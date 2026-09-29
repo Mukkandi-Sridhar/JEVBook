@@ -29,6 +29,10 @@ pip install git+https://github.com/Mukkandi-Sridhar/JEVBook
 
 The second line installs `jevkit`, the book's toolkit. Among other things, it includes the mock that answers the official SDK's calls without a network connection or an API key. If you have a real TypeSafe API key, set `JEVKIT_LIVE=1` and `TYPESAFE_API_KEY`, and the labs call the real service instead; Chapter 23 explains how.
 
+## The companion widgets
+
+Four small browser tools let you move the book's numbers yourself: a threshold simulator (Chapter 21), a calibration playground (Chapters 4 and 18), a bake-off explorer (Chapter 20) and a decision cost calculator (Chapters 16, 19 and 23). They're in the `site/` folder of the repository and on the book's website, and they run entirely in your browser.
+
 ## A word on the numbers
 
 Kestrel Logistics is fictional, and so are its alerts, which come from a generator with a known truth behind every one. That's what makes it possible to measure things exactly, like how many real threats a policy misses. It also means every number is an illustration of a method, not a fact about the world. When a figure is labelled *synthetic*, believe the shape and test the numbers on your own data.

@@ -23,7 +23,7 @@ local is_html = quarto.doc.is_format("html") or quarto.doc.is_format("epub")
 local ENVS = {
   tryit = "tryit", breaks = "breaks", threshold = "threshold", deeper = "deeper",
   keyidea = "keyidea", goals = "goals", exercises = "exercises", nexthook = "nexthook",
-  wide = "widefig", summary = "summarypage", partintro = "partintro",
+  wide = "widefig", summary = "summarypage", partintro = "partintro", indexlist = "indexlist",
 }
 
 local LABELS = {

@@ -235,3 +235,7 @@
 \renewcommand*{\partheadendvskip}{\vspace{0.35in}}
 \renewcommand*{\partheademptypage}{}
 \newenvironment{partintro}{\begin{minipage}{0.92\textwidth}\raggedright\fontsize{11.5}{17}\selectfont\color{ink2}}{\end{minipage}}
+
+% Index of terms: two columns, small type
+\usepackage{multicol}
+\newenvironment{indexlist}{\par\begin{multicols}{2}\small\raggedright\setlength{\parskip}{2pt}}{\end{multicols}\par}

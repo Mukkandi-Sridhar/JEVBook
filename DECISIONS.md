@@ -129,3 +129,8 @@ Newest decisions are appended at the bottom of each section.
   DecisionRecord, a frozen Config with a fingerprint, fallback-to-review on any SDK error, a deterministic hash-based
   3% audit draw, a daily monitor with bands chosen by eye from the live week and a 10% tolerance on capacity, and a
   shadow comparison. `fit_config` fits the lines with the critical-asset rule included.
+- **D-56 · Index of terms** is generated (`tools/make_index.py`) from the glossary plus names, and lists chapters rather
+  than page numbers, so it never goes stale between renders. Set in two columns in print.
+- **D-57 · Companion widgets** (`site/`) are dependency-free HTML + JS reading `site/data.js`, exported by
+  `tools/export_widget_data.py` from the same synthetic data as the book. Tested headless at 900 px and 390 px, light
+  and dark, with no page-level horizontal scroll.

@@ -1,3 +1,104 @@
-# Cheat sheets
+# Cheat sheets {.unnumbered}
 
-*Draft.*
+Everything on these pages is explained properly in the chapter given in brackets. They're here for the day you need the formula and not the story.
+
+## Drawing the line (Chapter 5)
+
+For a yes-or-no decision, act when the probability of a problem is above
+
+$$
+p^{*} = \frac{C_{\text{false alarm}}}{C_{\text{false alarm}} + C_{\text{miss}}}
+$$
+
+A false alarm costing \$400 and a miss costing \$10,000 give $p^{*} = 400 / 10{,}400 \approx 0.04$.
+
+## Three zones (Chapter 21)
+
+With a review that costs $C_r$ and catches all but a share $m$ of real problems, a miss $C_{\text{miss}}$ and a false page $C_{\text{page}}$, the cost-optimal lines for calibrated probabilities are
+
+$$
+\text{low} = \frac{C_r}{C_{\text{miss}}\,(1-m)} \qquad
+\text{high} = \frac{C_{\text{page}} - C_r}{C_{\text{page}} + m\,C_{\text{miss}}}
+$$
+
+Then check the queue. If the review zone holds more cases than people can clear, raise the low line until it fits, and write down what that costs.
+
+## Measuring probabilities (Chapters 3, 4)
+
+For predictions $p_i$ and outcomes $y_i \in \{0, 1\}$:
+
+$$
+\text{Brier} = \frac{1}{n}\sum_i (p_i - y_i)^2 \qquad
+\text{log loss} = -\frac{1}{n}\sum_i \big[y_i \log p_i + (1-y_i)\log(1-p_i)\big]
+$$
+
+$$
+\text{ECE} = \sum_{b} \frac{n_b}{n}\,\big|\,\bar p_b - \bar y_b\,\big|
+$$
+
+where each bin $b$ holds $n_b$ predictions with average $\bar p_b$ and observed rate $\bar y_b$. AUC measures ranking only: a model can have a perfect AUC and useless probabilities.
+
+## Fixing probabilities (Chapters 4, 18)
+
+| Method | What it fits | Use when |
+|---|---|---|
+| Temperature | $p' = \sigma(z / T)$, one number | the model is uniformly over- or underconfident |
+| Platt scaling | $p' = \sigma(a z + b)$, two numbers | a few hundred labels; the usual first fix |
+| Isotonic | any increasing curve | thousands of labels |
+| Prior shift | odds × $\dfrac{b'/(1-b')}{b/(1-b)}$ | only the base rate changed, from $b$ to $b'$ |
+
+Here $z = \log\frac{p}{1-p}$ and $\sigma$ is the S-curve.
+
+## Testing a model's calibration on your data (Chapter 18)
+
+1. Collect labels for a random sample of real cases, not just the interesting ones.
+2. Measure ranking (AUC) and calibration (ECE, with a bootstrap range) separately.
+3. Compare the average predicted probability with the observed base rate. A big gap usually means prior shift.
+4. Fix the base rate first; then Platt scaling on a few hundred labels if needed.
+5. Re-test on labels you didn't fit on. Repeat on a schedule and whenever the model version changes.
+
+## Designing typed questions (Chapter 17)
+
+- **Noul**: one fact per question; say what counts as yes and as no; no double negatives.
+- **Choice**: options that don't overlap; always an escape option ("other", "none", "not enough information").
+- **Score**: put thresholds on the probability of the levels you care about, not on the average level.
+- Ask related questions in one call: the state is sent once.
+- Decide with the whole distribution and the costs of each action, not the top label.
+
+## The official SDK (Chapters 16, 17, 23)
+
+```python
+from typesafe_sdk import Choice, Noul, Score, TypeSafeClient, RetryPolicy
+from jevkit import MockJevTransport       # drop the transport and add a key for the real API
+
+client = TypeSafeClient(api_key="mock", transport=MockJevTransport(),
+                        retry=RetryPolicy(max_retries=2))
+r = client.system_one(
+    state="…",                                           # text, JSON object or list
+    questions={
+        "attack": Noul(instructions="Is this a real attack?"),
+        "kind": Choice(criteria={"phishing": "…", "malware": "…", "none": None}),
+        "severity": Score(criteria=["low", "medium", "high"]),
+    },
+    model="jev-latest")                                  # pin a dated version in production
+r.nouls["attack"].noul                   # P(yes)
+r.choices["kind"].probabilities          # {label: P}
+r.scores["severity"].probabilities       # {level: P}
+r.usage, r.request_id                    # log both
+```
+
+Retry rate limits (429) and server errors (5xx). Never retry 4xx errors: fix the request.
+
+## Choosing a method (Chapter 20)
+
+| If you have… | Start with |
+|---|---|
+| thousands of labels, clean fields, one stable decision | logistic regression |
+| a rule an expert can write and an auditor must read | rules |
+| no labels, raw text or many different decisions | a decision model, checked on a few hundred labels |
+| messy input and a sharp decision | an LLM to extract, a decision model to decide |
+| output a person must read | an LLM, checked by typed questions |
+
+## Before a decision service runs (Chapter 28)
+
+Pinned model · one versioned config with a fingerprint · a decided meaning for every failure · a record for every decision · a random audit of automatic actions · a daily monitor with flags · shadow runs for every new version · a named owner who can switch everything to review.
