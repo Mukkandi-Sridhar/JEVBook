@@ -1,5 +1,9 @@
 # Cheat sheets {.unnumbered}
 
+```{=latex}
+\begingroup\small
+```
+
 Everything on these pages is explained properly in the chapter given in brackets. They're here for the day you need the formula and not the story.
 
 ## Drawing the line (Chapter 4)
@@ -102,3 +106,7 @@ Retry rate limits (429) and server errors (5xx). Never retry 4xx errors: fix the
 ## Before a decision service runs (Chapter 21)
 
 Pinned model · a versioned, fingerprinted config · a meaning for every failure · a record for every decision · random audits of automatic actions · a daily monitor · shadow runs for new versions · an owner who can switch it all to review.
+
+```{=latex}
+\par\endgroup
+```

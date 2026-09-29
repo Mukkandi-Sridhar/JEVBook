@@ -30,7 +30,7 @@ Resume from here. Each chapter row is updated after its lab runs, it renders, an
 | 12 | The Jevons paradox of decisions | 1,941 | 11 | 6 | ok | pass | 6 |
 | 13 | The bake-off: six ways to make a decision | 1,878 | 9 | 7 | ok | pass | 2 |
 | 14 | Act, review, or escalate | 2,655 | 14 | 7 | ok | pass | 0 |
-| 15 | A catalog of decision patterns | 1,932 | 12 | 8 | ok | pass | 2 |
+| 15 | A catalogue of decision patterns | 1,932 | 12 | 8 | ok | pass | 2 |
 | 16 | First calls, and the mock that makes them free | 1,552 | 9 | 6 | ok | pass | 3 |
 | 17 | A hybrid agent: Jev decides, the LLM reasons | 1,363 | 8 | 6 | ok | pass | 1 |
 | 18 | Case study: SOC alert triage | 1,644 | 8 | 6 | ok | pass | 2 |
@@ -48,12 +48,52 @@ Resume from here. Each chapter row is updated after its lab runs, it renders, an
 5. `quarto render --to pdf`, then look at the pages (`python tools/contact.py _book/*.pdf A B out.png`).
 6. `python tools/progress.py --pdf _book/*.pdf` rewrites the chapter table above.
 
-## What's left for the author
+## NEEDS AUTHOR
 
-- **[[VERIFY]] marks: 38.** Almost all are vendor claims about Jev (release timing, speed, price, RLCD, the name) and
-  exact wording of attributed quotes. `docs/jev-facts.md` is the ledger; check each against a primary source.
-- **[[AUTHOR STORY]] marks: 16**, one or two per chapter where the author's own experience (AttendX, the police FIR
-  agent, SIGNAL) belongs, plus the preface and acknowledgements.
-- **Live check.** With a TypeSafe key, set `JEVKIT_LIVE=1` and re-run the labs for Chapters 9–11, 13 and 16 against
-  real Jev; every synthetic number in those chapters has a real counterpart to measure.
-- **Publishing.** Cover art in `assets/cover/` is a placeholder; ISBN and final copyright page details are to fill in.
+Everything below needs you, or access this build didn't have. `BOOK_DRAFT=1 quarto render --to pdf` shows every
+[[VERIFY]] and [[AUTHOR STORY]] marker in place; `[[AUTHOR: …]]` placeholders show in every build.
+
+**Placeholders to fill (visible in print until you do)**
+
+- Copyright page (`assets/latex/before-body.tex`): publisher or imprint and city, ISBN for the paperback, ISBN for the
+  ebook, and the month of the first edition. The printing line (10 9 8 … 1) is in place.
+- Acknowledgements (`front/acknowledgements.qmd`) and About the Author (`back/about-author.qmd`).
+- Cover art in `assets/cover/` is still a placeholder.
+
+**Your stories** — [[AUTHOR STORY]] markers: 20, hidden in print. They mark where AttendX, the police
+FIR agent, SIGNAL, VMG-RAG or leading the intern team belongs. `grep -n "AUTHOR STORY" chapters/*.qmd index.qmd`
+lists them with their topics.
+
+**Checks against sources this build couldn't open.** The network blocked docs.typesafe.ai, typesafe.ai, arxiv.org,
+huggingface.co and every article host, so these rest on search-engine excerpts that agreed across several queries:
+
+- Chapter 9 and the glossary: TypeSafe's docs say `confidence` is computed from the shape of the probabilities (not
+  the top probability), that `noul` answers carry no confidence, and that questions are evaluated in parallel and in
+  isolation against the same state; the quick-start example shows confidence 0.78 beside a top probability of 0.85.
+  Read docs.typesafe.ai (Quick start, Primitives, Confidence) and confirm the wording.
+- Chapter 15: Jev-Mem (Jiang, Li and Li, UT Dallas, arXiv 2609.23986): method, LoCoMo LLM-as-judge 0.777 (+11.0%),
+  memory construction 158 s (6.6× faster), query latency 0.93 s (−36.7%). Check against the paper.
+- Bibliography: URLs and the access date (29 September 2026) for TypeSafe's blog and docs, DataCamp, regolo.ai and
+  Alex Molas. Search results show the DataCamp article under two titles ("…That Never Hallucinates" and
+  "…Explained"); the book uses the first. Confirm on the page.
+- The Doom demo (Chapter 9: about ten decisions a second, about \$7 an hour) keeps its [[VERIFY]]: find TypeSafe's
+  own post or video and cite it.
+- [[VERIFY]] marks in total: 36, mostly vendor numbers (latency, price, speed-ups) and attributed quotes
+  (Simon, Amara, Tyson, Gibson, "Hope is not a strategy"). `docs/jev-facts.md` is the ledger.
+
+**Things to switch on**
+
+- The companion site: the book prints https://mukkandi-sridhar.github.io/JEVBook/ (from `_quarto.yml`), but no
+  GitHub Pages deployment exists yet. Turn on Pages for the rendered `_book/` (or change the URL in
+  `front/how-to-read.qmd` and `_quarto.yml`).
+- The lab QR codes and Colab links point at `labs/chNN.ipynb` on `main`. Merge this branch before printing, or the
+  codes open a 404.
+
+**Not done here**
+
+- A fine-tuned MiniLM for the bake-off's text-classifier row. It needs model weights from huggingface.co (blocked) and
+  PyTorch (not installed). The row stays a TF-IDF classifier and the text says it's a floor, not a transformer.
+- Live check: with a TypeSafe key, set `JEVKIT_LIVE=1` and re-run the labs for Chapters 9–11, 13 and 16 against real
+  Jev; every synthetic number there has a real counterpart to measure.
+- Chapters other than each part's first still open on either page (D-63): all on the right would push the book
+  past 250 pages.

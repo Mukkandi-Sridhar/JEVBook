@@ -12,7 +12,7 @@ from jevkit import MockJevTransport, soc
 state = soc.load().description[118]
 ```
 
-Twenty-two chapters in, you know what a System One model is for, how to test it and where to put it. You haven't yet written the ten lines of code that actually call one.
+Fifteen chapters in, you know what a System One model is for, how to test it and where to put it. You haven't yet written the ten lines of code that actually call one.
 
 That moment has a particular feeling with any new API. Where does the key go? What does an error look like? Will a bug in a loop cost me money? Will my tests break when the network's down?
 
@@ -126,7 +126,7 @@ Chapter 10 showed that one call can carry several questions about the same state
 
 Asking Kestrel's four triage questions in one call used about {{< num ch23 tokens_four_one int >}} input tokens. Asking them in four separate calls used {{< num ch23 tokens_four_sep int >}}, because the alert went over the wire four times (@fig-tokens). One call is also one round trip instead of four.
 
-These are the mock's token counts, not the real tokenizer's [[VERIFY]]. But they suggest something worth noticing: a Kestrel alert is short, about {{< num ch23 tokens_text int >}} tokens as text. Chapters 9 and 12 assumed 500 tokens per decision, which was generous. At short states like these, the vendor-reported price works out to a few dollars per million decisions.
+These are the mock's token counts, not the real tokeniser's [[VERIFY]]. But they suggest something worth noticing: a Kestrel alert is short, about {{< num ch23 tokens_text int >}} tokens as text. Chapters 9 and 12 assumed 500 tokens per decision, which was generous. At short states like these, the vendor-reported price works out to a few dollars per million decisions.
 
 ## Tests that never touch the network
 
@@ -164,7 +164,7 @@ Kestrel's login check has a 300 ms budget. If the call to Jev fails or times out
 (With no answer, the best estimate is the base rate. Letting it through costs about 0.0001 × \$10,000 = \$1 on average; blocking costs about \$20. So fail open: allow the login, and log it for a later check. For a class of logins with a much higher base rate, such as admin accounts from new countries, the same arithmetic may say fail closed.)
 :::
 
-::: {.bookquote by="Edsger W. Dijkstra, Notes on Structured Programming, 1970"}
+::: {.bookquote by="Edsger W. Dijkstra, Notes on Structured Programming, 1972"}
 Program testing can be used to show the presence of bugs, but never to show their absence!
 :::
 
@@ -174,7 +174,7 @@ Dijkstra's point [@dijkstra1970] [[VERIFY]] is doubly true for a model behind an
 
 The first call was ten lines, and the only thing that made it a mock was the transport. Errors split into two kinds: our own, which fail fast and should be fixed, and the world's, which the SDK retries. When the clock is tight, a failed call becomes a case for the policy to decide, not a retry setting. Asking four questions in one call sent the alert once instead of four times. And a recording made once with a key can drive every test afterwards, with no key at all.
 
-::: {.exercises}
+::: {.exercises lab="ch16"}
 1. In the lab, set `fail_rate=0.5`. How many retries do you need for 99% of calls to succeed? What would that do to your latency?
 2. Write a small function `decide_or_fallback(state)` that returns P(attack) from Jev, or a fallback value of your choosing if the call fails within 300 ms. What fallback did you choose, and why?
 3. Record a cassette for five alerts, change one question's wording, and replay. What happens? Why is that the behaviour you want?

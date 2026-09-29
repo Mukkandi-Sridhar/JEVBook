@@ -39,8 +39,10 @@ def serve(arrivals, priority=None, per_day: int = CAPACITY, max_age_min: float =
     service = 24 * 60 / per_day
     wait = np.full(len(arrivals), np.inf)
     heap, i, t = [], 0, 0.0
-    end = arrivals.max() + 24 * 60 if len(arrivals) else 0.0      # anything unreached a day after the last arrival is dropped
-    while (i < len(order) or heap) and t <= end:
+    # the week ends at the end of the last arrival's day: work doesn't carry on into an eighth day, so no more than
+    # `per_day` items a day are ever served, and anything still waiting then counts as never reached
+    end = np.ceil((arrivals.max() + 1e-9) / (24 * 60)) * 24 * 60 if len(arrivals) else 0.0
+    while (i < len(order) or heap) and t < end:
         while i < len(order) and arrivals[order[i]] <= t:
             k = order[i]
             key = -priority[k] if priority is not None else arrivals[k]

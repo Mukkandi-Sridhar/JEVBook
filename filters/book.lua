@@ -139,6 +139,9 @@ function Div(div)
     end
     local keep = cls == "deeper" and "\\needspace{7\\baselineskip}" or ""
     blocks:insert(latex(keep .. "\\begin{" .. ENVS[cls] .. "}"))
+    if cls == "exercises" and div.attributes["lab"] then
+      blocks:insert(latex("\\labqr{" .. div.attributes["lab"] .. "}"))
+    end
     blocks:extend(div.content)
     blocks:insert(latex("\\end{" .. ENVS[cls] .. "}"))
     return blocks
@@ -153,6 +156,10 @@ function Div(div)
   if (cls == "bookquote" or cls == "epigraph") and div.attributes["by"] then
     div.content:insert(pandoc.Div({pandoc.Plain({pandoc.Str("\u{2014} " .. div.attributes["by"])})}, pandoc.Attr("", {"quote-by"})))
   end
+  if cls == "exercises" and div.attributes["lab"] then
+    local url = "https://colab.research.google.com/github/Mukkandi-Sridhar/JEVBook/blob/main/labs/" .. div.attributes["lab"] .. ".ipynb"
+    div.content:insert(2, pandoc.Para({pandoc.Link({pandoc.Str("Open this chapter's lab in Colab \u{2192}")}, url)}))
+  end
   if cls == "tryit" and div.attributes["lab"] then
     local ch = div.attributes["lab"]
     local url = "https://colab.research.google.com/github/Mukkandi-Sridhar/JEVBook/blob/main/labs/" .. ch .. ".ipynb"
@@ -163,3 +170,92 @@ function Div(div)
 end
 
 -- Chapters open with their title only: no progress map (removed for a cleaner print page).
+
+-- Short code names with hyphens (jev-mock-synthetic, x-jevkit-synthetic) must not break across lines in print.
+function Code(el)
+  if not is_latex then return nil end
+  if el.text:find("-", 1, true) and not el.text:find("%s") and #el.text <= 34 then
+    return {latexi("\\mbox{"), el, latexi("}")}
+  end
+end
+
+-- ---------------------------------------------------------------- print index
+-- tools/make_index.py lists the terms in back/index-terms.json. In print, a term gets a LaTeX \index entry where
+-- a paragraph defines it in bold and, unless it's an ordinary word ("strict"), at its first mention in each chapter.
+local function load_index_terms()
+  local dir = (quarto and quarto.project and quarto.project.directory) or "."
+  local fh = io.open(dir .. "/back/index-terms.json", "r")
+  if not fh then return {} end
+  local data = pandoc.json.decode(fh:read("*a"))
+  fh:close()
+  return data.terms or {}
+end
+
+local function lua_escape(s) return (s:gsub("[%^%$%(%)%%%.%[%]%*%+%-%?]", "%%%0")) end
+
+local function index_matches(text, lower, patterns)
+  for _, p in ipairs(patterns) do
+    local src = (p ~= p:lower()) and text or lower              -- capitals mean case-sensitive
+    local prefix = p:sub(-1) == "*"
+    local body = prefix and p:sub(1, -2) or p
+    local pat = lua_escape(body)
+    if body:sub(1, 1):match("%w") then pat = "%f[%w]" .. pat end
+    if not prefix and body:sub(-1):match("%w") then pat = pat .. "%f[^%w]" end
+    if src:find(pat) then return true end
+  end
+  return false
+end
+
+local function index_entry(t)
+  local shown = t.display:gsub("([&%%#_])", "\\%1")
+  if t.code then shown = "\\texttt{" .. shown .. "}" end
+  local key = t.sort:gsub("[!@|\"]", "")
+  return pandoc.RawInline("latex", "\\index{" .. key .. "@" .. shown .. "}")
+end
+
+local function index_blocks(blocks, st)
+  for i = 1, #blocks do
+    local b = blocks[i]
+    if b.t == "Header" and b.level == 1 then
+      local id = b.identifier or ""
+      if id:match("^sec%-ch%d+") then st.chapter, st.seen = id, {} else st.chapter = nil end
+    elseif st.chapter and (b.t == "Para" or b.t == "Plain") then
+      local text = pandoc.utils.stringify(b)
+      local lower = text:lower()
+      local strong = {}
+      pandoc.walk_block(b, {Strong = function(s) strong[#strong + 1] = pandoc.utils.stringify(s) end})
+      local stext = table.concat(strong, " | ")
+      local slower = stext:lower()
+      local adds = {}
+      for _, t in ipairs(st.terms) do
+        local defined = #strong > 0 and index_matches(stext, slower, t.patterns)
+        local first = (not t.strict) and (not st.seen[t.display]) and index_matches(text, lower, t.patterns)
+        if defined or first then
+          st.seen[t.display] = true
+          adds[#adds + 1] = index_entry(t)
+        end
+      end
+      if #adds > 0 then
+        for k = #adds, 1, -1 do b.content:insert(1, adds[k]) end
+        blocks[i] = b
+      end
+    elseif b.t == "Div" or b.t == "BlockQuote" then
+      b.content = index_blocks(b.content, st)
+      blocks[i] = b
+    elseif b.t == "BulletList" or b.t == "OrderedList" then
+      local items = b.content
+      for k = 1, #items do items[k] = index_blocks(items[k], st) end
+      b.content = items
+      blocks[i] = b
+    end
+  end
+  return blocks
+end
+
+function Pandoc(doc)
+  if not is_latex then return nil end
+  local terms = load_index_terms()
+  if #terms == 0 then return nil end
+  doc.blocks = index_blocks(doc.blocks, {terms = terms, chapter = nil, seen = {}})
+  return doc
+end

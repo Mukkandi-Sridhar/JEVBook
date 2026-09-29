@@ -128,7 +128,6 @@ def doom_check():
         draw.text(ax, x + 0.42, 0.48, b, size=5.6, ha="center", va="top", color=C["ink2"])
         if i < 4:
             draw.arrow(ax, (x + 0.85, 0.85), (x + 0.95, 0.85), head=3)
-    draw.text(ax, 0.0, 1.35, "A back-of-envelope check: do the vendor’s numbers agree with each other?", size=6.8, weight="bold")
     return f
 
 

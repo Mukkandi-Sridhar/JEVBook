@@ -126,7 +126,9 @@ In Chapter 2, precision and recall looked like two scores. Now you can see them 
 
 At the cost-based line in @fig-pr-threshold, Kestrel blocks about {{< num ch05 blocked_frac pct >}} of alerts. That catches {{< num ch05 caught pct >}} of real threats, but only {{< num ch05 precision pct >}} of the blocks are real ones. That precision sounds poor. Is it?
 
-Only the costs can say. Each wrong block costs \$200; each missed threat \$4,000. So one missed threat is worth twenty wrong blocks. With these costs, a precision of about one in five is exactly right. Arguing about precision or recall on its own, without the costs, is arguing about half a sentence.
+Only the costs can say. Each wrong block costs \$200; each missed threat \$4,000. The line sits at 200 ÷ 4,200, about {{< num ch05 t_formula f3 >}}: block an alert when the chance it's real is better than about 1 in 21. That's a rule about the *marginal* alert, the one sitting right on the line, where blocking and letting it through cost the same on average.
+
+Precision is a different thing. It's an average over *every* alert above the line, and most of those are far likelier than 1 in 21 to be real, which is why it comes out nearer one in five. Nobody chose that number. It's a by-product of putting the line where the costs say, and a model with better ranking would push it up without moving the line at all. Arguing about precision or recall on its own, without the costs, is arguing about half a sentence.
 
 ::: {.threshold}
 Kestrel's sales team complains that blocked customer emails are costing deals, and argues a wrong block costs \$800, not \$200. Recompute the blocking line. Roughly what happens to the share of alerts blocked, and to recall?
@@ -170,13 +172,13 @@ The same goes for cost estimates. The numbers will be wrong. Writing them down, 
 
 ## The end of Part I
 
-Step back and look at what you've built over five chapters.
+Step back and look at what you've built over four chapters.
 
 In Chapter 1 a machine learned exactly what we asked and was useless, because we asked for yes or no. So we asked for a chance instead, and had to learn what a chance means. That took us to a model that outputs one, and then to the uncomfortable discovery that its number might not be honest. Once we could check and fix that, the last step was the one this chapter took: letting costs, not habit, decide where the lines go, and leaving a door open for the cases a machine shouldn't decide alone.
 
 That's the foundation. Every system in the rest of the book, from deep networks to LLMs to Jev, gets judged by it.
 
-::: {.exercises}
+::: {.exercises lab="ch04"}
 1. A hospital test flags a serious but treatable condition. Treating someone who doesn't have it costs \$500 and some discomfort; missing someone who does costs \$50,000. What's the treatment threshold? What would you want to know about the test's calibration before trusting it?
 2. In the lab, halve and double both costs (together and separately). When does the threshold move, and when doesn't it? Why?
 3. Explain in two sentences why "0.5 is the neutral threshold" is wrong.

@@ -177,7 +177,11 @@ def compare():
         vals = [h[key] * (mul or 1), l[key] * (mul or 1)]
         ax.bar([0, 1], vals, color=[C["jev"], C["llm"]], width=0.6)
         for i, v in enumerate(vals):
-            ax.text(i, v, fmt.format(v), ha="center", va="bottom", fontsize=6.0)
+            if key == "reviews_day":           # inside the bar, clear of the capacity line
+                ax.text(i, v - max(vals) * 0.04, fmt.format(v), ha="center", va="top", fontsize=6.0, color="white",
+                        fontweight="bold")
+            else:
+                ax.text(i, v, fmt.format(v), ha="center", va="bottom", fontsize=6.0)
         ax.set_xticks([0, 1])
         ax.set_xticklabels(["hybrid", "all-LLM"], fontsize=6.0)
         ax.set_title(title, fontsize=6.4, loc="left")
@@ -185,7 +189,7 @@ def compare():
         ax.tick_params(axis="y", labelsize=5.6)
         if key == "reviews_day":
             ax.axhline(240, color=C["ink"], lw=0.8, ls=(0, (3, 2)))
-            ax.text(1.45, 240, "capacity", fontsize=5.4, va="bottom", ha="right")
+            ax.text(-0.45, 246, "capacity 240", fontsize=5.4, va="bottom", ha="left", color=C["ink2"])
     f.subplots_adjust(wspace=0.55, top=0.75)
     synthetic_tag(f)
     return f

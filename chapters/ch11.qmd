@@ -102,6 +102,8 @@ The adjustment rests on an assumption: that alerts of each kind look the same at
 
 "A few hundred labels" is the answer I've been giving. It's time to be precise, because small samples play a nasty trick on calibration measurements.
 
+[[AUTHOR STORY: SIGNAL or the police FIR agent: where the first few hundred labels came from, and whose time they cost]]
+
 Take the mock at Kestrel, whose ECE on all 20,000 alerts is {{< num ch18 ece_full f3 >}}. Now pretend you only had a random 100 labelled alerts, and measure ECE on those. Do it 200 times with different random samples.
 
 ![The ECE you'd measure from a random sample of labelled alerts, for different sample sizes, on a model whose ECE over all 20,000 alerts is shown by the black line. With a hundred labels the measurement is both noisy and biased upwards: an honest model looks dishonest. The bias shrinks as samples grow.](/figures/ch18/ece-noise.pdf){#fig-ece-noise}
@@ -132,7 +134,7 @@ For a **score**, check the probability of each tail you put a threshold on, such
 
 Here's the routine I'd follow before trusting any model's probabilities for a decision, and on a schedule afterwards (@fig-protocol).
 
-1. **Collect labels.** Recent cases with known outcomes, and a few thousand if you can get them. In a SOC, include random audits of auto-closed alerts, as Chapter 14 insisted, or your labels will only cover the cases people looked at.
+1. **Collect labels.** Recent cases with known outcomes, and a few thousand if you can get them. In a SOC, include random audits of auto-closed alerts, as Chapter 14 will insist, or your labels will only cover the cases people looked at.
 2. **Plot, don't just score.** A reliability diagram with the counts showing, and ECE with a range. Look hardest near your thresholds.
 3. **Slice.** Every group you'll act on differently: source, customer tier, language, region.
 4. **Fix.** A base-rate adjustment if that's the problem and you know the rate; Platt or temperature scaling on your labels otherwise.
@@ -166,7 +168,7 @@ Two claims collided, and we tested instead of taking sides. The same model was h
 
 Next, the bigger picture: what happens when decisions like these become almost free.
 
-::: {.exercises}
+::: {.exercises lab="ch11"}
 1. Explain to a manager, in three sentences, why a model can be calibrated at one company and not another, even with identical inputs.
 2. In the lab, generate a third company where attacks are *more* common than at Kestrel (use `logit_shift` of +1.0). Which way does the reliability curve bend? Does the odds adjustment fix it?
 3. You have 150 labelled alerts and measure ECE 0.05. A colleague says the model is badly calibrated. What would you say, and what would you do next?

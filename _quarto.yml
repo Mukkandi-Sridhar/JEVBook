@@ -15,6 +15,7 @@ book:
   downloads: [pdf, epub]
   chapters:
     - index.qmd
+    - front/acknowledgements.qmd
     - front/how-to-read.qmd
     - front/prologue.qmd
     - part: parts/p1.qmd
@@ -56,6 +57,7 @@ book:
     - back/cheatsheets.qmd
     - back/bibliography.qmd
     - back/index-terms.qmd
+    - back/about-author.qmd
 
 bibliography: references.bib
 csl: assets/chicago-author-date.csl
@@ -82,13 +84,13 @@ format:
     documentclass: scrbook
     classoption: [twoside, open=any, fontsize=10.5pt, headings=standardclasses, numbers=noenddot]
     papersize: custom
-    geometry:                      # 7 x 10 in trim; a wider inner margin for the binding
+    geometry:                      # 7 x 10 in trim; equal margins so the text sits in the same place on every page
       - paperwidth=7in
       - paperheight=10in
       - top=0.8in
       - bottom=0.85in
-      - inner=0.95in
-      - outer=0.85in
+      - inner=0.9in
+      - outer=0.9in
       - marginparsep=0.1in
       - marginparwidth=0.6in
       - headsep=0.28in
@@ -106,7 +108,9 @@ format:
     include-in-header: assets/latex/preamble.tex
     template-partials:
       - assets/latex/before-body.tex
+      - assets/latex/doc-class.tex
     keep-tex: true
+    latex-makeindex-opts: ["-s", "assets/latex/book.ist"]
     cite-method: citeproc
   html:
     theme: [cosmo, assets/web/book.scss]

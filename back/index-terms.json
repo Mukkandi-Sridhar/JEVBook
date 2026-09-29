@@ -1,0 +1,805 @@
+{
+ "terms": [
+  {
+   "display": "Act, review, escalate",
+   "sort": "act, review, escalate",
+   "patterns": [
+    "act, review",
+    "three doors",
+    "three zones"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Agent",
+   "sort": "agent",
+   "patterns": [
+    "agent",
+    "agents"
+   ],
+   "strict": true,
+   "code": false
+  },
+  {
+   "display": "Attention",
+   "sort": "attention",
+   "patterns": [
+    "attention"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Audit (random)",
+   "sort": "audit (random)",
+   "patterns": [
+    "random audit*",
+    "audit"
+   ],
+   "strict": true,
+   "code": false
+  },
+  {
+   "display": "AUC",
+   "sort": "auc",
+   "patterns": [
+    "auc"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Base rate",
+   "sort": "base rate",
+   "patterns": [
+    "base rate*",
+    "base-rate"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Brier score",
+   "sort": "brier score",
+   "patterns": [
+    "brier"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Calibration",
+   "sort": "calibration",
+   "patterns": [
+    "calibrat*"
+   ],
+   "strict": true,
+   "code": false
+  },
+  {
+   "display": "Capacity",
+   "sort": "capacity",
+   "patterns": [
+    "capacity"
+   ],
+   "strict": true,
+   "code": false
+  },
+  {
+   "display": "Cassette",
+   "sort": "cassette",
+   "patterns": [
+    "cassette*"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Choice (question type)",
+   "sort": "choice (question type)",
+   "patterns": [
+    "choice"
+   ],
+   "strict": true,
+   "code": false
+  },
+  {
+   "display": "Confidence",
+   "sort": "confidence",
+   "patterns": [
+    "confidence"
+   ],
+   "strict": true,
+   "code": false
+  },
+  {
+   "display": "Context window",
+   "sort": "context window",
+   "patterns": [
+    "context window*"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Cost line",
+   "sort": "cost line",
+   "patterns": [
+    "cost line*",
+    "cost-based line",
+    "cost-based threshold"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Decision layer",
+   "sort": "decision layer",
+   "patterns": [
+    "decision layer*"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Decision record",
+   "sort": "decision record",
+   "patterns": [
+    "decision record*"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Drift",
+   "sort": "drift",
+   "patterns": [
+    "drift*"
+   ],
+   "strict": true,
+   "code": false
+  },
+  {
+   "display": "ECE (expected calibration error)",
+   "sort": "ece (expected calibration error)",
+   "patterns": [
+    "ece",
+    "expected calibration error"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Elasticity",
+   "sort": "elasticity",
+   "patterns": [
+    "elastic*"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Embedding",
+   "sort": "embedding",
+   "patterns": [
+    "embedding*"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Escape option",
+   "sort": "escape option",
+   "patterns": [
+    "escape option*",
+    "\"other\"",
+    "not enough information"
+   ],
+   "strict": true,
+   "code": false
+  },
+  {
+   "display": "Extract, then decide",
+   "sort": "extract, then decide",
+   "patterns": [
+    "extract, then decide",
+    "extracts, jev decides"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Fail-safe",
+   "sort": "fail-safe",
+   "patterns": [
+    "fail-safe*"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Fine-tuning",
+   "sort": "fine-tuning",
+   "patterns": [
+    "fine-tun*"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Gradient descent",
+   "sort": "gradient descent",
+   "patterns": [
+    "gradient descent"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Guardrail gate",
+   "sort": "guardrail gate",
+   "patterns": [
+    "guardrail*"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Hallucination",
+   "sort": "hallucination",
+   "patterns": [
+    "hallucinat*"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Hybrid agent",
+   "sort": "hybrid agent",
+   "patterns": [
+    "hybrid agent*",
+    "hybrid"
+   ],
+   "strict": true,
+   "code": false
+  },
+  {
+   "display": "Isotonic regression",
+   "sort": "isotonic regression",
+   "patterns": [
+    "isotonic"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Jevons paradox",
+   "sort": "jevons paradox",
+   "patterns": [
+    "jevons paradox"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "JSON mode",
+   "sort": "json mode",
+   "patterns": [
+    "json mode",
+    "constrained decoding"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Label",
+   "sort": "label",
+   "patterns": [
+    "label",
+    "labels"
+   ],
+   "strict": true,
+   "code": false
+  },
+  {
+   "display": "LLM (large language model)",
+   "sort": "llm (large language model)",
+   "patterns": [
+    "large language model*"
+   ],
+   "strict": true,
+   "code": false
+  },
+  {
+   "display": "LLM-as-judge",
+   "sort": "llm-as-judge",
+   "patterns": [
+    "llm-as-judge",
+    "llm-as-a-judge"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Log loss",
+   "sort": "log loss",
+   "patterns": [
+    "log loss"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Logistic regression",
+   "sort": "logistic regression",
+   "patterns": [
+    "logistic regression"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Loss",
+   "sort": "loss",
+   "patterns": [
+    "loss"
+   ],
+   "strict": true,
+   "code": false
+  },
+  {
+   "display": "Mock",
+   "sort": "mock",
+   "patterns": [
+    "mock"
+   ],
+   "strict": true,
+   "code": false
+  },
+  {
+   "display": "Noul",
+   "sort": "noul",
+   "patterns": [
+    "noul",
+    "nouls"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Observe, Decide, Act",
+   "sort": "observe, decide, act",
+   "patterns": [
+    "observe, decide",
+    "ooda"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Ordinal",
+   "sort": "ordinal",
+   "patterns": [
+    "ordinal"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Overconfidence",
+   "sort": "overconfidence",
+   "patterns": [
+    "overconfiden*"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Overfitting",
+   "sort": "overfitting",
+   "patterns": [
+    "overfit*"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Platt scaling",
+   "sort": "platt scaling",
+   "patterns": [
+    "platt scaling"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Policy",
+   "sort": "policy",
+   "patterns": [
+    "policy"
+   ],
+   "strict": true,
+   "code": false
+  },
+  {
+   "display": "Prior shift",
+   "sort": "prior shift",
+   "patterns": [
+    "prior shift",
+    "prior-shift"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Prompt injection",
+   "sort": "prompt injection",
+   "patterns": [
+    "prompt injection"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Proper scoring rule",
+   "sort": "proper scoring rule",
+   "patterns": [
+    "proper scoring rule*"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "RAG (retrieval-augmented generation)",
+   "sort": "rag (retrieval-augmented generation)",
+   "patterns": [
+    "rag",
+    "retrieval-augmented"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Reliability diagram",
+   "sort": "reliability diagram",
+   "patterns": [
+    "reliability diagram*"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "RLCD",
+   "sort": "rlcd",
+   "patterns": [
+    "rlcd"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "RLHF",
+   "sort": "rlhf",
+   "patterns": [
+    "rlhf"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Router",
+   "sort": "router",
+   "patterns": [
+    "router*",
+    "routing"
+   ],
+   "strict": true,
+   "code": false
+  },
+  {
+   "display": "Score (question type)",
+   "sort": "score (question type)",
+   "patterns": [
+    "score"
+   ],
+   "strict": true,
+   "code": false
+  },
+  {
+   "display": "Shadow mode",
+   "sort": "shadow mode",
+   "patterns": [
+    "shadow"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Softmax",
+   "sort": "softmax",
+   "patterns": [
+    "softmax"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "State",
+   "sort": "state",
+   "patterns": [
+    "state"
+   ],
+   "strict": true,
+   "code": false
+  },
+  {
+   "display": "Structured output",
+   "sort": "structured output",
+   "patterns": [
+    "structured output*"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "System 1, System 2",
+   "sort": "system 1, system 2",
+   "patterns": [
+    "system 1",
+    "system 2"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "System One model",
+   "sort": "system one model",
+   "patterns": [
+    "system one model*"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Temperature (calibration)",
+   "sort": "temperature (calibration)",
+   "patterns": [
+    "temperature scaling",
+    "fitted temperature"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Temperature (sampling)",
+   "sort": "temperature (sampling)",
+   "patterns": [
+    "temperature 0",
+    "temperature 0.7",
+    "temperature of"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Three-zone policy",
+   "sort": "three-zone policy",
+   "patterns": [
+    "three-zone"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Token",
+   "sort": "token",
+   "patterns": [
+    "token",
+    "tokens"
+   ],
+   "strict": true,
+   "code": false
+  },
+  {
+   "display": "Trace",
+   "sort": "trace",
+   "patterns": [
+    "trace",
+    "traces"
+   ],
+   "strict": true,
+   "code": false
+  },
+  {
+   "display": "Transformer",
+   "sort": "transformer",
+   "patterns": [
+    "transformer*"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Transport",
+   "sort": "transport",
+   "patterns": [
+    "transport"
+   ],
+   "strict": true,
+   "code": false
+  },
+  {
+   "display": "Typed question",
+   "sort": "typed question",
+   "patterns": [
+    "typed question*"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Vendor-reported",
+   "sort": "vendor-reported",
+   "patterns": [
+    "vendor-reported"
+   ],
+   "strict": true,
+   "code": false
+  },
+  {
+   "display": "Bake-off",
+   "sort": "bake-off",
+   "patterns": [
+    "bake-off"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Bayes' rule",
+   "sort": "bayes rule",
+   "patterns": [
+    "bayes"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Doom demo",
+   "sort": "doom demo",
+   "patterns": [
+    "doom"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Harbor Pharma",
+   "sort": "harbor pharma",
+   "patterns": [
+    "harbor"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Jev-Mem",
+   "sort": "jev-mem",
+   "patterns": [
+    "jev-mem"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Jevons, William Stanley",
+   "sort": "jevons, william stanley",
+   "patterns": [
+    "jevons"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "jevkit",
+   "sort": "jevkit",
+   "patterns": [
+    "jevkit"
+   ],
+   "strict": false,
+   "code": true
+  },
+  {
+   "display": "Kahneman, Daniel",
+   "sort": "kahneman, daniel",
+   "patterns": [
+    "kahneman"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Molas, Alex",
+   "sort": "molas, alex",
+   "patterns": [
+    "molas"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Murphy, Allan",
+   "sort": "murphy, allan",
+   "patterns": [
+    "murphy"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Phishing campaign",
+   "sort": "phishing campaign",
+   "patterns": [
+    "campaign"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Reasoning models",
+   "sort": "reasoning models",
+   "patterns": [
+    "reasoning model*"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "ReAct",
+   "sort": "react",
+   "patterns": [
+    "ReAct"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "Threat intel",
+   "sort": "threat intel",
+   "patterns": [
+    "threat intel*"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "TinyJev",
+   "sort": "tinyjev",
+   "patterns": [
+    "tinyjev"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "TypeSafe AI",
+   "sort": "typesafe ai",
+   "patterns": [
+    "typesafe"
+   ],
+   "strict": false,
+   "code": false
+  },
+  {
+   "display": "typesafe-sdk",
+   "sort": "typesafe-sdk",
+   "patterns": [
+    "typesafe-sdk",
+    "typesafeclient"
+   ],
+   "strict": false,
+   "code": true
+  }
+ ]
+}

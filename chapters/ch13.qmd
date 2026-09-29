@@ -33,9 +33,9 @@ The decision is Kestrel's: is this alert a real threat? Every method gets the th
 
 Each reads what it would naturally read in practice (@fig-contenders). The rules and the logistic regression get the alert's structured fields from the SIEM. The text classifier and both LLM methods get the raw alert text. Jev gets the fields as a JSON state, the same information the logistic regression sees.
 
-The **text classifier** needs a word of explanation. It stands in for a fine-tuned model: a classic word-counting classifier trained on the history labels. A real fine-tuned transformer would read the text better. I couldn't train one here in a way you could re-run on a laptop, so treat this row as a floor for what a trained text model can do.
+The **text classifier** needs a word of explanation. It stands in for a fine-tuned model: a classic word-counting classifier (word weights plus logistic regression) trained on the history labels, which re-trains in seconds on any laptop. A fine-tuned transformer, even a small one of the MiniLM kind, would usually read the text better, so treat this row as a floor for what a trained text model can do.
 
-One warning before any results, and it's the most important paragraph in this chapter. Both LLM contestants are the book's mock, and I built it as a *noisier reader* than mock Jev (it's documented in `DECISIONS.md`). So when the LLM ranks alerts worse than Jev below, that's a consequence of how the mocks were made. It isn't evidence about real LLMs or real Jev. What *does* carry over is the shape of the other results: how stated confidences behave, how often free-text JSON breaks, what happens when you ask twice, what labels cost. Those come from how each kind of method works, not from my choice of noise.
+One warning before any results, and it's the most important paragraph in this chapter. Both LLM contestants are the book's mock, and I built it as a *noisier reader* than mock Jev (the repository's `docs/mock-design.md` explains how). So when the LLM ranks alerts worse than Jev below, that's a consequence of how the mocks were made. It isn't evidence about real LLMs or real Jev. What *does* carry over is the shape of the other results: how stated confidences behave, how often free-text JSON breaks, what happens when you ask twice, what labels cost. Those come from how each kind of method works, not from my choice of noise.
 
 ## Round one: ranking
 
@@ -71,7 +71,7 @@ The judge's 1-to-10 rating was never meant to be a probability, and reading it a
 
 ![Ranking on the live week as the trained methods see more labelled alerts, averaged over random samples. Jev and the LLMs need no labels to start, so they're flat lines. Logistic regression draws level with Jev at about 3,000 labels.](/figures/ch20/labels.pdf){#fig-labels}
 
-@fig-labels is the chart I'd show the data scientist in that argument. Logistic regression needs about 3,000 labelled alerts to draw level with Jev, and at a few hundred it's clearly behind. At Kestrel's volume, 3,000 labels is four or five days of analyst verdicts, which Kestrel happens to have. A team that's just starting, or a new decision nobody has labelled yet, doesn't.
+@fig-labels is the chart I'd show the data scientist in that argument. Logistic regression needs about 3,000 labelled alerts to draw level with Jev, and at a few hundred it's clearly behind. Where would 3,000 labels come from? Not from analysts' reviews alone: at 240 a day, that's nearly two weeks of verdicts. Kestrel's labels are *eventual outcomes*: the incident that was confirmed or ruled out, the user who said "that was me", the alert nobody followed up and nothing came of. Every alert gets one sooner or later, so at about 700 alerts a day, 3,000 labels is around four days of history, which Kestrel happens to have. A team that's just starting, or a new decision nobody has labelled yet, doesn't.
 
 The text classifier never catches up, even with every label we have. Words alone, counted, don't carry the numbers.
 
@@ -83,7 +83,7 @@ Labels are the hidden cost of trained models. A method that needs none can start
 
 ![Time and cost per decision for each method, on log scales. Classic models run in microseconds for fractions of a cent per million (an assumption: compute only). The LLM figures are this book's illustrative assumptions; Jev's are vendor-reported.](/figures/ch20/cost-latency.pdf){#fig-cost-latency}
 
-Nothing beats a rule on speed or price, and the classic models are close behind (@fig-cost-latency). They run in microseconds, on hardware you already own. Jev's vendor-reported figures put it in between: about \${{< num ch20 jev_cost_m int >}} per million decisions, in tens to hundreds of milliseconds. The illustrative LLM costs about \${{< num ch20 llm_json_cost_m int >}} per million for a small JSON answer and takes over a second.
+Nothing beats a rule on speed or price, and the classic models are close behind (@fig-cost-latency). They run in microseconds, on hardware you already own. Jev's vendor-reported figures put it in between: about \${{< num ch20 jev_cost_m int >}} per million decisions, in tens to hundreds of milliseconds. The illustrative LLM costs about \${{< num ch20 llm_json_cost_m int >}} per million and takes about {{< num ch20 llm_json_latency f1 >}} seconds. That's a little more than Chapter 9's figures because the bake-off's JSON answer carries four fields (verdict, confidence, rule and threat-intel score), about 60 output tokens rather than 40.
 
 If a decision can be made well by a rule or a logistic regression, one of those is the cheapest, fastest option, by orders of magnitude. Jev's price advantage is against *LLMs*, not against everything.
 
@@ -115,6 +115,7 @@ And the LLM? In this contest it's the weakest decider, partly by construction. B
 
 ::: {.tryit lab="ch13"}
 ```{python}
+from jevkit import bakeoff as B    # the six contestants, one live week
 r = B.run()
 for m in B.METHODS:
     s = B.scores(r["probs"][m], r["y"])
@@ -123,7 +124,7 @@ for m in B.METHODS:
 ```
 :::
 
-[[AUTHOR STORY: a time you chose a simple rule or a classic model over something newer, and why that was the right call]]
+[[AUTHOR STORY: AttendX or VMG-RAG: a time you chose a simple rule or a classic model over something newer, and why that was the right call]]
 
 ::: {.breaks}
 This is one decision, on one synthetic company, with mocks standing in for the LLM and for Jev. The LLM-versus-Jev accuracy gap was built into the mocks and tells you nothing about the real models. The text classifier is a weak stand-in for a fine-tuned model. And a single live week has only about four hundred real threats, so differences in the second decimal place of AUC are within noise. The value of a bake-off is the *method*: run the same contest on your own data, with the real models, and fill in your own scorecard.
@@ -145,7 +146,7 @@ Wolpert and Macready proved that about search and optimisation [@wolpert1997] [[
 
 Six methods sat the same exam. The trained logistic regression won on ranking and calibration, because it had fifteen thousand labels on clean fields. It needed about three thousand of them just to draw level with a method that needed none. The rules won on explanation and price. The LLM's stated confidences turned out to be round numbers, and its free-text JSON broke often enough to matter. Jev's row was the strongest wherever labels were scarce or the input was raw text. None of that tells you what real models will do on your data. It tells you exactly which columns to measure when you try.
 
-::: {.exercises}
+::: {.exercises lab="ch13"}
 1. In the lab, write a better hand-written rule. How close to the logistic regression can you get? What did you have to add?
 2. Fit Platt scaling to the LLM-as-judge ratings using 300 history alerts. What happens to its ECE? To its AUC? Why does one change and not the other?
 3. Rerun the labels curve with the text classifier using bigrams only. Does it help? Why might a fine-tuned transformer do better?

@@ -131,6 +131,14 @@ def synthetic_tag(f_or_ax, text="SYNTHETIC · not measured on real Jev", loc="tr
     f = f_or_ax.figure if hasattr(f_or_ax, "figure") and not isinstance(f_or_ax, plt.Figure) else f_or_ax
     x, ha = (0.995, "right") if loc.endswith("r") else (0.005, "left")
     y, va = (0.0, "top") if loc.startswith("b") else (1.0, "bottom")
+    # sit clear of anything already drawn past the figure's edge (panel titles, tick labels)
+    try:
+        r = f.canvas.get_renderer()
+        bb = f.get_tightbbox(r)
+        h = f.get_figheight()
+        y = min(0.0, bb.y0 / h - 0.01) if loc.startswith("b") else max(1.0, bb.y1 / h + 0.01)
+    except Exception:
+        pass
     f.text(x, y, text, ha=ha, va=va, fontsize=5.6, color=C["muted"], fontweight="medium",
            bbox=dict(boxstyle="round,pad=0.25,rounding_size=0.15", fc="white", ec=C["grid"], lw=0.5))
 

@@ -106,7 +106,7 @@ low, high = pol.cost_optimal_thresholds(costs)
 print(f"act below {low:.4f}; escalate at {high:.2f} and above")
 ```
 
-That first number deserves a second look. It says: only let the machine close an alert on its own if it's more than 99.8% sure the alert is harmless. When a miss costs 650 times more than a review, that's what "cheap mistakes only" means.
+That first number deserves a second look. It says: only let the machine close an alert on its own if it's more than 99.8% sure the alert is harmless. When closing a real threat unseen costs about 630 times more than a review (\$9,500 extra, once you allow for the 5% a reviewer would miss anyway, against \$15), that's what "cheap mistakes only" means.
 
 ::: {.threshold}
 Suppose Kestrel invests in better endpoint protection, and the expected loss from a missed threat falls from \$10,000 to \$2,000. Recompute the *act* line using the same formula: 15 ÷ (2,000 × 0.95). Does it move up or down? By roughly how much? What happens to the number of alerts the machine can close alone?
@@ -135,7 +135,7 @@ for name, col in (("raw", "p"), ("calibrated", "pc")):
 
 Here's the uncomfortable result. Among live alerts the raw model called "under 2% likely", it claimed an average of about {{< num ch21 raw_believed pct1 >}}. The real rate was {{< num ch21 raw_actual pct1 >}}. Its "almost certainly harmless" alerts were about {{< num ch21 raw_ratio f1 >}} times riskier than it said.
 
-That's not a bug I planted for drama. The mock is built to be slightly overconfident at the extremes (see `DECISIONS.md`), because that's how most real models behave, as Chapter 5 explained. Whether *real* Jev behaves this way on *your* data is exactly the kind of thing you should never assume and always measure. Chapter 11 shows how.
+That's not a bug I planted for drama. The mock is built to be slightly overconfident at the extremes (the repository's `docs/mock-design.md` gives the settings), because that's how most real models behave, as Chapter 5 explained. Whether *real* Jev behaves this way on *your* data is exactly the kind of thing you should never assume and always measure. Chapter 11 shows how.
 
 ![Zoomed in on the low end, where the ACT zone lives. Raw scores (red) sit above the diagonal: the model was more confident than reality justified. After Platt scaling fitted on other days (green), the curve hugs the diagonal much more closely.](/figures/ch21/calibration-zones.pdf){#fig-calibration-zones}
 
@@ -175,9 +175,11 @@ for k in ("act", "review", "escalate", "missed_by_automation"):
 
 Fitted on history, checked on the live week. The machine now closes about {{< num ch21 chosen.act int >}} alerts a day by itself, the analysts get {{< num ch21 chosen.review int >}}, on-call gets {{< num ch21 chosen.escalate int >}} pages, and the number of real threats closed without a human falls from {{< num ch21 naive.missed_by_automation int >}} a day to about {{< num ch21 chosen.missed_by_automation f1 >}}.
 
+Look closely and the live week slightly overshoots the team: about {{< num ch21 chosen.review int >}} reviews against a capacity of {{< num ch21 capacity int >}}, and {{< num ch21 chosen.escalate int >}} pages against {{< num ch21 pages_cap int >}}. The lines were fitted to fill capacity exactly on the history weeks, and the live week happens to be a little busier. That's normal. Lines fitted on the past are a forecast, not a guarantee, which is why Chapter 21's service watches the queue every day and flags when it runs over.
+
 ![Where the live week's real threats (left) and harmless alerts (right) end up each day, under one line at 0.5 and under the capacity-aware three-zone policy. The light segment on the left is the number that matters: threats closed with no human involved.](/figures/ch21/one-vs-three.pdf){#fig-one-vs-three}
 
-@fig-one-vs-three puts the two policies side by side. Notice what didn't change much: the number of harmless alerts the machine closes. Notice what did: the light purple bar on the threat side shrank from the biggest segment to the smallest.
+@fig-one-vs-three puts the two policies side by side. Notice what didn't change much: the number of harmless alerts the machine closes. Notice what did: the "act" segment on the threat side (the lightest purple) shrank from the biggest to the smallest.
 
 But about six a day is still not zero, and here's where I want you to stop thinking like a modeller and start thinking like the person who signs the budget.
 
@@ -204,6 +206,7 @@ Stakes override confidence.
 A model can be 99% sure an alert on the payroll database server is harmless. The 1% still lives on the payroll database server. So the policy looks at *what's at risk* as well as *how likely*:
 
 ```{python}
+from textwrap import shorten
 from typesafe_sdk import Choice, Noul, Score, TypeSafeClient
 from jevkit import MockJevTransport
 
@@ -224,7 +227,7 @@ def route(p, severity, criticality):
     return "review"          # everything else gets a human
 
 p = float(platt([r.nouls["real"].noul])[0])
-print(alert.description[:70], "...")
+print(shorten(alert.description, 70, placeholder=" …"))
 print(r.choices["kind"].choice, round(p, 3),
       round(r.scores["severity"].score, 2),
       "->", route(p, r.scores["severity"].score,
@@ -295,7 +298,7 @@ In week five, Kestrel is hit by a phishing campaign. Link alerts fire three time
 
 ![Top: the share of alerts that were real threats each day (black) against what the calibrated model expected (green). Bottom: alerts sent to review each day against the team's capacity. In week five (shaded), reality pulls away from the model, and the queue overflows.](/figures/ch21/drift-watch.pdf){#fig-drift-watch}
 
-@fig-drift-watch shows two things going wrong at once. The model expected about {{< num ch21 campaign_pred pct >}} of alerts to be threats; the real figure was {{< num ch21 campaign_actual pct >}}. And the review queue climbed to about {{< num ch21 campaign_reviews_per_day int >}} a day against a capacity of {{< num ch21 capacity int >}}, so work that nobody chose to skip started getting skipped.
+@fig-drift-watch shows two things going wrong at once. The model expected about {{< num ch21 campaign_pred pct >}} of alerts to be threats; the real figure was {{< num ch21 campaign_actual pct >}}. And the review queue climbed to an average of about {{< num ch21 campaign_reviews_per_day int >}} a day over the campaign week against a capacity of {{< num ch21 capacity int >}}, so work that nobody chose to skip started getting skipped.
 
 Neither problem is visible from a single alert. Both are obvious on a daily chart. That's why the weekly check in @fig-production-loop tracks three numbers: the share of alerts in each zone, the queue against capacity, and predicted threats against confirmed ones. When they diverge, three responses are available, and a human should pick among them: refit calibration on the most recent week, temporarily move the act line down for the affected alert type, or add review capacity until the campaign passes.
 
@@ -305,7 +308,11 @@ The purpose of computing is insight, not numbers.
 
 For a decision layer, I'd put it slightly differently: the purpose of a probability is an action. Everything in this chapter is the machinery for getting from one to the other without fooling yourself along the way.
 
-::: {.exercises}
+## Where we are
+
+We started with one probability and ended with a policy. Costs gave us two lines, and the lines sent every alert through one of three doors: act, review or escalate. Checking calibration against recent outcomes made those lines mean what they say. Capacity turned the cheapest policy on paper into the cheapest one the team can actually run, and put a price on two more analysts. With several answers per alert, stakes overrode confidence. Then the policy went into production with a log, an audit and a daily watch, and that watch caught the week the world changed.
+
+::: {.exercises lab="ch14"}
 1. In the lab, rerun the capacity search for 4, 8 and 10 analysts. Plot threats auto-closed per day against team size. Where does the curve flatten out, and what does that suggest about where extra money is best spent?
 2. Change the false-page cost from \$400 to \$2,000. Recompute both cost-optimal thresholds by hand, then check your answer with `cost_optimal_thresholds`. Which line moved, and why only that one?
 3. The decision log in this chapter records a hash of the alert text rather than the text itself. Give one reason that's a good idea and one situation where you'd regret it.

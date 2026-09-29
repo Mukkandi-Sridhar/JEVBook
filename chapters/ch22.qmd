@@ -112,23 +112,9 @@ Turing ended his most famous paper with that sentence [@turing1950]. It fits thi
 
 ![The whole book as one story.](/figures/ch29/journey.pdf){#fig-journey}
 
-So instead of memorising every term in this book, think of it as a story:
+Read @fig-journey from the top and you have the whole book in six lines. That's the map, and you know where everything on it is now. What's left is choosing the first decision in your own work that deserves the care.
 
-We wanted machines to make decisions.
-
-Rules weren't enough, so we taught them from data, and learned to make their probabilities honest.
-
-Our models grew powerful enough to read and write, and we built agents that could act.
-
-Then someone built a model that only decides, fast and cheap, with probabilities we can test.
-
-Now deciding is cheap.
-
-The question is which decisions deserve to be made, and how to make them well.
-
-That's the map. You know where everything is on it now.
-
-::: {.exercises}
+::: {.exercises lab="ch22"}
 1. Run the lab with a task from your own work. What share of its steps are decisions? What would change if they moved to a decision model?
 2. Write the decision audit for one system you know: every decision, how often it happens, what a mistake costs, and who owns it.
 3. Pick one item from @fig-unknowns and design the smallest test that would move it into the "verified" pile for your use.

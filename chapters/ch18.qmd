@@ -63,13 +63,13 @@ At the end of the shadow week, you put what it would have done next to what turn
 
 ![Shadow mode's verdict, per day of the live week. Each cell counts alerts by what the system would have done and what they turned out to be. The red cell is the one to argue about: real threats it would have closed on its own.](/figures/ch25/shadow.pdf){#fig-shadow-18}
 
-The meeting after a shadow week is mostly about one cell, the red one in @fig-shadow-18: about {{< num ch25 new_threats_closed_per_day f1 >}} real threats a day that the system would have auto-closed. That sounds bad until you compare it with the old queue, which let {{< num ch25 old.threats_unseen_per_day f1 >}} a day age out. It's also exactly the number Chapter 14 predicted before the week began. That's worth saying out loud in the meeting. A system whose mistakes match its own forecast is one you can plan around.
+The meeting after a shadow week is mostly about one cell, the red one in @fig-shadow-18: about {{< num ch25 new_threats_closed_per_day f1 >}} real threats a day that the system would have auto-closed. That sounds bad until you compare it with the old queue, which let {{< num ch25 old.threats_unseen_per_day f1 >}} a day age out. It's also more than the forecast. Before the week began, the same policy on the three history weeks auto-closed about {{< num ch25 forecast_closed_hist f1 >}} real threats a day, and the calibrated probabilities themselves added up to about {{< num ch25 forecast_closed_expected f1 >}}. The live week came in higher, in line with it being a busier week than the ones the lines were fitted on. That's worth saying out loud in the meeting: the forecast was in the right range but optimistic, and the daily monitor is what tells you whether the gap is noise or a trend.
 
 The team's decision was to switch it on, with two conditions from Chapter 14: a random audit of 3% of auto-closed alerts, and a fail-safe that sends an alert to review whenever a call fails.
 
 ## Order matters as much as size
 
-Here's a detail that took me by surprise when I ran the numbers.
+Here's a detail that's easy to miss.
 
 The new review queue is sorted by probability: the alerts most likely to be real are looked at first. What if we'd kept the old habit of first come, first served, with the same alerts in the same queue?
 
@@ -93,7 +93,7 @@ Link alerts fired three times as often as usual, and far more of them were real.
 
 ![The campaign week, day by day, with and without a response on day 3. Left: alerts sent to review, against the team's capacity. Right: real threats never seen by a person, added up over the week. Recalibrating link alerts and adding overtime helped, but it didn't make the problem go away.](/figures/ch25/campaign.pdf){#fig-campaign}
 
-On day 1 the review queue was already over capacity, peaking at {{< num ch25 camp_peak_reviews int >}} alerts a day against {{< num ch25 capacity int >}}. And the probabilities were now too low for link alerts, because they'd been calibrated on weeks when those alerts were mostly harmless. The monitoring from Chapter 14 caught both on day 2: the queue was over its line, and the reviewers were confirming far more link alerts than predicted.
+On day 1 the review queue was already over capacity. Its worst day reached {{< num ch25 camp_peak_reviews int >}} alerts against {{< num ch25 capacity int >}}, above the week's average of about {{< num ch21 campaign_reviews_per_day int >}} that Chapter 14 reported. And the probabilities were now too low for link alerts, because they'd been calibrated on weeks when those alerts were mostly harmless. The monitoring from Chapter 14 caught both on day 2: the queue was over its line, and the reviewers were confirming far more link alerts than predicted.
 
 On day 3 the team responded in two ways. They re-estimated the base rate for link alerts from what reviewers had confirmed so far, and adjusted those probabilities with the prior-shift correction from Chapter 11. And they approved overtime: two extra analysts' worth of reviews a day.
 
@@ -129,7 +129,7 @@ Deming said something like this often, in talks and seminars [[VERIFY]]. Kestrel
 
 Kestrel's SOC used to decide by running out of time: whatever nobody reached aged out, and a large share of real threats went with it. We assembled the new system from pieces built across the book and ran it in shadow mode. Its mistakes matched its own forecast, so the team switched it on. With the same six analysts, more real threats reached a person, and they got there faster. The cheapest part of that gain came from putting the likeliest threats first. Then a phishing campaign arrived. Recalibration and overtime reduced the damage, and they also showed plainly how much more work the world had created.
 
-::: {.exercises}
+::: {.exercises lab="ch18"}
 1. In the lab, set `ops.PAGE_RESPONSE_MIN` to 45. How does the scorecard change? Which row moves most?
 2. Rerun the campaign with a response on day 2 instead of day 3. How many more threats reach a person? What would you need in place to respond a day earlier?
 3. The old way sorted rule-flagged alerts first. What if it had sorted by the SIEM's own severity field instead? Sketch how you'd test whether that alone closes most of the gap.

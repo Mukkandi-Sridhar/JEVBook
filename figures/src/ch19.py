@@ -50,6 +50,7 @@ def record():
             pool_raw=next(p.per_day for p in econ.POOLS if p.name == "raw log events"),
             flags_top_llm=fl["top_share"], flags_top_jev=fj["top_share"],
             flags_cost_llm=fl["cost_line"], flags_cost_jev=fj["cost_line"], capacity=CAPACITY,
+            reviewable_llm=fl["decided"], reviewable_jev=fj["decided"],
             new_job=econ.NEW_JOB.per_day, new_job_value=econ.NEW_JOB.median_value,
             llm_new_spend=econ.day(econ.LLM_PRICE, econ.LLM_LATENCY, extra=(econ.NEW_JOB,))["spend"],
             jev_new_spend=econ.day(econ.JEV_PRICE, econ.JEV_LATENCY[0], extra=(econ.NEW_JOB,))["spend"],

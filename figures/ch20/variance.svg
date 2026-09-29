@@ -36,7 +36,7 @@ z
      <g id="line2d_1">
       <path d="M 69.50775 131.407781 
 L 69.50775 26.071781 
-" clip-path="url(#p7d8c0f3ffc)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#pd2be73dc0d)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_2"/>
      <g id="text_1">
@@ -45,71 +45,82 @@ L 69.50775 26.071781
     </g>
     <g id="xtick_2">
      <g id="line2d_3">
-      <path d="M 92.116371 131.407781 
-L 92.116371 26.071781 
-" clip-path="url(#p7d8c0f3ffc)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+      <path d="M 87.594647 131.407781 
+L 87.594647 26.071781 
+" clip-path="url(#pd2be73dc0d)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_4"/>
      <g id="text_2">
-      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="92.116371" y="142.189031" transform="rotate(-0 92.116371 142.189031)">2%</text>
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="87.594647" y="142.189031" transform="rotate(-0 87.594647 142.189031)">2%</text>
      </g>
     </g>
     <g id="xtick_3">
      <g id="line2d_5">
-      <path d="M 114.724991 131.407781 
-L 114.724991 26.071781 
-" clip-path="url(#p7d8c0f3ffc)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+      <path d="M 105.681543 131.407781 
+L 105.681543 26.071781 
+" clip-path="url(#pd2be73dc0d)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_6"/>
      <g id="text_3">
-      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="114.724991" y="142.189031" transform="rotate(-0 114.724991 142.189031)">5%</text>
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="105.681543" y="142.189031" transform="rotate(-0 105.681543 142.189031)">4%</text>
      </g>
     </g>
     <g id="xtick_4">
      <g id="line2d_7">
-      <path d="M 137.333612 131.407781 
-L 137.333612 26.071781 
-" clip-path="url(#p7d8c0f3ffc)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+      <path d="M 123.76844 131.407781 
+L 123.76844 26.071781 
+" clip-path="url(#pd2be73dc0d)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_8"/>
      <g id="text_4">
-      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="137.333612" y="142.189031" transform="rotate(-0 137.333612 142.189031)">8%</text>
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="123.76844" y="142.189031" transform="rotate(-0 123.76844 142.189031)">6%</text>
      </g>
     </g>
     <g id="xtick_5">
      <g id="line2d_9">
-      <path d="M 159.942233 131.407781 
-L 159.942233 26.071781 
-" clip-path="url(#p7d8c0f3ffc)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+      <path d="M 141.855336 131.407781 
+L 141.855336 26.071781 
+" clip-path="url(#pd2be73dc0d)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_10"/>
      <g id="text_5">
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="141.855336" y="142.189031" transform="rotate(-0 141.855336 142.189031)">8%</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_11">
+      <path d="M 159.942233 131.407781 
+L 159.942233 26.071781 
+" clip-path="url(#pd2be73dc0d)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_12"/>
+     <g id="text_6">
       <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="159.942233" y="142.189031" transform="rotate(-0 159.942233 142.189031)">10%</text>
      </g>
     </g>
    </g>
    <g id="matplotlib.axis_2">
     <g id="ytick_1">
-     <g id="line2d_11"/>
-     <g id="text_6">
+     <g id="line2d_13"/>
+     <g id="text_7">
       <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="65.50775" y="40.702906" transform="rotate(-0 65.50775 40.702906)">LLM, temperature 0.7</text>
      </g>
     </g>
     <g id="ytick_2">
-     <g id="line2d_12"/>
-     <g id="text_7">
+     <g id="line2d_14"/>
+     <g id="text_8">
       <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="65.50775" y="68.062906" transform="rotate(-0 65.50775 68.062906)">LLM, temperature 0</text>
      </g>
     </g>
     <g id="ytick_3">
-     <g id="line2d_13"/>
-     <g id="text_8">
+     <g id="line2d_15"/>
+     <g id="text_9">
       <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="65.50775" y="95.422906" transform="rotate(-0 65.50775 95.422906)">Jev (mock)</text>
      </g>
     </g>
     <g id="ytick_4">
-     <g id="line2d_14"/>
-     <g id="text_9">
+     <g id="line2d_16"/>
+     <g id="text_10">
       <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="65.50775" y="122.782906" transform="rotate(-0 65.50775 122.782906)">logistic regression</text>
      </g>
     </g>
@@ -120,7 +131,7 @@ L 116.820797 44.539781
 L 116.820797 30.859781 
 L 69.50775 30.859781 
 z
-" clip-path="url(#p7d8c0f3ffc)" style="fill: #e07a1f"/>
+" clip-path="url(#pd2be73dc0d)" style="fill: #e07a1f"/>
    </g>
    <g id="patch_4">
     <path d="M 69.50775 71.899781 
@@ -128,7 +139,7 @@ L 69.50775 71.899781
 L 69.50775 58.219781 
 L 69.50775 58.219781 
 z
-" clip-path="url(#p7d8c0f3ffc)" style="fill: #e07a1f"/>
+" clip-path="url(#pd2be73dc0d)" style="fill: #e07a1f"/>
    </g>
    <g id="patch_5">
     <path d="M 69.50775 99.259781 
@@ -136,7 +147,7 @@ L 69.50775 99.259781
 L 69.50775 85.579781 
 L 69.50775 85.579781 
 z
-" clip-path="url(#p7d8c0f3ffc)" style="fill: #3b9c6e"/>
+" clip-path="url(#pd2be73dc0d)" style="fill: #3b9c6e"/>
    </g>
    <g id="patch_6">
     <path d="M 69.50775 126.619781 
@@ -144,7 +155,7 @@ L 69.50775 126.619781
 L 69.50775 112.939781 
 L 69.50775 112.939781 
 z
-" clip-path="url(#p7d8c0f3ffc)" style="fill: #2f6db5"/>
+" clip-path="url(#pd2be73dc0d)" style="fill: #2f6db5"/>
    </g>
    <g id="patch_7">
     <path d="M 69.50775 131.407781 
@@ -156,19 +167,19 @@ L 69.50775 26.071781
 L 159.942233 131.407781 
 " style="fill: none; stroke: #c9ced6; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="text_10">
+   <g id="text_11">
     <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="119.533832" y="39.882398" transform="rotate(-0 119.533832 39.882398)">5.2%</text>
    </g>
-   <g id="text_11">
+   <g id="text_12">
     <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="72.220784" y="67.242398" transform="rotate(-0 72.220784 67.242398)">0.0%</text>
    </g>
-   <g id="text_12">
+   <g id="text_13">
     <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="72.220784" y="94.602398" transform="rotate(-0 72.220784 94.602398)">0.0%</text>
    </g>
-   <g id="text_13">
+   <g id="text_14">
     <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="72.220784" y="121.962398" transform="rotate(-0 72.220784 121.962398)">0.0%</text>
    </g>
-   <g id="text_14">
+   <g id="text_15">
     <text style="font-weight: 600; font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="69.50775" y="18.071781" transform="rotate(-0 69.50775 18.071781)">verdict changes across 5 identical calls</text>
    </g>
   </g>
@@ -182,61 +193,61 @@ z
 " style="fill: #ffffff"/>
    </g>
    <g id="matplotlib.axis_3">
-    <g id="xtick_6">
-     <g id="line2d_15">
-      <path d="M 241.333267 131.407781 
-L 241.333267 26.071781 
-" clip-path="url(#p8cb60c3f19)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
-     </g>
-     <g id="line2d_16"/>
-     <g id="text_15">
-      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="241.333267" y="142.189031" transform="rotate(-0 241.333267 142.189031)">0%</text>
-     </g>
-    </g>
     <g id="xtick_7">
      <g id="line2d_17">
-      <path d="M 271.478095 131.407781 
-L 271.478095 26.071781 
-" clip-path="url(#p8cb60c3f19)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+      <path d="M 241.333267 131.407781 
+L 241.333267 26.071781 
+" clip-path="url(#pae3179d03b)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_18"/>
      <g id="text_16">
-      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="271.478095" y="142.189031" transform="rotate(-0 271.478095 142.189031)">2%</text>
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="241.333267" y="142.189031" transform="rotate(-0 241.333267 142.189031)">0%</text>
      </g>
     </g>
     <g id="xtick_8">
      <g id="line2d_19">
-      <path d="M 301.622922 131.407781 
-L 301.622922 26.071781 
-" clip-path="url(#p8cb60c3f19)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+      <path d="M 271.478095 131.407781 
+L 271.478095 26.071781 
+" clip-path="url(#pae3179d03b)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_20"/>
      <g id="text_17">
-      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="301.622922" y="142.189031" transform="rotate(-0 301.622922 142.189031)">4%</text>
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="271.478095" y="142.189031" transform="rotate(-0 271.478095 142.189031)">2%</text>
      </g>
     </g>
     <g id="xtick_9">
      <g id="line2d_21">
-      <path d="M 331.76775 131.407781 
-L 331.76775 26.071781 
-" clip-path="url(#p8cb60c3f19)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+      <path d="M 301.622922 131.407781 
+L 301.622922 26.071781 
+" clip-path="url(#pae3179d03b)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_22"/>
      <g id="text_18">
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="301.622922" y="142.189031" transform="rotate(-0 301.622922 142.189031)">4%</text>
+     </g>
+    </g>
+    <g id="xtick_10">
+     <g id="line2d_23">
+      <path d="M 331.76775 131.407781 
+L 331.76775 26.071781 
+" clip-path="url(#pae3179d03b)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_24"/>
+     <g id="text_19">
       <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="331.76775" y="142.189031" transform="rotate(-0 331.76775 142.189031)">6%</text>
      </g>
     </g>
    </g>
    <g id="matplotlib.axis_4">
     <g id="ytick_5">
-     <g id="line2d_23"/>
-     <g id="text_19">
+     <g id="line2d_25"/>
+     <g id="text_20">
       <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="237.333267" y="61.485983" transform="rotate(-0 237.333267 61.485983)">LLM, free text JSON</text>
      </g>
     </g>
     <g id="ytick_6">
-     <g id="line2d_24"/>
-     <g id="text_20">
+     <g id="line2d_26"/>
+     <g id="text_21">
       <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="237.333267" y="101.999829" transform="rotate(-0 237.333267 101.999829)">Jev (typed answers)</text>
      </g>
     </g>
@@ -247,7 +258,7 @@ L 289.905597 67.598474
 L 289.905597 49.367243 
 L 241.333267 49.367243 
 z
-" clip-path="url(#p8cb60c3f19)" style="fill: #e07a1f"/>
+" clip-path="url(#pae3179d03b)" style="fill: #e07a1f"/>
    </g>
    <g id="patch_11">
     <path d="M 241.333267 108.11232 
@@ -255,7 +266,7 @@ L 241.333267 108.11232
 L 241.333267 89.881089 
 L 241.333267 89.881089 
 z
-" clip-path="url(#p8cb60c3f19)" style="fill: #3b9c6e"/>
+" clip-path="url(#pae3179d03b)" style="fill: #3b9c6e"/>
    </g>
    <g id="patch_12">
     <path d="M 241.333267 131.407781 
@@ -267,17 +278,17 @@ L 241.333267 26.071781
 L 331.76775 131.407781 
 " style="fill: none; stroke: #c9ced6; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="text_21">
+   <g id="text_22">
     <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="292.92008" y="60.665475" transform="rotate(-0 292.92008 60.665475)">3.2%</text>
    </g>
-   <g id="text_22">
+   <g id="text_23">
     <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="244.34775" y="101.179322" transform="rotate(-0 244.34775 101.179322)">0.0%</text>
    </g>
-   <g id="text_23">
+   <g id="text_24">
     <text style="font-weight: 600; font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="241.333267" y="18.071781" transform="rotate(-0 241.333267 18.071781)">answers that couldn’t be parsed</text>
    </g>
   </g>
-  <g id="text_24">
+  <g id="text_25">
    <g id="patch_14">
     <path d="M 258.74075 11.055781 
 L 364.47575 11.055781 
@@ -295,10 +306,10 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p7d8c0f3ffc">
+  <clipPath id="pd2be73dc0d">
    <rect x="69.50775" y="26.071781" width="90.434483" height="105.336"/>
   </clipPath>
-  <clipPath id="p8cb60c3f19">
+  <clipPath id="pae3179d03b">
    <rect x="241.333267" y="26.071781" width="90.434483" height="105.336"/>
   </clipPath>
  </defs>

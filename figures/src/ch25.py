@@ -27,7 +27,16 @@ def record():
             new_threats_closed_per_day=float(((rn == "act") & (y == 1)).sum() / 7),
             camp_missed_base=float(sum(x["missed"] for x in base)), camp_missed_resp=float(sum(x["missed"] for x in resp)),
             camp_peak_reviews=max(x["reviews"] for x in base), camp_days=7, capacity=ops.CAPACITY,
-            page_response_min=ops.PAGE_RESPONSE_MIN, **queue_order())
+            page_response_min=ops.PAGE_RESPONSE_MIN, **queue_order(), **forecast())
+
+
+def forecast():
+    """What the history weeks said to expect before the live week: threats auto-closed per day."""
+    hist, live, platt, policy = ops.setup()
+    z = policy.decide_many(hist.pc.to_numpy())
+    act = z == "act"
+    return dict(forecast_closed_hist=float((act & (hist.malicious.to_numpy() == 1)).sum() / 21),
+                forecast_closed_expected=float(hist.pc.to_numpy()[act].sum() / 21))
 
 
 def queue_order():
@@ -194,7 +203,7 @@ def scorecard():
              f"{sn['threats_within_hour_share']:.0%}"),
             ("median wait for a seen threat", fmt_min(so["median_wait_threat_min"]), fmt_min(sn["median_wait_threat_min"])),
             ("90th-percentile wait", fmt_min(so["p90_wait_threat_min"]), fmt_min(sn["p90_wait_threat_min"])),
-            ("alerts a person looks at, per day", f"{so['human_looks_per_day']:.0f}", f"{sn['human_looks_per_day']:.0f}"),
+            ("alerts seen per day (analysts + on-call)", f"{so['human_looks_per_day']:.0f}", f"{sn['human_looks_per_day']:.0f}"),
             ("analysts", str(ops.ANALYSTS), str(ops.ANALYSTS))]
     f, ax = draw.canvas("text", 2.65)
     draw.text(ax, 2.55, 2.2, "before", size=6.6, weight="bold", ha="center", color=C["slate"])

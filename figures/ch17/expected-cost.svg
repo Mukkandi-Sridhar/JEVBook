@@ -34,7 +34,7 @@ Q 71.28 30.96 71.28 33.12
 L 71.28 34.56 
 Q 71.28 36.72 73.44 36.72 
 z
-" clip-path="url(#p5662c169ac)" style="fill: #e2f2e9"/>
+" clip-path="url(#pa6d111502f)" style="fill: #e2f2e9"/>
    </g>
    <g id="patch_3">
     <path d="M 73.44 51.12 
@@ -47,7 +47,7 @@ Q 71.28 45.36 71.28 47.52
 L 71.28 48.96 
 Q 71.28 51.12 73.44 51.12 
 z
-" clip-path="url(#p5662c169ac)" style="fill: #e2f2e9"/>
+" clip-path="url(#pa6d111502f)" style="fill: #e2f2e9"/>
    </g>
    <g id="patch_4">
     <path d="M 73.44 65.52 
@@ -60,7 +60,7 @@ Q 71.28 59.76 71.28 61.92
 L 71.28 63.36 
 Q 71.28 65.52 73.44 65.52 
 z
-" clip-path="url(#p5662c169ac)" style="fill: #e2f2e9"/>
+" clip-path="url(#pa6d111502f)" style="fill: #e2f2e9"/>
    </g>
    <g id="patch_5">
     <path d="M 73.44 79.92 
@@ -73,7 +73,7 @@ Q 71.28 74.16 71.28 76.32
 L 71.28 77.76 
 Q 71.28 79.92 73.44 79.92 
 z
-" clip-path="url(#p5662c169ac)" style="fill: #e2f2e9"/>
+" clip-path="url(#pa6d111502f)" style="fill: #e2f2e9"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="2.88" y="14.099859" transform="rotate(-0 2.88 14.099859)">Probabilities from a choice question</text>
@@ -92,7 +92,7 @@ Q 71.28 30.96 71.28 33.12
 L 71.28 34.56 
 Q 71.28 36.72 73.44 36.72 
 z
-" clip-path="url(#p5662c169ac)" style="fill: #3b9c6e"/>
+" clip-path="url(#pa6d111502f)" style="fill: #3b9c6e"/>
    </g>
    <g id="text_3">
     <text style="font-size: 6px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #4b5563" x="118.08" y="36" transform="rotate(-0 118.08 36)">0.15</text>
@@ -111,7 +111,7 @@ Q 71.28 45.36 71.28 47.52
 L 71.28 48.96 
 Q 71.28 51.12 73.44 51.12 
 z
-" clip-path="url(#p5662c169ac)" style="fill: #3b9c6e"/>
+" clip-path="url(#pa6d111502f)" style="fill: #3b9c6e"/>
    </g>
    <g id="text_5">
     <text style="font-size: 6px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #4b5563" x="118.08" y="50.4" transform="rotate(-0 118.08 50.4)">0.10</text>
@@ -130,7 +130,7 @@ Q 71.28 59.76 71.28 61.92
 L 71.28 63.36 
 Q 71.28 65.52 73.44 65.52 
 z
-" clip-path="url(#p5662c169ac)" style="fill: #3b9c6e"/>
+" clip-path="url(#pa6d111502f)" style="fill: #3b9c6e"/>
    </g>
    <g id="text_7">
     <text style="font-size: 6px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #4b5563" x="118.08" y="64.8" transform="rotate(-0 118.08 64.8)">0.35</text>
@@ -149,7 +149,7 @@ Q 71.28 74.16 71.28 76.32
 L 71.28 77.76 
 Q 71.28 79.92 73.44 79.92 
 z
-" clip-path="url(#p5662c169ac)" style="fill: #3b9c6e"/>
+" clip-path="url(#pa6d111502f)" style="fill: #3b9c6e"/>
    </g>
    <g id="text_9">
     <text style="font-size: 6px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #4b5563" x="118.08" y="79.2" transform="rotate(-0 118.08 79.2)">0.40</text>
@@ -182,18 +182,12 @@ z
     <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="262.08" y="79.241" transform="rotate(-0 262.08 79.241)">$2,350</text>
    </g>
    <g id="text_19">
-    <text style="font-size: 6.1px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="2.88" y="114.876672" transform="rotate(-0 2.88 114.876672)">The top label is “benign” (0.40), but closing has the highest expected cost, because the other</text>
-   </g>
-   <g id="text_20">
-    <text style="font-size: 6.1px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="2.88" y="127.633656" transform="rotate(-0 2.88 127.633656)">60% is a threat and missing one is expensive. Use the whole distribution, not just the top label.</text>
-   </g>
-   <g id="text_21">
     <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: end; fill: #8a919c" x="341.28" y="145.274625" transform="rotate(-0 341.28 145.274625)">illustrative numbers</text>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="p5662c169ac">
+  <clipPath id="pa6d111502f">
    <rect x="2.88" y="2.88" width="338.4" height="154.8"/>
   </clipPath>
  </defs>

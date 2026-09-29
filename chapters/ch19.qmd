@@ -1,5 +1,9 @@
 # An applications gallery {#sec-ch19}
 
+::: {.epigraph by="John Tukey, The Future of Data Analysis, 1962"}
+Far better an approximate answer to the right question, which is often vague, than an exact answer to the wrong question, which can always be made precise.
+:::
+
 ```{python}
 #| include: false
 from jevkit import gallery
@@ -88,7 +92,7 @@ Some decisions also carry legal weight. Lending, hiring, benefits and medical de
 
 ![Signs that a decision suits a System One model, and signs that it doesn't, or that a person must decide.](/figures/ch26/fit.pdf){#fig-fit}
 
-Not everything is a decision layer. @fig-fit is the checklist I use. If there are many similar cases a day, a fixed set of answers, outcomes you can eventually learn from, and a cost you can put on a mistake, it's a good fit. If the problem is a one-off, the answer has to be written, there are no labels, or the job needs a plan rather than a verdict, it's the wrong tool. That's the System 2 work from Chapter 8, and it still belongs to people and to slower models.
+Not everything is a decision layer. @fig-fit is a quick checklist for telling the two apart. If there are many similar cases a day, a fixed set of answers, outcomes you can eventually learn from, and a cost you can put on a mistake, it's a good fit. If the problem is a one-off, the answer has to be written, there are no labels, or the job needs a plan rather than a verdict, it's the wrong tool. That's the System 2 work from Chapter 8, and it still belongs to people and to slower models.
 
 ::: {.breaks}
 Every volume and cost in this chapter is an illustrative assumption; your organisation's will differ, sometimes by orders of magnitude, and the lines move with them. The support-ticket demo uses the mock's general-purpose engine, which is a word-matcher, so its weak numbers say nothing about real Jev in either direction. And "a person decides" only protects anyone if the person has time to think. A clinician who must approve four hundred model suggestions an hour isn't deciding; they're clicking. Watch the load on the humans in the loop as carefully as the model.
@@ -110,7 +114,7 @@ Maslow was talking about scientists and their methods [@maslow1966] [[VERIFY]]. 
 
 We toured six decision layers and found the same parts in every one: a state, a few typed questions, and an option for what fits nowhere. What changed from job to job was who decides. Where decisions are many and cheap, the model decides and people audit. Where they're few and costly, the model orders the queue and a person decides. The Chapter 4 formula put the line anywhere from 5% to 0.3%, depending only on costs. And running one stop for real, support tickets, showed why you measure first: the mock that did well at Kestrel stumbled on a new kind of text, and routing only when it was sure recovered most of the damage.
 
-::: {.exercises}
+::: {.exercises lab="ch19"}
 1. Pick a decision from your own work. Write its card in the style of @fig-cards: state, typed questions, the escape option, who decides.
 2. In the lab, rewrite the `account` description to separate it from `technical`. What happens to accuracy on each team?
 3. Using the threshold formula, find the refund amount at which the line in the box above crosses 50%.
@@ -118,5 +122,5 @@ We toured six decision layers and found the same parts in every one: a state, a 
 :::
 
 ::: {.nexthook}
-Next: you've used a System One model for twenty-six chapters. Now you'll build a small one yourself, with typed heads and calibration built into its training.
+Next: you've used a System One model for nineteen chapters. Now you'll build a small one yourself, with typed heads and calibration built into its training.
 :::

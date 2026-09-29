@@ -1,5 +1,9 @@
 # Glossary {.unnumbered}
 
+```{=latex}
+\begingroup\small
+```
+
 One plain sentence for each term, and the chapter where it's explained properly.
 
 Act, review, escalate
@@ -36,7 +40,7 @@ Choice
 : A typed question with a set of named options; the answer is a probability for each option, adding up to 1 (Chapter 10).
 
 Confidence
-: In a Jev response, a summary of how sure the answer is; in the book's mock it is the probability of the top option (Chapter 9).
+: In a Jev `choice` or `score` answer, a number from 0 to 1 computed from the shape of the probabilities: high when they're concentrated on one option, low when they're spread out. It isn't simply the top probability (TypeSafe's quick-start shows 0.78 beside 0.85). The book's mock uses the top probability as a stand-in (Chapter 9).
 
 Context window
 : The amount of text an LLM can read at once (Chapter 7).
@@ -156,7 +160,7 @@ RLCD
 : TypeSafe's name for reinforcement learning for calibrated decisions, which it says trains Jev; details unpublished (Chapter 9).
 
 RLHF
-: Reinforcement learning from human feedback, which trains an LLM toward answers people prefer (Chapter 5).
+: Reinforcement learning from human feedback, which trains an LLM towards answers people prefer (Chapter 5).
 
 Router
 : A pattern that sends each case to a destination with a choice question, falling back to a person when unsure (Chapter 15).
@@ -208,3 +212,7 @@ Typed question
 
 Vendor-reported
 : A claim made by the company selling the product, not independently checked (Chapter 9).
+
+```{=latex}
+\par\endgroup
+```

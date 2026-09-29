@@ -28,10 +28,10 @@ That one detail explains a surprising amount: why long answers are slow, why the
 
 ## One token at a time
 
-A language model reads **tokens**: chunks of text, often parts of words, made by a separate program called a tokenizer. Common words become one chunk; rare ones, like hostnames, typos and base64 blobs, the stuff security logs are made of, break into many small pieces. You pay per token, and numbers such as 0.87 or an IP address may be split in ways that don't line up with their meaning, which is one reason LLMs can be clumsy with arithmetic.
+A language model reads **tokens**: chunks of text, often parts of words, made by a separate program called a tokeniser. Common words become one chunk; rare ones, like hostnames, typos and base64 blobs, the stuff security logs are made of, break into many small pieces. You pay per token, and numbers such as 0.87 or an IP address may be split in ways that don't line up with their meaning, which is one reason LLMs can be clumsy with arithmetic.
 
 ::: {.tryit lab="ch06"}
-A tiny tokenizer, trained on synthetic analyst notes in about a second.
+A tiny tokeniser, trained on synthetic analyst notes in about a second.
 
 ```{python}
 notes = [" ".join(n) for n in text.notes_corpus(5000)]
@@ -70,7 +70,7 @@ print({a: answers.count(a) for a in sorted(set(answers))})
 
 That's the book's stand-in LLM, `llm-mock-synthetic`, built to behave the way LLMs typically do; it isn't a model of any real product. Across forty borderline alerts, each asked twenty times, most got *both* answers.
 
-![Forty borderline alerts, each asked the same question twenty times at temperature 0.7. The bar shows how often the answer was "malicious". Only a handful got the same answer every time.](/figures/ch10/variance.pdf){#fig-variance-06}
+![Forty borderline alerts, each asked the same question twenty times at temperature 0.7. The bar shows how often the answer was "malicious". All but one of them got different answers across the twenty runs.](/figures/ch10/variance.pdf){#fig-variance-06}
 
 In @fig-variance-06, {{< num ch10 n_split int >}} of the {{< num ch10 n_alerts int >}} alerts flipped. Set the temperature to zero and answers become much more repeatable, but the *uncertainty* doesn't go away. It just stops showing.
 
@@ -88,7 +88,7 @@ On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?
 
 Software can't read a paragraph. It needs `verdict = "malicious"`: a field, a value. So every team wiring an LLM into a pipeline adds a line to the prompt: *"Reply only with JSON."* And it works. Almost always.
 
-At seven hundred alerts a day, "almost" is a few failures every day.
+But "almost" adds up. Over 4,000 alerts, {{< num ch11 prompt_fail_share pct1 >}} of the answers came back broken, wrapped or padded with an extra field. At seven hundred alerts a day, that's about {{< num ch11 prompt_fail_per_day int >}} failures every day.
 
 ![What came back when we asked for JSON, over 4,000 alerts. With only the prompt, some responses were wrapped in friendly chat, some were cut off mid-object, and some were valid JSON with a field nobody asked for. With JSON mode on, the first two problems vanish. The third doesn't.](/figures/ch11/json-failures.pdf){#fig-json-failures}
 
@@ -130,9 +130,11 @@ Now say the JSON is perfect: `"verdict": "malicious", "confidence": 0.95`. Can K
 
 There are three different numbers you might use. **The confidence the model wrote** is text: the characters "0", ".", "9", "5", picked like any other tokens. **The token probability** is the probability the model gave to "malicious" as the next token, which many APIs will return. And **a probability from a decision model** is one whose actual output is a probability for each option.
 
-![Reliability of three "confidences" on the same test alerts, all reading the same raw text. The stated confidence barely separates attacks from harmless alerts. The token probability ranks well but is overconfident. The decision model ranks as well and sits closest to the diagonal. Synthetic: the mocks reflect design choices, not measurements of real models.](/figures/ch11/three-confidences.pdf){#fig-three-confidences}
+![Reliability of three "confidences" on the same test alerts, all reading the same raw text. The stated confidence barely separates attacks from harmless alerts. The token probability ranks well but is overconfident. The decision model ranks best and also sits close to the diagonal. Synthetic: the mocks reflect design choices, not measurements of real models.](/figures/ch11/three-confidences.pdf){#fig-three-confidences}
 
-The mock wrote only {{< num ch11 n_distinct_stated int >}} different confidence values, {{< num ch11 share_stated_ge_09 pct >}} of them 0.9 or higher, a pattern many people have noticed with real models. Stated confidence ranks poorly, with an AUC of {{< num ch11 verbal.auc f2 >}}. The token probability ranks much better ({{< num ch11 token.auc f2 >}}) but is overconfident (ECE {{< num ch11 token.ece f3 >}}). The decision model ranks slightly better again ({{< num ch11 jev_text.auc f2 >}}) and is the most honest, with an ECE of {{< num ch11 jev_text.ece f3 >}} (@fig-three-confidences).
+The mock wrote only {{< num ch11 n_distinct_stated int >}} different confidence values, {{< num ch11 share_stated_ge_09 pct >}} of them 0.9 or higher, a pattern many people have noticed with real models. Stated confidence ranks poorly, with an AUC of {{< num ch11 verbal.auc f2 >}}. The token probability ranks much better ({{< num ch11 token.auc f2 >}}) but is overconfident (ECE {{< num ch11 token.ece f3 >}}). The decision model ranks slightly better again ({{< num ch11 jev_text.auc f2 >}}) and is also well calibrated, with an ECE of {{< num ch11 jev_text.ece f3 >}} (@fig-three-confidences).
+
+Look closely and the stated confidence has the lowest ECE of the three, {{< num ch11 verbal.ece f3 >}}. That isn't a win. When a model says nearly the same thing about every alert, it can be right *on average* and still tell you almost nothing about which alert is which. It's Chapter 3's lesson again: calibration and ranking are separate, and you need both.
 
 Research on real models is genuinely mixed here; one study found stated confidence *better* calibrated than token probabilities for some tuned models [@tian2023], another found it badly overconfident [@xiong2024]. The only honest rule is to measure yours.
 
@@ -166,7 +168,7 @@ ChatGPT's typing turned out to be the real mechanism: tokens come out one at a t
 
 An LLM also only knows what it was trained on, not your company. Next: giving it your documents, and letting it act.
 
-::: {.exercises}
+::: {.exercises lab="ch06"}
 1. Explain in your own words why generation can't be parallelised the way reading can.
 2. Using the illustrative latency numbers, how long would 10,000 alerts take to label one at a time with a one-word answer? With a 300-token explanation?
 3. In the lab, change `extra="forbid"` to `extra="ignore"`. What gets through now? When might that be acceptable?

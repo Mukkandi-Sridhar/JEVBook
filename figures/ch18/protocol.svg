@@ -69,7 +69,7 @@ C 6.044842 17.700171 5.4 19.256957 5.4 20.88
 C 5.4 22.503043 6.044842 24.059829 7.192506 25.207494 
 C 8.340171 26.355158 9.896957 27 11.52 27 
 z
-" clip-path="url(#pfd7a028a1d)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
+" clip-path="url(#pb92542b821)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 11.52 58.68 
@@ -82,7 +82,7 @@ C 6.044842 49.380171 5.4 50.936957 5.4 52.56
 C 5.4 54.183043 6.044842 55.739829 7.192506 56.887494 
 C 8.340171 58.035158 9.896957 58.68 11.52 58.68 
 z
-" clip-path="url(#pfd7a028a1d)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
+" clip-path="url(#pb92542b821)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 11.52 90.36 
@@ -95,7 +95,7 @@ C 6.044842 81.060171 5.4 82.616957 5.4 84.24
 C 5.4 85.863043 6.044842 87.419829 7.192506 88.567494 
 C 8.340171 89.715158 9.896957 90.36 11.52 90.36 
 z
-" clip-path="url(#pfd7a028a1d)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
+" clip-path="url(#pb92542b821)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 11.52 122.04 
@@ -108,7 +108,7 @@ C 6.044842 112.740171 5.4 114.296957 5.4 115.92
 C 5.4 117.543043 6.044842 119.099829 7.192506 120.247494 
 C 8.340171 121.395158 9.896957 122.04 11.52 122.04 
 z
-" clip-path="url(#pfd7a028a1d)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
+" clip-path="url(#pb92542b821)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
    </g>
    <g id="patch_6">
     <path d="M 11.52 153.72 
@@ -121,7 +121,7 @@ C 6.044842 144.420171 5.4 145.976957 5.4 147.6
 C 5.4 149.223043 6.044842 150.779829 7.192506 151.927494 
 C 8.340171 153.075158 9.896957 153.72 11.52 153.72 
 z
-" clip-path="url(#pfd7a028a1d)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
+" clip-path="url(#pb92542b821)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
    </g>
    <g id="text_11">
     <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="11.52" y="23.568879" transform="rotate(-0 11.52 23.568879)">1</text>
@@ -141,7 +141,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="pfd7a028a1d">
+  <clipPath id="pb92542b821">
    <rect x="2.88" y="2.88" width="338.4" height="172.8"/>
   </clipPath>
  </defs>

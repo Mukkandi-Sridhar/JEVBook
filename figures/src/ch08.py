@@ -88,10 +88,6 @@ def qkv():
         draw.arrow(ax, (3.2, 1.2), (x + 0.29, 0.88), color=C["jev"], lw=0.4 + 2.5 * wt, head=3)
         draw.text(ax, x + 0.29, 0.5, f"{wt:.2f}", size=6.4, ha="center", va="top", weight="bold",
                   color=C["ink"] if wt > 0.5 else C["muted"])
-    draw.text(ax, 0.0, 0.12, "“phishing” asks a question (its query), compares it with every word’s key, turns the matches into", size=6.3,
-              color=C["ink2"])
-    draw.text(ax, 0.0, -0.05, "weights that add up to 1, and takes that mix of their values. Here it looks almost entirely at “not”.",
-              size=6.3, color=C["ink2"])
     ax.set_ylim(-0.12, 2.35)
     return f
 

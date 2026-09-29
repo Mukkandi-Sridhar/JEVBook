@@ -13,7 +13,7 @@ from jevkit import MockJevTransport
 
 Here's a confession that shapes this whole chapter. I've never called Jev.
 
-When I wrote this book, Jev had been public for a couple of weeks, in early access, and I didn't have an API key [[VERIFY]]. What I did have was TypeSafe's official Python library, which anyone can download and read, a stream of launch coverage and early commentary, and a growing pile of research papers from people who *had* used it.
+When I wrote this book, Jev had been public for a couple of weeks, in early access, and I didn't have an API key [[VERIFY]]. What I did have was TypeSafe's official Python library, which anyone can download and read, TypeSafe's public documentation, a stream of launch coverage and early commentary, and a growing pile of research papers from people who *had* used it.
 
 *"So how much can anyone actually say about what's inside it?"*
 
@@ -39,7 +39,7 @@ More than you'd think, and less than most articles imply. The trick is to sort e
 
 **Unknown** means it hasn't been published, so any statement about it is a guess, and I'll say so when I guess.
 
-My access to the sources for the second pile was limited to search summaries, so treat every vendor number in this book as a claim to check, not a fact. A good habit: when a claim about a model appears without a pile attached, ask which pile it belongs in.
+Treat every vendor number in this book as a claim to check, not a fact. A good habit: when a claim about a model appears without a pile attached, ask which pile it belongs in.
 
 ## What we can verify: the interface
 
@@ -68,19 +68,19 @@ client.system_one(
     },
 )
 request_body, response_body = exchanges[0]
-print(json.dumps(request_body, indent=1)[:260])
+print(json.dumps(request_body, indent=1))
 ```
 :::
 
-A few details from the SDK's own documentation are worth knowing. A `choice` answer includes the chosen label, a `confidence` and a probability for every label. A `score` answer includes an expected score, a `confidence`, the rubric as a legend and a probability for every level. A `noul` (yes or no) answer is a single number: the probability of "yes". The schema describes output tokens as "currently free of charge". And the library handles retries and rate limits for you, which Chapter 16 puts to use.
+A few details from the SDK and TypeSafe's documentation are worth knowing [@typesafedocs2026]. A `choice` answer includes the chosen label, a `confidence` and a probability for every label. A `score` answer includes an expected score, a `confidence`, the rubric as a legend and a probability for every level. A `noul` (yes or no) answer is a single number, the probability of "yes", with no `confidence` attached. The schema describes output tokens as "currently free of charge". And the library handles retries and rate limits for you, which Chapter 16 puts to use.
 
-What the SDK doesn't say is exactly how `confidence` is defined. In the mock I've made it the probability of the top option, and I've said so in `DECISIONS.md`. Don't assume the real one works the same way until you've checked.
+What about `confidence`? TypeSafe's documentation describes it as a statistic computed from the *shape* of the answer's probabilities: high when they're piled on one option, low when they're spread across several. It doesn't publish the formula. Its quick-start example shows why that matters: a support ticket goes to "technical" with probability 0.85, and the answer's confidence is 0.78. So real confidence isn't simply the top probability. The book's mock uses that simplest stand-in anyway, the top option's probability, and the repository's `docs/mock-design.md` says so. With a real key, read the `probabilities` and test `confidence` on your own labels before you set a threshold on it.
 
 ## What TypeSafe says: two ideas
 
-Two claims sit at the centre of how TypeSafe describes Jev [@typesafe2026] [[VERIFY]].
+Two claims sit at the centre of how TypeSafe describes Jev: a new architecture with a "parallel sampler", and a training method it calls RLCD [@typesafe2026; @typesafedocs2026].
 
-**A "parallel sampler".** An LLM, as Chapter 6 showed, writes one token at a time, each waiting for the last. TypeSafe says Jev instead produces all its outputs *in a single pass*. It doesn't write an answer; it computes one. That's the claimed source of the speed.
+**A "parallel sampler".** An LLM, as Chapter 6 showed, writes one token at a time, each waiting for the last. TypeSafe says Jev instead produces all its outputs *in a single pass*. It doesn't write an answer; it computes one. That's the claimed source of the speed. The documentation adds that every question is evaluated in parallel and in isolation against the same state, so adding questions barely changes the response time [@typesafedocs2026].
 
 **RLCD: reinforcement learning for calibrated decisions.** TypeSafe contrasts this with RLHF, which rewards answers people prefer (Chapter 5), and with reinforcement learning from verifiable rewards, which rewards answers a program can check. RLCD, they say, rewards *honest probabilities*.
 
@@ -118,7 +118,7 @@ Ten decisions a second is {{< num ch16 doom_decisions_per_hour int >}} an hour. 
 
 Here's the uncomfortable part: the unknowns are exactly the things a decision layer depends on.
 
-We don't know the model's size, its architecture or its training data. We don't know how well its probabilities are calibrated on data like yours. We don't know how it behaves on adversarial input, like the planted sentence from Chapter 7. We don't know how stable its behaviour is across versions: `jev-latest` is an alias, and aliases move. And by design, it gives no reasons, only probabilities. Some early critics called that a compliance problem for regulated uses [@datacamp2026] [[VERIFY]]. Chapter 14 answered it with decision logs that audit the policy rather than the model.
+We don't know the model's size, its architecture or its training data. We don't know how well its probabilities are calibrated on data like yours. We don't know how it behaves on adversarial input, like the planted sentence from Chapter 7. We don't know how stable its behaviour is across versions: `jev-latest` is an alias, and aliases move. And by design, it gives no reasons, only probabilities. Some early critics called that a compliance problem for regulated uses [@datacamp2026] [[VERIFY]]. Chapter 14 will answer it with decision logs that audit the policy rather than the model.
 
 None of those unknowns are reasons to avoid a new model. They're reasons to *test* it, on your own data, with the tools you already have. The next two chapters do exactly that: first by understanding each question type properly, then by testing calibration the way Chapter 3 taught.
 
@@ -140,7 +140,7 @@ Extraordinary claims require extraordinary evidence.
 
 I started without an API key, so we sorted what can be known into three piles. The interface was verifiable, and small: state and typed questions in, probabilities out. The speed and training method were the vendor's claims, and we could reason about them without accepting them. The prices let us do our own arithmetic, and the vendor's numbers turned out to agree with each other. What remained unknown was exactly what a decision layer depends on, which means the next job is testing.
 
-::: {.exercises}
+::: {.exercises lab="ch09"}
 1. Find a claim about Jev in a recent article and put it in one of the three piles. What would it take to move it to "verified"?
 2. In the lab, send a `score` question with five levels instead of three. Look at the raw response. What does `score` mean when it's 2.4?
 3. Redo the Doom check with a different assumption: suppose each decision read 500 tokens. What hourly cost would that imply? What would you conclude if the vendor had quoted that figure instead?

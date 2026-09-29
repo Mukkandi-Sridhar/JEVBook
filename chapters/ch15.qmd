@@ -1,4 +1,8 @@
-# A catalog of decision patterns {#sec-ch15}
+# A catalogue of decision patterns {#sec-ch15}
+
+::: {.epigraph by="Alfred North Whitehead, An Introduction to Mathematics, 1911"}
+Civilization advances by extending the number of important operations which we can perform without thinking about them.
+:::
 
 ```{python}
 #| include: false
@@ -122,10 +126,10 @@ r = client.system_one(
     state={"evidence": alert.description,
            "note": "Benign admin activity; the change ticket covers it."},
     questions={"supported": check})
-print(round(r.nouls["supported"].noul, 2))
+supported = r.nouls["supported"].noul    # a probability: put lines on it
 ```
 
-The book's mock can't really check claims against evidence, so I won't show you a number for this pattern and pretend it means something. The shape is what matters, and it's the same shape as the LLM-as-judge from Chapter 13, with two differences. The answer is a probability you can calibrate and put lines on, not a 1-to-10 rating. And the check is cheap enough to run on every draft, not a sample.
+The listing stops short of printing the answer on purpose. The book's mock can't really check claims against evidence, so any number it gave here would be noise dressed up as a result. The shape is what matters, and it's the same shape as the LLM-as-judge from Chapter 13, with two differences. The answer is a probability you can calibrate and put lines on, not a 1-to-10 rating. And the check is cheap enough to run on every draft, not a sample.
 
 **How it breaks.** A checker that shares the writer's blind spots will wave its mistakes through. Test the checker on drafts you know are wrong. And cap the redrafts: a loop of "write, reject, rewrite" can run forever, so after one retry a person takes over.
 
@@ -151,7 +155,9 @@ The same pattern routes between *models*: a cheap one for the confident cases, a
 
 ![A memory controller. Small typed decisions choose what to store and where to look; one slow reasoning call uses the result.](/figures/ch22/memory.pdf){#fig-memory}
 
-That's the design of the Jev-Mem paper, which uses a System One model as the controller for an agent's memory [@jevmem2026] [[VERIFY]]. I haven't been able to check its results, so I'll describe only the idea: memory operations are frequent, small and typed, which makes them exactly the kind of decision this book has been about.
+That's close to the design of Jev-Mem, from Jiang, Li and Li at the University of Texas at Dallas: a System One controller decides how each memory is typed and linked, and at query time chooses the route, the retrieval budget and when to stop, calling a slower reasoning model only to compose the final answer [@jevmem2026]. On the LoCoMo long-conversation benchmark the authors report an LLM-as-judge score of 0.777, 11% above their strongest baseline, with memory built 6.6 times faster and queries answered in 0.93 seconds on average, 37% faster; those are the authors' numbers, not a replication.
+
+The idea underneath is the one this book keeps returning to: memory operations are frequent, small and typed, which makes them exactly the kind of decision a decision model is for.
 
 ```{python}
 keep = Noul(instructions="Will this fact matter for future alerts "
@@ -187,7 +193,7 @@ We lined up six patterns, and all of them had the same spine. Something else wri
 
 That closes Part IV. We've compared the methods, drawn the lines and named the patterns. Part V builds them.
 
-::: {.exercises}
+::: {.exercises lab="ch15"}
 1. In the lab, change the router's line from 0.8 to 0.6 and to 0.9. Which would you choose if a misroute costs an hour and the general queue costs twenty minutes per alert?
 2. Design a guardrail gate for an email agent that can send messages to customers. What's the typed question? Which facts are trusted? Where do the lines go?
 3. Take an agent you've seen or built. List its steps and sort them into observe, decide, generate and act. How many decide steps could be typed questions?

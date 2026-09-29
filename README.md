@@ -34,7 +34,7 @@ print(r.choices["category"])
 pip install -r requirements.txt && pip install -e .
 make fonts      # install the book fonts (OFL)
 make test       # jevkit tests
-make figures    # rebuild every figure from code
+make figures    # rebuild every figure from code, the lab QR codes and the index terms
 make labs       # execute every notebook in mock mode
 make pdf        # 7x10in print PDF (needs LuaLaTeX)
 make html       # web edition

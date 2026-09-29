@@ -85,14 +85,16 @@ def paths():
 
 @figure(CH, "boxes")
 def boxes():
-    f, ax = draw.canvas("text", 1.85)
+    f, ax = draw.canvas("text", 2.57)
     items = [("TRY IT", "jev", "Code you can run. The chapter’s lab notebook has the full version."),
              ("SET THE THRESHOLD", "review", "A small decision to make yourself, with costs. The answer follows in brackets."),
              ("WHERE THIS BREAKS", "fail", "The honest limits of what the chapter just showed."),
              ("KEY IDEA", "neutral", "The one sentence to keep if you forget the rest."),
+             ("GOING DEEPER", "neutral", "Optional maths. Skip it and nothing later depends on it."),
+             ("WHY NOT …?", "neutral", "A side box that answers the obvious objection in a few lines."),
              ("SYNTHETIC", "plain", "Every Jev number comes from a mock model, and says so.")]
     for i, (t, k, d) in enumerate(items):
-        y = 1.65 - i * 0.36
+        y = 2.37 - i * 0.36
         draw.box(ax, 0.0, y - 0.14, 1.25, 0.28, t, kind=k, size=5.6, weight="bold",
                  textcolor="white" if k == "review" else None, fill=draw.KIND["review"][0] if k == "review" else None)
         draw.text(ax, 1.4, y, d, size=6.1)

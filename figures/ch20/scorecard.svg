@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="487.341844pt" height="254.382744pt" viewBox="0 0 487.341844 254.382744" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="434.16pt" height="258.954744pt" viewBox="0 0 434.16 258.954744" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
@@ -15,238 +15,240 @@
  </defs>
  <g id="figure_1">
   <g id="patch_1">
-   <path d="M 0 254.382744 
-L 487.341844 254.382744 
-L 487.341844 0 
+   <path d="M 0 258.954744 
+L 434.16 258.954744 
+L 434.16 0 
 L 0 0 
 z
 " style="fill: #ffffff"/>
   </g>
   <g id="axes_1">
    <g id="patch_2">
-    <path d="M 2.88 77.335781 
-L 429.84 77.335781 
-L 429.84 47.095781 
-L 2.88 47.095781 
+    <path d="M 2.88 79.747781 
+L 429.84 79.747781 
+L 429.84 49.507781 
+L 2.88 49.507781 
 z
-" clip-path="url(#p9b1b4305a6)" style="fill: #f1f2f4"/>
+" clip-path="url(#p50c08b2295)" style="fill: #f1f2f4"/>
    </g>
    <g id="patch_3">
-    <path d="M 2.88 137.815781 
-L 429.84 137.815781 
-L 429.84 107.575781 
-L 2.88 107.575781 
+    <path d="M 2.88 140.227781 
+L 429.84 140.227781 
+L 429.84 109.987781 
+L 2.88 109.987781 
 z
-" clip-path="url(#p9b1b4305a6)" style="fill: #f1f2f4"/>
+" clip-path="url(#p50c08b2295)" style="fill: #f1f2f4"/>
    </g>
    <g id="patch_4">
-    <path d="M 2.88 198.295781 
-L 429.84 198.295781 
-L 429.84 168.055781 
-L 2.88 168.055781 
+    <path d="M 2.88 200.707781 
+L 429.84 200.707781 
+L 429.84 170.467781 
+L 2.88 170.467781 
 z
-" clip-path="url(#p9b1b4305a6)" style="fill: #f1f2f4"/>
+" clip-path="url(#p50c08b2295)" style="fill: #f1f2f4"/>
    </g>
    <g id="text_1">
-    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(103.741438 24.781461)">ranking</text>
-    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(105.74475 34.097477)">(AUC)</text>
+    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(103.741438 27.193461)">ranking</text>
+    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(105.74475 36.509477)">(AUC)</text>
    </g>
    <g id="text_2">
-    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(143.323062 24.684336)">caught at</text>
-    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(144.629437 33.610539)">240/day</text>
+    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(143.323062 27.096336)">caught at</text>
+    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(144.629437 36.022539)">240/day</text>
    </g>
    <g id="text_3">
-    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(183.867625 25.354148)">calibration</text>
-    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(190.636625 34.097477)">(ECE)</text>
+    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(183.867625 27.766148)">calibration</text>
+    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(190.636625 36.509477)">(ECE)</text>
    </g>
    <g id="text_4">
-    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(229.21725 24.572336)">cost per</text>
-    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(231.42925 34.162664)">million</text>
+    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(229.21725 26.984336)">cost per</text>
+    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(231.42925 36.574664)">million</text>
    </g>
    <g id="text_5">
-    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(271.301812 24.814273)">time per</text>
-    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(270.964062 34.162664)">decision</text>
+    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(271.301812 27.226273)">time per</text>
+    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(270.964062 36.574664)">decision</text>
    </g>
    <g id="text_6">
-    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(316.525437 25.257023)">labels</text>
-    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(314.3655 34.065539)">needed</text>
+    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(316.525437 27.669023)">labels</text>
+    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(314.3655 36.477539)">needed</text>
    </g>
    <g id="text_7">
-    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(348.697125 24.773148)">same answer</text>
-    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(357.72975 34.162664)">twice?</text>
+    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(348.697125 27.185148)">same answer</text>
+    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(357.72975 36.574664)">twice?</text>
    </g>
    <g id="text_8">
-    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(397.517875 24.814273)">explains</text>
-    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(400.545375 34.162664)">itself?</text>
+    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(397.517875 27.226273)">explains</text>
+    <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(400.545375 36.574664)">itself?</text>
    </g>
    <g id="text_9">
-    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="64.509281" transform="rotate(-0 6.48 64.509281)">Rules</text>
+    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="66.921281" transform="rotate(-0 6.48 66.921281)">Rules</text>
    </g>
    <g id="text_10">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="113.94" y="64.471031" transform="rotate(-0 113.94 64.471031)">0.66</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="113.94" y="66.883031" transform="rotate(-0 113.94 66.883031)">0.66</text>
    </g>
    <g id="text_11">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="156.06" y="64.463281" transform="rotate(-0 156.06 64.463281)">50%</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="156.06" y="66.875281" transform="rotate(-0 156.06 66.875281)">50%</text>
    </g>
    <g id="text_12">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="198.18" y="64.475391" transform="rotate(-0 198.18 64.475391)">0.009</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="198.18" y="66.887391" transform="rotate(-0 198.18 66.887391)">0.009</text>
    </g>
    <g id="text_13">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="240.3" y="64.471516" transform="rotate(-0 240.3 64.471516)">&lt; $1</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="240.3" y="66.883516" transform="rotate(-0 240.3 66.883516)">&lt; $1</text>
    </g>
    <g id="text_14">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="282.42" y="63.838437" transform="rotate(-0 282.42 63.838437)">1 µs</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="282.42" y="66.250437" transform="rotate(-0 282.42 66.250437)">1 µs</text>
    </g>
    <g id="text_15">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="324.54" y="63.893172" transform="rotate(-0 324.54 63.893172)">none</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="324.54" y="66.305172" transform="rotate(-0 324.54 66.305172)">none</text>
    </g>
    <g id="text_16">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="366.66" y="63.284797" transform="rotate(-0 366.66 63.284797)">yes</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="366.66" y="65.696797" transform="rotate(-0 366.66 65.696797)">yes</text>
    </g>
    <g id="text_17">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="408.78" y="63.932406" transform="rotate(-0 408.78 63.932406)">fully</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="408.78" y="66.344406" transform="rotate(-0 408.78 66.344406)">fully</text>
    </g>
    <g id="text_18">
-    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="94.221781" transform="rotate(-0 6.48 94.221781)">Logistic regression</text>
+    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="96.633781" transform="rotate(-0 6.48 96.633781)">Logistic regression</text>
    </g>
    <g id="text_19">
-    <text style="font-weight: 700; font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #3b9c6e" x="113.94" y="94.713938" transform="rotate(-0 113.94 94.713938)">0.90</text>
+    <text style="font-weight: 700; font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #3b9c6e" x="113.94" y="97.125937" transform="rotate(-0 113.94 97.125937)">0.90</text>
    </g>
    <g id="text_20">
-    <text style="font-weight: 700; font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #3b9c6e" x="156.06" y="94.708125" transform="rotate(-0 156.06 94.708125)">87%</text>
+    <text style="font-weight: 700; font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #3b9c6e" x="156.06" y="97.120125" transform="rotate(-0 156.06 97.120125)">87%</text>
    </g>
    <g id="text_21">
-    <text style="font-weight: 700; font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #3b9c6e" x="198.18" y="94.711031" transform="rotate(-0 198.18 94.711031)">0.008</text>
+    <text style="font-weight: 700; font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #3b9c6e" x="198.18" y="97.123031" transform="rotate(-0 198.18 97.123031)">0.008</text>
    </g>
    <g id="text_22">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="240.3" y="94.711516" transform="rotate(-0 240.3 94.711516)">&lt; $1</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="240.3" y="97.123516" transform="rotate(-0 240.3 97.123516)">&lt; $1</text>
    </g>
    <g id="text_23">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="282.42" y="94.108953" transform="rotate(-0 282.42 94.108953)">10 µs</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="282.42" y="96.520953" transform="rotate(-0 282.42 96.520953)">10 µs</text>
    </g>
    <g id="text_24">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="324.54" y="94.198078" transform="rotate(-0 324.54 94.198078)">~3,000</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="324.54" y="96.610078" transform="rotate(-0 324.54 96.610078)">~3,000</text>
    </g>
    <g id="text_25">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="366.66" y="93.524797" transform="rotate(-0 366.66 93.524797)">yes</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="366.66" y="95.936797" transform="rotate(-0 366.66 95.936797)">yes</text>
    </g>
    <g id="text_26">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="408.78" y="94.116219" transform="rotate(-0 408.78 94.116219)">weights</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="408.78" y="96.528219" transform="rotate(-0 408.78 96.528219)">weights</text>
    </g>
    <g id="text_27">
-    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="125.117781" transform="rotate(-0 6.48 125.117781)">Text classifier</text>
+    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="127.529781" transform="rotate(-0 6.48 127.529781)">Text classifier</text>
    </g>
    <g id="text_28">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="113.94" y="124.951031" transform="rotate(-0 113.94 124.951031)">0.75</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="113.94" y="127.363031" transform="rotate(-0 113.94 127.363031)">0.75</text>
    </g>
    <g id="text_29">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="156.06" y="124.943281" transform="rotate(-0 156.06 124.943281)">67%</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="156.06" y="127.355281" transform="rotate(-0 156.06 127.355281)">67%</text>
    </g>
    <g id="text_30">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="198.18" y="124.951031" transform="rotate(-0 198.18 124.951031)">0.011</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="198.18" y="127.363031" transform="rotate(-0 198.18 127.363031)">0.011</text>
    </g>
    <g id="text_31">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="240.3" y="124.951516" transform="rotate(-0 240.3 124.951516)">$1</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="240.3" y="127.363516" transform="rotate(-0 240.3 127.363516)">$1</text>
    </g>
    <g id="text_32">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="282.42" y="124.348953" transform="rotate(-0 282.42 124.348953)">100 µs</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="282.42" y="126.760953" transform="rotate(-0 282.42 126.760953)">100 µs</text>
    </g>
    <g id="text_33">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="324.54" y="124.438078" transform="rotate(-0 324.54 124.438078)">15,000+</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="324.54" y="126.850078" transform="rotate(-0 324.54 126.850078)">15,000+</text>
    </g>
    <g id="text_34">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="366.66" y="123.764797" transform="rotate(-0 366.66 123.764797)">yes</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="366.66" y="126.176797" transform="rotate(-0 366.66 126.176797)">yes</text>
    </g>
    <g id="text_35">
-    <text style="font-size: 5.7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="408.78" y="124.222312" transform="rotate(-0 408.78 124.222312)">word weights</text>
+    <text style="font-size: 5.7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="408.78" y="126.634312" transform="rotate(-0 408.78 126.634312)">word weights</text>
    </g>
    <g id="text_36">
-    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="154.678281" transform="rotate(-0 6.48 154.678281)">LLM, JSON</text>
+    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="157.090281" transform="rotate(-0 6.48 157.090281)">LLM, JSON</text>
    </g>
    <g id="text_37">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="113.94" y="155.191031" transform="rotate(-0 113.94 155.191031)">0.71</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="113.94" y="157.603031" transform="rotate(-0 113.94 157.603031)">0.71</text>
    </g>
    <g id="text_38">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="156.06" y="155.183281" transform="rotate(-0 156.06 155.183281)">60%</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="156.06" y="157.595281" transform="rotate(-0 156.06 157.595281)">60%</text>
    </g>
    <g id="text_39">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="198.18" y="155.191031" transform="rotate(-0 198.18 155.191031)">0.025</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="198.18" y="157.603031" transform="rotate(-0 198.18 157.603031)">0.025</text>
    </g>
    <g id="text_40">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="240.3" y="155.191516" transform="rotate(-0 240.3 155.191516)">$740</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="240.3" y="157.603516" transform="rotate(-0 240.3 157.603516)">$740</text>
    </g>
    <g id="text_41">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="282.42" y="155.154703" transform="rotate(-0 282.42 155.154703)">1.4 s</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="282.42" y="157.566703" transform="rotate(-0 282.42 157.566703)">1.4 s</text>
    </g>
    <g id="text_42">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="324.54" y="154.613172" transform="rotate(-0 324.54 154.613172)">none</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="324.54" y="157.025172" transform="rotate(-0 324.54 157.025172)">none</text>
    </g>
    <g id="text_43">
-    <text style="font-size: 5.7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="366.66" y="154.416445" transform="rotate(-0 366.66 154.416445)">not always</text>
+    <text style="font-size: 5.7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="366.66" y="156.828445" transform="rotate(-0 366.66 156.828445)">not always</text>
    </g>
    <g id="text_44">
-    <text style="font-size: 5.7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="408.78" y="155.041219" transform="rotate(-0 408.78 155.041219)">writes reasons*</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="408.78" y="157.640812" transform="rotate(-0 408.78 157.640812)">in words*</text>
    </g>
    <g id="text_45">
-    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="184.941781" transform="rotate(-0 6.48 184.941781)">LLM-as-judge</text>
+    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="187.353781" transform="rotate(-0 6.48 187.353781)">LLM-as-judge</text>
    </g>
    <g id="text_46">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="113.94" y="185.431031" transform="rotate(-0 113.94 185.431031)">0.75</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="113.94" y="187.843031" transform="rotate(-0 113.94 187.843031)">0.75</text>
    </g>
    <g id="text_47">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="156.06" y="185.423281" transform="rotate(-0 156.06 185.423281)">69%</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="156.06" y="187.835281" transform="rotate(-0 156.06 187.835281)">69%</text>
    </g>
    <g id="text_48">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="198.18" y="185.431031" transform="rotate(-0 198.18 185.431031)">0.102</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="198.18" y="187.843031" transform="rotate(-0 198.18 187.843031)">0.102</text>
    </g>
    <g id="text_49">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="240.3" y="185.431516" transform="rotate(-0 240.3 185.431516)">$552</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="240.3" y="187.843516" transform="rotate(-0 240.3 187.843516)">$552</text>
    </g>
    <g id="text_50">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="282.42" y="185.425219" transform="rotate(-0 282.42 185.425219)">583 ms</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="282.42" y="187.837219" transform="rotate(-0 282.42 187.837219)">583 ms</text>
    </g>
    <g id="text_51">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="324.54" y="184.853172" transform="rotate(-0 324.54 184.853172)">none</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="324.54" y="187.265172" transform="rotate(-0 324.54 187.265172)">none</text>
    </g>
    <g id="text_52">
-    <text style="font-size: 5.7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="366.66" y="184.656445" transform="rotate(-0 366.66 184.656445)">not always</text>
+    <text style="font-size: 5.7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="366.66" y="187.068445" transform="rotate(-0 366.66 187.068445)">not always</text>
    </g>
    <g id="text_53">
-    <text style="font-size: 5.7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="408.78" y="185.281219" transform="rotate(-0 408.78 185.281219)">writes reasons*</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="408.78" y="187.880812" transform="rotate(-0 408.78 187.880812)">in words*</text>
    </g>
    <g id="text_54">
-    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="215.450281" transform="rotate(-0 6.48 215.450281)">Jev (mock)</text>
+    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="217.862281" transform="rotate(-0 6.48 217.862281)">Jev (mock)</text>
    </g>
    <g id="text_55">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="113.94" y="215.675391" transform="rotate(-0 113.94 215.675391)">0.89</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="113.94" y="218.087391" transform="rotate(-0 113.94 218.087391)">0.89</text>
    </g>
    <g id="text_56">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="156.06" y="215.663281" transform="rotate(-0 156.06 215.663281)">86%</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="156.06" y="218.075281" transform="rotate(-0 156.06 218.075281)">86%</text>
    </g>
    <g id="text_57">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="198.18" y="215.671031" transform="rotate(-0 198.18 215.671031)">0.012</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="198.18" y="218.083031" transform="rotate(-0 198.18 218.083031)">0.012</text>
    </g>
    <g id="text_58">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="240.3" y="215.671516" transform="rotate(-0 240.3 215.671516)">$21†</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="240.3" y="218.083516" transform="rotate(-0 240.3 218.083516)">$21†</text>
    </g>
    <g id="text_59">
-    <text style="font-size: 5.7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="282.42" y="215.483812" transform="rotate(-0 282.42 215.483812)">70–500 ms†</text>
+    <text style="font-size: 5.7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="282.42" y="217.895813" transform="rotate(-0 282.42 217.895813)">70–500 ms†</text>
    </g>
    <g id="text_60">
-    <text style="font-size: 5.7px; font-family: 'Inter'; fill: #1f2430" transform="translate(310.783852 210.534665)">none; 300</text>
-    <text style="font-size: 5.7px; font-family: 'Inter'; fill: #1f2430" transform="translate(309.502687 220.004124)">to calibrate</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="324.54" y="218.046703" transform="rotate(-0 324.54 218.046703)">none‡</text>
    </g>
    <g id="text_61">
-    <text style="font-size: 5.7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="366.66" y="215.023359" transform="rotate(-0 366.66 215.023359)">yes (mock)</text>
+    <text style="font-size: 5.7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="366.66" y="217.435359" transform="rotate(-0 366.66 217.435359)">yes (mock)</text>
    </g>
    <g id="text_62">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="408.78" y="215.093172" transform="rotate(-0 408.78 215.093172)">no</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="408.78" y="217.505172" transform="rotate(-0 408.78 217.505172)">no</text>
    </g>
    <g id="text_63">
-    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="6.48" y="248.902781" transform="rotate(-0 6.48 248.902781)">Bold: best in column.  † vendor-reported.  * reasons written after the fact may not be how the verdict was reached (Chapter 6).  Classic costs: compute only (assumption).  LLM: illustrative.</text>
+    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="6.48" y="243.27075" transform="rotate(-0 6.48 243.27075)">Bold: best in column.  † vendor-reported.  ‡ none to start; about 300 to check and calibrate.  Classic costs: compute only (assumption).</text>
+   </g>
+   <g id="text_64">
+    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="6.48" y="253.453688" transform="rotate(-0 6.48 253.453688)">* reasons written after the fact, which may not be how the verdict was reached (Chapter 6).  LLM figures: illustrative.</text>
    </g>
   </g>
-  <g id="text_64">
+  <g id="text_65">
    <g id="patch_5">
     <path d="M 323.963 11.055781 
 L 429.698 11.055781 
@@ -264,8 +266,8 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p9b1b4305a6">
-   <rect x="2.88" y="9.655781" width="428.4" height="241.2"/>
+  <clipPath id="p50c08b2295">
+   <rect x="2.88" y="12.067781" width="428.4" height="241.2"/>
   </clipPath>
  </defs>
 </svg>

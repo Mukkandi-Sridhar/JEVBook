@@ -29,7 +29,7 @@ L 341.28 73.735781
 L 341.28 53.575781 
 L 2.88 53.575781 
 z
-" clip-path="url(#p43f46ee445)" style="fill: #f1f2f4"/>
+" clip-path="url(#pf142a58de7)" style="fill: #f1f2f4"/>
    </g>
    <g id="patch_3">
     <path d="M 2.88 116.935781 
@@ -37,7 +37,7 @@ L 341.28 116.935781
 L 341.28 96.775781 
 L 2.88 96.775781 
 z
-" clip-path="url(#p43f46ee445)" style="fill: #f1f2f4"/>
+" clip-path="url(#pf142a58de7)" style="fill: #f1f2f4"/>
    </g>
    <g id="patch_4">
     <path d="M 2.88 160.135781 
@@ -45,7 +45,7 @@ L 341.28 160.135781
 L 341.28 139.975781 
 L 2.88 139.975781 
 z
-" clip-path="url(#p43f46ee445)" style="fill: #f1f2f4"/>
+" clip-path="url(#pf142a58de7)" style="fill: #f1f2f4"/>
    </g>
    <g id="patch_5">
     <path d="M 2.88 203.335781 
@@ -53,7 +53,7 @@ L 341.28 203.335781
 L 341.28 183.175781 
 L 2.88 183.175781 
 z
-" clip-path="url(#p43f46ee445)" style="fill: #f1f2f4"/>
+" clip-path="url(#pf142a58de7)" style="fill: #f1f2f4"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #5b6b82" x="186.48" y="44.533875" transform="rotate(-0 186.48 44.533875)">before</text>
@@ -65,7 +65,7 @@ z
     <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="65.304609" transform="rotate(-0 6.48 65.304609)">real threats a person sees</text>
    </g>
    <g id="text_4">
-    <text style="font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="186.48" y="66.012031" transform="rotate(-0 186.48 66.012031)">57%</text>
+    <text style="font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="186.48" y="66.012031" transform="rotate(-0 186.48 66.012031)">54%</text>
    </g>
    <g id="text_5">
     <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="280.08" y="66.015586" transform="rotate(-0 280.08 66.015586)">89%</text>
@@ -74,7 +74,7 @@ z
     <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="86.892305" transform="rotate(-0 6.48 86.892305)">real threats never seen, per day</text>
    </g>
    <g id="text_7">
-    <text style="font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="186.48" y="87.620156" transform="rotate(-0 186.48 87.620156)">25.1</text>
+    <text style="font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="186.48" y="87.631328" transform="rotate(-0 186.48 87.631328)">27.1</text>
    </g>
    <g id="text_8">
     <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="280.08" y="87.620156" transform="rotate(-0 280.08 87.620156)">6.4</text>
@@ -107,13 +107,13 @@ z
     <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="280.08" y="152.500898" transform="rotate(-0 280.08 152.500898)">15 min</text>
    </g>
    <g id="text_18">
-    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="173.292305" transform="rotate(-0 6.48 173.292305)">alerts a person looks at, per day</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="173.432578" transform="rotate(-0 6.48 173.432578)">alerts seen per day (analysts + on-call)</text>
    </g>
    <g id="text_19">
-    <text style="font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="186.48" y="174.052148" transform="rotate(-0 186.48 174.052148)">274</text>
+    <text style="font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="186.48" y="174.020156" transform="rotate(-0 186.48 174.020156)">240</text>
    </g>
    <g id="text_20">
-    <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="280.08" y="174.020156" transform="rotate(-0 280.08 174.020156)">283</text>
+    <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="280.08" y="174.023203" transform="rotate(-0 280.08 174.023203)">279</text>
    </g>
    <g id="text_21">
     <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="194.892305" transform="rotate(-0 6.48 194.892305)">analysts</text>
@@ -143,7 +143,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p43f46ee445">
+  <clipPath id="pf142a58de7">
    <rect x="2.88" y="9.655781" width="338.4" height="190.8"/>
   </clipPath>
  </defs>

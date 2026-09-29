@@ -1,5 +1,5 @@
 -- {{< num ch21 auto_rate pct >}} -> a number from results/ch21.json, formatted.
--- Formats: pct (12%), pct1 (12.3%), int (12,345), f1, f2, f3, money ($12,345), raw
+-- Formats: pct (12%), pct1 (12.3%), int (12,345), approx (160,000 / 1.2 million), f1, f2, f3, money ($12,345), raw
 local cache = {}
 
 local function load(ch)
@@ -19,8 +19,22 @@ local function commas(n)
   return (out:gsub("^,", ""):gsub("^%-,", "-"))
 end
 
+-- Two significant figures, for illustrative counts: 158,475 -> 160,000; 1,209,022 -> 1.2 million.
+local function approx(v)
+  if v == 0 then return "0" end
+  local mag = 10 ^ (math.floor(math.log(math.abs(v), 10)) - 1)
+  local r = math.floor(v / mag + 0.5) * mag
+  if math.abs(r) >= 1e6 then
+    local m = r / 1e6
+    if m == math.floor(m) then return string.format("%d million", m) end
+    return string.format("%.1f million", m)
+  end
+  return commas(r)
+end
+
 local function fmt(v, f)
   if type(v) ~= "number" then return tostring(v) end
+  if f == "approx" then return approx(v) end
   if f == "pct" then return string.format("%.0f%%", v * 100)
   elseif f == "pct1" then return string.format("%.1f%%", v * 100)
   elseif f == "int" then return commas(v)

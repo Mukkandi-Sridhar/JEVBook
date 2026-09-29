@@ -2,7 +2,7 @@
 
 You don't have to read it front to back. Here are three routes, depending on where you're starting.
 
-![Three routes through the book's seven parts.](/figures/front/paths.pdf){#fig-paths}
+![Three routes through the book's six parts.](/figures/front/paths.pdf){#fig-paths}
 
 **If you're new to machine learning**, read it in order. Part I builds the foundation everything else rests on: probabilities, and how to turn them into actions you can defend. Part II is a short tour of neural networks, LLMs and agents that assumes you haven't met any of them before.
 
@@ -14,7 +14,7 @@ You don't have to read it front to back. Here are three routes, depending on whe
 
 ![The boxes you'll meet in every chapter.](/figures/front/boxes.pdf){#fig-boxes}
 
-Each chapter opens with a short list of what you'll be able to do by the end, and closes with a short recap, exercises and a hook to the next chapter. In between, a few kinds of box recur (@fig-boxes). The *Try it* boxes contain code you can run; the *Set the threshold* boxes ask you to make a small decision with real costs; the *Where this breaks* boxes are the honest limits of what the chapter just showed. Read those last ones. They're the difference between knowing a technique and knowing when to trust it.
+Each chapter opens with a short list of what you'll be able to do by the end, and closes with a short recap, exercises and a hook to the next chapter. In between, a few kinds of box recur (@fig-boxes). The *Try it* boxes contain code you can run; the *Set the threshold* boxes ask you to make a small decision with real costs; the *Where this breaks* boxes are the honest limits of what the chapter just showed. *Going deeper* boxes hold optional maths, and a side box headed with a question, like *Why not just maximise accuracy?*, deals with the objection you're probably already forming. Read the *Where this breaks* boxes above all. They're the difference between knowing a technique and knowing when to trust it.
 
 ## Running the code
 
@@ -29,9 +29,23 @@ pip install git+https://github.com/Mukkandi-Sridhar/JEVBook
 
 The second line installs `jevkit`, the book's toolkit. Among other things, it includes the mock that answers the official SDK's calls without a network connection or an API key. If you have a real TypeSafe API key, set `JEVKIT_LIVE=1` and `TYPESAFE_API_KEY`, and the labs call the real service instead; Chapter 16 explains how.
 
+The listings use short names for `jevkit`'s modules, imported at the top of each chapter's lab:
+
+| Name | Module | What's in it |
+|---|---|---|
+| `soc` | `jevkit.soc` | Kestrel's synthetic alerts |
+| `cal` | `jevkit.calibration` | reliability diagrams, ECE, Platt and temperature scaling |
+| `pol` | `jevkit.policy` | costs, lines and the three zones |
+| `llm` | `jevkit.llm` | the mock LLM |
+| `kb`, `agent` | `jevkit.kb`, `jevkit.agent` | the knowledge base and the SOC agent (Chapters 7 and 17) |
+| `B` | `jevkit.bakeoff` | the six contestants (Chapter 13) |
+| `econ` | `jevkit.econ` | the decision economics (Chapter 12) |
+| `ops`, `gallery` | `jevkit.ops`, `jevkit.gallery` | the case study and the gallery (Chapters 18 and 19) |
+| `tj`, `S` | `jevkit.tinyjev`, `jevkit.service` | your own model and the decision service (Chapters 20 and 21) |
+
 ## The companion widgets
 
-Four small browser tools let you move the book's numbers yourself: a threshold simulator (Chapter 14), a calibration playground (Chapters 3 and 11), a bake-off explorer (Chapter 13) and a decision cost calculator (Chapters 9, 12 and 16). They're in the `site/` folder of the repository and on the book's website, and they run entirely in your browser.
+Four small browser tools let you move the book's numbers yourself: a threshold simulator (Chapter 14), a calibration playground (Chapters 3 and 11), a bake-off explorer (Chapter 13) and a decision cost calculator (Chapters 9, 12 and 16). They're in the `site/` folder of the repository and on the book's website, [mukkandi-sridhar.github.io/JEVBook](https://mukkandi-sridhar.github.io/JEVBook/), and they run entirely in your browser.
 
 ## A word on the numbers
 

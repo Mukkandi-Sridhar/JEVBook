@@ -162,8 +162,6 @@ def human_final():
     draw.box(ax, 1.25, 0.05, 2.35, 0.45, "log: what the model said, what the person decided, and why", kind="plain",
              size=5.8)
     draw.arrow(ax, (4.3, 0.8), (3.6, 0.3), color=C["muted"], head=3)
-    draw.text(ax, 0.0, 1.75, "In high-stakes domains the model never closes a case. It decides what a person sees first.",
-              size=6.3, weight="semibold")
     return f
 
 

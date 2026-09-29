@@ -26,53 +26,45 @@ z
    <g id="line2d_1">
     <path d="M 13.68 26.64 
 L 13.68 35.28 
-" clip-path="url(#p899531b4bc)" style="fill: none; stroke: #c9ced6; stroke-linecap: round"/>
+" clip-path="url(#p8348e5d6e5)" style="fill: none; stroke: #c9ced6; stroke-linecap: round"/>
    </g>
    <g id="line2d_2">
     <path d="M 13.68 54 
 L 13.68 62.64 
-" clip-path="url(#p899531b4bc)" style="fill: none; stroke: #c9ced6; stroke-linecap: round"/>
+" clip-path="url(#p8348e5d6e5)" style="fill: none; stroke: #c9ced6; stroke-linecap: round"/>
    </g>
    <g id="line2d_3">
     <path d="M 13.68 81.36 
 L 13.68 90 
-" clip-path="url(#p899531b4bc)" style="fill: none; stroke: #c9ced6; stroke-linecap: round"/>
+" clip-path="url(#p8348e5d6e5)" style="fill: none; stroke: #c9ced6; stroke-linecap: round"/>
    </g>
    <g id="line2d_4">
     <path d="M 13.68 108.72 
 L 13.68 117.36 
-" clip-path="url(#p899531b4bc)" style="fill: none; stroke: #c9ced6; stroke-linecap: round"/>
+" clip-path="url(#p8348e5d6e5)" style="fill: none; stroke: #c9ced6; stroke-linecap: round"/>
    </g>
    <g id="line2d_5">
     <path d="M 13.68 136.08 
 L 13.68 144.72 
-" clip-path="url(#p899531b4bc)" style="fill: none; stroke: #c9ced6; stroke-linecap: round"/>
-   </g>
-   <g id="line2d_6">
-    <path d="M 13.68 163.44 
-L 13.68 172.08 
-" clip-path="url(#p899531b4bc)" style="fill: none; stroke: #c9ced6; stroke-linecap: round"/>
+" clip-path="url(#p8348e5d6e5)" style="fill: none; stroke: #c9ced6; stroke-linecap: round"/>
    </g>
    <g id="text_1">
-    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="31.68" y="19.086234" transform="rotate(-0 31.68 19.086234)">We learned to speak in probabilities, and to make them honest.</text>
+    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="31.68" y="19.086234" transform="rotate(-0 31.68 19.086234)">We learned to speak in probabilities, make them honest and turn them into actions.</text>
    </g>
    <g id="text_2">
-    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="31.68" y="46.441594" transform="rotate(-0 31.68 46.441594)">Networks learned patterns, and got overconfident at scale.</text>
+    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="31.68" y="46.407562" transform="rotate(-0 31.68 46.407562)">Networks learned patterns, LLMs learned to write, and agents to act.</text>
    </g>
    <g id="text_3">
-    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="31.68" y="73.767562" transform="rotate(-0 31.68 73.767562)">LLMs learned to write, and agents to act, one token at a time.</text>
+    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="31.68" y="73.840266" transform="rotate(-0 31.68 73.840266)">A new kind of model decided in one pass, with probabilities we could test.</text>
    </g>
    <g id="text_4">
-    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="31.68" y="101.200266" transform="rotate(-0 31.68 101.200266)">A new kind of model decided in one pass, with probabilities we could test.</text>
+    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="31.68" y="101.200266" transform="rotate(-0 31.68 101.200266)">We compared methods, drew lines from costs and named the patterns.</text>
    </g>
    <g id="text_5">
-    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="31.68" y="128.560266" transform="rotate(-0 31.68 128.560266)">We drew lines from costs, and named the patterns.</text>
+    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="31.68" y="128.487562" transform="rotate(-0 31.68 128.487562)">We built it: calls, an agent, a case study, our own model, a service.</text>
    </g>
    <g id="text_6">
-    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="31.68" y="155.847562" transform="rotate(-0 31.68 155.847562)">We built it: calls, agents, a case study, our own model, a service.</text>
-   </g>
-   <g id="text_7">
-    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="31.68" y="183.246234" transform="rotate(-0 31.68 183.246234)">Now decisions are cheap. The question is which ones deserve them.</text>
+    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="31.68" y="155.886234" transform="rotate(-0 31.68 155.886234)">Now decisions are cheap. The question is which ones deserve them.</text>
    </g>
    <g id="patch_2">
     <path d="M 13.68 26.64 
@@ -85,7 +77,7 @@ C 5.306229 12.416732 4.32 14.797699 4.32 17.28
 C 4.32 19.762301 5.306229 22.143268 7.061481 23.898519 
 C 8.816732 25.653771 11.197699 26.64 13.68 26.64 
 z
-" clip-path="url(#p899531b4bc)" style="fill: #2f6db5; stroke: #ffffff; stroke-linejoin: miter"/>
+" clip-path="url(#p8348e5d6e5)" style="fill: #2f6db5; stroke: #ffffff; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 13.68 54 
@@ -98,7 +90,7 @@ C 5.306229 39.776732 4.32 42.157699 4.32 44.64
 C 4.32 47.122301 5.306229 49.503268 7.061481 51.258519 
 C 8.816732 53.013771 11.197699 54 13.68 54 
 z
-" clip-path="url(#p899531b4bc)" style="fill: #2f6db5; stroke: #ffffff; stroke-linejoin: miter"/>
+" clip-path="url(#p8348e5d6e5)" style="fill: #2f6db5; stroke: #ffffff; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 13.68 81.36 
@@ -111,7 +103,7 @@ C 5.306229 67.136732 4.32 69.517699 4.32 72
 C 4.32 74.482301 5.306229 76.863268 7.061481 78.618519 
 C 8.816732 80.373771 11.197699 81.36 13.68 81.36 
 z
-" clip-path="url(#p899531b4bc)" style="fill: #2f6db5; stroke: #ffffff; stroke-linejoin: miter"/>
+" clip-path="url(#p8348e5d6e5)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 13.68 108.72 
@@ -124,7 +116,7 @@ C 5.306229 94.496732 4.32 96.877699 4.32 99.36
 C 4.32 101.842301 5.306229 104.223268 7.061481 105.978519 
 C 8.816732 107.733771 11.197699 108.72 13.68 108.72 
 z
-" clip-path="url(#p899531b4bc)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
+" clip-path="url(#p8348e5d6e5)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
    </g>
    <g id="patch_6">
     <path d="M 13.68 136.08 
@@ -137,7 +129,7 @@ C 5.306229 121.856732 4.32 124.237699 4.32 126.72
 C 4.32 129.202301 5.306229 131.583268 7.061481 133.338519 
 C 8.816732 135.093771 11.197699 136.08 13.68 136.08 
 z
-" clip-path="url(#p899531b4bc)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
+" clip-path="url(#p8348e5d6e5)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
    </g>
    <g id="patch_7">
     <path d="M 13.68 163.44 
@@ -150,46 +142,30 @@ C 5.306229 149.216732 4.32 151.597699 4.32 154.08
 C 4.32 156.562301 5.306229 158.943268 7.061481 160.698519 
 C 8.816732 162.453771 11.197699 163.44 13.68 163.44 
 z
-" clip-path="url(#p899531b4bc)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
+" clip-path="url(#p8348e5d6e5)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
    </g>
-   <g id="patch_8">
-    <path d="M 13.68 190.8 
-C 16.162301 190.8 18.543268 189.813771 20.298519 188.058519 
-C 22.053771 186.303268 23.04 183.922301 23.04 181.44 
-C 23.04 178.957699 22.053771 176.576732 20.298519 174.821481 
-C 18.543268 173.066229 16.162301 172.08 13.68 172.08 
-C 11.197699 172.08 8.816732 173.066229 7.061481 174.821481 
-C 5.306229 176.576732 4.32 178.957699 4.32 181.44 
-C 4.32 183.922301 5.306229 186.303268 7.061481 188.058519 
-C 8.816732 189.813771 11.197699 190.8 13.68 190.8 
-z
-" clip-path="url(#p899531b4bc)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
-   </g>
-   <g id="text_8">
+   <g id="text_7">
     <text style="font-weight: 700; font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="13.68" y="19.532355" transform="rotate(-0 13.68 19.532355)">I</text>
    </g>
-   <g id="text_9">
+   <g id="text_8">
     <text style="font-weight: 700; font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="13.68" y="46.892355" transform="rotate(-0 13.68 46.892355)">II</text>
    </g>
-   <g id="text_10">
+   <g id="text_9">
     <text style="font-weight: 700; font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="13.68" y="74.252355" transform="rotate(-0 13.68 74.252355)">III</text>
    </g>
-   <g id="text_11">
+   <g id="text_10">
     <text style="font-weight: 700; font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="13.68" y="101.612355" transform="rotate(-0 13.68 101.612355)">IV</text>
    </g>
-   <g id="text_12">
+   <g id="text_11">
     <text style="font-weight: 700; font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="13.68" y="128.972355" transform="rotate(-0 13.68 128.972355)">V</text>
    </g>
-   <g id="text_13">
+   <g id="text_12">
     <text style="font-weight: 700; font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="13.68" y="156.332355" transform="rotate(-0 13.68 156.332355)">VI</text>
-   </g>
-   <g id="text_14">
-    <text style="font-weight: 700; font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="13.68" y="183.692355" transform="rotate(-0 13.68 183.692355)">VII</text>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="p899531b4bc">
+  <clipPath id="p8348e5d6e5">
    <rect x="2.88" y="2.88" width="338.4" height="208.8"/>
   </clipPath>
  </defs>

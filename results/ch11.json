@@ -29,6 +29,8 @@
       "wrapped in chat text": 71
     }
   },
+  "prompt_fail_per_day": 33.075,
+  "prompt_fail_share": 0.04725,
   "share_stated_ge_09": 0.983,
   "token": {
     "auc": 0.8379963753451839,

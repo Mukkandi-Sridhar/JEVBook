@@ -34,7 +34,7 @@ This chapter is about checking. It's the single most important habit in the book
 
 Let's go back to the weather.
 
-People love to complain about forecasters. But in the 1970s, when researchers checked American weather forecasters against decades of their own forecasts, they found something remarkable. When the forecasters said "30% chance of rain", it rained on roughly 30% of those days. When they said 70%, it rained roughly 70% of the time. Across the whole range, what they said and what happened lined up almost perfectly [@murphy1977].
+People love to complain about forecasters. But in the 1970s, when researchers checked American weather forecasters' chance-of-rain forecasts against what actually happened, they found something remarkable. When the forecasters said "30% chance of rain", it rained on roughly 30% of those days. When they said 70%, it rained roughly 70% of the time. Across the whole range, what they said and what happened lined up almost perfectly [@murphy1977].
 
 Compare that with how people usually do. Ask someone to give a range they're "90% sure" contains the answer to a trivia question, and the truth lands inside far less often than 90% of the time. We are, as a species, reliably too sure of ourselves.
 
@@ -124,7 +124,9 @@ The Brier score from Chapter 2 splits neatly into three parts, a result due to A
 
 If log loss rewards honesty, as Chapter 2 said, why would a model ever come out miscalibrated? Because the training setup can quietly lie to it. Here are the usual suspects.
 
-**Rebalancing the data.** This is the one I see most often, and it's usually done with the best intentions. Attacks are rare, only {{< num ch04 base pct >}} of alerts, so someone decides the model needs to "see more attacks" and trains it on a 50/50 mix: every attack, plus an equal number of randomly chosen harmless alerts. The ranking survives. But the model has learned from a world where attacks are *common*, and it faithfully reports probabilities for that world.
+**Rebalancing the data.** This is one of the most common, and it's usually done with the best intentions. Attacks are rare, only {{< num ch04 base pct >}} of alerts, so someone decides the model needs to "see more attacks" and trains it on a 50/50 mix: every attack, plus an equal number of randomly chosen harmless alerts. The ranking survives. But the model has learned from a world where attacks are *common*, and it faithfully reports probabilities for that world.
+
+[[AUTHOR STORY: AttendX or SIGNAL: a model trained on rebalanced or filtered data, and what its probabilities looked like once it met the real mix]]
 
 ![A model trained on 50/50 rebalanced data (red) thinks attacks are about ten times more common than they are, and its probabilities sit far below the diagonal. After Platt scaling fitted on a separate calibration set (green), the same model is honest again.](/figures/ch04/rebalanced.pdf){#fig-rebalanced}
 
@@ -136,7 +138,7 @@ The rebalanced model's average prediction is {{< num ch04 bal_mean_pred pct >}}.
 
 **Big modern networks.** Surprisingly, very large neural networks trained for classification tend to be *overconfident* [@guo2017]. Chapter 5 looks at why. And the "confidence" an LLM states in words is a different animal again. Chapter 6 measures it.
 
-**The world changing.** A model calibrated on last month's base rate is miscalibrated the day a campaign doubles the number of attacks. Chapter 14 watched it happen.
+**The world changing.** A model calibrated on last month's base rate is miscalibrated the day a campaign doubles the number of attacks. Chapter 14 will watch it happen.
 
 ## Fixing it
 
@@ -209,7 +211,7 @@ The weather forecasters showed us that honesty is checkable. Then two models wit
 
 When Part III tests Jev's own calibration, it'll use exactly these tools, pointed at the mock, with everything in this chapter as the yardstick.
 
-::: {.exercises}
+::: {.exercises lab="ch03"}
 1. Explain to a colleague, without jargon, the difference between a model that ranks well and a model that's calibrated. Use a weather example.
 2. In the lab, train the rebalanced model with a 30/70 mix instead of 50/50. Is it more or less miscalibrated? Predict the answer before you run it.
 3. Why must the calibration correction be fitted on a separate calibration set, not on the training set? What would go wrong?

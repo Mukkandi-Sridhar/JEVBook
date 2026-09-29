@@ -1,0 +1,8 @@
+% makeindex style for the book's index: a letter heading before each group, en-dashes in page ranges.
+headings_flag 1
+heading_prefix "\\indexletter{"
+heading_suffix "}\n"
+delim_0 ", "
+delim_1 ", "
+delim_2 ", "
+delim_r "--"

@@ -81,7 +81,7 @@ for p in econ.POOLS:
 
 ![Kestrel's decision pools (illustrative). Each line spans the middle 90% of decision values in a pool, with the median as a dot. A decision is worth making when its value is to the right of its price. At the LLM price, most emails, logins and log lines aren't worth asking about. At Jev's vendor-reported price, most are.](/figures/ch19/pools.pdf){#fig-pools}
 
-Look at the long bottom rows of @fig-pools. There are {{< num ch19 pool_raw int >}} log events a day. A typical one is worth about two thousandths of a cent to check. At the book's illustrative LLM price of \${{< num ch19 llm_price f5 >}} a decision, only a sliver of them clear the bar. At Jev's vendor-reported price of \${{< num ch19 jev_price f6 >}}, about half of them do.
+Look at the long bottom rows of @fig-pools. There are about {{< num ch19 pool_raw approx >}} log events a day. A typical one is worth about two thousandths of a cent to check. At the book's illustrative LLM price of \${{< num ch19 llm_price f5 >}} a decision, only a sliver of them clear the bar. At Jev's vendor-reported price of \${{< num ch19 jev_price f6 >}}, about half of them do.
 
 ## Two gates, not one
 
@@ -99,7 +99,7 @@ Now we can count a whole day. Start from the price: as it falls, how many decisi
 
 ![Decisions worth making per day, and total spend, as the price per decision falls (illustrative; price gate only). Decisions climb steeply. Spend falls, because the newly affordable decisions are each worth so little.](/figures/ch19/curve.pdf){#fig-curve}
 
-With both gates applied, the illustrative LLM makes {{< num ch19 llm_decisions int >}} decisions a day and spends about \${{< num ch19 llm_spend int >}}. Jev, at the fast end of its range, makes {{< num ch19 jev_decisions int >}} and spends about \${{< num ch19 jev_spend int >}}. That's about {{< num ch19 decisions_ratio int >}} times as many decisions for a quarter of the bill.
+With both gates applied, the illustrative LLM makes about {{< num ch19 llm_decisions approx >}} decisions a day and spends about \${{< num ch19 llm_spend int >}}. Jev, at the fast end of its range, makes about {{< num ch19 jev_decisions approx >}} and spends about \${{< num ch19 jev_spend int >}}. That's about {{< num ch19 decisions_ratio int >}} times as many decisions for a quarter of the bill.
 
 Notice what didn't happen. The bill went *down*. Inside Kestrel's existing jobs, demand for decisions is elastic enough to multiply the count, but not elastic enough to raise the spend. The newly affordable decisions are worth so little each that they add only about \${{< num ch19 value_gain int >}} a day of avoided loss.
 
@@ -107,7 +107,7 @@ Notice what didn't happen. The bill went *down*. Inside Kestrel's existing jobs,
 
 It's in the jobs that don't exist yet.
 
-Suppose cheap decisions let Kestrel build something new: checking every file that's shared outside the company, {{< num ch19 new_job int >}} a day, each worth about three thousandths of a cent. At LLM prices almost nobody would build that. At Jev's price, the model takes {{< num ch19 jev_new_taken int >}} of those checks a day, and Kestrel's decision bill jumps from \${{< num ch19 jev_spend int >}} to about \${{< num ch19 jev_new_spend int >}}.
+Suppose cheap decisions let Kestrel build something new: checking every file that's shared outside the company, {{< num ch19 new_job approx >}} a day, each worth about three thousandths of a cent. At LLM prices almost nobody would build that. At Jev's price, the model takes about {{< num ch19 jev_new_taken approx >}} of those checks a day, and Kestrel's decision bill jumps from \${{< num ch19 jev_spend int >}} to about \${{< num ch19 jev_new_spend int >}}.
 
 ::: {.keyidea}
 Cheaper decisions rarely raise the bill for the jobs you already do. They raise it by making new jobs worth doing.
@@ -123,7 +123,9 @@ More decisions means more *outcomes* that someone has to deal with. Some of thos
 
 ![Alerts sent to a person per day, under two rules (illustrative). A rule that flags a fixed share of what the model looks at scales with the number of decisions, and swamps the team's capacity at Jev volumes. A cost line, which flags only when the expected loss is larger than the cost of a review, barely moves.](/figures/ch19/flags.pdf){#fig-flags}
 
-Suppose you carried over a rule that seemed sensible at LLM volumes: send the top 0.1% of what the model looks at to a person. That sends {{< num ch19 flags_top_llm int >}} a day, comfortably under the team's capacity of {{< num ch19 capacity int >}}. At Jev volumes, the same rule sends {{< num ch19 flags_top_jev int >}} (@fig-flags). Nobody changed the policy. The queue just grew eightfold.
+Only some of those decisions can end with a person, though. Agent steps and checks on LLM outputs never go to a queue, so of the LLM's roughly {{< num ch19 llm_decisions approx >}} decisions a day, about {{< num ch19 reviewable_llm approx >}} are the reviewable kind; at Jev's volume it's about {{< num ch19 reviewable_jev approx >}}. Those are the counts @fig-flags labels.
+
+Now suppose you carried over a rule that seemed sensible at LLM volumes: send the top 0.1% of the reviewable decisions to a person. That sends {{< num ch19 flags_top_llm int >}} a day, comfortably under the team's capacity of {{< num ch19 capacity int >}}. At Jev volumes, the same rule sends {{< num ch19 flags_top_jev int >}} (@fig-flags). Nobody changed the policy. The queue just grew eightfold.
 
 The cost line from Chapter 4 doesn't have this problem. It flags a case when its expected loss is bigger than the \$15 a review costs, and a log line worth two thousandths of a cent is never going to clear that. It sends {{< num ch19 flags_cost_jev int >}} a day either way.
 
@@ -149,7 +151,7 @@ Jevons noticed that better engines made coal-powered work cheaper, and cheaper w
 
 Part III has been about Jev on its own: what it is, what it answers, whether its probabilities can be trusted and what it might do to demand. Part IV puts it in context, against every other way of making the same decision.
 
-::: {.exercises}
+::: {.exercises lab="ch12"}
 1. Name something in your own life that got much cheaper, and say whether you use more of it, the same, or more *and* spend more in total. Which case in @fig-elasticity is it?
 2. In the lab, halve the value of every raw log event. How many fewer decisions does Jev make? Does the bill change much? Why not?
 3. Add a new job of your own design to the model. What value per decision and daily volume does it need before Kestrel's Jev bill doubles?

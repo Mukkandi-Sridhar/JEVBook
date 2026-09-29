@@ -124,14 +124,14 @@
     borderline west={1.6pt}{0pt}{rulec}]}{\end{tcolorbox}}
 \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},fontsize=\codesize,
   breaklines, breakanywhere, breaksymbolleft={}, breaksymbolright={}}
-\fvset{fontsize=\codesize, breaklines, breakanywhere}
+\fvset{fontsize=\codesize, breaklines, breakanywhere, breaksymbolleft={}, breaksymbolright={}, breakindent=1.2em}
 % Cell outputs (plain verbatim) get a lighter, open style
 \makeatletter
 \renewenvironment{verbatim}{%
   \VerbatimEnvironment
   \begin{tcolorbox}[breakable, enhanced, colback=white, colframe=gridc, boxrule=0.5pt, arc=2pt,
     left=7pt, right=5pt, top=3pt, bottom=3pt, before skip=2pt, after skip=8pt]%
-  \begin{Verbatim}[fontsize=\codesize, formatcom=\color{ink2}, breaklines, breakanywhere]}%
+  \begin{Verbatim}[fontsize=\codesize, formatcom=\color{ink2}, breaklines, breakanywhere, breaksymbolleft={}, breakindent=1.2em]}%
   {\end{Verbatim}\end{tcolorbox}}
 \makeatother
 
@@ -188,6 +188,13 @@
   {\sffamily\bfseries\fontsize{7}{9}\selectfont\color{ink}\addfontfeature{LetterSpace=10}EXERCISES}\par
   \vspace{2pt}{\color{rulec}\rule{\linewidth}{0.5pt}}\par\vspace{2pt}\small}{\par\nopagebreak[4]\vspace{6pt}}
 
+% The chapter's lab: a QR code to its Colab notebook (tools/make_qr.py), at the top of the exercises
+\newcommand{\labqr}[1]{\par\noindent
+  \begin{minipage}[c]{0.52in}\includegraphics[width=0.52in]{figures/qr/#1.pdf}\end{minipage}\hspace{0.9em}%
+  \begin{minipage}[c]{\dimexpr\linewidth-0.52in-0.9em\relax}\raggedright\sffamily\footnotesize\color{ink2}
+  \textbf{\color{ink}This chapter's lab.} Scan to open it in Google Colab, or open \texttt{labs/#1.ipynb} in the
+  book's repository. It runs on the mock, so it needs no API key.\end{minipage}\par\vspace{7pt}}
+
 % Chapter goals ("By the end...")
 \newenvironment{goals}{\par\vspace{6pt}\begin{tcolorbox}[enhanced, colback=white, colframe=gridc, boxrule=0.6pt, arc=2pt,
   left=9pt, right=8pt, top=7pt, bottom=6pt, fontupper=\small]
@@ -238,7 +245,7 @@
 % Part pages: keep the part's short introduction on the same page as its title
 \renewcommand*{\partheadendvskip}{\vspace{0.35in}}
 \renewcommand*{\partheademptypage}{}
-\newenvironment{partintro}{\begin{minipage}{0.92\textwidth}\raggedright\fontsize{11.5}{17}\selectfont\color{ink2}}{\end{minipage}}
+\newenvironment{partintro}{\begin{minipage}{0.92\textwidth}\raggedright\fontsize{11.5}{17}\selectfont\color{ink2}}{\end{minipage}\cleardoubleoddemptypage}  % the part's first chapter opens on a right-hand page
 
 % Index of terms: two columns, small type
 \usepackage{multicol}
@@ -254,3 +261,31 @@
 \makeatletter\@openrightfalse\makeatother
 % Quarto puts a \cleardoublepage before the appendix; with open=any it should only start a new page.
 \let\cleardoublepage\clearpage
+% Part pages open on the right, like a printed book's.
+\pretocmd{\part}{\cleardoubleoddemptypage}{}{}
+% Roman numerals run through the front matter and Part I's opener; Chapter 1 is page 1. Quarto calls \mainmatter
+% straight after the table of contents, so that call does nothing and parts/p1.qmd starts the main matter instead.
+\let\bookmainmatter\mainmatter
+\renewcommand*{\mainmatter}{}
+
+% Real space characters in the PDF, so copied or extracted text keeps every space between words.
+\usepackage{tagpdf}
+\tagpdfsetup{interwordspace=true}
+
+% ---------- Index ----------
+% filters/book.lua writes \index entries (terms listed by tools/make_index.py); Quarto runs makeindex with
+% assets/latex/book.ist. The index page's own heading comes from back/index-terms.qmd, so theindex adds none.
+\usepackage{makeidx}
+\makeindex
+\newcommand*{\indexletter}[1]{\par\vspace{7pt plus 2pt}{\sffamily\bfseries\small\color{ink}#1}\par\nopagebreak\vspace{1pt}}
+\makeatletter
+\renewenvironment{theindex}{%
+  \begin{multicols}{2}\small\raggedright\setlength{\parindent}{0pt}\setlength{\parskip}{0pt plus 0.3pt}%
+  \def\@idxitem{\par\hangindent 1.2em}\let\item\@idxitem
+  \def\subitem{\@idxitem\hspace*{0.8em}}\def\indexspace{\par}}%
+  {\end{multicols}}
+\makeatother
+
+% Reference matter in small type: the bibliography here; the glossary and cheat sheets set it in their own files.
+\AtBeginEnvironment{CSLReferences}{\small}
+

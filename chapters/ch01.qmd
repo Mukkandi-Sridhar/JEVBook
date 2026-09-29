@@ -213,7 +213,7 @@ LLMs know a lot about the world and nothing about *your* world, so we let them l
 
 Watch an agent work for a while and you notice something.
 
-Most of its steps aren't writing essays. They're small decisions. Is this alert real? Which queue does this ticket go in? Is this action safe to take? Did that tool call work? Hundreds of little judgments, each with a known set of possible answers.
+Most of its steps aren't writing essays. They're small decisions. Is this alert real? Which queue does this ticket go in? Is this action safe to take? Did that tool call work? Hundreds of little judgements, each with a known set of possible answers.
 
 For each of those, the usual approach today is to ask an LLM, get a paragraph back, and then write code to dig the answer out of the paragraph. It works. It's also a bit like hiring a novelist to tick a checkbox.
 
@@ -262,7 +262,7 @@ That's the map (@fig-ai-story-map).
 
 You don't need to understand every box today. Just know where we're going. The next three chapters stay down at the bottom-left corner of this map on purpose, because everything above it, Jev included, is built on one idea we've only just met: a model's answer should be a probability, and the probability should be honest.
 
-::: {.exercises}
+::: {.exercises lab="ch01"}
 1. Name one system you use every week that follows rules, and one that learned from examples. What gave it away?
 2. In the lab, swap the threat-intel score for `prior_alerts_24h` (how many related alerts fired in the last day). Which threshold makes the fewest mistakes now? Is that rule any more *useful*?
 3. Our best rule made {{< num ch01 best_mistakes int >}} mistakes and caught almost nothing. Write one sentence describing the question you *wish* we had asked the machine instead.

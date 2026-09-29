@@ -110,7 +110,7 @@ A flag is only useful if someone reads it. The last item on the checklist below 
 
 The service will improve. New calibration, new lines, a new model version. Each change is a new config, and a new config runs in **shadow** first: it decides every alert alongside the current version, logs what it would have done, and touches nothing.
 
-![A week of the candidate version in shadow beside the current one, in alerts per day. They agree on most alerts. The candidate would move about 29 alerts a day from review to auto-close, the gold cell, and that's the cell to look at before switching.](/figures/ch28/shadow.pdf){#fig-shadow-21}
+![A week of the candidate version in shadow beside the current one, in alerts per day. They agree on most alerts. The candidate would move about {{< num ch28 shadow_review_to_act_day int >}} alerts a day from review to auto-close: the gold cell, in the "current: review" row and the "new: act" column. That's the cell to look at before switching.](/figures/ch28/shadow.pdf){#fig-shadow-21}
 
 The candidate here is the fixed config from the dry run. It agreed with the current version on {{< num ch28 shadow_agree pct >}} of alerts (@fig-shadow-21). The disagreements all go one way: about {{< num ch28 shadow_review_to_act_day f1 >}} alerts a day that the current version queues and the candidate would close. Among those, about {{< num ch28 shadow_moved_threats_day f1 >}} a day were real threats.
 
@@ -121,6 +121,8 @@ That's not a bug. It's the price of fitting the queue, and the shadow run puts a
 ![Eight things a decision service needs before it runs on Monday.](/figures/ch28/checklist.pdf){#fig-checklist}
 
 @fig-checklist is the list I'd want ticked before switching on any decision service, whatever model sits inside it. None of it is specific to Jev. All of it is specific to *deciding*: once a model's output closes a case, pages a person or blocks a login, every item on that list stops being good practice and becomes the job.
+
+[[AUTHOR STORY: leading an intern team: how you split a service like this into parts people could own, and which checklist item a newcomer caught or missed]]
 
 ::: {.breaks}
 This is a teaching service. A real one needs things this chapter leaves out: authentication, rate limiting of its own callers, a durable log store rather than a file, access control on who can change the config, and data protection for the states it records, which may hold personal data. The monitor's bands were set by eye from one quiet week, so treat them as a starting point to tune. And shadow comparisons only show where versions *disagree*; if both are wrong in the same way, a shadow run can't tell you. Keep the random audit going.
@@ -142,7 +144,7 @@ Vogels has said this in many talks [[VERIFY]]. A decision service is built aroun
 
 We built the service from the book's pieces. One versioned config held the model, calibration, lines and rules. Every decision left a record that explains it. A dry run caught a rule and a set of lines that didn't fit together, and fitting them together fixed it. A deliberate failure test showed why failures must fall back to review. A daily monitor kept quiet through a normal week and spoke up on the first day of a campaign. And a shadow run put a price on the next change before anyone paid it.
 
-::: {.exercises}
+::: {.exercises lab="ch21"}
 1. In the lab, set `fallback="escalate"`. What happens to the pager on a day when 30% of calls fail? Which fallback would you choose, and why?
 2. Add a new check to `daily_report`: flag the day if the share of "none" answers from any choice question moves by more than ten points from last week (Chapter 17's lesson).
 3. Read a week of decision records and answer, from the log alone: which alert with P above 0.3 was auto-closed, and why?

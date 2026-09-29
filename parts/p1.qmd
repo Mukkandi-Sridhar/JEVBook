@@ -7,3 +7,7 @@ These four chapters build the answer from the ground up. What learning is. What 
 
 Everything later in the book stands on these pages. If you only read one part slowly, make it this one.
 :::
+
+```{=latex}
+\bookmainmatter
+```

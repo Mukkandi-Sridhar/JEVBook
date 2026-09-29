@@ -53,6 +53,22 @@ def scores():
     return y, dict(raw=raw, temp=tem, over=ovr, jev=jev, logistic=lr)
 
 
+@lru_cache(None)
+def plugin_answer():
+    """The chapter's "Plug it in" listing, run the same way, so the figure shows what the listing prints."""
+    from typesafe_sdk import Choice, Noul, Score, TypeSafeClient
+    H, L, Tr, Va, ftr, fva = splits()
+    p, _, T = good()
+    client = TypeSafeClient(api_key="mock", transport=tj.TinyJevTransport(p, T))
+    a = L.iloc[118]
+    state = {"alert": a.title, **{k: a[k].item() if hasattr(a[k], "item") else a[k] for k in soc.FEATURE_FIELDS}}
+    r = client.system_one(state=state, questions={
+        "attack": Noul(instructions="Is this alert a real attack?"),
+        "kind": Choice(criteria={c: None for c in soc.CATEGORIES}),
+        "severity": Score(criteria=soc.SEVERITY_LEVELS)})
+    return round(r.nouls["attack"].noul, 4), r.choices["kind"].choice
+
+
 def record():
     H, L, Tr, Va, ftr, fva = splits()
     y, s = scores()
@@ -70,7 +86,7 @@ def record():
             over_train_noul=histo[-1]["train"]["noul"], over_val_noul=histo[-1]["val"]["noul"],
             over_best_step=best["step"], over_best_val=best["val"]["noul"],
             n_train=len(Tr), n_val=len(Va), n_params=int(sum(np.size(v) for v in p.values())),
-            over_ece_temp=cal.ece(tj.predict(po, L, To)[0], y))
+            over_ece_temp=cal.ece(tj.predict(po, L, To)[0], y), plugin_noul=plugin_answer()[0])
 
 
 @figure(CH, "architecture")
@@ -161,7 +177,7 @@ def calibration():
     y, s = scores()
     f, axes = subplots(1, 3, width="text", height=1.9, sharey=True)
     for ax, key, title, col in zip(axes, ("raw", "temp", "over"),
-                                   ("TinyJev as trained", "after temperature", "the overtrained net"),
+                                   ("TinyJev as trained", "after temperature", "overtrained, no temperature"),
                                    (C["data"], C["jev"], C["fail"])):
         clean(ax, "both")
         b = cal.reliability(s[key], y, n_bins=15)
@@ -185,7 +201,7 @@ def compare():
     y, s = scores()
     f, (a1, a2) = subplots(1, 2, width="text", height=1.9)
     rows = [("logistic regression\n(3 weeks of labels)", "logistic", C["data"]), ("mock Jev\n(no labels)", "jev", C["jev"]),
-            ("TinyJev\n(2 weeks + 1 to calibrate)", "temp", C["gold"]), ("the overtrained net", "over", C["fail"])]
+            ("TinyJev\n(2 weeks + 1 to calibrate)", "temp", C["gold"]), ("the overtrained net\n(no temperature)", "over", C["fail"])]
     for ax, fn, title, lim in ((a1, lambda v: cal.summary(v, y)["auc"], "ranking (AUC)", (0.7, 0.92)),
                                (a2, lambda v: cal.ece(v, y), "calibration error (ECE)", (0, 0.08))):
         clean(ax, "x")
@@ -213,7 +229,8 @@ def plugin():
     draw.box(ax, 3.35, 1.05, 1.35, 0.55, "TinyJevTransport\nyour weights", kind="data", size=6.0, family="JetBrains Mono")
     draw.arrow(ax, (1.5, 1.32), (1.8, 1.32))
     draw.arrow(ax, (3.05, 1.32), (3.35, 1.32))
-    lines = ['"model": "tinyjev-your-own"', '"attack": {"noul": 0.0007}', '"kind": {"choice": "benign", …}',
+    noul, kind = plugin_answer()
+    lines = ['"model": "tinyjev-your-own"', f'"attack": {{"noul": {noul}}}', f'"kind": {{"choice": "{kind}", …}}',
              '"severity": {"probabilities": {…}}']
     draw.box(ax, 1.8, 0.05, 2.9, 0.8, "", kind="plain")
     for i, l in enumerate(lines):

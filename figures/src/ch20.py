@@ -50,7 +50,8 @@ def record():
             labels_to_match=match, labels_curve=curve,
             llm_json_cost_m=SPEED["llm_json"][1] * 1e6, llm_judge_cost_m=SPEED["llm_judge"][1] * 1e6,
             jev_cost_m=JEV_PRICE * 1e6, llm_json_latency=SPEED["llm_json"][0], llm_judge_latency=SPEED["llm_judge"][0],
-            conf_levels=int(len(np.unique(np.round(r["probs"]["llm_json"], 3)))))
+            # distinct *stated* confidences: undo the verdict flip (P = c or 1 - c) on the answers that parsed
+            conf_levels=int(len(np.unique(np.round(np.maximum(r["probs"]["llm_json"], 1 - r["probs"]["llm_json"])[r["parse_ok"]], 3)))))
 
 
 @figure(CH, "contenders")
@@ -204,6 +205,7 @@ def variance():
     a1.set_yticks(range(len(rows))[::-1])
     a1.set_yticklabels([r_[0] for r_ in rows], fontsize=6.2)
     a1.set_xlim(0, 0.1)
+    a1.set_xticks([0, 0.02, 0.04, 0.06, 0.08, 0.1])
     a1.xaxis.set_major_formatter(PCT)
     a1.set_title("verdict changes across 5 identical calls", fontsize=6.6, loc="left")
     clean(a2, "x")
@@ -235,9 +237,9 @@ def scorecard():
         "rules": [None, None, None, cost(SPEED["rules"][1]), lat(SPEED["rules"][0]), "none", "yes", "fully"],
         "logistic": [None, None, None, cost(SPEED["logistic"][1]), lat(SPEED["logistic"][0]), "~3,000", "yes", "weights"],
         "text_clf": [None, None, None, cost(SPEED["text_clf"][1]), lat(SPEED["text_clf"][0]), "15,000+", "yes", "word weights"],
-        "llm_json": [None, None, None, cost(SPEED["llm_json"][1]), lat(SPEED["llm_json"][0]), "none", "not always", "writes reasons*"],
-        "llm_judge": [None, None, None, cost(SPEED["llm_judge"][1]), lat(SPEED["llm_judge"][0]), "none", "not always", "writes reasons*"],
-        "jev": [None, None, None, f"${JEV_PRICE * 1e6:.0f}†", "70–500 ms†", "none; 300\nto calibrate", "yes (mock)", "no"],
+        "llm_json": [None, None, None, cost(SPEED["llm_json"][1]), lat(SPEED["llm_json"][0]), "none", "not always", "in words*"],
+        "llm_judge": [None, None, None, cost(SPEED["llm_judge"][1]), lat(SPEED["llm_judge"][0]), "none", "not always", "in words*"],
+        "jev": [None, None, None, f"${JEV_PRICE * 1e6:.0f}†", "70–500 ms†", "none‡", "yes (mock)", "no"],
     }
     for m in B.METHODS:
         rows[m][0] = f"{sc[m]['auc']:.2f}"
@@ -259,9 +261,10 @@ def scorecard():
             bold = best.get(j) == m
             draw.text(ax, x0 + j * cw + cw / 2, y, v, size=5.7 if "\n" in v or len(v) > 9 else 6.2, ha="center",
                       weight="bold" if bold else "normal", color=C["jev"] if bold else C["ink"])
-    draw.text(ax, 0.05, 0.05, "Bold: best in column.  † vendor-reported.  * reasons written after the fact may not be how "
-                              "the verdict was reached (Chapter 6).  Classic costs: compute only (assumption).  LLM: illustrative.", size=5.4,
-              color=C["ink2"])
+    draw.text(ax, 0.05, 0.16, "Bold: best in column.  † vendor-reported.  ‡ none to start; about 300 to check and calibrate.  "
+                              "Classic costs: compute only (assumption).", size=5.4, color=C["ink2"])
+    draw.text(ax, 0.05, 0.02, "* reasons written after the fact, which may not be how the verdict was reached (Chapter 6).  "
+                              "LLM figures: illustrative.", size=5.4, color=C["ink2"])
     synthetic_tag(f)
     return f
 

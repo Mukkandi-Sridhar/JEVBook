@@ -13,7 +13,7 @@ from . import draw
 LAB_BASE = "https://colab.research.google.com/github/Mukkandi-Sridhar/JEVBook/blob/main/labs"
 SITE_BASE = "https://mukkandi-sridhar.github.io/JEVBook"
 
-PART_KIND = {"I": "data", "II": "data", "III": "llm", "IV": "jev", "V": "jev", "VI": "jev", "VII": "neutral"}
+PART_KIND = {"I": "data", "II": "data", "III": "llm", "IV": "jev", "V": "jev", "VI": "jev"}
 
 
 def you_are_here(chapter: str):

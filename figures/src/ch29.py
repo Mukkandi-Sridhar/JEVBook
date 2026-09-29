@@ -60,10 +60,10 @@ def task():
 
 @figure(CH, "skills")
 def skills():
-    rows = [("Thinking in probabilities", "2, 4", "jev"), ("Putting a price on mistakes", "5, 21", "jev"),
-            ("Testing calibration on your own data", "4, 18", "jev"), ("Designing typed questions", "17, 22", "jev"),
-            ("Sizing queues and people", "21, 25", "review"), ("Monitoring a decision system", "24, 28", "review"),
-            ("Writing prompts for everything", "10, 11", "llm"), ("Picking the biggest model", "9, 20", "llm")]
+    rows = [("Thinking in probabilities", "2, 3", "jev"), ("Putting a price on mistakes", "4, 14", "jev"),
+            ("Testing calibration on your own data", "3, 11", "jev"), ("Designing typed questions", "10, 15", "jev"),
+            ("Sizing queues and people", "14, 18", "review"), ("Monitoring a decision system", "17, 21", "review"),
+            ("Writing prompts for everything", "6, 7", "llm"), ("Picking the biggest model", "5, 13", "llm")]
     f, ax = draw.canvas("text", 2.9)
     draw.text(ax, 0.0, 2.78, "MATTERS MORE", size=6.4, weight="bold", color=C["jev"])
     draw.text(ax, 0.0, 0.7, "MATTERS LESS ON ITS OWN", size=6.4, weight="bold", color=C["llm"])
@@ -114,16 +114,15 @@ def monday():
 @figure(CH, "journey")
 def journey():
     f, ax = draw.canvas("text", 2.9)
-    story = [("I", "We learned to speak in probabilities, and to make them honest."),
-             ("II", "Networks learned patterns, and got overconfident at scale."),
-             ("III", "LLMs learned to write, and agents to act, one token at a time."),
-             ("IV", "A new kind of model decided in one pass, with probabilities we could test."),
-             ("V", "We drew lines from costs, and named the patterns."),
-             ("VI", "We built it: calls, agents, a case study, our own model, a service."),
-             ("VII", "Now decisions are cheap. The question is which ones deserve them.")]
+    story = [("I", "We learned to speak in probabilities, make them honest and turn them into actions."),
+             ("II", "Networks learned patterns, LLMs learned to write, and agents to act."),
+             ("III", "A new kind of model decided in one pass, with probabilities we could test."),
+             ("IV", "We compared methods, drew lines from costs and named the patterns."),
+             ("V", "We built it: calls, an agent, a case study, our own model, a service."),
+             ("VI", "Now decisions are cheap. The question is which ones deserve them.")]
     for i, (r, t) in enumerate(story):
         y = 2.7 - i * 0.38
-        draw.number_badge(ax, 0.15, y, r, color=C["jev"] if i >= 3 else C["data"], r=0.13, size=5.4)
+        draw.number_badge(ax, 0.15, y, r, color=C["jev"] if i >= 2 else C["data"], r=0.13, size=5.4)
         draw.text(ax, 0.4, y, t, size=6.6)
         if i < len(story) - 1:
             ax.plot([0.15, 0.15], [y - 0.13, y - 0.25], color=C["rule"], lw=1)

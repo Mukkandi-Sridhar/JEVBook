@@ -164,10 +164,6 @@ def expected_cost():
         draw.text(ax, 2.2, y, a, size=6.2, weight="bold" if i == best else "normal")
         draw.text(ax, 3.6, y, f"${e:,.0f}", size=6.2, family="JetBrains Mono", weight="bold" if i == best else "normal",
                   color=C["jev"] if i == best else C["ink"])
-    draw.text(ax, 0.0, 0.62, "The top label is “benign” (0.40), but closing has the highest expected cost, because the other", size=6.1,
-              color=C["ink2"])
-    draw.text(ax, 0.0, 0.44, "60% is a threat and missing one is expensive. Use the whole distribution, not just the top label.",
-              size=6.1, color=C["ink2"])
     draw.text(ax, 4.7, 0.2, "illustrative numbers", size=5.4, ha="right", color=C["muted"])
     return f
 

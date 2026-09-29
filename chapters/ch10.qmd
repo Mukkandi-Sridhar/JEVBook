@@ -149,7 +149,7 @@ Three types can't express everything. Numbers on a continuous range ("how many m
 ::: {.threshold}
 Kestrel pages on-call when P(severity medium or high) is at least some line. A false page costs \$400; a missed serious incident costs about \$10,000 more than handling it in the morning. Using the Chapter 4 formula, where does the line go? Would you use the same line for alerts on critical assets?
 
-(400 ÷ 10,400 ≈ 0.04, so page at about 4%. That's low, and it would page a lot, which is why Chapter 14 capped pages by what on-call can absorb. For critical assets a miss costs more, so the line should be even lower.)
+(400 ÷ 10,400 ≈ 0.04, so page at about 4%. That's low, and it would page a lot, which is why Chapter 14 will cap pages by what on-call can absorb. For critical assets a miss costs more, so the line should be even lower.)
 :::
 
 ::: {.bookquote by="Fred Brooks, The Mythical Man-Month, 1975"}
@@ -164,7 +164,7 @@ Three shapes, we found, cover most small decisions, as long as the questions are
 
 Everything here has assumed the probabilities are honest. Time to check.
 
-::: {.exercises}
+::: {.exercises lab="ch10"}
 1. Rewrite each bundled question as separate nouls, and say how you'd combine them: "Is this a phishing email that someone clicked on?"; "Is this login suspicious and from an admin account?"
 2. In the lab, remove "benign" and "policy_violation" from the choice for 50 harmless alerts. What's the mean confidence? Then add an "other" option instead. What changes?
 3. Find an alert in the lab whose severity distribution has two humps. What does its P(attack) look like? Why do the two go together?

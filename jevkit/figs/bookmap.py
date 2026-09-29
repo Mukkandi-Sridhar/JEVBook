@@ -26,7 +26,7 @@ PARTS = [
     ("IV", "The decision layer", [
         (13, "ch13", "The bake-off: six ways to make a decision"),
         (14, "ch14", "Act, review, or escalate"),
-        (15, "ch15", "A catalog of decision patterns"),
+        (15, "ch15", "A catalogue of decision patterns"),
     ]),
     ("V", "Building", [
         (16, "ch16", "First calls, and the mock that makes them free"),

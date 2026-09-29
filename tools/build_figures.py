@@ -21,6 +21,10 @@ def build(ch: str, only: set[str] | None = None) -> int:
     spec = importlib.util.spec_from_file_location(f"figsrc_{ch}", src)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
+    if hasattr(mod, "record"):            # write results/<id>.json, the numbers the text quotes
+        t = time.time()
+        mod.record()
+        print(f"  {ch}/record  ({time.time() - t:.1f}s)")
     n = 0
     for name, fn in figs.registered(ch):
         if name == "summary":                # one-page summaries are not part of the book any more

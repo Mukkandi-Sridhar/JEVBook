@@ -106,7 +106,7 @@ Newest decisions are appended at the bottom of each section.
   values, mostly 0.9–0.99. At temperature > 0 it samples. About 2% of free-text JSON answers are wrapped or
   truncated and 1.5% add an invented field. Latency 0.45 s + tokens/60 s, price $1/M in and $4/M out: all
   illustrative. Any accuracy comparison between the mock LLM and mock Jev reflects these choices, and the book says so.
-- **D-49 · Pattern catalog measurements.** Only patterns with a meaningful synthetic test are measured (extract then
+- **D-49 · Pattern catalogue measurements.** Only patterns with a meaningful synthetic test are measured (extract then
   decide, the gate via Chapter 14's result, the router). "Check the writer" and "memory controller" are shown as
   runnable shapes, with an explicit note that the mock's number means nothing there.
 - **D-50 · Batch cache key covers content.** `score_alerts` now keys its cache on every column the state is built
@@ -149,3 +149,30 @@ Newest decisions are appended at the bottom of each section.
 - **D-61 · Boxes don't split.** Try it, Where this breaks, Set the threshold and Key idea boxes are short, and a split
   one leaves its tail on the next page with no label. They are now unbreakable and move whole to the next page.
   Going deeper and sidebars can run long, so they may still break, but only with seven lines free at the start.
+- **D-62 · Equal margins.** Inner and outer margins are both 0.9in, so the text block sits in the same place on every
+  page, including in PDF viewers that show one page at a time. 0.9in is ample gutter for a 250-page binding.
+- **D-63 · Parts open on the right; roman front matter.** Every part page is a right-hand page, and the part's first
+  chapter opens on the next right-hand page (a blank verso sits between). Other chapters still open on either page:
+  forcing all of them right would add about a dozen blank pages and break the 250-page ceiling. Everything before
+  Chapter 1 is numbered in roman; Chapter 1 is page 1 (Quarto's `\mainmatter` call is a no-op and `parts/p1.qmd`
+  starts the main matter).
+- **D-64 · A page index.** The print index is built by makeindex from `\index` entries that `filters/book.lua` adds:
+  where a paragraph defines a term in bold and, for specific terms, at its first mention in each chapter. Ordinary
+  words ("label", "state", "policy") are indexed only where they're defined, so the index points at explanations,
+  not at every use. Terms and patterns live in `tools/make_index.py`. The web edition keeps a chapter list.
+- **D-65 · Real spaces in the PDF.** LaTeX doesn't write space characters, so text copied or extracted from the PDF
+  could lose word gaps on tight lines. `tagpdf`'s `interwordspace` (with `\DocumentMetadata`) writes real ones.
+- **D-66 · Lab QR codes.** The first draft's margin QR codes were removed for a cleaner page (D-59). The pre-print
+  review asked for them back, so each chapter's exercises now open with one small QR code to its Colab notebook
+  (`tools/make_qr.py`). The links point at the `main` branch.
+- **D-67 · Results always recorded.** Some figure sources wrote their numbers only from the (now skipped) summary
+  figure. `tools/build_figures.py` now calls each source's `record()` before drawing, so `results/` stays current.
+- **D-68 · The queue stops at the end of the week.** `ops.serve` used to keep working the queue for a day after the
+  last arrival, which counted eight days of reviews over seven and showed 274 a day against a capacity of 240. It
+  now stops at the end of the last day; anything still waiting counts as never reached.
+- **D-69 · One source of truth for shared numbers.** Chapter 15's "LLM decides" row reuses the bake-off's JSON
+  answers (AUC 0.708), the injection listing uses the figure's 400 threats, and Chapter 13 counts distinct *stated*
+  confidences (6, as in Chapter 6) rather than distinct probabilities.
+- **D-70 · Sources seen through search only.** The proxy blocked docs.typesafe.ai, typesafe.ai, arxiv.org and every
+  article host. The Chapter 9 rewrite, the confidence definition, the Jev-Mem summary and the bibliography URLs rely
+  on search-engine excerpts of those pages, consistent across queries. PROGRESS.md lists them under NEEDS AUTHOR.

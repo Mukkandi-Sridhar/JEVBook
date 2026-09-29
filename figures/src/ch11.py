@@ -47,7 +47,9 @@ def record():
     s = {k: cal.summary(d[k], y) for k in ("verb", "tok", "jev")}
     st = np.array(d["stated"])
     results(CH, outcomes=d["outcomes"], n=len(y), verbal=s["verb"], token=s["tok"], jev_text=s["jev"],
-            share_stated_ge_09=float((st >= 0.9).mean()), distinct_stated=sorted(set(float(x) for x in st)), n_distinct_stated=len(set(float(x) for x in st)))
+            share_stated_ge_09=float((st >= 0.9).mean()),
+            prompt_fail_share=sum(v for k, v in d["outcomes"]["prompt only"].items() if k != "valid, right shape") / len(y),
+            prompt_fail_per_day=700 * sum(v for k, v in d["outcomes"]["prompt only"].items() if k != "valid, right shape") / len(y), distinct_stated=sorted(set(float(x) for x in st)), n_distinct_stated=len(set(float(x) for x in st)))
 
 
 @figure(CH, "json-failures")

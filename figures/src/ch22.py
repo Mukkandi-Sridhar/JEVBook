@@ -1,4 +1,4 @@
-"""Figures for Chapter 15: A catalog of decision patterns."""
+"""Figures for Chapter 15: A catalogue of decision patterns."""
 
 import json
 from functools import lru_cache
@@ -31,12 +31,9 @@ def extract_scores():
     _, live = soc.history_and_live(alerts)
     y = live.malicious.to_numpy()
     e = extracted(live)
-    mock = llm.MockLLM()
-    p_llm = []
-    for d in live.description:
-        c = mock.classify(d)
-        p_llm.append(c["confidence"] if c["label"] == "malicious" else 1 - c["confidence"])
-    rows = {"llm_decides": np.array(p_llm), "jev_text": score_alerts(live, "text"),
+    # the LLM deciding on its own: the bake-off's JSON answers (Chapter 13), so both chapters quote one number
+    from jevkit import bakeoff
+    rows = {"llm_decides": bakeoff.run()["probs"]["llm_json"], "jev_text": score_alerts(live, "text"),
             "extract_then_jev": score_alerts(e, "structured"), "jev_fields": score_alerts(live, "structured")}
     misread = float((e.ioc_score != live.ioc_score).mean())
     return {k: cal.summary(v, y) for k, v in rows.items()}, misread
@@ -76,7 +73,7 @@ def record():
             inj_after=ch14["inj_act_after"], inj_trusted=ch14["inj_act_trusted"])
 
 
-# ---------------------------------------------------------------- glyphs shared by the catalog and the chapter
+# ---------------------------------------------------------------- glyphs shared by the catalogue and the chapter
 def glyph(ax, kind, x, y, w, h):
     """A tiny schematic of each pattern, drawn inside the box (x, y, w, h)."""
     s = 5.4
@@ -129,7 +126,7 @@ def extract_diagram():
     draw.arrow(ax, (0.45, 0.97), (0.7, 0.97))
     draw.box(ax, 0.7, 0.72, 0.9, 0.5, "LLM extracts\nfields", kind="llm", size=6.2, weight="semibold")
     draw.arrow(ax, (1.6, 0.97), (1.85, 0.97))
-    fields = ['rule: "unsigned_temp_binary"', "ioc_score: 0.38", "after_hours: false", "prior_alerts_24h: 1", "…"]
+    fields = ['rule: "unsigned_temp_binary"', "ioc_score: 0.38", "after_hours: false", "prior_alerts_24h: 1"]
     draw.box(ax, 1.85, 0.42, 1.38, 1.1, "", kind="data")
     for i, t in enumerate(fields):
         draw.text(ax, 1.9, 1.4 - i * 0.2, t, size=4.9, family="JetBrains Mono")
@@ -139,8 +136,6 @@ def extract_diagram():
     draw.box(ax, 4.12, 0.72, 0.58, 0.5, "policy\nlines", kind="review", size=6.0)
     draw.text(ax, 1.15, 0.55, "writes, never decides", size=5.6, ha="center", color=C["llm"], style="italic")
     draw.text(ax, 3.69, 0.55, "decides, never writes", size=5.6, ha="center", color=C["jev"], style="italic")
-    draw.text(ax, 0.0, 1.78, "The LLM’s output is data for the decision, checked like any other input.", size=6.4,
-              weight="semibold")
     return f
 
 
@@ -257,8 +252,6 @@ def memory():
     draw.arrow(ax, (2.6, 0.6), (3.1, 1.17), head=2.5, color=C["muted"])
     draw.arrow(ax, (3.72, 1.0), (4.05, 1.0), head=2.5)
     draw.box(ax, 4.05, 0.75, 0.65, 0.5, "LLM\nreasons", kind="llm", size=5.9)
-    draw.text(ax, 0.0, 2.1, "Many small memory decisions per step; one slow reasoning call at the end.", size=6.2,
-              weight="semibold")
     return f
 
 
@@ -287,5 +280,5 @@ def summary():
         dict(num=6, title="Memory controller", kind="jev", h=1.95, draw=g("memory"), draw_h=0.6,
              body="Store, fetch and forget are decisions too, and there are lots of them."),
     ]
-    return summary_page(CH, "A catalog of decision patterns", panels,
+    return summary_page(CH, "A catalogue of decision patterns", panels,
                         footer="Next: Part V. Your first real calls, and the mock that makes them free.")

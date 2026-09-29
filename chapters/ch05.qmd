@@ -137,7 +137,7 @@ The mechanism follows from Chapter 2. Once a model gets most training examples r
 Flexible models trained to squeeze out the last drop of training loss learn to be certain.
 :::
 
-The fixes are ones you'll meet properly in the next part of the book, and they're simple. Stop training when the loss on held-out data stops improving; here that was around epoch {{< num ch09 best_epoch int >}}. And correct the probabilities afterwards on data the model never saw: a single "temperature" cut the calibration error from {{< num ch09 last.ece f3 >}} to {{< num ch09 ece_after_T f3 >}}. A correction can make the numbers honest again. It can't give back what the model threw away by memorising.
+The fixes are ones you've already met in Chapters 2 and 3, and they're simple. Stop training when the loss on held-out data stops improving; here that was around epoch {{< num ch09 best_epoch int >}}. And correct the probabilities afterwards on data the model never saw: a single "temperature" cut the calibration error from {{< num ch09 last.ece f3 >}} to {{< num ch09 ece_after_T f3 >}}. A correction can make the numbers honest again. It can't give back what the model threw away by memorising.
 
 ::: {.breaks}
 Networks need lots of data, and with too little they memorise. They're hard to read: no tidy "×2.9 for a new country". Embeddings inherit the associations in their training text, including stereotypes [@bolukbasi2016], and they're bad at negation, since "malicious" and "not malicious" keep almost the same company. Attention maps are tempting to read as explanations; in large models they often aren't [@jain2019]. And you usually can't retrain someone else's big model, or even see its raw probabilities, which is one reason a decision model that returns probabilities as its main output, and gets tested, matters so much.
@@ -155,7 +155,7 @@ A neuron could only draw straight lines, so we stacked neurons in layers and gav
 
 You don't need to remember every detail. You need the last one most of all.
 
-::: {.exercises}
+::: {.exercises lab="ch05"}
 1. Why does a network with no hinges collapse to a single straight line, however many layers it has?
 2. In the lab, compare the cosine similarity of "upload" and "download". Why aren't they identical, even though they look like near-synonyms?
 3. In your own words, and without the letters Q, K or V, explain what attention does for "phishing" in "invoice not phishing".

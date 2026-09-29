@@ -89,7 +89,7 @@ def forecasters():
 def same_auc():
     d = record()
     y = d["y"]
-    f, axes = subplots(1, 2, width="text", height=2.3, sharey=True, gridspec_kw=dict(wspace=0.12))
+    f, axes = subplots(1, 2, width="text", height=2.3, sharey=True, gridspec_kw=dict(wspace=0.18))
     for ax, key, title, col in ((axes[0], "p", "Model A", C["jev"]), (axes[1], "sq", "Model B", C["fail"])):
         clean(ax, "both")
         diag(ax)
@@ -103,6 +103,8 @@ def same_auc():
         ax.xaxis.set_major_formatter(PCT)
         ax.yaxis.set_major_formatter(PCT)
         ax.set_xlabel("Predicted P(attack)")
+        ax.set_xticks([0, 0.2, 0.4, 0.6, 0.8, 1.0])
+    axes[0].set_xticks([0, 0.2, 0.4, 0.6, 0.8])      # the panels meet at 100% | 0%: label only one of them
     axes[0].set_ylabel("Share that were attacks")
     synthetic_tag(f, "SYNTHETIC DATA · Kestrel Logistics")
     return f
@@ -198,6 +200,8 @@ def by_source():
         ax.set_ylim(0, 0.3)
         ax.set_xticks([0, 0.3])
         ax.set_xticklabels(["0", "30%"], fontsize=5.6)
+        ax.get_xticklabels()[0].set_ha("left")          # keep neighbouring panels' labels apart
+        ax.get_xticklabels()[-1].set_ha("right")
         mp, ma = pg[m].mean(), y[m].mean()
         ax.text(0.015, 0.285, f"says {mp:.1%}\nreally {ma:.1%}", fontsize=5.6, va="top",
                 color=C["fail"] if abs(mp - ma) > 0.02 else C["ink2"])
