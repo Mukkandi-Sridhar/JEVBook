@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="344.16pt" height="174.96pt" viewBox="0 0 344.16 174.96" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 174.96 
+L 344.16 174.96 
+L 344.16 -0 
+L 0 -0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 73.28127 89.28 
+Q 82.082994 89.28 89.925854 89.28 
+" clip-path="url(#pb810624a5e)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+    <path d="M 85.425854 86.53 
+L 89.925854 89.28 
+L 85.425854 92.03 
+z
+" clip-path="url(#pb810624a5e)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 97.2 154.08 
+L 250.56 154.08 
+Q 254.88 154.08 254.88 149.76 
+L 254.88 25.2 
+Q 254.88 20.88 250.56 20.88 
+L 97.2 20.88 
+Q 92.88 20.88 92.88 25.2 
+L 92.88 149.76 
+Q 92.88 154.08 97.2 154.08 
+z
+" clip-path="url(#pb810624a5e)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 256.54377 59.37082 
+Q 265.680803 53.279465 274.020013 47.719992 
+" clip-path="url(#pb810624a5e)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+    <path d="M 268.750361 47.928004 
+L 274.020013 47.719992 
+L 271.801212 52.504281 
+z
+" clip-path="url(#pb810624a5e)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 256.88127 89.28 
+Q 265.682994 89.28 273.525854 89.28 
+" clip-path="url(#pb810624a5e)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+    <path d="M 269.025854 86.53 
+L 273.525854 89.28 
+L 269.025854 92.03 
+z
+" clip-path="url(#pb810624a5e)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 256.54377 119.18918 
+Q 265.680803 125.280535 274.020013 130.840008 
+" clip-path="url(#pb810624a5e)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+    <path d="M 271.801212 126.055719 
+L 274.020013 130.840008 
+L 268.750361 130.631996 
+z
+" clip-path="url(#pb810624a5e)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 7.2 110.88 
+L 66.96 110.88 
+Q 71.28 110.88 71.28 106.56 
+L 71.28 72 
+Q 71.28 67.68 66.96 67.68 
+L 7.2 67.68 
+Q 2.88 67.68 2.88 72 
+L 2.88 106.56 
+Q 2.88 110.88 7.2 110.88 
+z
+" clip-path="url(#pb810624a5e)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; fill: #1f2430" transform="translate(26.124 81.662994)">LLM or</text>
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; fill: #1f2430" transform="translate(27.849797 90.798)">agent</text>
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; fill: #1f2430" transform="translate(21.946922 100.4146)">proposes</text>
+   </g>
+   <g id="text_2">
+    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: start; fill: #3b9c6e" x="101.52" y="33.638906" transform="rotate(-0 101.52 33.638906)">the decision layer</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 6.1px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="103.68" y="51.933187" transform="rotate(-0 103.68 51.933187)">✓ schema + allow-list: is this a known tool?</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 6.1px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="103.68" y="71.497484" transform="rotate(-0 103.68 71.497484)">✓ typed decision + calibrated P</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 6.1px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="103.68" y="92.2875" transform="rotate(-0 103.68 92.2875)">✓ threshold from costs</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 6.1px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="103.68" y="111.793656" transform="rotate(-0 103.68 111.793656)">✓ budget: steps, time, money</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 6.1px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="103.68" y="132.108539" transform="rotate(-0 103.68 132.108539)">✓ trusted facts, not text claims</text>
+   </g>
+   <g id="text_8">
+    <g id="patch_8">
+     <path d="M 301.9205 51.070879 
+L 315.8395 51.070879 
+Q 316.5835 51.070879 316.5835 50.326879 
+L 316.5835 41.833121 
+Q 316.5835 41.089121 315.8395 41.089121 
+L 301.9205 41.089121 
+Q 301.1765 41.089121 301.1765 41.833121 
+L 301.1765 50.326879 
+Q 301.1765 51.070879 301.9205 51.070879 
+z
+" style="fill: #efeaf9; stroke: #b7a6e0; stroke-width: 0.7; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 600; font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="308.88" y="48.335371" transform="rotate(-0 308.88 48.335371)">ACT</text>
+   </g>
+   <g id="text_9">
+    <g id="patch_9">
+     <path d="M 296.332266 94.270879 
+L 321.427734 94.270879 
+Q 322.171734 94.270879 322.171734 93.526879 
+L 322.171734 85.033121 
+Q 322.171734 84.289121 321.427734 84.289121 
+L 296.332266 84.289121 
+Q 295.588266 84.289121 295.588266 85.033121 
+L 295.588266 93.526879 
+Q 295.588266 94.270879 296.332266 94.270879 
+z
+" style="fill: #e4dcf4; stroke: #8468c9; stroke-width: 0.7; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 600; font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="308.88" y="91.535371" transform="rotate(-0 308.88 91.535371)">REVIEW</text>
+   </g>
+   <g id="text_10">
+    <g id="patch_10">
+     <path d="M 292.367172 137.470879 
+L 325.392828 137.470879 
+Q 326.136828 137.470879 326.136828 136.726879 
+L 326.136828 128.233121 
+Q 326.136828 127.489121 325.392828 127.489121 
+L 292.367172 127.489121 
+Q 291.623172 127.489121 291.623172 128.233121 
+L 291.623172 136.726879 
+Q 291.623172 137.470879 292.367172 137.470879 
+z
+" style="fill: #dad2ec; stroke: #4b2c8f; stroke-width: 0.7; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 600; font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="308.88" y="134.735371" transform="rotate(-0 308.88 134.735371)">ESCALATE</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pb810624a5e">
+   <rect x="2.88" y="2.88" width="338.4" height="169.2"/>
+  </clipPath>
+ </defs>
+</svg>
