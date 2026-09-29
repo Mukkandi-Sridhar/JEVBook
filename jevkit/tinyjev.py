@@ -37,7 +37,7 @@ LEVELS = list(soc.SEVERITY_LEVELS)
 def features(df):
     """Numbers for the numeric fields, and an index for the rule (which the model embeds)."""
     X = soc.feature_matrix(df)
-    num = X[NUMERIC].to_numpy(float)
+    num = X[NUMERIC].to_numpy(float).copy()
     num[:, NUMERIC.index("prior_alerts_24h")] /= 6.0
     num[:, NUMERIC.index("log_mb_out")] /= 8.0
     num[:, NUMERIC.index("asset_criticality")] /= 3.0
@@ -117,7 +117,7 @@ def head_losses(p, num, rule, y, cat, sev, T=(1.0, 1.0, 1.0)):
 
 
 def train(num, rule, y, cat, sev, steps: int = 1500, lr: float = 0.01, batch: int = 512, seed: int = 0,
-          l2: float = 1e-4, val=None, every: int = 50, d: int = 32):
+          l2: float = 1e-4, val=None, every: int = 50, d: int = 32, weights=(1.0, 1.0, 1.0)):
     """Adam on minibatches. Returns (params, history) where history has per-head losses on train and val."""
     p = init(d=d, seed=seed)
     g = grad(loss)
@@ -127,7 +127,7 @@ def train(num, rule, y, cat, sev, steps: int = 1500, lr: float = 0.01, batch: in
     hist = []
     for t in range(1, steps + 1):
         idx = rng.choice(len(y), min(batch, len(y)), replace=False)
-        gr = g(p, num[idx], rule[idx], y[idx], cat[idx], sev[idx], l2=l2)
+        gr = g(p, num[idx], rule[idx], y[idx], cat[idx], sev[idx], weights=weights, l2=l2)
         for k in p:
             m[k] = 0.9 * m[k] + 0.1 * gr[k]
             v2[k] = 0.999 * v2[k] + 0.001 * gr[k] ** 2

@@ -118,3 +118,10 @@ Newest decisions are appended at the bottom of each section.
 - **D-52 · Chapter 13's agent bug is kept, not silently fixed.** The first agent never chose threat intel (the mock's
   lexical choice engine). Chapter 24 uses it as the teaching case for monitoring decision-step distributions; the
   fix (`always=("threat_intel",)`) is an explicit option, so Chapter 13's numbers still reproduce.
+- **D-53 · TinyJev (Chapter 27)** reads structured fields only (numeric fields + a rule embedding), not text, so it
+  trains in seconds on a laptop with autograd. Heads: sigmoid noul, softmax choice, cumulative-logit ordinal score
+  with thresholds kept in order by softplus gaps. Trained on weeks 1–2, temperatures fitted on week 3, tested on
+  week 4. The chapter states plainly that this is a design suggested by the interface, not Jev's architecture.
+- **D-54 · Gallery (Chapter 26)** uses an illustrative domain table and synthetic support tickets. The mock's general
+  engine does poorly on them (about 74% routing, urgency AUC about 0.6); the chapter shows this rather than tuning the
+  mock, because "measure before you trust" is the lesson.
