@@ -15,16 +15,17 @@
 \setmonofont{JetBrainsMono}[
   UprightFont = *-Regular, BoldFont = *-Bold, ItalicFont = *-Italic,
   BoldItalicFont = *-BoldItalic, Extension = .ttf, Path = ./assets/fonts/,
-  Scale = 0.84, Contextuals = Alternate]
+  Scale = 0.84, RawFeature = {-calt;-liga}]
 \newfontfamily\semibold{Inter}[UprightFont = *-SemiBold, Extension = .ttf, Path = ./assets/fonts/, Scale = 0.92]
 \newfontfamily\serifsemi{SourceSerif4}[UprightFont = *-Semibold, Extension = .ttf, Path = ./assets/fonts/, Numbers = Lining]
 \newfontfamily\liningserif{SourceSerif4}[UprightFont = *-Regular, ItalicFont = *-Italic, Extension = .ttf, Path = ./assets/fonts/, Numbers = Lining]
 
 \microtypesetup{protrusion=true,expansion=true}
 \linespread{1.08}
-\setlength{\parindent}{1.1em}
-\setlength{\parskip}{0pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.62em plus 0.15em minus 0.05em}
 \raggedbottom
+\frenchspacing
 \widowpenalty=10000
 \clubpenalty=10000
 \brokenpenalty=5000

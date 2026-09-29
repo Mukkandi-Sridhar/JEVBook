@@ -194,7 +194,7 @@ def _describe(rng, a: dict) -> str:
         "macro_attachment": f"Email to {user} with a macro-enabled attachment from {dom}. Received {t}.",
         "lookalike_domain": f"Email from {dom} to {user} ({dept}); sender domain is similar to {COMPANY.lower().replace(' ', '')}.com. Received {t}.",
         "impossible_travel": f"{user} signed in from two locations 4,800 km apart within 50 minutes. Latest sign-in {t} from {ip}.",
-        "mfa_fatigue": f"{user} received {rng.integers(6, 25)} MFA push requests in 10 minutes; {rng.integers(1, 3)} approved. Time {t}.",
+        "mfa_fatigue": f"{user} received {rng.integers(6, 25)} MFA push requests in 10 minutes; " + (f"{rng.integers(1, 3)} approved" if a["mfa_ok"] else f"none approved{'' if rng.integers(1, 3) else ''}") + f". Time {t}.",
         "new_admin_role": f"{user} was assigned the Global Administrator role at {t} by an account in {dept}.",
         "rare_domain_beacon": f"{host} is connecting to {dom} every {rng.choice([30, 60, 300])} seconds. First seen {t}. User {user}.",
         "internal_port_scan": f"{host} ({dept}) probed {rng.integers(40, 900)} internal ports on {rng.integers(3, 60)} hosts starting {t}.",
@@ -205,7 +205,7 @@ def _describe(rng, a: dict) -> str:
     }
     base = parts[r]
     extra = intel + related + (geo if r in ("impossible_travel", "key_new_asn", "mfa_fatigue", "new_admin_role") else "")
-    if r in ("impossible_travel", "mfa_fatigue", "key_new_asn", "new_admin_role"):
+    if r in ("impossible_travel", "key_new_asn", "new_admin_role"):
         extra += mfa
     extra += tool
     if a["after_hours"] and rng.random() < 0.5:

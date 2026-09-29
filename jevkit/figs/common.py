@@ -58,7 +58,7 @@ def qr(chapter: str, url: str | None = None, outdir: Path | None = None) -> Path
     return out / "qr.pdf"
 
 
-def summary_page(chapter: str, title: str, panels: list[dict], footer: str | None = None, height: float = 7.35):
+def summary_page(chapter: str, title: str, panels: list[dict], footer: str | None = None, height: float = 7.75):
     """The one-page visual summary that closes every chapter.
 
     Each panel is dict(title=..., body=..., draw=callable(ax, x, y, w, h) or None, kind=...).
@@ -96,7 +96,7 @@ def summary_page(chapter: str, title: str, panels: list[dict], footer: str | Non
         ax.text(tx, y - 0.22, p["title"], fontsize=8.2, fontweight="bold", va="center", color=C["ink"])
         body_top = y - 0.4
         if p.get("body"):
-            ax.text(x + 0.12, body_top, draw.wrap(p["body"], p.get("wrapw", int(w * 14.2))), fontsize=6.9,
+            ax.text(x + 0.12, body_top, draw.wrap(p["body"], p.get("wrapw", int(w * 18.5))), fontsize=6.9,
                     color=C["ink2"], va="top", linespacing=1.35, family="Source Serif 4")
         if p.get("draw"):
             dh = p.get("draw_h", h * 0.5)

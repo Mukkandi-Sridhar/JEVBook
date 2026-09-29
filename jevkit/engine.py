@@ -164,7 +164,7 @@ def _parse_soc_text(t: str) -> dict:
     return dict(rule=rule, asset_criticality=crit, after_hours=after, ioc_score=ioc,
                 known_tool="approved it tooling" in low or "change ticket" in low,
                 prior_alerts_24h=prior, new_geo="not seen for this user" in low or "never seen" in low,
-                mfa_ok="mfa completed" in low, mb_out=mb, role=role)
+                mfa_ok=("mfa completed" in low) or bool(re.search(r"\d+ approved", low)), mb_out=mb, role=role)
 
 
 def soc_features(state) -> tuple[dict, bool]:

@@ -13,3 +13,5 @@ index_files/
 *_files/
 site_libs/
 .ipynb_checkpoints/
+
+**/*.quarto_ipynb
