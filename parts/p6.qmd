@@ -1,2 +1,7 @@
 # Building
 
+::: {.partintro}
+Time to build. First calls through the official SDK, a hybrid agent where Jev decides and an LLM reasons, a full SOC triage case study and a gallery of other applications.
+
+Then you'll build a small System One model of your own, with typed heads and calibration training. The part ends with a production decision service you could actually run.
+:::

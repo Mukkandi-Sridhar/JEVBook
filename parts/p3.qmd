@@ -1,2 +1,9 @@
 # LLMs, GenAI and agents
 
+::: {.partintro}
+Large language models write. They also read, summarise, extract and plan, and teams now wire them into loops that take actions in the world.
+
+This part explains how an LLM produces text, why "just ask for JSON" is harder than it looks, how retrieval gives a model your documents, and how agents observe, decide and act.
+
+It ends with an honest look at where agents break, and at the one step inside every agent that's quietly doing most of the work: the decision.
+:::

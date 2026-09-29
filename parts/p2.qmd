@@ -1,2 +1,9 @@
 # Deep learning in plain English
 
+::: {.partintro}
+Part I's models were handed neat clues, like a threat-intel score. The real world hands you pixels, words and messy logs.
+
+These four chapters show how models learn their own clues. We start from a single artificial neuron, then turn words into points in space, watch attention decide what to look at, and see what happens when all of it is trained at enormous scale.
+
+Along the way we'll find out why the biggest models tend to be the most overconfident.
+:::

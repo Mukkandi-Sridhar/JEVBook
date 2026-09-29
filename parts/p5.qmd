@@ -1,2 +1,7 @@
 # The decision layer
 
+::: {.partintro}
+A model is not a system. Between a probability and an action sits a decision layer: the comparisons you ran, the lines you drew, the patterns you chose.
+
+This part puts six ways of deciding into one fair contest. It turns probabilities into act, review and escalate, and collects the patterns that keep turning up when decision models meet real software.
+:::
