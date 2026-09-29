@@ -185,7 +185,7 @@
 % Exercises
 \newenvironment{exercises}{\par\vspace{12pt}\needspace{5\baselineskip}\noindent
   {\sffamily\bfseries\fontsize{7}{9}\selectfont\color{ink}\addfontfeature{LetterSpace=10}EXERCISES}\par
-  \vspace{2pt}{\color{rulec}\rule{\linewidth}{0.5pt}}\par\vspace{2pt}\small}{\par\vspace{6pt}}
+  \vspace{2pt}{\color{rulec}\rule{\linewidth}{0.5pt}}\par\vspace{2pt}\small}{\par\nopagebreak[4]\vspace{6pt}}
 
 % Chapter goals ("By the end...")
 \newenvironment{goals}{\par\vspace{6pt}\begin{tcolorbox}[enhanced, colback=white, colframe=gridc, boxrule=0.6pt, arc=2pt,
@@ -194,7 +194,8 @@
   {\end{tcolorbox}\vspace{2pt}}
 
 % Next-chapter hook
-\newenvironment{nexthook}{\par\vspace{14pt}\needspace{3\baselineskip}\noindent\begin{minipage}{\linewidth}\raggedright
+% The hook never starts a page on its own: no break is allowed between it and what comes before.
+\newenvironment{nexthook}{\par\nopagebreak[4]\vspace{14pt}\nopagebreak[4]\noindent\begin{minipage}{\linewidth}\raggedright
   {\color{rulec}\rule{1.2in}{0.5pt}}\par\vspace{6pt}\sffamily\fontsize{9.5}{13}\selectfont\color{ink}}{\end{minipage}\par}
 
 % Wide material: extends into the outer margin on both odd and even pages
