@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="268.02pt" height="175.854645pt" viewBox="0 0 268.02 175.854645" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 175.854645 
+L 268.02 175.854645 
+L 268.02 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 2.88 172.974645 
+L 265.14 172.974645 
+L 265.14 12.198645 
+L 2.88 12.198645 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_1"/>
+   <g id="matplotlib.axis_2"/>
+   <g id="patch_3">
+    <path d="M 152.813702 166.976819 
+L 180.308702 166.976819 
+Q 184.538702 166.976819 184.538702 164.464694 
+L 184.538702 143.111632 
+Q 184.538702 140.599507 180.308702 140.599507 
+L 152.813702 140.599507 
+Q 148.583702 140.599507 148.583702 143.111632 
+L 148.583702 164.464694 
+Q 148.583702 166.976819 152.813702 166.976819 
+z
+" clip-path="url(#p18a8e84682)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 209.807326 138.612036 
+L 237.302326 138.612036 
+Q 241.532326 138.612036 241.532326 136.099911 
+L 241.532326 114.746849 
+Q 241.532326 112.234724 237.302326 112.234724 
+L 209.807326 112.234724 
+Q 205.577326 112.234724 205.577326 114.746849 
+L 205.577326 136.099911 
+Q 205.577326 138.612036 209.807326 138.612036 
+z
+" clip-path="url(#p18a8e84682)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 30.369024 83.521746 
+L 57.864024 83.521746 
+Q 62.094024 83.521746 62.094024 81.009621 
+L 62.094024 59.656559 
+Q 62.094024 57.144434 57.864024 57.144434 
+L 30.369024 57.144434 
+Q 26.139024 57.144434 26.139024 59.656559 
+L 26.139024 81.009621 
+Q 26.139024 83.521746 30.369024 83.521746 
+z
+" clip-path="url(#p18a8e84682)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 93.265521 42.972176 
+L 120.760521 42.972176 
+Q 124.990521 42.972176 124.990521 40.460051 
+L 124.990521 19.106989 
+Q 124.990521 16.594864 120.760521 16.594864 
+L 93.265521 16.594864 
+Q 89.035521 16.594864 89.035521 19.106989 
+L 89.035521 40.460051 
+Q 89.035521 42.972176 93.265521 42.972176 
+z
+" clip-path="url(#p18a8e84682)" style="fill: #ffffff; stroke: #2f6db5; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 83.820351 168.578426 
+L 111.315351 168.578426 
+Q 115.545351 168.578426 115.545351 166.066301 
+L 115.545351 144.713239 
+Q 115.545351 142.201114 111.315351 142.201114 
+L 83.820351 142.201114 
+Q 79.590351 142.201114 79.590351 144.713239 
+L 79.590351 166.066301 
+Q 79.590351 168.578426 83.820351 168.578426 
+z
+" clip-path="url(#p18a8e84682)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 174.772527 49.298042 
+L 202.267527 49.298042 
+Q 206.497527 49.298042 206.497527 46.785917 
+L 206.497527 25.432854 
+Q 206.497527 22.920729 202.267527 22.920729 
+L 174.772527 22.920729 
+Q 170.542527 22.920729 170.542527 25.432854 
+L 170.542527 46.785917 
+Q 170.542527 49.298042 174.772527 49.298042 
+z
+" clip-path="url(#p18a8e84682)" style="fill: #ffffff; stroke: #2f6db5; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 14.5125 130.596614 
+L 42.0075 130.596614 
+Q 46.2375 130.596614 46.2375 128.084489 
+L 46.2375 106.731426 
+Q 46.2375 104.219301 42.0075 104.219301 
+L 14.5125 104.219301 
+Q 10.2825 104.219301 10.2825 106.731426 
+L 10.2825 128.084489 
+Q 10.2825 130.596614 14.5125 130.596614 
+z
+" clip-path="url(#p18a8e84682)" style="fill: #ffffff; stroke: #5b6b82; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 113.631729 95.292266 
+L 141.126729 95.292266 
+Q 145.356729 95.292266 145.356729 92.780141 
+L 145.356729 71.427079 
+Q 145.356729 68.914954 141.126729 68.914954 
+L 113.631729 68.914954 
+Q 109.401729 68.914954 109.401729 71.427079 
+L 109.401729 92.780141 
+Q 109.401729 95.292266 113.631729 95.292266 
+z
+" clip-path="url(#p18a8e84682)" style="fill: #ffffff; stroke: #5b6b82; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 226.0125 93.663335 
+L 253.5075 93.663335 
+Q 257.7375 93.663335 257.7375 91.15121 
+L 257.7375 69.798148 
+Q 257.7375 67.286023 253.5075 67.286023 
+L 226.0125 67.286023 
+Q 221.7825 67.286023 221.7825 69.798148 
+L 221.7825 91.15121 
+Q 221.7825 93.663335 226.0125 93.663335 
+z
+" clip-path="url(#p18a8e84682)" style="fill: #ffffff; stroke: #5b6b82; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="166.561202" y="146.404804" transform="rotate(-0 166.561202 146.404804)">phishing</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="166.561202" y="151.052235" transform="rotate(-0 166.561202 151.052235)">spoofed</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="166.561202" y="155.699666" transform="rotate(-0 166.561202 155.699666)">lookalike</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="166.561202" y="160.347098" transform="rotate(-0 166.561202 160.347098)">fake</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="166.561202" y="164.994529" transform="rotate(-0 166.561202 164.994529)">impersonation</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="223.554826" y="118.040021" transform="rotate(-0 223.554826 118.040021)">malware</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="223.554826" y="122.687452" transform="rotate(-0 223.554826 122.687452)">trojan</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="223.554826" y="127.334883" transform="rotate(-0 223.554826 127.334883)">ransomware</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="223.554826" y="131.982314" transform="rotate(-0 223.554826 131.982314)">backdoor</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="223.554826" y="136.629746" transform="rotate(-0 223.554826 136.629746)">dropper</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="44.116524" y="62.949731" transform="rotate(-0 44.116524 62.949731)">password</text>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="44.116524" y="67.597162" transform="rotate(-0 44.116524 67.597162)">credentials</text>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="44.116524" y="72.244593" transform="rotate(-0 44.116524 72.244593)">token</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="44.116524" y="76.892024" transform="rotate(-0 44.116524 76.892024)">passcode</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="44.116524" y="81.539456" transform="rotate(-0 44.116524 81.539456)">login</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="107.013021" y="22.400161" transform="rotate(-0 107.013021 22.400161)">invoice</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="107.013021" y="27.047592" transform="rotate(-0 107.013021 27.047592)">payment</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="107.013021" y="31.695023" transform="rotate(-0 107.013021 31.695023)">refund</text>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="107.013021" y="36.342454" transform="rotate(-0 107.013021 36.342454)">bill</text>
+   </g>
+   <g id="text_20">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="107.013021" y="40.989886" transform="rotate(-0 107.013021 40.989886)">transfer</text>
+   </g>
+   <g id="text_21">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="97.567851" y="148.006411" transform="rotate(-0 97.567851 148.006411)">upload</text>
+   </g>
+   <g id="text_22">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="97.567851" y="152.653842" transform="rotate(-0 97.567851 152.653842)">exfiltration</text>
+   </g>
+   <g id="text_23">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="97.567851" y="157.301273" transform="rotate(-0 97.567851 157.301273)">download</text>
+   </g>
+   <g id="text_24">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="97.567851" y="161.948704" transform="rotate(-0 97.567851 161.948704)">copy</text>
+   </g>
+   <g id="text_25">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="97.567851" y="166.596136" transform="rotate(-0 97.567851 166.596136)">leak</text>
+   </g>
+   <g id="text_26">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="188.520027" y="28.726026" transform="rotate(-0 188.520027 28.726026)">printer</text>
+   </g>
+   <g id="text_27">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="188.520027" y="33.373457" transform="rotate(-0 188.520027 33.373457)">meeting</text>
+   </g>
+   <g id="text_28">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="188.520027" y="38.020888" transform="rotate(-0 188.520027 38.020888)">lunch</text>
+   </g>
+   <g id="text_29">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="188.520027" y="42.66832" transform="rotate(-0 188.520027 42.66832)">holiday</text>
+   </g>
+   <g id="text_30">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="188.520027" y="47.315751" transform="rotate(-0 188.520027 47.315751)">coffee</text>
+   </g>
+   <g id="text_31">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="28.26" y="110.024598" transform="rotate(-0 28.26 110.024598)">blocked</text>
+   </g>
+   <g id="text_32">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="28.26" y="114.672029" transform="rotate(-0 28.26 114.672029)">quarantined</text>
+   </g>
+   <g id="text_33">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="28.26" y="119.319461" transform="rotate(-0 28.26 119.319461)">isolated</text>
+   </g>
+   <g id="text_34">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="28.26" y="123.966892" transform="rotate(-0 28.26 123.966892)">contained</text>
+   </g>
+   <g id="text_35">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="28.26" y="128.614323" transform="rotate(-0 28.26 128.614323)">disabled</text>
+   </g>
+   <g id="text_36">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="127.379229" y="74.72025" transform="rotate(-0 127.379229 74.72025)">analyst</text>
+   </g>
+   <g id="text_37">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="127.379229" y="79.367682" transform="rotate(-0 127.379229 79.367682)">manager</text>
+   </g>
+   <g id="text_38">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="127.379229" y="84.015113" transform="rotate(-0 127.379229 84.015113)">engineer</text>
+   </g>
+   <g id="text_39">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="127.379229" y="88.662544" transform="rotate(-0 127.379229 88.662544)">contractor</text>
+   </g>
+   <g id="text_40">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="127.379229" y="93.309975" transform="rotate(-0 127.379229 93.309975)">admin</text>
+   </g>
+   <g id="text_41">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="239.76" y="73.091319" transform="rotate(-0 239.76 73.091319)">laptop</text>
+   </g>
+   <g id="text_42">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="239.76" y="77.738751" transform="rotate(-0 239.76 77.738751)">server</text>
+   </g>
+   <g id="text_43">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="239.76" y="82.386182" transform="rotate(-0 239.76 82.386182)">workstation</text>
+   </g>
+   <g id="text_44">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="239.76" y="87.033613" transform="rotate(-0 239.76 87.033613)">phone</text>
+   </g>
+   <g id="text_45">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="239.76" y="91.681044" transform="rotate(-0 239.76 91.681044)">tablet</text>
+   </g>
+   <g id="text_46">
+    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start; fill: #b8323a" x="2.88" y="8.983125" transform="rotate(-0 2.88 8.983125)">● threat words</text>
+   </g>
+   <g id="text_47">
+    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start; fill: #2f6db5" x="60.5772" y="8.983125" transform="rotate(-0 60.5772 8.983125)">● everyday business</text>
+   </g>
+   <g id="text_48">
+    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start; fill: #5b6b82" x="134.01" y="8.983125" transform="rotate(-0 134.01 8.983125)">● actions, roles, devices</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p18a8e84682">
+   <rect x="2.88" y="12.198645" width="262.26" height="160.776"/>
+  </clipPath>
+ </defs>
+</svg>

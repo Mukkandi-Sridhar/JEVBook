@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="344.16pt" height="142.56pt" viewBox="0 0 344.16 142.56" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 142.56 
+L 344.16 142.56 
+L 344.16 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 5.76 40.32 
+L 23.4 40.32 
+Q 26.28 40.32 26.28 37.44 
+L 26.28 24.48 
+Q 26.28 21.6 23.4 21.6 
+L 5.76 21.6 
+Q 2.88 21.6 2.88 24.48 
+L 2.88 37.44 
+Q 2.88 40.32 5.76 40.32 
+z
+" clip-path="url(#p441c3230b3)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 32.76 40.32 
+L 50.4 40.32 
+Q 53.28 40.32 53.28 37.44 
+L 53.28 24.48 
+Q 53.28 21.6 50.4 21.6 
+L 32.76 21.6 
+Q 29.88 21.6 29.88 24.48 
+L 29.88 37.44 
+Q 29.88 40.32 32.76 40.32 
+z
+" clip-path="url(#p441c3230b3)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 59.76 40.32 
+L 72.72 40.32 
+Q 75.6 40.32 75.6 37.44 
+L 75.6 24.48 
+Q 75.6 21.6 72.72 21.6 
+L 59.76 21.6 
+Q 56.88 21.6 56.88 24.48 
+L 56.88 37.44 
+Q 56.88 40.32 59.76 40.32 
+z
+" clip-path="url(#p441c3230b3)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 82.08 40.32 
+L 99.72 40.32 
+Q 102.6 40.32 102.6 37.44 
+L 102.6 24.48 
+Q 102.6 21.6 99.72 21.6 
+L 82.08 21.6 
+Q 79.2 21.6 79.2 24.48 
+L 79.2 37.44 
+Q 79.2 40.32 82.08 40.32 
+z
+" clip-path="url(#p441c3230b3)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 109.08 40.32 
+L 136.08 40.32 
+Q 138.96 40.32 138.96 37.44 
+L 138.96 24.48 
+Q 138.96 21.6 136.08 21.6 
+L 109.08 21.6 
+Q 106.2 21.6 106.2 24.48 
+L 106.2 37.44 
+Q 106.2 40.32 109.08 40.32 
+z
+" clip-path="url(#p441c3230b3)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 145.44 40.32 
+L 167.76 40.32 
+Q 170.64 40.32 170.64 37.44 
+L 170.64 24.48 
+Q 170.64 21.6 167.76 21.6 
+L 145.44 21.6 
+Q 142.56 21.6 142.56 24.48 
+L 142.56 37.44 
+Q 142.56 40.32 145.44 40.32 
+z
+" clip-path="url(#p441c3230b3)" style="fill: #f7e0e1; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 5.76 67.68 
+L 23.4 67.68 
+Q 26.28 67.68 26.28 64.8 
+L 26.28 51.84 
+Q 26.28 48.96 23.4 48.96 
+L 5.76 48.96 
+Q 2.88 48.96 2.88 51.84 
+L 2.88 64.8 
+Q 2.88 67.68 5.76 67.68 
+z
+" clip-path="url(#p441c3230b3)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 32.76 67.68 
+L 55.08 67.68 
+Q 57.96 67.68 57.96 64.8 
+L 57.96 51.84 
+Q 57.96 48.96 55.08 48.96 
+L 32.76 48.96 
+Q 29.88 48.96 29.88 51.84 
+L 29.88 64.8 
+Q 29.88 67.68 32.76 67.68 
+z
+" clip-path="url(#p441c3230b3)" style="fill: #f7e0e1; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 64.44 67.68 
+L 91.44 67.68 
+Q 94.32 67.68 94.32 64.8 
+L 94.32 51.84 
+Q 94.32 48.96 91.44 48.96 
+L 64.44 48.96 
+Q 61.56 48.96 61.56 51.84 
+L 61.56 64.8 
+Q 61.56 67.68 64.44 67.68 
+z
+" clip-path="url(#p441c3230b3)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 100.8 67.68 
+L 113.76 67.68 
+Q 116.64 67.68 116.64 64.8 
+L 116.64 51.84 
+Q 116.64 48.96 113.76 48.96 
+L 100.8 48.96 
+Q 97.92 48.96 97.92 51.84 
+L 97.92 64.8 
+Q 97.92 67.68 100.8 67.68 
+z
+" clip-path="url(#p441c3230b3)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 123.12 67.68 
+L 145.44 67.68 
+Q 148.32 67.68 148.32 64.8 
+L 148.32 51.84 
+Q 148.32 48.96 145.44 48.96 
+L 123.12 48.96 
+Q 120.24 48.96 120.24 51.84 
+L 120.24 64.8 
+Q 120.24 67.68 123.12 67.68 
+z
+" clip-path="url(#p441c3230b3)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 189.36 40.32 
+L 225.72 40.32 
+Q 228.6 40.32 228.6 37.44 
+L 228.6 24.48 
+Q 228.6 21.6 225.72 21.6 
+L 189.36 21.6 
+Q 186.48 21.6 186.48 24.48 
+L 186.48 37.44 
+Q 186.48 40.32 189.36 40.32 
+z
+" clip-path="url(#p441c3230b3)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 235.08 40.32 
+L 252.72 40.32 
+Q 255.6 40.32 255.6 37.44 
+L 255.6 24.48 
+Q 255.6 21.6 252.72 21.6 
+L 235.08 21.6 
+Q 232.2 21.6 232.2 24.48 
+L 232.2 37.44 
+Q 232.2 40.32 235.08 40.32 
+z
+" clip-path="url(#p441c3230b3)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_15">
+    <path d="M 262.08 40.32 
+L 303.12 40.32 
+Q 306 40.32 306 37.44 
+L 306 24.48 
+Q 306 21.6 303.12 21.6 
+L 262.08 21.6 
+Q 259.2 21.6 259.2 24.48 
+L 259.2 37.44 
+Q 259.2 40.32 262.08 40.32 
+z
+" clip-path="url(#p441c3230b3)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_16">
+    <path d="M 189.36 67.68 
+L 230.4 67.68 
+Q 233.28 67.68 233.28 64.8 
+L 233.28 51.84 
+Q 233.28 48.96 230.4 48.96 
+L 189.36 48.96 
+Q 186.48 48.96 186.48 51.84 
+L 186.48 64.8 
+Q 186.48 67.68 189.36 67.68 
+z
+" clip-path="url(#p441c3230b3)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_17">
+    <path d="M 239.76 67.68 
+L 257.4 67.68 
+Q 260.28 67.68 260.28 64.8 
+L 260.28 51.84 
+Q 260.28 48.96 257.4 48.96 
+L 239.76 48.96 
+Q 236.88 48.96 236.88 51.84 
+L 236.88 64.8 
+Q 236.88 67.68 239.76 67.68 
+z
+" clip-path="url(#p441c3230b3)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_18">
+    <path d="M 266.76 67.68 
+L 303.12 67.68 
+Q 306 67.68 306 64.8 
+L 306 51.84 
+Q 306 48.96 303.12 48.96 
+L 266.76 48.96 
+Q 263.88 48.96 263.88 51.84 
+L 263.88 64.8 
+Q 263.88 67.68 266.76 67.68 
+z
+" clip-path="url(#p441c3230b3)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="2.88" y="12.06675" transform="rotate(-0 2.88 12.06675)">Same word, different meaning</text>
+   </g>
+   <g id="text_2">
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="14.58" y="33.264" transform="rotate(-0 14.58 33.264)">she</text>
+   </g>
+   <g id="text_3">
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="41.58" y="33.184" transform="rotate(-0 41.58 33.184)">sat</text>
+   </g>
+   <g id="text_4">
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="66.24" y="32.72" transform="rotate(-0 66.24 32.72)">by</text>
+   </g>
+   <g id="text_5">
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="90.9" y="33.264" transform="rotate(-0 90.9 33.264)">the</text>
+   </g>
+   <g id="text_6">
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="122.58" y="33.4305" transform="rotate(-0 122.58 33.4305)">river</text>
+   </g>
+   <g id="text_7">
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="156.6" y="33.264" transform="rotate(-0 156.6 33.264)">bank</text>
+   </g>
+   <g id="text_8">
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="14.58" y="60.624" transform="rotate(-0 14.58 60.624)">the</text>
+   </g>
+   <g id="text_9">
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="43.92" y="60.624" transform="rotate(-0 43.92 60.624)">bank</text>
+   </g>
+   <g id="text_10">
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="77.94" y="60.624" transform="rotate(-0 77.94 60.624)">froze</text>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="107.28" y="59.536" transform="rotate(-0 107.28 59.536)">my</text>
+   </g>
+   <g id="text_12">
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="134.28" y="60.624" transform="rotate(-0 134.28 60.624)">card</text>
+   </g>
+   <g id="text_13">
+    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="186.48" y="12.06675" transform="rotate(-0 186.48 12.06675)">Same words, opposite meaning</text>
+   </g>
+   <g id="text_14">
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="207.54" y="33.4305" transform="rotate(-0 207.54 33.4305)">invoice</text>
+   </g>
+   <g id="text_15">
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="243.9" y="33.187" transform="rotate(-0 243.9 33.187)">not</text>
+   </g>
+   <g id="text_16">
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="282.6" y="32.8865" transform="rotate(-0 282.6 32.8865)">phishing</text>
+   </g>
+   <g id="text_17">
+    <text style="font-weight: 600; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #3b9c6e" x="311.76" y="33.252" transform="rotate(-0 311.76 33.252)">harmless</text>
+   </g>
+   <g id="text_18">
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="209.88" y="60.2465" transform="rotate(-0 209.88 60.2465)">phishing</text>
+   </g>
+   <g id="text_19">
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="248.58" y="60.547" transform="rotate(-0 248.58 60.547)">not</text>
+   </g>
+   <g id="text_20">
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="284.94" y="60.7905" transform="rotate(-0 284.94 60.7905)">invoice</text>
+   </g>
+   <g id="text_21">
+    <text style="font-weight: 600; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #b8323a" x="311.76" y="60.612" transform="rotate(-0 311.76 60.612)">a threat</text>
+   </g>
+   <g id="text_22">
+    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="2.88" y="119.881594" transform="rotate(-0 2.88 119.881594)">One fixed vector per word can’t tell these apart. Neither can a bag of words,</text>
+   </g>
+   <g id="text_23">
+    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="2.88" y="134.273344" transform="rotate(-0 2.88 134.273344)">which only knows which words appear, not where or next to what.</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p441c3230b3">
+   <rect x="2.88" y="2.88" width="338.4" height="136.8"/>
+  </clipPath>
+ </defs>
+</svg>

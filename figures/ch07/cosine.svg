@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="344.16pt" height="128.16pt" viewBox="0 0 344.16 128.16" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 128.16 
+L 344.16 128.16 
+L 344.16 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 47.850326 109.94825 
+Q 83.700648 91.079659 118.465691 72.782268 
+" clip-path="url(#pb3515b0f9e)" style="fill: none; stroke: #2f6db5; stroke-width: 1.3; stroke-linecap: round"/>
+    <path d="M 113.761652 72.432958 
+L 118.465691 72.782268 
+L 116.090384 76.857549 
+z
+" clip-path="url(#pb3515b0f9e)" style="fill: #2f6db5; stroke: #2f6db5; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 47.706334 109.718333 
+Q 80.728431 86.131121 112.752551 63.256749 
+" clip-path="url(#pb3515b0f9e)" style="fill: none; stroke: #2f6db5; stroke-width: 1.3; stroke-linecap: round"/>
+    <path d="M 108.044522 63.547368 
+L 112.752551 63.256749 
+L 110.950713 67.616035 
+z
+" clip-path="url(#pb3515b0f9e)" style="fill: #2f6db5; stroke: #2f6db5; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 45.645667 108.925499 
+Q 40.139745 84.148852 34.89987 60.569417 
+" clip-path="url(#pb3515b0f9e)" style="fill: none; stroke: #b8323a; stroke-width: 1.3; stroke-linecap: round"/>
+    <path d="M 33.327125 65.016492 
+L 34.89987 60.569417 
+L 38.20806 63.931839 
+z
+" clip-path="url(#pb3515b0f9e)" style="fill: #b8323a; stroke: #b8323a; stroke-width: 1.3; stroke-linecap: round"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 600; font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #2f6db5" x="125.424" y="68.718094" transform="rotate(-0 125.424 68.718094)">invoice</text>
+   </g>
+   <g id="text_2">
+    <text style="font-weight: 600; font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #2f6db5" x="119.16" y="58.282734" transform="rotate(-0 119.16 58.282734)">bill</text>
+   </g>
+   <g id="text_3">
+    <text style="font-weight: 600; font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #b8323a" x="33.552" y="53.465812" transform="rotate(-0 33.552 53.465812)">trojan</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="161.28" y="29.847562" transform="rotate(-0 161.28 29.847562)">Similar meaning = small angle between arrows.</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #4b5563" x="161.28" y="46.752" transform="rotate(-0 161.28 46.752)">cosine similarity = cos(angle)</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="161.28" y="66.447" transform="rotate(-0 161.28 66.447)">invoice vs bill:   close to 1</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="161.28" y="80.2315" transform="rotate(-0 161.28 80.2315)">invoice vs trojan: near 0 or below</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 6.2px; font-family: 'Inter'; fill: #8a919c" transform="translate(161.28 94.630186)">The arrows’ lengths don’t matter,</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; fill: #8a919c" transform="translate(161.28 104.480799)">only the directions.</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pb3515b0f9e">
+   <rect x="2.88" y="2.88" width="338.4" height="122.4"/>
+  </clipPath>
+ </defs>
+</svg>

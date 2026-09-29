@@ -1,3 +1,172 @@
 # Attention and transformers, visually {#sec-ch08}
 
-*Draft in progress.*
+```{python}
+#| include: false
+import numpy as np
+from jevkit import attention as at
+```
+
+If you've read anything about modern AI, you've probably run into a paper with a slightly smug title: *Attention Is All You Need* [@vaswani2017]. It introduced the **transformer**, the design inside ChatGPT and every LLM you've heard of. (What's inside Jev hasn't been published; Chapter 16 sorts what's known from what's guessed.)
+
+And if you've tried to read an explanation of it, you've probably met a diagram with a dozen boxes and arrows labelled Q, K and V, and quietly closed the tab.
+
+*"Is this where the book loses me?"*
+
+No. The core idea fits in one sentence, and you can build it in ten lines of NumPy. We'll start with the problem it solves, because the problem is the easy part to feel.
+
+::: {.goals}
+- Explain why one fixed vector per word isn't enough.
+- Describe attention as a soft lookup: queries, keys and values, in plain words.
+- Train a tiny attention model on a task a bag of words can't solve, and read what it learned.
+- Sketch a transformer block and say why transformers scale so well.
+- Tell the difference between models that read (encoders) and models that write (decoders).
+:::
+
+## One vector per word isn't enough
+
+In Chapter 7, every word got one vector. "bank" got one point on the map.
+
+But which bank?
+
+![Left: "bank" means different things in different sentences. Right: two notes with exactly the same words and opposite meanings. A fixed vector per word, or a bag of words, can't tell either pair apart.](/figures/ch08/context-problem.pdf){#fig-context-problem}
+
+The left side of @fig-context-problem is the famous example. The right side is the one that matters for a SOC. "invoice, not phishing" is an analyst clearing an alert. "phishing, not invoice" is an analyst raising one. Same three words. A model that only knows *which words appear*, called a **bag of words**, sees two identical notes.
+
+What we need is a way for each word to look at the words around it and adjust its meaning accordingly. "phishing" should mean something different when "not" sits right before it.
+
+## Attention is a soft lookup
+
+Here's the idea, in the form I find easiest to hold in my head.
+
+Every word in a sentence does three things.
+
+It asks a **question**: *"which other words should change what I mean?"* For "phishing", that question might amount to "is anyone negating me?"
+
+It advertises a **label**: *"here's what I can tell you about."* For "not", the label amounts to "I'm a negation, and I sit right before you."
+
+It holds some **content**: the information it would pass along if someone listened.
+
+Then each word compares its question with every word's label. Good matches get high scores, and the scores are turned into weights that add up to 1. Finally, the word takes a *weighted mix* of everyone's content and blends it into its own meaning.
+
+![The word "phishing" asks its question (the query), compares it with each word's label (key), turns the matches into weights that sum to 1, and takes that mix of their contents (values). In the trained model, it looks almost entirely at "not".](/figures/ch08/qkv.pdf){#fig-qkv}
+
+In the jargon, the question is the **query**, the label is the **key** and the content is the **value**. That's the Q, K and V from the scary diagrams. All three are just the word's vector multiplied by three different learned matrices.
+
+::: {.keyidea}
+Attention: every word asks which other words matter to it, and listens to them in proportion.
+:::
+
+It's "soft" because nothing is chosen outright. A word can listen 98% to one neighbour and 2% to the rest, and because every step is smooth, gradient descent can learn what to ask and what to advertise.
+
+::: {.tryit lab="ch08"}
+Self-attention, in full.
+
+```{python}
+def softmax(s):
+    s = s - s.max(-1, keepdims=True)
+    e = np.exp(s)
+    return e / e.sum(-1, keepdims=True)
+
+def self_attention(H, Wq, Wk, Wv):
+    Q, K, V = H @ Wq, H @ Wk, H @ Wv     # questions, labels, contents
+    weights = softmax(Q @ K.T / np.sqrt(K.shape[1]))
+    return weights @ V, weights
+
+rng = np.random.default_rng(0)
+H = rng.normal(size=(3, 8))              # 3 words, 8 numbers each
+out, w = self_attention(H, *(rng.normal(size=(8, 8)) for _ in range(3)))
+print(np.round(w, 2))                    # each row sums to 1
+```
+:::
+
+::: {.deeper}
+The **softmax** function turns any list of scores into weights that are positive and sum to 1: raise *e* to the power of each score and divide by the total. It's the many-option version of the S-curve from Chapter 3, and it's everywhere in this book. The attention weights above use it; an LLM uses it to turn scores into a probability for every possible next word (Chapter 10); and a Jev `choice` answer is a probability for every label, which is exactly what a softmax produces (Chapter 17). The division by the square root of the vector size keeps the scores from growing so large that the softmax saturates into all-or-nothing weights.
+:::
+
+## Watching it learn
+
+Random weights make random attention. The interesting question is what attention learns when you train it.
+
+So let's set it a task a bag of words can't do. I generated 4,000 tiny analyst notes from a handful of words: threat words like "phishing" and "malware", harmless ones like "invoice" and "lunch", plus "not" and "and". A note counts as a threat if it contains a threat word that *isn't* directly preceded by "not". So "invoice not phishing" is harmless and "phishing not invoice" is a threat.
+
+Then I trained a model with one attention layer, where each word also knows its position in the note, using the same downhill walk as always.
+
+```{python}
+X, y, notes = at.make_data(4000, 0)
+X_test, y_test, _ = at.make_data(1000, 1)
+params = at.train(X, y, steps=4000, lr=0.01, seed=1)
+
+acc = ((at.forward(params, X_test) > 0.5) == y_test).mean()
+print(f"attention model accuracy on new notes: {acc:.1%}")
+```
+
+![Accuracy on 1,000 new notes. A bag-of-words model (logistic regression on word counts) can only get so far, because many notes it must separate contain exactly the same words. One attention layer solves the task. Right: its training loss, on a log scale.](/figures/ch08/bow-vs-attention.pdf){#fig-bow-vs-attention}
+
+The bag of words tops out at {{< num ch08 acc_bow pct >}}, because many notes it has to separate contain exactly the same words. One layer of attention gets {{< num ch08 acc_att pct >}}.
+
+But the score isn't the fun part. The fun part is looking inside.
+
+![What each word attends to, in three notes, from the trained model. Read each row as "this word is looking at...". In "invoice not phishing", "phishing" puts nearly all its attention on "not". In "lunch and malware", "malware" looks at the word before it, sees "and", and stays a threat.](/figures/ch08/heatmaps.pdf){#fig-heatmaps}
+
+In the left panel of @fig-heatmaps, the row for "phishing" puts {{< num ch08 att_phishing_to_not pct >}} of its attention on "not". Nobody told the model about negation, or even that "not" was special. Gradient descent found that the cheapest way to get the answers right was for each threat word to *look at the word just before it*, and that's the pattern it built.
+
+That's the whole magic of attention, in miniature. The model learns which relationships between words matter, and learns to look for them.
+
+## The transformer
+
+A real transformer is this idea, repeated and polished.
+
+![One transformer block. Every word looks at every other word (attention), then each word's vector is refined by a small network on its own. Shortcut connections add each step's input back to its output, which keeps training stable. Large models stack dozens of these blocks.](/figures/ch08/block.pdf){#fig-block}
+
+Each **block** in @fig-block does two things. First, attention: every word looks at every word and updates its meaning. Then a small neural network, like the one in Chapter 6, processes each word's updated vector on its own. Add a couple of engineering details (shortcuts and normalisation, which keep deep stacks trainable), and that's a block.
+
+Stack twelve blocks, or a hundred. Real models also run many attention patterns side by side in each block, called *heads*: one might track negation, another which verb goes with which subject, another what "it" refers to.
+
+Why did this design take over? Earlier language models read text one word at a time, left to right, passing a summary along like a game of telephone, and they forgot the start of long sentences. Attention looks at every pair of words *at once*. That means it can connect words far apart, and all the computation for a sentence can run in parallel on graphics chips. It was the architecture that could finally use enormous amounts of hardware, which is Chapter 9's story.
+
+## Readers and writers
+
+One last distinction, and it matters a great deal for this book.
+
+![Two ways to wire attention. A reader (encoder) lets every word look at every other word, before and after it: good for understanding a whole input at once. A writer (decoder) lets each word see only the words before it: it has to, because when writing, the future words don't exist yet.](/figures/ch08/encoder-decoder.pdf){#fig-encoder-decoder}
+
+A **reader**, or *encoder*, lets every word look at the whole input, before and after it (@fig-encoder-decoder, left). That's what you want for *understanding*: classifying an alert, judging a ticket, deciding. Models built this way, like BERT [@devlin2019], were the workhorses of text classification for years.
+
+A **writer**, or *decoder*, only lets each word look backwards (@fig-encoder-decoder, right). That's what you need for *generating*, because when you're writing word five, word six doesn't exist yet. GPT-style LLMs are writers: they produce text one piece at a time, each piece looking back at everything before it.
+
+Hold on to that picture. When Chapter 10 explains why generating a decision word by word is slow, and Chapter 16 asks what's inside a model that returns a whole typed decision "in a single parallel pass" [[VERIFY]], this is the distinction underneath.
+
+::: {.breaks}
+Attention maps are tempting to read as explanations. Sometimes they are, as in our tiny model. In large models, they often aren't: with dozens of layers and heads, the weights in one head don't reliably tell you *why* the model decided something, and researchers have argued about this directly [@jain2019]. Attention also costs more as inputs get longer, since every word looks at every other word. That's why models have limits on how much text they can take in at once, and why long documents get chopped up (Chapter 12).
+:::
+
+::: {.threshold}
+Our attention model outputs P(threat) = 1.00 for "phishing not invoice" and 0.00 for "invoice not phishing". Its training loss fell to almost zero. If you deployed it on real analyst notes, which are far messier than these templates, would you trust a 1.00? What would you check first?
+
+(Not without checking. A near-zero training loss on tidy data means the model has learned to be completely certain, and it will carry that certainty onto messy notes it has never seen. Check calibration on real notes first. Chapter 9 explains why big models drift this way.)
+:::
+
+::: {.bookquote by="Ashish Vaswani and colleagues, Attention Is All You Need, 2017"}
+We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely.
+:::
+
+## Where we are
+
+One vector per word couldn't tell "not phishing" from "phishing". So we let each word ask a question of the others and listen in proportion, and trained that on notes a bag of words couldn't separate. The model worked out on its own that threat words should look at the word before them. Stacking that idea in blocks gave us the transformer, and wiring it to see everything or only the past gave us readers and writers.
+
+We have the architecture. What turned it into ChatGPT was scale: more data, more layers, more computing power than anyone had used before. That's next, along with a side effect that matters a great deal for decisions.
+
+::: {.exercises}
+1. In your own words, and without the letters Q, K or V, explain what attention does for the word "phishing" in "invoice not phishing".
+2. In the lab, remove the position information (set `params["P"]` to zeros after training). What happens to accuracy? Why?
+3. Why can a writer (decoder) not look at future words, even though they'd help? When is that a disadvantage?
+4. Invent a note where the word *two* positions back changes the meaning ("not a phishing email"). Would our trained model handle it? How would you change the training data so it could?
+:::
+
+::: {.nexthook}
+Next: take this architecture, make it enormous and train it on a large share of the internet. What comes out can write, and it's also surprisingly overconfident. Chapter 9 explains both.
+:::
+
+::: {.summary}
+![](/figures/ch08/summary.pdf){width=100%}
+:::

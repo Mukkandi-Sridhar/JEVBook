@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="344.16pt" height="117.353437pt" viewBox="0 0 344.16 117.353437" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 117.353437 
+L 344.16 117.353437 
+L 344.16 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 5.76 34.56 
+L 24.768 34.56 
+Q 27.648 34.56 27.648 31.68 
+L 27.648 17.28 
+Q 27.648 14.4 24.768 14.4 
+L 5.76 14.4 
+Q 2.88 14.4 2.88 17.28 
+L 2.88 31.68 
+Q 2.88 34.56 5.76 34.56 
+z
+" clip-path="url(#p5a787e9ea8)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 34.848 34.56 
+L 78.336 34.56 
+Q 81.216 34.56 81.216 31.68 
+L 81.216 17.28 
+Q 81.216 14.4 78.336 14.4 
+L 34.848 14.4 
+Q 31.968 14.4 31.968 17.28 
+L 31.968 31.68 
+Q 31.968 34.56 34.848 34.56 
+z
+" clip-path="url(#p5a787e9ea8)" style="fill: #f7e0e1; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 88.416 34.56 
+L 117.216 34.56 
+Q 120.096 34.56 120.096 31.68 
+L 120.096 17.28 
+Q 120.096 14.4 117.216 14.4 
+L 88.416 14.4 
+Q 85.536 14.4 85.536 17.28 
+L 85.536 31.68 
+Q 85.536 34.56 88.416 34.56 
+z
+" clip-path="url(#p5a787e9ea8)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 127.296 34.56 
+L 156.096 34.56 
+Q 158.976 34.56 158.976 31.68 
+L 158.976 17.28 
+Q 158.976 14.4 156.096 14.4 
+L 127.296 14.4 
+Q 124.416 14.4 124.416 17.28 
+L 124.416 31.68 
+Q 124.416 34.56 127.296 34.56 
+z
+" clip-path="url(#p5a787e9ea8)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 166.176 34.56 
+L 185.184 34.56 
+Q 188.064 34.56 188.064 31.68 
+L 188.064 17.28 
+Q 188.064 14.4 185.184 14.4 
+L 166.176 14.4 
+Q 163.296 14.4 163.296 17.28 
+L 163.296 31.68 
+Q 163.296 34.56 166.176 34.56 
+z
+" clip-path="url(#p5a787e9ea8)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 195.264 34.56 
+L 224.064 34.56 
+Q 226.944 34.56 226.944 31.68 
+L 226.944 17.28 
+Q 226.944 14.4 224.064 14.4 
+L 195.264 14.4 
+Q 192.384 14.4 192.384 17.28 
+L 192.384 31.68 
+Q 192.384 34.56 195.264 34.56 
+z
+" clip-path="url(#p5a787e9ea8)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 234.144 34.56 
+L 277.632 34.56 
+Q 280.512 34.56 280.512 31.68 
+L 280.512 17.28 
+Q 280.512 14.4 277.632 14.4 
+L 234.144 14.4 
+Q 231.264 14.4 231.264 17.28 
+L 231.264 31.68 
+Q 231.264 34.56 234.144 34.56 
+z
+" clip-path="url(#p5a787e9ea8)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 5.76 70.56 
+L 24.768 70.56 
+Q 27.648 70.56 27.648 67.68 
+L 27.648 53.28 
+Q 27.648 50.4 24.768 50.4 
+L 5.76 50.4 
+Q 2.88 50.4 2.88 53.28 
+L 2.88 67.68 
+Q 2.88 70.56 5.76 70.56 
+z
+" clip-path="url(#p5a787e9ea8)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 34.848 70.56 
+L 73.44 70.56 
+Q 76.32 70.56 76.32 67.68 
+L 76.32 53.28 
+Q 76.32 50.4 73.44 50.4 
+L 34.848 50.4 
+Q 31.968 50.4 31.968 53.28 
+L 31.968 67.68 
+Q 31.968 70.56 34.848 70.56 
+z
+" clip-path="url(#p5a787e9ea8)" style="fill: #f7e0e1; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 83.52 70.56 
+L 112.32 70.56 
+Q 115.2 70.56 115.2 67.68 
+L 115.2 53.28 
+Q 115.2 50.4 112.32 50.4 
+L 83.52 50.4 
+Q 80.64 50.4 80.64 53.28 
+L 80.64 67.68 
+Q 80.64 70.56 83.52 70.56 
+z
+" clip-path="url(#p5a787e9ea8)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 122.4 70.56 
+L 151.2 70.56 
+Q 154.08 70.56 154.08 67.68 
+L 154.08 53.28 
+Q 154.08 50.4 151.2 50.4 
+L 122.4 50.4 
+Q 119.52 50.4 119.52 53.28 
+L 119.52 67.68 
+Q 119.52 70.56 122.4 70.56 
+z
+" clip-path="url(#p5a787e9ea8)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 161.28 70.56 
+L 180.288 70.56 
+Q 183.168 70.56 183.168 67.68 
+L 183.168 53.28 
+Q 183.168 50.4 180.288 50.4 
+L 161.28 50.4 
+Q 158.4 50.4 158.4 53.28 
+L 158.4 67.68 
+Q 158.4 70.56 161.28 70.56 
+z
+" clip-path="url(#p5a787e9ea8)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 190.368 70.56 
+L 219.168 70.56 
+Q 222.048 70.56 222.048 67.68 
+L 222.048 53.28 
+Q 222.048 50.4 219.168 50.4 
+L 190.368 50.4 
+Q 187.488 50.4 187.488 53.28 
+L 187.488 67.68 
+Q 187.488 70.56 190.368 70.56 
+z
+" clip-path="url(#p5a787e9ea8)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_15">
+    <path d="M 229.248 70.56 
+L 258.048 70.56 
+Q 260.928 70.56 260.928 67.68 
+L 260.928 53.28 
+Q 260.928 50.4 258.048 50.4 
+L 229.248 50.4 
+Q 226.368 50.4 226.368 53.28 
+L 226.368 67.68 
+Q 226.368 70.56 229.248 70.56 
+z
+" clip-path="url(#p5a787e9ea8)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 500; font-size: 6.6px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="15.264" y="26.856" transform="rotate(-0 15.264 26.856)">the</text>
+   </g>
+   <g id="text_2">
+    <text style="font-weight: 500; font-size: 6.6px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="56.592" y="26.466703" transform="rotate(-0 56.592 26.466703)">phishing</text>
+   </g>
+   <g id="text_3">
+    <text style="font-weight: 500; font-size: 6.6px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="102.816" y="27.027703" transform="rotate(-0 102.816 27.027703)">email</text>
+   </g>
+   <g id="text_4">
+    <text style="font-weight: 500; font-size: 6.6px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="141.696" y="26.856" transform="rotate(-0 141.696 26.856)">asked</text>
+   </g>
+   <g id="text_5">
+    <text style="font-weight: 500; font-size: 6.6px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="175.68" y="26.859094" transform="rotate(-0 175.68 26.859094)">for</text>
+   </g>
+   <g id="text_6">
+    <text style="font-weight: 500; font-size: 6.6px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="209.664" y="27.027703" transform="rotate(-0 209.664 27.027703)">their</text>
+   </g>
+   <g id="text_7">
+    <text style="font-weight: 500; font-size: 6.6px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="255.888" y="26.295" transform="rotate(-0 255.888 26.295)">password</text>
+   </g>
+   <g id="text_8">
+    <text style="font-weight: 500; font-size: 6.6px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="15.264" y="62.856" transform="rotate(-0 15.264 62.856)">the</text>
+   </g>
+   <g id="text_9">
+    <text style="font-weight: 500; font-size: 6.6px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="54.144" y="62.295" transform="rotate(-0 54.144 62.295)">spoofed</text>
+   </g>
+   <g id="text_10">
+    <text style="font-weight: 500; font-size: 6.6px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="97.92" y="63.027703" transform="rotate(-0 97.92 63.027703)">email</text>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 500; font-size: 6.6px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="136.8" y="62.856" transform="rotate(-0 136.8 62.856)">asked</text>
+   </g>
+   <g id="text_12">
+    <text style="font-weight: 500; font-size: 6.6px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="170.784" y="62.859094" transform="rotate(-0 170.784 62.859094)">for</text>
+   </g>
+   <g id="text_13">
+    <text style="font-weight: 500; font-size: 6.6px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="204.768" y="63.027703" transform="rotate(-0 204.768 63.027703)">their</text>
+   </g>
+   <g id="text_14">
+    <text style="font-weight: 500; font-size: 6.6px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="243.648" y="62.856" transform="rotate(-0 243.648 62.856)">token</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="2.88" y="99.7" transform="rotate(-0 2.88 99.7)">Different words, same neighbours (blue). Count enough sentences and their context</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="2.88" y="111.187" transform="rotate(-0 2.88 111.187)">profiles line up, so their vectors end up close together.</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p5a787e9ea8">
+   <rect x="2.88" y="2.88" width="338.4" height="108"/>
+  </clipPath>
+ </defs>
+</svg>

@@ -1,3 +1,181 @@
 # Embeddings: meaning as geometry {#sec-ch07}
 
-*Draft in progress.*
+```{python}
+#| include: false
+import numpy as np
+from sklearn.neighbors import NearestNeighbors
+from jevkit import soc, text, calibration as cal
+```
+
+Here's a problem that sounds too simple to be hard.
+
+A neural network does arithmetic. It multiplies and adds numbers. So before a network can read an alert, an email or a question, every word has to become a number.
+
+*"Fine,"* you might think, *"number the words. 'invoice' is 101, 'bill' is 102, done."*
+
+And it works, in the sense that nothing crashes. But it quietly throws away the one thing we need: meaning. This chapter is about the idea that fixed that, turning words into points on a map where closeness means similarity. It sounds modest. It's the foundation of every LLM, every semantic search box and every RAG system you'll meet in Part III.
+
+::: {.goals}
+- Explain why word IDs and one-hot vectors carry no meaning.
+- Describe how an embedding learns meaning from the company a word keeps.
+- Measure similarity between words, or whole alerts, with cosine similarity.
+- Use embeddings to find "alerts like this one", and turn neighbours into a checkable probability.
+- Say what embeddings are good at, and what they lose.
+:::
+
+## Numbers without meaning
+
+Let's try the obvious approaches first and watch them fail.
+
+**Give every word an ID.** "invoice" is 101, "bill" is 102, "lunch" is 103, "trojan" is 104. The trouble is that a network *will* do arithmetic on those numbers. It'll treat "bill" as halfway between "invoice" and "lunch", and "trojan" as just a bit more than "lunch". The numbers are arbitrary, but the maths takes them literally.
+
+**Give every word its own slot.** Make a long list with one position per word in the vocabulary, put a 1 in that word's slot and 0 everywhere else. This is called **one-hot** encoding, and it avoids the fake arithmetic. But now every word is exactly as different from every other word. "invoice" is as far from "bill" as it is from "trojan". The representation knows nothing.
+
+![Three ways to turn words into numbers. IDs invent a false order. One-hot slots make every word equally different from every other. An embedding gives each word a short list of numbers where similar words get similar lists.](/figures/ch07/representations.pdf){#fig-representations}
+
+What we want is the third column of @fig-representations: a short list of numbers for each word, where words with similar meanings get similar numbers. That's an **embedding**. The question is where the numbers come from, because nobody is going to sit down and hand-score a hundred thousand words.
+
+## You shall know a word by the company it keeps
+
+The answer came from linguistics, decades before deep learning, and it's summed up in one of the best-known lines in the field:
+
+::: {.bookquote by="J. R. Firth, A Synopsis of Linguistic Theory, 1957"}
+You shall know a word by the company it keeps!
+:::
+
+Here's what that means in practice. Look at these two sentences from analysts' notes:
+
+![Two notes that differ in two words. "phishing" and "spoofed" never appear together, but they keep the same company: "the ... email asked for their ...". Over thousands of sentences, that shared company is what gives them similar vectors.](/figures/ch07/company.pdf){#fig-company}
+
+"phishing" and "spoofed" hardly ever appear in the same sentence. But they appear in the same *kinds* of places, next to "email", before "asked", near "password". If you counted, for every word, which other words turn up near it, you'd find that "phishing" and "spoofed" have almost the same counts. Their *context profiles* match.
+
+That's the whole trick, and it can be done with nothing more than counting:
+
+1. Go through a large pile of text.
+2. For every word, count how often each other word appears within a couple of positions of it.
+3. Squash those long count lists into a short list of numbers, keeping the patterns and dropping the noise.
+
+What you get is a vector per word, and words used in similar ways get similar vectors. Nobody tells the method that "phishing" and "spoofed" are related. It finds out.
+
+To show you this working, I generated 30,000 short synthetic analyst notes from templates: "the ___ email asked the ___ for their ___", "the ___ was ___ on the ___", and so on. Words from the same family can fill the same slot, and there's a little noise, because real people don't write to templates. The embedding method never sees the families. It only counts.
+
+![Word vectors learned from 30,000 synthetic notes, laid out so that words with similar vectors sit close together. Each card is one family of words the method discovered on its own from context: kinds of lure, kinds of malware, kinds of secret. Threat words sit on one side of the map, and everyday business words on the other.](/figures/ch07/word-map.pdf){#fig-word-map}
+
+@fig-word-map is what came out. Each card holds words the method grouped together, and it matches the families I used exactly. "invoice", "payment", "refund" and "bill" end up together. So do "trojan", "ransomware" and "backdoor". So do "printer", "meeting" and "lunch". The threat families drift to one side of the map and the everyday office words to the other.
+
+::: {.keyidea}
+Meaning becomes geometry: similar words become nearby points.
+:::
+
+This counting approach is old, and it has names like *latent semantic analysis* [@deerwester1990]. The embeddings inside modern LLMs are learned differently, by a network trying to predict missing words, an idea that went mainstream with *word2vec* in 2013 [@mikolov2013]. But the two are closer than they look. Researchers later showed that word2vec is, roughly, doing a clever version of the same counting and squashing [@levy2014]. Same intuition, better machinery.
+
+## Measuring closeness
+
+Once words are vectors, "how similar are these two words?" becomes "how close are these two points?"
+
+The standard measure doesn't use distance, exactly. It uses the *angle* between the two vectors, pictured as arrows from the centre of the map.
+
+![Picture each word's vector as an arrow. Similar meanings point in similar directions. Cosine similarity is the cosine of the angle between them: about 1 when they point the same way, about 0 when they're unrelated.](/figures/ch07/cosine.pdf){#fig-cosine}
+
+That's **cosine similarity**. It runs from −1 (pointing opposite ways) through 0 (unrelated) to 1 (the same direction), and it ignores how long the arrows are, which mostly reflects how common a word is rather than what it means.
+
+::: {.tryit lab="ch07"}
+```{python}
+vocab, vectors, counts = text.note_vectors()
+
+def cosine(a, b):
+    va = vectors[vocab.index(a)]
+    vb = vectors[vocab.index(b)]
+    return float(va @ vb / (np.linalg.norm(va) * np.linalg.norm(vb)))
+
+for a, b in [("invoice", "bill"), ("invoice", "trojan"),
+             ("upload", "download"), ("phishing", "spoofed")]:
+    print(f"{a:>9} vs {b:<9} {cosine(a, b):+.2f}")
+```
+:::
+
+Look at "upload" and "download". They're similar, but not identical. In my notes, "download" also turns up in harmless places like "download the meeting slides", and the embedding picked up that difference too.
+
+## Embedding whole alerts
+
+Words are only the start. You can embed a whole sentence, an email, a ticket or an alert, and the same geometry applies: similar alerts land near each other.
+
+For Kestrel's alerts I've used a simple, classic recipe: count the words in each alert (giving rare, specific words more weight than common ones), then squash the counts into 64 numbers. Modern systems use a neural network trained for the job, called an *embedding model*, but the idea is identical and the results look the same.
+
+![About 2,000 of Kestrel's alerts, embedded by their text and laid out so that similar alerts sit close together (with a method called t-SNE, which is good at keeping near neighbours near; distances between far-apart groups don't mean much). Alerts cluster by what they're about. Red dots are real threats.](/figures/ch07/alert-map.pdf){#fig-alert-map}
+
+In @fig-alert-map, the alerts sort themselves into islands: beaconing here, impossible travel there, macro attachments over there. No rule name was given to the embedding. The words alone put them there.
+
+This is enormously useful in practice. It lets an analyst ask "show me past alerts like this one", even when the new one uses different words. It lets a SOC group near-duplicates, so fifty copies of the same noisy alert become one ticket. And it's the engine inside RAG (Chapter 12): to answer a question, first fetch the documents whose embeddings sit closest to the question's.
+
+```{python}
+alerts = soc.load()
+train, calib, test = soc.split(alerts)
+embed = text.alert_embedder(train.description.tolist())
+Z_train = embed(train.description.tolist())
+Z_test = embed(test.description.tolist())
+
+nn = NearestNeighbors(n_neighbors=3, metric="cosine").fit(Z_train)
+dist, idx = nn.kneighbors(Z_test[5:6])
+print("NEW: ", test.description.iloc[5][:66])
+for d, i in zip(dist[0], idx[0]):
+    print(f"{1 - d:.2f}  {train.description.iloc[i][:66]}")
+```
+
+## Neighbours give probabilities
+
+Here's where embeddings meet Part I.
+
+Remember the most important words of Chapter 2: *among cases like this one*. Embeddings give us a direct way to find "cases like this one". So we can estimate a probability the most literal way imaginable: take a new alert, find the 50 most similar past alerts, and count how many were attacks.
+
+```{python}
+nn50 = NearestNeighbors(n_neighbors=50, metric="cosine").fit(Z_train)
+_, idx = nn50.kneighbors(Z_test)
+p_knn = np.clip(train.malicious.to_numpy()[idx].mean(1), 0.005, 0.995)
+print(cal.summary(p_knn, test.malicious))
+```
+
+And because it's a probability, we check it the way we check every probability in this book.
+
+![Reliability of two ways to estimate P(attack) on the same test alerts. Counting attacks among the 50 nearest alerts by text meaning (orange) is honest but blunt: its probabilities barely spread out. Logistic regression on the structured fields (blue) is just as honest and far sharper.](/figures/ch07/knn-vs-fields.pdf){#fig-knn-vs-fields}
+
+The neighbour estimate is honest: its ECE is {{< num ch07 knn.ece f3 >}}. But it's blunt, with an AUC of only {{< num ch07 knn.auc f2 >}}, against {{< num ch07 lr.auc f2 >}} for logistic regression on the structured fields.
+
+Why? Because text similarity captures what an alert is *about*, and misses the number that matters most. Two "large outbound upload" alerts sit right next to each other in embedding space whether the threat-intel score is 0.05 or 0.95. To the embedding, those are almost the same sentence. To the SOC, they're opposite ends of the risk scale.
+
+::: {.keyidea}
+Embeddings capture what things are about. They're poor at the exact numbers inside them.
+:::
+
+Keep that sentence in mind. It's the reason Part III's systems don't just embed everything and hope. And it's the reason for the "LLM extracts, Jev decides" pattern in Chapter 22, where one component pulls the numbers out as numbers before another makes the call.
+
+::: {.breaks}
+Embeddings learn whatever associations are in their training text, including the ones you'd rather they didn't: stereotypes about gender, nationality and names show up in word vectors trained on ordinary web text [@bolukbasi2016]. They're also bad at negation. "malicious" and "not malicious" sit very close together, because they keep almost the same company. And an embedding trained on one kind of text, such as news or the web, can be clumsy on another, such as security logs full of hostnames and process names. Test it on your own data before you rely on "similar".
+:::
+
+::: {.threshold}
+Kestrel wants to merge near-duplicate alerts into one ticket whenever their cosine similarity is above some line. Merging two alerts that are really different means one might never be investigated. Leaving true duplicates unmerged means an analyst reads the same thing twice. Which mistake is worse? Should the merge line be high (0.98) or moderate (0.85)?
+
+(Missing an alert is worse, so the line should be high, and the merge should keep the higher-risk alert's details. And given what this chapter just showed, check that merged alerts also have similar *numbers*, not just similar text.)
+:::
+
+## Where we are
+
+We needed words to become numbers, and the obvious numbers had no meaning. Counting the company each word keeps gave it a meaningful place on a map, and the angle between arrows told us how close two meanings are. The same trick worked for whole alerts, which let us find "cases like this one" and turn them straight into a probability. That probability was honest, and blunt, because meaning and numbers aren't the same thing.
+
+There's still a gap. In every example so far, each word got *one* vector. But words change meaning with context: "bank" by a river isn't "bank" with your money in it. And "the email was not phishing" means the opposite of "the email was phishing". Fixing that is what attention does.
+
+::: {.exercises}
+1. Explain to a colleague, in two or three sentences and without maths, why "phishing" and "spoofed" end up with similar vectors even though they rarely appear together.
+2. In the lab, add a new template to the notes corpus in which "upload" appears with office words ("upload the lunch photos"). Retrain. How does the similarity between "upload" and "exfiltration" change?
+3. Find an alert in the lab whose nearest neighbours by text include both real threats and harmless alerts. What's different about them that the text embedding can't see?
+4. Why does cosine similarity ignore the length of the vectors? Give an example where that's exactly what you want.
+:::
+
+::: {.nexthook}
+Next: "bank" means different things in different sentences, and "not" can flip everything. Attention lets each word look at the others before deciding what it means, and it's the heart of every transformer.
+:::
+
+::: {.summary}
+![](/figures/ch07/summary.pdf){width=100%}
+:::
