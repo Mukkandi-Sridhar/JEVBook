@@ -156,3 +156,22 @@ def summary(p, y) -> dict:
     from sklearn.metrics import roc_auc_score
     p, y = _arr(p, y)
     return dict(auc=float(roc_auc_score(y, p)), brier=brier(p, y), log_loss=log_loss(p, y), ece=ece(p, y))
+
+
+def prior_shift(p, base_rate_trained: float, base_rate_yours: float):
+    """Adjust probabilities for a different base rate: multiply the odds by the ratio of the base-rate odds.
+
+    This is the classic correction for label (prior) shift. It assumes that, within each class, alerts look
+    the same at both places; only how common each class is has changed.
+    """
+    p = np.clip(np.asarray(p, float), 1e-9, 1 - 1e-9)
+    o = p / (1 - p) * (base_rate_yours / (1 - base_rate_yours)) / (base_rate_trained / (1 - base_rate_trained))
+    return o / (1 + o)
+
+
+def ece_interval(p, y, n_boot: int = 300, seed: int = 0, q=(5, 95)):
+    """Bootstrap range for ECE. With few labels, ECE is noisy and biased upwards: report the range."""
+    rng = np.random.default_rng(seed)
+    p, y = np.asarray(p, float), np.asarray(y, float)
+    vals = [ece(p[i], y[i]) for i in (rng.integers(0, len(p), len(p)) for _ in range(n_boot))]
+    return tuple(float(v) for v in np.percentile(vals, q))

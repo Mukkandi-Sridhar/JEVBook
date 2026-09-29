@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="344.16pt" height="178.56pt" viewBox="0 0 344.16 178.56" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 178.56 
+L 344.16 178.56 
+L 344.16 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="25.92" y="21.982969" transform="rotate(-0 25.92 21.982969)">Collect labels</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #4b5563" transform="translate(143.28 16.927146)">a few hundred to a few thousand</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #4b5563" transform="translate(143.28 26.490683)">recent cases with known outcomes</text>
+   </g>
+   <g id="text_3">
+    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="25.92" y="53.092578" transform="rotate(-0 25.92 53.092578)">Plot, don’t just score</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #4b5563" transform="translate(143.28 47.956161)">reliability diagram + ECE with a range;</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #4b5563" transform="translate(143.28 57.502065)">look near your thresholds</text>
+   </g>
+   <g id="text_5">
+    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="25.92" y="85.449062" transform="rotate(-0 25.92 85.449062)">Slice</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #4b5563" transform="translate(143.28 79.405505)">every group you act on</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #4b5563" transform="translate(143.28 89.262604)">differently: source, customer, language</text>
+   </g>
+   <g id="text_7">
+    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="25.92" y="117.166797" transform="rotate(-0 25.92 117.166797)">Fix</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #4b5563" transform="translate(143.28 111.371442)">base-rate adjustment if you know it;</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #4b5563" transform="translate(143.28 120.873979)">Platt or temperature on labels</text>
+   </g>
+   <g id="text_9">
+    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="25.92" y="148.668516" transform="rotate(-0 25.92 148.668516)">Re-test</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #4b5563" transform="translate(143.28 143.051442)">on a schedule, and after any model</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #4b5563" transform="translate(143.28 152.591151)">version or data change</text>
+   </g>
+   <g id="patch_2">
+    <path d="M 11.52 27 
+C 13.143043 27 14.699829 26.355158 15.847494 25.207494 
+C 16.995158 24.059829 17.64 22.503043 17.64 20.88 
+C 17.64 19.256957 16.995158 17.700171 15.847494 16.552506 
+C 14.699829 15.404842 13.143043 14.76 11.52 14.76 
+C 9.896957 14.76 8.340171 15.404842 7.192506 16.552506 
+C 6.044842 17.700171 5.4 19.256957 5.4 20.88 
+C 5.4 22.503043 6.044842 24.059829 7.192506 25.207494 
+C 8.340171 26.355158 9.896957 27 11.52 27 
+z
+" clip-path="url(#pe4cbba4502)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 11.52 58.68 
+C 13.143043 58.68 14.699829 58.035158 15.847494 56.887494 
+C 16.995158 55.739829 17.64 54.183043 17.64 52.56 
+C 17.64 50.936957 16.995158 49.380171 15.847494 48.232506 
+C 14.699829 47.084842 13.143043 46.44 11.52 46.44 
+C 9.896957 46.44 8.340171 47.084842 7.192506 48.232506 
+C 6.044842 49.380171 5.4 50.936957 5.4 52.56 
+C 5.4 54.183043 6.044842 55.739829 7.192506 56.887494 
+C 8.340171 58.035158 9.896957 58.68 11.52 58.68 
+z
+" clip-path="url(#pe4cbba4502)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 11.52 90.36 
+C 13.143043 90.36 14.699829 89.715158 15.847494 88.567494 
+C 16.995158 87.419829 17.64 85.863043 17.64 84.24 
+C 17.64 82.616957 16.995158 81.060171 15.847494 79.912506 
+C 14.699829 78.764842 13.143043 78.12 11.52 78.12 
+C 9.896957 78.12 8.340171 78.764842 7.192506 79.912506 
+C 6.044842 81.060171 5.4 82.616957 5.4 84.24 
+C 5.4 85.863043 6.044842 87.419829 7.192506 88.567494 
+C 8.340171 89.715158 9.896957 90.36 11.52 90.36 
+z
+" clip-path="url(#pe4cbba4502)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 11.52 122.04 
+C 13.143043 122.04 14.699829 121.395158 15.847494 120.247494 
+C 16.995158 119.099829 17.64 117.543043 17.64 115.92 
+C 17.64 114.296957 16.995158 112.740171 15.847494 111.592506 
+C 14.699829 110.444842 13.143043 109.8 11.52 109.8 
+C 9.896957 109.8 8.340171 110.444842 7.192506 111.592506 
+C 6.044842 112.740171 5.4 114.296957 5.4 115.92 
+C 5.4 117.543043 6.044842 119.099829 7.192506 120.247494 
+C 8.340171 121.395158 9.896957 122.04 11.52 122.04 
+z
+" clip-path="url(#pe4cbba4502)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 11.52 153.72 
+C 13.143043 153.72 14.699829 153.075158 15.847494 151.927494 
+C 16.995158 150.779829 17.64 149.223043 17.64 147.6 
+C 17.64 145.976957 16.995158 144.420171 15.847494 143.272506 
+C 14.699829 142.124842 13.143043 141.48 11.52 141.48 
+C 9.896957 141.48 8.340171 142.124842 7.192506 143.272506 
+C 6.044842 144.420171 5.4 145.976957 5.4 147.6 
+C 5.4 149.223043 6.044842 150.779829 7.192506 151.927494 
+C 8.340171 153.075158 9.896957 153.72 11.52 153.72 
+z
+" clip-path="url(#pe4cbba4502)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="11.52" y="23.568879" transform="rotate(-0 11.52 23.568879)">1</text>
+   </g>
+   <g id="text_12">
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="11.52" y="55.248879" transform="rotate(-0 11.52 55.248879)">2</text>
+   </g>
+   <g id="text_13">
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="11.52" y="86.928879" transform="rotate(-0 11.52 86.928879)">3</text>
+   </g>
+   <g id="text_14">
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="11.52" y="118.608879" transform="rotate(-0 11.52 118.608879)">4</text>
+   </g>
+   <g id="text_15">
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="11.52" y="150.288879" transform="rotate(-0 11.52 150.288879)">5</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pe4cbba4502">
+   <rect x="2.88" y="2.88" width="338.4" height="172.8"/>
+  </clipPath>
+ </defs>
+</svg>

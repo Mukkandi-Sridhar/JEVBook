@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="344.16pt" height="120.96pt" viewBox="0 0 344.16 120.96" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 120.96 
+L 344.16 120.96 
+L 344.16 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 73.212935 64.588667 
+Q 105.478914 73.079714 136.8176 81.326737 
+" clip-path="url(#p7c67b175fa)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+    <path d="M 133.165621 77.522062 
+L 136.8176 81.326737 
+L 131.765908 82.840972 
+z
+" clip-path="url(#p7c67b175fa)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 270.947065 64.588667 
+Q 238.681086 73.079714 207.3424 81.326737 
+" clip-path="url(#p7c67b175fa)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+    <path d="M 212.394092 82.840972 
+L 207.3424 81.326737 
+L 210.994379 77.522062 
+z
+" clip-path="url(#p7c67b175fa)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 7.2 64.08 
+L 135.36 64.08 
+Q 139.68 64.08 139.68 59.76 
+L 139.68 25.2 
+Q 139.68 20.88 135.36 20.88 
+L 7.2 20.88 
+Q 2.88 20.88 2.88 25.2 
+L 2.88 59.76 
+Q 2.88 64.08 7.2 64.08 
+z
+" clip-path="url(#p7c67b175fa)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 208.8 64.08 
+L 336.96 64.08 
+Q 341.28 64.08 341.28 59.76 
+L 341.28 25.2 
+Q 341.28 20.88 336.96 20.88 
+L 208.8 20.88 
+Q 204.48 20.88 204.48 25.2 
+L 204.48 59.76 
+Q 204.48 64.08 208.8 64.08 
+z
+" clip-path="url(#p7c67b175fa)" style="fill: #f7e0e1; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 108 114.48 
+L 236.16 114.48 
+Q 240.48 114.48 240.48 110.16 
+L 240.48 86.4 
+Q 240.48 82.08 236.16 82.08 
+L 108 82.08 
+Q 103.68 82.08 103.68 86.4 
+L 103.68 110.16 
+Q 103.68 114.48 108 114.48 
+z
+" clip-path="url(#p7c67b175fa)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 500; font-size: 6.8px; font-family: 'Inter'; fill: #1f2430" transform="translate(34.638094 34.829604)">“Jev returns calibrated</text>
+    <text style="font-weight: 500; font-size: 6.8px; font-family: 'Inter'; fill: #1f2430" transform="translate(49.693719 44.461896)">probabilities”</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 5.8px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="71.28" y="51.755766" transform="rotate(-0 71.28 51.755766)">the vendor</text>
+   </g>
+   <g id="text_3">
+    <text style="font-weight: 500; font-size: 6.8px; font-family: 'Inter'; fill: #1f2430" transform="translate(234.878094 34.829604)">“Jev can’t be calibrated</text>
+    <text style="font-weight: 500; font-size: 6.8px; font-family: 'Inter'; fill: #1f2430" transform="translate(250.531375 44.465084)">for your data”</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 5.8px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="272.88" y="51.822375" transform="rotate(-0 272.88 51.822375)">a critic</text>
+   </g>
+   <g id="text_5">
+    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="172.08" y="100.238906" transform="rotate(-0 172.08 100.238906)">test it on your labels</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p7c67b175fa">
+   <rect x="2.88" y="2.88" width="338.4" height="115.2"/>
+  </clipPath>
+ </defs>
+</svg>
