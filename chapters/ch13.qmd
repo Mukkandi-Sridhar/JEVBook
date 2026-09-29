@@ -1,3 +1,161 @@
 # Agents: Observe, Decide, Act {#sec-ch13}
 
-*Draft in progress.*
+```{python}
+#| include: false
+from collections import Counter
+from jevkit import soc
+from jevkit.agent import SOCAgent
+```
+
+"Agent" might be the most overused word in AI right now. It's on every product page and in every funding announcement, and it seems to mean something slightly different to everyone who says it.
+
+*"So what actually is an agent? And is it just a chatbot with a new name?"*
+
+Strip away the marketing and an agent is a simple thing: a model in a **loop**, with **tools**. It looks at the situation, decides what to do, does it, looks at what happened, and goes round again, until the job is done or it gives up.
+
+That simple shape has a consequence nobody puts on the product page. Once you build one and watch it work, you notice that most of its steps aren't the impressive part. They're small decisions. This chapter builds an agent for Kestrel's SOC and counts.
+
+::: {.goals}
+- Describe an agent as an Observe, Decide, Act loop with tools.
+- Explain what a "tool call" really is, and why your code, not the model, should do the acting.
+- Build and trace a small SOC triage agent.
+- Count what kinds of steps an agent takes, and see how many are decisions.
+- Explain why errors and latency compound over a loop.
+:::
+
+## A model in a loop
+
+Military strategists had a name for this long before AI did. In the 1970s and 80s, the US Air Force colonel John Boyd described the **OODA loop**, observe, orient, decide, act, to explain why fighter pilots who cycled through it faster tended to win [@boyd1987]. I'll use a simpler version.
+
+![The agent loop. Observe the situation, using tools and memory. Decide what to do. Act, which changes the world. Then observe again. The loop runs until the task is finished or a stopping rule fires.](/figures/ch13/loop.pdf){#fig-loop}
+
+**Observe**: read the alert, call a tool to look something up, fetch a past case from memory. **Decide**: what to look at next, whether there's enough evidence, which door this alert goes through. **Act**: close it, queue it, page someone, isolate a laptop.
+
+An LLM-based agent usually runs this loop by writing: it produces some reasoning, then the name of a tool and its arguments, then reads the tool's result, then writes some more. The best-known recipe for that, called ReAct, interleaves "thought" text with actions [@yao2023].
+
+## What a tool call really is
+
+The word "tool" makes it sound as if the model reaches out and presses buttons. It doesn't.
+
+![A tool call. The model outputs text naming a tool and its arguments. Your code checks that text, runs the tool if it's allowed, and puts the result back into the model's context for the next step.](/figures/ch13/tool-call.pdf){#fig-tool-call}
+
+A tool call is the model *writing down* which tool it wants and with what arguments, usually as structured output of the kind Chapter 11 dissected [@schick2023]. Your code reads that, decides whether to allow it, runs it, and hands back the result.
+
+Look at what that request contains: a choice from a fixed list of tools, and some values pulled from the context. It's a typed decision wearing a costume. And the part that actually touches the world, the acting, is ordinary code you control. Keep it that way. The model proposes; your code checks and disposes.
+
+## Building one
+
+The book's SOC agent is deliberately small, so you can see every step. For each alert it:
+
+1. **observes** the alert;
+2. **decides** which piece of evidence to gather next: threat intel, the host's recent history, or the policies, or none;
+3. **observes** that evidence with a tool;
+4. **decides** whether it now has enough evidence, and loops back to step 2 if not (at most three times);
+5. **decides** the verdict: is it real, what kind of threat, how severe;
+6. puts the alert through one of the three doors from Chapter 21, and **acts**: closing it, or **generating** a case note for the analyst, or **generating** a page message for on-call.
+
+Every decision goes through TypeSafe's official client to `jev-mock-synthetic` as a typed question. Every piece of free text comes from `llm-mock-synthetic`. Both are synthetic stand-ins, so treat what follows as a look at *structure*, not performance.
+
+::: {.tryit lab="ch13"}
+```{python}
+alerts = soc.load()
+agent = SOCAgent()
+trace = agent.run(next(alerts.iloc[[3]].itertuples()))
+for s in trace.steps:
+    print(f"{s.kind:>8}  {s.name:<16} {s.detail[:34]}")
+print("door:", trace.action)
+```
+:::
+
+![One alert's full trace: ten steps from reading the alert to closing it. Each step is labelled with its kind. Latencies are illustrative.](/figures/ch13/trace.pdf){#fig-trace}
+
+Read the trace in @fig-trace from top to bottom. The agent looked at the alert, chose to check the host's history, decided that wasn't enough, checked the policies, decided that wasn't enough either, decided it didn't need anything else, then made its verdict: very unlikely to be an attack. Into the act door; closed.
+
+(Look at the policy chunk it retrieved, too. It's about payment approvals, not temp-folder binaries. The retriever from Chapter 12 found the "nearest" chunk, and the nearest chunk wasn't relevant. Chapter 14 is about exactly this kind of quiet failure.)
+
+## Counting the steps
+
+Now run it on 300 alerts and count what kind of work the agent actually did.
+
+```{python}
+traces = [agent.run(r) for r in alerts.head(300).itertuples()]
+kinds = Counter(s.kind for t in traces for s in t.steps)
+print({k: round(v / len(traces), 2) for k, v in kinds.items()})
+```
+
+![What the agent spent its steps on, averaged over 300 alerts. Small typed decisions dominate. Free text, the thing LLMs are famous for, is a small minority of the work.](/figures/ch13/census.pdf){#fig-census}
+
+On average, each alert took {{< num ch13 per_alert.decide f1 >}} small typed decisions, {{< num ch13 per_alert.observe f1 >}} tool reads, one action, and {{< num ch13 per_alert.generate f2 >}} pieces of free text (@fig-census). Decisions made up {{< num ch13 share_decide pct >}} of all steps. Written text made up {{< num ch13 share_generate pct >}}.
+
+You could object that I built the agent, so I chose that mix. That's fair, and you should run the same count on any agent you build or buy. But I'd be surprised if you found a very different shape. Look at what an agent has to do on every task: pick a tool, check a result, decide whether to continue, route the case, choose whom to tell. Writing is the occasional output. Deciding is the everyday work.
+
+::: {.keyidea}
+Watch an agent work, and most of what it does is decide.
+:::
+
+## Errors compound
+
+Here's the uncomfortable arithmetic of loops.
+
+If each step is right 95% of the time, and a task needs ten steps to all go right, the chance of the whole task going right is 0.95 multiplied by itself ten times, about {{< num ch13 compound_95_10 pct >}}.
+
+![The chance that every step of a task goes right, for different per-step reliabilities. Small per-step error rates become large task-level failure rates as the number of steps grows.](/figures/ch13/compound.pdf){#fig-compound}
+
+@fig-compound is why agents that look great in a demo stumble in production. A demo is a few steps on a friendly example. Production is twenty steps on a strange one. At 95% per step, a twenty-step task succeeds about {{< num ch13 compound_95_20 pct >}} of the time. At 99% per step, ten steps succeed about {{< num ch13 compound_99_10 pct >}} of the time.
+
+Not every step error ruins the task. Some get corrected later, and some don't matter. But the direction is always the same, and it points at the decisions: they're most of the steps, so they're most of the risk. A decision that comes with an honest probability can be caught before it compounds, by routing it to review or gathering more evidence. A decision that comes back as a confident sentence can't.
+
+## Latency compounds too
+
+Every step also takes time, and the steps run one after another.
+
+![Average time per alert for the same agent, under illustrative latency assumptions, when every decision is made by an LLM writing a small JSON object, and when decisions go to a fast decision model instead. Decisions are most of the steps, so they're most of the waiting.](/figures/ch13/latency.pdf){#fig-latency}
+
+Under the illustrative assumptions from Chapter 10, an LLM call that writes a small JSON answer takes about {{< num ch13 llm_json_latency f1 >}} seconds. With every decision made that way, the agent takes about {{< num ch13 t_llm f1 >}} seconds per alert (@fig-latency). With decisions sent to a fast decision model, whose latency here is the mock's own synthetic figure, it's about {{< num ch13 t_fast f1 >}} seconds. At 700 alerts a day, and with analysts waiting on the queue, that difference is the whole shift.
+
+Treat those numbers as a shape, not a benchmark. Your models, providers and network will give you different ones. The shape holds: the decisions dominate the wait because they dominate the steps.
+
+## Stopping is a decision too
+
+One decision in the loop deserves special attention: *do I have enough evidence to stop?*
+
+Stop too early, and the agent decides on too little. Stop too late, and it burns time and money gathering evidence that changes nothing, or loops forever. Real agent frameworks all have a maximum-steps setting for exactly this reason, and it's usually the only thing preventing an expensive runaway.
+
+"Enough evidence" is a yes-or-no question with a probability, which means it can be treated like every other decision in this book: a threshold chosen from costs, checked against outcomes. The most useful agents I've seen treat stopping that way, rather than hoping the model will say "I'm done" at the right moment.
+
+[[AUTHOR STORY: SIGNAL, or another agent you built: the moment you realised most of its steps were small decisions]]
+
+::: {.breaks}
+Agents fail in ways single calls don't. A wrong early decision sends the loop down the wrong path, and every later step builds on it. Retrieved text and tool results can carry prompt injections that redirect the agent. Loops can oscillate, gathering the same evidence again and again. And an agent with real tools can do real damage: isolate the CEO's laptop during a board meeting, or close a real incident. Give every action tool an allow-list, a budget and a human-approval door for anything expensive to undo. Chapter 14 goes through the failure modes one by one.
+:::
+
+::: {.threshold}
+The agent's "enough evidence?" decision stops when P(enough) is above 0.5. Gathering one more piece of evidence costs about half a second and some API calls. Deciding on too little evidence sometimes sends a real threat through the act door. Should the line move up or down? What would you measure to set it properly?
+
+(Up, towards gathering more evidence, when a wrong verdict is expensive and a lookup is cheap, as it is here. Measure how often extra evidence *changes the verdict*, and what that change is worth. If one more lookup rarely changes anything, stop sooner.)
+:::
+
+::: {.bookquote by="Shunyu Yao and colleagues, ReAct: Synergizing Reasoning and Acting in Language Models, 2023"}
+[R]easoning traces help the model induce, track, and update action plans as well as handle exceptions, while actions allow it to interface with and gather additional information from external sources such as knowledge bases or environments.
+:::
+
+## Where we are
+
+An agent turned out to be a model in a loop, observing, deciding and acting, with tools that are really just decisions your code carries out. We built a small one for Kestrel and counted its steps: most were typed decisions, and very little was writing. That changed how we look at its weak points. Per-step errors compound over a loop, per-step latency adds up, and even stopping is a decision that deserves a threshold.
+
+Next, a closer and more honest look at where agents break.
+
+::: {.exercises}
+1. In your own words, why is a tool call "a typed decision wearing a costume"?
+2. In the lab, set `max_evidence=1`. How do the step counts change? What happens to the share of alerts in each door? Why?
+3. An agent vendor says their agent completes 90% of steps correctly. Their typical task is fifteen steps. What would you expect the task success rate to be, and what else would you want to know?
+4. Sketch an agent for a job you know (customer refunds, IT help desk, invoice processing). List its steps and label each as observe, decide, generate or act. What share are decisions?
+:::
+
+::: {.nexthook}
+Next: agents break in predictable ways. Chapter 14 catalogues them, from compounding errors to prompt injection, and shows which ones a decision layer can catch.
+:::
+
+::: {.summary}
+![](/figures/ch13/summary.pdf){width=100%}
+:::

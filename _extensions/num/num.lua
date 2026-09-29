@@ -41,7 +41,11 @@ return {
     local v = data
     for part in key:gmatch("[^%.]+") do
       if type(v) ~= "table" then v = nil break end
-      v = v[part]
+      if part:match("^%d+$") and v[tonumber(part) + 1] ~= nil then
+        v = v[tonumber(part) + 1]
+      else
+        v = v[part]
+      end
     end
     if v == nil then error("num: no key '" .. key .. "' in results/" .. ch .. ".json") end
     local s = fmt(v, f)

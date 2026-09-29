@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="344.16pt" height="185.76pt" viewBox="0 0 344.16 185.76" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 185.76 
+L 344.16 185.76 
+L 344.16 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 205.726378 33.243646 
+Q 234.88191 70.507132 217.612546 113.62833 
+" clip-path="url(#paf5ca38ff2)" style="fill: none; stroke: #4b5563; stroke-width: 0.9; stroke-linecap: round"/>
+    <path d="M 221.838432 110.473273 
+L 217.612546 113.62833 
+L 216.732664 108.428493 
+z
+" clip-path="url(#paf5ca38ff2)" style="fill: #4b5563; stroke: #4b5563; stroke-width: 0.9; stroke-linecap: round"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 214.731875 124.351435 
+Q 170.001187 145.540444 129.973536 117.918925 
+" clip-path="url(#paf5ca38ff2)" style="fill: none; stroke: #4b5563; stroke-width: 0.9; stroke-linecap: round"/>
+    <path d="M 132.115403 122.738147 
+L 129.973536 117.918925 
+L 135.239179 118.211336 
+z
+" clip-path="url(#paf5ca38ff2)" style="fill: #4b5563; stroke: #4b5563; stroke-width: 0.9; stroke-linecap: round"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 126.82739 121.644006 
+Q 104.964505 70.487648 137.94179 26.759149 
+" clip-path="url(#paf5ca38ff2)" style="fill: none; stroke: #4b5563; stroke-width: 0.9; stroke-linecap: round"/>
+    <path d="M 133.036654 28.696194 
+L 137.94179 26.759149 
+L 137.427919 32.00781 
+z
+" clip-path="url(#paf5ca38ff2)" style="fill: #4b5563; stroke: #4b5563; stroke-width: 0.9; stroke-linecap: round"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 140.4 46.08 
+L 203.76 46.08 
+Q 208.08 46.08 208.08 41.76 
+L 208.08 21.6 
+Q 208.08 17.28 203.76 17.28 
+L 140.4 17.28 
+Q 136.08 17.28 136.08 21.6 
+L 136.08 41.76 
+Q 136.08 46.08 140.4 46.08 
+z
+" clip-path="url(#paf5ca38ff2)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 217.251094 137.88 
+L 280.611094 137.88 
+Q 284.931094 137.88 284.931094 133.56 
+L 284.931094 113.4 
+Q 284.931094 109.08 280.611094 109.08 
+L 217.251094 109.08 
+Q 212.931094 109.08 212.931094 113.4 
+L 212.931094 133.56 
+Q 212.931094 137.88 217.251094 137.88 
+z
+" clip-path="url(#paf5ca38ff2)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 63.548906 137.88 
+L 126.908906 137.88 
+Q 131.228906 137.88 131.228906 133.56 
+L 131.228906 113.4 
+Q 131.228906 109.08 126.908906 109.08 
+L 63.548906 109.08 
+Q 59.228906 109.08 59.228906 113.4 
+L 59.228906 133.56 
+Q 59.228906 137.88 63.548906 137.88 
+z
+" clip-path="url(#paf5ca38ff2)" style="fill: #f1f2f4; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 7.4px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="172.08" y="34.368281" transform="rotate(-0 172.08 34.368281)">Observe</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 5.9px; font-family: 'Inter'; fill: #4b5563" transform="translate(147.026203 58.109153)">read the alert, call</text>
+    <text style="font-size: 5.9px; font-family: 'Inter'; fill: #4b5563" transform="translate(144.2615 67.394163)">tools, fetch memory</text>
+   </g>
+   <g id="text_3">
+    <text style="font-weight: 700; font-size: 7.4px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="248.931094" y="126.280437" transform="rotate(-0 248.931094 126.280437)">Decide</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 5.9px; font-family: 'Inter'; fill: #4b5563" transform="translate(220.916235 149.81881)">what next? enough?</text>
+    <text style="font-size: 5.9px; font-family: 'Inter'; fill: #4b5563" transform="translate(231.835844 159.742679)">which door?</text>
+   </g>
+   <g id="text_5">
+    <text style="font-weight: 700; font-size: 7.4px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="95.228906" y="126.131859" transform="rotate(-0 95.228906 126.131859)">Act</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 5.9px; font-family: 'Inter'; fill: #4b5563" transform="translate(67.818796 149.789771)">close, queue, page,</text>
+    <text style="font-size: 5.9px; font-family: 'Inter'; fill: #4b5563" transform="translate(76.809382 159.739913)">isolate a host</text>
+   </g>
+   <g id="text_7">
+    <text style="font-style: italic; font-size: 6.2px; font-family: 'Inter'; fill: #8a919c" transform="translate(158.364438 93.822779)">the world</text>
+    <text style="font-style: italic; font-size: 6.2px; font-family: 'Inter'; fill: #8a919c" transform="translate(159.418922 102.942471)">changes</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="paf5ca38ff2">
+   <rect x="2.88" y="2.88" width="338.4" height="180"/>
+  </clipPath>
+ </defs>
+</svg>

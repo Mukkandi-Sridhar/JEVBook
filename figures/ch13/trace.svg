@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="344.16pt" height="196.56pt" viewBox="0 0 344.16 196.56" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 196.56 
+L 344.16 196.56 
+L 344.16 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="text_1">
+    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="60.48" y="22.64" transform="rotate(-0 60.48 22.64)">get_alert</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="150.48" y="22.517812" transform="rotate(-0 150.48 22.517812)">Unsigned binary ran from a temp folder</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 5.8px; font-family: 'JetBrains Mono'; text-anchor: end; fill: #8a919c" x="341.28" y="22.997" transform="rotate(-0 341.28 22.997)">0.05 s</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="60.48" y="39.6065" transform="rotate(-0 60.48 39.6065)">next_evidence</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="150.48" y="39.132187" transform="rotate(-0 150.48 39.132187)">-&gt; host_history  (p=0.29)</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 5.8px; font-family: 'JetBrains Mono'; text-anchor: end; fill: #8a919c" x="341.28" y="39.557" transform="rotate(-0 341.28 39.557)">0.14 s</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="60.48" y="55.9105" transform="rotate(-0 60.48 55.9105)">host_history</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="150.48" y="56.144531" transform="rotate(-0 150.48 56.144531)">1 related alert</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 5.8px; font-family: 'JetBrains Mono'; text-anchor: end; fill: #8a919c" x="341.28" y="56.117" transform="rotate(-0 341.28 56.117)">0.40 s</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="60.48" y="72.4705" transform="rotate(-0 60.48 72.4705)">enough_evidence</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="150.48" y="72.22875" transform="rotate(-0 150.48 72.22875)">P(enough) = 0.02</text>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 5.8px; font-family: 'JetBrains Mono'; text-anchor: end; fill: #8a919c" x="341.28" y="72.677" transform="rotate(-0 341.28 72.677)">0.13 s</text>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="60.48" y="89.2865" transform="rotate(-0 60.48 89.2865)">next_evidence</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="150.48" y="88.812187" transform="rotate(-0 150.48 88.812187)">-&gt; policy  (p=0.42)</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 5.8px; font-family: 'JetBrains Mono'; text-anchor: end; fill: #8a919c" x="341.28" y="89.237" transform="rotate(-0 341.28 89.237)">0.14 s</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="60.48" y="105.5905" transform="rotate(-0 60.48 105.5905)">policy_lookup</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="150.48" y="105.238594" transform="rotate(-0 150.48 105.238594)">approve payments. Warehouse scanners are rated low</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 5.8px; font-family: 'JetBrains Mono'; text-anchor: end; fill: #8a919c" x="341.28" y="105.797" transform="rotate(-0 341.28 105.797)">0.20 s</text>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="60.48" y="122.1505" transform="rotate(-0 60.48 122.1505)">enough_evidence</text>
+   </g>
+   <g id="text_20">
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="150.48" y="121.90875" transform="rotate(-0 150.48 121.90875)">P(enough) = 0.02</text>
+   </g>
+   <g id="text_21">
+    <text style="font-size: 5.8px; font-family: 'JetBrains Mono'; text-anchor: end; fill: #8a919c" x="341.28" y="122.357" transform="rotate(-0 341.28 122.357)">0.14 s</text>
+   </g>
+   <g id="text_22">
+    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="60.48" y="138.9665" transform="rotate(-0 60.48 138.9665)">next_evidence</text>
+   </g>
+   <g id="text_23">
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="150.48" y="138.503906" transform="rotate(-0 150.48 138.503906)">-&gt; none  (p=0.71)</text>
+   </g>
+   <g id="text_24">
+    <text style="font-size: 5.8px; font-family: 'JetBrains Mono'; text-anchor: end; fill: #8a919c" x="341.28" y="138.917" transform="rotate(-0 341.28 138.917)">0.14 s</text>
+   </g>
+   <g id="text_25">
+    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="60.48" y="155.8145" transform="rotate(-0 60.48 155.8145)">verdict</text>
+   </g>
+   <g id="text_26">
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="150.48" y="155.02875" transform="rotate(-0 150.48 155.02875)">P(attack) = 0.011, benign, severity 0.2</text>
+   </g>
+   <g id="text_27">
+    <text style="font-size: 5.8px; font-family: 'JetBrains Mono'; text-anchor: end; fill: #8a919c" x="341.28" y="155.477" transform="rotate(-0 341.28 155.477)">0.16 s</text>
+   </g>
+   <g id="text_28">
+    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="60.48" y="171.936" transform="rotate(-0 60.48 171.936)">close_alert</text>
+   </g>
+   <g id="text_29">
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="150.48" y="172.064531" transform="rotate(-0 150.48 172.064531)">auto-closed</text>
+   </g>
+   <g id="text_30">
+    <text style="font-size: 5.8px; font-family: 'JetBrains Mono'; text-anchor: end; fill: #8a919c" x="341.28" y="172.037" transform="rotate(-0 341.28 172.037)">0.05 s</text>
+   </g>
+   <g id="text_31">
+    <g id="patch_2">
+     <path d="M 16.173234 25.548887 
+L 39.986766 25.548887 
+Q 40.682766 25.548887 40.682766 24.852887 
+L 40.682766 16.907113 
+Q 40.682766 16.211113 39.986766 16.211113 
+L 16.173234 16.211113 
+Q 15.477234 16.211113 15.477234 16.907113 
+L 15.477234 24.852887 
+Q 15.477234 25.548887 16.173234 25.548887 
+z
+" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.7; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="28.08" y="22.989863" transform="rotate(-0 28.08 22.989863)">observe</text>
+   </g>
+   <g id="text_32">
+    <g id="patch_3">
+     <path d="M 18.118953 42.108887 
+L 38.041047 42.108887 
+Q 38.737047 42.108887 38.737047 41.412887 
+L 38.737047 33.467113 
+Q 38.737047 32.771113 38.041047 32.771113 
+L 18.118953 32.771113 
+Q 17.422953 32.771113 17.422953 33.467113 
+L 17.422953 41.412887 
+Q 17.422953 42.108887 18.118953 42.108887 
+z
+" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.7; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="28.08" y="39.549863" transform="rotate(-0 28.08 39.549863)">decide</text>
+   </g>
+   <g id="text_33">
+    <g id="patch_4">
+     <path d="M 16.173234 58.668887 
+L 39.986766 58.668887 
+Q 40.682766 58.668887 40.682766 57.972887 
+L 40.682766 50.027113 
+Q 40.682766 49.331113 39.986766 49.331113 
+L 16.173234 49.331113 
+Q 15.477234 49.331113 15.477234 50.027113 
+L 15.477234 57.972887 
+Q 15.477234 58.668887 16.173234 58.668887 
+z
+" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.7; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="28.08" y="56.109863" transform="rotate(-0 28.08 56.109863)">observe</text>
+   </g>
+   <g id="text_34">
+    <g id="patch_5">
+     <path d="M 18.118953 75.228887 
+L 38.041047 75.228887 
+Q 38.737047 75.228887 38.737047 74.532887 
+L 38.737047 66.587113 
+Q 38.737047 65.891113 38.041047 65.891113 
+L 18.118953 65.891113 
+Q 17.422953 65.891113 17.422953 66.587113 
+L 17.422953 74.532887 
+Q 17.422953 75.228887 18.118953 75.228887 
+z
+" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.7; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="28.08" y="72.669863" transform="rotate(-0 28.08 72.669863)">decide</text>
+   </g>
+   <g id="text_35">
+    <g id="patch_6">
+     <path d="M 18.118953 91.788887 
+L 38.041047 91.788887 
+Q 38.737047 91.788887 38.737047 91.092887 
+L 38.737047 83.147113 
+Q 38.737047 82.451113 38.041047 82.451113 
+L 18.118953 82.451113 
+Q 17.422953 82.451113 17.422953 83.147113 
+L 17.422953 91.092887 
+Q 17.422953 91.788887 18.118953 91.788887 
+z
+" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.7; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="28.08" y="89.229863" transform="rotate(-0 28.08 89.229863)">decide</text>
+   </g>
+   <g id="text_36">
+    <g id="patch_7">
+     <path d="M 16.173234 108.348887 
+L 39.986766 108.348887 
+Q 40.682766 108.348887 40.682766 107.652887 
+L 40.682766 99.707113 
+Q 40.682766 99.011113 39.986766 99.011113 
+L 16.173234 99.011113 
+Q 15.477234 99.011113 15.477234 99.707113 
+L 15.477234 107.652887 
+Q 15.477234 108.348887 16.173234 108.348887 
+z
+" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.7; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="28.08" y="105.789863" transform="rotate(-0 28.08 105.789863)">observe</text>
+   </g>
+   <g id="text_37">
+    <g id="patch_8">
+     <path d="M 18.118953 124.908887 
+L 38.041047 124.908887 
+Q 38.737047 124.908887 38.737047 124.212887 
+L 38.737047 116.267113 
+Q 38.737047 115.571113 38.041047 115.571113 
+L 18.118953 115.571113 
+Q 17.422953 115.571113 17.422953 116.267113 
+L 17.422953 124.212887 
+Q 17.422953 124.908887 18.118953 124.908887 
+z
+" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.7; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="28.08" y="122.349863" transform="rotate(-0 28.08 122.349863)">decide</text>
+   </g>
+   <g id="text_38">
+    <g id="patch_9">
+     <path d="M 18.118953 141.468887 
+L 38.041047 141.468887 
+Q 38.737047 141.468887 38.737047 140.772887 
+L 38.737047 132.827113 
+Q 38.737047 132.131113 38.041047 132.131113 
+L 18.118953 132.131113 
+Q 17.422953 132.131113 17.422953 132.827113 
+L 17.422953 140.772887 
+Q 17.422953 141.468887 18.118953 141.468887 
+z
+" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.7; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="28.08" y="138.909863" transform="rotate(-0 28.08 138.909863)">decide</text>
+   </g>
+   <g id="text_39">
+    <g id="patch_10">
+     <path d="M 18.118953 158.028887 
+L 38.041047 158.028887 
+Q 38.737047 158.028887 38.737047 157.332887 
+L 38.737047 149.387113 
+Q 38.737047 148.691113 38.041047 148.691113 
+L 18.118953 148.691113 
+Q 17.422953 148.691113 17.422953 149.387113 
+L 17.422953 157.332887 
+Q 17.422953 158.028887 18.118953 158.028887 
+z
+" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.7; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="28.08" y="155.469863" transform="rotate(-0 28.08 155.469863)">decide</text>
+   </g>
+   <g id="text_40">
+    <g id="patch_11">
+     <path d="M 23.237906 174.588887 
+L 32.922094 174.588887 
+Q 33.618094 174.588887 33.618094 173.892887 
+L 33.618094 165.947113 
+Q 33.618094 165.251113 32.922094 165.251113 
+L 23.237906 165.251113 
+Q 22.541906 165.251113 22.541906 165.947113 
+L 22.541906 173.892887 
+Q 22.541906 174.588887 23.237906 174.588887 
+z
+" style="fill: #f1f2f4; stroke: #4b5563; stroke-width: 0.7; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="28.08" y="172.029863" transform="rotate(-0 28.08 172.029863)">act</text>
+   </g>
+  </g>
+ </g>
+</svg>
