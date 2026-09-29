@@ -141,7 +141,3 @@ Next we let the model act: the loop that makes an LLM an agent.
 ::: {.nexthook}
 Next: give a model tools and a loop, and it becomes an agent. Chapter 13 builds one around Kestrel's SOC, and finds out what the agent spends most of its time doing.
 :::
-
-::: {.summary}
-![](/figures/ch12/summary.pdf){width=100%}
-:::

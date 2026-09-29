@@ -175,7 +175,3 @@ There's still a gap. In every example so far, each word got *one* vector. But wo
 ::: {.nexthook}
 Next: "bank" means different things in different sentences, and "not" can flip everything. Attention lets each word look at the others before deciding what it means, and it's the heart of every transformer.
 :::
-
-::: {.summary}
-![](/figures/ch07/summary.pdf){width=100%}
-:::

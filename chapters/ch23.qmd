@@ -180,7 +180,3 @@ The first call was ten lines, and the only thing that made it a mock was the tra
 ::: {.nexthook}
 Next: an agent where Jev decides and the LLM reasons, built step by step, and measured against one where the LLM does everything.
 :::
-
-::: {.summary}
-![](/figures/ch23/summary.pdf){width=100%}
-:::

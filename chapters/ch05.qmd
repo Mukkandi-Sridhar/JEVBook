@@ -183,7 +183,3 @@ That's the foundation. Every system in the rest of the book, from deep networks 
 ::: {.nexthook}
 Next, Part II: so far our models were handed neat features like a threat-intel score. What about raw pixels, raw words, raw logs? That's where deep learning comes in, and it starts with a single artificial neuron.
 :::
-
-::: {.summary}
-![](/figures/ch05/summary.pdf){width=100%}
-:::

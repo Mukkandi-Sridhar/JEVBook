@@ -165,7 +165,3 @@ Next we need to feed a network the rawest input of all, words. And words aren't 
 ::: {.nexthook}
 Next: how does a word become a number that *means* something? The answer is a map where similar words live close together, and it's the idea underneath every LLM.
 :::
-
-::: {.summary}
-![](/figures/ch06/summary.pdf){width=100%}
-:::

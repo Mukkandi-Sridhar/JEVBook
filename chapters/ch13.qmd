@@ -155,7 +155,3 @@ Next, a closer and more honest look at where agents break.
 ::: {.nexthook}
 Next: agents break in predictable ways. Chapter 14 catalogues them, from compounding errors to prompt injection, and shows which ones a decision layer can catch.
 :::
-
-::: {.summary}
-![](/figures/ch13/summary.pdf){width=100%}
-:::

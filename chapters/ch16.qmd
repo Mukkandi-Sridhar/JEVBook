@@ -35,7 +35,7 @@ More than you'd think, and less than most articles imply. The trick is to sort e
 
 **Unknown** means it hasn't been published, so any statement about it is a guess, and I'll say so when I guess.
 
-Everything in the second and third piles is marked [[VERIFY]] in the draft, because my access to the sources was limited to search summaries. A good habit: when a claim about a model appears without a pile attached, ask which pile it belongs in.
+My access to the sources for the second pile was limited to search summaries, so treat every vendor number in this book as a claim to check, not a fact. A good habit: when a claim about a model appears without a pile attached, ask which pile it belongs in.
 
 ## What we can verify: the interface
 
@@ -145,8 +145,4 @@ I started without an API key, so we sorted what can be known into three piles. T
 
 ::: {.nexthook}
 Next: the three question types, `choice`, `score` and `noul`, one at a time, with the design choices that make each work well.
-:::
-
-::: {.summary}
-![](/figures/ch16/summary.pdf){width=100%}
 :::

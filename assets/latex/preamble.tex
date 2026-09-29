@@ -21,9 +21,9 @@
 \newfontfamily\liningserif{SourceSerif4}[UprightFont = *-Regular, ItalicFont = *-Italic, Extension = .ttf, Path = ./assets/fonts/, Numbers = Lining]
 
 \microtypesetup{protrusion=true,expansion=true}
-\linespread{1.08}
+\linespread{1.1}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0.62em plus 0.15em minus 0.05em}
+\setlength{\parskip}{0.5em plus 0.15em minus 0.05em}
 \raggedbottom
 \frenchspacing
 \widowpenalty=10000
@@ -201,7 +201,8 @@
 % Wide material: extends into the outer margin on both odd and even pages
 \makeatletter
 % Inside a wide block, figures stop floating so they take the widened line width.
-\newenvironment{widefig}{\par\begin{adjustwidth*}{0pt}{-\dimexpr\marginparwidth+\marginparsep\relax}%
+% (The print layout has no margin column, so wide figures stay inside the text block.)
+\newenvironment{widefig}{\par\begin{adjustwidth*}{0pt}{0pt}%
   \renewenvironment{figure}[1][]{\par\medskip\def\@captype{figure}\centering}{\par\medskip}}%
   {\end{adjustwidth*}\par}
 \makeatother
@@ -212,6 +213,8 @@
 % Margin items
 \newcommand{\marginqr}[2]{\marginnote{\raggedright\includegraphics[width=0.62in]{#1}\\[3pt]{\sffamily\bfseries\fontsize{6.5}{8}\selectfont\color{jevgreen}LAB NOTEBOOK}\\{\sffamily\fontsize{6.2}{8}\selectfont\color{ink2}#2}}}
 \newcommand{\sidenote}[1]{\marginnote{\raggedright\sffamily\fontsize{7}{9.2}\selectfont\color{ink2}#1}}
+% A short aside set in the text column (the print layout has no margin notes)
+\newenvironment{asidenote}{\par\vspace{2pt}\begingroup\leftskip=1.2em\sffamily\fontsize{8.5}{11.5}\selectfont\color{ink2}}{\par\endgroup\vspace{2pt}}
 
 % Draft markers (visible on purpose; removed before print)
 \newcommand{\authorstory}[1]{\begin{storybox}\iconstory\hspace{0.4em}\textbf{AUTHOR STORY:} #1\end{storybox}}

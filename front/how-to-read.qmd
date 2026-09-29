@@ -14,11 +14,11 @@ You don't have to read it front to back. Here are three routes, depending on whe
 
 ![The boxes you'll meet in every chapter.](/figures/front/boxes.pdf){#fig-boxes}
 
-Each chapter opens with a short list of what you'll be able to do by the end, and closes with a one-page visual summary, exercises and a hook to the next chapter. In between, a few kinds of box recur (@fig-boxes). The *Try it* boxes contain code you can run; the *Set the threshold* boxes ask you to make a small decision with real costs; the *Where this breaks* boxes are the honest limits of what the chapter just showed. Read those last ones. They're the difference between knowing a technique and knowing when to trust it.
+Each chapter opens with a short list of what you'll be able to do by the end, and closes with a short recap, exercises and a hook to the next chapter. In between, a few kinds of box recur (@fig-boxes). The *Try it* boxes contain code you can run; the *Set the threshold* boxes ask you to make a small decision with real costs; the *Where this breaks* boxes are the honest limits of what the chapter just showed. Read those last ones. They're the difference between knowing a technique and knowing when to trust it.
 
 ## Running the code
 
-Every listing in the book runs, and a test in the book's repository checks that it still does. The labs are Jupyter notebooks. The QR code beside each chapter's first *Try it* box opens its lab in Google Colab, where it installs everything it needs.
+Every listing in the book runs, and a test in the book's repository checks that it still does. The labs are Jupyter notebooks. Chapter 1's lab is `labs/ch01.ipynb`, Chapter 2's is `labs/ch02.ipynb`, and so on; each one opens in Google Colab and installs everything it needs.
 
 To run things on your own machine:
 

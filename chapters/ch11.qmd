@@ -185,7 +185,3 @@ LLMs have another weakness we haven't dealt with. They only know what they were 
 ::: {.nexthook}
 Next: an LLM knows the internet, not your company. Chapter 12 shows how retrieval hands it the right documents at the right moment, and how agents keep a memory.
 :::
-
-::: {.summary}
-![](/figures/ch11/summary.pdf){width=100%}
-:::

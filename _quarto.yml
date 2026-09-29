@@ -90,19 +90,19 @@ format:
   pdf:
     pdf-engine: lualatex
     documentclass: scrbook
-    classoption: [twoside, open=right, fontsize=10.25pt, headings=standardclasses, numbers=noenddot]
+    classoption: [twoside, open=any, fontsize=10.5pt, headings=standardclasses, numbers=noenddot]
     papersize: custom
-    geometry:
+    geometry:                      # 7 x 10 in trim; a wider inner margin for the binding
       - paperwidth=7in
       - paperheight=10in
-      - top=0.85in
-      - bottom=0.9in
-      - inner=0.72in
-      - textwidth=4.7in
-      - marginparsep=0.2in
-      - marginparwidth=1.1in
-      - headsep=0.3in
-      - footskip=0.45in
+      - top=0.8in
+      - bottom=0.85in
+      - inner=0.95in
+      - outer=0.85in
+      - marginparsep=0.1in
+      - marginparwidth=0.6in
+      - headsep=0.28in
+      - footskip=0.42in
     toc: true
     toc-depth: 1
     number-sections: true

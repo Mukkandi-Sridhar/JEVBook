@@ -197,7 +197,3 @@ That closes Part V. We've compared the methods, drawn the lines and named the pa
 ::: {.nexthook}
 Next: Part VI starts building. Your first real calls to Jev through the official SDK, with retries, rate limits, and a mock that makes every one of them free.
 :::
-
-::: {.summary}
-![](/figures/ch22/summary.pdf){width=100%}
-:::

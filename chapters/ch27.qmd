@@ -164,7 +164,3 @@ We built a System One model in miniature. A shared encoder read each alert once,
 ::: {.nexthook}
 Next: a model is not a service. The capstone wraps a decision model in something you could run for real: versioned, logged, monitored and safe to fail.
 :::
-
-::: {.summary}
-![](/figures/ch27/summary.pdf){width=100%}
-:::

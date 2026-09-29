@@ -1,7 +1,7 @@
 -- book.lua: the book's semantic blocks, rendered for print (LaTeX) and web (HTML/EPUB).
 --
 -- Authoring syntax (in .qmd):
---   ::: {.tryit lab="ch01"}      ... :::   Try it box (+ QR code in the margin)
+--   ::: {.tryit lab="ch01"}      ... :::   Try it box (web: link to the chapter's notebook)
 --   ::: {.breaks}                ... :::   Where this breaks
 --   ::: {.threshold}             ... :::   Set the threshold
 --   ::: {.deeper}                ... :::   Going deeper (optional maths)
@@ -12,12 +12,14 @@
 --   ::: {.bookquote by="Name, Source"} ... ::: Pull quote
 --   ::: {.sidebar title="..."}   ... :::   Neutral sidebar
 --   ::: {.wide}                  ... :::   Figure that runs into the outer margin
---   ::: {.summary}               ... :::   Full-page visual summary
+--   ::: {.summary}               ... :::   (dropped from all outputs)
 --   ::: {.margin}                ... :::   Margin note
---   [[AUTHOR STORY: topic]]  (own paragraph)  -> visible draft marker
---   [[VERIFY]]               (inline)         -> visible draft marker
+--   [[AUTHOR STORY: topic]]  (own paragraph)  -> marker in draft builds, hidden in print
+--   [[VERIFY]]               (inline)         -> marker in draft builds, hidden in print
 
 local is_latex = quarto.doc.is_format("latex") or quarto.doc.is_format("pdf")
+-- Draft markers ([[AUTHOR STORY]], [[VERIFY]]) show only in a draft build: BOOK_DRAFT=1 quarto render
+local draft = os.getenv("BOOK_DRAFT") == "1"
 local is_html = quarto.doc.is_format("html") or quarto.doc.is_format("epub")
 
 local ENVS = {
@@ -62,6 +64,7 @@ function Para(p)
   local s = marker_text(p.content)
   local topic = s:match("^%[%[AUTHOR STORY:%s*(.-)%]%]$")
   if topic then
+    if not draft then return {} end
     if is_latex then
       return latex("\\authorstory{" .. escape_tex(topic) .. "}")
     else
@@ -81,7 +84,10 @@ function Inlines(inls)
     if el.t == "Str" and el.text:find("%[%[VERIFY%]%]") then
       local before, after = el.text:match("^(.-)%[%[VERIFY%]%](.*)$")
       if before ~= "" then out:insert(pandoc.Str(before)) end
-      if is_latex then
+      if not draft then
+        -- print build: drop the marker and the space before it
+        if #out > 0 and (out[#out].t == "Space" or out[#out].t == "SoftBreak") then out:remove(#out) end
+      elseif is_latex then
         out:insert(latexi("\\verifymark{}"))
       else
         out:insert(pandoc.Span({pandoc.Str("VERIFY")}, pandoc.Attr("", {"verify"})))
@@ -102,18 +108,15 @@ function Div(div)
     if ENVS[c] or c == "bookquote" or c == "sidebar" or c == "margin" then cls = c break end
   end
   if not cls then return nil end
+  if cls == "summary" then return {} end          -- one-page summaries repeat "Where we are"; not printed
 
   if is_latex then
     local blocks = pandoc.List({})
     if cls == "margin" then
-      blocks:insert(latex("\\sidenote{"))
+      blocks:insert(latex("\\begin{asidenote}"))
       blocks:extend(div.content)
-      blocks:insert(latex("}"))
+      blocks:insert(latex("\\end{asidenote}"))
       return blocks
-    end
-    if cls == "tryit" and div.attributes["lab"] then
-      local ch = div.attributes["lab"]
-      blocks:insert(latex("\\marginqr{figures/" .. ch .. "/qr.pdf}{Scan to open this chapter's notebook in Colab.}"))
     end
     if cls == "bookquote" then
       blocks:insert(latex("\\begin{bookquote}{" .. escape_tex(div.attributes["by"] or "") .. "}"))
@@ -151,18 +154,4 @@ function Div(div)
   return div
 end
 
--- ---------------------------------------------------------------- chapter opener map
-function Header(h)
-  if h.level == 1 then
-    local ch = h.identifier:match("^sec%-(ch%d%d)$")
-    if ch then
-      local map = "figures/" .. ch .. "/map"
-      if is_latex then
-        return {h, latex("\\vspace{-4pt}\\noindent\\includegraphics[width=\\textwidth]{" .. map .. ".pdf}\\par\\vspace{14pt}\\noindentnext")}
-      else
-        return {h, pandoc.Para({pandoc.Image({}, "/" .. map .. ".svg", "", pandoc.Attr("", {"you-are-here"}))})}
-      end
-    end
-  end
-  return nil
-end
+-- Chapters open with their title only: no progress map (removed for a cleaner print page).

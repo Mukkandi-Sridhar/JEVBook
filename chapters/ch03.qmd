@@ -189,7 +189,3 @@ We now have a model that outputs probabilities, trained with a score that reward
 ::: {.nexthook}
 Next: our model says 0.8. Does 0.8 really mean 80%? We'll check, find out where it lies, and fix it.
 :::
-
-::: {.summary}
-![](/figures/ch03/summary.pdf){width=100%}
-:::

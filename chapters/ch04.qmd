@@ -216,7 +216,3 @@ When Part IV tests Jev's own calibration, it'll use exactly these tools, pointed
 ::: {.nexthook}
 Next: we finally have probabilities we can trust. Chapter 5 turns them into actions: what each mistake costs, where the lines go, and how to see the whole trade-off on one page.
 :::
-
-::: {.summary}
-![](/figures/ch04/summary.pdf){width=100%}
-:::

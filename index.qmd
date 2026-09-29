@@ -16,7 +16,7 @@ It's for anyone who builds, buys or runs systems that make decisions. If you're 
 
 Every chapter follows one fictional company, Kestrel Logistics, and its security operations centre, where a small team triages hundreds of alerts a day. SOC triage turned out to be a near-perfect teaching example: lots of decisions, a real price on mistakes, and a queue of people with limited time.
 
-Every figure is drawn by code, and almost every number in the book is computed by it. Each chapter has a lab you can run in your browser from the QR code in its margin.
+Every figure is drawn by code, and almost every number in the book is computed by it. Each chapter has a lab, a notebook in the book's repository, that reproduces its numbers and lets you change them.
 
 ## Three rules I followed
 
@@ -24,10 +24,8 @@ Every figure is drawn by code, and almost every number in the book is computed b
 
 **Vendor claims are labelled.** When I report what TypeSafe says about Jev, such as its speed or its price, I say it's vendor-reported and cite where it came from.
 
-**Unverified is marked.** Anything I couldn't check against a primary source carries a [[VERIFY]] mark in this draft. Chapter 16 explains how I sorted claims into what's verified, what's reported and what's unknown, and I'd encourage you to keep the same three piles for anything you read about new models, including this book.
+**Claims have piles.** Everything said about Jev is sorted into what I could verify, what the vendor reports and what nobody outside the company knows yet. Chapter 16 explains how, and I'd encourage you to keep the same three piles for anything you read about new models, including this book.
 
 [[AUTHOR STORY: why you wrote this book: the moment you realised most of your agent's work was small decisions]]
 
-## Acknowledgements
-
-[[AUTHOR STORY: acknowledgements]]
+[[AUTHOR STORY: acknowledgements (add a heading when written)]]

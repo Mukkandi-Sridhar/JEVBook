@@ -166,7 +166,3 @@ We have the architecture. What turned it into ChatGPT was scale: more data, more
 ::: {.nexthook}
 Next: take this architecture, make it enormous and train it on a large share of the internet. What comes out can write, and it's also surprisingly overconfident. Chapter 9 explains both.
 :::
-
-::: {.summary}
-![](/figures/ch08/summary.pdf){width=100%}
-:::

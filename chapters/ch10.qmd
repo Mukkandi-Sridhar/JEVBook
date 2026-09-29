@@ -173,7 +173,3 @@ Which leaves an obvious question for anyone who wants a *decision* rather than a
 ::: {.nexthook}
 Next: ask an LLM for JSON and you'll usually get it. Usually. Chapter 11 is about getting structured answers out of a writing machine, and about the three different "confidences" you can get back, which don't agree.
 :::
-
-::: {.summary}
-![](/figures/ch10/summary.pdf){width=100%}
-:::

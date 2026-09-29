@@ -197,7 +197,3 @@ Every one of those ideas comes back in the next three chapters.
 ::: {.nexthook}
 Next: how does a machine actually learn a probability from examples? We'll build the simplest model that does it honestly, and watch it learn by rolling downhill.
 :::
-
-::: {.summary}
-![](/figures/ch02/summary.pdf){width=100%}
-:::

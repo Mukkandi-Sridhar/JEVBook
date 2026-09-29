@@ -167,7 +167,3 @@ That's the end of Part II. You now know what's inside an LLM. Next, we watch one
 ::: {.nexthook}
 Next, Part III: what does an LLM actually do when it writes? One token at a time, with a probability for every possible next piece. That detail turns out to matter a great deal for decisions.
 :::
-
-::: {.summary}
-![](/figures/ch09/summary.pdf){width=100%}
-:::

@@ -312,7 +312,3 @@ For a decision layer, I'd put it slightly differently: the purpose of a probabil
 ::: {.nexthook}
 Next: you now know how to turn one decision into an action. Chapter 22 shows the recurring shapes that decision layers take inside real systems, from "LLM extracts, Jev decides" to guardrails, judges and routers.
 :::
-
-::: {.summary}
-![](/figures/ch21/summary.pdf){width=100%}
-:::
