@@ -111,3 +111,10 @@ Newest decisions are appended at the bottom of each section.
   runnable shapes, with an explicit note that the mock's number means nothing there.
 - **D-50 · Batch cache key covers content.** `score_alerts` now keys its cache on every column the state is built
   from, not only alert IDs, so alerts with edited fields (for example LLM-extracted ones) are scored afresh.
+- **D-51 · Case-study baseline.** "Before" at Kestrel is one queue worked at capacity (240/day), rule-flagged alerts
+  first, then first come first served, with alerts unreached after 24 h ageing out unseen. On-call responds to a page
+  in 15 minutes (assumption). Both are stated in the chapter; the median-wait row that favours "before" is shown and
+  explained rather than hidden.
+- **D-52 · Chapter 13's agent bug is kept, not silently fixed.** The first agent never chose threat intel (the mock's
+  lexical choice engine). Chapter 24 uses it as the teaching case for monitoring decision-step distributions; the
+  fix (`always=("threat_intel",)`) is an explicit option, so Chapter 13's numbers still reproduce.

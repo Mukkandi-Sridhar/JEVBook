@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="334.39225pt" height="145.910535pt" viewBox="0 0 334.39225 145.910535" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 145.910535 
+L 334.39225 145.910535 
+L 334.39225 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 37.10425 131.407781 
+L 299.36425 131.407781 
+L 299.36425 26.071781 
+L 37.10425 26.071781 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1"/>
+     <g id="text_1">
+      <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="82.677299" y="141.510906" transform="rotate(-0 82.677299 141.510906)">would auto-close</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2"/>
+     <g id="text_2">
+      <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="168.664184" y="141.510906" transform="rotate(-0 168.664184 141.510906)">would queue</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3"/>
+     <g id="text_3">
+      <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="254.65107" y="141.510906" transform="rotate(-0 254.65107 141.510906)">would page</text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_4"/>
+     <g id="text_4">
+      <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="33.10425" y="56.870388" transform="rotate(-0 33.10425 56.870388)">harmless</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_5"/>
+     <g id="text_5">
+      <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="33.10425" y="108.253802" transform="rotate(-0 33.10425 108.253802)">real threat</text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 41.403594 77.455196 
+L 123.951004 77.455196 
+L 123.951004 30.182454 
+L 41.403594 30.182454 
+z
+" clip-path="url(#p0e79631782)" style="fill: #b7a6e0; opacity: 0.9"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 41.403594 128.838611 
+L 123.951004 128.838611 
+L 123.951004 81.565869 
+L 41.403594 81.565869 
+z
+" clip-path="url(#p0e79631782)" style="fill: #b8323a; opacity: 0.9"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 127.39048 77.455196 
+L 209.937889 77.455196 
+L 209.937889 30.182454 
+L 127.39048 30.182454 
+z
+" clip-path="url(#p0e79631782)" style="fill: #8468c9; opacity: 0.9"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 127.39048 128.838611 
+L 209.937889 128.838611 
+L 209.937889 81.565869 
+L 127.39048 81.565869 
+z
+" clip-path="url(#p0e79631782)" style="fill: #8468c9; opacity: 0.9"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 213.377365 77.455196 
+L 295.924775 77.455196 
+L 295.924775 30.182454 
+L 213.377365 30.182454 
+z
+" clip-path="url(#p0e79631782)" style="fill: #4b2c8f; opacity: 0.9"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 213.377365 128.838611 
+L 295.924775 128.838611 
+L 295.924775 81.565869 
+L 213.377365 81.565869 
+z
+" clip-path="url(#p0e79631782)" style="fill: #4b2c8f; opacity: 0.9"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 37.10425 131.407781 
+L 37.10425 26.071781 
+" style="fill: none; stroke: #c9ced6; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 37.10425 131.407781 
+L 299.36425 131.407781 
+" style="fill: none; stroke: #c9ced6; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_6">
+    <text style="font-weight: 600; font-size: 6.4px; font-family: 'Inter'; fill: #1f2430" transform="translate(73.518299 52.275075)">425.4</text>
+    <text style="font-weight: 600; font-size: 6.4px; font-family: 'Inter'; fill: #1f2430" transform="translate(74.368799 60.018825)">a day</text>
+   </g>
+   <g id="text_7">
+    <text style="font-weight: 600; font-size: 6.4px; font-family: 'Inter'; fill: #ffffff" transform="translate(78.641299 103.65849)">6.1</text>
+    <text style="font-weight: 600; font-size: 6.4px; font-family: 'Inter'; fill: #ffffff" transform="translate(74.368799 111.40224)">a day</text>
+   </g>
+   <g id="text_8">
+    <text style="font-weight: 600; font-size: 6.4px; font-family: 'Inter'; fill: #ffffff" transform="translate(161.248184 52.275075)">218.1</text>
+    <text style="font-weight: 600; font-size: 6.4px; font-family: 'Inter'; fill: #ffffff" transform="translate(160.355684 60.018825)">a day</text>
+   </g>
+   <g id="text_9">
+    <text style="font-weight: 600; font-size: 6.4px; font-family: 'Inter'; fill: #ffffff" transform="translate(161.900684 103.65849)">24.7</text>
+    <text style="font-weight: 600; font-size: 6.4px; font-family: 'Inter'; fill: #ffffff" transform="translate(160.355684 111.40224)">a day</text>
+   </g>
+   <g id="text_10">
+    <text style="font-weight: 600; font-size: 6.4px; font-family: 'Inter'; fill: #ffffff" transform="translate(248.62057 52.275075)">15.7</text>
+    <text style="font-weight: 600; font-size: 6.4px; font-family: 'Inter'; fill: #ffffff" transform="translate(246.34257 60.018825)">a day</text>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 600; font-size: 6.4px; font-family: 'Inter'; fill: #ffffff" transform="translate(247.63457 103.65849)">28.0</text>
+    <text style="font-weight: 600; font-size: 6.4px; font-family: 'Inter'; fill: #ffffff" transform="translate(246.34257 111.40224)">a day</text>
+   </g>
+  </g>
+  <g id="text_12">
+   <g id="patch_11">
+    <path d="M 226.33725 11.055781 
+L 332.07225 11.055781 
+Q 332.91225 11.055781 332.91225 10.215781 
+L 332.91225 2.32 
+Q 332.91225 1.48 332.07225 1.48 
+L 226.33725 1.48 
+Q 225.49725 1.48 225.49725 2.32 
+L 225.49725 10.215781 
+Q 225.49725 11.055781 226.33725 11.055781 
+z
+" style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <text style="font-weight: 500; font-size: 5.6px; font-family: 'Inter'; text-anchor: end; fill: #8a919c" x="331.51225" y="8.305" transform="rotate(-0 331.51225 8.305)">SYNTHETIC · not measured on real Jev</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p0e79631782">
+   <rect x="37.10425" y="26.071781" width="262.26" height="105.336"/>
+  </clipPath>
+ </defs>
+</svg>
