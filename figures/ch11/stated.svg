@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="335.124289pt" height="147.379203pt" viewBox="0 0 335.124289 147.379203" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 147.379203 
+L 335.124289 147.379203 
+L 335.124289 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 37.836289 118.591781 
+L 300.096289 118.591781 
+L 300.096289 24.343781 
+L 37.836289 24.343781 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1"/>
+     <g id="text_1">
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="61.570712" y="129.373031" transform="rotate(-0 61.570712 129.373031)">0.70</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2"/>
+     <g id="text_2">
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="104.528943" y="129.373031" transform="rotate(-0 104.528943 129.373031)">0.80</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3"/>
+     <g id="text_3">
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="147.487174" y="129.373031" transform="rotate(-0 147.487174 129.373031)">0.85</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4"/>
+     <g id="text_4">
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="190.445405" y="129.373031" transform="rotate(-0 190.445405 129.373031)">0.90</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5"/>
+     <g id="text_5">
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="233.403635" y="129.373031" transform="rotate(-0 233.403635 129.373031)">0.95</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_6"/>
+     <g id="text_6">
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="276.361866" y="129.373031" transform="rotate(-0 276.361866 129.373031)">0.99</text>
+     </g>
+    </g>
+    <g id="text_7">
+     <text style="font-size: 7.8px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="168.966289" y="142.617758" transform="rotate(-0 168.966289 142.617758)">“confidence” value written in the JSON</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_7">
+      <path d="M 37.836289 118.591781 
+L 300.096289 118.591781 
+" clip-path="url(#pc23d709aec)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_8"/>
+     <g id="text_8">
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="33.836289" y="121.982406" transform="rotate(-0 33.836289 121.982406)">0</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_9">
+      <path d="M 37.836289 98.811894 
+L 300.096289 98.811894 
+" clip-path="url(#pc23d709aec)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_10"/>
+     <g id="text_9">
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="33.836289" y="102.202519" transform="rotate(-0 33.836289 102.202519)">500</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_11">
+      <path d="M 37.836289 79.032006 
+L 300.096289 79.032006 
+" clip-path="url(#pc23d709aec)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_12"/>
+     <g id="text_10">
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="33.836289" y="82.422631" transform="rotate(-0 33.836289 82.422631)">1000</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_13">
+      <path d="M 37.836289 59.252118 
+L 300.096289 59.252118 
+" clip-path="url(#pc23d709aec)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_14"/>
+     <g id="text_11">
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="33.836289" y="62.642743" transform="rotate(-0 33.836289 62.642743)">1500</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_15">
+      <path d="M 37.836289 39.472231 
+L 300.096289 39.472231 
+" clip-path="url(#pc23d709aec)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_16"/>
+     <g id="text_12">
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="33.836289" y="42.862856" transform="rotate(-0 33.836289 42.862856)">2000</text>
+     </g>
+    </g>
+    <g id="text_13">
+     <text style="font-size: 7.8px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="10.43625" y="71.467781" transform="rotate(-90 10.43625 71.467781)">alerts</text>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 49.757198 118.591781 
+L 73.384225 118.591781 
+L 73.384225 117.563227 
+L 49.757198 117.563227 
+z
+" clip-path="url(#pc23d709aec)" style="fill: #c9971c"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 92.715429 118.591781 
+L 116.342456 118.591781 
+L 116.342456 117.800586 
+L 92.715429 117.800586 
+z
+" clip-path="url(#pc23d709aec)" style="fill: #c9971c"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 135.67366 118.591781 
+L 159.300687 118.591781 
+L 159.300687 117.721466 
+L 135.67366 117.721466 
+z
+" clip-path="url(#pc23d709aec)" style="fill: #c9971c"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 178.631891 118.591781 
+L 202.258918 118.591781 
+L 202.258918 80.10012 
+L 178.631891 80.10012 
+z
+" clip-path="url(#pc23d709aec)" style="fill: #c9971c"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 221.590122 118.591781 
+L 245.217149 118.591781 
+L 245.217149 38.720595 
+L 221.590122 38.720595 
+z
+" clip-path="url(#pc23d709aec)" style="fill: #c9971c"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 264.548353 118.591781 
+L 288.17538 118.591781 
+L 288.17538 81.405592 
+L 264.548353 81.405592 
+z
+" clip-path="url(#pc23d709aec)" style="fill: #c9971c"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 37.836289 118.591781 
+L 300.096289 118.591781 
+" style="fill: none; stroke: #c9ced6; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="61.570712" y="116.376434" transform="rotate(-0 61.570712 116.376434)">26</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="104.528943" y="116.613792" transform="rotate(-0 104.528943 116.613792)">20</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="147.487174" y="116.534673" transform="rotate(-0 147.487174 116.534673)">22</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="190.445405" y="78.913327" transform="rotate(-0 190.445405 78.913327)">973</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="233.403635" y="37.533802" transform="rotate(-0 233.403635 37.533802)">2,019</text>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="276.361866" y="80.218799" transform="rotate(-0 276.361866 80.218799)">940</text>
+   </g>
+  </g>
+  <g id="text_20">
+   <g id="patch_10">
+    <path d="M 196.654289 11.055781 
+L 332.804289 11.055781 
+Q 333.644289 11.055781 333.644289 10.215781 
+L 333.644289 2.32 
+Q 333.644289 1.48 332.804289 1.48 
+L 196.654289 1.48 
+Q 195.814289 1.48 195.814289 2.32 
+L 195.814289 10.215781 
+Q 195.814289 11.055781 196.654289 11.055781 
+z
+" style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <text style="font-weight: 500; font-size: 5.6px; font-family: 'Inter'; text-anchor: end; fill: #8a919c" x="332.244289" y="8.305" transform="rotate(-0 332.244289 8.305)">SYNTHETIC · llm-mock-synthetic, not a real model</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pc23d709aec">
+   <rect x="37.836289" y="24.343781" width="262.26" height="94.248"/>
+  </clipPath>
+ </defs>
+</svg>

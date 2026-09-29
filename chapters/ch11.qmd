@@ -1,3 +1,191 @@
 # Structured outputs and JSON mode {#sec-ch11}
 
-*Draft in progress.*
+```{python}
+#| include: false
+import json
+import numpy as np
+from typing import Literal
+from pydantic import BaseModel, ConfigDict, ValidationError
+from jevkit import soc, llm, calibration as cal
+from jevkit.batch import score_alerts
+```
+
+Software can't read a paragraph. It needs `verdict = "malicious"`, a field, a value.
+
+So the first thing every team does when they wire an LLM into a pipeline is add a line to the prompt: *"Reply only with JSON in this format."* And it works. Almost always.
+
+*"Almost always is fine, isn't it?"*
+
+At a hundred alerts a day, maybe. At seven hundred a day, "almost" is a few failures every day, each one a crash, a silent drop or an alert sent nowhere. And even when the JSON is perfect, there's a quieter question hiding inside it. The model wrote `"confidence": 0.95`. What does that number actually mean?
+
+This chapter is about getting decisions, not essays, out of a machine built to write. We'll count the ways it goes wrong, fix the format, and then look hard at the three different "confidences" you can get back, because they don't agree.
+
+::: {.goals}
+- Recognise the ways "just ask for JSON" fails, and how often.
+- Explain constrained decoding ("JSON mode") and what it does and doesn't guarantee.
+- Validate model output strictly, retry, and fail safe.
+- Compare three kinds of confidence: stated in the text, read from token probabilities, and returned by a decision model.
+- Explain why a token's probability isn't the probability that an answer is right.
+:::
+
+## Asking nicely
+
+Let's ask our stand-in LLM, `llm-mock-synthetic`, to triage every one of Kestrel's 4,000 test alerts and reply with a small JSON object: a verdict, a confidence, and a few fields it read from the alert. As always, the mock is synthetic. Its failure rates are ones I chose to show the typical problems, not measurements of any product.
+
+Most of the answers come back perfectly. But not all.
+
+![What came back when we asked for JSON, over 4,000 alerts. With only the prompt, a few responses were wrapped in friendly chat ("Sure! Here is the JSON:"), a few were cut off mid-object, and some were valid JSON with a field nobody asked for. With JSON mode switched on, the first two problems vanish. The third doesn't.](/figures/ch11/json-failures.pdf){#fig-json-failures}
+
+@fig-json-failures shows the three classic failures. The model adds chatty text around the JSON, because it was trained to be friendly. It stops partway, leaving an unclosed brace. Or it produces perfectly valid JSON with an extra field it invented, here an `attacker_country` that isn't in the alert at all.
+
+Each of those needs handling. The first two crash a naive parser. The third is worse, because it parses fine and quietly puts made-up data into your system.
+
+## Making the format impossible to break
+
+Chapter 10 showed that the model picks each token from a probability for every possible next token. That gives us a lever. At each step, we can look at where we are in the required format and **forbid every token that would break it**.
+
+![Constrained decoding. After `{"verdict": "`, the schema only allows the start of "malicious" or "benign". Every other token, including the chatty "Sure" and a stray code fence, gets its probability set to zero before one is picked.](/figures/ch11/constrained.pdf){#fig-constrained}
+
+That's **constrained decoding**, often sold as "JSON mode" or "structured outputs" [@willard2023]. The model still does all the thinking. The decoder just refuses to pick tokens that would leave the format. With it switched on, the output is guaranteed to match the grammar you gave it.
+
+Look carefully at what that guarantees, though. The *format*. Not the content. A constrained model can still pick "benign" for a real attack, with perfect syntax. And unless your schema forbids extra fields and your code checks, the invented `attacker_country` can still appear, as it did in @fig-json-failures.
+
+::: {.keyidea}
+Constrained decoding guarantees the shape of the answer, never its truth.
+:::
+
+## Treat the output like untrusted input
+
+So whatever the provider promises, validate. Parse the response into a strict type that rejects unknown fields and wrong values. If it fails, retry once, perhaps with the stricter mode. If it still fails, do what Chapter 21 insists on: send the case to a human, never to the "act" door.
+
+::: {.tryit lab="ch11"}
+```{python}
+class Verdict(BaseModel):
+    model_config = ConfigDict(extra="forbid")   # invented fields fail
+    verdict: Literal["malicious", "benign"]
+    confidence: float
+    rule: str
+    threat_intel_score: float
+    after_hours: bool
+    related_alerts: int
+
+def parse(raw):
+    try:
+        return Verdict.model_validate_json(raw)
+    except ValidationError:
+        return None
+
+alerts = soc.load()
+train, calib, test = soc.split(alerts)
+mock = llm.MockLLM()
+parsed = [parse(mock.structured(t)) for t in test.description]
+print(f"valid: {sum(p is not None for p in parsed):,} of {len(parsed):,}")
+```
+:::
+
+This is ordinary software hygiene, and it's worth being blunt about why it matters more here than usual. An LLM's output is *generated text*, influenced by everything in its input, including an alert description an attacker may have written. Treat it exactly as you'd treat text typed into a web form by a stranger.
+
+::: {.bookquote by="Jon Postel, RFC 761 (the TCP specification), 1980"}
+Be conservative in what you do, be liberal in what you accept from others.
+:::
+
+Postel's advice helped the internet survive its own messiness. For model output feeding decisions, I'd flip half of it. Be liberal in what you *parse*, so a stray code fence doesn't crash you. Be strict in what you *accept*, so an invented field never reaches a decision.
+
+## Three confidences
+
+Now the quieter problem. Say the JSON is perfect. It says `"verdict": "malicious", "confidence": 0.95`. Can Kestrel put a threshold on that 0.95?
+
+There are actually three different numbers you might use here, and it's worth seeing them side by side.
+
+**The confidence the model wrote.** The `0.95` in the JSON is text. The model generated the characters "0", ".", "9", "5" the same way it generates any other text: by picking plausible tokens. This is often called *verbalized* confidence.
+
+**The token probability.** Many APIs will return the probability the model gave to each token it produced, called *logprobs*. You can read off the probability it gave to "malicious" as the first token of the verdict.
+
+**A probability from a model built to produce one.** A decision model whose actual output *is* a probability for each option, like the calibrated classifiers of Part I or Jev's typed answers.
+
+Let's look at the first one before we compare.
+
+![Every confidence value the mock LLM wrote in its JSON, across 4,000 alerts. Just a handful of round numbers, almost all 0.9 or above.](/figures/ch11/stated.pdf){#fig-stated}
+
+The mock wrote only {{< num ch11 n_distinct_stated int >}} different values, and {{< num ch11 share_stated_ge_09 pct >}} of them were 0.9 or higher (@fig-stated). That's a pattern many people have noticed with real models: stated confidences cluster on round, high numbers. Whether a given real model's stated confidence is well calibrated is genuinely mixed in the research. One study found that for some preference-tuned models, asking for a stated confidence gave *better* calibration than the token probabilities [@tian2023]. Others found stated confidence badly overconfident [@xiong2024]. The only honest rule is to measure yours.
+
+Here's the comparison on Kestrel's test alerts, all three reading exactly the same raw alert text.
+
+![Reliability of three "confidences" on the same 4,000 test alerts, all reading the same raw text. The stated confidence (yellow) barely separates attacks from harmless alerts. The token probability (orange) ranks well but is overconfident. The decision model (green) ranks as well and sits closest to the diagonal.](/figures/ch11/three-confidences.pdf){#fig-three-confidences}
+
+::: {.sidebar title="Read this chart carefully"}
+Everything in @fig-three-confidences is synthetic. The mock LLM and the mock Jev were built by me, and their behaviour reflects my design choices (see `DECISIONS.md`), which follow failure patterns reported for real LLMs. The chart shows *how to compare* confidences. It doesn't show how any real LLM or real Jev performs. Run the same comparison on your own models and data.
+:::
+
+The stated confidence ranks alerts poorly, with an AUC of {{< num ch11 verbal.auc f2 >}}, because a handful of round numbers can't separate much. The token probability ranks much better ({{< num ch11 token.auc f2 >}}), but it's overconfident: ECE {{< num ch11 token.ece f3 >}}. The decision model ranks slightly better still ({{< num ch11 jev_text.auc f2 >}}) and is the most honest of the three, with an ECE of {{< num ch11 jev_text.ece f3 >}}.
+
+## Why a token probability isn't an answer probability
+
+The token probability deserves a closer look, because it's so tempting. It's a real probability, straight from the model. Why isn't it the probability that "malicious" is the right answer?
+
+Because the model isn't choosing between two answers. It's choosing between tens of thousands of possible next tokens.
+
+![The first-token probabilities for one alert (illustrative). "malicious" as the first token gets 0.41. But capitalised and space-prefixed versions take more, and some probability goes to the model starting a sentence instead of answering. The probability of the answer "malicious" is spread across all of them.](/figures/ch11/surface-forms.pdf){#fig-surface-forms}
+
+As @fig-surface-forms shows, the same answer can start with several different tokens: "malicious", "Malicious", " malicious" with a leading space. Some probability goes to the model starting a sentence ("The alert...") instead of answering. Longer labels are split across several tokens, so their probability is a product of several steps. And everything the model learned in preference tuning (Chapter 9) shapes these numbers too. You *can* add up the right tokens and renormalise, and people do, but at that point you're building a decision model by hand on top of a writing model.
+
+::: {.keyidea}
+The probability of a token isn't the probability of an answer.
+:::
+
+## The typed alternative
+
+Which brings us to a different way of asking.
+
+Instead of asking a writer to produce text in a decision-shaped format, you can ask a model whose native output *is* the decision. You declare the question and its possible answers as types, and you get back the answer as data, with a probability for every option.
+
+![The same question, two ways. On the left, an LLM writes JSON, including a confidence it wrote as text. On the right, a typed decision question returns data: a probability for a yes/no question, and a probability for every label of a choice.](/figures/ch11/typed-vs-text.pdf){#fig-typed-vs-text}
+
+That's what Jev's interface looks like, and here it is through TypeSafe's official Python library, with the book's mock underneath:
+
+```{python}
+from typesafe_sdk import Choice, Noul, TypeSafeClient
+from jevkit import MockJevTransport
+
+client = TypeSafeClient(api_key="mock", transport=MockJevTransport())
+r = client.system_one(state=test.description.iloc[0], questions={
+    "attack": Noul(instructions="Is this alert a real attack?"),
+    "kind": Choice(criteria={c: None for c in soc.CATEGORIES}),
+})
+print(r.model, round(r.nouls["attack"].noul, 3))
+print(r.choices["kind"].choice,
+      round(r.choices["kind"].confidence, 3))
+```
+
+There's nothing to parse and no format to break. The labels can only be the ones you listed. And the number you get back is designed to be a probability rather than a piece of text, which means it's a claim you can check with a reliability diagram. Part IV does exactly that, and it covers the three question types, `noul`, `choice` and `score`, in detail.
+
+::: {.breaks}
+JSON mode doesn't stop a model from choosing the wrong value, repeating a field, or copying an attacker's text straight into your structured output. Strict validation doesn't catch a value that's valid but wrong: a threat-intel score misread as 0.18 instead of 0.81 passes every schema. And typed decision APIs have their own limits: they give you probabilities but no reasons, and their calibration still has to be tested on your data, not assumed from the interface.
+:::
+
+::: {.threshold}
+Kestrel wants to auto-close alerts the LLM labels "benign" with confidence at least 0.95. Using @fig-stated and @fig-three-confidences, roughly how many alerts would pass that line? Would you trust it? Which of the three numbers would you rather threshold, and what would you check first?
+
+(Most benign-labelled alerts would pass, because 0.95 and 0.99 are the mock's favourite values, so the line filters almost nothing. The stated confidence can't support a threshold. The best choice here is the probability with the best calibration, checked on recent history, with the act line set by Chapter 21's cost arithmetic.)
+:::
+
+## Where we are
+
+We asked a writing machine for decisions. The format broke a few times in every hundred, and constrained decoding fixed the format while leaving the content free to be wrong. Strict validation and a fail-safe handled the rest. Then we found three candidates for "how sure" in the same response: a number the model wrote, a token probability spread across spellings, and a probability from a model built to produce one. Only one of them was designed to be thresholded, and even that one has to be checked.
+
+LLMs have another weakness we haven't dealt with. They only know what they were trained on. Next: giving them your documents.
+
+::: {.exercises}
+1. List the three JSON failures in @fig-json-failures and, for each, say whether constrained decoding prevents it, strict validation catches it, or neither.
+2. In the lab, change `extra="forbid"` to `extra="ignore"`. What gets through now? When might that be acceptable?
+3. Explain to a product manager, in three sentences, why `"confidence": 0.95` in an LLM's JSON can't be used as a probability without testing.
+4. Design a test to check whether the token probability of "malicious" from a real LLM API is calibrated on 500 of your own labelled alerts. What would you plot, and what would you do if it were overconfident?
+:::
+
+::: {.nexthook}
+Next: an LLM knows the internet, not your company. Chapter 12 shows how retrieval hands it the right documents at the right moment, and how agents keep a memory.
+:::
+
+::: {.summary}
+![](/figures/ch11/summary.pdf){width=100%}
+:::
