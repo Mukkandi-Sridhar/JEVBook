@@ -125,3 +125,7 @@ Newest decisions are appended at the bottom of each section.
 - **D-54 · Gallery (Chapter 26)** uses an illustrative domain table and synthetic support tickets. The mock's general
   engine does poorly on them (about 74% routing, urgency AUC about 0.6); the chapter shows this rather than tuning the
   mock, because "measure before you trust" is the lesson.
+- **D-55 · Capstone service** (`jevkit/service.py`) is framework-agnostic (no web framework installed): a pydantic
+  DecisionRecord, a frozen Config with a fingerprint, fallback-to-review on any SDK error, a deterministic hash-based
+  3% audit draw, a daily monitor with bands chosen by eye from the live week and a 10% tolerance on capacity, and a
+  shadow comparison. `fit_config` fits the lines with the critical-asset rule included.
