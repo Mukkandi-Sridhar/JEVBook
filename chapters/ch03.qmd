@@ -1,3 +1,195 @@
 # Data, loss and gradient descent {#sec-ch03}
 
-*Draft in progress.*
+```{python}
+#| include: false
+import numpy as np
+from jevkit import soc
+```
+
+In Chapter 1, learning looked easy. We had one knob, the threshold, and we tried every setting from 0 to 1.
+
+Here's the question that should be nagging you now:
+
+*"Real models have millions of knobs. Billions, for the big ones. You can't try every setting. So how does learning actually work?"*
+
+That's what this chapter answers. By the end you'll have built, in about twenty lines of code, a model that turns alerts into probabilities, trained it yourself, and watched it get within a whisker of perfect. The same three ingredients, a model, a way to score it and a way to improve it, are inside every system in this book, from logistic regression to the largest LLM.
+
+::: {.goals}
+- Build a model that adds up evidence and turns it into a probability.
+- Explain why we score probabilities with *log loss*, and why that choice matters for honesty.
+- Describe gradient descent as rolling downhill, and say what the step size does.
+- Train a model from scratch, then check it on data it never saw.
+- Recognise overfitting and leakage, the two ways a model can fool you during training.
+:::
+
+## Ingredient one: a model that adds up evidence
+
+Remember the end of Chapter 2? Every clue multiplied the odds of an attack. A bad threat-intel score multiplied them by about ten; "outside business hours" by one and a half; and so on.
+
+Multiplying is awkward. Adding is easy. So take the logarithm of the odds, the **log-odds**, and every multiplication becomes an addition. A clue that multiplies the odds by ten adds about 2.3 to the log-odds. A clue that halves them subtracts about 0.7.
+
+Which gives us a very simple machine:
+
+1. Start from a baseline number (how likely an attack is before you look at anything).
+2. For each clue, add its **weight**.
+3. Turn the total back into a probability.
+
+Step 3 uses a curve with a friendly shape. Big negative totals become probabilities near 0, big positive totals become probabilities near 1, and a total of 0 becomes exactly 0.5.
+
+![The S-curve (the logistic, or sigmoid, function) turns total evidence into a probability. Every step to the right multiplies the odds by the same amount, which is why the curve flattens out: once you're very sure, more evidence changes the probability only a little.](/figures/ch03/sigmoid.pdf){#fig-sigmoid}
+
+That's the whole model. It's called **logistic regression**, and it's been used for decisions like credit scores and medical risk for decades. It's also, underneath, just Bayes' rule on the log-odds scale, with one important upgrade: instead of us measuring each clue's likelihood ratio separately, the model learns all the weights *together*. That lets it discount clues that overlap, like the threat-intel score and the time of night.
+
+The weights are the knobs. Learning means finding good ones. For that, we need a way to say what "good" means.
+
+## Ingredient two: a way to score a probability
+
+In Chapter 1 we scored a model by counting its mistakes. That doesn't work any more. Our model doesn't say yes or no. It says 0.07, or 0.63. Was 0.63 a mistake if the alert turned out to be harmless? Partly?
+
+Think about how *you'd* want to be judged if you were forecasting.
+
+If you said an attack was 90% likely and it happened, you should lose almost nothing. If you said 1% and it happened, you should be embarrassed, badly, because you were confidently wrong. And being unsure should cost *something*, but not as much as being confidently wrong.
+
+There's a score that does exactly that. It's called **log loss**, and it measures surprise: the penalty is minus the logarithm of the probability you gave to what actually happened.
+
+![Log loss for a single alert. If it really was an attack (red), the penalty is small when the model gave "attack" a high probability and explodes as that probability heads towards zero. Harmless alerts (blue) work the same way from the other side.](/figures/ch03/logloss.pdf){#fig-logloss}
+
+Look at the two marked points in @fig-logloss. Saying 90% and being right costs about {{< num ch03 loss_if_right_09 f1 >}}. Saying 1% and being wrong costs about {{< num ch03 loss_if_certain_wrong f1 >}}, nearly fifty times more. That asymmetry is the whole point. A model trained on log loss learns very quickly that false certainty is the most expensive habit it can have.
+
+::: {.keyidea}
+Log loss rewards honest confidence and punishes confident mistakes.
+:::
+
+There's a deeper property hiding here, and it's the reason this book cares so much about log loss. It's what statisticians call a **proper scoring rule**: the only way to get the best possible score, on average, is to report the probabilities you actually believe. You can't game it by exaggerating. Say 99% when you believe 80%, and over many cases you'll lose more than you gain. That's why models trained this way tend to come out reasonably *calibrated*, a word we'll spend all of the next chapter on.
+
+::: {.deeper}
+Log loss for one prediction is $-\big[y \log p + (1-y)\log(1-p)\big]$, where $y$ is 1 for an attack and 0 otherwise, and we average it over all alerts. Another proper scoring rule you'll see in this book is the **Brier score**, $(p - y)^2$ averaged: the squared distance between the forecast and what happened. Brier is gentler on confident mistakes than log loss, and easier to read, since 0 is perfect and 0.25 is what you'd get by always saying 0.5 on a balanced problem. Accuracy, by contrast, is *not* a proper scoring rule, which is one more reason Chapter 1's rule went so wrong.
+:::
+
+## Ingredient three: rolling downhill
+
+Now we have a model with knobs, and a score telling us how bad the current knob settings are. Lower is better. Picture the score as hilly ground: every possible combination of weights is a place, and the height at each place is the log loss.
+
+Learning is finding the lowest point.
+
+We can't search every place. There are too many places. But we don't have to. Imagine standing on a hillside in thick fog. You can't see the valley, but you can feel which way the ground slopes under your feet. So you take a step downhill, feel the slope again, take another step, and keep going until the ground is flat.
+
+::: {.keyidea}
+That's gradient descent.
+:::
+
+The **gradient** is just the slope, in every direction at once: for each weight, "if I nudged this up a little, would the loss go up or down, and by how much?" For logistic regression it has a lovely form. For each alert, take the difference between what the model said and what happened, *p* − *y*, and multiply by the alert's clues. Average that over all alerts, and you have the direction of steepest climb. Step the other way.
+
+![The loss surface for a tiny model with just two knobs: a starting point and a weight on the threat-intel score. The contours are like a map's height lines. Gradient descent starts from a deliberately bad guess and follows the slope down to the valley floor.](/figures/ch03/descent-2d.pdf){#fig-descent-2d}
+
+@fig-descent-2d shows a real run, on real (well, synthetic) Kestrel alerts, with just two knobs so we can draw it. Notice the path isn't a straight line to the bottom. It follows the slope, which first points mostly one way and then bends. With twenty-six knobs instead of two, or two billion, we can't draw the picture, but the same idea works.
+
+One setting needs care: how big a step to take, called the **learning rate**.
+
+![The same slope, three step sizes. Too small and you barely move. Too big and you overshoot the valley and bounce around the bottom. In between, you get there quickly and settle.](/figures/ch03/descent-1d.pdf){#fig-descent-1d}
+
+## Building it
+
+Enough pictures. Let's build one.
+
+We'll split Kestrel's alerts into three piles: 60% to train on, 20% set aside for calibration in the next chapter, and 20% locked away for testing. The test pile is sacred. The model never sees it during training. It's our only honest estimate of how the model will do on alerts that haven't happened yet.
+
+::: {.tryit lab="ch03"}
+```{python}
+alerts = soc.load()
+train, calib, test = soc.split(alerts)       # 60/20/20
+X = soc.feature_matrix(train).to_numpy()
+Xt = soc.feature_matrix(test).to_numpy()
+y, yt = train.malicious.to_numpy(), test.malicious.to_numpy()
+
+def sigmoid(z):
+    return 1 / (1 + np.exp(-z))
+
+def log_loss(p, y):
+    p = np.clip(p, 1e-12, 1 - 1e-12)
+    return -np.mean(y * np.log(p) + (1 - y) * np.log(1 - p))
+
+mu, sd = X.mean(0), X.std(0) + 1e-9          # common scale
+Xs, Xts = (X - mu) / sd, (Xt - mu) / sd
+
+w, b = np.zeros(X.shape[1]), 0.0             # all knobs at zero
+for step in range(401):
+    p = sigmoid(Xs @ w + b)
+    w -= 0.5 * Xs.T @ (p - y) / len(y)       # step downhill
+    b -= 0.5 * np.mean(p - y)
+    if step % 100 == 0:
+        print(f"step {step:3d}  loss {log_loss(p, y):.4f}")
+```
+:::
+
+That loop is the heart of machine learning. Everything else, including the training of LLMs, is this loop with a bigger model, more data and cleverer steps.
+
+![Log loss on the training alerts as gradient descent runs. It starts at 0.69, which is what you get by saying 50% for every alert, and drops quickly before levelling off just above the dashed line, the loss you'd get if you knew the generator's true probabilities.](/figures/ch03/training-curve.pdf){#fig-training-curve}
+
+Now the moment of truth: alerts the model has never seen.
+
+```{python}
+pt = sigmoid(Xts @ w + b)
+print(f"our model, test alerts:  {log_loss(pt, yt):.4f}")
+print(f"the truth, test alerts:  "
+      f"{log_loss(test.p_true.to_numpy(), yt):.4f}")
+```
+
+Because Kestrel is synthetic, we can do something you can never do with real data: compare against the *true* probability of every alert. Our twenty-line model is within {{< num ch03 gap_pct pct >}} of the best log loss any model could possibly achieve on this data. That's partly because the generator itself is built on log-odds, so logistic regression suits it well. Real data is messier. But the principle carries over, and so does the habit of checking against something you trust.
+
+## Reading what it learned
+
+A nice property of this particular model is that its knobs mean something. Each weight tells you how much a clue moves the odds, holding everything else fixed.
+
+![What each clue does to the odds of an attack, as learned by logistic regression from the training alerts. Green clues raise the odds; blue clues lower them. Note that "outside business hours" looks stronger here than in Chapter 2: the model has separated it from other clues it overlaps with.](/figures/ch03/weights.pdf){#fig-weights}
+
+Read @fig-weights like a detective's notebook. Matching an approved IT tool with a change ticket cuts the odds to about a tenth: strong evidence of innocence, and exactly the kind of clue attackers will try to fake. A completed multi-factor sign-in cuts them to about a quarter. Each extra 0.1 on the threat-intel score multiplies them by {{< num ch03 mult_ioc_tenth f2 >}}.
+
+Not every model is this readable. The deep networks in Part II aren't, and neither is Jev. That's one of the reasons logistic regression keeps turning up in Chapter 20's bake-off: when it's good enough, being able to explain it is worth a lot.
+
+## Two ways a model fools you
+
+Everything so far went smoothly. Here are the two classic ways it doesn't.
+
+**Overfitting** is memorising instead of learning. A flexible enough model can shape itself around every quirk of the training data, including the random noise, and the training loss keeps going down while the model gets *worse* at anything new.
+
+![A decision tree answers a series of yes/no questions about each alert. Allowed only a few questions, it learns general patterns. Allowed dozens, it memorises individual training alerts: its loss on them approaches zero while its loss on new alerts climbs.](/figures/ch03/overfit.pdf){#fig-overfit}
+
+@fig-overfit shows it happening. A decision tree allowed {{< num ch03 tree_best_depth int >}} levels of questions does best on new alerts. Allowed twenty, it nearly memorises the training set, with a training loss of {{< num ch03 tree_deep_train f3 >}}, and does terribly on alerts it hasn't seen ({{< num ch03 tree_deep_test f2 >}}). The only way to see this is to test on data the model never trained on. That's why the test pile is sacred.
+
+**Leakage** is subtler and nastier. It's when a feature quietly contains the answer.
+
+::: {.breaks}
+Suppose Kestrel's alert database has a field called `analyst_notes`. Train a model with it included and you'll get astonishing results, because notes like "confirmed phishing, user reset" are only written *after* someone has decided. At 2:14 a.m., when the model actually has to decide, that field is empty. Leakage produces models that look brilliant in the notebook and are useless in production. The fix is a question you ask about every feature: *would I actually have this value at the moment of the decision?*
+:::
+
+::: {.threshold}
+Our model gives a fresh alert P = 0.12. Kestrel's analysts only review alerts at 0.1 or above, so this one goes to the queue. A colleague retrains the model with a new feature and the same alert now scores 0.08, so it would close automatically. Before you accept the new model, what two things would you check?
+
+(First, that the new feature isn't leaking the answer. Second, that the new model's probabilities are still honest around 0.1, where the decision happens. A lower loss overall doesn't guarantee that. The next chapter shows how to check.)
+:::
+
+::: {.bookquote by="John Tukey, The Future of Data Analysis, 1962"}
+Far better an approximate answer to the right question, which is often vague, than an exact answer to the wrong question, which can always be made precise.
+:::
+
+## Where we are
+
+Every learning system in this book is built from the same three parts. There's a model with knobs. There's a score that says how wrong the knobs are, and for probabilities that score should be a proper one like log loss. And there's a way to improve the knobs, usually some version of rolling downhill. Keep a test set the model never touches, and ask of every feature whether you'd really have it at decision time.
+
+We now have a model that outputs probabilities, trained with a score that rewards honesty. But "rewards honesty" isn't the same as "is honest". Whether the probabilities can be trusted is something we have to check directly.
+
+::: {.exercises}
+1. In your own words, why is log loss a better training score than "number of mistakes" when the model outputs probabilities?
+2. In the lab, change the learning rate from 0.5 to 5, then to 0.01. Describe what happens to the loss over 400 steps, and connect it to @fig-descent-1d.
+3. Add a leaky feature to the lab (`Xs = np.c_[Xs, y]`) and retrain. What happens to the training loss? Why can't you use this model?
+4. The model learned that "matches approved IT tooling" cuts the odds of an attack to about a tenth. If you were an attacker who knew that, what would you do? What does that suggest about features that are easy to fake?
+:::
+
+::: {.nexthook}
+Next: our model says 0.8. Does 0.8 really mean 80%? We'll check, find out where it lies, and fix it.
+:::
+
+::: {.summary}
+![](/figures/ch03/summary.pdf){width=100%}
+:::

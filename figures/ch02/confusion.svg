@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="413.165pt" height="182.16pt" viewBox="0 0 413.165 182.16" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 182.16 
+L 413.165 182.16 
+L 413.165 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 97.2 101.52 
+L 192.96 101.52 
+Q 197.28 101.52 197.28 97.2 
+L 197.28 49.68 
+Q 197.28 45.36 192.96 45.36 
+L 97.2 45.36 
+Q 92.88 45.36 92.88 49.68 
+L 92.88 97.2 
+Q 92.88 101.52 97.2 101.52 
+z
+" clip-path="url(#p6ebcc77819)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 205.2 101.52 
+L 300.96 101.52 
+Q 305.28 101.52 305.28 97.2 
+L 305.28 49.68 
+Q 305.28 45.36 300.96 45.36 
+L 205.2 45.36 
+Q 200.88 45.36 200.88 49.68 
+L 200.88 97.2 
+Q 200.88 101.52 205.2 101.52 
+z
+" clip-path="url(#p6ebcc77819)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 97.2 161.28 
+L 192.96 161.28 
+Q 197.28 161.28 197.28 156.96 
+L 197.28 109.44 
+Q 197.28 105.12 192.96 105.12 
+L 97.2 105.12 
+Q 92.88 105.12 92.88 109.44 
+L 92.88 156.96 
+Q 92.88 161.28 97.2 161.28 
+z
+" clip-path="url(#p6ebcc77819)" style="fill: #f7e0e1; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 205.2 161.28 
+L 300.96 161.28 
+Q 305.28 161.28 305.28 156.96 
+L 305.28 109.44 
+Q 305.28 105.12 300.96 105.12 
+L 205.2 105.12 
+Q 200.88 105.12 200.88 109.44 
+L 200.88 156.96 
+Q 200.88 161.28 205.2 161.28 
+z
+" clip-path="url(#p6ebcc77819)" style="fill: #f1f2f4; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="197.28" y="11.898359" transform="rotate(-0 197.28 11.898359)">What really happened</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #b8323a" x="145.08" y="28.998984" transform="rotate(-0 145.08 28.998984)">real attack</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="249.48" y="28.998984" transform="rotate(-0 249.48 28.998984)">harmless</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 6.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(6.48 69.020613)">Rule</text>
+    <text style="font-size: 6.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(6.48 78.177984)">says</text>
+    <text style="font-size: 6.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(6.48 89.780449)">alert</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 6.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(6.48 125.180613)">Rule</text>
+    <text style="font-size: 6.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(6.48 134.337984)">says</text>
+    <text style="font-size: 6.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(6.48 145.387699)">quiet</text>
+   </g>
+   <g id="text_6">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="145.08" y="72.765" transform="rotate(-0 145.08 72.765)">675</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="145.08" y="82.2775" transform="rotate(-0 145.08 82.2775)">caught</text>
+   </g>
+   <g id="text_8">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="253.08" y="71.667187" transform="rotate(-0 253.08 71.667187)">1,287</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="253.08" y="83.037" transform="rotate(-0 253.08 83.037)">false alarm</text>
+   </g>
+   <g id="text_10">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="145.08" y="132.525" transform="rotate(-0 145.08 132.525)">840</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="145.08" y="142.767" transform="rotate(-0 145.08 142.767)">missed</text>
+   </g>
+   <g id="text_12">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="253.08" y="131.438437" transform="rotate(-0 253.08 131.438437)">17,198</text>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="253.08" y="142.139" transform="rotate(-0 253.08 142.139)">correctly quiet</text>
+   </g>
+   <g id="text_14">
+    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="319.68" y="55.929063" transform="rotate(-0 319.68 55.929063)">Precision</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 6.4px; font-family: 'Inter'; fill: #4b5563" transform="translate(319.68 69.445437)">of alerts, how many real?</text>
+    <text style="font-size: 6.4px; font-family: 'Inter'; fill: #4b5563" transform="translate(319.68 79.616812)">675 / 1,962 = 34%</text>
+   </g>
+   <g id="text_16">
+    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="319.68" y="106.188516" transform="rotate(-0 319.68 106.188516)">Recall</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 6.4px; font-family: 'Inter'; fill: #4b5563" transform="translate(319.68 119.820437)">of attacks, how many caught?</text>
+    <text style="font-size: 6.4px; font-family: 'Inter'; fill: #4b5563" transform="translate(319.68 130.016812)">675 / 1,515 = 45%</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p6ebcc77819">
+   <rect x="2.88" y="2.88" width="338.4" height="176.4"/>
+  </clipPath>
+ </defs>
+</svg>

@@ -16,8 +16,8 @@ Resume from here. Each chapter row is updated after its lab runs, it renders, an
 | Ch | Title | Words | Pages | Figures | Lab | Voice | Open [[VERIFY]] |
 |---|---|---|---|---|---|---|---|
 | 1 | What “learning” means | 2,790 | 12 (incl. summary) | 6 + summary | ok | pass | 1 (TypeSafe release date) |
-| 2 | Probability is the language of decisions | – | – | – | – | – | – |
-| 3 | Data, loss and gradient descent | – | – | – | – | – | – |
+| 2 | Probability is the language of decisions | 1,880 | 12 | 6 + summary | ok | pass | 0 |
+| 3 | Data, loss and gradient descent | 1,870 | 13 | 7 + summary | ok | pass | 0 |
 | 4 | Calibration: when 0.8 really means 80% | – | – | – | – | – | – |
 | 5 | From probabilities to actions | – | – | – | – | – | – |
 | 6 | Neurons to networks | – | – | – | – | – | – |

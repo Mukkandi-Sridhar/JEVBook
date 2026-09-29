@@ -1,3 +1,203 @@
 # Probability is the language of decisions {#sec-ch02}
 
-*Draft in progress.*
+```{python}
+#| include: false
+from jevkit import soc
+```
+
+Let me guess what went through your head when you saw this chapter's title.
+
+*"Probability. Coins and dice. I did this at school, didn't enjoy it much, and I'm fairly sure I don't need it to build AI systems."*
+
+That's a reasonable thought. It's also the most expensive mistake people make in this field.
+
+In the last chapter, a machine learned exactly what we asked and still ended up useless, because we asked for yes-or-no answers. The fix was to ask for a *chance* instead. This chapter is about what a chance actually means, how to read one without being fooled, and the one trap that catches doctors, judges and security teams alike.
+
+There's no heavy maths here. There are a few ideas that, once they click, you'll use for the rest of your career.
+
+::: {.goals}
+- Say what "a 70% chance" means in a way you could check.
+- Tell apart P(attack) and P(attack | this clue), and know why the difference matters.
+- Spot the base-rate trap before it costs you, using natural frequencies.
+- Update a probability with new evidence by multiplying odds: Bayes' rule without the fear.
+- Read precision and recall, and explain why accuracy can lie.
+:::
+
+## What "70%" means
+
+Your weather app says there's a 70% chance of rain tomorrow.
+
+Tomorrow comes. It doesn't rain.
+
+Was the forecast wrong?
+
+Not necessarily. One day can't tell you. What *can* tell you is the forecaster's track record. Collect every day they said "70%". If it rained on about 70 of every 100 of those days, the forecaster is doing their job, and a dry day is just one of the 30.
+
+![One way to picture a probability. Of 100 days when a forecast said "70% chance of rain", a good forecaster sees rain on about 70.](/figures/ch02/forecast.pdf){#fig-forecast}
+
+So here's the idea to hold on to, in one sentence: **a probability is a claim about how often something happens among cases like this one.**
+
+That definition is useful because it's *checkable*. You can collect cases, count, and see whether the claim holds up. We'll lean on that again and again. When a model tells you an alert is 70% likely to be an attack, it's making the same kind of promise as the weather app, and we can hold it to the same standard.
+
+::: {.deeper}
+Statisticians have argued for two centuries about what probability "really" is. Is it a long-run frequency, or a degree of belief? The Italian mathematician Bruno de Finetti opened his famous textbook with the line *"Probability does not exist"*, meaning it isn't a property of the world but of our knowledge about it. For building decision systems you can hold both views at once: a model's probability is its degree of belief, and we judge that belief by how often it comes true.
+:::
+
+## The two most important words: "among what?"
+
+That phrase *among cases like this one* is doing a lot of quiet work.
+
+At Kestrel Logistics, about {{< num ch02 base pct1 >}} of all alerts turn out to be real attacks. That's the probability of an attack **among all alerts**.
+
+But among alerts with a threat-intel score of 0.7 or more, the share is much higher. Among alerts that match an approved IT tool with a change ticket on file, it's much lower. Same question, "is it an attack?", with a different answer depending on *which group* you're asking about.
+
+Statisticians write the second kind with a vertical bar, and you read the bar as "given":
+
+- P(attack) means the chance of an attack, full stop.
+- P(attack | bad score) means the chance of an attack *given* that the score is bad.
+
+Here's where people get tangled. P(attack | bad score) and P(bad score | attack) look like mirror images. They're not.
+
+::: {.tryit lab="ch02"}
+```{python}
+alerts = soc.load()
+y = alerts.malicious
+bad = alerts.ioc_score >= 0.7
+print(f"P(attack)               = {y.mean():.3f}")
+print(f"P(attack | bad score)   = {y[bad].mean():.3f}")
+print(f"P(bad score | attack)   = {bad[y == 1].mean():.3f}")
+```
+:::
+
+About {{< num ch02 ioc_attack_share pct >}} of attacks come with a bad score. That doesn't mean a bad score makes an alert {{< num ch02 ioc_attack_share pct >}} likely to be an attack. Those numbers answer two different questions: "how often do attacks look like this?" and "how often is something that looks like this an attack?" Mixing them up has a name in courtrooms, the *prosecutor's fallacy*, and it has put innocent people in prison. In a SOC it just ruins your week.
+
+## The trap
+
+Here's a puzzle. Try it honestly before reading on.
+
+A new detector catches 99% of real attacks. It also raises a false alarm on 5% of normal activity. Real attacks are rare: one event in every thousand.
+
+The detector just fired. What's the chance you're looking at a real attack?
+
+Most people say something like 95%. The detector is "99% accurate", after all.
+
+The real answer is about 2%.
+
+If that feels wrong, you're in excellent company. In a well-known 1978 study, doctors and students at Harvard Medical School were given the same puzzle about a medical test. The most common answer was 95%. Fewer than one in five got close to the right one [@casscells1978].
+
+The way out isn't a formula. It's counting. Imagine 100,000 events.
+
+![The same puzzle, counted out. Of 100,000 events, 100 are attacks and the detector catches 99 of them. But 5% of the 99,900 normal events also set it off: 4,995 false alarms. When the alarm sounds, you're holding one of 5,094 alerts, and only 99 of them are real.](/figures/ch02/base-rate-tree.pdf){#fig-base-rate-tree}
+
+@fig-base-rate-tree is the whole trick. The 5% false-alarm rate sounds small, but it's 5% of a *huge* number. The 99% hit rate sounds large, but it's 99% of a *tiny* one. Rarity wins.
+
+This way of counting has a name, *natural frequencies*, and the psychologist Gerd Gigerenzer showed that people who reason with counts like these get Bayesian puzzles right far more often than people handed percentages [@gigerenzer1995]. I'd go further: if a probability ever surprises you, stop and turn it into counts of people or events. The surprise usually vanishes.
+
+![What the analyst on shift actually sees. Every square stands for 10 alerts from the new detector; the red ones are real attacks.](/figures/ch02/icon-array.pdf){#fig-icon-array}
+
+That's the chance of something *before* you see any evidence, the 1 in 1,000, and it's called the **base rate**. Ignoring it is called the base-rate fallacy, and it's everywhere in AI. It's why a "95% accurate" fraud model can still bury a bank in false alarms, and why every security team feels drowned in noise.
+
+::: {.keyidea}
+Rare things stay rare even after the alarm goes off.
+:::
+
+## Bayes' rule, without the fear
+
+So how *should* a new clue change your mind?
+
+The cleanest way I know uses **odds** instead of probabilities. Odds are just "for" compared with "against". A probability of 20% is odds of 20 to 80, or 1 to 4, or 0.25.
+
+Now, every clue has a strength. Ask: *how much more common is this clue among attacks than among harmless alerts?* That ratio is called the **likelihood ratio**. At Kestrel, a threat-intel score of 0.7 or more shows up in {{< num ch02 ioc_attack_share pct >}} of attacks and {{< num ch02 ioc_benign_share pct1 >}} of harmless alerts, so its likelihood ratio is about {{< num ch02 lr_ioc f1 >}}.
+
+Then Bayes' rule, the famous one, fits in a single line:
+
+::: {.keyidea}
+New odds = old odds × likelihood ratio.
+:::
+
+That's it. A clue that's ten times more common among attacks multiplies the odds by ten. A clue that's equally common in both groups multiplies them by one and changes nothing, which is exactly as it should be.
+
+```{python}
+def likelihood_ratio(mask):
+    return mask[y == 1].mean() / mask[y == 0].mean()
+
+odds = y.mean() / (1 - y.mean())
+clues = [("bad threat intel", alerts.ioc_score >= 0.7),
+         ("after hours", alerts.after_hours),
+         ("new country", alerts.new_geo)]
+for name, mask in clues:
+    lr = likelihood_ratio(mask)
+    odds *= lr
+    print(f"{name:>17}: x{lr:4.1f} -> P = {odds / (1 + odds):.0%}")
+```
+
+![Starting from the base rate and multiplying the odds by each clue's likelihood ratio. Three ordinary clues take an alert from "probably nothing" to "probably an attack".](/figures/ch02/odds-update.pdf){#fig-odds-update}
+
+@fig-odds-update shows the evidence piling up. An ordinary alert starts at {{< num ch02 base pct >}}. A bad threat-intel score takes it to {{< num ch02 p1 pct >}}. Add "outside business hours" and it's {{< num ch02 p2 pct >}}. Add "sign-in from a new country" and it's {{< num ch02 p3 pct >}}.
+
+One honest caveat. Multiplying likelihood ratios like this assumes each clue tells you something *new*, that the clues are independent given the answer. Real clues often aren't. In Kestrel's data, attackers who use bad infrastructure also tend to work at night, so the two clues overlap. When we look at alerts that have both, the real attack rate is {{< num ch02 real12 pct >}}, not the {{< num ch02 p2 pct >}} our multiplication predicted. The multiplication gave the right direction and the wrong size.
+
+That gap is exactly why we don't do this by hand in practice. We let a model learn how much each clue is worth, *including* how the clues interact. The next chapter shows you the simplest such model, and it turns out to be Bayes' rule in disguise: it adds up evidence on the log-odds scale.
+
+## Why accuracy lies
+
+Back to the question that fooled us in Chapter 1: how do we score a rule?
+
+Let's take a concrete one, *raise an alert whenever the threat-intel score is 0.5 or more*, and sort every alert at Kestrel into four boxes.
+
+![Every one of the 20,000 alerts, sorted by what the rule said and what really happened. Precision and recall each ignore one of the two columns, and that's what makes them honest about rare events.](/figures/ch02/confusion.pdf){#fig-confusion}
+
+@fig-confusion is called a *confusion matrix*, which is a terrible name for something so clarifying. Two numbers come out of it that you'll see in every chapter from here on.
+
+**Precision** answers: *when the rule raises an alert, how often is it real?* Here it's {{< num ch02 precision pct >}}. That's how much the analysts can trust the alarm.
+
+**Recall** answers: *of all the real attacks, how many did the rule catch?* Here it's {{< num ch02 recall pct >}}. That's how much the company can trust the silence.
+
+And **accuracy**, the share of all alerts put in the right box, comes out at {{< num ch02 accuracy pct >}}. Sounds decent, until you notice that a rule that *never raises any alert at all* scores {{< num ch02 always_benign_acc pct >}}. When one outcome is rare, accuracy mostly measures how common the other outcome is.
+
+::: {.threshold}
+Precision and recall pull against each other. Lower the rule's threshold from 0.5 to 0.3, and which of the two goes up? Which goes down? If Kestrel's analysts can only look at 300 alerts a day, which number should they care about more?
+
+(Recall goes up, precision down: you catch more attacks and raise more false alarms. With a fixed daily budget, precision decides how many real attacks fit inside those 300 looks. Chapter 5 puts both into a single cost.)
+:::
+
+## Small samples wobble
+
+One last idea, and it's the one that'll save you from embarrassing yourself in meetings.
+
+Say a new detector fires 20 times in its first week, and analysts confirm 3 of those were real. Is the detector's precision 15%?
+
+Maybe. But with only 20 alerts, the true rate could plausibly be anywhere from about 4% to 35%. Twenty coin flips can easily come up 13 heads.
+
+![How far a measured rate can wander from the truth, depending on how many alerts you check. The black line is the true attack rate; the shaded band is where 95% of honest samples land; the dots are real random samples. At 20 alerts, the band is enormous. At a few thousand, it's thin.](/figures/ch02/sample-size.pdf){#fig-sample-size}
+
+@fig-sample-size shows how quickly that uncertainty shrinks as the sample grows, and how slowly it shrinks at first. The practical rule is simple. Whenever you report a rate from a small sample, report the range too. Chapter 21 needs exactly this when it audits the alerts a machine closed on its own: with true miss rates around 1%, you need hundreds of audits before the number means much.
+
+::: {.breaks}
+A probability is always "among cases like this", and the world gets to change what "like this" means. If attackers launch a campaign, the base rate jumps, and every probability computed from last month's base rate is suddenly too low. A likelihood ratio measured on one company's data may not hold at another's. And conditional probabilities computed from tiny groups ("alerts from the legal department, on a Sunday, from a new country") are mostly noise. Always ask how many cases sit behind a number.
+:::
+
+::: {.bookquote by="Pierre-Simon Laplace, A Philosophical Essay on Probabilities, 1814"}
+Probability theory is nothing but common sense reduced to calculation.
+:::
+
+## Where we are
+
+We've got the vocabulary now. A probability is a checkable claim about how often. The bar means "given", and "given what?" is the question that matters most. Rare things stay rare, even after an alarm. Evidence multiplies the odds. Accuracy flatters; precision and recall tell the truth. And small samples wobble.
+
+That's everything the rest of Part I builds on.
+
+::: {.exercises}
+1. A spam filter catches 98% of spam and wrongly flags 1% of real email. If 20% of a company's incoming email is spam, what fraction of flagged emails are real email? Now redo it for a mailbox where only 1% is spam. Use natural frequencies, not formulas.
+2. In the lab, find the likelihood ratio of `known_tool` (the alert matches approved IT tooling). Is it above or below 1? What does that mean in plain words?
+3. Explain to a non-technical manager, in three sentences, why a detector with "99% accuracy" might still be a bad purchase.
+4. An analyst says "the new rule has 50% precision; I checked 6 alerts and 3 were real." Sketch roughly how wide the plausible range is, and what you'd say back.
+:::
+
+::: {.nexthook}
+Next: how does a machine actually learn a probability from examples? We'll build the simplest model that does it honestly, and watch it learn by rolling downhill.
+:::
+
+::: {.summary}
+![](/figures/ch02/summary.pdf){width=100%}
+:::
