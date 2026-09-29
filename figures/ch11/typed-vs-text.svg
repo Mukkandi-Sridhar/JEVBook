@@ -34,7 +34,7 @@ Q 2.88 20.88 2.88 24.48
 L 2.88 128.88 
 Q 2.88 132.48 6.48 132.48 
 z
-" clip-path="url(#p86480c8eac)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pece21cf49d)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 182.88 132.48 
@@ -47,7 +47,7 @@ Q 179.28 20.88 179.28 24.48
 L 179.28 128.88 
 Q 179.28 132.48 182.88 132.48 
 z
-" clip-path="url(#p86480c8eac)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pece21cf49d)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 700; font-size: 6.8px; font-family: 'Inter'; text-anchor: start; fill: #e07a1f" x="2.88" y="12.633188" transform="rotate(-0 2.88 12.633188)">Ask an LLM for JSON</text>
@@ -100,7 +100,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p86480c8eac">
+  <clipPath id="pece21cf49d">
    <rect x="2.88" y="2.88" width="338.4" height="147.6"/>
   </clipPath>
  </defs>

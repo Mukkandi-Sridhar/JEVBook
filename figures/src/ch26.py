@@ -1,4 +1,4 @@
-"""Figures for Chapter 26: An applications gallery."""
+"""Figures for Chapter 19: An applications gallery."""
 
 import json
 from functools import lru_cache
@@ -108,7 +108,7 @@ def lines_fig():
     ax.set_yticklabels([d.name for d in ds], fontsize=6.3)
     ax.set_xlim(0, 0.09)
     ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:.0%}"))
-    ax.set_xlabel("flag a case once P(problem) passes this line (Chapter 5)")
+    ax.set_xlabel("flag a case once P(problem) passes this line (Chapter 4)")
     synthetic_tag(f, ILLUS)
     return f
 

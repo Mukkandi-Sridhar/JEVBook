@@ -1,4 +1,4 @@
-"""Figures for Chapter 13: Agents: Observe, Decide, Act."""
+"""Figures for Chapter 7: Agents: Observe, Decide, Act."""
 
 from collections import Counter
 from functools import lru_cache

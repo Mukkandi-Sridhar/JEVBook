@@ -10,6 +10,7 @@
 --   ::: {.exercises}             ... :::   Exercises
 --   ::: {.nexthook}              ... :::   Closing hook to the next chapter
 --   ::: {.bookquote by="Name, Source"} ... ::: Pull quote
+--   ::: {.epigraph by="Name, Source"}  ... ::: Short quotation under a chapter title
 --   ::: {.sidebar title="..."}   ... :::   Neutral sidebar
 --   ::: {.wide}                  ... :::   Figure that runs into the outer margin
 --   ::: {.summary}               ... :::   (dropped from all outputs)
@@ -105,7 +106,7 @@ end
 function Div(div)
   local cls = nil
   for _, c in ipairs(div.classes) do
-    if ENVS[c] or c == "bookquote" or c == "sidebar" or c == "margin" then cls = c break end
+    if ENVS[c] or c == "bookquote" or c == "epigraph" or c == "sidebar" or c == "margin" then cls = c break end
   end
   if not cls then return nil end
   if cls == "summary" then return {} end          -- one-page summaries repeat "Where we are"; not printed
@@ -124,13 +125,20 @@ function Div(div)
       blocks:insert(latex("\\end{bookquote}"))
       return blocks
     end
+    if cls == "epigraph" then
+      blocks:insert(latex("\\begin{chapterepigraph}{" .. escape_tex(div.attributes["by"] or "") .. "}"))
+      blocks:extend(div.content)
+      blocks:insert(latex("\\end{chapterepigraph}"))
+      return blocks
+    end
     if cls == "sidebar" then
-      blocks:insert(latex("\\begin{sidebar}{" .. escape_tex(string.upper(div.attributes["title"] or "")) .. "}"))
+      blocks:insert(latex("\\needspace{7\\baselineskip}\\begin{sidebar}{" .. escape_tex(string.upper(div.attributes["title"] or "")) .. "}"))
       blocks:extend(div.content)
       blocks:insert(latex("\\end{sidebar}"))
       return blocks
     end
-    blocks:insert(latex("\\begin{" .. ENVS[cls] .. "}"))
+    local keep = cls == "deeper" and "\\needspace{7\\baselineskip}" or ""
+    blocks:insert(latex(keep .. "\\begin{" .. ENVS[cls] .. "}"))
     blocks:extend(div.content)
     blocks:insert(latex("\\end{" .. ENVS[cls] .. "}"))
     return blocks
@@ -142,7 +150,7 @@ function Div(div)
   if label then
     div.content:insert(1, pandoc.Div({pandoc.Plain({pandoc.Str(label)})}, pandoc.Attr("", {"box-label"})))
   end
-  if cls == "bookquote" and div.attributes["by"] then
+  if (cls == "bookquote" or cls == "epigraph") and div.attributes["by"] then
     div.content:insert(pandoc.Div({pandoc.Plain({pandoc.Str("\u{2014} " .. div.attributes["by"])})}, pandoc.Attr("", {"quote-by"})))
   end
   if cls == "tryit" and div.attributes["lab"] then

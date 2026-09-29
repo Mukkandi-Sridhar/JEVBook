@@ -1,174 +1,141 @@
-# Testing Jev's calibration yourself {#sec-ch18}
+# Case study: SOC alert triage {#sec-ch18}
+
+::: {.epigraph by="Mike Tyson, attributed"}
+Everybody has a plan until they get punched in the mouth. [[VERIFY]]
+:::
 
 ```{python}
 #| include: false
 import numpy as np
-from jevkit import soc, calibration as cal
-from jevkit.batch import score_alerts
+from jevkit import ops
 ```
 
-A week after Jev launched, two claims were circling.
+Every chapter so far has taken one piece of Kestrel's problem and looked at it closely. Calibration here, a threshold there, an agent, a pattern.
 
-TypeSafe's: Jev returns *calibrated* probabilities. Its training method, RLCD, is named after exactly that goal [@typesafe2026] [[VERIFY]].
+This chapter puts the pieces back together and runs the whole thing, the way a real team would. We'll meet the SOC as it was before any of this. We'll design the new system and run it in silence for a week before trusting it. Then we'll switch it on, and in the week after, a phishing campaign arrives.
 
-And a blunt reply from the data scientist Alex Molas, in a post titled "Jev can't be calibrated": useful, yes, but treat its outputs as scores, not probabilities, because calibration depends on *your* data, which Jev never sees [@molas2026] [[VERIFY]].
+*"Is this where it all works perfectly?"*
 
-*"So which is it?"*
-
-Both, and neither, and that's the point of this chapter. You already have everything you need to settle it for your own use: Chapter 4's reliability diagram, a few hundred labelled cases, and an afternoon. This chapter shows why the critic's argument is right in a precise sense, how to measure it, and how to fix it when it bites.
-
-![Two claims about the same model. The way to settle them is the same either way: test on your own labelled cases.](/figures/ch18/two-claims.pdf){#fig-two-claims}
+No. That's the point of a case study. You'll see where it helps a lot, where it helps less than you'd hope, and the one assumption that turned out to matter most.
 
 ::: {.goals}
-- Explain why calibration belongs to a model *and* a data distribution, not to a model alone.
-- Show the same model calibrated at one company and miscalibrated at another.
-- Fix a base-rate mismatch with a one-line odds adjustment, or with Platt scaling on a few hundred labels.
-- Know how many labels you need before an ECE means anything.
-- Check calibration for choices, not only yes/no answers, and follow a testing routine you can repeat.
+- Describe a SOC's triage before a decision layer, and measure what it quietly misses.
+- Assemble the system from the book's pieces, and name which chapter each piece comes from.
+- Run a new decision system in shadow mode before it acts, and read what shadow mode shows.
+- See why the order of a review queue matters as much as its size.
+- Handle a campaign that breaks the base rate, with monitoring, recalibration and overtime.
 :::
 
-## Why the critic has a point
+## Before: the queue
 
-Here's the argument in plain terms.
+Kestrel's SOC gets about {{< num ch21 live_per_day int >}} alerts a day. Six analysts can each clear about forty, so a day's capacity is {{< num ch25 capacity int >}}. Before this project, every alert joined one queue. The alerts that the senior analyst's rules flagged went to the front; everything else was first come, first served. Whatever nobody reached within a day aged out and was closed without anyone looking.
 
-Chapter 2 said a probability is a claim about *how often, among cases like this one*. Now imagine two companies send Jev the same alert text. Jev, reading the same input, returns the same probability to both. But suppose one company is a frequent target and the other rarely is. Among alerts that look exactly like this one, the true share of attacks can differ between them. A single number can't be right for both.
+That's a very ordinary way to run a SOC. It's also invisible in a particular way: nobody ever sees the alerts that age out, so nobody knows how many of them were real.
 
-That's the base-rate trap from Chapter 2, turned on the model. It's called *prior shift* or *label shift*: the mix of outcomes changes while the way each outcome looks stays the same. A model trained or tuned on one mix can be perfectly calibrated there, and systematically off everywhere the mix is different.
+In our synthetic week, we do know. About {{< num ch25 old.threats_unseen_per_day f1 >}} real threats a day were never seen by anyone.
 
-::: {.keyidea}
-Calibration is a property of a model *and the data it's used on*.
-:::
+![Where each day's alerts go, and where the real threats go, before and after. Before, most alerts aged out of the queue unseen, and so did a large share of real threats. After, most alerts are closed by the policy on purpose, and most real threats are queued or paged.](/figures/ch25/routes.pdf){#fig-routes}
 
-## Two companies, one model
+The left half of @fig-routes looks similar before and after: most alerts get closed without a person either way. The right half is the difference. Before, alerts were closed by *running out of time*, with no regard for which ones mattered. After, they're closed by a *decision*, and the real threats mostly end up in front of a person.
 
-Let's see it happen. Alongside Kestrel Logistics I've generated a second synthetic company, Harbor Pharma. Its alerts come from the same detectors and look the same, but real attacks are less common there: {{< num ch18 harbor_base pct1 >}} of alerts, against Kestrel's {{< num ch18 kestrel_base pct1 >}}.
+## The system
 
-Send both through the same decision model and check each one's reliability.
+![The whole system, with the chapter each piece comes from. Alerts go to Jev as typed questions, the answers are calibrated, the policy routes each alert, and people see the queue and the pages. The LLM writes only for them. Everything is logged and monitored, and labels from reviews and a random audit feed back into calibration.](/figures/ch25/system.pdf){#fig-system}
+
+There's nothing in @fig-system you haven't built. The alert's fields go to Jev as three typed questions (Chapter 10). Platt scaling, fitted on three weeks of history, makes the probabilities honest at Kestrel (Chapters 3 and 11). The three-zone policy, with its lines set by cost and capacity, routes each alert (Chapter 14). The LLM writes the case note for the queue and the message for the page, and nothing else (Chapters 15 and 17). And every decision is logged with its inputs, answers and policy version.
+
+[[AUTHOR STORY: what the first design review of a system like this looked like, and the question from a stakeholder you didn't expect]]
+
+## A week in the shadows
+
+You don't switch a system like this on and hope. You run it in **shadow mode**: it sees every alert and records what it *would* have done, while the analysts carry on exactly as before. Nothing it decides touches anything.
 
 ::: {.tryit lab="ch18"}
 ```{python}
-kestrel = soc.load()
-harbor = soc.to_frame(soc.generate(
-    n=8000, seed=21, logit_shift={r: -1.3 for r in soc.RULES}))
-p_k, p_h = score_alerts(kestrel), score_alerts(harbor)
-
-for name, p, df in (("Kestrel", p_k, kestrel), ("Harbor", p_h, harbor)):
-    lo, hi = cal.ece_interval(p, df.malicious)
-    print(f"{name:>8}: attacks {df.malicious.mean():.1%}, "
-          f"average P {p.mean():.1%}, ECE {cal.ece(p, df.malicious):.3f} "
-          f"({lo:.3f}-{hi:.3f})")
+r = ops.before_after()
+y, zone = r["y"].astype(bool), r["new"][0]
+for z in ("act", "review", "escalate"):
+    print(f"{z:>9}: {((zone == z) & y).sum() / 7:4.1f} threats/day")
 ```
 :::
 
-![The same model's reliability at two companies. At Kestrel, whose mix of alerts matches what the mock was built around, it sits close to the diagonal. At Harbor, where attacks are rarer, every probability is too high.](/figures/ch18/two-companies.pdf){#fig-two-companies}
+At the end of the shadow week, you put what it would have done next to what turned out to be true.
 
-At Kestrel, the ECE is {{< num ch18 ece_kestrel f3 >}}. At Harbor, it's {{< num ch18 ece_harbor f3 >}}, and the direction is consistent: Harbor's average predicted risk is {{< num ch18 harbor_mean_p pct1 >}} when the real attack rate is {{< num ch18 harbor_base pct1 >}}. Put Chapter 21's act line on those numbers and Harbor sends roughly twice as many alerts to review as it needs to (@fig-two-companies).
+![Shadow mode's verdict, per day of the live week. Each cell counts alerts by what the system would have done and what they turned out to be. The red cell is the one to argue about: real threats it would have closed on its own.](/figures/ch25/shadow.pdf){#fig-shadow-18}
 
-Nothing about the model changed. Only the world did.
+The meeting after a shadow week is mostly about one cell, the red one in @fig-shadow-18: about {{< num ch25 new_threats_closed_per_day f1 >}} real threats a day that the system would have auto-closed. That sounds bad until you compare it with the old queue, which let {{< num ch25 old.threats_unseen_per_day f1 >}} a day age out. It's also exactly the number Chapter 14 predicted before the week began. That's worth saying out loud in the meeting. A system whose mistakes match its own forecast is one you can plan around.
 
-As always, the mock is synthetic and I built Harbor to make the point cleanly. I can't tell you how much real Jev's calibration varies between real companies. What I can tell you is that the mechanism is general, and it applies to every model that returns probabilities without seeing your base rate.
+The team's decision was to switch it on, with two conditions from Chapter 14: a random audit of 3% of auto-closed alerts, and a fail-safe that sends an alert to review whenever a call fails.
 
-## Fixing it
+## Order matters as much as size
 
-Here's the good news, and it's very good news. This kind of miscalibration is often easy to fix.
+Here's a detail that took me by surprise when I ran the numbers.
 
-**Adjust for the base rate.** If the model's probabilities were right for one base rate, and you know yours, you can correct them with one line of arithmetic. Multiply the odds by the ratio of the two base rates' odds. That's Bayes' rule from Chapter 2 again: the new evidence is the same, only the starting point moved [@saerens2002].
+The new review queue is sorted by probability: the alerts most likely to be real are looked at first. What if we'd kept the old habit of first come, first served, with the same alerts in the same queue?
 
-```{python}
-rng = np.random.default_rng(0)
-labelled = rng.choice(len(harbor), 300, replace=False)
-rest = np.setdiff1d(np.arange(len(harbor)), labelled)
-y = harbor.malicious.to_numpy()
+The median real threat in the review queue would wait about {{< num ch25 fifo_wait int >}} minutes. Sorted by probability, it waits about {{< num ch25 prio_wait int >}}.
 
-rate = y[labelled].mean()              # estimated from 300 labels
-adjusted = cal.prior_shift(p_h, kestrel.malicious.mean(), rate)
-platt = cal.Platt().fit(p_h[labelled], y[labelled])
-print(f"as returned:   ECE {cal.ece(p_h[rest], y[rest]):.3f}")
-print(f"odds adjusted: ECE {cal.ece(adjusted[rest], y[rest]):.3f}")
-print(f"Platt, 300:    ECE {cal.ece(platt(p_h[rest]), y[rest]):.3f}")
-```
+Same analysts. Same alerts. Same queue. The only change is the order.
 
-![Harbor's alerts, on the cases not used for fitting: as returned (red), after adjusting the odds for Harbor's base rate (blue), and after Platt scaling on 300 labelled alerts (green). Both fixes bring the curve most of the way back to the diagonal.](/figures/ch18/harbor-fixes.pdf){#fig-harbor-fixes}
+![How long it takes for a real threat to reach a person. Before, rule-flagged threats were seen quickly and the rest waited up to a day or were never seen. After, pages reach someone in about fifteen minutes and the queue takes the likeliest threats first.](/figures/ch25/time-to-human.pdf){#fig-time-to-human}
 
-With the base rate known exactly, the odds adjustment brings Harbor's ECE down to {{< num ch18 ece_prior_known f3 >}}. With the base rate *estimated* from just 300 labelled alerts, it gets {{< num ch18 ece_prior_est f3 >}}. Platt scaling fitted on the same 300 labels does best of all, {{< num ch18 ece_platt300 f3 >}} (@fig-harbor-fixes), because it can correct a stretch as well as a shift.
-
-The adjustment rests on an assumption: that alerts of each kind look the same at both places, and only how common each kind is has changed. When that's not true, when your attackers use different techniques or your detectors fire differently, only fitting on your own labels will do. That's another reason the labels matter.
-
-## How many labels?
-
-"A few hundred labels" is the answer I've been giving. It's time to be precise, because small samples play a nasty trick on calibration measurements.
-
-Take the mock at Kestrel, whose ECE on all 20,000 alerts is {{< num ch18 ece_full f3 >}}. Now pretend you only had a random 100 labelled alerts, and measure ECE on those. Do it 200 times with different random samples.
-
-![The ECE you'd measure from a random sample of labelled alerts, for different sample sizes, on a model whose ECE over all 20,000 alerts is shown by the black line. With a hundred labels the measurement is both noisy and biased upwards: an honest model looks dishonest. The bias shrinks as samples grow.](/figures/ch18/ece-noise.pdf){#fig-ece-noise}
-
-With 100 labels, the typical measured ECE is {{< num ch18 ece_n100 f3 >}}, over three times the real value, and one sample in twenty reads as high as {{< num ch18 ece_n100_hi f3 >}} (@fig-ece-noise). That isn't the model being worse; it's the measurement. With few cases per bin, every bin's observed rate wobbles, and ECE adds up the *size* of the wobbles regardless of direction, so noise always pushes it up. By 3,200 labels, the measurement is close to the truth.
+@fig-time-to-human shows the whole distribution. The old way wasn't slow for everything. Rule-flagged threats jumped the queue and were seen within minutes. Its problem was the long flat stretch: threats the rules didn't flag waited behind everything else, and many never got a turn. After the change, {{< num ch25 new.threats_within_hour_share pct >}} of real threats reach a person within an hour, against {{< num ch25 old.threats_within_hour_share pct >}} before.
 
 ::: {.keyidea}
-With few labels, ECE is biased upwards. Report a range, and don't call a model miscalibrated on a hundred cases.
+A probability doesn't only decide *whether* a person looks. It decides *what they look at first*. Ordering the queue is often the cheapest improvement available.
 :::
 
-The practical upshot is a trade-off. A few hundred labels are enough to *fix* a big, systematic problem like Harbor's base rate. Checking that a model is calibrated to within a percentage point or two takes a few thousand. Use `ece_interval()`, or plot the diagram with the counts showing, and let the range guide you.
+## The campaign
 
-## Choices and scores
+The system went live. Then a phishing campaign started.
 
-Everything so far has been about yes-or-no. Chapter 17's other types need checking too.
+Link alerts fired three times as often as usual, and far more of them were real. Chapter 14 used this same week to show how drift looks on a monitoring dashboard. Here's what it did to the operation.
 
-For a **choice**, start with the simplest version: is the top label's confidence honest? Among all the times the model's top label had confidence around 0.8, was it right about 80% of the time?
+![The campaign week, day by day, with and without a response on day 3. Left: alerts sent to review, against the team's capacity. Right: real threats never seen by a person, added up over the week. Recalibrating link alerts and adding overtime helped, but it didn't make the problem go away.](/figures/ch25/campaign.pdf){#fig-campaign}
 
-![Top-label calibration for the category question on 2,500 of Kestrel's alerts: the confidence of the model's top category against how often that category was right.](/figures/ch18/top-label.pdf){#fig-top-label}
+On day 1 the review queue was already over capacity, peaking at {{< num ch25 camp_peak_reviews int >}} alerts a day against {{< num ch25 capacity int >}}. And the probabilities were now too low for link alerts, because they'd been calibrated on weeks when those alerts were mostly harmless. The monitoring from Chapter 14 caught both on day 2: the queue was over its line, and the reviewers were confirming far more link alerts than predicted.
 
-For the mock's category answers, the top label's average confidence is {{< num ch18 top_conf_mean pct >}} and it's right {{< num ch18 top_acc pct >}} of the time, with an ECE of {{< num ch18 top_ece f3 >}} (@fig-top-label). Then go further: check each label's probability on its own (*is "phishing" at 0.3 right 30% of the time?*), especially the labels you act on.
+On day 3 the team responded in two ways. They re-estimated the base rate for link alerts from what reviewers had confirmed so far, and adjusted those probabilities with the prior-shift correction from Chapter 11. And they approved overtime: two extra analysts' worth of reviews a day.
 
-For a **score**, check the probability of each tail you put a threshold on, such as P(severity is medium or high), exactly like a noul.
+It helped. Over the week, the real threats never seen by a person fell from about {{< num ch25 camp_missed_base int >}} to about {{< num ch25 camp_missed_resp int >}} (@fig-campaign). But look at the left panel: with honest probabilities, the queue grew *past* the overtime capacity. Once the link alerts' probabilities were corrected, far more of them deserved a look than even the enlarged team could give.
 
-## A routine you can repeat
+That's the uncomfortable truth of the campaign week. Calibration tells you honestly how much work there is. It can't make the work smaller. When the world gets more dangerous, the decision layer's job is to make that visible early and to spend scarce attention on the likeliest threats. The rest is staffing.
 
-![A testing routine for any model that returns probabilities, Jev included.](/figures/ch18/protocol.pdf){#fig-protocol}
+## After five weeks
 
-Here's the routine I'd follow before trusting any model's probabilities for a decision, and on a schedule afterwards (@fig-protocol).
+![Kestrel's triage before and after, on the same synthetic live week, with the same six analysts.](/figures/ch25/scorecard.pdf){#fig-scorecard-18}
 
-1. **Collect labels.** Recent cases with known outcomes, and a few thousand if you can get them. In a SOC, include random audits of auto-closed alerts, as Chapter 21 insisted, or your labels will only cover the cases people looked at.
-2. **Plot, don't just score.** A reliability diagram with the counts showing, and ECE with a range. Look hardest near your thresholds.
-3. **Slice.** Every group you'll act on differently: source, customer tier, language, region.
-4. **Fix.** A base-rate adjustment if that's the problem and you know the rate; Platt or temperature scaling on your labels otherwise.
-5. **Re-test.** On a schedule, and whenever the model version or your data changes. Aliases like `jev-latest` can move under you.
+@fig-scorecard-18 is the summary I'd put in front of Kestrel's leadership. The analysts looked at about the same number of alerts a day. They weren't working harder. They were looking at different alerts, in a different order, and more real threats reached them, sooner.
 
-So, back to the two claims. The vendor may well be right that Jev is calibrated on the data they tested it on. The critic is right that this doesn't make it calibrated on yours. The routine turns the argument into a measurement.
-
-::: {.keyidea}
-Treat a new model's outputs as scores until you've tested them on your data. After that, treat them as probabilities.
-:::
+One line needs a word of honesty. The *median* wait for a seen threat went up, from about five minutes to fifteen. That's because the old way's seen threats were mostly the rule-flagged ones that jumped the queue, and because I assumed on-call takes fifteen minutes to respond to a page. The fair comparison is the one above it: the share of all real threats seen within an hour more than doubled.
 
 ::: {.breaks}
-Labels are themselves imperfect. Analysts disagree, some attacks are never discovered, and labels arrive late: an alert closed today may turn out to be part of an intrusion found next month. Calibration measured on today's labels will look better than it is. Keep a "mature labels" set, cases old enough that their outcomes have settled, and measure on that. And be careful with labels that exist only because of the model's own decisions: if the model auto-closed a case, nobody labelled it, and your sample is biased towards the cases it sent to people.
+This whole case study is a simulation on synthetic alerts, with mock Jev and made-up costs, capacities and response times, so treat every number as an illustration of the method. Real SOCs differ in ways it leaves out: analysts aren't interchangeable, alerts arrive in bursts, and some real threats are caught later by other defences. Shadow mode is only as good as the labels you compare against, and labels for alerts nobody reviewed are exactly the ones you don't have; that's why the random audit matters. And the campaign response used labels from the first two days, which means the system was wrong for two days before anyone could fix it.
 :::
 
 ::: {.threshold}
-Harbor adopts Kestrel's act line of 0.031 without checking calibration. Given that Harbor's probabilities run about twice too high, is Harbor's line effectively stricter or looser than Kestrel's? What happens to Harbor's review queue, and to its missed threats?
+During the campaign, Kestrel can afford overtime for two more analysts, or it can tell the policy to auto-close more link alerts to keep the queue at capacity. A missed threat costs about \$10,000; an analyst-day of overtime costs about \$600. The corrected probabilities say the extra reviews would find roughly one real threat for every six alerts. Which would you choose?
 
-(Stricter. With inflated probabilities, fewer alerts fall below 0.031, so Harbor auto-closes less than it safely could. Its queue swells, and its missed threats go *down*, at the cost of analyst time it may not have. Fix the calibration, then recompute the line from Harbor's own costs.)
+(Each extra analyst clears about 40 alerts a day, which at one threat in six finds about 6 or 7 real threats worth around \$65,000. That's roughly a hundred times the cost of the overtime. Staff up, and keep the lines honest: shrinking the queue by closing likely threats just moves the cost to where nobody sees it.)
 :::
 
-::: {.bookquote by="Bruno de Finetti, Theory of Probability, 1974"}
-Probability does not exist.
+::: {.bookquote by="W. Edwards Deming, attributed"}
+A bad system will beat a good person every time.
 :::
 
-De Finetti meant that probability isn't a physical property of the world, but a statement of belief given what you know. For a model, "what it knows" never includes your base rate, unless you tell it.
+Deming said something like this often, in talks and seminars [[VERIFY]]. Kestrel's analysts were never the problem. The old queue decided what they saw by accident. The new one decides on purpose.
 
 ## Where we are
 
-Two claims collided, and we tested instead of taking sides. The same model was honest at one company and inflated at another, because a probability depends on its data as well as its model. A one-line odds adjustment or a few hundred labels fixed the gap. Then we found that a few hundred labels can't *prove* calibration, because small samples make honest models look dishonest. What remains is a routine you can run on Jev or on anything else.
-
-Next, the bigger picture: what happens when decisions like these become almost free.
+Kestrel's SOC used to decide by running out of time: whatever nobody reached aged out, and a large share of real threats went with it. We assembled the new system from pieces built across the book and ran it in shadow mode. Its mistakes matched its own forecast, so the team switched it on. With the same six analysts, more real threats reached a person, and they got there faster. The cheapest part of that gain came from putting the likeliest threats first. Then a phishing campaign arrived. Recalibration and overtime reduced the damage, and they also showed plainly how much more work the world had created.
 
 ::: {.exercises}
-1. Explain to a manager, in three sentences, why a model can be calibrated at one company and not another, even with identical inputs.
-2. In the lab, generate a third company where attacks are *more* common than at Kestrel (use `logit_shift` of +1.0). Which way does the reliability curve bend? Does the odds adjustment fix it?
-3. You have 150 labelled alerts and measure ECE 0.05. A colleague says the model is badly calibrated. What would you say, and what would you do next?
-4. Design the labelling plan for testing Jev's calibration at your organisation, or one you know: how many labels, from which cases, how you'd avoid only labelling what the model sent to people, and how often you'd repeat it.
+1. In the lab, set `ops.PAGE_RESPONSE_MIN` to 45. How does the scorecard change? Which row moves most?
+2. Rerun the campaign with a response on day 2 instead of day 3. How many more threats reach a person? What would you need in place to respond a day earlier?
+3. The old way sorted rule-flagged alerts first. What if it had sorted by the SIEM's own severity field instead? Sketch how you'd test whether that alone closes most of the gap.
+4. Write the one-page shadow-mode report you'd send to Kestrel's head of security. What would you put first?
 :::
 
 ::: {.nexthook}
-Next: TypeSafe named the model after a Victorian economist who noticed something strange about coal. Chapter 19 is about why that might be the most important thing about it.
+Next: the same decision layer, a long way from a SOC. An applications gallery, from support tickets to clinical triage, with the questions each one would ask.
 :::

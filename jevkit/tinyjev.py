@@ -1,4 +1,4 @@
-"""TinyJev: a small System One model you can read in one sitting (Chapter 27).
+"""TinyJev: a small System One model you can read in one sitting (Chapter 20).
 
 A shared encoder reads an alert's fields; three typed heads answer three questions in one forward pass:
 
@@ -7,7 +7,7 @@ A shared encoder reads an alert's fields; three typed heads answer three questio
     score   P(severity) for each level      ordinal: P(level > k) = sigmoid(z - t_k), thresholds t_k increasing
 
 Every head is trained with log loss, a proper scoring rule, so honesty is what training rewards. After training,
-one temperature per head is fitted on held-out data (Chapter 4), because proper scoring alone doesn't stop a
+one temperature per head is fitted on held-out data (Chapter 3), because proper scoring alone doesn't stop a
 network from overfitting into overconfidence.
 
 Plain NumPy + autograd. Nothing here is TypeSafe's architecture; it's a design the interface suggests.
@@ -59,8 +59,8 @@ def init(d: int = 32, e: int = 8, seed: int = 0):
     n_in = len(NUMERIC) + e
     s = lambda a, b: rng.normal(0, np.sqrt(2 / a), (a, b))
     return dict(
-        R=rng.normal(0, 0.3, (len(RULES), e)),               # rule embedding (Chapter 7)
-        W1=s(n_in, d), b1=np.zeros(d), W2=s(d, d), b2=np.zeros(d),   # shared encoder (Chapter 6)
+        R=rng.normal(0, 0.3, (len(RULES), e)),               # rule embedding (Chapter 5)
+        W1=s(n_in, d), b1=np.zeros(d), W2=s(d, d), b2=np.zeros(d),   # shared encoder (Chapter 5)
         wn=rng.normal(0, 0.1, d), bn=0.0,                        # noul head
         Wc=rng.normal(0, 0.1, (d, len(CATS))), bc=np.zeros(len(CATS)),   # choice head
         ws=rng.normal(0, 0.1, d), ts=np.linspace(-1, 1, len(LEVELS) - 1),  # score head: one number + thresholds

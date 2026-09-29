@@ -1,4 +1,4 @@
-"""Figures for Chapter 16: Inside Jev: what we know and what we don't."""
+"""Figures for Chapter 9: Inside Jev: what we know and what we don't."""
 
 import numpy as np
 
@@ -148,7 +148,7 @@ def guess():
         draw.arrow(ax, (2.75, 1.06), (3.05, y + 0.18), head=3, color=C["muted"])
         draw.box(ax, 3.05, y, 1.6, 0.36, h, kind="jev", size=6.3, weight="bold")
         draw.text(ax, 3.85, y - 0.04, s, size=5.6, ha="center", va="top", color=C["ink2"])
-    draw.text(ax, 0.0, 0.12, "One forward pass, no token-by-token writing. Chapter 27 builds a small model of exactly this shape.",
+    draw.text(ax, 0.0, 0.12, "One forward pass, no token-by-token writing. Chapter 20 builds a small model of exactly this shape.",
               size=6.2, color=C["ink2"])
     return f
 
@@ -172,7 +172,7 @@ def summary():
         dict(num=5, title="Check claims against each other", kind="neutral", h=1.45,
              body=f"The Doom demo’s numbers imply about {rr['doom_implied_tokens']:,.0f} tokens per decision. Plausible, and checkable."),
         dict(num=6, title="Calibration can’t be taken on trust", kind="fail", h=1.45,
-             body="“Calibrated” is a claim about data. Yours isn’t theirs. Chapter 18 tests it."),
+             body="“Calibrated” is a claim about data. Yours isn’t theirs. Chapter 11 tests it."),
     ]
     return summary_page(CH, "Inside Jev: what we know and what we don’t", panels,
                         footer="Next: the three question types, one at a time.")

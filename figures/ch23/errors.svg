@@ -29,7 +29,7 @@ L 341.28 41.76
 L 341.28 21.6 
 L 2.88 21.6 
 z
-" clip-path="url(#pa2d46d89b7)" style="fill: #f1f2f4"/>
+" clip-path="url(#pa3b862b748)" style="fill: #f1f2f4"/>
    </g>
    <g id="patch_3">
     <path d="M 2.88 83.52 
@@ -37,7 +37,7 @@ L 341.28 83.52
 L 341.28 63.36 
 L 2.88 63.36 
 z
-" clip-path="url(#pa2d46d89b7)" style="fill: #f1f2f4"/>
+" clip-path="url(#pa3b862b748)" style="fill: #f1f2f4"/>
    </g>
    <g id="patch_4">
     <path d="M 2.88 125.28 
@@ -45,7 +45,7 @@ L 341.28 125.28
 L 341.28 105.12 
 L 2.88 105.12 
 z
-" clip-path="url(#pa2d46d89b7)" style="fill: #f1f2f4"/>
+" clip-path="url(#pa3b862b748)" style="fill: #f1f2f4"/>
    </g>
    <g id="patch_5">
     <path d="M 2.88 167.04 
@@ -53,7 +53,7 @@ L 341.28 167.04
 L 341.28 146.88 
 L 2.88 146.88 
 z
-" clip-path="url(#pa2d46d89b7)" style="fill: #f1f2f4"/>
+" clip-path="url(#pa3b862b748)" style="fill: #f1f2f4"/>
    </g>
    <g id="patch_6">
     <path d="M 2.88 208.8 
@@ -61,7 +61,7 @@ L 341.28 208.8
 L 341.28 188.64 
 L 2.88 188.64 
 z
-" clip-path="url(#pa2d46d89b7)" style="fill: #f1f2f4"/>
+" clip-path="url(#pa3b862b748)" style="fill: #f1f2f4"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 600; font-size: 6.2px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="2.88" y="13.826328" transform="rotate(-0 2.88 13.826328)">what went wrong</text>
@@ -156,7 +156,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="pa2d46d89b7">
+  <clipPath id="pa3b862b748">
    <rect x="2.88" y="2.88" width="338.4" height="219.6"/>
   </clipPath>
  </defs>

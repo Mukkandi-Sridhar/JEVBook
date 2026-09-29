@@ -7,13 +7,15 @@
 # ---
 
 # %% [markdown]
-# # Lab 13 · Agents: Observe, Decide, Act
+# # Lab 13 · The bake-off: six ways to make a decision
 #
-# *Decide, Don't Generate*, Chapter 13. The agent, the LLM and Jev are all synthetic stand-ins.
+# *Decide, Don't Generate*, Chapter 13.
 #
-# 1. Run the book's SOC agent on one alert and read its trace.
-# 2. Count what kinds of steps it takes over many alerts.
-# 3. See how errors and latency compound over steps.
+# Six methods decide whether each Kestrel alert is a real threat. All train or tune on weeks 1-3 and are scored
+# on week 4. Jev answers come from `jev-mock-synthetic`; the LLM is the book's `MockLLM`. **Synthetic, not measured
+# on real Jev or a real LLM.** The mock LLM was built as a noisier reader than mock Jev, so the accuracy gap between
+# those two is a design choice. The other columns (calibration shape, parse failures, variance, labels) are the lesson.
+
 
 # %%
 import importlib.util, subprocess, sys
@@ -22,29 +24,46 @@ if importlib.util.find_spec("jevkit") is None:
                     "git+https://github.com/Mukkandi-Sridhar/JEVBook"], check=True)
 
 # %%
-from collections import Counter
-from jevkit import soc
-from jevkit.agent import SOCAgent
+import numpy as np
+from jevkit import bakeoff as B
 
-alerts = soc.load()
-agent = SOCAgent()
-trace = agent.run(next(alerts.iloc[[3]].itertuples()))
-for s in trace.steps:
-    print(f"{s.kind:>8}  {s.name:<18} {s.detail}")
-print("door:", trace.action)
-
-# %%
-traces = [agent.run(row) for row in alerts.head(300).itertuples()]
-kinds = Counter(s.kind for t in traces for s in t.steps)
-print({k: round(v / len(traces), 2) for k, v in kinds.items()})
-print(Counter(t.action for t in traces))
+r = B.run()
+y = r["y"]
+print(f"history {len(r['hist']):,} alerts, live {len(y):,} alerts ({y.sum()} real threats)")
+for m in B.METHODS:
+    s = B.scores(r["probs"][m], y, verdict=r["rules_live"] if m == "rules" else None)
+    print(f"{B.NAMES[m]:>26}: AUC {s['auc']:.3f}  ECE {s['ece']:.3f}  Brier {s['brier']:.4f}  "
+          f"caught@240/day {s['caught']:.0%}  F1@0.5 {s['f1']:.2f}")
 
 # %% [markdown]
-# ## Compounding
+# ## Jev on raw text instead of fields
 
 # %%
-for per_step in (0.99, 0.95, 0.90):
-    print(per_step, [round(per_step ** n, 2) for n in (5, 10, 20)])
+s = B.scores(r["jev_text"], y)
+print(f"Jev (text): AUC {s['auc']:.3f}  ECE {s['ece']:.3f}")
 
 # %% [markdown]
-# **Try:** set `SOCAgent(max_evidence=1)` and rerun. How do the step counts and the doors change?
+# ## How many distinct confidences does the LLM state?
+
+# %%
+vals, counts = np.unique(np.round(r["probs"]["llm_json"], 3), return_counts=True)
+print(dict(zip(vals, counts)))
+print(f"parse failures: {1 - r['parse_ok'].mean():.1%}")
+
+# %% [markdown]
+# ## Stability: ask again
+
+# %%
+print(f"verdicts that change over 5 calls at temperature 0.7: "
+      f"{B.flip_rate(r['live'].description[:1500].tolist()):.1%}")
+
+# %% [markdown]
+# ## Labels needed
+
+# %%
+curve = B.labels_curve(sizes=(100, 300, 1000, 3000), repeats=3)
+for n, a, b in zip(curve["sizes"], curve["logistic"], curve["text_clf"]):
+    print(f"{n:>6} labels: logistic {a:.3f}   text classifier {b:.3f}")
+
+# %% [markdown]
+# **Try:** write a better rule in `B.rules`. How close to logistic regression can a hand-written rule get?

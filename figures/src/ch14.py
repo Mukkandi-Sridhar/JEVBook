@@ -1,4 +1,4 @@
-"""Figures for Chapter 14: Where agents break."""
+"""Figures for Chapter 7: Where agents break."""
 
 from functools import lru_cache
 
@@ -174,4 +174,4 @@ def summary():
         dict(num=6, title="A decision layer catches most of it", kind="jev", h=1.45,
              body="Allow-lists, typed decisions with calibrated probabilities, cost-based thresholds and human doors."),
     ]
-    return summary_page(CH, "Where agents break", panels, footer="Next, Part IV: Jev, in depth.")
+    return summary_page(CH, "Where agents break", panels, footer="Next, Part III: Jev, in depth.")

@@ -1,4 +1,4 @@
-"""Figures for Chapter 12: RAG and memory."""
+"""Figures for Chapter 7: RAG and memory."""
 
 from functools import lru_cache
 

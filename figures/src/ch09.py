@@ -1,4 +1,4 @@
-"""Figures for Chapter 9: Training at scale, and why big models are overconfident."""
+"""Figures for Chapter 5: Training at scale, and why big models are overconfident."""
 
 import warnings
 from collections import Counter, defaultdict
@@ -226,4 +226,4 @@ def summary():
                    "Stopping early beat both on log loss.")),
     ]
     return summary_page(CH, "Training at scale, and why big models are overconfident", panels,
-                        footer="Next, Part III: what an LLM actually does when it writes.")
+                        footer="Next, Part II: what an LLM actually does when it writes.")

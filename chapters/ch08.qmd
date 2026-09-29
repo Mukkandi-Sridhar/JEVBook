@@ -1,168 +1,157 @@
-# Attention and transformers, visually {#sec-ch08}
+# System 1 and System 2 {#sec-ch08}
+
+::: {.epigraph by="Herbert Simon, as quoted by Daniel Kahneman, 2011"}
+Intuition is nothing more and nothing less than recognition. [[VERIFY]]
+:::
 
 ```{python}
 #| include: false
 import numpy as np
-from jevkit import attention as at
+from jevkit import soc, calibration as cal
+from jevkit.batch import score_alerts
 ```
 
-If you've read anything about modern AI, you've probably run into a paper with a slightly smug title: *Attention Is All You Need* [@vaswani2017]. It introduced the **transformer**, the design inside ChatGPT and every LLM you've heard of. (What's inside Jev hasn't been published; Chapter 16 sorts what's known from what's guessed.)
+When TypeSafe AI released Jev, it didn't call it a better LLM. It called it the first of a new class: a **System One model** [@typesafe2026] [[VERIFY]].
 
-And if you've tried to read an explanation of it, you've probably met a diagram with a dozen boxes and arrows labelled Q, K and V, and quietly closed the tab.
+*"Is that a real idea, or just a clever name?"*
 
-*"Is this where the book loses me?"*
-
-No. The core idea fits in one sentence, and you can build it in ten lines of NumPy. We'll start with the problem it solves, because the problem is the easy part to feel.
+It's both, and it's worth unpacking properly before we open Jev up in the next chapter. The name comes from one of the best-known ideas in modern psychology, and that idea turns out to describe the software we've been building in this book surprisingly well. Most of the work is fast judgement. A little of it is slow thought. And the art is sending each case to the right one.
 
 ::: {.goals}
-- Explain why one fixed vector per word isn't enough.
-- Describe attention as a soft lookup: queries, keys and values, in plain words.
-- Train a tiny attention model on a task a bag of words can't solve, and read what it learned.
-- Sketch a transformer block and say why transformers scale so well.
-- Tell the difference between models that read (encoders) and models that write (decoders).
+- Describe Kahneman's System 1 and System 2, with everyday examples.
+- Map them onto software: which tools behave like each.
+- Explain why most real work, in a SOC and in an agent, is System 1 work.
+- Route cases between a fast system and a slow one by doubt, and measure what that buys.
+- Say when fast judgement can be trusted, and why honest doubt is the key condition.
 :::
 
-## One vector per word isn't enough
+## Two ways of thinking
 
-In Chapter 7, every word got one vector. "bank" got one point on the map.
+Try this. What's 2 + 2?
 
-But which bank?
+You didn't work it out. The answer was just there. Now try 17 × 24.
 
-![Left: "bank" means different things in different sentences. Right: two notes with exactly the same words and opposite meanings. A fixed vector per word, or a bag of words, can't tell either pair apart.](/figures/ch08/context-problem.pdf){#fig-context-problem}
+That one felt different. You had to stop, hold numbers in your head, do steps in order. You could feel the effort. Your pupils probably widened.
 
-The left side of @fig-context-problem is the famous example. The right side is the one that matters for a SOC. "invoice, not phishing" is an analyst clearing an alert. "phishing, not invoice" is an analyst raising one. Same three words. A model that only knows *which words appear*, called a **bag of words**, sees two identical notes.
+The psychologist Daniel Kahneman used exactly these examples to introduce two modes of thinking, which he called **System 1** and **System 2** [@kahneman2011]. System 1 is fast, automatic and effortless: recognising a face, reading a word, sensing that a sentence is hostile, knowing that 2 + 2 is 4. System 2 is slow, deliberate and effortful: long multiplication, filling in a tax form, checking an argument.
 
-What we need is a way for each word to look at the words around it and adjust its meaning accordingly. "phishing" should mean something different when "not" sits right before it.
+::: {.bookquote by="Daniel Kahneman, Thinking, Fast and Slow, 2011"}
+System 1 operates automatically and quickly, with little or no effort and no sense of voluntary control.
+:::
 
-## Attention is a soft lookup
+Neither is better. System 1 runs almost everything you do, and it's usually right. But it can be confidently wrong. Here's a famous test of that [@frederick2005]:
 
-Here's the idea, in the form I find easiest to hold in my head.
+*A bat and a ball cost \$1.10 in total. The bat costs \$1.00 more than the ball. How much does the ball cost?*
 
-Every word in a sentence does three things.
+The answer that jumps out is 10 cents. It's wrong: the ball costs 5 cents. System 1 offered a quick, plausible answer, and unless System 2 stepped in to check, that's the answer you'd have given.
 
-It asks a **question**: *"which other words should change what I mean?"* For "phishing", that question might amount to "is anyone negating me?"
+![The two systems, side by side, and the kinds of software that behave like each.](/figures/ch15/two-systems.pdf){#fig-two-systems}
 
-It advertises a **label**: *"here's what I can tell you about."* For "not", the label amounts to "I'm a negation, and I sit right before you."
+## Software has mostly had one of them
 
-It holds some **content**: the information it would pass along if someone listened.
+Now look at the tools this book has covered, and sort them by how they "think".
 
-Then each word compares its question with every word's label. Good matches get high scores, and the scores are turned into weights that add up to 1. Finally, the word takes a *weighted mix* of everyone's content and blends it into its own meaning.
+Rules and classifiers are System 1–like: fast, automatic, good at familiar patterns, useless outside them. Logistic regression doesn't deliberate. It adds up the evidence and answers in microseconds.
 
-![The word "phishing" asks its question (the query), compares it with each word's label (key), turns the matches into weights that sum to 1, and takes that mix of their contents (values). In the trained model, it looks almost entirely at "not".](/figures/ch08/qkv.pdf){#fig-qkv}
+Large language models, especially the newer ones that write out their reasoning before answering, are the closest software has come to System 2: slow, effortful, general, able to tackle problems they've never seen. Chapter 6 showed what that costs. Every step of reasoning is tokens in the loop, and tokens are time and money.
 
-In the jargon, the question is the **query**, the label is the **key** and the content is the **value**. That's the Q, K and V from the scary diagrams. All three are just the word's vector multiplied by three different learned matrices.
+For the last few years, the industry's instinct has been to use that System 2 machinery for *everything*, including judgements that System 1 handles fine. Chapter 7 counted what that looks like inside an agent: mostly small, familiar decisions, each made by a slow, general reasoner.
+
+![Tasks in and around a SOC, placed by how often they happen and how much thinking each needs (illustrative). The high-volume ones cluster at the bottom right: quick judgements made hundreds or thousands of times a day. The few that need real reasoning happen rarely.](/figures/ch15/task-map.pdf){#fig-task-map}
+
+@fig-task-map is illustrative, but the shape is familiar to anyone who has worked in operations. A handful of tasks need real thought: reconstructing an attack, writing the incident report, explaining a breach to the board. The overwhelming volume is quick judgement: is this alert real, which queue, which tool next, is this chunk relevant, is this the same incident as that one.
 
 ::: {.keyidea}
-Attention: every word asks which other words matter to it, and listens to them in proportion.
+Most of the work is System 1 work. Most of the machinery we've been using is System 2.
 :::
 
-It's "soft" because nothing is chosen outright. A word can listen 98% to one neighbour and 2% to the rest, and because every step is smooth, gradient descent can learn what to ask and what to advertise.
+That mismatch is the gap TypeSafe named Jev's model class after. A **System One model**, in their sense, is one built for the high-volume corner of @fig-task-map. It answers typed questions fast and returns probabilities, and it doesn't reason in text at all. Whether Jev fills that gap well is the subject of the rest of Part III, measured with the tools of Part I.
+
+## Route by doubt
+
+Here's the practical design question. If you have a fast system and a slow one, how do you split the work?
+
+A good analyst already knows the answer. They triage most alerts in seconds, and they *notice* the ones that don't feel right. Those get the slow treatment. The skill isn't only fast judgement. It's fast judgement *plus an honest sense of when it's not enough*.
+
+![Route by doubt. A fast System 1 looks at every case and returns a decision with a probability. Confident cases are decided on the spot. Unsure ones go to System 2: slow reasoning, more evidence, or a person.](/figures/ch15/router.pdf){#fig-router-08}
+
+Let's measure what that design buys at Kestrel. System 1 is the mock decision model reading each alert's raw text, recalibrated on the history weeks. System 2 is a careful investigation, which in our synthetic world I can model perfectly: it learns each alert's *true* probability. That's the best any investigation could do, so it's the upper limit of what System 2 can add.
+
+We decide whether each live alert is a threat using the cost line from Chapter 4, with a missed threat at \$10,000 and a false alarm at \$400. Then we send a share of alerts to System 2, either the ones System 1 is least sure about, or a random selection.
 
 ::: {.tryit lab="ch08"}
-Self-attention, in full.
-
 ```{python}
-def softmax(s):
-    s = s - s.max(-1, keepdims=True)
-    e = np.exp(s)
-    return e / e.sum(-1, keepdims=True)
+alerts = soc.load()
+alerts["p"] = score_alerts(alerts, "text")
+history, live = soc.history_and_live(alerts)
+system1 = cal.Platt().fit(history.p, history.malicious)(live.p)
+system2 = live.p_true.to_numpy()        # idealised investigation
+y = live.malicious.to_numpy()
 
-def self_attention(H, Wq, Wk, Wv):
-    Q, K, V = H @ Wq, H @ Wk, H @ Wv     # questions, labels, contents
-    weights = softmax(Q @ K.T / np.sqrt(K.shape[1]))
-    return weights @ V, weights
+miss, fa = 10_000, 400
+line = fa / (fa + miss)
+lo = lambda x: np.log(x / (1 - x))
+doubt = np.argsort(np.abs(lo(np.clip(system1, 1e-6, 1 - 1e-6)) - lo(line)))
 
-rng = np.random.default_rng(0)
-H = rng.normal(size=(3, 8))              # 3 words, 8 numbers each
-out, w = self_attention(H, *(rng.normal(size=(8, 8)) for _ in range(3)))
-print(np.round(w, 2))                    # each row sums to 1
+def daily_cost(share):
+    act = (system1 >= line).astype(int)
+    sent = doubt[: int(share * len(y))]
+    act[sent] = (system2[sent] >= line).astype(int)
+    wrong = ((act == 1) & (y == 0)) * fa + ((act == 0) & (y == 1)) * miss
+    return wrong.sum() / 7
+
+for share in (0, 0.1, 0.2, 1.0):
+    print(f"send {share:4.0%} to System 2: ${daily_cost(share):,.0f} a day")
 ```
 :::
 
-::: {.deeper}
-The **softmax** function turns any list of scores into weights that are positive and sum to 1: raise *e* to the power of each score and divide by the total. It's the many-option version of the S-curve from Chapter 3, and it's everywhere in this book. The attention weights above use it; an LLM uses it to turn scores into a probability for every possible next word (Chapter 10); and a Jev `choice` answer is a probability for every label, which is exactly what a softmax produces (Chapter 17). The division by the square root of the vector size keeps the scores from growing so large that the softmax saturates into all-or-nothing weights.
+![Expected cost per day as more alerts go to System 2. Sending the alerts System 1 is least sure about (green) gets most of the benefit early. Sending a random share (grey) gets almost nothing until you send nearly everything.](/figures/ch15/routing-curve.pdf){#fig-routing-curve}
+
+The result in @fig-routing-curve is the whole argument for a dual-process design, in one chart. Sending the 20% of alerts System 1 is least sure about captures {{< num ch15 share_gain_20 pct >}} of everything System 2 could possibly add. Sending a random 20% captures {{< num ch15 share_gain_20_random pct >}}.
+
+And the cost of System 2 is paid only on that 20%. If a careful pass takes 25 seconds and a fast decision 0.15 (illustrative numbers again), then routing by doubt averages about {{< num ch15 time_20 f1 >}} seconds per alert, against 25 for sending everything to the slow system.
+
+::: {.keyidea}
+The value of a fast system isn't only its speed. It's knowing which cases it shouldn't decide.
 :::
 
-## Watching it learn
+That's why calibration keeps coming back in this book. Routing by doubt only works if System 1's doubt is *honest*: if its 0.5 really means "this could go either way" and its 0.02 really means "almost certainly fine". An overconfident System 1 sends the wrong cases to System 2, and keeps the dangerous ones for itself.
 
-Random weights make random attention. The interesting question is what attention learns when you train it.
+## When can fast judgement be trusted?
 
-So let's set it a task a bag of words can't do. I generated 4,000 tiny analyst notes from a handful of words: threat words like "phishing" and "malware", harmless ones like "invoice" and "lunch", plus "not" and "and". A note counts as a threat if it contains a threat word that *isn't* directly preceded by "not". So "invoice not phishing" is harmless and "phishing not invoice" is a threat.
+Psychologists spent years arguing about intuition. Some, like Gary Klein, studied experts such as firefighters and nurses, whose split-second judgements were remarkably good. Others, like Kahneman, catalogued the ways snap judgements go wrong. In 2009 the two of them wrote a joint paper setting out when intuition can be trusted, and found they mostly agreed [@kahneman2009].
 
-Then I trained a model with one attention layer, where each word also knows its position in the note, using the same downhill walk as always.
+![Conditions under which fast, intuitive judgement tends to be reliable, adapted from Kahneman and Klein. SOC triage mostly meets the first three. The fourth is what separates good experts, and good models, from confident ones.](/figures/ch15/conditions.pdf){#fig-conditions}
 
-```{python}
-X, y, notes = at.make_data(4000, 0)
-X_test, y_test, _ = at.make_data(1000, 1)
-params = at.train(X, y, steps=4000, lr=0.01, seed=1)
+Their answer, roughly: trust fast judgement in a **regular** environment, where the same cues keep meaning the same things, after **plenty of practice** with **quick, clear feedback** (@fig-conditions). Don't trust it in chaotic environments, or where feedback is slow and rare, however confident the expert feels.
 
-acc = ((at.forward(params, X_test) > 0.5) == y_test).mean()
-print(f"attention model accuracy on new notes: {acc:.1%}")
-```
+I've added a fourth condition that I think matters just as much for machines: an honest sense of doubt. A good expert knows when a case is outside their experience. A good System One model should too, and for a model "knowing" means one thing: calibrated probabilities that drop towards uncertainty when the case is unfamiliar.
 
-![Accuracy on 1,000 new notes. A bag-of-words model (logistic regression on word counts) can only get so far, because many notes it must separate contain exactly the same words. One attention layer solves the task. Right: its training loss, on a log scale.](/figures/ch08/bow-vs-attention.pdf){#fig-bow-vs-attention}
-
-The bag of words tops out at {{< num ch08 acc_bow pct >}}, because many notes it has to separate contain exactly the same words. One layer of attention gets {{< num ch08 acc_att pct >}}.
-
-But the score isn't the fun part. The fun part is looking inside.
-
-![What each word attends to, in three notes, from the trained model. Read each row as "this word is looking at...". In "invoice not phishing", "phishing" puts nearly all its attention on "not". In "lunch and malware", "malware" looks at the word before it, sees "and", and stays a threat.](/figures/ch08/heatmaps.pdf){#fig-heatmaps}
-
-In the left panel of @fig-heatmaps, the row for "phishing" puts {{< num ch08 att_phishing_to_not pct >}} of its attention on "not". Nobody told the model about negation, or even that "not" was special. Gradient descent found that the cheapest way to get the answers right was for each threat word to *look at the word just before it*, and that's the pattern it built.
-
-That's the whole magic of attention, in miniature. The model learns which relationships between words matter, and learns to look for them.
-
-## The transformer
-
-A real transformer is this idea, repeated and polished.
-
-![One transformer block. Every word looks at every other word (attention), then each word's vector is refined by a small network on its own. Shortcut connections add each step's input back to its output, which keeps training stable. Large models stack dozens of these blocks.](/figures/ch08/block.pdf){#fig-block}
-
-Each **block** in @fig-block does two things. First, attention: every word looks at every word and updates its meaning. Then a small neural network, like the one in Chapter 6, processes each word's updated vector on its own. Add a couple of engineering details (shortcuts and normalisation, which keep deep stacks trainable), and that's a block.
-
-Stack twelve blocks, or a hundred. Real models also run many attention patterns side by side in each block, called *heads*: one might track negation, another which verb goes with which subject, another what "it" refers to.
-
-Why did this design take over? Earlier language models read text one word at a time, left to right, passing a summary along like a game of telephone, and they forgot the start of long sentences. Attention looks at every pair of words *at once*. That means it can connect words far apart, and all the computation for a sentence can run in parallel on graphics chips. It was the architecture that could finally use enormous amounts of hardware, which is Chapter 9's story.
-
-## Readers and writers
-
-One last distinction, and it matters a great deal for this book.
-
-![Two ways to wire attention. A reader (encoder) lets every word look at every other word, before and after it: good for understanding a whole input at once. A writer (decoder) lets each word see only the words before it: it has to, because when writing, the future words don't exist yet.](/figures/ch08/encoder-decoder.pdf){#fig-encoder-decoder}
-
-A **reader**, or *encoder*, lets every word look at the whole input, before and after it (@fig-encoder-decoder, left). That's what you want for *understanding*: classifying an alert, judging a ticket, deciding. Models built this way, like BERT [@devlin2019], were the workhorses of text classification for years.
-
-A **writer**, or *decoder*, only lets each word look backwards (@fig-encoder-decoder, right). That's what you need for *generating*, because when you're writing word five, word six doesn't exist yet. GPT-style LLMs are writers: they produce text one piece at a time, each piece looking back at everything before it.
-
-Hold on to that picture. When Chapter 10 explains why generating a decision word by word is slow, and Chapter 16 asks what's inside a model that returns a whole typed decision "in a single parallel pass" [[VERIFY]], this is the distinction underneath.
+SOC triage fits the first three conditions better than most jobs. Alerts come from a fixed set of detectors; there are thousands of examples; analysts find out, eventually, which alerts were real. Novel attack investigations fit badly. So do one-off strategic decisions. That's a useful rule of thumb for where System One models belong, and where they don't.
 
 ::: {.breaks}
-Attention maps are tempting to read as explanations. Sometimes they are, as in our tiny model. In large models, they often aren't: with dozens of layers and heads, the weights in one head don't reliably tell you *why* the model decided something, and researchers have argued about this directly [@jain2019]. Attention also costs more as inputs get longer, since every word looks at every other word. That's why models have limits on how much text they can take in at once, and why long documents get chopped up (Chapter 12).
+The two-systems idea is a metaphor, and Kahneman himself was clear that the "systems" are shorthand, not two machines in the brain. Mapping it onto software is looser still: a System One model isn't intuitive in any human sense; it's a trained function. And routing by doubt has a weakness: if System 1 is confidently wrong about a whole class of cases, say a new attack technique it has never seen, it won't route them to System 2, because it doesn't feel unsure. Random audits (Chapter 14) and drift checks are there to catch what doubt misses.
 :::
 
 ::: {.threshold}
-Our attention model outputs P(threat) = 1.00 for "phishing not invoice" and 0.00 for "invoice not phishing". Its training loss fell to almost zero. If you deployed it on real analyst notes, which are far messier than these templates, would you trust a 1.00? What would you check first?
+Kestrel's System 2 is expensive: a senior analyst's time. The team can afford to send 10% of alerts, not 20%. Using @fig-routing-curve, roughly how much of the benefit do they keep? And if they could make System 1 better calibrated, would the curve move up, down, or change shape?
 
-(Not without checking. A near-zero training loss on tidy data means the model has learned to be completely certain, and it will carry that certainty onto messy notes it has never seen. Check calibration on real notes first. Chapter 9 explains why big models drift this way.)
-:::
-
-::: {.bookquote by="Ashish Vaswani and colleagues, Attention Is All You Need, 2017"}
-We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely.
+(They'd keep somewhat over half. Better calibration makes the green curve drop *faster*, because the cases System 1 marks as uncertain would really be the uncertain ones, so each escalation buys more.)
 :::
 
 ## Where we are
 
-One vector per word couldn't tell "not phishing" from "phishing". So we let each word ask a question of the others and listen in proportion, and trained that on notes a bag of words couldn't separate. The model worked out on its own that threat words should look at the word before them. Stacking that idea in blocks gave us the transformer, and wiring it to see everything or only the past gave us readers and writers.
+We started with 2 + 2 and 17 × 24, and found two modes of thinking in each of us. Software, we saw, has mostly used its slow, general mode for every job, even though most jobs are quick judgements. So we put a fast system in front of a slow one and sent across only the cases it doubted, and a fifth of the traffic bought most of the benefit. That only worked because the fast system's doubt was honest, which is exactly the condition under which psychologists say intuition can be trusted.
 
-We have the architecture. What turned it into ChatGPT was scale: more data, more layers, more computing power than anyone had used before. That's next, along with a side effect that matters a great deal for decisions.
+Now we can look inside the model that took the name.
 
 ::: {.exercises}
-1. In your own words, and without the letters Q, K or V, explain what attention does for the word "phishing" in "invoice not phishing".
-2. In the lab, remove the position information (set `params["P"]` to zeros after training). What happens to accuracy? Why?
-3. Why can a writer (decoder) not look at future words, even though they'd help? When is that a disadvantage?
-4. Invent a note where the word *two* positions back changes the meaning ("not a phishing email"). Would our trained model handle it? How would you change the training data so it could?
+1. List five decisions from your own work that are System 1 work and two that need System 2. What makes the difference?
+2. In the lab, route the alerts randomly instead of by doubt, and plot both curves. At what share does random routing catch up?
+3. Explain in plain words why an overconfident System 1 makes routing by doubt fail.
+4. Using Kahneman and Klein's conditions, would you trust a System One model to triage insurance claims? To approve mortgages? To decide which patient a nurse sees first? Why or why not?
 :::
 
 ::: {.nexthook}
-Next: take this architecture, make it enormous and train it on a large share of the internet. What comes out can write, and it's also surprisingly overconfident. Chapter 9 explains both.
+Next: what's actually inside Jev? We'll separate what TypeSafe has published, what they claim, and what nobody outside knows yet.
 :::

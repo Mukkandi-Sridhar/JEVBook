@@ -1,4 +1,4 @@
-"""Figures for Chapter 28: Capstone: a production decision service."""
+"""Figures for Chapter 21: Capstone: a production decision service."""
 
 import json
 from functools import lru_cache

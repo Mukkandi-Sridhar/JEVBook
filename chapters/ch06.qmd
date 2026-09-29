@@ -1,167 +1,178 @@
-# Neurons to networks {#sec-ch06}
+# How an LLM writes, and structured outputs {#sec-ch06}
+
+::: {.epigraph by="Ludwig Wittgenstein, Tractatus Logico-Philosophicus, 1922"}
+The limits of my language mean the limits of my world.
+:::
 
 ```{python}
 #| include: false
-import numpy as np
-from jevkit.learn import sigmoid, log_loss, fit_logistic
+from typing import Literal
+from pydantic import BaseModel, ConfigDict, ValidationError
+from jevkit import llm, text, soc
 ```
 
-"Deep learning" might be the most intimidating phrase in the field. It sounds like something between neuroscience and magic, and people talk about it with a mix of awe and suspicion.
+When ChatGPT answers you, the words appear a few at a time, as if someone were typing.
 
-So here's some good news to start Part II with:
+You've probably wondered whether that's just a nice animation, with the whole answer sitting there, finished, revealed slowly for effect.
 
-*You've already built one.*
+It isn't. That's genuinely how the model works. It doesn't know the end of its sentence when it writes the beginning. It picks one small piece, then the next, each time looking back at everything so far.
 
-The logistic regression you trained in Chapter 3 is a single artificial neuron. A deep network is many of them, stacked in layers and trained with the same downhill walk you already know. There are a couple of genuinely new ideas in this chapter, and they're both small. What makes deep learning powerful isn't mystery. It's scale.
+That one detail explains a surprising amount: why long answers are slow, why the same question can get different answers, why you pay per token, and why "just ask the LLM" is an awkward way to make a decision. It also explains why getting a clean, trustworthy *decision* out of a writing machine is harder than adding "reply in JSON" to a prompt.
 
 ::: {.goals}
-- Recognise logistic regression as a single artificial neuron.
-- Show why one neuron can only draw a straight line, and why that's a real limit.
-- Explain how hidden layers and a "hinge" (ReLU) let a network draw almost any shape.
-- Describe backpropagation as blame flowing backwards through the network.
-- Say when a bigger network helps, and when it quietly makes things worse.
+- Describe the generation loop: predict, pick, append, repeat.
+- Explain why answer length drives latency and cost, and why the same question can get different answers.
+- Recognise how "just ask for JSON" fails, and what constrained decoding does and doesn't fix.
+- Compare three kinds of confidence: stated in the text, read from token probabilities, and returned by a decision model.
 :::
 
-## You've already built a neuron
+## One token at a time
 
-Look at what our Chapter 3 model does to an alert. It takes each clue, multiplies it by a weight, adds everything up with a starting point, and squashes the total through an S-curve to get a probability.
-
-![A single artificial neuron. Inputs are weighted, summed with a bias, and passed through a squashing function. Our logistic regression from Chapter 3 is exactly this.](/figures/ch06/neuron.pdf){#fig-neuron}
-
-That's a **neuron**, at least in the artificial sense. The name comes from a loose analogy with brain cells, which collect signals from their neighbours and "fire" if the total is strong enough. The analogy goes back to the 1940s and the perceptron of the late 1950s [@mcculloch1943; @rosenblatt1958]. Don't lean on it too hard. Real neurons are far more complicated, and deep learning works for mathematical reasons, not biological ones.
-
-## One neuron draws a straight line
-
-A single neuron has a limit you can see.
-
-Imagine two clues about a user account, clue A and clue B: how far today's activity is from that person's usual pattern, measured two different ways. Normal behaviour sits in the middle. Suspicious behaviour is *unusual in any direction*: far too much, far too little, far too early, far too late.
-
-A single neuron adds up weighted clues. The places where that sum equals any particular value form a straight line. So all a single neuron can ever do is cut the space in two with a straight edge: "more of this, less of that".
-
-![A toy problem. Blue dots are normal activity; red dots are suspicious, and they surround the normal cluster on every side. One neuron (left) can only draw a straight line through it, which is useless. With a hidden layer of three neurons (middle), the boundary becomes a triangle. With twelve (right), it's close to a circle.](/figures/ch06/line-limit.pdf){#fig-line-limit}
-
-The left panel of @fig-line-limit is the problem. No straight line separates the middle from the edges. Our logistic regression's log loss on this toy is {{< num ch06 toy_lr f2 >}}, barely better than knowing nothing.
-
-This limit was famous. In 1969 Marvin Minsky and Seymour Papert proved it carefully for single-layer perceptrons, and the result helped cool a whole field's enthusiasm for neural networks for more than a decade [@minsky1969].
-
-The fix was known in principle. Actually making it work took until the 1980s.
-
-## Hidden layers bend the line
-
-Here's the fix: don't send the clues straight to the output. Send them to a few neurons first, each drawing its own straight line, and let the output neuron combine *their* answers.
-
-![A small deep network. Clues enter on the left. Each neuron in a hidden layer computes its own weighted sum of everything in the layer before. The output neuron combines the last layer into a single probability. Every line is a weight to be learned.](/figures/ch06/network.pdf){#fig-network}
-
-Each hidden neuron is asking its own simple question: "is this point on the far side of *my* line?" The output neuron then asks a question about the answers: "is it on the far side of *all three* lines?" Three straight edges, combined, make a triangle. Twelve make something close to a circle, as @fig-line-limit shows. The network's log loss drops from {{< num ch06 toy_lr f2 >}} to {{< num ch06 toy_net12 f2 >}}.
-
-The layers in between are called **hidden** simply because you never see their values directly; they're not inputs and not outputs. A network with several hidden layers is a **deep** network. That's the whole meaning of the word "deep" in deep learning: many layers.
-
-### The hinge that makes it work
-
-There's one small but essential detail. If each hidden neuron just passed its weighted sum straight on, the whole network would collapse. A weighted sum of weighted sums is still just a weighted sum, and you'd be back to one straight line, no matter how many layers you stacked.
-
-So every hidden neuron applies a bend before passing its answer on. The most popular bend today is almost embarrassingly simple, and it's called **ReLU**: if the sum is negative, output zero; otherwise output the sum unchanged. It's a hinge.
-
-![Left: one hinge (ReLU). Middle: three hinges with different positions and slopes. Right: add five hinges together and you can trace a smooth curve closely. That's why networks with enough hidden units can approximate almost any shape.](/figures/ch06/hinges.pdf){#fig-hinges}
-
-@fig-hinges shows why a pile of hinges is so powerful. Each one adds a single bend, and added together they can follow almost any curve. Mathematicians proved decades ago that a network with just one hidden layer can approximate any reasonable function this way, given enough hidden units [@cybenko1989]. Whether it can *learn* that function from a sensible amount of data is a different question, and that's where depth and cleverness come in.
-
-::: {.keyidea}
-Weighted sums draw lines. Hinges bend them. Layers combine the bends.
-:::
-
-## Backpropagation: blame flows backwards
-
-How does the network find good weights? The same way as in Chapter 3: roll downhill on the log loss. The only new problem is working out the slope for a weight buried deep inside the network, several layers away from the output where the error is measured.
-
-The trick is called **backpropagation**, and it was popularised in 1986 by David Rumelhart, Geoffrey Hinton and Ronald Williams [@rumelhart1986]. The idea is intuitive once you picture it as blame.
-
-![Forward, the network turns an input into a prediction. Backward, the error at the output is shared out as blame: each layer passes blame to the one before it, in proportion to how much each weight contributed. Then every weight takes a small step to reduce its share.](/figures/ch06/backprop.pdf){#fig-backprop}
-
-Say the network said 0.9 for an alert that was harmless. The output is too high. Which weights are to blame? The ones in the last layer, in proportion to how strongly the neurons they connect were firing. And how much blame does each hidden neuron carry? Its share of the output's error, passed back through its weight, and zero if its hinge was switched off. Repeat, layer by layer, all the way back to the inputs.
-
-In code, that's two extra lines compared with Chapter 3.
+A language model reads **tokens**: chunks of text, often parts of words, made by a separate program called a tokenizer. Common words become one chunk; rare ones, like hostnames, typos and base64 blobs, the stuff security logs are made of, break into many small pieces. You pay per token, and numbers such as 0.87 or an IP address may be split in ways that don't line up with their meaning, which is one reason LLMs can be clumsy with arithmetic.
 
 ::: {.tryit lab="ch06"}
-A network with twelve hidden neurons, trained from scratch on the toy problem.
+A tiny tokenizer, trained on synthetic analyst notes in about a second.
 
 ```{python}
-rng = np.random.default_rng(3)
-X = rng.uniform(-1, 1, (700, 2))
-far = np.sqrt(((X - [0.1, 0.05]) ** 2).sum(1))
-y = (rng.random(700) < sigmoid(12 * (far - 0.92))).astype(float)
-
-H = 12
-W1 = rng.normal(0, 1, (2, H)); b1 = np.zeros(H)
-W2 = rng.normal(0, 0.3, H);    b2 = 0.0
-for step in range(3001):
-    h_in = X @ W1 + b1
-    h = np.maximum(0, h_in)                  # hinges
-    p = sigmoid(h @ W2 + b2)                 # forward
-    d_out = (p - y) / len(y)                 # blame at output
-    d_h = np.outer(d_out, W2) * (h_in > 0)   # blame, passed back
-    W2 -= 0.3 * h.T @ d_out; b2 -= 0.3 * d_out.sum()
-    W1 -= 0.3 * X.T @ d_h;   b1 -= 0.3 * d_h.sum(0)
-    if step % 1000 == 0:
-        print(f"step {step:4d}  loss {log_loss(p, y):.3f}")
+notes = [" ".join(n) for n in text.notes_corpus(5000)]
+tok = llm.BPE().fit(notes, merges=150)
+for s in ["the ransomware was quarantined", "passw0rd reset"]:
+    print(tok.tokenize(s))
 ```
 :::
 
-Every deep-learning library you'll ever use does exactly this, with much bigger matrices, many more layers, and the blame calculation worked out automatically so nobody has to write the backward pass by hand.
+Every time an LLM produces a token, it runs the same loop.
 
-## Why "deep" works on pixels and words
+![The generation loop. The model reads everything so far, produces a probability for every possible next token, one gets picked, it's appended, and the loop runs again.](/figures/ch10/loop.pdf){#fig-loop-06}
 
-On our toy, one hidden layer was enough. So why do real systems use dozens or hundreds?
+Read everything so far. Produce a probability for every token in the vocabulary, often around a hundred thousand of them. Pick one. Append it, and go round again (@fig-loop-06). The probability step is the transformer from Chapter 5, a *writer* that can only look backwards. Everything else is a loop around it.
 
-Because each layer can build on the features the layer before it found. Train a deep network on photos and something remarkable happens without anyone asking for it: the first layers learn to detect edges, the next ones combine edges into textures and corners, later ones into eyes and wheels, and the final layers into whole cats and cars [@lecun2015]. Nobody wrote a rule for "edge" or "eye". The network discovered that those intermediate features were useful for reducing its loss.
+The picking hides a choice. Always taking the most likely token, **greedy** decoding, is predictable but dull. Rolling a die weighted by the probabilities, **sampling**, gives variety. A setting called **temperature** controls how adventurous the die is: divide every score by *T* before turning scores into probabilities, so below 1 the favourites win more, and above 1 long shots get a real chance. (It's the same temperature Chapter 3 used to soften overconfident models, pointed the other way.)
 
-That's the real break from Part I. There, a human decided the clues: threat-intel score, time of day, new country. A deep network takes raw input, like pixels, characters or bytes of a log line, and *learns its own clues*. For problems where nobody could write the features down, that changes everything.
+## Length is time
 
-Andrej Karpathy put the shift memorably:
+Because each token waits for the one before it, generation is *sequential*: token fifty can't exist before token forty-nine. So the length of the answer drives how long it takes.
 
-::: {.bookquote by="Andrej Karpathy, Software 2.0, 2017"}
-Neural networks are not just another classifier, they represent the beginning of a fundamental shift in how we develop software.
-:::
+![How long an answer takes under simple, illustrative assumptions: a short wait before the first token, then a steady stream. A one-word label is fast. An explanation takes seconds. Step-by-step reasoning takes tens of seconds.](/figures/ch10/latency.pdf){#fig-latency-06}
 
-## Bigger isn't automatically better
+Assuming {{< num ch10 ttft f2 >}} seconds before the first token and {{< num ch10 tps int >}} tokens a second after (illustrative, not measured), a one-word answer takes about {{< num ch10 lat_1 f1 >}} seconds, an explanation of a few hundred tokens about {{< num ch10 lat_300 f1 >}}, and 1,500 tokens of step-by-step reasoning about {{< num ch10 lat_1500 int >}} (@fig-latency-06). The newest "reasoning" models write long chains of thought before answering, which makes them much better on hard problems and much slower, because every thinking token goes through the loop. That trade-off, careful and slow against quick and intuitive, is the heart of Part III.
 
-Now a reality check, on Kestrel's own alerts.
+## Same question, different answers
 
-Our alerts don't arrive as raw pixels. They come with neat features someone already engineered. On data like that, does a network beat logistic regression?
+Sampling has another consequence, and for decisions it's a big one. Ask the same question twice at any temperature above zero, and you might get two different answers. For a poem, that's a feature. For deciding whether an alert is real, it's a problem.
 
-![Reliability diagrams on the test alerts for logistic regression, a small network with 16 hidden units, and a big two-layer network trained for too long. The first two are honest and nearly identical. The big one is both worse and overconfident: its curve falls away below the diagonal.](/figures/ch06/kestrel-nets.pdf){#fig-kestrel-nets}
+```{python}
+alert = soc.load().description[118]
+mock = llm.MockLLM(temperature=0.7)
+answers = [mock.classify(alert)["label"] for _ in range(20)]
+print({a: answers.count(a) for a in sorted(set(answers))})
+```
 
-Not really. The small network ties logistic regression, with a log loss of {{< num ch06 k_small.log_loss f3 >}} against {{< num ch06 k_lr.log_loss f3 >}}. The big network, allowed to train for a long time, memorises the training alerts and gets *much* worse on new ones: log loss {{< num ch06 k_big.log_loss f3 >}}, with an ECE of {{< num ch06 k_big.ece f3 >}}. Worse still, it's overconfident, and a policy built on its numbers would trust it more than it deserves.
+That's the book's stand-in LLM, `llm-mock-synthetic`, built to behave the way LLMs typically do; it isn't a model of any real product. Across forty borderline alerts, each asked twenty times, most got *both* answers.
+
+![Forty borderline alerts, each asked the same question twenty times at temperature 0.7. The bar shows how often the answer was "malicious". Only a handful got the same answer every time.](/figures/ch10/variance.pdf){#fig-variance-06}
+
+In @fig-variance-06, {{< num ch10 n_split int >}} of the {{< num ch10 n_alerts int >}} alerts flipped. Set the temperature to zero and answers become much more repeatable, but the *uncertainty* doesn't go away. It just stops showing.
 
 ::: {.keyidea}
-Deep networks earn their keep on raw, messy input. On neat features, start simple.
+Sampling turns a model's uncertainty into randomness in its answers. Temperature zero hides it; it doesn't remove it.
 :::
 
-This isn't a knock on deep learning. It's the reason Chapter 20's bake-off includes plain logistic regression and rules alongside LLMs and Jev. The right model depends on what your input looks like and how much data you have.
+And nothing in the loop checks whether the sentence is *true*. The model produces a plausible next token. It can write a fluent, confident, completely made-up hostname or citation, because that's the kind of thing that *would* come next. That's **hallucination**.
+
+::: {.bookquote by="Title of a 2021 paper by Emily Bender, Timnit Gebru, Angelina McMillan-Major and Margaret Mitchell"}
+On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?
+:::
+
+## Asking for JSON
+
+Software can't read a paragraph. It needs `verdict = "malicious"`: a field, a value. So every team wiring an LLM into a pipeline adds a line to the prompt: *"Reply only with JSON."* And it works. Almost always.
+
+At seven hundred alerts a day, "almost" is a few failures every day.
+
+![What came back when we asked for JSON, over 4,000 alerts. With only the prompt, some responses were wrapped in friendly chat, some were cut off mid-object, and some were valid JSON with a field nobody asked for. With JSON mode on, the first two problems vanish. The third doesn't.](/figures/ch11/json-failures.pdf){#fig-json-failures}
+
+The three classic failures are in @fig-json-failures: chatty text around the JSON ("Sure! Here is..."), a response cut off mid-object, and valid JSON with an invented field, here an `attacker_country` that isn't in the alert at all. That last one is the worst, because it parses fine and quietly puts made-up data into your system.
+
+The generation loop gives us a lever. At each step, we can forbid every token that would break the required format. That's **constrained decoding**, sold as "JSON mode" or "structured outputs" [@willard2023]. It guarantees the *shape* of the answer.
+
+::: {.keyidea}
+Constrained decoding guarantees the shape of the answer, never its truth.
+:::
+
+A constrained model can still say "benign" for a real attack, in perfect syntax. So whatever the provider promises, treat model output like text typed into a web form by a stranger. Parse it into a strict type that rejects unknown fields and wrong values, and if it fails, send the case to a person, never to an automatic action.
+
+```{python}
+class Verdict(BaseModel):
+    model_config = ConfigDict(extra="forbid")   # invented fields fail
+    verdict: Literal["malicious", "benign"]
+    confidence: float
+    rule: str
+    threat_intel_score: float
+    after_hours: bool
+    related_alerts: int
+
+def parse(raw):
+    try:
+        return Verdict.model_validate_json(raw)
+    except ValidationError:
+        return None
+
+test = soc.load().sample(1000, random_state=0)
+ok = sum(parse(llm.MockLLM().structured(t)) is not None
+         for t in test.description)
+print(f"valid: {ok} of {len(test)}")
+```
+
+## Three confidences
+
+Now say the JSON is perfect: `"verdict": "malicious", "confidence": 0.95`. Can Kestrel put a threshold on that 0.95?
+
+There are three different numbers you might use. **The confidence the model wrote** is text: the characters "0", ".", "9", "5", picked like any other tokens. **The token probability** is the probability the model gave to "malicious" as the next token, which many APIs will return. And **a probability from a decision model** is one whose actual output is a probability for each option.
+
+![Reliability of three "confidences" on the same test alerts, all reading the same raw text. The stated confidence barely separates attacks from harmless alerts. The token probability ranks well but is overconfident. The decision model ranks as well and sits closest to the diagonal. Synthetic: the mocks reflect design choices, not measurements of real models.](/figures/ch11/three-confidences.pdf){#fig-three-confidences}
+
+The mock wrote only {{< num ch11 n_distinct_stated int >}} different confidence values, {{< num ch11 share_stated_ge_09 pct >}} of them 0.9 or higher, a pattern many people have noticed with real models. Stated confidence ranks poorly, with an AUC of {{< num ch11 verbal.auc f2 >}}. The token probability ranks much better ({{< num ch11 token.auc f2 >}}) but is overconfident (ECE {{< num ch11 token.ece f3 >}}). The decision model ranks slightly better again ({{< num ch11 jev_text.auc f2 >}}) and is the most honest, with an ECE of {{< num ch11 jev_text.ece f3 >}} (@fig-three-confidences).
+
+Research on real models is genuinely mixed here; one study found stated confidence *better* calibrated than token probabilities for some tuned models [@tian2023], another found it badly overconfident [@xiong2024]. The only honest rule is to measure yours.
+
+Why isn't a token probability the probability of the answer? Because the model isn't choosing between two answers. It's choosing between tens of thousands of tokens. "malicious", "Malicious" and " malicious" with a space are all different tokens, and some probability goes to the model starting a sentence instead of answering. You can add up the right ones and renormalise, but by then you're building a decision model by hand on top of a writing model.
+
+::: {.keyidea}
+The probability of a token isn't the probability of an answer.
+:::
+
+## The typed alternative
+
+Which brings us to a different way of asking. Instead of asking a writer to produce text in a decision-shaped format, ask a model whose native output *is* the decision. Declare the question and its possible answers as types, and get back data, with a probability for every option.
+
+![The same question, two ways. On the left, an LLM writes JSON, including a confidence it wrote as text. On the right, a typed question returns data: a probability for a yes-or-no question, and one for every label of a choice.](/figures/ch11/typed-vs-text.pdf){#fig-typed-vs-text}
+
+That's what Jev's interface looks like (@fig-typed-vs-text): nothing to parse, no format to break, labels that can only be the ones you listed, and a number designed to be a probability, which makes it a claim you can check. Part III takes it apart.
 
 ::: {.breaks}
-Networks need lots of data, and with too little they memorise. They're hard to read: there's no tidy "×2.9 for a new country" like @fig-weights in Chapter 3. And large ones trained for too long drift towards overconfidence, which Chapter 9 explains. Always hold out test data, stop training when the test loss stops improving (this is called *early stopping*), and check calibration before you trust a network's probabilities.
+Token probabilities describe the next piece of text, not the truth of the answer. JSON mode doesn't stop a model choosing the wrong value or copying an attacker's text into a field, and strict validation doesn't catch a value that's valid but wrong: a threat-intel score misread as 0.18 instead of 0.81 passes every schema. Providers update models, so "temperature 0" behaviour can shift between versions; pin versions for anything you'll audit. And typed decision APIs have their own limits: probabilities without reasons, and calibration that still has to be tested on your data.
 :::
 
 ::: {.threshold}
-Your team replaces Kestrel's logistic regression with the big network above because its training loss is lower. You keep the same act line from Chapter 21, P below 0.031 closes automatically. Will more or fewer real threats be closed without a human? Why?
+Kestrel wants to auto-close alerts the LLM labels "benign" with stated confidence at least 0.95. Would you trust that line? What would you threshold instead?
 
-(More. The big network is overconfident: many of the alerts it pushes near zero aren't really that safe. The act line assumed honest probabilities. Recalibrate first, then re-check the line, or keep the simpler model.)
+(No. 0.95 and 0.99 are the mock's favourite values, so the line filters almost nothing. Put the line on the best-calibrated probability you have, checked on recent history, with its position set by what mistakes cost, as Chapter 4 shows.)
 :::
 
 ## Where we are
 
-We started with a neuron you'd already built, and found that it could only draw straight lines. So we stacked neurons into layers, and gave each a hinge so the layers wouldn't collapse back into one line. Training them needed the slope of weights buried deep inside, so blame learned to flow backwards. Depth then let networks find their own features in pixels and words. And Kestrel's neat alerts reminded us that when someone has already found the features, a small honest model is often all you need.
+ChatGPT's typing turned out to be the real mechanism: tokens come out one at a time, each chosen from a probability for every possible next piece. That loop explained why long answers are slow, why the same question can get different answers, and why fluent doesn't mean true. Then we asked the loop for decisions. The format broke a few times in every hundred, constrained decoding fixed the format but not the content, and of three candidates for "how sure", only one was designed to be thresholded.
 
-Next we need to feed a network the rawest input of all, words. And words aren't numbers.
+An LLM also only knows what it was trained on, not your company. Next: giving it your documents, and letting it act.
 
 ::: {.exercises}
-1. In your own words, why does a network with no hinges (no ReLU) collapse to a single straight line, however many layers it has?
-2. In the lab, change the number of hidden neurons to 2, 3, 6 and 24. Sketch the boundary you expect for each before running it. How close were you?
-3. Remove `* (h_in > 0)` from the backward pass in the lab. The code still runs. What is it now computing, and why does training get worse?
-4. Kestrel's analysts want a model that reads the raw alert *text* instead of the engineered features. Would you expect logistic regression or a deep network to do better on that input? Why?
+1. Explain in your own words why generation can't be parallelised the way reading can.
+2. Using the illustrative latency numbers, how long would 10,000 alerts take to label one at a time with a one-word answer? With a 300-token explanation?
+3. In the lab, change `extra="forbid"` to `extra="ignore"`. What gets through now? When might that be acceptable?
+4. Explain to a product manager, in three sentences, why `"confidence": 0.95` in an LLM's JSON can't be used as a probability without testing.
 :::
 
 ::: {.nexthook}
-Next: how does a word become a number that *means* something? The answer is a map where similar words live close together, and it's the idea underneath every LLM.
+Next: an LLM knows the internet, not your company. Retrieval hands it the right documents, agents let it act, and both open new ways to fail.
 :::

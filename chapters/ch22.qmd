@@ -1,199 +1,140 @@
-# A catalog of decision patterns {#sec-ch22}
+# What changes now {#sec-ch22}
+
+::: {.epigraph by="William Gibson, attributed"}
+The future is already here. It's just not very evenly distributed. [[VERIFY]]
+:::
 
 ```{python}
 #| include: false
-from typesafe_sdk import Choice, Noul, TypeSafeClient
-from jevkit import MockJevTransport, soc, llm
-client = TypeSafeClient(api_key="mock", transport=MockJevTransport())
-mock = llm.MockLLM()
-alert = soc.load().iloc[118]
+from jevkit.econ import TASK, task_cost
 ```
 
-When you learn to cook, you start with recipes. After a while you notice that most recipes are the same few moves in different clothes: brown something, add liquid, reduce. Once you can see the moves, you stop needing the recipe.
+We started this book with a question a lot of people are asking right now:
 
-Software has moves like that too, and people call them **patterns**. A pattern is a shape of solution that keeps turning up, with a name, so that a team can say "put a gate in front of that" and everyone knows what they mean.
+*"Do I really need to learn all of this?"*
 
-We've already met most of the decision patterns in this book, one at a time, inside Kestrel's story. This chapter lines them up. There are six. For each one: what it's for, what it looks like, what we measured where we could, and how it goes wrong.
+You've learned quite a lot of it since. Probability and calibration, neural networks, embeddings, attention, LLMs, agents. Then a new kind of model, and everything it takes to use one well. This last chapter is shorter. It steps back and asks what all of that adds up to, for the industry and for you.
+
+I'll try to be careful here. It's easy to end a book like this with predictions, and most predictions about AI age badly. So I'll stick to three things: what the book showed, what it suggests, and what nobody knows yet.
 
 ::: {.goals}
-- Recognise six recurring ways to put a decision model inside a larger system.
-- Use "extract, then decide" to let an LLM and a decision model each do what they're good at.
-- Put typed decisions at the decide step of an agent loop, in front of risky actions, and after an LLM writes.
-- Route cases by a choice, with a fallback for the ones the model isn't sure about.
-- Treat memory reads and writes as decisions.
+- See the decision layer as its own layer in an AI system, separate from generation.
+- Estimate what moving decisions out of an LLM changes for one of your own tasks.
+- Know which skills become more valuable when decisions get cheap.
+- Keep an honest list of what isn't known yet.
+- Leave with a plan for your first three months.
 :::
 
-![The six patterns in this chapter, as small diagrams. In every one, something else writes or acts, and a typed question decides.](/figures/ch22/catalog.pdf){#fig-catalog}
+## A layer of its own
 
-Look at @fig-catalog before reading on and notice the common thread. In every pattern, the decision model never writes anything and never acts on its own. It answers a typed question, and ordinary code turns the answer into an action. That separation is the whole idea of a decision layer.
+For the last few years, the default design for an AI system has been one big model doing everything. It reads the input, decides what to do, writes the output and calls the tools, all as text.
 
-## Pattern 1: extract, then decide
+![Two ways to build an AI system. Left: one model does everything as text. Right: each layer does one job. An LLM reads and writes, a decision layer answers typed questions with probabilities, a policy turns those into actions, and tools, logs and people sit underneath.](/figures/ch29/stack.pdf){#fig-stack}
 
-**The problem.** Your input is messy: an email, a chat message, a PDF, an alert written for humans. The decision you need is small and sharp. LLMs read messy input brilliantly. Chapter 20 showed they're weaker at the decision itself.
+The right-hand side of @fig-stack is the shape this book kept arriving at, chapter after chapter. The LLM does what only an LLM can do: read anything, and write for people. The decision layer answers small typed questions in one pass, with probabilities you can test. The policy draws the lines, from costs and capacity. And underneath, tools act and people review.
 
-**The pattern.** Let the LLM turn the mess into fields. Let the decision model decide on the fields.
+Each layer is smaller than the whole. Each can be tested on its own, with the tools from Part I. And each can be replaced without rebuilding the others: a better LLM, a different decision model, new lines. That, more than any benchmark, is why I think the split will last.
 
-![Extract, then decide. The LLM reads the raw text and writes structured fields; a decision model answers a typed question about them; policy lines turn the answer into an action. The LLM writes but never decides; the decision model decides but never writes.](/figures/ch22/extract.pdf){#fig-extract}
+## What gets cheap
+
+Here's one task, sketched the way Chapter 7 counted Kestrel's agent: a ticket comes in, an agent picks tools, checks whether it has enough, checks whether an action is safe, does it and writes a reply.
 
 ::: {.tryit lab="ch22"}
 ```{python}
-fields = mock.extract(alert.description)        # the LLM writes...
-attack = Noul(instructions="Is this alert a real attack?")
-r = client.system_one(state={"alert": alert.title, **fields},
-                      questions={"attack": attack})
-print(round(r.nouls["attack"].noul, 3))          # ...Jev decides
+decisions = sum(n for _, kind, n in TASK if kind == "decide")
+steps = sum(n for _, _, n in TASK)
+print(f"{decisions} of {steps} steps are decisions")
+for who in ("llm", "jev"):
+    s, d = task_cost(who)
+    print(f"{who:>4} decides: {s:4.1f} s and ${d * 1000:.2f} per 1,000 tasks")
 ```
 :::
 
-We ran this on Kestrel's live week, alongside three other ways of making the same decision.
+![One illustrative agent task, with its decisions made by an LLM or by a decision model. The writing step costs the same either way; the decisions are where the difference is.](/figures/ch29/task.pdf){#fig-task}
 
-![Four ways to make Kestrel's decision, ranked by AUC on the live week. Extracting fields first beats letting the LLM decide, and edges out Jev reading the raw text. The SIEM's own fields beat everything, because they hold facts the alert text never mentions.](/figures/ch22/extract-results.pdf){#fig-extract-results}
+With the book's illustrative LLM figures and Jev's vendor-reported ones, the task drops from about {{< num ch29 task_llm_s int >}} seconds to {{< num ch29 task_jev_s int >}}, and the bill falls by about three quarters (@fig-task). What's left is mostly the one step where an LLM writes something a person will read. Chapter 17 measured the same shape on Kestrel's agent, which ran about {{< num ch29 ch24_speedup int >}} times faster as a hybrid.
 
-Extracting first lifted the AUC from {{< num ch22 llm_decides_auc f3 >}}, when the LLM decided on its own, to {{< num ch22 extract_then_jev_auc f3 >}} (@fig-extract-results). It also edged out Jev reading the raw text directly, at {{< num ch22 jev_text_auc f3 >}}. The LLM's misreads, about {{< num ch22 misread pct >}} of alerts with a wrong number, were a small cost.
+Then Chapter 12's warning applies. When decisions get this cheap, we won't make the same decisions for less. We'll make many more of them: every login checked, every retrieved passage judged, every agent step gated. That's where most of the change will be. It won't come from doing today's work more cheaply. It'll come from the work that becomes worth doing.
 
-But look at the bottom row. The SIEM's own fields scored {{< num ch22 jev_fields_auc f3 >}}, better than any extraction. That's not because the extractor is bad. The alert text simply never mentions some of what the SIEM knows, like how critical the machine is or the user's role, and no extractor can recover a fact that isn't written down.
+## What gets valuable
+
+If deciding gets cheap, what becomes scarce?
+
+Judgement about the decision itself. Somebody has to say what a mistake costs, where the lines go, how much the review queue can take, and whether the probabilities are still honest this week. The model can't do any of that for you.
+
+![Skills that matter more when decisions get cheap, and skills that matter less on their own, with the chapters that teach each.](/figures/ch29/skills.pdf){#fig-skills}
+
+That's the case for the book's first part, which may have felt like a long detour. Thinking in probabilities and testing calibration were the foundations, not the preamble (@fig-skills). They're what separates a system that makes a million cheap decisions well from one that makes a million cheap mistakes.
+
+What matters less *on its own* is prompting for everything, and reaching for the biggest model by default. Both still have their place. They're just no longer the whole job.
+
+[[AUTHOR STORY: how your own work changed once you started treating decisions and generation as different jobs, in SIGNAL or the FIR agent]]
+
+## What nobody knows yet
+
+I've tried throughout to keep three piles: what's verified, what's vendor-reported and what's unknown. Here's the unknown pile, as it stands.
+
+![Open questions, and what you can do about each today.](/figures/ch29/unknowns.pdf){#fig-unknowns}
+
+Every item in @fig-unknowns is open [[VERIFY]]. None of them is a reason to wait. Calibration on your data is a test you can run this week. Drift between versions is a pin and a monitor. Prices are a spreadsheet with a sensitivity column. And the question of who else builds decision models matters less than it seems, because the pattern outlives any vendor. A typed question in, a probability out, and a policy in your own code: you can move that to a different model on a Tuesday afternoon.
 
 ::: {.keyidea}
-Extract when the only input you have is text. When structured data exists, use it: extraction can't add facts the text doesn't contain.
+You don't need to predict how this plays out. You need decisions you can measure, lines you can move and a model you can swap.
 :::
 
-**How it breaks.** The extracted fields are LLM output, so everything Chapter 14 said applies: a planted sentence in the text can become a planted value in a field. Validate fields against types and ranges, and prefer trusted sources for anything that matters. One more thing: one extraction can feed many typed questions, so the LLM's cost is paid once per case, not once per decision.
+## What to do on Monday
 
-## Pattern 2: the decide step
+![A first three months, one decision at a time.](/figures/ch29/monday.pdf){#fig-monday}
 
-**The problem.** An agent runs a loop: observe, decide, act, repeat. Chapter 13 counted Kestrel's agent making about {{< num ch22 decide_per_alert f1 >}} small decisions per alert, and writing something only about {{< num ch22 generate_per_alert f2 >}} times. Yet most agent frameworks send every one of those decisions to the LLM, as text.
+If you do one thing after closing this book, make it the audit in the first box of @fig-monday. List every decision your system makes, and count them. Most people are surprised by how many there are, and by how many are small, typed and frequent. The lab for this chapter is a template for exactly that.
 
-**The pattern.** Give the loop's decide step to a decision model. Each decision is a typed question with named options. The LLM is called only when there's something to write.
+Then pick *one*. Get a few hundred labels. Test it the way Chapter 11 did. Put prices on its mistakes, draw its lines and run it in shadow. Switch it on with a fail-safe and a monitor. Then do the next one.
 
-![The Observe, Decide, Act loop with the decide step made explicit. Most steps are small typed decisions; writing is occasional.](/figures/ch22/oda.pdf){#fig-oda}
-
-```{python}
-next_step = Choice(
-    instructions="Which evidence should the agent gather next?",
-    criteria={"threat_intel": None, "host_history": None,
-              "policy": None, "none": None})
-a = client.system_one(state=alert.description,
-                      questions={"next": next_step})
-print(a.choices["next"].choice)
-```
-
-Because each decision comes back with probabilities, the loop can do something an LLM-driven loop can't do cleanly: notice when it's unsure. If no option is clearly ahead, stop and escalate, rather than picking one and carrying on confidently. Chapter 13's compounding arithmetic is the reason that matters: a small error rate per step becomes a large one over ten steps.
-
-**How it breaks.** Some steps aren't small decisions. Planning a novel investigation is real reasoning, and belongs with the LLM or a person. The skill is sorting the steps honestly, the way Chapter 15 sorted System 1 work from System 2.
-
-## Pattern 3: the guardrail gate
-
-**The problem.** Agents take actions: closing alerts, disabling accounts, sending emails. Chapter 14 showed how one planted sentence in an alert's text could talk the model into closing real threats. Auto-close among real threats went from {{< num ch22 inj_before pct >}} to {{< num ch22 inj_after pct >}}.
-
-**The pattern.** Before any risky action runs, ask a typed question about it, using only trusted facts, and gate on the answer.
-
-![A guardrail gate. The agent proposes an action. A decision model estimates whether it's safe, from trusted facts only, never from text an attacker could write. High probability allows the action, low probability blocks it, and the middle asks a person.](/figures/ch22/gate.pdf){#fig-gate}
-
-```{python}
-def gate(p_safe, low=0.3, high=0.75):
-    if p_safe >= high:
-        return "allow"
-    return "block" if p_safe < low else "ask a person"
-
-trusted = {k: alert[k].item() if hasattr(alert[k], "item")
-           else alert[k] for k in ("rule", "ioc_score", "known_tool")}
-p = client.system_one(state=trusted, questions={"attack": attack})
-print(gate(1 - p.nouls["attack"].noul))
-```
-
-In Chapter 14, reading only the trusted fields held auto-close at {{< num ch22 inj_trusted pct >}} under the same attack. The gate didn't need to be clever. It needed to look at the right things.
-
-The three outcomes are the three zones of Chapter 21, pointed at actions instead of alerts. The lines come from the same arithmetic: what a wrongly allowed action costs, against what it costs to ask a person.
-
-**How it breaks.** A gate is only as good as its idea of "trusted". If the attacker can write to a field you trust, the gate trusts the attacker. And a gate that asks a person too often gets clicked through; watch its ask rate the way Chapter 21 watched the review queue.
-
-## Pattern 4: check the writer
-
-**The problem.** Some outputs have to be written: an incident note, a customer reply, a summary for the board. LLMs write them well. They also sometimes state things the evidence doesn't support.
-
-**The pattern.** After the LLM writes, ask typed questions *about* the draft. Is every claim supported by the evidence? Does it name the affected host? Is the tone appropriate for a customer? Ship it, send it back once with the gaps named, or hand it to a person.
-
-![Check the writer. The LLM drafts; a decision model answers typed questions about the draft and the evidence together; the answer decides whether the draft ships, goes back once for a redraft, or goes to a person.](/figures/ch22/judge.pdf){#fig-judge}
-
-```{python}
-check = Noul(instructions="Is every claim in the note supported "
-                          "by the evidence?")
-r = client.system_one(
-    state={"evidence": alert.description,
-           "note": "Benign admin activity; the change ticket covers it."},
-    questions={"supported": check})
-print(round(r.nouls["supported"].noul, 2))
-```
-
-The book's mock can't really check claims against evidence, so I won't show you a number for this pattern and pretend it means something. The shape is what matters, and it's the same shape as the LLM-as-judge from Chapter 20, with two differences. The answer is a probability you can calibrate and put lines on, not a 1-to-10 rating. And the check is cheap enough to run on every draft, not a sample.
-
-**How it breaks.** A checker that shares the writer's blind spots will wave its mistakes through. Test the checker on drafts you know are wrong. And cap the redrafts: a loop of "write, reject, rewrite" can run forever, so after one retry a person takes over.
-
-## Pattern 5: the router
-
-**The problem.** Cases need to go somewhere: the identity team, the malware team, the data-loss team. A wrong route costs a handoff and a delay.
-
-**The pattern.** Ask a `choice` with one option per destination. Route automatically only when the top option is clearly ahead; send the rest to a general queue, where a person routes them.
-
-![Routing Kestrel's alerts by category. Routing everything automatically sends 88% to the right team. Routing only when the top label is at least 0.8 covers about four in five alerts, and gets 94% of those right. The rest go to a general queue.](/figures/ch22/router.pdf){#fig-router}
-
-On a sample of the live week, routing every alert by the top label sent {{< num ch22 route_all_acc pct >}} to the right team. Routing only when the top probability was at least {{< num ch22 route_line f1 >}} covered {{< num ch22 route_cov pct >}} of alerts, and {{< num ch22 route_acc pct >}} of those went to the right place (@fig-router). That's the coverage trade-off from Chapter 5, and the curve lets you choose where to stand on it.
-
-The same pattern routes between *models*: a cheap one for the confident cases, a slow one for the rest. That's Chapter 15's route by doubt, and it's probably the most valuable single use of honest probabilities.
-
-**How it breaks.** Remember Chapter 17: a choice must give every real case somewhere to go. A router without an "other" or "not sure" option will confidently misroute the cases that fit nowhere.
-
-## Pattern 6: the memory controller
-
-**The problem.** Agents need memory: past cases, what a host usually does, which policies apply. Every step raises small questions about it. Is this worth remembering? Which store should I look in? Is this old note still true? Chapter 12 showed that retrieving the wrong thing is one of the commonest ways a RAG system fails.
-
-**The pattern.** Treat each read and write as a typed decision. A noul decides whether a new fact is worth keeping. A choice decides which store to search, including "none". Only after the memory work is done does the LLM reason over what was fetched.
-
-![A memory controller. Small typed decisions choose what to store and where to look; one slow reasoning call uses the result.](/figures/ch22/memory.pdf){#fig-memory}
-
-That's the design of the Jev-Mem paper, which uses a System One model as the controller for an agent's memory [@jevmem2026] [[VERIFY]]. I haven't been able to check its results, so I'll describe only the idea: memory operations are frequent, small and typed, which makes them exactly the kind of decision this book has been about.
-
-```{python}
-keep = Noul(instructions="Will this fact matter for future alerts "
-                         "about the same host or user?")
-fact = "rhea.novak has an approved change ticket until Friday."
-r = client.system_one(state=fact, questions={"keep": keep})
-print(round(r.nouls["keep"].noul, 2))
-```
-
-**How it breaks.** Memory decisions fail quietly. A fact wrongly discarded never shows up as an error; it just isn't there when it's needed. Log what the controller discards, and audit a sample, as Chapter 21 did with auto-closed alerts.
-
-[[AUTHOR STORY: which of these patterns you reached for first in a real system (the police FIR agent, SIGNAL or AttendX), and what went wrong before you did]]
+It isn't glamorous. It's how every system in this book got better.
 
 ::: {.breaks}
-Only patterns 1, 3 and 5 have measurements in this chapter, and all of them are synthetic. The others are shapes, drawn from how the pieces work, and each needs testing on real data before you trust it. Combining patterns multiplies failure points: an extractor feeding a gate feeding a router has three places to be wrong, and the errors can compound as Chapter 13 showed. And every pattern here assumes the decision model's probabilities are honest on your data, which Chapter 18 said you must check, not assume.
+This chapter is the most speculative in the book. The cost and speed figures are illustrative, and Jev's are vendor-reported from its early access. The claim that a decision layer will become a standard part of AI systems is my reading of the evidence here, not a finding. It could be wrong if general-purpose models become fast and well calibrated enough that splitting stops paying off. If that happens, the skills in @fig-skills still apply; only the box they live in changes.
 :::
 
 ::: {.threshold}
-Kestrel's agent wants to disable a user account when it suspects stolen credentials. Disabling a real attacker's account early saves about \$10,000. Disabling an innocent user's account costs about \$300 in lost work and a help-desk call. Asking the on-call analyst costs about \$15 and a few minutes. Where would you put the gate's two lines on P(attack)?
+Your own system: pick the decision in it that happens most often. What does a wrong "yes" cost? A wrong "no"? Where does the line go? And how would you know, a month from now, whether the probabilities behind it are still honest?
 
-(Allow when disabling is clearly worth it and asking adds nothing, block when it clearly isn't. Using Chapter 21's arithmetic: asking beats blocking once P × \$10,000 exceeds about \$15, so above roughly 0.2%; allowing beats asking once the expected cost of a wrong disable, (1 − P) × \$300, drops below \$15, so above about 0.95. Most cases land in the middle and go to a person, which is fine at Kestrel's volume. At a hundred times the volume, it wouldn't be.)
+(There's no answer at the back of the book for this one. If you can fill in all four, you've learned what this book set out to teach.)
 :::
 
-::: {.bookquote by="Christopher Alexander, A Pattern Language, 1977"}
-Each pattern describes a problem which occurs over and over again in our environment, and then describes the core of the solution to that problem, in such a way that you can use this solution a million times over, without ever doing it the same way twice.
+::: {.bookquote by="Alan Turing, Computing Machinery and Intelligence, 1950"}
+We can only see a short distance ahead, but we can see plenty there that needs to be done.
 :::
 
-Alexander was an architect writing about towns and buildings [@alexander1977] [[VERIFY]]. Software engineers borrowed his idea, and it fits decision layers well: the same few shapes, never quite the same twice.
+Turing ended his most famous paper with that sentence [@turing1950]. It fits this moment well.
 
-## Where we are
+## The story, one more time
 
-We lined up six patterns, and all of them had the same spine. Something else writes, reads or acts, and a typed question decides. Letting the LLM extract fields and Jev decide beat letting the LLM decide, though nothing beat the facts the SIEM already had. Gates kept a planted sentence from closing real threats because they looked only at trusted facts. A router that stepped aside when unsure was right far more often than one that always answered. Checking drafts and managing memory are decisions too, and so are the small steps inside every agent loop.
+![The whole book as one story.](/figures/ch29/journey.pdf){#fig-journey}
 
-That closes Part V. We've compared the methods, drawn the lines and named the patterns. Part VI builds them.
+So instead of memorising every term in this book, think of it as a story:
+
+We wanted machines to make decisions.
+
+Rules weren't enough, so we taught them from data, and learned to make their probabilities honest.
+
+Our models grew powerful enough to read and write, and we built agents that could act.
+
+Then someone built a model that only decides, fast and cheap, with probabilities we can test.
+
+Now deciding is cheap.
+
+The question is which decisions deserve to be made, and how to make them well.
+
+That's the map. You know where everything is on it now.
 
 ::: {.exercises}
-1. In the lab, change the router's line from 0.8 to 0.6 and to 0.9. Which would you choose if a misroute costs an hour and the general queue costs twenty minutes per alert?
-2. Design a guardrail gate for an email agent that can send messages to customers. What's the typed question? Which facts are trusted? Where do the lines go?
-3. Take an agent you've seen or built. List its steps and sort them into observe, decide, generate and act. How many decide steps could be typed questions?
-4. The "check the writer" pattern can share the writer's blind spots. Describe a test that would reveal that.
+1. Run the lab with a task from your own work. What share of its steps are decisions? What would change if they moved to a decision model?
+2. Write the decision audit for one system you know: every decision, how often it happens, what a mistake costs, and who owns it.
+3. Pick one item from @fig-unknowns and design the smallest test that would move it into the "verified" pile for your use.
+4. Write a one-page memo to your team proposing the first decision to move, using the vocabulary of this book: costs, lines, calibration, shadow, fail-safe.
 :::
 
 ::: {.nexthook}
-Next: Part VI starts building. Your first real calls to Jev through the official SDK, with retries, rate limits, and a mock that makes every one of them free.
+Thank you for reading. The labs, the mock and every figure's code are in the companion repository, waiting for your own data.
 :::

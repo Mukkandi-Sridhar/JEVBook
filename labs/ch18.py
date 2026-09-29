@@ -7,14 +7,11 @@
 # ---
 
 # %% [markdown]
-# # Lab 18 · Testing Jev's calibration yourself
+# # Lab 18 · Case study: SOC alert triage
 #
-# *Decide, Don't Generate*, Chapter 18. The same protocol works on real Jev; here every answer
-# comes from `jev-mock-synthetic` and every company is synthetic.
-#
-# 1. Measure calibration at two companies with different base rates.
-# 2. Fix it: adjust for the base rate, or fit Platt scaling on a few hundred labels.
-# 3. See how noisy ECE is with few labels.
+# *Decide, Don't Generate*, Chapter 18. Kestrel's SOC before and after the decision layer, simulated on the
+# book's synthetic alerts. Jev answers come from `jev-mock-synthetic`. **Synthetic, not measured on real Jev.**
+
 
 # %%
 import importlib.util, subprocess, sys
@@ -24,42 +21,43 @@ if importlib.util.find_spec("jevkit") is None:
 
 # %%
 import numpy as np
-from jevkit import soc, calibration as cal
-from jevkit.batch import score_alerts
+from jevkit import ops
 
-kestrel = soc.load()
-harbor = soc.to_frame(soc.generate(n=8000, seed=21, logit_shift={r: -1.3 for r in soc.RULES}))
-p_k, p_h = score_alerts(kestrel), score_alerts(harbor)
-for name, p, df in (("Kestrel", p_k, kestrel), ("Harbor", p_h, harbor)):
-    lo, hi = cal.ece_interval(p, df.malicious)
-    print(f"{name:>8}: attacks {df.malicious.mean():.1%}, average P {p.mean():.1%}, "
-          f"ECE {cal.ece(p, df.malicious):.3f} (range {lo:.3f}-{hi:.3f})")
+r = ops.before_after()
+print("policy:", r["policy"])
+for name in ("s_old", "s_new"):
+    s = r[name]
+    print(f"{name}: threats seen {s['threats_seen_share']:.0%}, never seen {s['threats_unseen_per_day']:.1f}/day, "
+          f"within an hour {s['threats_within_hour_share']:.0%}")
 
 # %% [markdown]
-# ## Fix 1: adjust for the base rate (needs only an estimate of it)
+# ## Shadow mode: what the system would have done, against what was true
 
 # %%
-rng = np.random.default_rng(0)
-labelled = rng.choice(len(harbor), 300, replace=False)
-rest = np.setdiff1d(np.arange(len(harbor)), labelled)
-y = harbor.malicious.to_numpy()
-estimated_rate = y[labelled].mean()
-adjusted = cal.prior_shift(p_h, kestrel.malicious.mean(), estimated_rate)
-print(f"base-rate adjusted ECE: {cal.ece(adjusted[rest], y[rest]):.3f}")
+y = r["y"].astype(bool)
+z = r["new"][0]
+for zone in ("act", "review", "escalate"):
+    print(f"{zone:>9}: {((z == zone) & ~y).sum() / 7:6.1f} harmless/day   {((z == zone) & y).sum() / 7:5.1f} threats/day")
 
 # %% [markdown]
-# ## Fix 2: Platt scaling on the same 300 labels
+# ## The queue: first come, first served against highest probability first
 
 # %%
-platt = cal.Platt().fit(p_h[labelled], y[labelled])
-print(f"Platt ECE: {cal.ece(platt(p_h[rest]), y[rest]):.3f}")
+t = ops.minutes(r["live"].timestamp)
+p = r["live"].pc.to_numpy()
+rev = z == "review"
+fifo = ops.serve(t[rev])
+prio = ops.serve(t[rev], priority=p[rev])
+yt = y[rev]
+for name, w in (("first come", fifo), ("by probability", prio)):
+    print(f"{name:>15}: median wait for a real threat {np.median(w[yt & np.isfinite(w)]):.0f} min")
 
 # %% [markdown]
-# ## How many labels do you need?
+# ## The campaign week, day by day
 
 # %%
-for n in (100, 400, 1600):
-    vals = [cal.ece(p_k[i], kestrel.malicious.to_numpy()[i])
-            for i in (rng.choice(len(p_k), n, replace=False) for _ in range(200))]
-    print(f"{n:>5} labels: measured ECE typically {np.median(vals):.3f} "
-          f"(90% range {np.percentile(vals, 5):.3f}-{np.percentile(vals, 95):.3f})")
+for row in ops.campaign():
+    print(row["respond"], row["day"] + 1, row["reviews"], row["capacity"], round(row["missed"], 1))
+
+# %% [markdown]
+# **Try:** change `ops.PAGE_RESPONSE_MIN`, or respond on day 2 instead of day 3 (`ops.campaign(respond_day=1)`).

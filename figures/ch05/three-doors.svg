@@ -29,7 +29,7 @@ L 70.56 69.84
 L 70.56 33.84 
 L 2.88 33.84 
 z
-" clip-path="url(#p9808cd35e0)" style="fill: #b7a6e0; stroke: #ffffff; stroke-width: 1.5; stroke-linejoin: miter"/>
+" clip-path="url(#pa817dcf7ae)" style="fill: #b7a6e0; stroke: #ffffff; stroke-width: 1.5; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 70.56 69.84 
@@ -37,7 +37,7 @@ L 222.84 69.84
 L 222.84 33.84 
 L 70.56 33.84 
 z
-" clip-path="url(#p9808cd35e0)" style="fill: #8468c9; stroke: #ffffff; stroke-width: 1.5; stroke-linejoin: miter"/>
+" clip-path="url(#pa817dcf7ae)" style="fill: #8468c9; stroke: #ffffff; stroke-width: 1.5; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 222.84 69.84 
@@ -45,7 +45,7 @@ L 341.28 69.84
 L 341.28 33.84 
 L 222.84 33.84 
 z
-" clip-path="url(#p9808cd35e0)" style="fill: #4b2c8f; stroke: #ffffff; stroke-width: 1.5; stroke-linejoin: miter"/>
+" clip-path="url(#pa817dcf7ae)" style="fill: #4b2c8f; stroke: #ffffff; stroke-width: 1.5; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="36.72" y="50.859141" transform="rotate(-0 36.72 50.859141)">ACT</text>
@@ -86,7 +86,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p9808cd35e0">
+  <clipPath id="pa817dcf7ae">
    <rect x="2.88" y="2.88" width="338.4" height="111.6"/>
   </clipPath>
  </defs>

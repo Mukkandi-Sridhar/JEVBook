@@ -1,9 +1,9 @@
-# Probability, calibration and decisions
+# Prerequisites: probability and decisions
 
 ::: {.partintro}
 Before any neural network, any LLM or any Jev, every AI system has to answer one question honestly: *how sure are you?*
 
-These five chapters build the answer from nothing. What learning is. What a probability means. How a model learns one. How to check whether it's honest. And how to turn it into an action.
+These four chapters build the answer from the ground up. What learning is. What a probability means, and how a machine learns one. How to check whether it's honest. And how to turn it into an action, once you know what each mistake costs.
 
-It's the foundation the whole book stands on.
+Everything later in the book stands on these pages. If you only read one part slowly, make it this one.
 :::

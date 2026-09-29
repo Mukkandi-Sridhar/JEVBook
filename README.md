@@ -11,6 +11,7 @@
   - `figs`: the book's figure system
 - `labs/`: one notebook per chapter (`chNN.py` source, `chNN.ipynb` for Colab)
 - `figures/src/`: the code behind every figure; `figures/chNN/` the generated PDF + SVG
+  (figure folders and `results/` keep the first draft's ids; see D-58 in `DECISIONS.md` and `jevkit/figs/bookmap.py`)
 - `site/`: companion widgets (calibration playground, threshold simulator, bake-off explorer, cost calculator)
 
 ```python

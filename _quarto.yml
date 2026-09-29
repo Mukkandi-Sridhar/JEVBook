@@ -1,7 +1,6 @@
 project:
   type: book
   output-dir: _book
-  pre-render: python3 tools/prerender.py
   resources:
     - site/
 
@@ -24,43 +23,34 @@ book:
         - chapters/ch02.qmd
         - chapters/ch03.qmd
         - chapters/ch04.qmd
-        - chapters/ch05.qmd
     - part: parts/p2.qmd
       chapters:
+        - chapters/ch05.qmd
         - chapters/ch06.qmd
         - chapters/ch07.qmd
-        - chapters/ch08.qmd
-        - chapters/ch09.qmd
     - part: parts/p3.qmd
       chapters:
+        - chapters/ch08.qmd
+        - chapters/ch09.qmd
         - chapters/ch10.qmd
         - chapters/ch11.qmd
         - chapters/ch12.qmd
-        - chapters/ch13.qmd
-        - chapters/ch14.qmd
     - part: parts/p4.qmd
       chapters:
+        - chapters/ch13.qmd
+        - chapters/ch14.qmd
         - chapters/ch15.qmd
+    - part: parts/p5.qmd
+      chapters:
         - chapters/ch16.qmd
         - chapters/ch17.qmd
         - chapters/ch18.qmd
         - chapters/ch19.qmd
-    - part: parts/p5.qmd
-      chapters:
         - chapters/ch20.qmd
         - chapters/ch21.qmd
-        - chapters/ch22.qmd
     - part: parts/p6.qmd
       chapters:
-        - chapters/ch23.qmd
-        - chapters/ch24.qmd
-        - chapters/ch25.qmd
-        - chapters/ch26.qmd
-        - chapters/ch27.qmd
-        - chapters/ch28.qmd
-    - part: parts/p7.qmd
-      chapters:
-        - chapters/ch29.qmd
+        - chapters/ch22.qmd
   appendices:
     - back/glossary.qmd
     - back/cheatsheets.qmd

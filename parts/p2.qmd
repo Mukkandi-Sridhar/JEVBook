@@ -1,9 +1,9 @@
-# Deep learning in plain English
+# Prerequisites: networks, language models and agents
 
 ::: {.partintro}
-Part I's models were handed neat clues, like a threat-intel score. The real world hands you pixels, words and messy logs.
+The models in Part I were handed neat clues. The real world hands you pixels, words and messy logs, and today's AI systems are built from models that learn their own clues, write text, and act in loops.
 
-These four chapters show how models learn their own clues. We start from a single artificial neuron, then turn words into points in space, watch attention decide what to look at, and see what happens when all of it is trained at enormous scale.
+These three chapters are a fast, honest tour: deep learning in one chapter, how an LLM writes and why asking it for a decision is awkward, and what retrieval and agents do, including where they break.
 
-Along the way we'll find out why the biggest models tend to be the most overconfident.
+You don't need every detail. You need to see where the decisions hide.
 :::

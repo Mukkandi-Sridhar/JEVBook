@@ -1,4 +1,4 @@
-"""Figures for Chapter 10: How an LLM writes, one token at a time."""
+"""Figures for Chapter 6: How an LLM writes, one token at a time."""
 
 from functools import lru_cache
 

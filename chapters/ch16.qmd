@@ -1,148 +1,186 @@
-# Inside Jev: what we know and what we don't {#sec-ch16}
+# First calls, and the mock that makes them free {#sec-ch16}
+
+::: {.epigraph by="Linus Torvalds, Linux kernel mailing list, 2000"}
+Talk is cheap. Show me the code.
+:::
 
 ```{python}
 #| include: false
-import json
-from typesafe_sdk import Choice, Noul, Score, TypeSafeClient
-from jevkit import MockJevTransport
+from typesafe_sdk import (Choice, Noul, RetryPolicy, Score, TypeSafeClient,
+                          TypeSafeError)
+from jevkit import MockJevTransport, soc
+state = soc.load().description[118]
 ```
 
-Here's a confession that shapes this whole chapter. I've never called Jev.
+Twenty-two chapters in, you know what a System One model is for, how to test it and where to put it. You haven't yet written the ten lines of code that actually call one.
 
-When I wrote this book, Jev had been public for a couple of weeks, in early access, and I didn't have an API key [[VERIFY]]. What I did have was TypeSafe's official Python library, which anyone can download and read, a stream of launch coverage and early commentary, and a growing pile of research papers from people who *had* used it.
+That moment has a particular feeling with any new API. Where does the key go? What does an error look like? Will a bug in a loop cost me money? Will my tests break when the network's down?
 
-*"So how much can anyone actually say about what's inside it?"*
-
-More than you'd think, and less than most articles imply. The trick is to sort every claim into one of three piles: what you can verify yourself, what the vendor says, and what nobody outside the company knows. That habit is worth more than any single fact in this chapter, because Jev won't be the last new model you have to evaluate from the outside.
+This chapter answers those questions with the official TypeSafe library, `typesafe-sdk`, and the book's mock. By the end you'll have made every kind of call, provoked every kind of error, and written tests that never touch the network. None of it will have cost anything.
 
 ::: {.goals}
-- Sort claims about a new model into verified, vendor-reported and unknown.
-- Read Jev's interface from its public SDK: what goes in, what comes out.
-- Understand the two technical claims at the heart of Jev: the "parallel sampler" and RLCD.
-- Do the price and latency arithmetic yourself, and check the vendor's numbers against each other.
-- Know what you'd still need to test before trusting it.
+- Make a first call with the official SDK and read everything the response contains.
+- Swap between the mock and the real API by changing one argument.
+- Tell errors you should retry from errors you should fix, and set retries for your latency budget.
+- Ask several questions in one call, and know what that saves.
+- Record real answers once and replay them in tests forever.
 :::
 
-## Three piles
+## The first call
 
-![Every claim about Jev in this book, sorted into three piles. The first pile you can check yourself today. The second is what TypeSafe says. The third is what nobody outside the company can know yet.](/figures/ch16/ledger.pdf){#fig-ledger}
+Install the library and the book's toolkit (the labs do this for you):
 
-@fig-ledger is a summary of the book's facts ledger, which lives in the repository as `docs/jev-facts.md`. The rules I followed:
+```bash
+pip install typesafe-sdk==0.7.2
+pip install git+https://github.com/Mukkandi-Sridhar/JEVBook   # jevkit
+```
 
-**Verified** means I read it myself in something anyone can inspect. For Jev, that's mainly the `typesafe-sdk` library on PyPI, version 0.7.2, including the data models generated from the API's own specification.
-
-**Vendor-reported** means TypeSafe, or coverage quoting TypeSafe, said it. It may well be true. It hasn't been independently checked here, and every such number carries that label.
-
-**Unknown** means it hasn't been published, so any statement about it is a guess, and I'll say so when I guess.
-
-My access to the sources for the second pile was limited to search summaries, so treat every vendor number in this book as a claim to check, not a fact. A good habit: when a claim about a model appears without a pile attached, ask which pile it belongs in.
-
-## What we can verify: the interface
-
-Jev's interface is refreshingly small. You send one request to one endpoint, `POST /v1/systemone`, with three things:
-
-- **state**: the situation, as text, a JSON object or a list;
-- **model**: which model to use (the library's default is `jev-latest`);
-- **questions**: a set of named, typed questions about that state.
-
-And you get back, for each question, a typed answer with probabilities, plus a count of tokens used.
-
-![A real request as the official SDK builds it, and the response. The answers here come from the book's mock, but their shape is exactly what the SDK's own data models expect.](/figures/ch16/anatomy.pdf){#fig-anatomy}
-
-You don't have to take my word for the shape. Here's the exchange as the SDK actually sends it. The mock records it on the way through.
+Then make a call. Here it is against the mock.
 
 ::: {.tryit lab="ch16"}
 ```{python}
-exchanges = []
-client = TypeSafeClient(api_key="mock",
-                        transport=MockJevTransport(log=exchanges))
-client.system_one(
-    state="I was charged twice. Please fix this ASAP.",
-    questions={
-        "topic": Choice(criteria={"billing": None, "technical": None}),
-        "urgent": Noul(instructions="Does this need a reply today?"),
-    },
-)
-request_body, response_body = exchanges[0]
-print(json.dumps(request_body, indent=1)[:260])
+client = TypeSafeClient(api_key="mock", transport=MockJevTransport())
+r = client.system_one(
+    state=state,
+    questions={"attack": Noul(instructions="Is this alert a real attack?")})
+print(round(r.nouls["attack"].noul, 3))
+print(r.usage)
 ```
 :::
 
-A few details from the SDK's own documentation are worth knowing. A `choice` answer includes the chosen label, a `confidence` and a probability for every label. A `score` answer includes an expected score, a `confidence`, the rubric as a legend and a probability for every level. A `noul` (yes or no) answer is a single number: the probability of "yes". The schema describes output tokens as "currently free of charge". And the library handles retries and rate limits for you, which Chapter 23 puts to use.
+The response carries more than the answer. `r.nouls`, `r.choices` and `r.scores` hold the typed answers, keyed by the names you gave your questions. `r.usage` counts tokens, which is what you're billed on. `r.request_id` identifies the call, and it's worth logging next to every decision so that you can trace a surprising answer later. And `r.raw_http_response` is there when you need the headers.
 
-What the SDK doesn't say is exactly how `confidence` is defined. In the mock I've made it the probability of the top option, and I've said so in `DECISIONS.md`. Don't assume the real one works the same way until you've checked.
+## One argument decides what's on the other end
 
-## What TypeSafe says: two ideas
+Look at the first line of that listing again. Everything that makes it a mock is one argument: `transport=MockJevTransport()`.
 
-Two claims sit at the centre of how TypeSafe describes Jev [@typesafe2026] [[VERIFY]].
+![The official SDK does all the work of building requests, retrying and parsing answers. The transport decides where requests go. The book's mock answers locally; the default sends them over the network to TypeSafe.](/figures/ch23/layers.pdf){#fig-layers}
 
-**A "parallel sampler".** An LLM, as Chapter 10 showed, writes one token at a time, each waiting for the last. TypeSafe says Jev instead produces all its outputs *in a single pass*. It doesn't write an answer; it computes one. That's the claimed source of the speed.
+A **transport** is the lowest layer of an HTTP client: the part that takes a finished request and returns a response. The SDK lets you supply your own, and that's the seam the book's mock plugs into (@fig-layers). Your code, the SDK's request building, its retries and its parsing all run exactly as they would against the real service. Only the last step is different.
 
-**RLCD: reinforcement learning for calibrated decisions.** TypeSafe contrasts this with RLHF, which rewards answers people prefer (Chapter 9), and with reinforcement learning from verifiable rewards, which rewards answers a program can check. RLCD, they say, rewards *honest probabilities*.
+That's also why the mock is worth trusting as a stand-in for the *interface*. It accepts the same request shape as the API, returns the same answer shape, and rejects bad requests with the same error codes, which I checked against the SDK's own data models. What it can't stand in for is the *answers*. They come from a small synthetic engine, every response says so in an `x-jevkit-synthetic` header, and the model name it reports is `jev-mock-synthetic`.
 
-We don't know the details of either. But you already have the background to think about them clearly. Chapter 3 showed that a **proper scoring rule**, like log loss, makes honesty the best possible strategy: you can't improve your average score by exaggerating. If RLCD's reward is built on a rule like that, calibration is what it would be pushing towards. That's an inference, not something TypeSafe has published, and it still wouldn't guarantee calibration on *your* data, as Chapter 18 will show.
+To call the real thing, drop the transport and give it a key:
 
-![One possible shape for a model like this: a reader that looks at the state and the questions together, then typed "heads" that each turn the result into probabilities, all in one pass. This is my guess, based on the interface and Chapter 8, and not TypeSafe's description.](/figures/ch16/guess.pdf){#fig-guess}
+```python
+client = TypeSafeClient(api_key=os.environ["TYPESAFE_API_KEY"],
+                        model="jev-latest")   # better: pin a dated version
+```
 
-If you want a mental model, @fig-guess is mine, and I want to be very clear that it's a guess. It's built from what the interface demands and from what Chapter 8 said about readers and writers. It's also a design you can build yourself, which is exactly what Chapter 27 does.
+Or use `jevkit.client()`, which returns the mock unless you set `JEVKIT_LIVE=1` and a key. Every lab in the book runs through it, so each one can be pointed at real Jev with two environment variables.
 
-## The numbers: speed and price
+Pin the model if you can. `jev-latest` is an alias, and aliases move. Chapter 9 said the unknowns in a new model include how its behaviour changes between versions; pinning is how you make that a decision rather than a surprise.
 
-TypeSafe and its launch coverage report end-to-end latency of roughly 70 to 500 milliseconds, and "two orders of magnitude" faster than LLMs on System One tasks [[VERIFY]]. Both are vendor-reported.
+## What happens on the wire
 
-![Time per decision on a log scale: the vendor-reported range for Jev, and the illustrative LLM figures used throughout this book. The LLM figures aren't measurements; they're the stated assumptions from Chapter 10.](/figures/ch16/latency.pdf){#fig-latency}
+![One call's life. The SDK validates and sends the request. A success is parsed into typed answers. A rate limit or server error waits and retries. Anything else, or running out of retries, raises an error.](/figures/ch23/lifecycle.pdf){#fig-lifecycle}
 
-One critic pointed out that the most dramatic speed multipliers in the launch material compare Jev with slow *reasoning* models, which think for a long time before answering [@regolo2026] [[VERIFY]]. That's a fair comparison for some uses and an unfair one for others. Against a fast, non-reasoning LLM asked for a one-word label, the gap is much smaller. Always ask: faster than *what*, doing *what*?
+Most of the time a call goes straight along the top of @fig-lifecycle. The interesting parts are the two ways off it.
 
-The price is where the story gets interesting. The listed price is \$0.042 per million input tokens, with output free [[VERIFY]]. For a decision that reads about 500 tokens of state and questions, that's about \${{< num ch16 jev_cost_per_million int >}} per million decisions.
+## Two kinds of error
 
-![Cost per million decisions of 500 input tokens each: Jev at its vendor-reported price, and an LLM at this book's illustrative mid-range price, which is an assumption, not a quote.](/figures/ch16/cost.pdf){#fig-cost}
+I provoked every error I could think of against the mock and recorded what the SDK did.
 
-Using this book's illustrative LLM prices (\${{< num ch16 llm_price_in f2 >}} per million input tokens, \${{< num ch16 llm_price_out f2 >}} per million output, and 40 output tokens for a small JSON answer), the same million decisions would cost about \${{< num ch16 llm_cost_per_million int >}}. That's roughly {{< num ch16 ratio int >}} times more (@fig-cost). Real LLM prices range over two orders of magnitude, so treat the ratio as a shape. Chapter 19 is about why that shape might matter more than any benchmark.
+![What the SDK does for each kind of failure, measured against the mock. Mistakes in your request fail at once. Rate limits and server errors are retried under the default policy.](/figures/ch23/errors.pdf){#fig-errors}
 
-## Check the claims against each other
+The errors in @fig-errors fall into two families, and they need opposite treatment.
 
-Here's a habit I'd love you to leave this chapter with. When a vendor gives you several numbers, see whether they agree with *each other*.
+**Your mistakes** fail fast: no key, a model name that doesn't exist, a question with no options. Some are caught before anything is sent; the rest come back as a 4xx error. Retrying them is pointless, because the same request will fail the same way. Fix the code.
 
-TypeSafe's launch demo had Jev playing the video game Doom, making decisions from a text description of the game state about ten times a second, at a reported cost of about \$7 an hour [[VERIFY]]. Do those numbers hang together with the listed price?
+**The world's mistakes** are worth retrying: rate limits (429), server errors (5xx) and a network that drops. The SDK retries these by default, twice, waiting a little longer each time.
 
-![A consistency check using only the vendor's own numbers. Ten decisions a second at \$7 an hour means each decision costs about two hundredths of a cent, which at the listed price implies each decision read around 4,600 input tokens: a large but plausible description of a game state.](/figures/ch16/doom-check.pdf){#fig-doom-check}
+```{python}
+try:
+    client.system_one(state=state,
+                      questions={"a": Choice(criteria={})})
+except TypeSafeError as e:
+    print(type(e).__name__)
+```
 
-Ten decisions a second is {{< num ch16 doom_decisions_per_hour int >}} an hour. At \$7 an hour, each decision costs about \${{< num ch16 doom_cost_per_decision f4 >}}. At \$0.042 per million input tokens, that implies about {{< num ch16 doom_implied_tokens int >}} tokens of game state per decision. That's plausible for a detailed text description of a game screen (@fig-doom-check). The numbers are consistent. That doesn't prove them, but if they'd implied three tokens per decision, or three million, you'd have learned something important.
+## How many retries?
 
-## What we don't know
+To see what retries buy, I made the mock fail at random, then counted how many calls succeeded.
 
-Here's the uncomfortable part: the unknowns are exactly the things a decision layer depends on.
+![The share of calls that succeed, as more retries are allowed, when 1%, 5% or 20% of requests fail at random. Dotted lines show the simple formula: a call fails only if every attempt fails.](/figures/ch23/retries.pdf){#fig-retries}
 
-We don't know the model's size, its architecture or its training data. We don't know how well its probabilities are calibrated on data like yours. We don't know how it behaves on adversarial input, like the planted sentence from Chapter 14. We don't know how stable its behaviour is across versions: `jev-latest` is an alias, and aliases move. And by design, it gives no reasons, only probabilities. Some early critics called that a compliance problem for regulated uses [@datacamp2026] [[VERIFY]]. Chapter 21 answered it with decision logs that audit the policy rather than the model.
+With one request in five failing, only {{< num ch23 ok_20_0 pct >}} of calls succeed with no retries. With the SDK's default two retries, {{< num ch23 ok_20_2 pct1 >}} do (@fig-retries). The arithmetic is simple: if each attempt fails independently with probability *q*, a call with *r* retries fails only with probability *q*^*r*+1^.
 
-None of those unknowns are reasons to avoid a new model. They're reasons to *test* it, on your own data, with the tools you already have. The next two chapters do exactly that: first by understanding each question type properly, then by testing calibration the way Chapter 4 taught.
+Retries cost time, though. The default policy waits about half a second, then a second, before retrying. That's fine for a batch job. It's not fine for Chapter 12's login check, which had three hundred milliseconds in total.
+
+So here's the decision-layer way to think about it. A call that fails is just another case your policy must handle. For a tight budget, allow no retries and decide what a failure *means*: for a login, maybe "allow, but flag for review"; for closing an alert, "don't close; send to the queue". Chapter 14 called this a fail-safe. It belongs in the policy, where it's visible, not buried in a retry setting.
+
+```{python}
+fast = TypeSafeClient(api_key="mock", transport=MockJevTransport(),
+                      retry=RetryPolicy(max_retries=0, timeout=0.3))
+```
+
+::: {.keyidea}
+Retry the world's errors, never your own. And when the clock matters, decide in advance what a failed call means.
+:::
+
+## Ask together
+
+Chapter 10 showed that one call can carry several questions about the same state. Here's what that saves.
+
+![Input tokens per call, averaged over 800 of Kestrel's alerts, and what they'd cost per million calls at Jev's vendor-reported price. Asking four questions in one call sends the alert once; asking them in four calls sends it four times.](/figures/ch23/tokens.pdf){#fig-tokens}
+
+Asking Kestrel's four triage questions in one call used about {{< num ch23 tokens_four_one int >}} input tokens. Asking them in four separate calls used {{< num ch23 tokens_four_sep int >}}, because the alert went over the wire four times (@fig-tokens). One call is also one round trip instead of four.
+
+These are the mock's token counts, not the real tokenizer's [[VERIFY]]. But they suggest something worth noticing: a Kestrel alert is short, about {{< num ch23 tokens_text int >}} tokens as text. Chapters 9 and 12 assumed 500 tokens per decision, which was generous. At short states like these, the vendor-reported price works out to a few dollars per million decisions.
+
+## Tests that never touch the network
+
+Everything so far runs against the mock, so tests using it are already free, fast and repeatable. But at some point you'll want tests built on *real* answers, and you won't want them to call the API on every run.
+
+![Record once, replay forever. With a key, a recording transport saves each real request and response to a file. In every later test run, a replay transport answers from that file: the same answers, byte for byte, with no key and no cost.](/figures/ch23/record-replay.pdf){#fig-record-replay}
+
+The toolkit includes both halves (@fig-record-replay). `RecordingTransport` wraps any transport and writes each exchange to a JSON-lines file, which testers call a **cassette**. `ReplayTransport` answers from that file, and raises if a test asks something that wasn't recorded, so a changed question can't silently pass.
+
+```{python}
+import os, tempfile
+from jevkit.mock import RecordingTransport, ReplayTransport
+
+path = os.path.join(tempfile.mkdtemp(), "cassette.jsonl")
+TypeSafeClient(api_key="mock", transport=RecordingTransport(
+    MockJevTransport(), path)).system_one(
+    state=state, questions={"a": Noul(instructions="Real attack?")})
+replayed = TypeSafeClient(api_key="mock", transport=ReplayTransport(path))
+r = replayed.system_one(
+    state=state, questions={"a": Noul(instructions="Real attack?")})
+print(round(r.nouls["a"].noul, 3))
+```
+
+The book's own repository works this way. Every lab and every listing runs in CI against the mock on each change. A separate weekly job calls the real API, if a key is configured, and checks that it still has the shape the book teaches, so a change in the interface shows up as a failing check rather than a surprise. Comparing the real *answers* against a recorded baseline is the natural next step, and exercise 3 builds the pieces.
+
+[[AUTHOR STORY: the first time an API change or an unpinned model version broke something of yours in production, and how you found out]]
 
 ::: {.breaks}
-Vendor numbers are measured on the vendor's tasks, in the vendor's setup, against comparisons the vendor chose. Early-access models change quickly, so behaviour you test this month may shift next month. Pin a model version where you can, rather than `jev-latest`, and re-run your checks when it changes. And be wary of third-party "benchmarks" that appeared within days of launch: some are careful, some aren't, and most can't tell you how the model behaves on your data.
+The mock copies the interface, not the model: every answer it gives is synthetic, and its token counts are its own. Behaviour the SDK leaves to the server, such as exact rate limits, timeouts under load and the precise meaning of `confidence`, can only be learned against the real API [[VERIFY]]. Replayed cassettes go stale: they record what the model said on the day you recorded them, so re-record on a schedule and when you change model versions. And retries hide trouble as well as fixing it; count them, because a rising retry rate is often the first sign that something upstream is wrong.
 :::
 
 ::: {.threshold}
-Kestrel's agent makes about 3,700 small decisions a day (Chapter 13's count, scaled up). At the vendor-reported price and 500 tokens each, what would a year of those decisions cost? At the illustrative LLM price? At what daily volume would the difference be worth a week of an engineer's time to switch?
+Kestrel's login check has a 300 ms budget. If the call to Jev fails or times out, the login must still be decided. Letting a risky login through costs about \$10,000 times its P(attack); blocking an innocent login costs about \$20 of lost work and a help-desk call. The typical login has P(attack) around 0.0001. What should a failed call do?
 
-(About 1.35 million decisions a year: roughly \$28 at the Jev price and about \$900 at the illustrative LLM price. At Kestrel's volume, price alone doesn't justify a switch. Speed and calibration might. At a hundred times the volume, price becomes a real argument.)
+(With no answer, the best estimate is the base rate. Letting it through costs about 0.0001 × \$10,000 = \$1 on average; blocking costs about \$20. So fail open: allow the login, and log it for a later check. For a class of logins with a much higher base rate, such as admin accounts from new countries, the same arithmetic may say fail closed.)
 :::
 
-::: {.bookquote by="Carl Sagan, Cosmos, 1980"}
-Extraordinary claims require extraordinary evidence.
+::: {.bookquote by="Edsger W. Dijkstra, Notes on Structured Programming, 1970"}
+Program testing can be used to show the presence of bugs, but never to show their absence!
 :::
+
+Dijkstra's point [@dijkstra1970] [[VERIFY]] is doubly true for a model behind an API: tests against a mock show your code handles the answers. They can't show the answers will be good. That's what Chapter 11's calibration checks are for.
 
 ## Where we are
 
-I started without an API key, so we sorted what can be known into three piles. The interface was verifiable, and small: state and typed questions in, probabilities out. The speed and training method were the vendor's claims, and we could reason about them without accepting them. The prices let us do our own arithmetic, and the vendor's numbers turned out to agree with each other. What remained unknown was exactly what a decision layer depends on, which means the next job is testing.
+The first call was ten lines, and the only thing that made it a mock was the transport. Errors split into two kinds: our own, which fail fast and should be fixed, and the world's, which the SDK retries. When the clock is tight, a failed call becomes a case for the policy to decide, not a retry setting. Asking four questions in one call sent the alert once instead of four times. And a recording made once with a key can drive every test afterwards, with no key at all.
 
 ::: {.exercises}
-1. Find a claim about Jev in a recent article and put it in one of the three piles. What would it take to move it to "verified"?
-2. In the lab, send a `score` question with five levels instead of three. Look at the raw response. What does `score` mean when it's 2.4?
-3. Redo the Doom check with a different assumption: suppose each decision read 500 tokens. What hourly cost would that imply? What would you conclude if the vendor had quoted that figure instead?
-4. Write three questions you'd ask TypeSafe before using Jev for a decision that affects customers. Which pile would each answer go in?
+1. In the lab, set `fail_rate=0.5`. How many retries do you need for 99% of calls to succeed? What would that do to your latency?
+2. Write a small function `decide_or_fallback(state)` that returns P(attack) from Jev, or a fallback value of your choosing if the call fails within 300 ms. What fallback did you choose, and why?
+3. Record a cassette for five alerts, change one question's wording, and replay. What happens? Why is that the behaviour you want?
+4. Log `request_id`, the model name and the answer for every call in a batch of 100. What would you need from this log if an auditor asked about one decision next month?
 :::
 
 ::: {.nexthook}
-Next: the three question types, `choice`, `score` and `noul`, one at a time, with the design choices that make each work well.
+Next: an agent where Jev decides and the LLM reasons, built step by step, and measured against one where the LLM does everything.
 :::

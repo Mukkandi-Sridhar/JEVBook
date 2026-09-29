@@ -7,14 +7,12 @@
 # ---
 
 # %% [markdown]
-# # Lab 17 · The type system: choice, score, noul
+# # Lab 17 · A hybrid agent: Jev decides, the LLM reasons
 #
-# *Decide, Don't Generate*, Chapter 17. Answers from `jev-mock-synthetic`.
-#
-# 1. Ask all three types in one call, with a typed response model.
-# 2. See what happens when a choice has no right option.
-# 3. Read a score's whole distribution, not just its average.
-# 4. Choose an action by expected cost.
+# *Decide, Don't Generate*, Chapter 17. The agent harness is `jevkit.agent.SOCAgent`. Decisions go through the
+# official SDK to `jev-mock-synthetic`; writing goes to the book's `MockLLM`. Timings and prices are simulated:
+# the LLM's are illustrative, Jev's sit inside the vendor-reported range. **Synthetic throughout.**
+
 
 # %%
 import importlib.util, subprocess, sys
@@ -23,50 +21,44 @@ if importlib.util.find_spec("jevkit") is None:
                     "git+https://github.com/Mukkandi-Sridhar/JEVBook"], check=True)
 
 # %%
+from collections import Counter
 import numpy as np
-from typesafe_sdk import (Choice, ChoiceAnswer, Noul, NoulAnswer, Score, ScoreAnswer,
-                          SystemOneResponse, TypeSafeClient)
-from jevkit import MockJevTransport, soc
+from jevkit import soc, agent
 
-class Triage(SystemOneResponse):          # your answers, as typed fields
-    attack: NoulAnswer
-    kind: ChoiceAnswer
-    severity: ScoreAnswer
-
-client = TypeSafeClient(api_key="mock", transport=MockJevTransport())
 alerts = soc.load()
-questions = {
-    "attack": Noul(instructions="Is this alert a real attack?",
-                   criteria={"true": "A real attacker or real malware is involved",
-                             "false": "Normal activity, a test, or a false positive"}),
-    "kind": Choice(criteria={c: None for c in soc.CATEGORIES}),
-    "severity": Score(instructions="How severe is this?", criteria=soc.SEVERITY_LEVELS),
-}
-t = client.system_one(state=alerts.description[118], questions=questions, response_model=Triage)
-print(round(t.attack.noul, 3), t.kind.choice, round(t.kind.confidence, 3))
-print({k: round(v, 3) for k, v in t.severity.probabilities.items()}, "average", round(t.severity.score, 2))
+_, live = soc.history_and_live(alerts)
+sample = live.sample(300, random_state=24)
 
 # %% [markdown]
-# ## A choice with no right answer
+# ## 1. One alert, step by step
 
 # %%
-threat_only = {c: None for c in soc.CATEGORIES if c not in ("benign", "policy_violation")}
-harmless = alerts.query("malicious == 0").head(200).description
-conf = [client.system_one(state=s, questions={"k": Choice(criteria=threat_only)}).choices["k"].confidence
-        for s in harmless]
-print(f"harmless alerts, forced into threat labels: median confidence {np.median(conf):.2f}")
+hybrid = agent.SOCAgent(always=("threat_intel",))
+t = hybrid.run(live.iloc[118])
+for s in t.steps:
+    print(f"{s.kind:>8}  {s.name:<16} {s.latency_s:5.2f}s  {s.detail}")
+print("action:", t.action)
 
 # %% [markdown]
-# ## Tails, not averages
+# ## 2. Watch what each decision step answers
 
 # %%
-p = t.severity.probabilities
-print(f"P(medium or high) = {p[2] + p[3]:.2f}, although the average level is {t.severity.score:.2f}")
+first = agent.SOCAgent()                         # the Chapter 7 version
+picks = Counter(s.detail.split()[1] for a in sample.itertuples()
+                for s in first.run(a).steps if s.name == "next_evidence")
+print(picks)                                     # which option never appears?
 
 # %% [markdown]
-# ## Expected cost across a choice
+# ## 3. Three agents on the same alerts
 
 # %%
-probs = np.array([t.kind.probabilities[c] for c in soc.CATEGORIES])
-close_cost = np.array([2000, 3000, 5000, 4000, 1500, 300, 0])   # cost of closing, if the truth is each category
-print(f"expected cost of closing this alert: ${probs @ close_cost:,.0f}")
+def summarise(ag, label):
+    tr = [ag.run(a) for a in sample.itertuples()]
+    y = sample.malicious.to_numpy()
+    acts = np.array([x.action for x in tr])
+    print(f"{label:>10}: {np.mean([sum(s.latency_s for s in x.steps) for x in tr]):.1f} s/alert, "
+          f"reviews {np.mean(acts == 'review'):.0%}, threats auto-closed {((acts == 'act') & (y == 1)).sum()}")
+
+summarise(first, "first")
+summarise(hybrid, "hybrid")
+summarise(agent.SOCAgent(always=("threat_intel",), decider="llm"), "all-LLM")

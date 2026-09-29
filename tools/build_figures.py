@@ -1,4 +1,6 @@
-"""Build every figure for one or more chapters: python tools/build_figures.py ch01 ch21 (or 'all')."""
+"""Build every figure for one or more figure sources: python tools/build_figures.py ch01 ch21 (or 'all').
+
+Figure sources keep the first draft's ids (figures/src/chNN.py); see DECISIONS.md D-58."""
 
 import importlib.util
 import sys
@@ -9,7 +11,6 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from jevkit import figs  # noqa: E402
-from jevkit.figs.bookmap import CHAPTERS  # noqa: E402
 
 
 def build(ch: str, only: set[str] | None = None) -> int:
@@ -21,10 +22,9 @@ def build(ch: str, only: set[str] | None = None) -> int:
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     n = 0
-    if ch in CHAPTERS:                       # front and back matter have no map or lab
-        figs.save(figs.you_are_here(ch), ch, "map")
-        figs.qr(ch)
     for name, fn in figs.registered(ch):
+        if name == "summary":                # one-page summaries are not part of the book any more
+            continue
         if only and name not in only:
             continue
         t = time.time()
@@ -42,6 +42,6 @@ if __name__ == "__main__":
         i = args.index("--only")
         only = set(args[i + 1:])
         args = args[:i]
-    chs = sorted(CHAPTERS) if args == ["all"] else args
+    chs = sorted(p.stem for p in (ROOT / "figures" / "src").glob("*.py")) if args == ["all"] else args
     total = sum(build(c, only) for c in chs)
     print(f"built {total} figures")

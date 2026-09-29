@@ -2,7 +2,7 @@
 
 usage: python tools/progress.py [--pdf _book/*.pdf]
 
-Words and voice come from tools/voice_check.py; figures from figures/chNN/*.pdf (minus the map and QR);
+Words and voice come from tools/voice_check.py; figures are counted from the chapter's image references;
 labs from whether labs/chNN.py exists (CI runs them); open [[VERIFY]] marks are counted in the chapter source;
 pages are read from the rendered PDF when one is given.
 """
@@ -48,9 +48,8 @@ def row(num, ch, title, pages):
     with contextlib.redirect_stdout(buf):
         issues = voice_check.check(q)
     words = re.search(r"(\d+) words", buf.getvalue())
-    figs = [p for p in (ROOT / "figures" / ch).glob("*.pdf") if p.stem not in ("map", "qr")]
-    nfig = len([p for p in figs if p.stem != "summary"])
-    summ = " + summary" if any(p.stem == "summary" for p in figs) else ""
+    nfig = len(re.findall(r"!\[[^\]]*\]\(/figures/", text))
+    summ = ""
     lab = "ok" if (ROOT / "labs" / f"{ch}.py").exists() else "–"
     verify = text.count("[[VERIFY]]")
     pg = pages.get(num, "–")

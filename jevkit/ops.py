@@ -1,8 +1,8 @@
-"""Chapter 25's case study: Kestrel's SOC before and after the decision layer.
+"""Chapter 18's case study: Kestrel's SOC before and after the decision layer.
 
 Everything here is a simulation on synthetic alerts. The pieces are the book's own: the old way is the
-hand-written rules from Chapter 20 feeding a first-come-first-served queue; the new way is mock Jev,
-Platt-calibrated on history, with Chapter 21's capacity-aware three-zone policy.
+hand-written rules from Chapter 13 feeding a first-come-first-served queue; the new way is mock Jev,
+Platt-calibrated on history, with Chapter 14's capacity-aware three-zone policy.
 """
 
 from __future__ import annotations

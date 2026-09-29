@@ -7,13 +7,12 @@
 # ---
 
 # %% [markdown]
-# # Lab 15 · System 1 and System 2
+# # Lab 15 · A catalog of decision patterns
 #
-# *Decide, Don't Generate*, Chapter 15. Synthetic data and synthetic models.
-#
-# A fast System 1 (the mock decision model reading raw alert text) decides every alert.
-# The cases it is least sure about go to System 2, modelled here as a careful investigation that
-# learns the alert's true probability. How much of System 2's benefit do we get by sending only a few?
+# *Decide, Don't Generate*, Chapter 15. Six patterns, each small enough to read in one screen.
+# Jev answers come from `jev-mock-synthetic` and the LLM is the book's `MockLLM`: synthetic throughout.
+# For patterns 4 and 6 the mock's numbers show the *shape* of the call, not a meaningful judgement.
+
 
 # %%
 import importlib.util, subprocess, sys
@@ -23,27 +22,72 @@ if importlib.util.find_spec("jevkit") is None:
 
 # %%
 import numpy as np
-from jevkit import soc, calibration as cal
-from jevkit.batch import score_alerts
+from typesafe_sdk import Choice, Noul, TypeSafeClient
+from jevkit import MockJevTransport, soc, llm
 
+client = TypeSafeClient(api_key="mock", transport=MockJevTransport())
+mock = llm.MockLLM()
 alerts = soc.load()
-alerts["p"] = score_alerts(alerts, "text")
-history, live = soc.history_and_live(alerts)
-system1 = cal.Platt().fit(history.p, history.malicious)(live.p)
-system2 = live.p_true.to_numpy()           # idealised careful investigation
-y = live.malicious.to_numpy()
+alert = alerts.iloc[118]
 
-miss, false_alarm = 10_000, 400
-line = false_alarm / (false_alarm + miss)
-logit = lambda x: np.log(x / (1 - x))
-doubt_order = np.argsort(np.abs(logit(np.clip(system1, 1e-6, 1 - 1e-6)) - logit(line)))
+# %% [markdown]
+# ## 1. Extract, then decide
 
-def daily_cost(share):
-    k = int(share * len(y))
-    act = (system1 >= line).astype(int)
-    sent = doubt_order[:k]
-    act[sent] = (system2[sent] >= line).astype(int)
-    return (((act == 1) & (y == 0)).sum() * false_alarm + ((act == 0) & (y == 1)).sum() * miss) / 7
+# %%
+fields = mock.extract(alert.description)          # the LLM writes...
+attack = Noul(instructions="Is this alert a real attack?")
+r = client.system_one(state={"alert": alert.title, **fields}, questions={"attack": attack})
+print(fields)
+print("P(attack) =", round(r.nouls["attack"].noul, 3))  # ...Jev decides
 
-for share in (0, 0.1, 0.2, 0.5, 1.0):
-    print(f"send {share:4.0%} to System 2: ${daily_cost(share):,.0f} a day")
+# %% [markdown]
+# ## 2. The decide step inside a loop: one typed question per step
+
+# %%
+next_step = Choice(instructions="Which evidence should the agent gather next?",
+                   criteria={"threat_intel": None, "host_history": None, "policy": None, "none": None})
+a = client.system_one(state=alert.description, questions={"next": next_step}).choices["next"]
+print(a.choice, {k: round(v, 2) for k, v in a.probabilities.items()})
+
+# %% [markdown]
+# ## 3. Guardrail gate: check a proposed action on trusted facts only
+
+# %%
+def gate(p_safe, low=0.3, high=0.75):
+    return "allow" if p_safe >= high else ("block" if p_safe < low else "ask a person")
+
+trusted = {k: alert[k] for k in ("rule", "ioc_score", "asset_criticality", "known_tool", "new_geo", "mfa_ok")}
+trusted = {k: (v.item() if hasattr(v, "item") else v) for k, v in trusted.items()}
+p = client.system_one(state=trusted, questions={"attack": attack}).nouls["attack"].noul
+print("close the alert?", gate(1 - p), f"(P(safe) = {1 - p:.2f})")
+
+# %% [markdown]
+# ## 4. Check the writer (shape only with the mock)
+
+# %%
+draft = "Benign admin activity; the change ticket covers it."
+check = Noul(instructions="Is every claim in the note supported by the evidence?")
+r = client.system_one(state={"evidence": alert.description, "note": draft}, questions={"supported": check})
+print("P(supported) =", round(r.nouls["supported"].noul, 2))
+
+# %% [markdown]
+# ## 5. Router with a fallback queue
+
+# %%
+kind = Choice(criteria={c: None for c in soc.CATEGORIES})
+sample = alerts.sample(400, random_state=5)
+routed = right = 0
+for row in sample.itertuples():
+    k = client.system_one(state=row.description, questions={"k": kind}).choices["k"]
+    if max(k.probabilities.values()) >= 0.8:
+        routed += 1
+        right += k.choice == row.category
+print(f"routed {routed / len(sample):.0%}, of which {right / routed:.0%} to the right team")
+
+# %% [markdown]
+# ## 6. Memory controller (shape only with the mock)
+
+# %%
+keep = Noul(instructions="Will this fact matter for future alerts about the same host or user?")
+fact = "rhea.novak has an approved change ticket for admin tooling until Friday."
+print("P(keep) =", round(client.system_one(state=fact, questions={"keep": keep}).nouls["keep"].noul, 2))

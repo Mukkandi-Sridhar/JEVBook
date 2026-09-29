@@ -7,14 +7,12 @@
 # ---
 
 # %% [markdown]
-# # Lab 20 · The bake-off: six ways to make a decision
+# # Lab 20 · Build your own System One model
 #
-# *Decide, Don't Generate*, Chapter 20.
-#
-# Six methods decide whether each Kestrel alert is a real threat. All train or tune on weeks 1-3 and are scored
-# on week 4. Jev answers come from `jev-mock-synthetic`; the LLM is the book's `MockLLM`. **Synthetic, not measured
-# on real Jev or a real LLM.** The mock LLM was built as a noisier reader than mock Jev, so the accuracy gap between
-# those two is a design choice. The other columns (calibration shape, parse failures, variance, labels) are the lesson.
+# *Decide, Don't Generate*, Chapter 20. TinyJev: a shared encoder and three typed heads (noul, choice, score),
+# trained with log loss in NumPy + autograd, calibrated with one temperature per head, then plugged into the
+# official SDK. Trained on the book's synthetic alerts. **Nothing here is TypeSafe's architecture.**
+
 
 # %%
 import importlib.util, subprocess, sys
@@ -22,47 +20,56 @@ if importlib.util.find_spec("jevkit") is None:
     subprocess.run([sys.executable, "-m", "pip", "install", "-q", "typesafe-sdk==0.7.2", "autograd",
                     "git+https://github.com/Mukkandi-Sridhar/JEVBook"], check=True)
 
+# %% [markdown]
+# ## 1. Data: two weeks to train, one to calibrate, one to test
+
 # %%
 import numpy as np
-from jevkit import bakeoff as B
+from jevkit import soc, tinyjev as tj, calibration as cal
 
-r = B.run()
-y = r["y"]
-print(f"history {len(r['hist']):,} alerts, live {len(y):,} alerts ({y.sum()} real threats)")
-for m in B.METHODS:
-    s = B.scores(r["probs"][m], y, verdict=r["rules_live"] if m == "rules" else None)
-    print(f"{B.NAMES[m]:>26}: AUC {s['auc']:.3f}  ECE {s['ece']:.3f}  Brier {s['brier']:.4f}  "
-          f"caught@240/day {s['caught']:.0%}  F1@0.5 {s['f1']:.2f}")
+alerts = soc.load()
+history, live = soc.history_and_live(alerts)
+t = history.timestamp.astype("datetime64[ns]")
+train_df = history[t < np.datetime64("2026-09-15")].reset_index(drop=True)
+calib_df = history[t >= np.datetime64("2026-09-15")].reset_index(drop=True)
+train = tj.features(train_df) + tj.targets(train_df)
+calib = tj.features(calib_df) + tj.targets(calib_df)
+print(len(train_df), "to train,", len(calib_df), "to calibrate,", len(live), "to test")
 
 # %% [markdown]
-# ## Jev on raw text instead of fields
+# ## 2. Train all three heads at once
 
 # %%
-s = B.scores(r["jev_text"], y)
-print(f"Jev (text): AUC {s['auc']:.3f}  ECE {s['ece']:.3f}")
+params, history_log = tj.train(*train, steps=1500, val=calib, every=250)
+for row in history_log:
+    print(row["step"], {k: round(v, 3) for k, v in row["val"].items()})
 
 # %% [markdown]
-# ## How many distinct confidences does the LLM state?
+# ## 3. Calibrate: one temperature per head
 
 # %%
-vals, counts = np.unique(np.round(r["probs"]["llm_json"], 3), return_counts=True)
-print(dict(zip(vals, counts)))
-print(f"parse failures: {1 - r['parse_ok'].mean():.1%}")
+T = tj.fit_temperatures(params, *calib)
+print("temperatures:", [round(x, 2) for x in T])
+y = live.malicious.to_numpy()
+for name, temps in (("as trained", (1, 1, 1)), ("with temperatures", T)):
+    p_attack, p_kind, p_sev = tj.predict(params, live, temps)
+    print(f"{name:>18}: AUC {cal.summary(p_attack, y)['auc']:.3f}  ECE {cal.ece(p_attack, y):.3f}")
 
 # %% [markdown]
-# ## Stability: ask again
+# ## 4. Plug it into the official SDK
 
 # %%
-print(f"verdicts that change over 5 calls at temperature 0.7: "
-      f"{B.flip_rate(r['live'].description[:1500].tolist()):.1%}")
+from typesafe_sdk import Choice, Noul, Score, TypeSafeClient
+
+client = TypeSafeClient(api_key="mock", transport=tj.TinyJevTransport(params, T))
+a = live.iloc[118]
+state = {"alert": a.title, **{k: (a[k].item() if hasattr(a[k], "item") else a[k]) for k in soc.FEATURE_FIELDS}}
+r = client.system_one(state=state, questions={
+    "attack": Noul(instructions="Is this alert a real attack?"),
+    "kind": Choice(criteria={c: None for c in soc.CATEGORIES}),
+    "severity": Score(criteria=soc.SEVERITY_LEVELS)})
+print(r.nouls["attack"].noul, r.choices["kind"].choice, r.scores["severity"].probabilities)
 
 # %% [markdown]
-# ## Labels needed
-
-# %%
-curve = B.labels_curve(sizes=(100, 300, 1000, 3000), repeats=3)
-for n, a, b in zip(curve["sizes"], curve["logistic"], curve["text_clf"]):
-    print(f"{n:>6} labels: logistic {a:.3f}   text classifier {b:.3f}")
-
-# %% [markdown]
-# **Try:** write a better rule in `B.rules`. How close to logistic regression can a hand-written rule get?
+# **Try:** train for 6,000 steps with `l2=0.0` and `d=64`. Watch the held-out loss. What temperature does the
+# overtrained model need, and does it fix the reliability curve?

@@ -1,4 +1,4 @@
-"""Figures for Chapter 25: Case study: SOC alert triage."""
+"""Figures for Chapter 18: Case study: SOC alert triage."""
 
 import json
 
@@ -47,13 +47,13 @@ def system():
     f, ax = draw.canvas("wide", 3.1)
     boxes = [
         (0.0, 2.3, "SIEM alert", "fields + text", "data", "Ch 1"),
-        (1.25, 2.3, "Jev: P(attack),\nkind, severity", "typed questions", "jev", "Ch 17"),
-        (2.5, 2.3, "calibrate", "Platt on history", "neutral", "Ch 4, 18"),
-        (3.75, 2.3, "policy", "act · review · escalate", "review", "Ch 21"),
-        (3.75, 1.2, "queue by P\nor page on-call", "capacity 240 / 40", "neutral", "Ch 21"),
-        (2.5, 1.2, "LLM writes the\ncase note", "only for people", "llm", "Ch 22, 24"),
-        (1.25, 1.2, "decision log", "state, answers,\npolicy version", "neutral", "Ch 21"),
-        (0.0, 1.2, "monitor", "zone rates, queue,\ncalibration, audit", "fail", "Ch 18, 24"),
+        (1.25, 2.3, "Jev: P(attack),\nkind, severity", "typed questions", "jev", "Ch 10"),
+        (2.5, 2.3, "calibrate", "Platt on history", "neutral", "Ch 3, 11"),
+        (3.75, 2.3, "policy", "act · review · escalate", "review", "Ch 14"),
+        (3.75, 1.2, "queue by P\nor page on-call", "capacity 240 / 40", "neutral", "Ch 14"),
+        (2.5, 1.2, "LLM writes the\ncase note", "only for people", "llm", "Ch 15, 17"),
+        (1.25, 1.2, "decision log", "state, answers,\npolicy version", "neutral", "Ch 14"),
+        (0.0, 1.2, "monitor", "zone rates, queue,\ncalibration, audit", "fail", "Ch 11, 17"),
     ]
     w, h = 1.05, 0.62
     for x, y, t, sub, k, ref in boxes:

@@ -1,4 +1,4 @@
-"""Figures for Chapter 4: Calibration: when 0.8 really means 80%."""
+"""Figures for Chapter 3: Calibration: when 0.8 really means 80%."""
 
 from functools import lru_cache
 
@@ -133,7 +133,7 @@ def anatomy():
     a2.set_ylabel("alerts", fontsize=6.6)
     a2.set_xlim(0, 1)
     a2.xaxis.set_major_formatter(PCT)
-    a2.set_xlabel("Predicted P(attack), logistic regression from Chapter 3, test alerts")
+    a2.set_xlabel("Predicted P(attack), logistic regression from Chapter 2, test alerts")
     synthetic_tag(f, "SYNTHETIC DATA · Kestrel Logistics")
     return f
 

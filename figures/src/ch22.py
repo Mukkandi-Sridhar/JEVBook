@@ -1,4 +1,4 @@
-"""Figures for Chapter 22: A catalog of decision patterns."""
+"""Figures for Chapter 15: A catalog of decision patterns."""
 
 import json
 from functools import lru_cache
@@ -182,7 +182,7 @@ def oda():
     draw.arrow(ax, (2.35, 1.55), (2.35, 1.8), head=2.5, color=C["llm"], dashed=True)
     draw.text(ax, 2.35, 0.82, f"≈ {ch13['decide']:.1f} decisions per alert", size=5.9, ha="center", va="top",
               color=C["jev"])
-    draw.text(ax, 3.0, 2.0, f"only ≈ {ch13['generate']:.2f} per alert\n(Chapter 13)", size=5.6, color=C["llm"],
+    draw.text(ax, 3.0, 2.0, f"only ≈ {ch13['generate']:.2f} per alert\n(Chapter 7)", size=5.6, color=C["llm"],
               va="center")
     return f
 
@@ -277,7 +277,7 @@ def summary():
         dict(num=2, title="The decide step", kind="jev", h=1.95, draw=g("oda"), draw_h=0.6,
              body=f"About {rr['decide_per_alert']:.1f} small decisions per alert. Send them to a decision model; keep the LLM for writing."),
         dict(num=3, title="Guardrail gate", kind="jev", h=1.95, draw=g("gate"), draw_h=0.6,
-             body=(f"Check actions on trusted facts only. In Chapter 14, that kept auto-close at "
+             body=(f"Check actions on trusted facts only. In Chapter 7, that kept auto-close at "
                    f"{rr['inj_trusted']:.0%} under injection, not {rr['inj_after']:.0%}.")),
         dict(num=4, title="Check the writer", kind="jev", h=1.95, draw=g("judge"), draw_h=0.6,
              body="Ask typed questions about the draft. Redraft once; then a person."),
@@ -288,4 +288,4 @@ def summary():
              body="Store, fetch and forget are decisions too, and there are lots of them."),
     ]
     return summary_page(CH, "A catalog of decision patterns", panels,
-                        footer="Next: Part VI. Your first real calls, and the mock that makes them free.")
+                        footer="Next: Part V. Your first real calls, and the mock that makes them free.")

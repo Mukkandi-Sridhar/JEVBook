@@ -34,7 +34,7 @@ Q 2.88 13.68 2.88 17.28
 L 2.88 204.48 
 Q 2.88 208.08 6.48 208.08 
 z
-" clip-path="url(#p0642e4e2e2)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pc7768d2d31)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 179.28 208.08 
@@ -47,7 +47,7 @@ Q 175.68 13.68 175.68 17.28
 L 175.68 204.48 
 Q 175.68 208.08 179.28 208.08 
 z
-" clip-path="url(#p0642e4e2e2)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pc7768d2d31)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #2f6db5" x="8.64" y="24.8575" transform="rotate(-0 8.64 24.8575)">request (what the SDK sends)</text>
@@ -121,7 +121,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p0642e4e2e2">
+  <clipPath id="pc7768d2d31">
    <rect x="2.88" y="2.88" width="338.4" height="208.8"/>
   </clipPath>
  </defs>

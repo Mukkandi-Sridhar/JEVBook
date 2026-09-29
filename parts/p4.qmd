@@ -1,9 +1,7 @@
-# Jev in depth
+# The decision layer
 
 ::: {.partintro}
-Now we can look properly at Jev: a model that doesn't write at all. It answers typed questions with probabilities.
+A model is not a system. Between a probability and an action sits a decision layer: the comparisons you ran, the lines you drew, the patterns you chose.
 
-This part separates what's published from what's claimed, walks through its three question types, shows you how to test its calibration yourself, and asks what happens to an industry when a decision becomes almost free.
-
-Every Jev number in these pages comes from the book's synthetic mock and is labelled that way.
+This part puts six ways of deciding into one fair contest, turns probabilities into act, review and escalate, and collects the patterns that keep turning up when decision models meet real software.
 :::

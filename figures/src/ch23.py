@@ -1,4 +1,4 @@
-"""Figures for Chapter 23: First calls, and the mock that makes them free."""
+"""Figures for Chapter 16: First calls, and the mock that makes them free."""
 
 import json
 from functools import lru_cache

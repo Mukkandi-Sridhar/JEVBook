@@ -1,4 +1,4 @@
-"""Figures for Chapter 17: The type system: choice, score, noul."""
+"""Figures for Chapter 10: The type system: choice, score, noul."""
 
 from functools import lru_cache
 
@@ -175,8 +175,8 @@ def expected_cost():
 @figure(CH, "maths")
 def maths():
     f, ax = draw.canvas("text", 1.45)
-    items = [("noul", "the S-curve of Chapter 3", "one number → P(yes)"),
-             ("choice", "the softmax of Chapter 8", "one number per label → P per label"),
+    items = [("noul", "the S-curve of Chapter 2", "one number → P(yes)"),
+             ("choice", "the softmax of Chapter 5", "one number per label → P per label"),
              ("score", "an ordered choice", "P per level → average and tails")]
     for i, (t, m, s) in enumerate(items):
         x = i * 1.6

@@ -7,15 +7,11 @@
 # ---
 
 # %% [markdown]
-# # Lab 16 · Inside Jev: what we know and what we don't
+# # Lab 16 · First calls, and the mock that makes them free
 #
-# *Decide, Don't Generate*, Chapter 16.
-#
-# 1. See exactly what the official SDK sends and receives (the mock records the exchange).
-# 2. List the models the endpoint offers.
-# 3. Do the vendor's price arithmetic yourself.
-#
-# Prices and demo figures are vendor-reported. Answers come from `jev-mock-synthetic`.
+# *Decide, Don't Generate*, Chapter 16. Everything here runs against `jev-mock-synthetic` through the official
+# `typesafe-sdk`. To call real Jev, set `JEVKIT_LIVE=1` and `TYPESAFE_API_KEY`, and use `jevkit.client()`.
+
 
 # %%
 import importlib.util, subprocess, sys
@@ -23,38 +19,84 @@ if importlib.util.find_spec("jevkit") is None:
     subprocess.run([sys.executable, "-m", "pip", "install", "-q", "typesafe-sdk==0.7.2", "autograd",
                     "git+https://github.com/Mukkandi-Sridhar/JEVBook"], check=True)
 
+# %% [markdown]
+# ## 1. The first call
+
 # %%
-import json
-from typesafe_sdk import Choice, Noul, Score, TypeSafeClient
+from typesafe_sdk import Choice, Noul, RetryPolicy, Score, TypeSafeClient
 from jevkit import MockJevTransport
 
-exchanges = []
-client = TypeSafeClient(api_key="mock", transport=MockJevTransport(log=exchanges))
+client = TypeSafeClient(api_key="mock", transport=MockJevTransport())
 r = client.system_one(
-    state="I was charged twice. Please fix this ASAP.",
-    questions={
-        "topic": Choice(criteria={"billing": "Payments, refunds, invoices",
-                                  "technical": "Bugs, errors, access", "other": None}),
-        "urgent": Noul(instructions="Does this need a reply today?"),
-        "tone": Score(criteria=["calm", "annoyed", "angry"]),
-    },
+    state="Unsigned executable launched from %TEMP% on HR-SRV-187. Threat intel score: 0.38.",
+    questions={"attack": Noul(instructions="Is this alert a real attack?")},
 )
-request_body, response_body = exchanges[0]
-print(json.dumps(request_body, indent=2))
-print(json.dumps(response_body, indent=2))
-
-# %%
-print([m.name for m in client.models.list().models])
+print(r.nouls["attack"].noul, r.usage, r.request_id)
+print(r.raw_http_response.headers["x-jevkit-synthetic"])
 
 # %% [markdown]
-# ## Price arithmetic (vendor-reported inputs)
+# ## 2. What the SDK does when things go wrong
 
 # %%
-price_per_million_input = 0.042          # vendor-reported
-tokens_per_decision = 500
-per_decision = tokens_per_decision * price_per_million_input / 1e6
-print(f"${per_decision:.6f} per decision; ${per_decision * 1e6:,.0f} per million decisions")
+from typesafe_sdk import TypeSafeError
 
-doom_per_hour, decisions_per_second = 7.0, 10   # vendor-reported demo figures
-per_doom_decision = doom_per_hour / (decisions_per_second * 3600)
-print(f"implied input tokens per Doom decision: {per_doom_decision / (price_per_million_input / 1e6):,.0f}")
+def attempt(**kw):
+    transport = kw.pop("transport", MockJevTransport())
+    questions = kw.pop("questions", {"a": Noul(instructions="Real attack?")})
+    try:
+        c = TypeSafeClient(api_key=kw.pop("api_key", "mock"), transport=transport,
+                           retry=RetryPolicy(max_retries=kw.pop("retries", 0), backoff_initial=0.001))
+        c.system_one(state="x", questions=questions, **kw)
+        return "ok"
+    except TypeSafeError as e:
+        return type(e).__name__
+
+print("unknown model:     ", attempt(model="jev-nope"))
+print("empty choice:      ", attempt(questions={"a": Choice(criteria={})}))
+print("503, no retries:   ", attempt(transport=MockJevTransport(fail_every=1)))
+print("503 once, retries: ", attempt(transport=MockJevTransport(fail_every=2), retries=2))
+
+# %% [markdown]
+# ## 3. Retries against random failures
+
+# %%
+for retries in (0, 1, 2, 3):
+    t = MockJevTransport(fail_rate=0.2, seed=retries)
+    c = TypeSafeClient(api_key="mock", transport=t,
+                       retry=RetryPolicy(max_retries=retries, backoff_initial=0.001, backoff_max=0.002))
+    ok = 0
+    for i in range(300):
+        try:
+            c.system_one(state=f"alert {i}", questions={"a": Noul(instructions="Real attack?")})
+            ok += 1
+        except TypeSafeError:
+            pass
+    print(f"{retries} retries: {ok / 300:.1%} succeed, {len(t.statuses) / 300:.2f} requests per call")
+
+# %% [markdown]
+# ## 4. Ask together: one call, four questions
+
+# %%
+from jevkit import soc
+qs = {"attack": Noul(instructions="Is this alert a real attack?"),
+      "kind": Choice(criteria={c: None for c in soc.CATEGORIES}),
+      "severity": Score(criteria=soc.SEVERITY_LEVELS),
+      "page": Noul(instructions="Should on-call be woken for this?")}
+state = soc.load().description[118]
+together = client.system_one(state=state, questions=qs).usage.input_tokens
+apart = sum(client.system_one(state=state, questions={k: q}).usage.input_tokens for k, q in qs.items())
+print(f"one call: {together} input tokens; four calls: {apart}")
+
+# %% [markdown]
+# ## 5. Record once, replay in tests
+
+# %%
+import os, tempfile
+from jevkit.mock import RecordingTransport, ReplayTransport
+
+path = os.path.join(tempfile.mkdtemp(), "cassette.jsonl")
+rec = TypeSafeClient(api_key="mock", transport=RecordingTransport(MockJevTransport(), path))
+first = rec.system_one(state=state, questions=qs)
+rep = TypeSafeClient(api_key="mock", transport=ReplayTransport(path))
+again = rep.system_one(state=state, questions=qs)
+print(first.nouls["attack"].noul == again.nouls["attack"].noul)

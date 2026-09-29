@@ -10,7 +10,7 @@ In 2026 a company called TypeSafe AI released Jev, which it describes as the fir
 
 ## Who this book is for
 
-It's for anyone who builds, buys or runs systems that make decisions. If you're new to machine learning, Part I starts from the beginning and assumes only that you're comfortable with a little arithmetic and a little Python. If you already build with LLMs, you'll move quickly through Parts II and III and find the substance in Parts IV to VI. If you lead a team, "How to read this book" suggests a shorter route.
+It's for anyone who builds, buys or runs systems that make decisions. If you're new to machine learning, Part I starts from the beginning and assumes only that you're comfortable with a little arithmetic and a little Python. If you already build with LLMs, you'll move quickly through Part II and find the substance in Parts III to V. If you lead a team, "How to read this book" suggests a shorter route.
 
 ## How it's built
 
@@ -24,7 +24,7 @@ Every figure is drawn by code, and almost every number in the book is computed b
 
 **Vendor claims are labelled.** When I report what TypeSafe says about Jev, such as its speed or its price, I say it's vendor-reported and cite where it came from.
 
-**Claims have piles.** Everything said about Jev is sorted into what I could verify, what the vendor reports and what nobody outside the company knows yet. Chapter 16 explains how, and I'd encourage you to keep the same three piles for anything you read about new models, including this book.
+**Claims have piles.** Everything said about Jev is sorted into what I could verify, what the vendor reports and what nobody outside the company knows yet. Chapter 9 explains how, and I'd encourage you to keep the same three piles for anything you read about new models, including this book.
 
 [[AUTHOR STORY: why you wrote this book: the moment you realised most of your agent's work was small decisions]]
 

@@ -1,4 +1,4 @@
-"""Figures for Chapter 7: Embeddings: meaning as geometry."""
+"""Figures for Chapter 5: Embeddings: meaning as geometry."""
 
 from functools import lru_cache
 

@@ -34,7 +34,7 @@ Q 2.88 9.36 2.88 13.68
 L 2.88 30.96 
 Q 2.88 35.28 7.2 35.28 
 z
-" clip-path="url(#pa455c595a5)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p1835e2e8d5)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 122.4 35.28 
@@ -47,7 +47,7 @@ Q 118.08 9.36 118.08 13.68
 L 118.08 30.96 
 Q 118.08 35.28 122.4 35.28 
 z
-" clip-path="url(#pa455c595a5)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p1835e2e8d5)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 237.6 35.28 
@@ -60,7 +60,7 @@ Q 233.28 9.36 233.28 13.68
 L 233.28 30.96 
 Q 233.28 35.28 237.6 35.28 
 z
-" clip-path="url(#pa455c595a5)" style="fill: #f7e0e1; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p1835e2e8d5)" style="fill: #f7e0e1; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="55.08" y="24.86625" transform="rotate(-0 55.08 24.86625)">VERIFIED</text>
@@ -141,7 +141,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="pa455c595a5">
+  <clipPath id="p1835e2e8d5">
    <rect x="2.88" y="2.88" width="338.4" height="248.4"/>
   </clipPath>
  </defs>

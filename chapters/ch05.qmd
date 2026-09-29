@@ -1,185 +1,167 @@
-# From probabilities to actions {#sec-ch05}
+# Deep learning in one chapter {#sec-ch05}
+
+::: {.epigraph by="Arthur C. Clarke, Profiles of the Future, 1973"}
+Any sufficiently advanced technology is indistinguishable from magic.
+:::
 
 ```{python}
 #| include: false
 import numpy as np
-import pandas as pd
-from sklearn.linear_model import LogisticRegression
-from jevkit import soc, policy as pol
+from jevkit import text
 ```
 
-You made it. You have a model whose probabilities you've checked and, where needed, fixed. When it says 20%, about one in five of those alerts really is an attack.
+"Deep learning" might be the most intimidating phrase in the field. It sounds like something between neuroscience and magic.
 
-And now you hit the wall everyone hits:
+So here's some good news to start with:
 
-*"Great. So where do I put the line?"*
+*You've already built one.*
 
-Most people pick 0.5 without thinking about it. It's the default in almost every library. It *feels* neutral.
+The logistic regression from Chapter 2 is a single artificial neuron. A deep network is many of them, stacked in layers and trained with the same downhill walk. Add two more ideas, a way to turn words into meaningful numbers and a way for words to look at each other, and you have the machinery inside every LLM.
 
-It isn't neutral at all. It's a very specific opinion about your business, and it's usually the wrong one. This chapter shows you how to put the line where it belongs, with nothing fancier than the arithmetic you already have.
+This chapter is a fast tour, not a course. You need four ideas from it, and each is smaller than it sounds.
 
 ::: {.goals}
-- Turn two costs into one threshold, and explain why 0.5 is a special case.
-- Check the formula against a brute-force search on real (synthetic) data.
-- See why the formula only works when the probabilities are calibrated.
-- Read the precision–recall trade-off as a business choice.
-- Treat "I don't know, ask a person" as a real action, and meet the three doors: act, review, escalate.
+- See why one neuron can only draw a straight line, and how layers and a simple "hinge" let a network draw almost any shape.
+- Explain how an embedding turns words into points where closeness means similar meaning.
+- Describe attention as each word asking which other words matter to it.
+- Explain why big models trained for long tend to become overconfident, and how to fix it.
 :::
 
-## The umbrella question
+## Idea one: layers bend the line
 
-Let's start somewhere dry. Well, somewhere that might not be.
+Look at what a neuron does to an alert: multiply each clue by a weight, add everything up, squash the total into a probability. The places where a weighted sum equals some value form a straight line. So all a single neuron can do is cut the space in two with a straight edge.
 
-The forecast says there's a 30% chance of rain. Do you take an umbrella?
+That's a real limit. Imagine behaviour that's suspicious when it's *unusual in any direction*: far too much activity, or far too little, far too early, or far too late. Normal sits in the middle, and no straight line separates the middle from the edges.
 
-It depends on two things you already know without thinking about them. Carrying an umbrella you didn't need is mildly annoying; call it 1 unit of annoyance. Getting soaked on the way to a meeting is much worse; call it 4.
+![A toy problem. Blue dots are normal activity; red dots surround them on every side. One neuron (left) can only draw a straight line through it. With a hidden layer of three neurons (middle) the boundary becomes a triangle; with twelve (right), close to a circle.](/figures/ch06/line-limit.pdf){#fig-line-limit}
 
-If you carry it, you pay 1, rain or shine. If you leave it, you pay 4, but only if it rains, so on average you pay 4 × the chance of rain.
+The fix is to send the clues to a few neurons first, each drawing its own line, and let an output neuron combine *their* answers. Three straight edges make a triangle. Twelve make something close to a circle (@fig-line-limit), and the log loss drops from {{< num ch06 toy_lr f2 >}} to {{< num ch06 toy_net12 f2 >}}. The layers in between are **hidden**, and a network with several of them is **deep**. That's all "deep" means.
 
-![The umbrella decision. Carrying always costs 1. Leaving it costs 4 times the chance of rain. The lines cross at 20%: above that, carry it.](/figures/ch05/umbrella.pdf){#fig-umbrella}
+One detail makes it work. A weighted sum of weighted sums is still a weighted sum, so each hidden neuron applies a bend before passing its answer on. The popular bend is almost embarrassingly simple: if the sum is negative, output zero; otherwise pass it through. It's called **ReLU**, and it's a hinge. Enough hinges, added together, can trace almost any curve.
 
-The two lines in @fig-umbrella cross where 4 × *P* = 1, which is *P* = 0.2. Above a 20% chance of rain, carry the umbrella. Below it, leave it at home. At 30%, you take it, even though it probably won't rain.
-
-That's the whole chapter, really. The rest is the same idea wearing work clothes.
-
-## One formula, two costs
-
-Replace the umbrella with any yes-or-no action. There are two ways to get it wrong:
-
-- a **false alarm**: you act, and you didn't need to (carried the umbrella; blocked a harmless login);
-- a **miss**: you don't act, and you should have (got soaked; let an attacker in).
-
-If a false alarm costs *C*~fa~ and a miss costs *C*~miss~, the cheapest thing to do, on average, is to act whenever
+Training works the same way as before, rolling downhill on log loss. The only new problem is finding the slope for a weight buried several layers deep, and the answer, **backpropagation**, is easiest to picture as blame [@rumelhart1986]. The error at the output is shared back through the network, each layer passing blame to the one before in proportion to how much each weight contributed.
 
 ::: {.keyidea}
-P > C~fa~ ÷ (C~fa~ + C~miss~)
+Weighted sums draw lines. Hinges bend them. Layers combine the bends.
 :::
 
-Check it with the umbrella: 1 ÷ (1 + 4) = 0.2. Exactly where the lines crossed.
+Here's why depth matters in practice. On photos, the first layers of a trained network learn to detect edges, later ones textures and shapes, the last ones whole objects [@lecun2015]. Nobody wrote a rule for "edge". A deep network takes raw input, pixels or characters, and *learns its own clues*.
 
-Now look at what happens when the two costs are equal. The formula gives 1 ÷ 2 = 0.5. *That's* where 0.5 comes from. It's the right threshold only when a false alarm and a miss hurt exactly the same amount, which is almost never true for anything worth building a model for.
+On Kestrel's neat, hand-made features, though, it has nothing to find. A small network ties logistic regression, log loss {{< num ch06 k_small.log_loss f3 >}} against {{< num ch06 k_lr.log_loss f3 >}}. A big one trained too long gets worse: {{< num ch06 k_big.log_loss f3 >}}.
 
-![The right threshold for any ratio between the cost of a miss and the cost of a false alarm (both axes on a log scale). Equal costs give 0.5. As misses get more expensive, the line drops fast.](/figures/ch05/threshold-ratio.pdf){#fig-threshold-ratio}
-
-@fig-threshold-ratio puts a few real decisions on one curve. Kestrel's decision in Chapter 21, whether an alert may close itself without any human looking at it, sits in the far bottom-right corner: a miss there is about 630 times worse than an analyst's twelve minutes, so the line drops to about {{< num ch05 soc_review_t f4 >}}. Different decision, different costs, different line.
-
-::: {.deeper}
-Where the formula comes from. For a single case with probability *P*, acting costs (1 − *P*) × *C*~fa~ on average (you pay only if it was harmless), and not acting costs *P* × *C*~miss~ (you pay only if it was real). Act when the first is smaller: (1 − *P*) *C*~fa~ < *P* *C*~miss~, which rearranges to *P* > *C*~fa~ / (*C*~fa~ + *C*~miss~). If getting it *right* also has costs or benefits (say, blocking a real threat earns some credit), the same logic works with a 2×2 table of costs, one for each combination of action and truth. This is the foundation of cost-sensitive learning [@elkan2001].
+::: {.keyidea}
+Deep networks earn their keep on raw, messy input. On neat features, start simple.
 :::
 
-## Does it work on real alerts?
+## Idea two: meaning as geometry
 
-A formula is nice. Evidence is better. Let's test it.
+A network does arithmetic, so every word has to become a number. Number the words, "invoice" is 101 and "bill" is 102, and the maths takes the numbers literally: "bill" becomes halfway between "invoice" and "lunch". Give every word its own slot instead, and every word is exactly as different from every other. Neither representation knows anything.
 
-Here's a decision Kestrel makes on every alert: **block it or allow it?** Block the sender, the connection or the sign-in, automatically. Wrongly blocking something harmless costs about \$200 in disrupted work: a stuck shipment, an angry customer, an engineer locked out. Letting a real threat through at this step costs about \$4,000, since other defences still have a chance to catch it later. Those are illustrative numbers, but plausible ones.
+The fix came from linguistics, decades before deep learning.
 
-The formula says block when *P* > 200 ÷ 4,200, which is about {{< num ch05 t_formula f3 >}}.
+::: {.bookquote by="J. R. Firth, A Synopsis of Linguistic Theory, 1957"}
+You shall know a word by the company it keeps!
+:::
+
+"phishing" and "spoofed" rarely appear in the same sentence. But they appear in the same *kinds* of places, next to "email", before "asked", near "password". Count, for every word, which words turn up near it, and squash those counts into a short list of numbers. Words used in similar ways end up with similar lists. That list is an **embedding**.
+
+![Word vectors learned from 30,000 synthetic analyst notes, with similar vectors placed close together. Each card is a family of words the method discovered on its own, from context alone: kinds of lure, kinds of malware, kinds of secret.](/figures/ch07/word-map.pdf){#fig-word-map}
+
+Nobody told the method that "trojan", "ransomware" and "backdoor" belong together. It found out (@fig-word-map). Closeness is measured by the angle between two word vectors, called **cosine similarity**: about 1 when they point the same way, about 0 when they're unrelated.
 
 ::: {.tryit lab="ch05"}
-Compare the formula with a brute-force search over 300 thresholds, using the calibrated logistic regression from Chapter 3 on the test alerts.
-
 ```{python}
-alerts = soc.load()
-train, calib, test = soc.split(alerts)
-F = lambda d: soc.feature_matrix(d).to_numpy()
-model = LogisticRegression(C=1e4, max_iter=5000).fit(
-    F(train), train.malicious)
-p, y = model.predict_proba(F(test))[:, 1], test.malicious.to_numpy()
-
-false_alarm, miss = 200, 4_000
-t = false_alarm / (false_alarm + miss)
-
-def total_cost(p, t):
-    block = p >= t
-    return ((block & (y == 0)).sum() * false_alarm
-            + (~block & (y == 1)).sum() * miss)
-
-grid = np.linspace(0.005, 0.9, 300)
-best = grid[np.argmin([total_cost(p, g) for g in grid])]
-print(f"brute force {best:.3f}: ${total_cost(p, best):,}")
-print(f"formula     {t:.3f}: ${total_cost(p, t):,}")
-print(f"0.5              : ${total_cost(p, 0.5):,}")
+vocab, vectors, counts = text.note_vectors()
+v = {w: vectors[vocab.index(w)] for w in vocab}
+cos = lambda a, b: v[a] @ v[b] / np.linalg.norm(v[a]) / np.linalg.norm(v[b])
+for a, b in [("invoice", "bill"), ("invoice", "trojan"),
+             ("phishing", "spoofed")]:
+    print(f"{a:>9} vs {b:<8} {cos(a, b):+.2f}")
 ```
 :::
 
-The formula lands close to the brute-force best, and the cost difference is small. The 0.5 line costs {{< num ch05 half_penalty f1 >}} times as much.
-
-![Total cost on the test alerts at every threshold. For the calibrated model (green), the formula's line sits near the bottom of the valley. For the same model trained on rebalanced data (red), the same line lands halfway up the wall.](/figures/ch05/cost-curve.pdf){#fig-cost-curve}
-
-And now the reason Chapter 4 came first. @fig-cost-curve also shows the rebalanced model from Chapter 4, which ranks alerts almost as well but whose probabilities are inflated. Put the formula's line on *its* numbers and the cost is {{< num ch05 bal_penalty pct >}} higher. Its own cheapest line is way out at about {{< num ch05 t_bal_best f2 >}}, and there's no formula that could have told you so. You'd have to find it by trial and error, and redo the search every time the costs change.
+The same trick works for whole alerts: similar alerts land near each other, which lets an analyst ask "show me past alerts like this one". It's also the engine inside RAG (Chapter 7). But it has a blind spot worth remembering. Finding Kestrel's 50 most similar past alerts by text and counting the attacks gives an honest probability, with a calibration error of {{< num ch07 knn.ece f3 >}}, and a blunt one: AUC {{< num ch07 knn.auc f2 >}}, against {{< num ch07 lr.auc f2 >}} for logistic regression on the fields. Two "large upload" alerts look identical to an embedding whether the threat-intel score is 0.05 or 0.95.
 
 ::: {.keyidea}
-With honest probabilities, costs set the line directly. Without them, you're guessing.
+Embeddings capture what things are about. They're poor at the exact numbers inside them.
 :::
 
-That's the practical payoff of calibration, in one sentence. It turns threshold-setting from an endless tuning exercise into a line of arithmetic you can explain to your finance team.
+## Idea three: words that look at each other
 
-## Precision, recall, and the price of each
+One vector per word still isn't enough. "invoice, not phishing" is an analyst clearing an alert; "phishing, not invoice" is an analyst raising one. Same three words. A model that only knows *which words appear* sees two identical notes.
 
-In Chapter 2, precision and recall looked like two scores. Now you can see them for what they are: two ends of the same rope.
+**Attention** fixes this, and the core idea fits in a sentence: every word asks which other words should change its meaning, and listens to them in proportion.
 
-![As the threshold moves up, precision (how many blocks were real) rises and recall (how many threats got blocked) falls. The grey line shows how much traffic you're blocking. The vertical line is the cost-based threshold.](/figures/ch05/pr-threshold.pdf){#fig-pr-threshold}
+![The word "phishing" asks a question (the query), compares it with each word's label (key), turns the matches into weights that sum to 1, and takes that mix of their contents (values). In the trained model, it looks almost entirely at "not".](/figures/ch08/qkv.pdf){#fig-qkv}
 
-At the cost-based line in @fig-pr-threshold, Kestrel blocks about {{< num ch05 blocked_frac pct >}} of alerts. That catches {{< num ch05 caught pct >}} of real threats, but only {{< num ch05 precision pct >}} of the blocks are real ones. That precision sounds poor. Is it?
+Each word makes three vectors from its own: a **query** ("what am I looking for?"), a **key** ("what can I tell you about?") and a **value** (what it passes on). Compare every query with every key, turn the scores into weights that add up to 1 with a **softmax**, and take the weighted mix of values (@fig-qkv). That's the Q, K and V from the scary diagrams.
 
-Only the costs can say. Each wrong block costs \$200; each missed threat \$4,000. So one missed threat is worth twenty wrong blocks. With these costs, a precision of about one in five is exactly right. Arguing about precision or recall on its own, without the costs, is arguing about half a sentence.
+```{python}
+def softmax(s):
+    e = np.exp(s - s.max(-1, keepdims=True))
+    return e / e.sum(-1, keepdims=True)
 
-::: {.threshold}
-Kestrel's sales team complains that blocked customer emails are costing deals, and argues a wrong block costs \$800, not \$200. Recompute the blocking line. Roughly what happens to the share of alerts blocked, and to recall?
+def self_attention(H, Wq, Wk, Wv):
+    Q, K, V = H @ Wq, H @ Wk, H @ Wv
+    weights = softmax(Q @ K.T / np.sqrt(K.shape[1]))
+    return weights @ V, weights
+```
 
-(800 ÷ 4,800 ≈ 0.17. The line moves up, fewer alerts get blocked and more threats get through. The model didn't change. The business's priorities did, and the threshold should follow them.)
+Train one attention layer on 4,000 tiny notes where "not" flips the meaning, and a bag of words tops out at {{< num ch08 acc_bow pct >}} while attention reaches {{< num ch08 acc_att pct >}}. Look inside, and you find what it learned.
+
+![What each word attends to after training. In "invoice not phishing", the word "phishing" puts nearly all its attention on "not". Nobody told the model about negation; it found that looking at the word before was the cheapest way to get the answers right.](/figures/ch08/heatmaps.pdf){#fig-heatmaps}
+
+"phishing" puts {{< num ch08 att_phishing_to_not pct >}} of its attention on "not" (@fig-heatmaps).
+
+A **transformer** is this idea repeated and polished: attention, then a small network on each word, stacked dozens of times [@vaswani2017]. It took over because attention looks at every pair of words *at once*, so it runs in parallel on graphics chips and can use enormous hardware. One more distinction matters for this book. A **reader** (encoder) lets every word see the whole input, which is what you want for understanding and deciding. A **writer** (decoder) lets each word see only the words before it, which is what you need for generating text, because when you're writing word five, word six doesn't exist yet. LLMs are writers.
+
+## Idea four: scale, and a side effect
+
+How did attention stacked up turn into something that writes essays? Mostly, it got bigger, trained on a task that needs no labels: take any text, hide the next word, and guess it. Every sentence ever written becomes free training data. To get good at the guessing, a model has to learn grammar, facts and a surprising amount of reasoning. This is **pretraining**, and researchers found its loss falls smoothly and predictably as models, data and computing power grow [@kaplan2020].
+
+::: {.bookquote by="Richard Sutton, The Bitter Lesson, 2019"}
+The biggest lesson that can be read from 70 years of AI research is that general methods that leverage computation are ultimately the most effective, and by a large margin.
 :::
 
-## "I don't know" is an action too
+Two more stages turn a text predictor into an assistant: **instruction tuning**, on examples of good answers, and **preference tuning**, where the model learns the answers people prefer [@ouyang2022]. People tend to prefer answers that sound sure. OpenAI's own report on GPT-4 showed the pretrained model's confidence was well calibrated and, after preference tuning, noticeably less so [@openai2023].
 
-So far every decision has been yes or no. But there's almost always a third option, and it's the most useful one: *don't decide; ask a person*.
+There's a deeper version of this effect, and you can watch it happen on Kestrel's alerts. Train a network much bigger than the job needs, for a long time, and check it on test alerts.
 
-The idea is old. In 1970 the engineer C. K. Chow showed that a recogniser allowed to reject its least certain cases could cut its error rate dramatically, and worked out the best trade-off [@chow1970]. Today it's called *selective prediction*, or classification with a reject option [@geifman2017].
+![The same training run, on test alerts. Accuracy (left) barely moves. Log loss (middle) and calibration error (right) are flat for a while, then climb steeply. Watch only accuracy and you'd never notice.](/figures/ch09/overtraining.pdf){#fig-overtraining}
 
-Here's how it looks at Kestrel. Sort the alerts by how confident the model is, surest first. Let the machine decide only the top slice, and send the rest to people. How low does the error rate go?
+Accuracy barely changed. Meanwhile the test log loss went from {{< num ch09 first.log_loss f2 >}} to {{< num ch09 last.log_loss f2 >}}, and the calibration error from {{< num ch09 first.ece f3 >}} to {{< num ch09 last.ece f3 >}} (@fig-overtraining). The model's *ranking* of alerts held up. Its *honesty* fell apart.
 
-![Coverage against risk. Reading from right to left: if the machine decides every alert, you take its full error rate. Let it decide only the alerts it's surest about and send the rest to people, and the error rate among its decisions falls steeply. A better model (green) gives you more coverage at the same risk.](/figures/ch05/coverage-risk.pdf){#fig-coverage-risk}
+The mechanism follows from Chapter 2. Once a model gets most training examples right, the only way left to lower log loss is to push correct answers closer to certainty: 0.95, then 0.99, then 0.999. A flexible model trained long enough becomes certain of everything it saw, including the noise, and carries that certainty onto new cases where it hasn't earned it. Deeper, wider modern networks show exactly this [@guo2017].
 
-Deciding every alert, the model gets {{< num ch05 risk_100 pct1 >}} wrong. Deciding only the surest 80%, just {{< num ch05 risk_80 pct1 >}} of its decisions are wrong. Deciding the surest half, {{< num ch05 risk_50 pct1 >}}.
+::: {.keyidea}
+Flexible models trained to squeeze out the last drop of training loss learn to be certain.
+:::
 
-That curve, from @fig-coverage-risk, is one of the most useful pictures you can show a manager. It turns "how good is the model?" into "how much of this work can we safely hand over, at what error rate?", which is the question they actually have.
-
-## Three doors
-
-Put the two ideas together, cost-based lines and "ask a person", and a shape appears that we'll use for the rest of the book.
-
-![The three doors. At one end the model is confident nothing's needed, so the machine handles it. At the other end it's confident something's badly wrong, so a person is pulled in immediately. In between, where it's unsure, a person looks when they can.](/figures/ch05/three-doors.pdf){#fig-three-doors}
-
-**Act** when the model is confident the machine can handle it alone. **Review** when it's unsure, so a person checks in the normal flow of work. **Escalate** when it's confident something important is wrong, so a person is pulled in right now.
-
-The two boundaries between the doors come from the same kind of cost arithmetic you've just done, with one extra line for each extra action. Chapter 21 does exactly that for Kestrel's SOC, and then does the part this chapter skips: what happens when you don't have enough people to staff the middle door.
+The fixes are ones you'll meet properly in the next part of the book, and they're simple. Stop training when the loss on held-out data stops improving; here that was around epoch {{< num ch09 best_epoch int >}}. And correct the probabilities afterwards on data the model never saw: a single "temperature" cut the calibration error from {{< num ch09 last.ece f3 >}} to {{< num ch09 ece_after_T f3 >}}. A correction can make the numbers honest again. It can't give back what the model threw away by memorising.
 
 ::: {.breaks}
-Costs are guesses, and guesses carry the same weight in the formula as facts. Two habits help. First, try your costs at half and double their value and see how much the line moves; if the answer barely changes, stop arguing about the exact number. Second, remember that costs often differ from case to case: a false alarm on the CEO's laptop isn't a false alarm on a test server. Per-case costs mean per-case thresholds, which is fine, as long as you write them down. And some costs aren't money at all: trust, fairness, safety and the law. Put those on the table explicitly, or someone else's defaults will decide them for you.
+Networks need lots of data, and with too little they memorise. They're hard to read: no tidy "×2.9 for a new country". Embeddings inherit the associations in their training text, including stereotypes [@bolukbasi2016], and they're bad at negation, since "malicious" and "not malicious" keep almost the same company. Attention maps are tempting to read as explanations; in large models they often aren't [@jain2019]. And you usually can't retrain someone else's big model, or even see its raw probabilities, which is one reason a decision model that returns probabilities as its main output, and gets tested, matters so much.
 :::
 
-::: {.bookquote by="Dwight D. Eisenhower, as quoted by Richard Nixon in Six Crises, 1962"}
-Plans are worthless, but planning is everything.
+::: {.threshold}
+Your team swaps Kestrel's logistic regression for a big network because its training loss is lower, and keeps the same line: alerts below P = 0.03 close automatically. Will more or fewer real threats be closed without a human?
+
+(More. The big network is overconfident: many alerts it pushes near zero aren't really that safe. The line assumed honest probabilities. Recalibrate first and re-check the line, or keep the simpler model.)
 :::
 
-The same goes for cost estimates. The numbers will be wrong. Writing them down, arguing about them and seeing what they imply is where the value is.
+## Where we are
 
-## The end of Part I
+A neuron could only draw straight lines, so we stacked neurons in layers and gave each a hinge. Words needed to become numbers with meaning, so we placed them by the company they keep. One vector per word couldn't tell "not phishing" from "phishing", so we let words look at each other, and attention learned negation on its own. Scaled up and trained to guess the next word, that machinery became the LLM, with a side effect: flexible models trained long enough become sure of themselves, and accuracy hides it.
 
-Step back and look at what you've built over five chapters.
-
-In Chapter 1 a machine learned exactly what we asked and was useless, because we asked for yes or no. So we asked for a chance instead, and had to learn what a chance means. That took us to a model that outputs one, and then to the uncomfortable discovery that its number might not be honest. Once we could check and fix that, the last step was the one this chapter took: letting costs, not habit, decide where the lines go, and leaving a door open for the cases a machine shouldn't decide alone.
-
-That's the foundation. Every system in the rest of the book, from deep networks to LLMs to Jev, gets judged by it.
+You don't need to remember every detail. You need the last one most of all.
 
 ::: {.exercises}
-1. A hospital test flags a serious but treatable condition. Treating someone who doesn't have it costs \$500 and some discomfort; missing someone who does costs \$50,000. What's the treatment threshold? What would you want to know about the test's calibration before trusting it?
-2. In the lab, halve and double both costs (together and separately). When does the threshold move, and when doesn't it? Why?
-3. Explain in two sentences why "0.5 is the neutral threshold" is wrong.
-4. Using the coverage–risk curve, how much of Kestrel's blocking decision could you automate if the business tolerates a 2% error rate among automated decisions? Where would the rest go?
-5. Pick a decision at your work or in your life with a natural third option ("ask someone", "wait a day", "get a second opinion"). Sketch its three doors and what would move each boundary.
+1. Why does a network with no hinges collapse to a single straight line, however many layers it has?
+2. In the lab, compare the cosine similarity of "upload" and "download". Why aren't they identical, even though they look like near-synonyms?
+3. In your own words, and without the letters Q, K or V, explain what attention does for "phishing" in "invoice not phishing".
+4. A vendor's classifier is "97% accurate" and returns a confidence with every prediction. You plan to act automatically above 0.9. What would you ask for before agreeing?
 :::
 
 ::: {.nexthook}
-Next, Part II: so far our models were handed neat features like a threat-intel score. What about raw pixels, raw words, raw logs? That's where deep learning comes in, and it starts with a single artificial neuron.
+Next: what does an LLM actually do when it writes? One token at a time, with a probability for every possible next piece, and that detail matters a great deal for decisions.
 :::

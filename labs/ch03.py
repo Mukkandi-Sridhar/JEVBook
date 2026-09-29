@@ -7,76 +7,78 @@
 # ---
 
 # %% [markdown]
-# # Lab 3 · Data, loss and gradient descent
+# # Lab 3 · Calibration: when 0.8 really means 80%
 #
-# *Decide, Don't Generate*, Chapter 3. You'll build logistic regression from scratch in NumPy,
-# train it by gradient descent, and check it on alerts it never saw. Synthetic data throughout.
+# *Decide, Don't Generate*, Chapter 3. Synthetic data throughout.
+#
+# 1. Build a reliability diagram by hand.
+# 2. Compute ECE and the Brier decomposition.
+# 3. Break calibration by rebalancing the training data.
+# 4. Fix it with Platt, temperature and isotonic, fitted on a separate calibration set.
+# 5. Check calibration per alert source.
+
 
 # %%
 import importlib.util, subprocess, sys
 if importlib.util.find_spec("jevkit") is None:
-    subprocess.run([sys.executable, "-m", "pip", "install", "-q", "typesafe-sdk==0.7.2",
+    subprocess.run([sys.executable, "-m", "pip", "install", "-q", "typesafe-sdk==0.7.2", "autograd",
                     "git+https://github.com/Mukkandi-Sridhar/JEVBook"], check=True)
 
 # %%
 import numpy as np
-from jevkit import soc
+import pandas as pd
+from sklearn.linear_model import LogisticRegression
+from jevkit import soc, calibration as cal
 
 alerts = soc.load()
-train, calib, test = soc.split(alerts)        # 60% / 20% / 20%
-X = soc.feature_matrix(train).to_numpy()
-Xt = soc.feature_matrix(test).to_numpy()
-y, yt = train.malicious.to_numpy(), test.malicious.to_numpy()
-print(X.shape, Xt.shape)
+train, calib, test = soc.split(alerts)
+F = lambda d: soc.feature_matrix(d).to_numpy()
+model = LogisticRegression(C=1e4, max_iter=5000).fit(F(train), train.malicious)
+p, y = model.predict_proba(F(test))[:, 1], test.malicious.to_numpy()
 
 # %% [markdown]
-# ## The model: add up evidence, squash with the S-curve
+# ## A reliability diagram, by hand
 
 # %%
-def sigmoid(z):
-    return 1 / (1 + np.exp(-z))
-
-def log_loss(p, y):
-    p = np.clip(p, 1e-12, 1 - 1e-12)
-    return -np.mean(y * np.log(p) + (1 - y) * np.log(1 - p))
-
-# put every feature on a similar scale so one step size suits them all
-mu, sd = X.mean(0), X.std(0) + 1e-9
-Xs, Xts = (X - mu) / sd, (Xt - mu) / sd
-
-# %% [markdown]
-# ## Gradient descent
+bins = np.linspace(0, 1, 11)
+which = np.clip(np.digitize(p, bins) - 1, 0, 9)
+table = pd.DataFrame({"bin": which, "p": p, "y": y}).groupby("bin").agg(
+    said=("p", "mean"), happened=("y", "mean"), n=("y", "size"))
+table.round(3)
 
 # %%
-w, b = np.zeros(X.shape[1]), 0.0
-for step in range(401):
-    p = sigmoid(Xs @ w + b)
-    w -= 0.5 * Xs.T @ (p - y) / len(y)     # the slope, for every weight at once
-    b -= 0.5 * np.mean(p - y)
-    if step % 100 == 0:
-        print(f"step {step:3d}  loss {log_loss(p, y):.4f}")
+print("ECE  ", round(cal.ece(p, y), 4))
+print(cal.brier_decomposition(p, y))
 
 # %% [markdown]
-# ## On alerts it never saw
+# ## Break it: train on 50/50 rebalanced data
 
 # %%
-pt = sigmoid(Xts @ w + b)
-print(f"test log loss   {log_loss(pt, yt):.4f}")
-print(f"truth log loss  {log_loss(test.p_true.to_numpy(), yt):.4f}   (the best possible)")
+pos = train[train.malicious == 1]
+neg = train[train.malicious == 0].sample(len(pos), random_state=0)
+balanced = pd.concat([pos, neg])
+model_b = LogisticRegression(C=1e4, max_iter=5000).fit(F(balanced), balanced.malicious)
+pb = model_b.predict_proba(F(test))[:, 1]
+print(f"average P: {pb.mean():.1%}   real attack rate: {y.mean():.1%}")
+print(cal.summary(pb, y))
 
 # %% [markdown]
-# **Try:** change the step size from 0.5 to 5 and to 0.01. What happens to the printed loss?
-#
-# **Try:** add a feature that leaks the answer, e.g. `Xs = np.c_[Xs, y]`. What happens to the training
-# loss? Why is that useless?
-
-# %% [markdown]
-# ## Overfitting: a model that memorises
+# ## Fix it, on the calibration set (never the test set)
 
 # %%
-from sklearn.tree import DecisionTreeClassifier
-for depth in (2, 4, 8, 16):
-    t = DecisionTreeClassifier(max_depth=depth, random_state=0).fit(X, y)
-    tr = log_loss(np.clip(t.predict_proba(X)[:, 1], 1e-3, 1 - 1e-3), y)
-    te = log_loss(np.clip(t.predict_proba(Xt)[:, 1], 1e-3, 1 - 1e-3), yt)
-    print(f"depth {depth:2d}: train {tr:.3f}  test {te:.3f}")
+pb_cal = model_b.predict_proba(F(calib))[:, 1]
+for name, fixer in [("Platt", cal.Platt()), ("Temperature", cal.Temperature()), ("Isotonic", cal.Isotonic())]:
+    fixer.fit(pb_cal, calib.malicious)
+    print(f"{name:>12}: ECE {cal.ece(fixer(pb), y):.4f}   log loss {cal.log_loss(fixer(pb), y):.4f}")
+
+# %% [markdown]
+# **Question:** why can't temperature scaling fix this model? (Hint: what does a temperature do to P = 0.5?)
+
+# %% [markdown]
+# ## Calibration per source
+
+# %%
+cols = [c for c in soc.feature_matrix(train).columns if not c.startswith("rule_")]
+generic = LogisticRegression(C=1e4, max_iter=5000).fit(soc.feature_matrix(train)[cols], train.malicious)
+pg = generic.predict_proba(soc.feature_matrix(test)[cols])[:, 1]
+pd.DataFrame({"source": test.source, "said": pg, "happened": y}).groupby("source").mean().round(3)

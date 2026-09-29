@@ -34,7 +34,7 @@ Q 2.88 21.6 2.88 25.92
 L 2.88 37.44 
 Q 2.88 41.76 7.2 41.76 
 z
-" clip-path="url(#pc0868ede52)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p58b2d38a53)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 7.2 63.36 
@@ -47,7 +47,7 @@ Q 2.88 43.2 2.88 47.52
 L 2.88 59.04 
 Q 2.88 63.36 7.2 63.36 
 z
-" clip-path="url(#pc0868ede52)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p58b2d38a53)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 7.2 84.96 
@@ -60,7 +60,7 @@ Q 2.88 64.8 2.88 69.12
 L 2.88 80.64 
 Q 2.88 84.96 7.2 84.96 
 z
-" clip-path="url(#pc0868ede52)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p58b2d38a53)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 7.2 106.56 
@@ -73,7 +73,7 @@ Q 2.88 86.4 2.88 90.72
 L 2.88 102.24 
 Q 2.88 106.56 7.2 106.56 
 z
-" clip-path="url(#pc0868ede52)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p58b2d38a53)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_6">
     <path d="M 7.2 128.16 
@@ -86,7 +86,7 @@ Q 2.88 108 2.88 112.32
 L 2.88 123.84 
 Q 2.88 128.16 7.2 128.16 
 z
-" clip-path="url(#pc0868ede52)" style="fill: #e4dcf4; stroke: #8468c9; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p58b2d38a53)" style="fill: #e4dcf4; stroke: #8468c9; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_7">
     <path d="M 7.2 149.76 
@@ -99,7 +99,7 @@ Q 2.88 129.6 2.88 133.92
 L 2.88 145.44 
 Q 2.88 149.76 7.2 149.76 
 z
-" clip-path="url(#pc0868ede52)" style="fill: #e4dcf4; stroke: #8468c9; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p58b2d38a53)" style="fill: #e4dcf4; stroke: #8468c9; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_8">
     <path d="M 7.2 191.52 
@@ -112,7 +112,7 @@ Q 2.88 171.36 2.88 175.68
 L 2.88 187.2 
 Q 2.88 191.52 7.2 191.52 
 z
-" clip-path="url(#pc0868ede52)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p58b2d38a53)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_9">
     <path d="M 7.2 213.12 
@@ -125,7 +125,7 @@ Q 2.88 192.96 2.88 197.28
 L 2.88 208.8 
 Q 2.88 213.12 7.2 213.12 
 z
-" clip-path="url(#pc0868ede52)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p58b2d38a53)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #3b9c6e" x="2.88" y="13.845" transform="rotate(-0 2.88 13.845)">MATTERS MORE</text>
@@ -184,7 +184,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="pc0868ede52">
+  <clipPath id="p58b2d38a53">
    <rect x="2.88" y="2.88" width="338.4" height="208.8"/>
   </clipPath>
  </defs>

@@ -7,13 +7,14 @@
 # ---
 
 # %% [markdown]
-# # Lab 8 · Attention and transformers, visually
+# # Lab 8 · System 1 and System 2
 #
-# *Decide, Don't Generate*, Chapter 8.
+# *Decide, Don't Generate*, Chapter 8. Synthetic data and synthetic models.
 #
-# 1. Self-attention in 10 lines of NumPy.
-# 2. A task a bag of words can't solve: "invoice not phishing" vs "phishing not invoice".
-# 3. Train a one-layer attention model (NumPy + autograd) and look at what it attends to.
+# A fast System 1 (the mock decision model reading raw alert text) decides every alert.
+# The cases it is least sure about go to System 2, modelled here as a careful investigation that
+# learns the alert's true probability. How much of System 2's benefit do we get by sending only a few?
+
 
 # %%
 import importlib.util, subprocess, sys
@@ -23,52 +24,27 @@ if importlib.util.find_spec("jevkit") is None:
 
 # %%
 import numpy as np
+from jevkit import soc, calibration as cal
+from jevkit.batch import score_alerts
 
-def softmax(s):
-    s = s - s.max(-1, keepdims=True)
-    e = np.exp(s)
-    return e / e.sum(-1, keepdims=True)
+alerts = soc.load()
+alerts["p"] = score_alerts(alerts, "text")
+history, live = soc.history_and_live(alerts)
+system1 = cal.Platt().fit(history.p, history.malicious)(live.p)
+system2 = live.p_true.to_numpy()           # idealised careful investigation
+y = live.malicious.to_numpy()
 
-def self_attention(H, Wq, Wk, Wv):
-    Q, K, V = H @ Wq, H @ Wk, H @ Wv            # questions, labels, contents
-    weights = softmax(Q @ K.T / np.sqrt(K.shape[1]))
-    return weights @ V, weights                  # each word: a weighted mix of the values
+miss, false_alarm = 10_000, 400
+line = false_alarm / (false_alarm + miss)
+logit = lambda x: np.log(x / (1 - x))
+doubt_order = np.argsort(np.abs(logit(np.clip(system1, 1e-6, 1 - 1e-6)) - logit(line)))
 
-rng = np.random.default_rng(0)
-H = rng.normal(size=(3, 8))                      # three words, 8 numbers each
-out, w = self_attention(H, *(rng.normal(size=(8, 8)) for _ in range(3)))
-print(np.round(w, 2))                            # every row sums to 1
+def daily_cost(share):
+    k = int(share * len(y))
+    act = (system1 >= line).astype(int)
+    sent = doubt_order[:k]
+    act[sent] = (system2[sent] >= line).astype(int)
+    return (((act == 1) & (y == 0)).sum() * false_alarm + ((act == 0) & (y == 1)).sum() * miss) / 7
 
-# %% [markdown]
-# ## The toy task
-
-# %%
-from jevkit import attention as at
-X, y, notes = at.make_data(4000, 0)
-X_test, y_test, _ = at.make_data(1000, 1)
-for n, label in list(zip(notes, y))[:5]:
-    print(f"{' '.join(n):<40} threat={int(label)}")
-
-# %%
-from sklearn.linear_model import LogisticRegression
-def bag(M):
-    B = np.zeros((len(M), len(at.VOCAB)))
-    for i, row in enumerate(M):
-        for t in row:
-            B[i, t] += 1
-    return B[:, 1:]
-bow = LogisticRegression(max_iter=2000).fit(bag(X), y)
-print(f"bag of words accuracy: {bow.score(bag(X_test), y_test):.1%}")
-
-# %% [markdown]
-# ## Train one attention layer (about 20 seconds)
-
-# %%
-params = at.train(X, y, steps=4000, lr=0.01, seed=1)
-acc = ((at.forward(params, X_test) > 0.5) == y_test).mean()
-print(f"attention accuracy: {acc:.1%}")
-
-for words in (["invoice", "not", "phishing"], ["phishing", "not", "invoice"]):
-    p, A = at.forward(params, at.encode(words), return_attn=True)
-    print(words, "P(threat) =", round(float(p[0]), 3))
-    print(np.round(A[0, :3, :3], 2))
+for share in (0, 0.1, 0.2, 0.5, 1.0):
+    print(f"send {share:4.0%} to System 2: ${daily_cost(share):,.0f} a day")

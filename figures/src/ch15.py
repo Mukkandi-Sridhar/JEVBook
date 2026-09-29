@@ -1,4 +1,4 @@
-"""Figures for Chapter 15: System 1 and System 2."""
+"""Figures for Chapter 8: System 1 and System 2."""
 
 from functools import lru_cache
 

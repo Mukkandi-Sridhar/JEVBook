@@ -1,7 +1,7 @@
-# The decision layer
+# Building
 
 ::: {.partintro}
-A model is not a system. Between a probability and an action sits a decision layer: the comparisons you ran, the lines you drew, the patterns you chose.
+Time to build. First calls through the official SDK, a hybrid agent where Jev decides and an LLM writes, a full SOC triage case study and a gallery of other applications.
 
-This part puts six ways of deciding into one fair contest. It turns probabilities into act, review and escalate, and collects the patterns that keep turning up when decision models meet real software.
+Then you'll build a small System One model of your own, and finish with a decision service you could actually run on Monday.
 :::

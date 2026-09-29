@@ -7,11 +7,11 @@
 </head>
 <body>
 <main>
-<nav><a href="index.html">Companion widgets</a> · Chapters 16, 19 and 23</nav>
+<nav><a href="index.html">Companion widgets</a> · Chapters 9, 12 and 16</nav>
 <div class="kicker">What do decisions cost?</div>
 <h1>Decision cost calculator</h1>
 <span class="tag">Jev price vendor-reported · LLM price and speed are illustrative assumptions · change them all</span>
-<p>Enter your own volumes and prices. The calculator compares answering every decision with an LLM against answering it with a decision model, and shows which decisions are worth making at each price (Chapter 19).</p>
+<p>Enter your own volumes and prices. The calculator compares answering every decision with an LLM against answering it with a decision model, and shows which decisions are worth making at each price (Chapter 12).</p>
 
 <div class="card controls ui">
   <label>Decisions per day: <b id="nV"></b><input id="n" type="range" min="2" max="8" step="0.1" value="4"></label>
@@ -43,7 +43,7 @@ function update() {
     ["price ratio", (llm / jev).toFixed(0) + "×"], ["LLM time per decision", lat.toFixed(2) + " s"]]
     .map(([k, v]) => `<div class="stat"><div class="v">${v}</div><div class="k">${k}</div></div>`).join("");
   const w = (p, name) => val > p ? `worth making with ${name}` : `<span class="warn">not worth making with ${name}</span>`;
-  $("worth").innerHTML = `A decision worth ${money(val)} is ${w(jev, "the decision model")} (it costs ${money(jev)}) and ${w(llm, "the LLM")} (it costs ${money(llm)}). Chapter 19: when price falls below value, decisions nobody used to make start being made.`;
+  $("worth").innerHTML = `A decision worth ${money(val)} is ${w(jev, "the decision model")} (it costs ${money(jev)}) and ${w(llm, "the LLM")} (it costs ${money(llm)}). Chapter 12: when price falls below value, decisions nobody used to make start being made.`;
 }
 document.querySelectorAll("input").forEach(e => e.addEventListener("input", update));
 update();

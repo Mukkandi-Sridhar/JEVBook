@@ -1,4 +1,4 @@
-"""Figures for Chapter 8: Attention and transformers, visually."""
+"""Figures for Chapter 5: Attention and transformers, visually."""
 
 from functools import lru_cache
 

@@ -1,4 +1,4 @@
-"""Chapter 26: decision layers outside the SOC.
+"""Chapter 19: decision layers outside the SOC.
 
 `DOMAINS` is an *illustrative* table: volumes and costs are round, plausible assumptions chosen to show how the
 same arithmetic lands differently in different jobs. None is a measurement of any real organisation.
@@ -46,7 +46,7 @@ DOMAINS = [
 
 
 def line(d: Domain) -> float:
-    """Chapter 5's line: act as if it's a problem when P > cost_false / (cost_false + cost_miss)."""
+    """Chapter 4's line: act as if it's a problem when P > cost_false / (cost_false + cost_miss)."""
     return d.cost_false / (d.cost_false + d.cost_miss)
 
 

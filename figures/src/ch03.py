@@ -1,4 +1,4 @@
-"""Figures for Chapter 3: Data, loss and gradient descent."""
+"""Figures for Chapter 2: Data, loss and gradient descent."""
 
 from functools import lru_cache
 

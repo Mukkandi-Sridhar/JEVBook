@@ -7,16 +7,12 @@
 # ---
 
 # %% [markdown]
-# # Lab 19 · The Jevons paradox of decisions
+# # Lab 19 · An applications gallery
 #
-# *Decide, Don't Generate*, Chapter 19.
-#
-# 1. Play with the constant-elasticity model: when does a price cut raise total spend?
-# 2. Explore Kestrel's illustrative "day of decisions" at LLM and Jev prices.
-# 3. See how review load grows under a fixed-share rule, and why a cost line doesn't.
-#
-# Everything in `jevkit.econ` is an **illustrative model**: every value is a stated assumption, not a measurement.
-# Jev's price and latency are vendor-reported. The LLM figures are this book's illustrative assumptions.
+# *Decide, Don't Generate*, Chapter 19. The domain table (`jevkit.gallery.DOMAINS`) is illustrative: every volume
+# and cost is an assumption. The support-ticket demo uses synthetic tickets and `jev-mock-synthetic`, whose general
+# engine is a simple word-matcher. **Synthetic, not measured on real Jev.**
+
 
 # %%
 import importlib.util, subprocess, sys
@@ -25,54 +21,45 @@ if importlib.util.find_spec("jevkit") is None:
                     "git+https://github.com/Mukkandi-Sridhar/JEVBook"], check=True)
 
 # %% [markdown]
-# ## 1. Elasticity: spend = price x quantity
+# ## 1. The same line formula, six jobs
 
 # %%
-from jevkit import econ
+from jevkit import gallery
 
-for e in (0.5, 1.0, 1.5):
-    print(f"elasticity {e}: a 100x price cut changes total spend by x{econ.elastic_spend(0.01, e):.2f}")
+for d in gallery.DOMAINS:
+    who = "person decides" if d.human_final else "model decides"
+    print(f"{d.name:>20}: flag above P = {gallery.line(d):.2%}   ({who}; needs '{d.none_option}')")
 
 # %% [markdown]
-# ## 2. A day of decisions at Kestrel (illustrative)
+# ## 2. Support tickets: route, and measure before trusting
 
 # %%
-for p in econ.POOLS:
-    print(f"{p.name:>22}: {p.per_day:>9,} a day, typical value ${p.median_value:g}, budget {p.budget_s:g} s")
+import numpy as np
+from typesafe_sdk import Choice, Noul, TypeSafeClient
+from jevkit import MockJevTransport, calibration as cal
 
-# %%
-worlds = {"LLM": econ.day(econ.LLM_PRICE, econ.LLM_LATENCY),
-          "Jev (fast end)": econ.day(econ.JEV_PRICE, econ.JEV_LATENCY[0]),
-          "Jev (slow end)": econ.day(econ.JEV_PRICE, econ.JEV_LATENCY[1])}
-for name, d in worlds.items():
-    print(f"{name:>15}: {d['decisions']:>10,} decisions, ${d['spend']:,.0f} spent, "
-          f"${d['value']:,.0f} of expected loss avoided")
-    print("                 ", {k: v for k, v in d["by_pool"].items()})
+client = TypeSafeClient(api_key="mock", transport=MockJevTransport())
+topic = Choice(instructions="Which team should handle this ticket?",
+               criteria={"billing": "Payments, refunds, invoices, charges",
+                         "technical": "Bugs, errors, crashes, the app not working",
+                         "account": "Login, password, access, profile", "other": None})
+urgent = Noul(instructions="Does this need a reply today?")
+
+tickets = gallery.tickets()
+top, conf, p_urgent = [], [], []
+for t in tickets:
+    r = client.system_one(state=t["text"], questions={"topic": topic, "urgent": urgent})
+    top.append(r.choices["topic"].choice)
+    conf.append(r.choices["topic"].confidence)
+    p_urgent.append(r.nouls["urgent"].noul)
+top, conf = np.array(top), np.array(conf)
+truth = np.array([t["topic"] for t in tickets])
+print(f"routed correctly: {(top == truth).mean():.0%}")
+for line in (0.6, 0.8):
+    m = conf >= line
+    print(f"route only when confidence >= {line}: {m.mean():.0%} routed, {(top == truth)[m].mean():.0%} right")
+print("urgency:", cal.summary(p_urgent, [t["urgent"] for t in tickets]))
 
 # %% [markdown]
-# ## 3. A new job appears
-#
-# Suppose cheap decisions make a new job possible: checking every file shared outside the company,
-# 5 million a day, each worth about $0.00003. `econ.NEW_JOB` describes it. Add it and watch the bill.
-
-# %%
-print(econ.NEW_JOB)
-for name, (price, lat) in {"LLM": (econ.LLM_PRICE, econ.LLM_LATENCY),
-                           "Jev": (econ.JEV_PRICE, econ.JEV_LATENCY[0])}.items():
-    before = econ.day(price, lat)
-    after = econ.day(price, lat, extra=(econ.NEW_JOB,))
-    print(f"{name}: {before['decisions']:,} -> {after['decisions']:,} decisions; "
-          f"${before['spend']:,.0f} -> ${after['spend']:,.0f} a day")
-
-# %% [markdown]
-# ## 4. Who reviews all this?
-
-# %%
-for name, (price, lat) in {"LLM": (econ.LLM_PRICE, econ.LLM_LATENCY),
-                           "Jev": (econ.JEV_PRICE, econ.JEV_LATENCY[0])}.items():
-    f = econ.flags(price, lat)
-    print(f"{name}: {f['decided']:,} reviewable decisions -> top 0.1% sends {f['top_share']:,}, "
-          f"cost line sends {f['cost_line']:,} (capacity 240)")
-
-# %% [markdown]
-# **Try:** change a pool's `median_value` or `budget_s` and re-run. Which assumption moves the answer most?
+# **Try:** rewrite the `account` description so that login problems stop landing in `technical`.
+# Does accuracy on `account` tickets improve? What happened to `technical`?

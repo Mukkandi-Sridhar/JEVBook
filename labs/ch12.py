@@ -7,13 +7,17 @@
 # ---
 
 # %% [markdown]
-# # Lab 12 · RAG and memory
+# # Lab 12 · The Jevons paradox of decisions
 #
-# *Decide, Don't Generate*, Chapter 12. Kestrel's knowledge base is synthetic.
+# *Decide, Don't Generate*, Chapter 12.
 #
-# 1. Chunk a small knowledge base and retrieve passages for a question.
-# 2. Measure retrieval: does the answer land in the top k?
-# 3. Decide when to say "I don't know".
+# 1. Play with the constant-elasticity model: when does a price cut raise total spend?
+# 2. Explore Kestrel's illustrative "day of decisions" at LLM and Jev prices.
+# 3. See how review load grows under a fixed-share rule, and why a cost line doesn't.
+#
+# Everything in `jevkit.econ` is an **illustrative model**: every value is a stated assumption, not a measurement.
+# Jev's price and latency are vendor-reported. The LLM figures are this book's illustrative assumptions.
+
 
 # %%
 import importlib.util, subprocess, sys
@@ -21,47 +25,55 @@ if importlib.util.find_spec("jevkit") is None:
     subprocess.run([sys.executable, "-m", "pip", "install", "-q", "typesafe-sdk==0.7.2", "autograd",
                     "git+https://github.com/Mukkandi-Sridhar/JEVBook"], check=True)
 
-# %%
-import numpy as np
-from jevkit import kb
+# %% [markdown]
+# ## 1. Elasticity: spend = price x quantity
 
-chunks = kb.corpus(size_words=30)          # policies + runbooks, plus 300 old alerts as distractors
-texts = [t for _, t in chunks]
-retriever = kb.Retriever(texts, mode="char")
-for score, text in retriever.search("Is svc-backup supposed to upload data at night?", k=3):
-    print(f"{score:.2f}  {text[:90]}")
+# %%
+from jevkit import econ
+
+for e in (0.5, 1.0, 1.5):
+    print(f"elasticity {e}: a 100x price cut changes total spend by x{econ.elastic_spend(0.01, e):.2f}")
 
 # %% [markdown]
-# ## Building the prompt
+# ## 2. A day of decisions at Kestrel (illustrative)
 
 # %%
-question = "A user clicked a phishing link. What are the first steps?"
-hits = retriever.search(question, k=3)
-prompt = "Answer using ONLY the passages below. If they don't contain the answer, say you don't know.\n\n"
-prompt += "\n".join(f"[{i + 1}] {t}" for i, (_, t) in enumerate(hits))
-prompt += f"\n\nQuestion: {question}"
-print(prompt)
+for p in econ.POOLS:
+    print(f"{p.name:>22}: {p.per_day:>9,} a day, typical value ${p.median_value:g}, budget {p.budget_s:g} s")
+
+# %%
+worlds = {"LLM": econ.day(econ.LLM_PRICE, econ.LLM_LATENCY),
+          "Jev (fast end)": econ.day(econ.JEV_PRICE, econ.JEV_LATENCY[0]),
+          "Jev (slow end)": econ.day(econ.JEV_PRICE, econ.JEV_LATENCY[1])}
+for name, d in worlds.items():
+    print(f"{name:>15}: {d['decisions']:>10,} decisions, ${d['spend']:,.0f} spent, "
+          f"${d['value']:,.0f} of expected loss avoided")
+    print("                 ", {k: v for k, v in d["by_pool"].items()})
 
 # %% [markdown]
-# ## How good is retrieval?
+# ## 3. A new job appears
+#
+# Suppose cheap decisions make a new job possible: checking every file shared outside the company,
+# 5 million a day, each worth about $0.00003. `econ.NEW_JOB` describes it. Add it and watch the bill.
 
 # %%
-def recall_at_k(mode, k):
-    r = kb.Retriever(texts, mode)
-    S = r.scores([q for _, q in kb.QUESTIONS])
-    hits = [any(kb.ANSWER_KEY[q] in texts[j] for j in np.argsort(-S[i])[:k])
-            for i, (_, q) in enumerate(kb.QUESTIONS)]
-    return np.mean(hits)
-
-for mode in ("word", "char", "hybrid"):
-    print(mode, [round(recall_at_k(mode, k), 2) for k in (1, 3, 5)])
+print(econ.NEW_JOB)
+for name, (price, lat) in {"LLM": (econ.LLM_PRICE, econ.LLM_LATENCY),
+                           "Jev": (econ.JEV_PRICE, econ.JEV_LATENCY[0])}.items():
+    before = econ.day(price, lat)
+    after = econ.day(price, lat, extra=(econ.NEW_JOB,))
+    print(f"{name}: {before['decisions']:,} -> {after['decisions']:,} decisions; "
+          f"${before['spend']:,.0f} -> ${after['spend']:,.0f} a day")
 
 # %% [markdown]
-# ## When to say "I don't know"
+# ## 4. Who reviews all this?
 
 # %%
-best_answerable = retriever.scores([q for _, q in kb.QUESTIONS]).max(1)
-best_unanswerable = retriever.scores(kb.UNANSWERABLE).max(1)
-for t in (0.2, 0.25, 0.3, 0.35):
-    print(f"threshold {t}: answers {np.mean(best_answerable >= t):.0%} of answerable, "
-          f"{np.mean(best_unanswerable >= t):.0%} of unanswerable")
+for name, (price, lat) in {"LLM": (econ.LLM_PRICE, econ.LLM_LATENCY),
+                           "Jev": (econ.JEV_PRICE, econ.JEV_LATENCY[0])}.items():
+    f = econ.flags(price, lat)
+    print(f"{name}: {f['decided']:,} reviewable decisions -> top 0.1% sends {f['top_share']:,}, "
+          f"cost line sends {f['cost_line']:,} (capacity 240)")
+
+# %% [markdown]
+# **Try:** change a pool's `median_value` or `budget_s` and re-run. Which assumption moves the answer most?

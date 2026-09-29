@@ -1,4 +1,4 @@
-"""A small SOC triage agent that runs an Observe -> Decide -> Act loop (Chapter 13 onward).
+"""A small SOC triage agent that runs an Observe -> Decide -> Act loop (Chapter 7 onward).
 
 Every step is recorded with its kind:
     observe   - a tool that reads something (the alert, threat intel, host history, a policy)

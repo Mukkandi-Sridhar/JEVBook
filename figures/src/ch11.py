@@ -1,4 +1,4 @@
-"""Figures for Chapter 11: Structured outputs and JSON mode."""
+"""Figures for Chapter 6: Structured outputs and JSON mode."""
 
 import json
 from functools import lru_cache

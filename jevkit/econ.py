@@ -1,4 +1,4 @@
-"""The economics of cheap decisions (Chapter 19).
+"""The economics of cheap decisions (Chapter 12).
 
 A deliberately simple, *illustrative* model of the decisions Kestrel could make in a day. Every number here
 is an assumption chosen to be plausible, stated in the open, and easy to change. None is a measurement.
@@ -94,7 +94,7 @@ def elastic_spend(price_ratio, elasticity: float):
     return np.asarray(price_ratio, float) ** (1 - elasticity)
 
 
-# An illustrative "decision audit" of one agent task (Chapter 29), reused by its lab.
+# An illustrative "decision audit" of one agent task (Chapter 22), reused by its lab.
 TASK = [("read the ticket", "observe", 1), ("which tool next?", "decide", 4), ("is this enough?", "decide", 3),
         ("fetch records", "observe", 3), ("is this safe to do?", "decide", 1), ("do it", "act", 1),
         ("write the reply", "generate", 1)]

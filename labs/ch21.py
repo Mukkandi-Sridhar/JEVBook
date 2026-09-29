@@ -7,118 +7,72 @@
 # ---
 
 # %% [markdown]
-# # Lab 21 · Act, review, or escalate
+# # Lab 21 · Capstone: a production decision service
 #
-# *Decide, Don't Generate*, Chapter 21.
-#
-# You will turn P(threat) from the mock Jev into a three-zone policy for the Kestrel Logistics SOC:
-#
-# 1. see what a single line at 0.5 does,
-# 2. derive thresholds from costs,
-# 3. check calibration before trusting any threshold,
-# 4. respect the capacity of real people,
-# 5. log every decision and fail safe,
-# 6. watch a phishing campaign break last month's calibration.
-#
-# All numbers are synthetic: not measured on real Jev.
+# *Decide, Don't Generate*, Chapter 21. `jevkit.service` in action: a versioned config, the decision record, the
+# fail-safe, the daily monitor and shadow comparison. Jev answers come from `jev-mock-synthetic`. **Synthetic.**
+
 
 # %%
 import importlib.util, subprocess, sys
 if importlib.util.find_spec("jevkit") is None:
-    subprocess.run([sys.executable, "-m", "pip", "install", "-q", "typesafe-sdk==0.7.2",
+    subprocess.run([sys.executable, "-m", "pip", "install", "-q", "typesafe-sdk==0.7.2", "autograd",
                     "git+https://github.com/Mukkandi-Sridhar/JEVBook"], check=True)
 
 # %%
-from jevkit import soc, policy as pol, calibration as cal
+import json, os, tempfile
+import numpy as np
+from typesafe_sdk import RetryPolicy, TypeSafeClient
+from jevkit import soc, service as S, MockJevTransport
 from jevkit.batch import score_alerts
 
 alerts = soc.load()
-alerts["p"] = score_alerts(alerts)          # every alert asked through the SDK + mock
+alerts["p"] = score_alerts(alerts)
 history, live = soc.history_and_live(alerts)
-print(len(history), "alerts of history,", len(live), "in the live week")
 
 # %% [markdown]
-# ## 1. One line at 0.5
+# ## 1. Fit a config, look at its fingerprint
 
 # %%
-one_line = pol.ThreeZonePolicy(low=0.5, high=0.5)
-r = pol.evaluate(one_line, live.p, live.malicious)
-print(f"auto-closed per day: {r['act'] / 7:.0f}")
-print(f"real threats among them per day: {r['missed_by_automation'] / 7:.1f}")
+cfg = S.fit_config(history, version="triage-2026.10.2")
+print(cfg)
+print("fingerprint:", cfg.fingerprint())
 
 # %% [markdown]
-# ## 2. Let the costs draw the lines
+# ## 2. Decide, and read the record
 
 # %%
-costs = pol.Costs(auto_close_miss=10_000, review_minutes=12, analyst_per_hour=75,
-                  review_miss_rate=0.05, escalate_false_alarm=400)
-low, high = pol.cost_optimal_thresholds(costs)
-print(f"act below {low:.4f}; escalate at {high:.2f} and above")
+log = os.path.join(tempfile.mkdtemp(), "decisions.jsonl")
+client = TypeSafeClient(api_key="mock", transport=MockJevTransport(), retry=RetryPolicy(max_retries=0))
+svc = S.DecisionService(cfg, client, log_path=log)
+rec = svc.decide(live.iloc[118])
+print(json.dumps(json.loads(rec.model_dump_json()), indent=1))
 
 # %% [markdown]
-# ## 3. Is the number honest? Recalibrate on history.
+# ## 3. Make it fail on purpose
 
 # %%
-platt = cal.Platt().fit(history.p, history.malicious)
-history["pc"] = platt(history.p)
-live["pc"] = platt(live.p)
-for name, col in (("raw", "p"), ("calibrated", "pc")):
-    m = live[col] < 0.02
-    print(f"{name:>10}: says {live[col][m].mean():.2%}, really {live.malicious[m].mean():.2%}")
+broken = TypeSafeClient(api_key="mock", transport=MockJevTransport(fail_rate=0.3, seed=1),
+                        retry=RetryPolicy(max_retries=0))
+svc_b = S.DecisionService(cfg, broken)
+recs = [svc_b.decide(a) for _, a in live.iloc[:200].iterrows()]
+print(S.daily_report(recs))
 
 # %% [markdown]
-# ## 4. Respect capacity
+# ## 4. One day's monitor, with labels from what people saw
 
 # %%
-per_day = len(history) / 21
-policy = pol.best_policy_with_capacity(history.pc, history.malicious,
-                                       max_review_rate=240 / per_day,
-                                       max_escalate_rate=40 / per_day, costs=costs)
-r = pol.evaluate(policy, live.pc, live.malicious, costs)
-print(policy)
-for k in ("act", "review", "escalate", "missed_by_automation", "false_pages"):
-    print(f"{k:>22}: {r[k] / 7:6.1f} per day")
+t = live.timestamp.astype("datetime64[ns]")
+day = live[t < t.min() + np.timedelta64(1, "D")]
+recs = [svc.decide(a) for _, a in day.iterrows()]
+labels = {r.alert_id: int(m) for r, m in zip(recs, day.malicious) if r.zone != "act" or r.audit}
+print(S.daily_report(recs, labels))
 
 # %% [markdown]
-# **Try:** change 240 to 320 (eight analysts). How many fewer threats are auto-closed per day?
-
-# %% [markdown]
-# ## 5. Log every decision, and fail safe
+# ## 5. Shadow a candidate version
 
 # %%
-import hashlib, json
-from typesafe_sdk import Noul, RetryPolicy, TypeSafeClient, TypeSafeError
-from jevkit import MockJevTransport
-
-flaky = TypeSafeClient(api_key="mock", transport=MockJevTransport(fail_every=3),
-                       retry=RetryPolicy(max_retries=0))
-
-def decide(alert, client):
-    state = alert.description
-    try:
-        r = client.system_one(state=state, questions={
-            "attack": Noul(instructions="Is this alert a real attack?")})
-        p = r.nouls["attack"].noul
-        pc = float(platt([p])[0])
-        action, model = policy.decide(pc), r.model
-    except TypeSafeError as err:
-        p = pc = None
-        action, model = "review", f"unavailable ({type(err).__name__})"
-    return {"alert_id": alert.alert_id,
-            "state_sha": hashlib.sha256(state.encode()).hexdigest()[:12],
-            "model": model, "p": p, "p_calibrated": pc,
-            "policy": f"v3 low={policy.low:.4f} high={policy.high:.2f}",
-            "action": action}
-
-for i in range(3):
-    print(json.dumps(decide(live.iloc[i], flaky)))
-
-# %% [markdown]
-# ## 6. A phishing campaign
-
-# %%
-week5 = soc.campaign_week()
-week5["pc"] = platt(score_alerts(week5))
-print(f"model expected {week5.pc.mean():.1%} threats; reality was {week5.malicious.mean():.1%}")
-z = policy.decide_many(week5.pc)
-print(f"reviews per day: {(z == 'review').sum() / 7:.0f} (capacity 240)")
+old = S.fit_config(history, version="triage-2026.10.1", account_for_rules=False)
+svc_old = S.DecisionService(old, client)
+current = [svc_old.decide(a) for _, a in day.iterrows()]
+print(S.shadow_compare(current, recs))

@@ -64,21 +64,21 @@ def night_fig():
 def paths():
     f, ax = draw.canvas("text", 2.4)
     parts = [p[0] for p in PARTS]
-    names = ["Probability", "Deep learning", "LLMs & agents", "Jev in depth", "Decision layer", "Building", "What now"]
-    w = 0.62
+    names = ["Probability\n& decisions", "Networks,\nLLMs, agents", "Jev in\ndepth", "Decision\nlayer", "Building", "What\nnow"]
+    w = 0.72
     for i, (r, nm) in enumerate(zip(parts, names)):
         x = i * (w + 0.06)
-        draw.box(ax, x, 1.75, w, 0.45, f"{r}\n{nm}", kind="neutral", size=5.4)
-    routes = [("New to machine learning", [0, 1, 2, 3, 4, 5, 6], C["data"], 1.35),
-              ("Engineer who knows LLMs", [0, 3, 4, 5, 6], C["jev"], 0.95),
-              ("Leader or product manager", [0, 3, 4, 6], C["llm"], 0.55)]
+        draw.box(ax, x, 1.7, w, 0.55, f"{r}\n{nm}", kind="neutral", size=5.4)
+    routes = [("New to machine learning", [0, 1, 2, 3, 4, 5], C["data"], 1.35),
+              ("Engineer who knows LLMs", [0, 2, 3, 4, 5], C["jev"], 0.95),
+              ("Leader or product manager", [0, 2, 3, 5], C["llm"], 0.55)]
     for lab, stops, col, y in routes:
         draw.text(ax, 0.0, y + 0.17, lab, size=6.0, weight="semibold", color=col)
         xs = [s * (w + 0.06) + w / 2 for s in stops]
         ax.plot(xs, [y] * len(xs), color=col, lw=1.4)
         for x in xs:
             draw.dot(ax, x, y, r=0.045, color=col)
-    draw.text(ax, 0.0, 0.12, "Part I is the foundation for every route: probabilities, calibration and costs.",
+    draw.text(ax, 0.0, 0.12, "Part I is the foundation for every route: probabilities, calibration and costs. Part II is optional if you know it.",
               size=5.9, color=C["ink2"], style="italic")
     return f
 

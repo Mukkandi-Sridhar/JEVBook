@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="488.385563pt" height="254.382744pt" viewBox="0 0 488.385563 254.382744" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="487.341844pt" height="254.382744pt" viewBox="0 0 487.341844 254.382744" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
@@ -16,8 +16,8 @@
  <g id="figure_1">
   <g id="patch_1">
    <path d="M 0 254.382744 
-L 488.385563 254.382744 
-L 488.385563 0 
+L 487.341844 254.382744 
+L 487.341844 0 
 L 0 0 
 z
 " style="fill: #ffffff"/>
@@ -29,7 +29,7 @@ L 429.84 77.335781
 L 429.84 47.095781 
 L 2.88 47.095781 
 z
-" clip-path="url(#p620060bc1d)" style="fill: #f1f2f4"/>
+" clip-path="url(#p9b1b4305a6)" style="fill: #f1f2f4"/>
    </g>
    <g id="patch_3">
     <path d="M 2.88 137.815781 
@@ -37,7 +37,7 @@ L 429.84 137.815781
 L 429.84 107.575781 
 L 2.88 107.575781 
 z
-" clip-path="url(#p620060bc1d)" style="fill: #f1f2f4"/>
+" clip-path="url(#p9b1b4305a6)" style="fill: #f1f2f4"/>
    </g>
    <g id="patch_4">
     <path d="M 2.88 198.295781 
@@ -45,7 +45,7 @@ L 429.84 198.295781
 L 429.84 168.055781 
 L 2.88 168.055781 
 z
-" clip-path="url(#p620060bc1d)" style="fill: #f1f2f4"/>
+" clip-path="url(#p9b1b4305a6)" style="fill: #f1f2f4"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(103.741438 24.781461)">ranking</text>
@@ -243,7 +243,7 @@ z
     <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="408.78" y="215.093172" transform="rotate(-0 408.78 215.093172)">no</text>
    </g>
    <g id="text_63">
-    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="6.48" y="248.902781" transform="rotate(-0 6.48 248.902781)">Bold: best in column.  † vendor-reported.  * reasons written after the fact may not be how the verdict was reached (Chapter 11).  Classic costs: compute only (assumption).  LLM: illustrative.</text>
+    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="6.48" y="248.902781" transform="rotate(-0 6.48 248.902781)">Bold: best in column.  † vendor-reported.  * reasons written after the fact may not be how the verdict was reached (Chapter 6).  Classic costs: compute only (assumption).  LLM: illustrative.</text>
    </g>
   </g>
   <g id="text_64">
@@ -264,7 +264,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p620060bc1d">
+  <clipPath id="p9b1b4305a6">
    <rect x="2.88" y="9.655781" width="428.4" height="241.2"/>
   </clipPath>
  </defs>

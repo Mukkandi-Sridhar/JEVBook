@@ -150,13 +150,14 @@
 \newcommand{\boxlabel}[3]{{\sffamily\bfseries\fontsize{7}{9}\selectfont\color{#1}#2\hspace{0.45em}\addfontfeature{LetterSpace=10}#3}\par\vspace{3pt}}
 
 % ---------- The book's boxes ------------------------------------------------
-\newtcolorbox{tryit}[1][]{breakable, enhanced, colback=jevtint, colframe=jevtint, boxrule=0pt, arc=2pt,
+% Short boxes stay whole on one page; a split one loses its label on the second page.
+\newtcolorbox{tryit}[1][]{enhanced, colback=jevtint, colframe=jevtint, boxrule=0pt, arc=2pt,
   borderline west={2.2pt}{0pt}{jevgreen}, left=9pt, right=8pt, top=7pt, bottom=7pt, before skip=10pt, after skip=10pt,
   fontupper=\small, before upper={\boxlabel{jevgreen}{\icontryit}{TRY IT}}, #1}
-\newtcolorbox{breaks}[1][]{breakable, enhanced, colback=failtint, colframe=failtint, boxrule=0pt, arc=2pt,
+\newtcolorbox{breaks}[1][]{enhanced, colback=failtint, colframe=failtint, boxrule=0pt, arc=2pt,
   borderline west={2.2pt}{0pt}{failred}, left=9pt, right=8pt, top=7pt, bottom=7pt, before skip=10pt, after skip=10pt,
   fontupper=\small, before upper={\boxlabel{failred}{\iconbreaks}{WHERE THIS BREAKS}}, #1}
-\newtcolorbox{threshold}[1][]{breakable, enhanced, colback=zonetint, colframe=zonetint, boxrule=0pt, arc=2pt,
+\newtcolorbox{threshold}[1][]{enhanced, colback=zonetint, colframe=zonetint, boxrule=0pt, arc=2pt,
   borderline west={2.2pt}{0pt}{zonereview}, left=9pt, right=8pt, top=7pt, bottom=7pt, before skip=10pt, after skip=10pt,
   fontupper=\small, before upper={\boxlabel{zonereview}{\iconthreshold}{SET THE THRESHOLD}}, #1}
 \newtcolorbox{deeper}[1][]{breakable, enhanced, colback=neutraltint, colframe=neutraltint, boxrule=0pt, arc=2pt,
@@ -170,7 +171,7 @@
   fontupper=\sffamily\footnotesize, #1}
 
 % Key idea: a reveal line with a green rule
-\newtcolorbox{keyidea}[1][]{enhanced, breakable, colback=white, colframe=white, boxrule=0pt, arc=0pt,
+\newtcolorbox{keyidea}[1][]{enhanced, colback=white, colframe=white, boxrule=0pt, arc=0pt,
   borderline west={3pt}{0pt}{jevgreen}, left=10pt, right=0pt, top=2pt, bottom=2pt, before skip=10pt, after skip=10pt,
   fontupper=\sffamily\bfseries\fontsize{11}{15}\selectfont\color{ink}\raggedright, #1}
 
@@ -242,3 +243,14 @@
 % Index of terms: two columns, small type
 \usepackage{multicol}
 \newenvironment{indexlist}{\par\begin{multicols}{2}\small\raggedright\setlength{\parskip}{2pt}}{\end{multicols}\par}
+
+% Chapter epigraph: a short quotation set right under the chapter title
+\newenvironment{chapterepigraph}[1]{\par\vspace{-2pt}\begin{flushright}\begin{minipage}{0.72\linewidth}\raggedleft
+  \itshape\fontsize{9.8}{13.5}\selectfont\color{ink2}\def\epiattrib{#1}}%
+  {\par\vspace{3pt}\upshape\sffamily\fontsize{7.2}{9}\selectfont\color{muted}\textemdash\ \epiattrib\end{minipage}\end{flushright}\par\vspace{8pt}}
+
+% Chapters and parts may open on either page: no blank pages before them (print length matters).
+\KOMAoptions{open=any}
+\makeatletter\@openrightfalse\makeatother
+% Quarto puts a \cleardoublepage before the appendix; with open=any it should only start a new page.
+\let\cleardoublepage\clearpage

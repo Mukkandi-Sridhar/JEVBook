@@ -1,4 +1,4 @@
-"""Figures for Chapter 24: A hybrid agent: Jev decides, the LLM reasons."""
+"""Figures for Chapter 17: A hybrid agent: Jev decides, the LLM reasons."""
 
 import json
 from collections import Counter
@@ -91,7 +91,7 @@ def architecture():
     draw.arrow(ax, (1.9, 1.55), (1.9, 1.25))
     draw.zone_bar(ax, 3.0, 0.85, 1.6, 0.3, 0.03, 0.34, size=5.4, ticks=False)
     draw.arrow(ax, (2.65, 1.0), (3.0, 1.0))
-    draw.text(ax, 3.8, 1.25, "policy (Chapter 21)", size=5.6, ha="center", color=C["ink2"])
+    draw.text(ax, 3.8, 1.25, "policy (Chapter 14)", size=5.6, ha="center", color=C["ink2"])
     draw.box(ax, 3.0, 0.05, 1.6, 0.5, "LLM writes the case note\nor the page message", kind="llm", size=5.8)
     draw.arrow(ax, (3.85, 0.85), (3.85, 0.55), head=3)
     draw.text(ax, 0.0, 0.3, "Jev decides.\nThe LLM writes,\nonly for people.", size=6.4, weight="semibold",

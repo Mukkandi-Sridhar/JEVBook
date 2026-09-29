@@ -1,4 +1,4 @@
-"""Figures for Chapter 29: What changes now."""
+"""Figures for Chapter 22: What changes now."""
 
 import json
 
@@ -81,9 +81,9 @@ def skills():
 @figure(CH, "unknowns")
 def unknowns():
     f, ax = draw.canvas("text", 2.4)
-    items = [("Does Jev’s calibration hold on data like yours?", "Chapter 18 tells you how to find out."),
+    items = [("Does Jev’s calibration hold on data like yours?", "Chapter 11 tells you how to find out."),
              ("How fast do System One models improve, and do they drift between versions?", "Pin versions; re-test."),
-             ("Will prices stay this low?", "Early-access prices change. Chapter 19’s model shows what depends on it."),
+             ("Will prices stay this low?", "Early-access prices change. Chapter 12’s model shows what depends on it."),
              ("Who else builds decision models?", "The interface pattern outlives any one vendor."),
              ("How will rules on automated decisions evolve?", "Keep people deciding where stakes are high.")]
     for i, (q, a) in enumerate(items):
@@ -98,8 +98,8 @@ def unknowns():
 def monday():
     f, ax = draw.canvas("text", 2.3)
     phases = [("WEEK 1", "Audit", "List every decision your system makes. Count them. Mark which are small, typed and frequent."),
-              ("WEEKS 2–4", "Measure", "Pick one. Get a few hundred labels. Test ranking and calibration: Chapters 4, 18, 20."),
-              ("MONTH 2", "Shadow", "Put costs on mistakes, draw lines, run in shadow: Chapters 5, 21, 28."),
+              ("WEEKS 2–4", "Measure", "Pick one. Get a few hundred labels. Test ranking and calibration: Chapters 3, 11 and 13."),
+              ("MONTH 2", "Shadow", "Put costs on mistakes, draw lines, run in shadow: Chapters 4, 14 and 21."),
               ("MONTH 3", "Switch, and watch", "Switch on with a fail-safe, an audit and a daily monitor. Then the next decision.")]
     w = 1.12
     for i, (when, what, detail) in enumerate(phases):

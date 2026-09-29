@@ -1,314 +1,154 @@
-# Act, review, or escalate {#sec-ch21}
+# Capstone: a production decision service {#sec-ch21}
+
+::: {.epigraph by="A saying among site reliability engineers"}
+Hope is not a strategy. [[VERIFY]]
+:::
 
 ```{python}
 #| include: false
-from jevkit import soc, policy as pol, calibration as cal
+import json
+import numpy as np
+from typesafe_sdk import RetryPolicy, TypeSafeClient
+from jevkit import soc, service as S, MockJevTransport
 from jevkit.batch import score_alerts
+alerts = soc.load()
+alerts["p"] = score_alerts(alerts)
+history, live = soc.history_and_live(alerts)
 ```
 
-It's 2:14 a.m. at Kestrel Logistics.
+There's a moment in every project when the notebook works and someone asks, "Great. Can we run it on Monday?"
 
-An alert comes in. The model looks at it and says 0.37.
+That question is harder than anything in the notebook. A model that decides well on a laptop is not a service. A service has to answer at three in the morning when the API is slow, has to explain itself to an auditor a year later, and has to tell someone when the world has changed under it. And when you improve it, it has to change safely.
 
-You've spent a good part of this book earning that number. You know it's a probability, you know how to check whether it's honest, and you know how it compares with what an LLM or a logistic regression would have said.
-
-And now someone in the SOC is standing behind you asking the only question that matters at 2:14 a.m.:
-
-*"So... what do we do with it?"*
-
-Close it? Put it in the queue for the morning? Wake someone up?
-
-This chapter is about that moment: the step from a number to an action. It's the least glamorous part of any AI system, and it's where most of the money is won or lost.
+This chapter builds that service, in miniature, from the pieces of the whole book. It's under two hundred lines of Python, in `jevkit/service.py`. You could read it in one sitting, and I'd encourage you to.
 
 ::: {.goals}
-- Explain why a single cut-off at 0.5 is almost always the wrong policy.
-- Split decisions into three zones (act, review, escalate) and say what each zone *means* in a real team.
-- Derive the zone boundaries from what mistakes cost, then adjust them for how many people you actually have.
-- Check calibration before trusting any threshold, and fix it when it's off.
-- Run the policy in production: decision logs, fail-safes, audits, and drift.
+- Put everything that changes a decision into one versioned config, and stamp every decision with it.
+- Design a decision record that answers "why?" a year later.
+- Give every failure a decided meaning, and test it by making calls fail.
+- Monitor a decision service with a handful of numbers that raise flags a person reads.
+- Try a new version in shadow before it touches anything.
 :::
 
-## The obvious answer
+## The shape of the service
 
-The obvious answer is the one every tutorial gives you. If the probability is above 0.5, treat it as a threat. Below 0.5, it's fine.
+![The decision service. Each alert's trusted fields go to Jev as three typed questions; the answer is calibrated, and the policy, business rules and capacity turn it into a zone. Every decision is recorded before it is returned. Any failure falls back to review. A daily monitor reads the log, and a candidate version can run in shadow beside the current one.](/figures/ch28/architecture.pdf){#fig-architecture-21}
 
-Let's try it on a real week. We'll use the first three weeks of Kestrel's alerts as history and treat the fourth week as "live", the way you would if you were switching this on for real.
+Read @fig-architecture-21 left to right, and you'll recognise every box. The state is built from trusted fields only, never the alert's free text, because Chapter 7 showed what a planted sentence can do. The three typed questions are Chapter 10's. The calibration is Chapter 11's. The policy, with its capacity, is Chapter 14's. The rest is what turns a pipeline into a service.
+
+## One config, one fingerprint
+
+Here's the first rule. *Everything that can change a decision lives in one place, with a version.*
+
+That means the model name, the calibration numbers, the two lines and every business rule, such as "never auto-close a critical asset". They all live in one small config object, and every decision the service makes is stamped with that config's version and a fingerprint of its contents.
 
 ::: {.tryit lab="ch21"}
 ```{python}
-alerts = soc.load()
-alerts["p"] = score_alerts(alerts)   # asks jev-mock-synthetic
-history, live = soc.history_and_live(alerts)
-
-one_line = pol.ThreeZonePolicy(low=0.5, high=0.5)
-r = pol.evaluate(one_line, live.p, live.malicious)
-print(f"auto-closed per day:       {r['act'] / 7:.0f}")
-print(f"  of which real threats:   {r['missed_by_automation'] / 7:.1f}")
-print(f"escalated per day:         {r['escalate'] / 7:.0f}")
+cfg = S.fit_config(history, version="triage-2026.10.2")
+print(cfg.version, cfg.fingerprint())
+print(f"lines: {cfg.low:.3f} / {cfg.high:.2f}")
 ```
 :::
 
-About {{< num ch21 naive.act int >}} alerts a day close themselves, which sounds wonderful until you read the next line. Every day, roughly {{< num ch21 naive.missed_by_automation int >}} of them were real threats: genuine phishing, genuine malware, a genuine stranger with someone's password. The machine closed them on its own and nobody ever looked.
+Why so strict? Because the question you'll be asked most often, months later, is "why did it do *that*?" If the answer depends on which calibration was live that week, you need to know which one was.
 
-Why does 0.5 do so badly?
+## The decision record
 
-Because 0.5 quietly assumes two things that aren't true here. It assumes a missed threat and a false alarm cost the same, which you already know from Chapter 5 is absurd for a SOC. And it assumes there are only two things you can do with an alert.
+Every call to the service returns, and logs, a record like this one.
 
-There are three.
+![One decision record, with notes on why each field is there. Together they say what the service saw, what the model said, what the policy did, which version decided, and why.](/figures/ch28/record.pdf){#fig-record}
 
-## Three doors
+```{python}
+client = TypeSafeClient(api_key="mock", transport=MockJevTransport(),
+                        retry=RetryPolicy(max_retries=0))
+svc = S.DecisionService(cfg, client)
+rec = svc.decide(live.iloc[118])
+print(rec.zone, "|", rec.reason, "|", rec.config_version)
+```
 
-Walk around a real SOC and you'll see that every alert leaves through one of three doors.
+Jev gives no reasons, only probabilities. Some early critics saw that as a problem for audits [[VERIFY]], and Chapter 14 answered it: audit the *policy*, not the model. The record in @fig-record is how. It holds the raw and calibrated probabilities, the lines they were compared with, the rule that fired and the version that decided. That's a complete, checkable explanation of every action, even though the model itself explains nothing.
 
-The first door is the one nobody sees. The alert is closed, or handled by an automated playbook, and no human ever reads it. Most alerts should leave this way, because most alerts are noise.
+[[AUTHOR STORY: a time someone asked you to explain an automated decision long after it was made, and what you wished you had logged]]
 
-The second door leads to the queue. An analyst picks the alert up, pulls the logs, maybe messages the user, and makes the call. It costs about twelve minutes of a skilled person's time.
+## The dry run that found a bug
 
-The third door is the loud one. Someone's phone rings. An on-call responder drops what they're doing, at 2:14 a.m. if necessary, because this one can't wait.
+Before the service touched anything, I ran it across the live week in a dry run, logging its decisions without acting on them. The monitor raised a flag on the first day: the review queue was over capacity.
+
+It shouldn't have been. The lines had been chosen, as in Chapter 14, to fit a queue of 240 a day. But after they were fitted, someone had added a sensible business rule: never auto-close an alert on a critical asset. Every alert that rule moved from "act" to "review" was extra work the lines hadn't budgeted for.
+
+![Alerts sent to review each day of the live week, before and after the fix. Fitted without the critical-asset rule, the lines let the queue run over capacity every day. Fitted with it, the low line rises slightly and the queue fits.](/figures/ch28/dry-run.pdf){#fig-dry-run}
+
+The fix was to fit the lines *with* the rule in place, so the model's share of the queue shrinks to leave room for it. The low line moved from {{< num ch28 v1_low f3 >}} to {{< num ch28 v2_low f3 >}}, and the average queue went from about {{< num ch28 v1_mean_reviews int >}} to {{< num ch28 v2_mean_reviews int >}} a day (@fig-dry-run).
+
+It's a small bug, and it's the most common kind: two reasonable changes, each tested alone, that don't fit together. It's also why the config holds the rules *and* the lines. They're one decision, and they have to be fitted together.
+
+## When the call fails
+
+The API will fail sometimes. Chapter 16 said to decide in advance what a failure *means*, and the service makes that a config setting: `fallback="review"`.
+
+![What happens to real threats when 10% of calls fail, under two fallbacks. Sending failures to review puts them in front of a person. Treating a failure as "act" would have closed them unseen, and nothing would have looked wrong.](/figures/ch28/failsafe.pdf){#fig-failsafe}
+
+To test it, I made 10% of calls fail. With the fallback set to review, the {{< num ch28 fallback_threats int >}} real threats among the failed calls went to a person. With it set to "act", the same {{< num ch28 fallback_act_closed int >}} would have been closed unseen, and every other number on the dashboard would have looked normal (@fig-failsafe). The monitor watches the fallback rate for exactly that reason: a failure you don't count is a failure you don't see.
 
 ::: {.keyidea}
-Act, review, escalate. Machines take the easy ends; people take the middle.
+Every failure needs a decided meaning, and the safe meaning is the one that puts a person in front of the case.
 :::
 
-In this book, **act** means the system handles the case by itself, **review** means a person checks it in the normal course of work, and **escalate** means a person is pulled in right now. The names are general on purpose. In customer support, act might be an automatic reply, review a human agent, escalate a supervisor. In content moderation, it might be auto-approve, human review, and legal.
+## The monitor
 
-![420 alerts from the live week, placed by how likely the (calibrated) model thinks they are to be real threats. Note the log scale: most alerts are crowded at the far left, where the model is confident they're harmless. The red dots, real threats, gather to the right, but not all of them.](/figures/ch21/zones-strip.pdf){#fig-zones-strip}
+The service writes every record to a log. Once a day, a small report reads the log and checks a handful of numbers against expected ranges: the share of alerts in each zone, the review queue against capacity, the fallback rate, and, for alerts a person has seen, the share predicted real against the share confirmed real.
 
-Look at @fig-zones-strip for a moment, because it holds the whole problem. The grey dots pile up on the left: the easy harmless alerts. The red dots lean right. But there are red dots scattered through the middle and even a few in the far-left crowd, and grey dots sitting in the escalate zone. No placement of two lines makes every dot land in the right zone. Our job is to place the lines so the *mistakes we can't avoid* are the cheap ones.
+![Two weeks of the daily monitor: the live week, then the phishing campaign. Top: the review queue, red on days a flag was raised. Bottom: for alerts people saw, the share the model predicted to be real against the share they confirmed. The campaign opens a gap on its first day.](/figures/ch28/monitor.pdf){#fig-monitor}
 
-[[AUTHOR STORY: the police FIR agent, and how you decided which complaints an officer had to read before anything else happened]]
+The live week raised no flags at all. That matters as much as what comes next: a monitor that cries wolf gets ignored, which is why the queue check allows a tenth over capacity before it complains.
 
-## Let the costs draw the lines
+On the first day of the campaign week, two flags went up: the queue was well over capacity, and the alerts people saw were real far more often than predicted (@fig-monitor). That second flag is the one I'd most want in any decision service. It says, in plain numbers, "the probabilities have stopped being honest", which is what Chapter 11 taught you to test for and Chapter 18 showed you how to fix.
 
-So where do the lines go? Not where they look nice. Where the money says.
+A flag is only useful if someone reads it. The last item on the checklist below is a named owner, with the authority to switch the service to "review everything" while they find out what happened.
 
-For every action, we can write down what it costs *on average*, given the probability *P* that the alert is real. Here are Kestrel's numbers. They're my estimates for a company this size, not industry figures, and the method matters far more than the exact values.
+## Changing it safely
 
-- **Act** (auto-close). If the alert was real, we've let a threat through. Other defences catch much of what slips past, so the *expected* loss per missed threat is about \$10,000. Expected cost: *P* × \$10,000.
-- **Review.** Twelve minutes of an analyst at \$75 an hour is \$15. Analysts are human and miss about one threat in twenty. Expected cost: \$15 + *P* × 5% × \$10,000.
-- **Escalate** (page on-call). If the alert was harmless, we've woken someone up for nothing. Call it \$400. Expected cost: (1 − *P*) × \$400.
+The service will improve. New calibration, new lines, a new model version. Each change is a new config, and a new config runs in **shadow** first: it decides every alert alongside the current version, logs what it would have done, and touches nothing.
 
-Now draw all three as lines against *P* and, at every value of *P*, pick the cheapest one.
+![A week of the candidate version in shadow beside the current one, in alerts per day. They agree on most alerts. The candidate would move about 29 alerts a day from review to auto-close, the gold cell, and that's the cell to look at before switching.](/figures/ch28/shadow.pdf){#fig-shadow-21}
 
-![Expected cost of each action as the probability of a real threat rises (both axes on a log scale). Acting is cheapest when P is tiny, escalating when P is large, and review wins everywhere in between. The two crossing points are the thresholds.](/figures/ch21/cost-lines.pdf){#fig-cost-lines}
+The candidate here is the fixed config from the dry run. It agreed with the current version on {{< num ch28 shadow_agree pct >}} of alerts (@fig-shadow-21). The disagreements all go one way: about {{< num ch28 shadow_review_to_act_day f1 >}} alerts a day that the current version queues and the candidate would close. Among those, about {{< num ch28 shadow_moved_threats_day f1 >}} a day were real threats.
 
-The lines in @fig-cost-lines cross in exactly two places, and those two crossings are your thresholds. You can find them with a pencil. Acting beats reviewing when *P* × 10,000 < 15 + *P* × 500, which works out to *P* below about 0.0016. Escalating beats reviewing when *P* rises above about 0.43.
+That's not a bug. It's the price of fitting the queue, and the shadow run puts a number on it before anyone pays it. Someone can now decide, with that number in front of them, whether to switch, hire, or accept a queue that runs over.
 
-```{python}
-costs = pol.Costs(auto_close_miss=10_000, review_minutes=12,
-                  analyst_per_hour=75, review_miss_rate=0.05,
-                  escalate_false_alarm=400)
-low, high = pol.cost_optimal_thresholds(costs)
-print(f"act below {low:.4f}; escalate at {high:.2f} and above")
-```
+## The checklist
 
-That first number deserves a second look. It says: only let the machine close an alert on its own if it's more than 99.8% sure the alert is harmless. When a miss costs 650 times more than a review, that's what "cheap mistakes only" means.
+![Eight things a decision service needs before it runs on Monday.](/figures/ch28/checklist.pdf){#fig-checklist}
 
-::: {.threshold}
-Suppose Kestrel invests in better endpoint protection, and the expected loss from a missed threat falls from \$10,000 to \$2,000. Recompute the *act* line using the same formula: 15 ÷ (2,000 × 0.95). Does it move up or down? By roughly how much? What happens to the number of alerts the machine can close alone?
-
-(It moves up, to about 0.008, five times higher, so far more alerts can safely close themselves. Cheaper misses buy you more automation.)
-:::
-
-## Before you trust a line, check the number under it
-
-There's a catch hiding in @fig-cost-lines, and it's the catch this whole book has been building towards.
-
-The cost lines are drawn as if *P* means exactly what it says. As if, among all the alerts the model scores at 0.001, one in a thousand really is a threat. If the model is overconfident, and says 0.001 when the truth is 0.003, then your "cheapest action" is quietly not the cheapest at all, and the machine is closing threats you never agreed to close.
-
-So before we move a single line, we check. We take the history weeks, where we know how every alert turned out, and ask the question from Chapter 4: when the model says *x*, does *x* happen?
-
-```{python}
-platt = cal.Platt().fit(history.p, history.malicious)
-history["pc"] = platt(history.p)
-live["pc"] = platt(live.p)
-
-for name, col in (("raw", "p"), ("calibrated", "pc")):
-    m = live[col] < 0.02
-    print(f"{name:>10}: says {live[col][m].mean():.2%}, "
-          f"really {live.malicious[m].mean():.2%}")
-```
-
-Here's the uncomfortable result. Among live alerts the raw model called "under 2% likely", it claimed an average of about {{< num ch21 raw_believed pct1 >}}. The real rate was {{< num ch21 raw_actual pct1 >}}. Its "almost certainly harmless" alerts were about {{< num ch21 raw_ratio f1 >}} times riskier than it said.
-
-That's not a bug I planted for drama. The mock is built to be slightly overconfident at the extremes (see `DECISIONS.md`), because that's how most real models behave, as Chapter 9 explained. Whether *real* Jev behaves this way on *your* data is exactly the kind of thing you should never assume and always measure. Chapter 18 shows how.
-
-![Zoomed in on the low end, where the ACT zone lives. Raw scores (red) sit above the diagonal: the model was more confident than reality justified. After Platt scaling fitted on other days (green), the curve hugs the diagonal much more closely.](/figures/ch21/calibration-zones.pdf){#fig-calibration-zones}
-
-After Platt scaling, fitted only on the three history weeks, the picture improves (@fig-calibration-zones). It isn't perfect. It's much closer. And that's the honest version of the rule:
-
-::: {.keyidea}
-Never put a threshold on a probability you haven't checked against recent outcomes.
-:::
-
-From here on, every line we draw is on the *calibrated* scale.
-
-## Then reality walks in: the queue
-
-We have cost-optimal thresholds and calibrated probabilities. Let's switch it on.
-
-Under the pure-cost policy, the live week sends about {{< num ch21 ideal.review int >}} alerts a day to review. At twelve minutes each, that's the full working day of about {{< num ch21 ideal_reviews_analysts int >}} analysts.
-
-Kestrel has {{< num ch21 analysts int >}}. Each can clear about 40 alerts in a shift, so the queue can take {{< num ch21 capacity int >}} a day. The on-call responders can absorb about {{< num ch21 pages_cap int >}} pages a day before the pages themselves become the problem.
-
-A policy that ignores capacity isn't a policy. It's a wish. Anything beyond {{< num ch21 capacity int >}} simply doesn't get looked at, in some order nobody chose.
-
-So we ask a better question: *among all the policies that fit the team we actually have, which is cheapest?* That search is quick, because for any escalation line the best review line is the one that fills the queue exactly and no more.
-
-```{python}
-per_day = len(history) / 21
-policy = pol.best_policy_with_capacity(
-    history.pc, history.malicious,
-    max_review_rate=240 / per_day,     # 6 analysts
-    max_escalate_rate=40 / per_day,    # on-call limit
-    costs=costs)
-
-r = pol.evaluate(policy, live.pc, live.malicious, costs)
-print(f"act below {policy.low:.3f}, escalate at {policy.high:.2f}")
-for k in ("act", "review", "escalate", "missed_by_automation"):
-    print(f"{k:>22}: {r[k] / 7:6.1f} per day")
-```
-
-Fitted on history, checked on the live week. The machine now closes about {{< num ch21 chosen.act int >}} alerts a day by itself, the analysts get {{< num ch21 chosen.review int >}}, on-call gets {{< num ch21 chosen.escalate int >}} pages, and the number of real threats closed without a human falls from {{< num ch21 naive.missed_by_automation int >}} a day to about {{< num ch21 chosen.missed_by_automation f1 >}}.
-
-![Where the live week's real threats (left) and harmless alerts (right) end up each day, under one line at 0.5 and under the capacity-aware three-zone policy. The light segment on the left is the number that matters: threats closed with no human involved.](/figures/ch21/one-vs-three.pdf){#fig-one-vs-three}
-
-@fig-one-vs-three puts the two policies side by side. Notice what didn't change much: the number of harmless alerts the machine closes. Notice what did: the light purple bar on the threat side shrank from the biggest segment to the smallest.
-
-But about six a day is still not zero, and here's where I want you to stop thinking like a modeller and start thinking like the person who signs the budget.
-
-![Threats auto-closed per day, for every team size from 3 to 14 analysts, with thresholds re-fitted for each. The gap between the two curves is what better input is worth: the same model reading structured alert fields instead of raw alert text.](/figures/ch21/capacity.pdf){#fig-capacity}
-
-@fig-capacity is the most useful chart in this chapter. Every point on the green curve is a fully optimised policy; the only thing that changes is how many people are on the queue. Going from six analysts to eight cuts the threats closed without review from {{< num ch21 chosen.missed_by_automation f1 >}} a day to {{< num ch21 eight.missed_by_automation f1 >}}. With Kestrel's cost estimates, two extra salaries buy back roughly {{< num ch21 saved_money_per_day money >}} of expected loss a day. The model doesn't get to make that call, and neither do you on your own. But now it's a decision with a visible price instead of a hunch.
-
-The grey curve is worth a look too. It's the same mock, scoring the same alerts, but reading only the raw alert text instead of clean structured fields. At every team size it does worse. Better input buys you the same thing as more analysts. That's the idea behind the "LLM extracts, Jev decides" pattern in the next chapter.
-
-::: {.sidebar title="Why not just maximise accuracy?"}
-Because accuracy counts every mistake as one mistake. With 8% of alerts being real, a policy that closes everything is 92% accurate and catastrophic. Chapter 1 made the same mistake on purpose. Costs and capacity are what turn "a good model" into "a good decision".
-:::
-
-## When the answer has more than two options
-
-So far the model has answered one yes-or-no question. Real triage asks several at once, and Jev's typed questions make that cheap: in one call you can ask whether it's real (a `Noul`), what kind of threat it is (a `Choice`), and how severe (a `Score`).
-
-With several answers, the policy needs one more rule, and it's a rule people often forget.
-
-::: {.keyidea}
-Stakes override confidence.
-:::
-
-A model can be 99% sure an alert on the payroll database server is harmless. The 1% still lives on the payroll database server. So the policy looks at *what's at risk* as well as *how likely*:
-
-```{python}
-from typesafe_sdk import Choice, Noul, Score, TypeSafeClient
-from jevkit import MockJevTransport
-
-client = TypeSafeClient(api_key="mock",
-                        transport=MockJevTransport())
-alert = live.iloc[7]
-r = client.system_one(state=alert.description, questions={
-    "real": Noul(instructions="Is this alert a real attack?"),
-    "kind": Choice(criteria={c: None for c in soc.CATEGORIES}),
-    "severity": Score(criteria=soc.SEVERITY_LEVELS),
-})
-
-def route(p, severity, criticality):
-    if p >= policy.high or (p >= 0.1 and severity >= 2):
-        return "escalate"
-    if p < policy.low and criticality < 3:
-        return "act"
-    return "review"          # everything else gets a human
-
-p = float(platt([r.nouls["real"].noul])[0])
-print(alert.description[:70], "...")
-print(r.choices["kind"].choice, round(p, 3),
-      round(r.scores["severity"].score, 2),
-      "->", route(p, r.scores["severity"].score,
-                  alert.asset_criticality))
-```
-
-Two details in `route()` are worth copying. The *act* door has an extra lock: nothing on a critical asset closes itself, however confident the model is. And the final line sends everything that doesn't clearly qualify for the other doors to a human. When in doubt, review.
-
-The same shape works for any typed decision. For a `Choice` such as "which queue?", act on the top label only when its probability clears your line, and send the rest to review. That's the coverage-and-risk trade-off from Chapter 5, one label at a time.
-
-## Running it for real
-
-A policy that works in a notebook is maybe a third of the job. The rest is what happens on the day the model is down, the week the attackers change tactics, and the month an auditor asks why an alert was closed.
-
-![The decision loop in production. Every alert flows through the model, calibration and a versioned policy into one of three doors. Every decision is logged. Outcomes, including a random audit of alerts the machine closed on its own, come back as labels, and a weekly check decides whether calibration or thresholds need to move.](/figures/ch21/production-loop.pdf){#fig-production-loop}
-
-@fig-production-loop shows the loop. Four habits make it trustworthy.
-
-**Write the policy down as code, and version it.** Thresholds that live in someone's head change without anyone noticing. `policy v3: act below 0.031, escalate at 0.34, fitted on 1–21 September, six analysts` is something you can review, test and roll back.
-
-**Log every decision.** Jev returns probabilities, not reasons, and critics are right that this makes a single answer hard to explain. But you can make the *system* explainable. Record what the model saw, what it said, which policy version turned that into an action, and when. Then any decision can be replayed and questioned later.
-
-**Fail safe towards review, never towards act.** If the model times out, returns an error or is simply unavailable, the alert goes to a human. A decision system should never quietly close alerts because a dependency went down.
-
-```{python}
-import hashlib, json
-from typesafe_sdk import RetryPolicy, TypeSafeError
-
-flaky = TypeSafeClient(api_key="mock",
-                       transport=MockJevTransport(fail_every=3),
-                       retry=RetryPolicy(max_retries=0))
-
-def decide(alert, client):
-    try:
-        r = client.system_one(state=alert.description, questions={
-            "real": Noul(instructions="Is this a real attack?")})
-        p = float(platt([r.nouls["real"].noul])[0])
-        action, model = policy.decide(p), r.model
-    except TypeSafeError as err:
-        p, action, model = None, "review", type(err).__name__
-    return {"alert": alert.alert_id,
-            "state_sha": hashlib.sha256(
-                alert.description.encode()).hexdigest()[:10],
-            "model": model, "p": p and round(p, 4),
-            "policy": "v3", "action": action}
-
-for i in range(3):
-    print(json.dumps(decide(live.iloc[i], flaky)))
-```
-
-The mock transport here fails every third call on purpose. Look at the third record: no probability, the error type in the log, and the alert sent to review.
-
-**Audit the act zone, at random.** This is the habit teams most often skip, and it's the one that matters most.
-
-Every alert that goes to review or escalation comes back with an answer: an analyst decided. Alerts the machine closed come back with *nothing*. If you only learn from the alerts people looked at, you will never see the machine's own mistakes, and your calibration checks will slowly go blind in exactly the zone where they matter.
-
-So send a small random slice of auto-closed alerts, say 3%, to an analyst anyway. At Kestrel's volume that's about a dozen a day. It isn't free, and at a true miss rate around 1% you'll need a few weeks of audits before the estimate is tight. It's still the only honest window into the act zone.
+@fig-checklist is the list I'd want ticked before switching on any decision service, whatever model sits inside it. None of it is specific to Jev. All of it is specific to *deciding*: once a model's output closes a case, pages a person or blocks a login, every item on that list stops being good practice and becomes the job.
 
 ::: {.breaks}
-Thresholds are fitted to the past, and attackers live in the future. If an attacker learns what makes your model relax, for example alerts that look like approved IT tooling, they will shape their activity to land in the act zone. Random audits, never exposing scores outside the SOC, and rules that keep critical assets out of the act zone all make this harder. None make it impossible. The cost figures are guesses too. Revisit them when the business changes, not just when the model does.
+This is a teaching service. A real one needs things this chapter leaves out: authentication, rate limiting of its own callers, a durable log store rather than a file, access control on who can change the config, and data protection for the states it records, which may hold personal data. The monitor's bands were set by eye from one quiet week, so treat them as a starting point to tune. And shadow comparisons only show where versions *disagree*; if both are wrong in the same way, a shadow run can't tell you. Keep the random audit going.
 :::
 
-## The week it broke
+::: {.threshold}
+The candidate config in shadow would auto-close about 29 more alerts a day, about one of them a real threat, to keep the queue at capacity. A missed threat costs about \$10,000; an extra analyst costs about \$600 a day and clears 40 reviews. Should Kestrel switch to the candidate, or keep the current version and add capacity?
 
-Here's what drift looks like when it arrives.
-
-In week five, Kestrel is hit by a phishing campaign. Link alerts fire three times as often as usual, and far more of them are real. Nothing about any individual alert looks unusual. The model scores them just as it scored last month's.
-
-![Top: the share of alerts that were real threats each day (black) against what the calibrated model expected (green). Bottom: alerts sent to review each day against the team's capacity. In week five (shaded), reality pulls away from the model, and the queue overflows.](/figures/ch21/drift-watch.pdf){#fig-drift-watch}
-
-@fig-drift-watch shows two things going wrong at once. The model expected about {{< num ch21 campaign_pred pct >}} of alerts to be threats; the real figure was {{< num ch21 campaign_actual pct >}}. And the review queue climbed to about {{< num ch21 campaign_reviews_per_day int >}} a day against a capacity of {{< num ch21 capacity int >}}, so work that nobody chose to skip started getting skipped.
-
-Neither problem is visible from a single alert. Both are obvious on a daily chart. That's why the weekly check in @fig-production-loop tracks three numbers: the share of alerts in each zone, the queue against capacity, and predicted threats against confirmed ones. When they diverge, three responses are available, and a human should pick among them: refit calibration on the most recent week, temporarily move the act line down for the affected alert type, or add review capacity until the campaign passes.
-
-::: {.bookquote by="Richard Hamming, Numerical Methods for Scientists and Engineers, 1962"}
-The purpose of computing is insight, not numbers.
+(Switching saves the queue about 29 reviews a day and costs about one missed threat, around \$10,000 a day in expected loss. Adding one analyst, about \$600 a day, would absorb those reviews instead. Unless hiring is impossible, keep the current lines and add capacity. The shadow run turned that from a hunch into arithmetic.)
 :::
 
-For a decision layer, I'd put it slightly differently: the purpose of a probability is an action. Everything in this chapter is the machinery for getting from one to the other without fooling yourself along the way.
+::: {.bookquote by="Werner Vogels, Amazon CTO, widely quoted"}
+Everything fails, all the time.
+:::
+
+Vogels has said this in many talks [[VERIFY]]. A decision service is built around it. Calls fail, models drift, and campaigns arrive on a Tuesday. The service doesn't prevent any of that. It makes sure each failure has a decided meaning, leaves a record, and reaches a person who can act.
+
+## Where we are
+
+We built the service from the book's pieces. One versioned config held the model, calibration, lines and rules. Every decision left a record that explains it. A dry run caught a rule and a set of lines that didn't fit together, and fitting them together fixed it. A deliberate failure test showed why failures must fall back to review. A daily monitor kept quiet through a normal week and spoke up on the first day of a campaign. And a shadow run put a price on the next change before anyone paid it.
 
 ::: {.exercises}
-1. In the lab, rerun the capacity search for 4, 8 and 10 analysts. Plot threats auto-closed per day against team size. Where does the curve flatten out, and what does that suggest about where extra money is best spent?
-2. Change the false-page cost from \$400 to \$2,000. Recompute both cost-optimal thresholds by hand, then check your answer with `cost_optimal_thresholds`. Which line moved, and why only that one?
-3. The decision log in this chapter records a hash of the alert text rather than the text itself. Give one reason that's a good idea and one situation where you'd regret it.
-4. Your audit samples 3% of the act zone. After four weeks, analysts have found 11 real threats among 1,200 audited alerts. Estimate the true miss rate in the act zone, and say roughly how uncertain that estimate is. (Hint: this is a proportion, and Chapter 2's tools are enough.)
-5. Design an act/review/escalate policy for a problem outside security, such as refunds, insurance claims or content moderation. What does each door mean? Which mistake is expensive? What capacity limits the review door?
+1. In the lab, set `fallback="escalate"`. What happens to the pager on a day when 30% of calls fail? Which fallback would you choose, and why?
+2. Add a new check to `daily_report`: flag the day if the share of "none" answers from any choice question moves by more than ten points from last week (Chapter 17's lesson).
+3. Read a week of decision records and answer, from the log alone: which alert with P above 0.3 was auto-closed, and why?
+4. Write the one-paragraph runbook for the person who owns the flags: what they check first, and when they switch the service to review everything.
 :::
 
 ::: {.nexthook}
-Next: you now know how to turn one decision into an action. Chapter 22 shows the recurring shapes that decision layers take inside real systems, from "LLM extracts, Jev decides" to guardrails, judges and routers.
+Next: the last chapter. What changes when deciding becomes cheap, fast and honest, for the industry, and for you.
 :::

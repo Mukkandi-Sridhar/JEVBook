@@ -56,7 +56,7 @@ def strip_quotes(text: str) -> str:
     """Quotations are other people's words: never flag them."""
     out, inq = [], False
     for line in text.splitlines():
-        if line.startswith("::: {.bookquote"):
+        if line.startswith(("::: {.bookquote", "::: {.epigraph")):
             inq = True
             continue
         if inq and line.startswith(":::"):

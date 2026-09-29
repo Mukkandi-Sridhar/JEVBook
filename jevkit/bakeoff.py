@@ -1,4 +1,4 @@
-"""Chapter 20's bake-off: six ways to decide whether a Kestrel alert is a real threat.
+"""Chapter 13's bake-off: six ways to decide whether a Kestrel alert is a real threat.
 
 Every contestant is trained or tuned on the history weeks and scored on the live week. Jev answers come from
 `jev-mock-synthetic`, and the LLM is `jevkit.llm.MockLLM`, so every number here is synthetic.
@@ -15,7 +15,7 @@ import numpy as np
 from jevkit import calibration as cal, llm, soc
 from jevkit.batch import score_alerts
 
-REVIEWS_PER_DAY = 240          # Kestrel's review capacity (Chapter 21)
+REVIEWS_PER_DAY = 240          # Kestrel's review capacity (Chapter 14)
 
 METHODS = ["rules", "logistic", "text_clf", "llm_json", "llm_judge", "jev"]
 NAMES = {"rules": "Hand-written rules", "logistic": "Logistic regression",

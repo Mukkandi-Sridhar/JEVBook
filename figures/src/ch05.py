@@ -1,4 +1,4 @@
-"""Figures for Chapter 5: From probabilities to actions."""
+"""Figures for Chapter 4: From probabilities to actions."""
 
 from functools import lru_cache
 
@@ -224,7 +224,7 @@ def summary():
              body=(f"Decide only the confident cases and the error rate drops: {rr['risk_100']:.1%} deciding all, "
                    f"{rr['risk_80']:.1%} deciding the surest 80%.")),
         dict(num=6, title="Three doors", kind="review", h=1.5, draw=mini_zone, draw_h=0.4,
-             body="Act, review, escalate: machines at the easy ends, people in the middle. Chapter 21 runs it for real."),
+             body="Act, review, escalate: machines at the easy ends, people in the middle. Chapter 14 runs it for real."),
     ]
     return summary_page(CH, "From probabilities to actions", panels,
                         footer="Next, Part II: how do models learn from raw pixels and words?")

@@ -21,11 +21,12 @@
 # Everything here is synthetic. Kestrel Logistics does not exist, and no number in this notebook was measured
 # on real Jev.
 
+
 # %%
 # Setup: installs the book's toolkit when running on Colab. Does nothing if it's already installed.
 import importlib.util, subprocess, sys
 if importlib.util.find_spec("jevkit") is None:
-    subprocess.run([sys.executable, "-m", "pip", "install", "-q", "typesafe-sdk==0.7.2",
+    subprocess.run([sys.executable, "-m", "pip", "install", "-q", "typesafe-sdk==0.7.2", "autograd",
                     "git+https://github.com/Mukkandi-Sridhar/JEVBook"], check=True)
 
 # %% [markdown]
@@ -108,4 +109,4 @@ print("was it really an attack?", bool(alerts.malicious[99]))
 #
 # 1. Replace `ioc_score` with `prior_alerts_24h`. Which threshold wins now? Is it more useful?
 # 2. Change `mistakes` so that a missed attack counts ten times as much as a false alarm. Where does the best
-#    threshold move? (Chapter 5 explains why.)
+#    threshold move? (Chapter 4 explains why.)

@@ -1,4 +1,4 @@
-"""Figures for Chapter 20: The bake-off: six ways to make a decision."""
+"""Figures for Chapter 13: The bake-off: six ways to make a decision."""
 
 from functools import lru_cache
 
@@ -260,7 +260,7 @@ def scorecard():
             draw.text(ax, x0 + j * cw + cw / 2, y, v, size=5.7 if "\n" in v or len(v) > 9 else 6.2, ha="center",
                       weight="bold" if bold else "normal", color=C["jev"] if bold else C["ink"])
     draw.text(ax, 0.05, 0.05, "Bold: best in column.  † vendor-reported.  * reasons written after the fact may not be how "
-                              "the verdict was reached (Chapter 11).  Classic costs: compute only (assumption).  LLM: illustrative.", size=5.4,
+                              "the verdict was reached (Chapter 6).  Classic costs: compute only (assumption).  LLM: illustrative.", size=5.4,
               color=C["ink2"])
     synthetic_tag(f)
     return f

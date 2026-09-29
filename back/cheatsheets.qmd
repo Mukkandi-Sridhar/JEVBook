@@ -2,7 +2,7 @@
 
 Everything on these pages is explained properly in the chapter given in brackets. They're here for the day you need the formula and not the story.
 
-## Drawing the line (Chapter 5)
+## Drawing the line (Chapter 4)
 
 For a yes-or-no decision, act when the probability of a problem is above
 
@@ -12,7 +12,7 @@ $$
 
 A false alarm costing \$400 and a miss costing \$10,000 give $p^{*} = 400 / 10{,}400 \approx 0.04$.
 
-## Three zones (Chapter 21)
+## Three zones (Chapter 14)
 
 With a review that costs $C_r$ and catches all but a share $m$ of real problems, a miss $C_{\text{miss}}$ and a false page $C_{\text{page}}$, the cost-optimal lines for calibrated probabilities are
 
@@ -23,7 +23,7 @@ $$
 
 Then check the queue. If the review zone holds more cases than people can clear, raise the low line until it fits, and write down what that costs.
 
-## Measuring probabilities (Chapters 3, 4)
+## Measuring probabilities (Chapters 2 and 3)
 
 For predictions $p_i$ and outcomes $y_i \in \{0, 1\}$:
 
@@ -38,7 +38,7 @@ $$
 
 where each bin $b$ holds $n_b$ predictions with average $\bar p_b$ and observed rate $\bar y_b$. AUC measures ranking only: a model can have a perfect AUC and useless probabilities.
 
-## Fixing probabilities (Chapters 4, 18)
+## Fixing probabilities (Chapters 3 and 11)
 
 | Method | What it fits | Use when |
 |---|---|---|
@@ -49,7 +49,7 @@ where each bin $b$ holds $n_b$ predictions with average $\bar p_b$ and observed 
 
 Here $z = \log\frac{p}{1-p}$ and $\sigma$ is the S-curve.
 
-## Testing a model's calibration on your data (Chapter 18)
+## Testing a model's calibration on your data (Chapter 11)
 
 1. Collect labels for a random sample of real cases, not just the interesting ones.
 2. Measure ranking (AUC) and calibration (ECE, with a bootstrap range) separately.
@@ -57,7 +57,7 @@ Here $z = \log\frac{p}{1-p}$ and $\sigma$ is the S-curve.
 4. Fix the base rate first; then Platt scaling on a few hundred labels if needed.
 5. Re-test on labels you didn't fit on. Repeat on a schedule and whenever the model version changes.
 
-## Designing typed questions (Chapter 17)
+## Designing typed questions (Chapter 10)
 
 - **Noul**: one fact per question; say what counts as yes and as no; no double negatives.
 - **Choice**: options that don't overlap; always an escape option ("other", "none", "not enough information").
@@ -65,11 +65,11 @@ Here $z = \log\frac{p}{1-p}$ and $\sigma$ is the S-curve.
 - Ask related questions in one call: the state is sent once.
 - Decide with the whole distribution and the costs of each action, not the top label.
 
-## The official SDK (Chapters 16, 17, 23)
+## The official SDK (Chapters 9, 10 and 16)
 
 ```python
 from typesafe_sdk import Choice, Noul, Score, TypeSafeClient, RetryPolicy
-from jevkit import MockJevTransport       # drop the transport and add a key for the real API
+from jevkit import MockJevTransport       # real API: drop this, add a key
 
 client = TypeSafeClient(api_key="mock", transport=MockJevTransport(),
                         retry=RetryPolicy(max_retries=2))
@@ -80,7 +80,7 @@ r = client.system_one(
         "kind": Choice(criteria={"phishing": "…", "malware": "…", "none": None}),
         "severity": Score(criteria=["low", "medium", "high"]),
     },
-    model="jev-latest")                                  # pin a dated version in production
+    model="jev-latest")                                  # pin a dated version
 r.nouls["attack"].noul                   # P(yes)
 r.choices["kind"].probabilities          # {label: P}
 r.scores["severity"].probabilities       # {level: P}
@@ -89,7 +89,7 @@ r.usage, r.request_id                    # log both
 
 Retry rate limits (429) and server errors (5xx). Never retry 4xx errors: fix the request.
 
-## Choosing a method (Chapter 20)
+## Choosing a method (Chapter 13)
 
 | If you have… | Start with |
 |---|---|
@@ -99,6 +99,6 @@ Retry rate limits (429) and server errors (5xx). Never retry 4xx errors: fix the
 | messy input and a sharp decision | an LLM to extract, a decision model to decide |
 | output a person must read | an LLM, checked by typed questions |
 
-## Before a decision service runs (Chapter 28)
+## Before a decision service runs (Chapter 21)
 
-Pinned model · one versioned config with a fingerprint · a decided meaning for every failure · a record for every decision · a random audit of automatic actions · a daily monitor with flags · shadow runs for every new version · a named owner who can switch everything to review.
+Pinned model · a versioned, fingerprinted config · a meaning for every failure · a record for every decision · random audits of automatic actions · a daily monitor · shadow runs for new versions · an owner who can switch it all to review.

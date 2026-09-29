@@ -9,41 +9,35 @@ Resume from here. Each chapter row is updated after its lab runs, it renders, an
 | 1 | Repo: Quarto book (PDF/HTML/EPUB), `jevkit` + tests, SOC generator, figure system, CI, this file | done |
 | 2 | Ch 1 (voice + design benchmark), then Ch 21 | done |
 | 3 | Remaining chapters in plan order | done |
-| 4 | Front/back matter, widgets, full render ≥ 250 pages | done: 364 pages, all 29 labs and every listing pass, every chapter passes the voice check |
+| 4 | Front/back matter, widgets, full render | done (first draft: 29 chapters, 364 pages) |
+| 5 | Print edition: 22 chapters in six parts, prerequisites merged, QR codes and summary pages removed, epigraphs, 200–250 pages | done: 238 pages, all 22 labs and every listing pass, every chapter passes the voice check |
 
 ## Chapters
 
 | Ch | Title | Words | Pages | Figures | Lab | Voice | Open [[VERIFY]] |
 |---|---|---|---|---|---|---|---|
-| 1 | What “learning” means | 2,780 | 14 | 6 + summary | ok | pass | 1 |
-| 2 | Probability is the language of decisions | 1,899 | 12 | 6 + summary | ok | pass | 0 |
-| 3 | Data, loss and gradient descent | 1,862 | 12 | 7 + summary | ok | pass | 0 |
-| 4 | Calibration: when 0.8 really means 80% | 2,076 | 12 | 6 + summary | ok | pass | 0 |
-| 5 | From probabilities to actions | 1,683 | 12 | 6 + summary | ok | pass | 0 |
-| 6 | Neurons to networks | 1,588 | 10 | 6 + summary | ok | pass | 0 |
-| 7 | Embeddings: meaning as geometry | 1,564 | 12 | 6 + summary | ok | pass | 0 |
-| 8 | Attention and transformers, visually | 1,539 | 10 | 6 + summary | ok | pass | 1 |
-| 9 | Training at scale, and why big models are overconfident | 1,581 | 12 | 6 + summary | ok | pass | 0 |
-| 10 | How an LLM writes, one token at a time | 1,611 | 10 | 5 + summary | ok | pass | 0 |
-| 11 | Structured outputs and JSON mode | 1,680 | 12 | 6 + summary | ok | pass | 0 |
-| 12 | RAG and memory | 1,507 | 10 | 6 + summary | ok | pass | 1 |
-| 13 | Agents: Observe, Decide, Act | 1,500 | 10 | 6 + summary | ok | pass | 0 |
-| 14 | Where agents break | 1,568 | 12 | 5 + summary | ok | pass | 0 |
-| 15 | System 1 and System 2 | 1,527 | 10 | 5 + summary | ok | pass | 1 |
-| 16 | Inside Jev: what we know and what we don’t | 1,606 | 10 | 6 + summary | ok | pass | 8 |
-| 17 | The type system: choice, score, noul | 1,282 | 10 | 6 + summary | ok | pass | 0 |
-| 18 | Testing Jev’s calibration yourself | 1,501 | 10 | 6 + summary | ok | pass | 2 |
-| 19 | The Jevons paradox of decisions | 1,941 | 14 | 6 + summary | ok | pass | 5 |
-| 20 | The bake-off: six ways to make a decision | 1,876 | 12 | 7 + summary | ok | pass | 2 |
-| 21 | Act, review, or escalate | 2,655 | 16 | 7 + summary | ok | pass | 0 |
-| 22 | A catalog of decision patterns | 1,931 | 16 | 8 + summary | ok | pass | 2 |
-| 23 | First calls, and the mock that makes them free | 1,552 | 10 | 6 + summary | ok | pass | 3 |
-| 24 | A hybrid agent: Jev decides, the LLM reasons | 1,361 | 10 | 6 + summary | ok | pass | 1 |
-| 25 | Case study: SOC alert triage | 1,642 | 10 | 6 + summary | ok | pass | 1 |
-| 26 | An applications gallery | 1,505 | 10 | 6 + summary | ok | pass | 3 |
-| 27 | Build your own System One model | 1,575 | 10 | 6 + summary | ok | pass | 2 |
-| 28 | Capstone: a production decision service | 1,550 | 12 | 7 + summary | ok | pass | 2 |
-| 29 | What changes now | 1,172 | 10 | 6 + summary | ok | pass | 1 |
+| 1 | What “learning” means | 2,662 | 12 | 5 | ok | pass | 1 |
+| 2 | Probability, and how a machine learns it | 2,083 | 11 | 7 | ok | pass | 0 |
+| 3 | Calibration: when 0.8 really means 80% | 2,077 | 11 | 6 | ok | pass | 0 |
+| 4 | From probabilities to actions | 1,683 | 10 | 6 | ok | pass | 0 |
+| 5 | Deep learning in one chapter | 1,860 | 8 | 5 | ok | pass | 0 |
+| 6 | How an LLM writes, and structured outputs | 1,644 | 9 | 6 | ok | pass | 0 |
+| 7 | RAG, agents, and where they break | 1,799 | 10 | 6 | ok | pass | 0 |
+| 8 | System 1 and System 2 | 1,527 | 8 | 5 | ok | pass | 2 |
+| 9 | Inside Jev: what we know and what we don’t | 1,612 | 9 | 6 | ok | pass | 7 |
+| 10 | The type system: choice, score, noul | 1,282 | 8 | 6 | ok | pass | 0 |
+| 11 | Testing Jev’s calibration yourself | 1,501 | 9 | 6 | ok | pass | 2 |
+| 12 | The Jevons paradox of decisions | 1,941 | 11 | 6 | ok | pass | 6 |
+| 13 | The bake-off: six ways to make a decision | 1,878 | 9 | 7 | ok | pass | 2 |
+| 14 | Act, review, or escalate | 2,655 | 14 | 7 | ok | pass | 0 |
+| 15 | A catalog of decision patterns | 1,932 | 12 | 8 | ok | pass | 2 |
+| 16 | First calls, and the mock that makes them free | 1,552 | 9 | 6 | ok | pass | 3 |
+| 17 | A hybrid agent: Jev decides, the LLM reasons | 1,363 | 8 | 6 | ok | pass | 1 |
+| 18 | Case study: SOC alert triage | 1,644 | 8 | 6 | ok | pass | 2 |
+| 19 | An applications gallery | 1,505 | 9 | 6 | ok | pass | 3 |
+| 20 | Build your own System One model | 1,576 | 9 | 6 | ok | pass | 2 |
+| 21 | Capstone: a production decision service | 1,552 | 10 | 7 | ok | pass | 3 |
+| 22 | What changes now | 1,172 | 7 | 6 | ok | pass | 2 |
 
 ## How to resume
 
@@ -60,6 +54,6 @@ Resume from here. Each chapter row is updated after its lab runs, it renders, an
   exact wording of attributed quotes. `docs/jev-facts.md` is the ledger; check each against a primary source.
 - **[[AUTHOR STORY]] marks: 16**, one or two per chapter where the author's own experience (AttendX, the police FIR
   agent, SIGNAL) belongs, plus the preface and acknowledgements.
-- **Live check.** With a TypeSafe key, set `JEVKIT_LIVE=1` and re-run the labs for Chapters 16–18, 20 and 23 against
+- **Live check.** With a TypeSafe key, set `JEVKIT_LIVE=1` and re-run the labs for Chapters 9–11, 13 and 16 against
   real Jev; every synthetic number in those chapters has a real counterpart to measure.
 - **Publishing.** Cover art in `assets/cover/` is a placeholder; ISBN and final copyright page details are to fill in.

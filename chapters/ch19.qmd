@@ -1,157 +1,122 @@
-# The Jevons paradox of decisions {#sec-ch19}
+# An applications gallery {#sec-ch19}
 
 ```{python}
 #| include: false
-from jevkit import econ
+from jevkit import gallery
 ```
 
-In 1865 a 29-year-old economist named William Stanley Jevons published a book about coal, and it made him famous almost overnight [@jevons1865].
+By now you might be thinking that this is a book about security operations.
 
-Britain ran on coal. Its factories, mines, ships and railways all burned it, and people had started to worry about how long it would last. The comforting answer was engineering. James Watt's steam engine got far more work out of each ton than the engines before it, and engineers kept improving it. Surely, as engines got more efficient, Britain would need less coal.
+It isn't. Kestrel's SOC was a teaching example, chosen because it has everything: lots of decisions, a real cost to mistakes, a queue of people with limited time. But once you've learned to see a decision layer, you start seeing them everywhere. There's one behind the support inbox, the fraud check on your card, the moderation queue on every social network, and the triage desk at a hospital.
 
-Jevons said no. More efficient engines had made coal-powered work *cheaper*, and cheaper work got used for more things. Engines that had been too costly to run became worth running, in more mills and more mines. Each engine used less coal. Britain used far more.
-
-::: {.bookquote by="William Stanley Jevons, The Coal Question, 1865"}
-It is wholly a confusion of ideas to suppose that the economical use of fuel is equivalent to a diminished consumption. The very contrary is the truth.
-:::
-
-A model whose name is short for Jevons [[VERIFY]] invites the question: what's the coal, this time?
-
-It's decisions.
-
-![The pattern Jevons saw in coal, and the same pattern with decisions. Making each unit cheaper opens up uses that weren't worth it before, and total use can rise.](/figures/ch19/loop.pdf){#fig-loop}
+This chapter is a short tour. For each stop, the same few questions: what does the model read, what does it answer, where does the line go, and who makes the final call?
 
 ::: {.goals}
-- Explain the Jevons paradox with everyday examples, and say when it happens and when it doesn't.
-- Work out when a decision is worth making at all, from its value, its price and its deadline.
-- Model how many decisions a company makes as the price per decision falls, and what it spends.
-- See where the paradox really bites: in new uses, not old ones.
-- Spot the catch: cheap decisions move the load onto the people who review them.
+- Recognise decision layers in domains outside security.
+- Design the typed questions for a new domain, including the option that catches what fits nowhere.
+- Use the Chapter 4 line to see why the same model gets very different thresholds in different jobs.
+- Decide when a model should make the call and when it should only order a person's queue.
+- Measure a new domain before trusting it, even with a model that works well elsewhere.
 :::
 
-## Cheaper things get used for more things
+## Six decision layers
 
-You already know this pattern, even if you've never heard Jevons' name.
+![Six decision layers, each described the same way: what the model reads, the typed questions it answers, the option every choice must include, and who makes the final call. Green cards let the model decide and people audit; red cards keep a person as the decider.](/figures/ch26/cards.pdf){#fig-cards}
 
-Think about photographs. When a photo meant film, developing and a trip to the chemist, you took a few dozen on a holiday and chose each one with care. Then each photo became essentially free. Nobody takes the same few dozen photos for less money. You take thousands, of receipts and parking spots and whiteboards, because each one is now worth taking.
+Look across @fig-cards and notice how little changes from card to card. Each has a state: a ticket, a post, a transaction, a claim, a nurse's note, a diff. Each asks two or three typed questions. And each choice has an escape hatch: "other", "none", "needs more info", "not enough information". Chapter 10 showed what happens without one. The model spreads all its belief across the options you gave it, and cases that fit none of them get confidently mislabelled.
 
-Or light. Over the last two centuries, the price of an hour of light fell enormously, from candles to gas to electric bulbs to LEDs. Economic historians who traced it for the UK found that people didn't pocket the savings and keep a candle's worth of light. They lit streets and buildings and kept them lit all night, and use grew far faster than the price fell [@fouquet2006] [[VERIFY]].
+What *does* change is at the bottom of each card: who decides.
 
-That pattern has a name. The **Jevons paradox** is what happens when something becomes more efficient to use, each unit of use gets cheaper, and total use rises instead of falling.
+## Volume and stakes
 
-## When it happens, and when it doesn't
+![The six domains placed by how many decisions a day they involve and how much one missed problem costs (illustrative). Where volume is high and each mistake is cheap, the model decides and people check samples. Where each mistake is expensive, the model orders the queue and a person makes the call.](/figures/ch26/domains.pdf){#fig-domains}
 
-The paradox isn't a law. Plenty of things got cheaper without anyone using much more of them. Salt is cheap, and you don't eat ten times as much as your great-grandparents did.
+@fig-domains places each domain on two axes, and they tell a story. At the bottom right, content moderation and payment fraud involve millions of decisions a day, each of which costs little if it's wrong. No team of people could look at them all, so the model decides, and people audit a sample, the way Kestrel audited its auto-closed alerts.
 
-What decides it is how hungry people are for more, which economists measure as **elasticity**: how much the amount people use changes when the price changes. Total spend is price times quantity, so there are three cases.
+At the top left, clinical intake involves a few hundred decisions a day, and a missed emergency is catastrophic. There, the model should never close a case. Its job is to put the right patient at the top of the list.
 
-![Three ways demand can respond to a falling price (illustrative). If people use only a little more when it's cheaper, total spend falls. If use grows exactly as fast as the price falls, spend stays flat. If use grows faster, spend rises: that's the Jevons paradox.](/figures/ch19/elasticity.pdf){#fig-elasticity}
+Every number in that chart is an assumption, chosen to be plausible for a mid-sized organisation. The shape is what matters: the further up and to the left a decision sits, the more a person belongs in the loop.
 
-If demand is **inelastic**, like salt, a price cut mostly saves money. If demand is **elastic**, like photos or light, a price cut opens up so many new uses that the total bill goes *up* (@fig-elasticity). Economists call the general effect a rebound, and they reserve "backfire" for the case where it more than cancels the saving. How often full backfire happens with energy is still argued over [@sorrell2009] [[VERIFY]].
+## The same formula, very different lines
 
-So the question for decisions isn't "is the paradox true?" It's: *how elastic is the demand for decisions?* Are there lots of decisions that aren't being made today, only because they cost too much?
+Here's something that surprises people. The line where you should start treating a case as a problem is set by the same formula in every domain, the one from Chapter 4: the cost of a false alarm, divided by the false alarm plus the miss.
 
-## Why a model would be named after it
-
-TypeSafe has said the name nods to Jevons: that cheaper intelligence leads to wider use, not less of it [[VERIFY]]. It's a good choice, and a pointed one, because the same idea did the rounds in early 2025, when cheaper AI models briefly rattled investors and several technology leaders reached for Jevons to argue that cheaper AI would mean more AI, not less [[VERIFY]].
-
-[[AUTHOR STORY: a decision you once wanted a system to make on every item, but couldn't justify the cost or wait, e.g. in AttendX or SIGNAL]]
-
-We don't need to settle that argument for the whole industry. We can look at one company and count.
-
-## The decisions nobody makes
-
-Every decision has a **value**: the expected loss it avoids. Chapter 5 gave you the tools to put a number on it. Checking an alert that has a 3% chance of being a \$10,000 breach, when a good decision would stop it, is worth about \$300. A decision is worth making when its value is above its price.
-
-Here's the thing about Kestrel. Its SOC makes a few thousand careful decisions a day. But the company generates millions of *possible* decisions: every inbound email, every login, every line in the logs. Each is almost certainly fine. Each is worth checking for a sliver of a cent.
-
-I've built a small, deliberately simple model of this, and I want to be clear about what it is. Every number in it is an assumption, chosen to be plausible and written down in `jevkit/econ.py` where you can change it. It isn't a measurement of Kestrel or anyone else.
+![Where the line falls in each domain, from its (illustrative) costs of a miss and a false alarm. Support tickets flag at about 5%; clinical intake at about 0.3%. Same formula, different jobs.](/figures/ch26/lines.pdf){#fig-lines}
 
 ::: {.tryit lab="ch19"}
 ```{python}
-for p in econ.POOLS:
-    print(f"{p.name:>21}: {p.per_day:>9,} a day, "
-          f"typical value ${p.median_value:.5f}".rstrip("0").rstrip("."))
+for d in gallery.DOMAINS:
+    print(f"{d.name:>20}: flag above {gallery.line(d):.2%}")
 ```
 :::
 
-![Kestrel's decision pools (illustrative). Each line spans the middle 90% of decision values in a pool, with the median as a dot. A decision is worth making when its value is to the right of its price. At the LLM price, most emails, logins and log lines aren't worth asking about. At Jev's vendor-reported price, most are.](/figures/ch19/pools.pdf){#fig-pools}
+For support tickets, a missed urgent ticket costs a bit of goodwill, and a false "urgent" costs a few minutes. The line lands near 5%. For clinical intake, a missed emergency costs vastly more than an unnecessary fast-track, and the line drops to about 0.3% (@fig-lines).
 
-Look at the long bottom rows of @fig-pools. There are {{< num ch19 pool_raw int >}} log events a day. A typical one is worth about two thousandths of a cent to check. At the book's illustrative LLM price of \${{< num ch19 llm_price f5 >}} a decision, only a sliver of them clear the bar. At Jev's vendor-reported price of \${{< num ch19 jev_price f6 >}}, about half of them do.
-
-## Two gates, not one
-
-Price isn't the only thing that stops a decision being made. Time does too.
-
-When someone logs in, they're sitting there waiting. You might have a few hundred milliseconds to decide whether the login looks risky before the delay becomes the problem. An email can wait a few seconds before it's delivered. An alert can wait a minute.
-
-![A decision gets made only if it's cheap enough (value above price) and fast enough (answer inside the time budget). The shaded regions show which decisions each option can make, using this book's illustrative LLM figures and Jev's vendor-reported price and latency range. Logins fall inside Jev's region only at the fast end of that range.](/figures/ch19/gates.pdf){#fig-gates}
-
-@fig-gates puts both gates on one chart. The LLM's region starts at over a second and at a price that rules out the cheap pools. Jev's region reaches much further left, and further down. Logins are the interesting case: they fall inside Jev's region only if its calls land at the fast end of the vendor's range. That's a thing you'd measure before promising anyone real-time login checks.
-
-## Kestrel's day, counted
-
-Now we can count a whole day. Start from the price: as it falls, how many decisions are worth making, and what does Kestrel spend?
-
-![Decisions worth making per day, and total spend, as the price per decision falls (illustrative; price gate only). Decisions climb steeply. Spend falls, because the newly affordable decisions are each worth so little.](/figures/ch19/curve.pdf){#fig-curve}
-
-With both gates applied, the illustrative LLM makes {{< num ch19 llm_decisions int >}} decisions a day and spends about \${{< num ch19 llm_spend int >}}. Jev, at the fast end of its range, makes {{< num ch19 jev_decisions int >}} and spends about \${{< num ch19 jev_spend int >}}. That's about {{< num ch19 decisions_ratio int >}} times as many decisions for a quarter of the bill.
-
-Notice what didn't happen. The bill went *down*. Inside Kestrel's existing jobs, demand for decisions is elastic enough to multiply the count, but not elastic enough to raise the spend. The newly affordable decisions are worth so little each that they add only about \${{< num ch19 value_gain int >}} a day of avoided loss.
-
-*"So where's the paradox?"*
-
-It's in the jobs that don't exist yet.
-
-Suppose cheap decisions let Kestrel build something new: checking every file that's shared outside the company, {{< num ch19 new_job int >}} a day, each worth about three thousandths of a cent. At LLM prices almost nobody would build that. At Jev's price, the model takes {{< num ch19 jev_new_taken int >}} of those checks a day, and Kestrel's decision bill jumps from \${{< num ch19 jev_spend int >}} to about \${{< num ch19 jev_new_spend int >}}.
+A line that low means a lot of flagging, which is fine: flagging is cheap. What it demands is honest probabilities down in the fractions of a percent, which is exactly where Chapter 5 said big models are least reliable, and exactly where Chapter 11's calibration checks matter most.
 
 ::: {.keyidea}
-Cheaper decisions rarely raise the bill for the jobs you already do. They raise it by making new jobs worth doing.
+The formula never changes. The costs do, and they move the line by more than an order of magnitude.
 :::
 
-Add two or three more jobs like that and Kestrel spends more on decisions than it ever did with an LLM, while making dozens of times as many. That's Jevons' coal, in miniature. It's also what TypeSafe's Doom demo from Chapter 16 was really showing: an agent making ten decisions a second is a use that simply didn't exist when each decision took a second and cost a tenth of a cent.
+## A tour stop, measured
 
-## The catch: where the load goes
+Let's take one stop and actually run it: support tickets. I generated {{< num ch26 n_tickets int >}} synthetic tickets, each with a known team and a known answer to "does this need a reply today?", and asked the mock.
 
-There's a second, less comfortable consequence, and it's the one I'd want you to remember on a Monday morning.
+It didn't go that well, and I want to show you why.
 
-More decisions means more *outcomes* that someone has to deal with. Some of those million decisions will say "this looks bad", and a person will be asked to look.
+![The mock routing synthetic support tickets. Left: where each true team's tickets were sent. Billing was perfect; account problems often went to technical. Right: routing only the tickets it was confident about trades coverage for accuracy.](/figures/ch26/tickets.pdf){#fig-tickets}
 
-![Alerts sent to a person per day, under two rules (illustrative). A rule that flags a fixed share of what the model looks at scales with the number of decisions, and swamps the team's capacity at Jev volumes. A cost line, which flags only when the expected loss is larger than the cost of a review, barely moves.](/figures/ch19/flags.pdf){#fig-flags}
+The mock routed {{< num ch26 topic_acc pct >}} of tickets to the right team. Billing was perfect. Account problems went to the right place only {{< num ch26 per_topic.account pct >}} of the time; login trouble kept landing in "technical" (@fig-tickets). And its answers to "does this need a reply today?" barely ranked the urgent tickets above the rest, with an AUC of {{< num ch26 urgent_auc f2 >}}.
 
-Suppose you carried over a rule that seemed sensible at LLM volumes: send the top 0.1% of what the model looks at to a person. That sends {{< num ch19 flags_top_llm int >}} a day, comfortably under the team's capacity of {{< num ch19 capacity int >}}. At Jev volumes, the same rule sends {{< num ch19 flags_top_jev int >}} (@fig-flags). Nobody changed the policy. The queue just grew eightfold.
+The reason is honest and a little embarrassing: outside the SOC, the book's mock is a simple word-matcher, and "I can't log in" shares words with "the app isn't working". Real Jev would do better or worse; I can't say which [[VERIFY]]. What I can say is that you'd only know by measuring, and the test took twenty lines.
 
-The cost line from Chapter 5 doesn't have this problem. It flags a case when its expected loss is bigger than the \$15 a review costs, and a log line worth two thousandths of a cent is never going to clear that. It sends {{< num ch19 flags_cost_jev int >}} a day either way.
+Two things rescue the situation, and neither needs a better model. First, route only when sure: routing tickets only when the top label's probability was at least 0.6 covered {{< num ch26 cov60 pct >}} of them and got {{< num ch26 acc60 pct >}} right, with the rest going to a person. Second, fix the options. "Technical" and "account" overlap, and Chapter 10 warned that overlapping options split belief. Sharper descriptions, or a separate noul for "is this about signing in?", are the first thing to try.
 
-::: {.keyidea}
-When decisions get cheap, thresholds must be set by cost, not by share. Otherwise the saving on machines turns into a bill for people.
-:::
+## When a person must decide
 
-That's also why calibration matters more, not less, as decisions multiply. A cost line only works if the probabilities are honest. An overconfident model making a million decisions a day doesn't make a few extra mistakes. It fills the queue.
+![When a person must make the call. The model reads each case and estimates the probabilities that matter; the queue is ordered by them; a person decides. The log records what the model said and what the person decided, so the two can be compared later.](/figures/ch26/human-final.pdf){#fig-human-final}
+
+In the red domains, the design flips. The model doesn't close anything. It reads every case, estimates the probabilities that matter, and orders the queue, so that a person sees the likeliest emergencies first (@fig-human-final). Chapter 18 showed that ordering alone can cut the wait for a real threat from hours to minutes. In a hospital, that's the whole value.
+
+Keep the log. When the model says 0.4 and the clinician says "routine", and the clinician is right, that's a label. When the model says 0.4 and the clinician says "routine" and is wrong, that's a lesson. Either way it's evidence for the next calibration check.
+
+Some decisions also carry legal weight. Lending, hiring, benefits and medical decisions face rules in many places about automated decision-making and the right to a human review [[VERIFY]]. I'm not a lawyer, and this isn't legal advice. But the design above, a person deciding with the model as an assistant and every step logged, is the one most likely to survive a question from a regulator.
+
+[[AUTHOR STORY: a decision in the police FIR agent or AttendX where you deliberately kept a person as the final decider, and what the model did instead]]
+
+## Where it doesn't fit
+
+![Signs that a decision suits a System One model, and signs that it doesn't, or that a person must decide.](/figures/ch26/fit.pdf){#fig-fit}
+
+Not everything is a decision layer. @fig-fit is the checklist I use. If there are many similar cases a day, a fixed set of answers, outcomes you can eventually learn from, and a cost you can put on a mistake, it's a good fit. If the problem is a one-off, the answer has to be written, there are no labels, or the job needs a plan rather than a verdict, it's the wrong tool. That's the System 2 work from Chapter 8, and it still belongs to people and to slower models.
 
 ::: {.breaks}
-Everything in this chapter's Kestrel model is an assumption: the pools, their sizes, the value of each decision, the time budgets. Change them and the numbers move a lot, which is exactly why the lab lets you. Jev's price and latency are vendor-reported, and early-access prices can change. The "value of a decision" is itself an estimate that depends on calibrated probabilities, which Chapter 18 showed you can't assume. And historical analogies are suggestive, not proof: whether demand for decisions turns out more like light or more like salt is something only the next few years will show.
+Every volume and cost in this chapter is an illustrative assumption; your organisation's will differ, sometimes by orders of magnitude, and the lines move with them. The support-ticket demo uses the mock's general-purpose engine, which is a word-matcher, so its weak numbers say nothing about real Jev in either direction. And "a person decides" only protects anyone if the person has time to think. A clinician who must approve four hundred model suggestions an hour isn't deciding; they're clicking. Watch the load on the humans in the loop as carefully as the model.
 :::
 
 ::: {.threshold}
-Kestrel wants to check every login in real time. There are 150,000 a day; a typical check is worth about \$0.0005; the budget is 300 milliseconds. At Jev's vendor-reported price, is the check worth making? What would you need to measure before switching it on? And what should the rule be for sending a login to a person?
+An online shop wants to auto-approve refunds under \$50. A wrongly approved fraudulent refund costs the refund; a wrongly refused honest one costs about \$30 in support time and some goodwill, which the team values at another \$40. For a \$40 refund, at what P(fraud) should the model refuse and send it to a person instead?
 
-(At \$0.000021 a check, yes: a typical login is worth about twenty times the price of checking it. The open question is time, so measure Jev's latency from your own network at your own volumes, including the slow tail. Send a login to a person only when its expected loss exceeds the cost of a review, never as a fixed share.)
+(A wrong approval costs \$40; a wrong refusal costs about \$70. Send it to a person when P(fraud) is above 70 ÷ 110, about 64%. That's a high line, and it should be: for small refunds, occasionally paying a fraudster is cheaper than annoying honest customers. For a \$500 refund the same arithmetic gives about 12%.)
 :::
+
+::: {.bookquote by="Abraham Maslow, The Psychology of Science, 1966"}
+I suppose it is tempting, if the only tool you have is a hammer, to treat everything as if it were a nail.
+:::
+
+Maslow was talking about scientists and their methods [@maslow1966] [[VERIFY]]. It's a fair warning for this chapter too. Once you've learned to see decision layers, it's tempting to see nothing else. The checklist in @fig-fit is there to keep you honest.
 
 ## Where we are
 
-Jevons noticed that better engines made coal-powered work cheaper, and cheaper work spread until Britain burned more coal than ever. Decisions, we found, work the same way, with a twist. Inside the jobs a company already does, cheaper decisions multiply the count and shrink the bill. The paradox arrives through new jobs, ones that were never worth doing at a tenth of a cent. And every extra decision can turn into work for a person, unless the lines are drawn by cost.
-
-Part IV has been about Jev on its own: what it is, what it answers, whether its probabilities can be trusted and what it might do to demand. Part V puts it in context, against every other way of making the same decision.
+We toured six decision layers and found the same parts in every one: a state, a few typed questions, and an option for what fits nowhere. What changed from job to job was who decides. Where decisions are many and cheap, the model decides and people audit. Where they're few and costly, the model orders the queue and a person decides. The Chapter 4 formula put the line anywhere from 5% to 0.3%, depending only on costs. And running one stop for real, support tickets, showed why you measure first: the mock that did well at Kestrel stumbled on a new kind of text, and routing only when it was sure recovered most of the damage.
 
 ::: {.exercises}
-1. Name something in your own life that got much cheaper, and say whether you use more of it, the same, or more *and* spend more in total. Which case in @fig-elasticity is it?
-2. In the lab, halve the value of every raw log event. How many fewer decisions does Jev make? Does the bill change much? Why not?
-3. Add a new job of your own design to the model. What value per decision and daily volume does it need before Kestrel's Jev bill doubles?
-4. The "top 0.1%" rule sounded sensible. Write down a rule from your own work that is set as a share, not a cost. What would happen to it if volume went up tenfold?
+1. Pick a decision from your own work. Write its card in the style of @fig-cards: state, typed questions, the escape option, who decides.
+2. In the lab, rewrite the `account` description to separate it from `technical`. What happens to accuracy on each team?
+3. Using the threshold formula, find the refund amount at which the line in the box above crosses 50%.
+4. For clinical intake, list three things you'd log for every case so that, in a month, you could tell whether the model's probabilities were honest.
 :::
 
 ::: {.nexthook}
-Next: six ways to make the same decision, from a hand-written rule to a large language model to Jev, in one fair contest on Kestrel's alerts. Jev doesn't win every round.
+Next: you've used a System One model for twenty-six chapters. Now you'll build a small one yourself, with typed heads and calibration built into its training.
 :::

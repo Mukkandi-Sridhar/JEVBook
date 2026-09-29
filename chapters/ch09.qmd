@@ -1,169 +1,152 @@
-# Training at scale, and why big models are overconfident {#sec-ch09}
+# Inside Jev: what we know and what we don't {#sec-ch09}
+
+::: {.epigraph by="David Hume, An Enquiry Concerning Human Understanding, 1748"}
+A wise man, therefore, proportions his belief to the evidence.
+:::
 
 ```{python}
 #| include: false
-import warnings
-import numpy as np
-from sklearn.neural_network import MLPClassifier
-from jevkit import soc, calibration as cal
-from jevkit.learn import Standardizer
+import json
+from typesafe_sdk import Choice, Noul, Score, TypeSafeClient
+from jevkit import MockJevTransport
 ```
 
-Here's a fair question after the last chapter:
+Here's a confession that shapes this whole chapter. I've never called Jev.
 
-*"If a transformer is just attention and small networks stacked up, how did anyone get from that to something that writes essays and passes exams?"*
+When I wrote this book, Jev had been public for a couple of weeks, in early access, and I didn't have an API key [[VERIFY]]. What I did have was TypeSafe's official Python library, which anyone can download and read, a stream of launch coverage and early commentary, and a growing pile of research papers from people who *had* used it.
 
-The honest answer is almost disappointing. Mostly, they made it bigger. Far more data, far more layers, far more computing power, and a training task so simple that it could soak all of that up.
+*"So how much can anyone actually say about what's inside it?"*
 
-This chapter explains that recipe. Then it explains a side effect of big, long training that matters enormously for anyone who wants to *decide* with a model's output, rather than just read it: big models tend to become overconfident. You'll watch it happen on Kestrel's alerts, and fix it.
+More than you'd think, and less than most articles imply. The trick is to sort every claim into one of three piles: what you can verify yourself, what the vendor says, and what nobody outside the company knows. That habit is worth more than any single fact in this chapter, because Jev won't be the last new model you have to evaluate from the outside.
 
 ::: {.goals}
-- Explain pretraining as "guess the next word", and why that task scales so well.
-- Describe what "scaling laws" say, and what they don't.
-- Walk through how a raw text predictor becomes an assistant: instruction tuning and preference tuning.
-- Watch a network's calibration collapse during long training while its accuracy barely moves.
-- Explain why that happens, and fix it with the tools from Chapter 4.
+- Sort claims about a new model into verified, vendor-reported and unknown.
+- Read Jev's interface from its public SDK: what goes in, what comes out.
+- Understand the two technical claims at the heart of Jev: the "parallel sampler" and RLCD.
+- Do the price and latency arithmetic yourself, and check the vendor's numbers against each other.
+- Know what you'd still need to test before trusting it.
 :::
 
-## The simplest task in the world
+## Three piles
 
-In Part I, every example came with a label someone had to provide. An analyst marked each alert real or harmless. Labels are expensive, so labelled data is always scarce.
+![Every claim about Jev in this book, sorted into three piles. The first pile you can check yourself today. The second is what TypeSafe says. The third is what nobody outside the company can know yet.](/figures/ch16/ledger.pdf){#fig-ledger}
 
-Large language models are trained on a task that needs no labels at all. Take any text, hide the next word, and guess it.
+@fig-ledger is a summary of the book's facts ledger, which lives in the repository as `docs/jev-facts.md`. The rules I followed:
 
-![The pretraining task. Show the model some text, hide the next word, ask for a probability for every word it could be, then check against what the text actually says. The label is free: it's just the next word.](/figures/ch09/pretrain-task.pdf){#fig-pretrain-task}
+**Verified** means I read it myself in something anyone can inspect. For Jev, that's mainly the `typesafe-sdk` library on PyPI, version 0.7.2, including the data models generated from the API's own specification.
 
-That's it. Every sentence ever written becomes thousands of free training examples. The model's output is a probability for every word in its vocabulary, and it's trained with the log loss you met in Chapter 3: a big penalty whenever the real next word got a low probability.
+**Vendor-reported** means TypeSafe, or coverage quoting TypeSafe, said it. It may well be true. It hasn't been independently checked here, and every such number carries that label.
 
-To get good at this, a model has to learn a startling amount. Grammar, obviously. But also facts ("the capital of France is..."), reasoning patterns ("if all alerts from this host are benign and this alert is from this host, then..."), styles, and a great deal of common sense. None of that was taught directly. All of it made the next word easier to guess. This is called **pretraining**, and it's where almost all of an LLM's knowledge comes from.
+**Unknown** means it hasn't been published, so any statement about it is a guess, and I'll say so when I guess.
 
-## Bigger, more, longer
+My access to the sources for the second pile was limited to search summaries, so treat every vendor number in this book as a claim to check, not a fact. A good habit: when a claim about a model appears without a pile attached, ask which pile it belongs in.
 
-What happens as you feed the task more text?
+## What we can verify: the interface
 
-You can watch a miniature version with nothing fancier than counting. Take the synthetic analyst notes from Chapter 7, and guess each next word from the two words before it, using counts from the training notes.
+Jev's interface is refreshingly small. You send one request to one endpoint, `POST /v1/systemone`, with three things:
 
-![A miniature scaling curve. A simple next-word guesser trained on more and more synthetic analyst notes, tested on notes it hasn't seen. Each tenfold increase in text helps, but a little less than the one before.](/figures/ch09/mini-scaling.pdf){#fig-mini-scaling}
+- **state**: the situation, as text, a JSON object or a list;
+- **model**: which model to use (the library's default is `jev-latest`);
+- **questions**: a set of named, typed questions about that state.
 
-Each tenfold increase in text helps, and each helps a bit less than the last (@fig-mini-scaling). Real LLMs show a strikingly similar pattern, over many more orders of magnitude. In 2020, researchers at OpenAI showed that a language model's loss falls smoothly and predictably as you increase the model's size, the amount of text and the computing power, following simple mathematical curves [@kaplan2020]. Two years later, a team at DeepMind refined the recipe and showed that many big models had been trained on too little text for their size [@hoffmann2022].
+And you get back, for each question, a typed answer with probabilities, plus a count of tokens used.
 
-Those results, called **scaling laws**, changed the economics of AI. Spending a hundred million dollars training a model is terrifying if you don't know what you'll get. It's a calculated bet if a curve fitted on smaller models predicts the answer. The models that followed, with parameter counts in the hundreds of billions, were built on that bet [@brown2020].
+![A real request as the official SDK builds it, and the response. The answers here come from the book's mock, but their shape is exactly what the SDK's own data models expect.](/figures/ch16/anatomy.pdf){#fig-anatomy-09}
 
-::: {.bookquote by="Richard Sutton, The Bitter Lesson, 2019"}
-The biggest lesson that can be read from 70 years of AI research is that general methods that leverage computation are ultimately the most effective, and by a large margin.
-:::
-
-Scaling laws predict the *loss*, the average surprise at the next word. They don't directly predict which skills will appear, how honest the model's confidence will be, or whether it's any good at *your* problem. We'll come back to that gap.
-
-## From predictor to assistant
-
-A freshly pretrained model isn't an assistant. It's a continuation machine. Ask it "What's the capital of France?" and it might answer, or it might continue with three more quiz questions, because that's what often follows such a question on the internet.
-
-Turning it into something helpful takes two more stages.
-
-![Three stages. Pretraining gives knowledge but only continues text. Instruction tuning, on examples of good answers, teaches the model to follow requests. Preference tuning, on people's ratings of answers, makes it helpful and polite, and can quietly make its confidence less honest.](/figures/ch09/stages.pdf){#fig-stages}
-
-**Instruction tuning** trains the model further on examples of requests paired with good responses. It learns the *shape* of being helpful.
-
-**Preference tuning** goes further. People compare pairs of the model's answers and pick the better one; the model is then trained to produce answers people prefer. The best-known version is called reinforcement learning from human feedback, **RLHF** [@ouyang2022].
-
-Preference tuning is a big part of why modern assistants feel so good to use. It also has a cost that matters for this book. People tend to prefer answers that sound confident. So a model tuned on their preferences learns to sound sure. When OpenAI published its technical report on GPT-4, it included a telling pair of charts: the pretrained model's confidence on multiple-choice questions was well calibrated, and after preference tuning it was noticeably less so [@openai2023]. Earlier work had also found pretrained models "mostly know what they know" when asked in the right format [@kadavath2022].
-
-::: {.keyidea}
-The steps that make a model pleasant to talk to can make its confidence less honest.
-:::
-
-## Watching overconfidence happen
-
-You don't need a giant LLM to see the deeper version of this effect. It shows up whenever a flexible model trains for a long time on log loss. Let's make it happen on purpose.
-
-Take a network much bigger than Kestrel's alerts need, two layers of 128 hidden neurons, and train it for 200 passes over the training alerts. Every so often, check it on the test alerts.
+You don't have to take my word for the shape. Here's the exchange as the SDK actually sends it. The mock records it on the way through.
 
 ::: {.tryit lab="ch09"}
 ```{python}
-alerts = soc.load()
-train, calib, test = soc.split(alerts)
-F = lambda d: soc.feature_matrix(d).to_numpy()
-st = Standardizer().fit(F(train))
-net = MLPClassifier(hidden_layer_sizes=(128, 128),
-                    learning_rate_init=0.002, random_state=0,
-                    batch_size=256)
-for epoch in range(1, 201):
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore")
-        net.partial_fit(st(F(train)), train.malicious,
-                        classes=[0, 1])
-    if epoch in (3, 20, 60, 200):
-        p = net.predict_proba(st(F(test)))[:, 1]
-        acc = ((p > 0.5) == test.malicious).mean()
-        s = cal.summary(p, test.malicious)
-        print(f"epoch {epoch:3d}: accuracy {acc:.3f}  "
-              f"log loss {s['log_loss']:.3f}  ECE {s['ece']:.3f}")
+exchanges = []
+client = TypeSafeClient(api_key="mock",
+                        transport=MockJevTransport(log=exchanges))
+client.system_one(
+    state="I was charged twice. Please fix this ASAP.",
+    questions={
+        "topic": Choice(criteria={"billing": None, "technical": None}),
+        "urgent": Noul(instructions="Does this need a reply today?"),
+    },
+)
+request_body, response_body = exchanges[0]
+print(json.dumps(request_body, indent=1)[:260])
 ```
 :::
 
-![Three views of the same training run, on test alerts. Accuracy (left) barely changes. Log loss (middle) and calibration error (right) are flat for a while, then climb steeply. If accuracy were the only number you watched, you'd never notice.](/figures/ch09/overtraining.pdf){#fig-overtraining}
+A few details from the SDK's own documentation are worth knowing. A `choice` answer includes the chosen label, a `confidence` and a probability for every label. A `score` answer includes an expected score, a `confidence`, the rubric as a legend and a probability for every level. A `noul` (yes or no) answer is a single number: the probability of "yes". The schema describes output tokens as "currently free of charge". And the library handles retries and rate limits for you, which Chapter 16 puts to use.
 
-Look at @fig-overtraining and imagine you only tracked accuracy, as many teams do. You'd see a line that barely moves and conclude that nothing much happened. Meanwhile, the test log loss went from {{< num ch09 first.log_loss f2 >}} to {{< num ch09 last.log_loss f2 >}}, and the calibration error from {{< num ch09 first.ece f3 >}} to {{< num ch09 last.ece f3 >}}. The model's *ranking* of alerts is nearly unchanged. Its *honesty* has fallen apart.
+What the SDK doesn't say is exactly how `confidence` is defined. In the mock I've made it the probability of the top option, and I've said so in `DECISIONS.md`. Don't assume the real one works the same way until you've checked.
 
-![Every predicted probability on the test alerts, early in training (blue) and after 200 passes (red), counted on a log scale. The overtrained network pushes far more of its predictions to the extremes: it has become sure.](/figures/ch09/confidence.pdf){#fig-confidence}
+## What TypeSafe says: two ideas
 
-## Why it happens
+Two claims sit at the centre of how TypeSafe describes Jev [@typesafe2026] [[VERIFY]].
 
-@fig-confidence shows what changed. The overtrained model piles its predictions up near 0 and 1.
+**A "parallel sampler".** An LLM, as Chapter 6 showed, writes one token at a time, each waiting for the last. TypeSafe says Jev instead produces all its outputs *in a single pass*. It doesn't write an answer; it computes one. That's the claimed source of the speed.
 
-Here's the mechanism, and it follows directly from Chapter 3. On the *training* alerts, log loss can always be lowered a tiny bit more by pushing a correct prediction closer to certainty: 0.95 becomes 0.99 becomes 0.999. Once the model gets most training alerts right, that's nearly the only way left to lower the loss. So a flexible model, trained long enough, learns to be extremely sure of what it saw, including the noise and the rare exceptions it has simply memorised. Then it carries that certainty onto new alerts where it hasn't earned it.
+**RLCD: reinforcement learning for calibrated decisions.** TypeSafe contrasts this with RLHF, which rewards answers people prefer (Chapter 5), and with reinforcement learning from verifiable rewards, which rewards answers a program can check. RLCD, they say, rewards *honest probabilities*.
 
-The same pressure exists in big modern networks, and researchers documented it clearly in 2017: deeper, wider networks trained with modern techniques are more accurate *and* more overconfident than the smaller networks of a decade earlier [@guo2017].
+We don't know the details of either. But you already have the background to think about them clearly. Chapter 2 showed that a **proper scoring rule**, like log loss, makes honesty the best possible strategy: you can't improve your average score by exaggerating. If RLCD's reward is built on a rule like that, calibration is what it would be pushing towards. That's an inference, not something TypeSafe has published, and it still wouldn't guarantee calibration on *your* data, as Chapter 11 will show.
 
-::: {.keyidea}
-Flexible models trained to squeeze out the last drop of training loss learn to be certain.
-:::
+![One possible shape for a model like this: a reader that looks at the state and the questions together, then typed "heads" that each turn the result into probabilities, all in one pass. This is my guess, based on the interface and Chapter 5, and not TypeSafe's description.](/figures/ch16/guess.pdf){#fig-guess}
 
-## Fixing it
+If you want a mental model, @fig-guess is mine, and I want to be very clear that it's a guess. It's built from what the interface demands and from what Chapter 5 said about readers and writers. It's also a design you can build yourself, which is exactly what Chapter 20 does.
 
-The good news is that you already know the fixes.
+## The numbers: speed and price
 
-**Stop early.** Watch the loss on held-out data and stop when it stops improving. In our run, the best test log loss came around epoch {{< num ch09 best_epoch int >}}. Everything after that made the model worse at the thing we care about.
+TypeSafe and its launch coverage report end-to-end latency of roughly 70 to 500 milliseconds, and "two orders of magnitude" faster than LLMs on System One tasks [[VERIFY]]. Both are vendor-reported.
 
-**Recalibrate afterwards.** Fit a correction on the calibration set, exactly as in Chapter 4.
+![Time per decision on a log scale: the vendor-reported range for Jev, and the illustrative LLM figures used throughout this book. The LLM figures aren't measurements; they're the stated assumptions from Chapter 6.](/figures/ch16/latency.pdf){#fig-latency-09}
 
-![The overtrained network's reliability on test alerts, before (red) and after temperature scaling fitted on the calibration set (green). A single number, T, softens every prediction. It helps, but here it can't fully straighten the curve.](/figures/ch09/temperature-fix.pdf){#fig-temperature-fix}
+One critic pointed out that the most dramatic speed multipliers in the launch material compare Jev with slow *reasoning* models, which think for a long time before answering [@regolo2026] [[VERIFY]]. That's a fair comparison for some uses and an unfair one for others. Against a fast, non-reasoning LLM asked for a one-word label, the gap is much smaller. Always ask: faster than *what*, doing *what*?
 
-```{python}
-p_cal = net.predict_proba(st(F(calib)))[:, 1]
-for name, fix in (("temperature", cal.Temperature()),
-                  ("Platt", cal.Platt())):
-    fix.fit(p_cal, calib.malicious)
-    print(f"{name:>11}: ECE {cal.ece(fix(p), test.malicious):.3f}"
-          f"  log loss {cal.log_loss(fix(p), test.malicious):.3f}")
-```
+The price is where the story gets interesting. The listed price is \$0.042 per million input tokens, with output free [[VERIFY]]. For a decision that reads about 500 tokens of state and questions, that's about \${{< num ch16 jev_cost_per_million int >}} per million decisions.
 
-Temperature scaling, the standard fix for overconfident networks, found T = {{< num ch09 temp_T f1 >}} and cut the calibration error from {{< num ch09 last.ece f3 >}} to {{< num ch09 ece_after_T f3 >}} (@fig-temperature-fix). Platt scaling, with its extra shift, did better: ECE {{< num ch09 ece_after_platt f3 >}}. But neither brought the log loss back to where early stopping had it ({{< num ch09 best_ll f3 >}}). A correction can make a model's numbers honest again. It can't give back information the model threw away by memorising.
+![Cost per million decisions of 500 input tokens each: Jev at its vendor-reported price, and an LLM at this book's illustrative mid-range price, which is an assumption, not a quote.](/figures/ch16/cost.pdf){#fig-cost}
+
+Using this book's illustrative LLM prices (\${{< num ch16 llm_price_in f2 >}} per million input tokens, \${{< num ch16 llm_price_out f2 >}} per million output, and 40 output tokens for a small JSON answer), the same million decisions would cost about \${{< num ch16 llm_cost_per_million int >}}. That's roughly {{< num ch16 ratio int >}} times more (@fig-cost). Real LLM prices range over two orders of magnitude, so treat the ratio as a shape. Chapter 12 is about why that shape might matter more than any benchmark.
+
+## Check the claims against each other
+
+Here's a habit I'd love you to leave this chapter with. When a vendor gives you several numbers, see whether they agree with *each other*.
+
+TypeSafe's launch demo had Jev playing the video game Doom, making decisions from a text description of the game state about ten times a second, at a reported cost of about \$7 an hour [[VERIFY]]. Do those numbers hang together with the listed price?
+
+![A consistency check using only the vendor's own numbers. Ten decisions a second at \$7 an hour means each decision costs about two hundredths of a cent, which at the listed price implies each decision read around 4,600 input tokens: a large but plausible description of a game state.](/figures/ch16/doom-check.pdf){#fig-doom-check}
+
+Ten decisions a second is {{< num ch16 doom_decisions_per_hour int >}} an hour. At \$7 an hour, each decision costs about \${{< num ch16 doom_cost_per_decision f4 >}}. At \$0.042 per million input tokens, that implies about {{< num ch16 doom_implied_tokens int >}} tokens of game state per decision. That's plausible for a detailed text description of a game screen (@fig-doom-check). The numbers are consistent. That doesn't prove them, but if they'd implied three tokens per decision, or three million, you'd have learned something important.
+
+## What we don't know
+
+Here's the uncomfortable part: the unknowns are exactly the things a decision layer depends on.
+
+We don't know the model's size, its architecture or its training data. We don't know how well its probabilities are calibrated on data like yours. We don't know how it behaves on adversarial input, like the planted sentence from Chapter 7. We don't know how stable its behaviour is across versions: `jev-latest` is an alias, and aliases move. And by design, it gives no reasons, only probabilities. Some early critics called that a compliance problem for regulated uses [@datacamp2026] [[VERIFY]]. Chapter 14 answered it with decision logs that audit the policy rather than the model.
+
+None of those unknowns are reasons to avoid a new model. They're reasons to *test* it, on your own data, with the tools you already have. The next two chapters do exactly that: first by understanding each question type properly, then by testing calibration the way Chapter 3 taught.
 
 ::: {.breaks}
-You usually can't retrain someone else's big model, and often you can't see its raw probabilities at all. Many LLM APIs return only text, or return token probabilities that describe the next *word*, not the answer to your question (Chapter 11 unpacks that). If a model is going to feed decisions, you need probabilities you can check and correct. That's one of the strongest arguments for a decision model that returns probabilities as its main output, like Jev, and for testing them rather than trusting them, which is Chapter 18's job.
+Vendor numbers are measured on the vendor's tasks, in the vendor's setup, against comparisons the vendor chose. Early-access models change quickly, so behaviour you test this month may shift next month. Pin a model version where you can, rather than `jev-latest`, and re-run your checks when it changes. And be wary of third-party "benchmarks" that appeared within days of launch: some are careful, some aren't, and most can't tell you how the model behaves on your data.
 :::
 
 ::: {.threshold}
-A vendor tells you their fine-tuned classifier is "97% accurate" at spotting phishing, and returns a confidence score with every prediction. You plan to auto-quarantine emails when confidence is above 0.9. What two numbers would you ask the vendor for before agreeing, and what would you do if they couldn't provide them?
+Kestrel's agent makes about 3,700 small decisions a day (Chapter 7's count, scaled up). At the vendor-reported price and 500 tokens each, what would a year of those decisions cost? At the illustrative LLM price? At what daily volume would the difference be worth a week of an engineer's time to switch?
 
-(Its calibration on data like yours, as ECE or a reliability diagram, and its precision among predictions above 0.9. If they can't provide them, measure them yourself on a few hundred of your own labelled emails, and recalibrate before you set the 0.9 line.)
+(About 1.35 million decisions a year: roughly \$28 at the Jev price and about \$900 at the illustrative LLM price. At Kestrel's volume, price alone doesn't justify a switch. Speed and calibration might. At a hundred times the volume, price becomes a real argument.)
+:::
+
+::: {.bookquote by="Carl Sagan, Cosmos, 1980"}
+Extraordinary claims require extraordinary evidence.
 :::
 
 ## Where we are
 
-We asked how transformers turned into ChatGPT, and the answer was a task with free labels, and the nerve to scale it up along predictable curves. Pretraining gave knowledge; instruction tuning gave manners; preference tuning gave charm, and a habit of sounding surer than the evidence. Then we made a network overconfident on purpose, found that accuracy hid it completely, and fixed it with the tools from Part I.
-
-That's the end of Part II. You now know what's inside an LLM. Next, we watch one work.
+I started without an API key, so we sorted what can be known into three piles. The interface was verifiable, and small: state and typed questions in, probabilities out. The speed and training method were the vendor's claims, and we could reason about them without accepting them. The prices let us do our own arithmetic, and the vendor's numbers turned out to agree with each other. What remained unknown was exactly what a decision layer depends on, which means the next job is testing.
 
 ::: {.exercises}
-1. Why does "guess the next word" need no human labelling? Name one other task with free labels that you could train a model on using your company's own data.
-2. In the lab, train the network for 400 epochs instead of 200. Predict what happens to accuracy, log loss and ECE before you run it.
-3. Explain in two sentences why preference tuning might make a model less calibrated, even if nobody intended it to.
-4. Our temperature fix helped but didn't fully straighten the curve. Using what you learned in Chapter 4, explain what a temperature can't do that Platt scaling can.
+1. Find a claim about Jev in a recent article and put it in one of the three piles. What would it take to move it to "verified"?
+2. In the lab, send a `score` question with five levels instead of three. Look at the raw response. What does `score` mean when it's 2.4?
+3. Redo the Doom check with a different assumption: suppose each decision read 500 tokens. What hourly cost would that imply? What would you conclude if the vendor had quoted that figure instead?
+4. Write three questions you'd ask TypeSafe before using Jev for a decision that affects customers. Which pile would each answer go in?
 :::
 
 ::: {.nexthook}
-Next, Part III: what does an LLM actually do when it writes? One token at a time, with a probability for every possible next piece. That detail turns out to matter a great deal for decisions.
+Next: the three question types, `choice`, `score` and `noul`, one at a time, with the design choices that make each work well.
 :::

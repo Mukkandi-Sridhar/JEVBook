@@ -1,4 +1,4 @@
-"""A one-layer, one-head self-attention classifier in NumPy + autograd (Chapter 8).
+"""A one-layer, one-head self-attention classifier in NumPy + autograd (Chapter 5).
 
 The toy task: short analyst notes such as "invoice not phishing" or "phishing not invoice".
 A note is a threat if it contains a threat word that is NOT directly preceded by "not".

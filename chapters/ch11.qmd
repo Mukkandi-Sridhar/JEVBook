@@ -1,187 +1,178 @@
-# Structured outputs and JSON mode {#sec-ch11}
+# Testing Jev's calibration yourself {#sec-ch11}
+
+::: {.epigraph by="Russian proverb, made famous by Ronald Reagan, 1987"}
+Trust, but verify.
+:::
 
 ```{python}
 #| include: false
-import json
 import numpy as np
-from typing import Literal
-from pydantic import BaseModel, ConfigDict, ValidationError
-from jevkit import soc, llm, calibration as cal
+from jevkit import soc, calibration as cal
 from jevkit.batch import score_alerts
 ```
 
-Software can't read a paragraph. It needs `verdict = "malicious"`, a field, a value.
+A week after Jev launched, two claims were circling.
 
-So the first thing every team does when they wire an LLM into a pipeline is add a line to the prompt: *"Reply only with JSON in this format."* And it works. Almost always.
+TypeSafe's: Jev returns *calibrated* probabilities. Its training method, RLCD, is named after exactly that goal [@typesafe2026] [[VERIFY]].
 
-*"Almost always is fine, isn't it?"*
+And a blunt reply from the data scientist Alex Molas, in a post titled "Jev can't be calibrated": useful, yes, but treat its outputs as scores, not probabilities, because calibration depends on *your* data, which Jev never sees [@molas2026] [[VERIFY]].
 
-At a hundred alerts a day, maybe. At seven hundred a day, "almost" is a few failures every day, each one a crash, a silent drop or an alert sent nowhere. And even when the JSON is perfect, there's a quieter question hiding inside it. The model wrote `"confidence": 0.95`. What does that number actually mean?
+*"So which is it?"*
 
-This chapter is about getting decisions, not essays, out of a machine built to write. We'll count the ways it goes wrong, fix the format, and then look hard at the three different "confidences" you can get back, because they don't agree.
+Both, and neither, and that's the point of this chapter. You already have everything you need to settle it for your own use: Chapter 3's reliability diagram, a few hundred labelled cases, and an afternoon. This chapter shows why the critic's argument is right in a precise sense, how to measure it, and how to fix it when it bites.
+
+![Two claims about the same model. The way to settle them is the same either way: test on your own labelled cases.](/figures/ch18/two-claims.pdf){#fig-two-claims}
 
 ::: {.goals}
-- Recognise the ways "just ask for JSON" fails, and how often.
-- Explain constrained decoding ("JSON mode") and what it does and doesn't guarantee.
-- Validate model output strictly, retry, and fail safe.
-- Compare three kinds of confidence: stated in the text, read from token probabilities, and returned by a decision model.
-- Explain why a token's probability isn't the probability that an answer is right.
+- Explain why calibration belongs to a model *and* a data distribution, not to a model alone.
+- Show the same model calibrated at one company and miscalibrated at another.
+- Fix a base-rate mismatch with a one-line odds adjustment, or with Platt scaling on a few hundred labels.
+- Know how many labels you need before an ECE means anything.
+- Check calibration for choices, not only yes/no answers, and follow a testing routine you can repeat.
 :::
 
-## Asking nicely
+## Why the critic has a point
 
-Let's ask our stand-in LLM, `llm-mock-synthetic`, to triage every one of Kestrel's 4,000 test alerts and reply with a small JSON object: a verdict, a confidence, and a few fields it read from the alert. As always, the mock is synthetic. Its failure rates are ones I chose to show the typical problems, not measurements of any product.
+Here's the argument in plain terms.
 
-Most of the answers come back perfectly. But not all.
+Chapter 2 said a probability is a claim about *how often, among cases like this one*. Now imagine two companies send Jev the same alert text. Jev, reading the same input, returns the same probability to both. But suppose one company is a frequent target and the other rarely is. Among alerts that look exactly like this one, the true share of attacks can differ between them. A single number can't be right for both.
 
-![What came back when we asked for JSON, over 4,000 alerts. With only the prompt, a few responses were wrapped in friendly chat ("Sure! Here is the JSON:"), a few were cut off mid-object, and some were valid JSON with a field nobody asked for. With JSON mode switched on, the first two problems vanish. The third doesn't.](/figures/ch11/json-failures.pdf){#fig-json-failures}
-
-@fig-json-failures shows the three classic failures. The model adds chatty text around the JSON, because it was trained to be friendly. It stops partway, leaving an unclosed brace. Or it produces perfectly valid JSON with an extra field it invented, here an `attacker_country` that isn't in the alert at all.
-
-Each of those needs handling. The first two crash a naive parser. The third is worse, because it parses fine and quietly puts made-up data into your system.
-
-## Making the format impossible to break
-
-Chapter 10 showed that the model picks each token from a probability for every possible next token. That gives us a lever. At each step, we can look at where we are in the required format and **forbid every token that would break it**.
-
-![Constrained decoding. After `{"verdict": "`, the schema only allows the start of "malicious" or "benign". Every other token, including the chatty "Sure" and a stray code fence, gets its probability set to zero before one is picked.](/figures/ch11/constrained.pdf){#fig-constrained}
-
-That's **constrained decoding**, often sold as "JSON mode" or "structured outputs" [@willard2023]. The model still does all the thinking. The decoder just refuses to pick tokens that would leave the format. With it switched on, the output is guaranteed to match the grammar you gave it.
-
-Look carefully at what that guarantees, though. The *format*. Not the content. A constrained model can still pick "benign" for a real attack, with perfect syntax. And unless your schema forbids extra fields and your code checks, the invented `attacker_country` can still appear, as it did in @fig-json-failures.
+That's the base-rate trap from Chapter 2, turned on the model. It's called *prior shift* or *label shift*: the mix of outcomes changes while the way each outcome looks stays the same. A model trained or tuned on one mix can be perfectly calibrated there, and systematically off everywhere the mix is different.
 
 ::: {.keyidea}
-Constrained decoding guarantees the shape of the answer, never its truth.
+Calibration is a property of a model *and the data it's used on*.
 :::
 
-## Treat the output like untrusted input
+## Two companies, one model
 
-So whatever the provider promises, validate. Parse the response into a strict type that rejects unknown fields and wrong values. If it fails, retry once, perhaps with the stricter mode. If it still fails, do what Chapter 21 insists on: send the case to a human, never to the "act" door.
+Let's see it happen. Alongside Kestrel Logistics I've generated a second synthetic company, Harbor Pharma. Its alerts come from the same detectors and look the same, but real attacks are less common there: {{< num ch18 harbor_base pct1 >}} of alerts, against Kestrel's {{< num ch18 kestrel_base pct1 >}}.
+
+Send both through the same decision model and check each one's reliability.
 
 ::: {.tryit lab="ch11"}
 ```{python}
-class Verdict(BaseModel):
-    model_config = ConfigDict(extra="forbid")   # invented fields fail
-    verdict: Literal["malicious", "benign"]
-    confidence: float
-    rule: str
-    threat_intel_score: float
-    after_hours: bool
-    related_alerts: int
+kestrel = soc.load()
+harbor = soc.to_frame(soc.generate(
+    n=8000, seed=21, logit_shift={r: -1.3 for r in soc.RULES}))
+p_k, p_h = score_alerts(kestrel), score_alerts(harbor)
 
-def parse(raw):
-    try:
-        return Verdict.model_validate_json(raw)
-    except ValidationError:
-        return None
-
-alerts = soc.load()
-train, calib, test = soc.split(alerts)
-mock = llm.MockLLM()
-parsed = [parse(mock.structured(t)) for t in test.description]
-print(f"valid: {sum(p is not None for p in parsed):,} of {len(parsed):,}")
+for name, p, df in (("Kestrel", p_k, kestrel), ("Harbor", p_h, harbor)):
+    lo, hi = cal.ece_interval(p, df.malicious)
+    print(f"{name:>8}: attacks {df.malicious.mean():.1%}, "
+          f"average P {p.mean():.1%}, ECE {cal.ece(p, df.malicious):.3f} "
+          f"({lo:.3f}-{hi:.3f})")
 ```
 :::
 
-This is ordinary software hygiene, and it's worth being blunt about why it matters more here than usual. An LLM's output is *generated text*, influenced by everything in its input, including an alert description an attacker may have written. Treat it exactly as you'd treat text typed into a web form by a stranger.
+![The same model's reliability at two companies. At Kestrel, whose mix of alerts matches what the mock was built around, it sits close to the diagonal. At Harbor, where attacks are rarer, every probability is too high.](/figures/ch18/two-companies.pdf){#fig-two-companies}
 
-::: {.bookquote by="Jon Postel, RFC 761 (the TCP specification), 1980"}
-Be conservative in what you do, be liberal in what you accept from others.
-:::
+At Kestrel, the ECE is {{< num ch18 ece_kestrel f3 >}}. At Harbor, it's {{< num ch18 ece_harbor f3 >}}, and the direction is consistent: Harbor's average predicted risk is {{< num ch18 harbor_mean_p pct1 >}} when the real attack rate is {{< num ch18 harbor_base pct1 >}}. Put Chapter 14's act line on those numbers and Harbor sends roughly twice as many alerts to review as it needs to (@fig-two-companies).
 
-Postel's advice helped the internet survive its own messiness. For model output feeding decisions, I'd flip half of it. Be liberal in what you *parse*, so a stray code fence doesn't crash you. Be strict in what you *accept*, so an invented field never reaches a decision.
+Nothing about the model changed. Only the world did.
 
-## Three confidences
+As always, the mock is synthetic and I built Harbor to make the point cleanly. I can't tell you how much real Jev's calibration varies between real companies. What I can tell you is that the mechanism is general, and it applies to every model that returns probabilities without seeing your base rate.
 
-Now the quieter problem. Say the JSON is perfect. It says `"verdict": "malicious", "confidence": 0.95`. Can Kestrel put a threshold on that 0.95?
+## Fixing it
 
-There are actually three different numbers you might use here, and it's worth seeing them side by side.
+Here's the good news, and it's very good news. This kind of miscalibration is often easy to fix.
 
-**The confidence the model wrote.** The `0.95` in the JSON is text. The model generated the characters "0", ".", "9", "5" the same way it generates any other text: by picking plausible tokens. This is often called *verbalized* confidence.
-
-**The token probability.** Many APIs will return the probability the model gave to each token it produced, called *logprobs*. You can read off the probability it gave to "malicious" as the first token of the verdict.
-
-**A probability from a model built to produce one.** A decision model whose actual output *is* a probability for each option, like the calibrated classifiers of Part I or Jev's typed answers.
-
-Let's look at the first one before we compare.
-
-![Every confidence value the mock LLM wrote in its JSON, across 4,000 alerts. Just a handful of round numbers, almost all 0.9 or above.](/figures/ch11/stated.pdf){#fig-stated}
-
-The mock wrote only {{< num ch11 n_distinct_stated int >}} different values, and {{< num ch11 share_stated_ge_09 pct >}} of them were 0.9 or higher (@fig-stated). That's a pattern many people have noticed with real models: stated confidences cluster on round, high numbers. Whether a given real model's stated confidence is well calibrated is genuinely mixed in the research. One study found that for some preference-tuned models, asking for a stated confidence gave *better* calibration than the token probabilities [@tian2023]. Others found stated confidence badly overconfident [@xiong2024]. The only honest rule is to measure yours.
-
-Here's the comparison on Kestrel's test alerts, all three reading exactly the same raw alert text.
-
-![Reliability of three "confidences" on the same 4,000 test alerts, all reading the same raw text. The stated confidence (yellow) barely separates attacks from harmless alerts. The token probability (orange) ranks well but is overconfident. The decision model (green) ranks as well and sits closest to the diagonal.](/figures/ch11/three-confidences.pdf){#fig-three-confidences}
-
-::: {.sidebar title="Read this chart carefully"}
-Everything in @fig-three-confidences is synthetic. The mock LLM and the mock Jev were built by me, and their behaviour reflects my design choices (see `DECISIONS.md`), which follow failure patterns reported for real LLMs. The chart shows *how to compare* confidences. It doesn't show how any real LLM or real Jev performs. Run the same comparison on your own models and data.
-:::
-
-The stated confidence ranks alerts poorly, with an AUC of {{< num ch11 verbal.auc f2 >}}, because a handful of round numbers can't separate much. The token probability ranks much better ({{< num ch11 token.auc f2 >}}), but it's overconfident: ECE {{< num ch11 token.ece f3 >}}. The decision model ranks slightly better still ({{< num ch11 jev_text.auc f2 >}}) and is the most honest of the three, with an ECE of {{< num ch11 jev_text.ece f3 >}}.
-
-## Why a token probability isn't an answer probability
-
-The token probability deserves a closer look, because it's so tempting. It's a real probability, straight from the model. Why isn't it the probability that "malicious" is the right answer?
-
-Because the model isn't choosing between two answers. It's choosing between tens of thousands of possible next tokens.
-
-![The first-token probabilities for one alert (illustrative). "malicious" as the first token gets 0.41. But capitalised and space-prefixed versions take more, and some probability goes to the model starting a sentence instead of answering. The probability of the answer "malicious" is spread across all of them.](/figures/ch11/surface-forms.pdf){#fig-surface-forms}
-
-As @fig-surface-forms shows, the same answer can start with several different tokens: "malicious", "Malicious", " malicious" with a leading space. Some probability goes to the model starting a sentence ("The alert...") instead of answering. Longer labels are split across several tokens, so their probability is a product of several steps. And everything the model learned in preference tuning (Chapter 9) shapes these numbers too. You *can* add up the right tokens and renormalise, and people do, but at that point you're building a decision model by hand on top of a writing model.
-
-::: {.keyidea}
-The probability of a token isn't the probability of an answer.
-:::
-
-## The typed alternative
-
-Which brings us to a different way of asking.
-
-Instead of asking a writer to produce text in a decision-shaped format, you can ask a model whose native output *is* the decision. You declare the question and its possible answers as types, and you get back the answer as data, with a probability for every option.
-
-![The same question, two ways. On the left, an LLM writes JSON, including a confidence it wrote as text. On the right, a typed decision question returns data: a probability for a yes/no question, and a probability for every label of a choice.](/figures/ch11/typed-vs-text.pdf){#fig-typed-vs-text}
-
-That's what Jev's interface looks like, and here it is through TypeSafe's official Python library, with the book's mock underneath:
+**Adjust for the base rate.** If the model's probabilities were right for one base rate, and you know yours, you can correct them with one line of arithmetic. Multiply the odds by the ratio of the two base rates' odds. That's Bayes' rule from Chapter 2 again: the new evidence is the same, only the starting point moved [@saerens2002].
 
 ```{python}
-from typesafe_sdk import Choice, Noul, TypeSafeClient
-from jevkit import MockJevTransport
+rng = np.random.default_rng(0)
+labelled = rng.choice(len(harbor), 300, replace=False)
+rest = np.setdiff1d(np.arange(len(harbor)), labelled)
+y = harbor.malicious.to_numpy()
 
-client = TypeSafeClient(api_key="mock", transport=MockJevTransport())
-r = client.system_one(state=test.description.iloc[0], questions={
-    "attack": Noul(instructions="Is this alert a real attack?"),
-    "kind": Choice(criteria={c: None for c in soc.CATEGORIES}),
-})
-print(r.model, round(r.nouls["attack"].noul, 3))
-print(r.choices["kind"].choice,
-      round(r.choices["kind"].confidence, 3))
+rate = y[labelled].mean()              # estimated from 300 labels
+adjusted = cal.prior_shift(p_h, kestrel.malicious.mean(), rate)
+platt = cal.Platt().fit(p_h[labelled], y[labelled])
+print(f"as returned:   ECE {cal.ece(p_h[rest], y[rest]):.3f}")
+print(f"odds adjusted: ECE {cal.ece(adjusted[rest], y[rest]):.3f}")
+print(f"Platt, 300:    ECE {cal.ece(platt(p_h[rest]), y[rest]):.3f}")
 ```
 
-There's nothing to parse and no format to break. The labels can only be the ones you listed. And the number you get back is designed to be a probability rather than a piece of text, which means it's a claim you can check with a reliability diagram. Part IV does exactly that, and it covers the three question types, `noul`, `choice` and `score`, in detail.
+![Harbor's alerts, on the cases not used for fitting: as returned (red), after adjusting the odds for Harbor's base rate (blue), and after Platt scaling on 300 labelled alerts (green). Both fixes bring the curve most of the way back to the diagonal.](/figures/ch18/harbor-fixes.pdf){#fig-harbor-fixes}
+
+With the base rate known exactly, the odds adjustment brings Harbor's ECE down to {{< num ch18 ece_prior_known f3 >}}. With the base rate *estimated* from just 300 labelled alerts, it gets {{< num ch18 ece_prior_est f3 >}}. Platt scaling fitted on the same 300 labels does best of all, {{< num ch18 ece_platt300 f3 >}} (@fig-harbor-fixes), because it can correct a stretch as well as a shift.
+
+The adjustment rests on an assumption: that alerts of each kind look the same at both places, and only how common each kind is has changed. When that's not true, when your attackers use different techniques or your detectors fire differently, only fitting on your own labels will do. That's another reason the labels matter.
+
+## How many labels?
+
+"A few hundred labels" is the answer I've been giving. It's time to be precise, because small samples play a nasty trick on calibration measurements.
+
+Take the mock at Kestrel, whose ECE on all 20,000 alerts is {{< num ch18 ece_full f3 >}}. Now pretend you only had a random 100 labelled alerts, and measure ECE on those. Do it 200 times with different random samples.
+
+![The ECE you'd measure from a random sample of labelled alerts, for different sample sizes, on a model whose ECE over all 20,000 alerts is shown by the black line. With a hundred labels the measurement is both noisy and biased upwards: an honest model looks dishonest. The bias shrinks as samples grow.](/figures/ch18/ece-noise.pdf){#fig-ece-noise}
+
+With 100 labels, the typical measured ECE is {{< num ch18 ece_n100 f3 >}}, over three times the real value, and one sample in twenty reads as high as {{< num ch18 ece_n100_hi f3 >}} (@fig-ece-noise). That isn't the model being worse; it's the measurement. With few cases per bin, every bin's observed rate wobbles, and ECE adds up the *size* of the wobbles regardless of direction, so noise always pushes it up. By 3,200 labels, the measurement is close to the truth.
+
+::: {.keyidea}
+With few labels, ECE is biased upwards. Report a range, and don't call a model miscalibrated on a hundred cases.
+:::
+
+The practical upshot is a trade-off. A few hundred labels are enough to *fix* a big, systematic problem like Harbor's base rate. Checking that a model is calibrated to within a percentage point or two takes a few thousand. Use `ece_interval()`, or plot the diagram with the counts showing, and let the range guide you.
+
+## Choices and scores
+
+Everything so far has been about yes-or-no. Chapter 10's other types need checking too.
+
+For a **choice**, start with the simplest version: is the top label's confidence honest? Among all the times the model's top label had confidence around 0.8, was it right about 80% of the time?
+
+![Top-label calibration for the category question on 2,500 of Kestrel's alerts: the confidence of the model's top category against how often that category was right.](/figures/ch18/top-label.pdf){#fig-top-label}
+
+For the mock's category answers, the top label's average confidence is {{< num ch18 top_conf_mean pct >}} and it's right {{< num ch18 top_acc pct >}} of the time, with an ECE of {{< num ch18 top_ece f3 >}} (@fig-top-label). Then go further: check each label's probability on its own (*is "phishing" at 0.3 right 30% of the time?*), especially the labels you act on.
+
+For a **score**, check the probability of each tail you put a threshold on, such as P(severity is medium or high), exactly like a noul.
+
+## A routine you can repeat
+
+![A testing routine for any model that returns probabilities, Jev included.](/figures/ch18/protocol.pdf){#fig-protocol}
+
+Here's the routine I'd follow before trusting any model's probabilities for a decision, and on a schedule afterwards (@fig-protocol).
+
+1. **Collect labels.** Recent cases with known outcomes, and a few thousand if you can get them. In a SOC, include random audits of auto-closed alerts, as Chapter 14 insisted, or your labels will only cover the cases people looked at.
+2. **Plot, don't just score.** A reliability diagram with the counts showing, and ECE with a range. Look hardest near your thresholds.
+3. **Slice.** Every group you'll act on differently: source, customer tier, language, region.
+4. **Fix.** A base-rate adjustment if that's the problem and you know the rate; Platt or temperature scaling on your labels otherwise.
+5. **Re-test.** On a schedule, and whenever the model version or your data changes. Aliases like `jev-latest` can move under you.
+
+So, back to the two claims. The vendor may well be right that Jev is calibrated on the data they tested it on. The critic is right that this doesn't make it calibrated on yours. The routine turns the argument into a measurement.
+
+::: {.keyidea}
+Treat a new model's outputs as scores until you've tested them on your data. After that, treat them as probabilities.
+:::
 
 ::: {.breaks}
-JSON mode doesn't stop a model from choosing the wrong value, repeating a field, or copying an attacker's text straight into your structured output. Strict validation doesn't catch a value that's valid but wrong: a threat-intel score misread as 0.18 instead of 0.81 passes every schema. And typed decision APIs have their own limits: they give you probabilities but no reasons, and their calibration still has to be tested on your data, not assumed from the interface.
+Labels are themselves imperfect. Analysts disagree, some attacks are never discovered, and labels arrive late: an alert closed today may turn out to be part of an intrusion found next month. Calibration measured on today's labels will look better than it is. Keep a "mature labels" set, cases old enough that their outcomes have settled, and measure on that. And be careful with labels that exist only because of the model's own decisions: if the model auto-closed a case, nobody labelled it, and your sample is biased towards the cases it sent to people.
 :::
 
 ::: {.threshold}
-Kestrel wants to auto-close alerts the LLM labels "benign" with confidence at least 0.95. Using @fig-stated and @fig-three-confidences, roughly how many alerts would pass that line? Would you trust it? Which of the three numbers would you rather threshold, and what would you check first?
+Harbor adopts Kestrel's act line of 0.031 without checking calibration. Given that Harbor's probabilities run about twice too high, is Harbor's line effectively stricter or looser than Kestrel's? What happens to Harbor's review queue, and to its missed threats?
 
-(Most benign-labelled alerts would pass, because 0.95 and 0.99 are the mock's favourite values, so the line filters almost nothing. The stated confidence can't support a threshold. The best choice here is the probability with the best calibration, checked on recent history, with the act line set by Chapter 21's cost arithmetic.)
+(Stricter. With inflated probabilities, fewer alerts fall below 0.031, so Harbor auto-closes less than it safely could. Its queue swells, and its missed threats go *down*, at the cost of analyst time it may not have. Fix the calibration, then recompute the line from Harbor's own costs.)
 :::
+
+::: {.bookquote by="Bruno de Finetti, Theory of Probability, 1974"}
+Probability does not exist.
+:::
+
+De Finetti meant that probability isn't a physical property of the world, but a statement of belief given what you know. For a model, "what it knows" never includes your base rate, unless you tell it.
 
 ## Where we are
 
-We asked a writing machine for decisions. The format broke a few times in every hundred, and constrained decoding fixed the format while leaving the content free to be wrong. Strict validation and a fail-safe handled the rest. Then we found three candidates for "how sure" in the same response: a number the model wrote, a token probability spread across spellings, and a probability from a model built to produce one. Only one of them was designed to be thresholded, and even that one has to be checked.
+Two claims collided, and we tested instead of taking sides. The same model was honest at one company and inflated at another, because a probability depends on its data as well as its model. A one-line odds adjustment or a few hundred labels fixed the gap. Then we found that a few hundred labels can't *prove* calibration, because small samples make honest models look dishonest. What remains is a routine you can run on Jev or on anything else.
 
-LLMs have another weakness we haven't dealt with. They only know what they were trained on. Next: giving them your documents.
+Next, the bigger picture: what happens when decisions like these become almost free.
 
 ::: {.exercises}
-1. List the three JSON failures in @fig-json-failures and, for each, say whether constrained decoding prevents it, strict validation catches it, or neither.
-2. In the lab, change `extra="forbid"` to `extra="ignore"`. What gets through now? When might that be acceptable?
-3. Explain to a product manager, in three sentences, why `"confidence": 0.95` in an LLM's JSON can't be used as a probability without testing.
-4. Design a test to check whether the token probability of "malicious" from a real LLM API is calibrated on 500 of your own labelled alerts. What would you plot, and what would you do if it were overconfident?
+1. Explain to a manager, in three sentences, why a model can be calibrated at one company and not another, even with identical inputs.
+2. In the lab, generate a third company where attacks are *more* common than at Kestrel (use `logit_shift` of +1.0). Which way does the reliability curve bend? Does the odds adjustment fix it?
+3. You have 150 labelled alerts and measure ECE 0.05. A colleague says the model is badly calibrated. What would you say, and what would you do next?
+4. Design the labelling plan for testing Jev's calibration at your organisation, or one you know: how many labels, from which cases, how you'd avoid only labelling what the model sent to people, and how often you'd repeat it.
 :::
 
 ::: {.nexthook}
-Next: an LLM knows the internet, not your company. Chapter 12 shows how retrieval hands it the right documents at the right moment, and how agents keep a memory.
+Next: TypeSafe named the model after a Victorian economist who noticed something strange about coal. Chapter 12 is about why that might be the most important thing about it.
 :::

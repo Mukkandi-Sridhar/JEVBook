@@ -1,26 +1,31 @@
-# Probability is the language of decisions {#sec-ch02}
+# Probability, and how a machine learns it {#sec-ch02}
+
+::: {.epigraph by="Joseph Butler, The Analogy of Religion, 1736"}
+But to us, probability is the very guide of life.
+:::
 
 ```{python}
 #| include: false
+import numpy as np
 from jevkit import soc
 ```
 
-Let me guess what went through your head when you saw this chapter's title.
+Let me guess what went through your head when you saw the word "probability".
 
-*"Probability. Coins and dice. I did this at school, didn't enjoy it much, and I'm fairly sure I don't need it to build AI systems."*
+*"Coins and dice. I did this at school, didn't enjoy it much, and I'm fairly sure I don't need it to build AI systems."*
 
 That's a reasonable thought. It's also the most expensive mistake people make in this field.
 
-In the last chapter, a machine learned exactly what we asked and still ended up useless, because we asked for yes-or-no answers. The fix was to ask for a *chance* instead. This chapter is about what a chance actually means, how to read one without being fooled, and the one trap that catches doctors, judges and security teams alike.
+In the last chapter, a machine learned exactly what we asked and still ended up useless, because we asked for yes-or-no answers. The fix was to ask for a *chance* instead. This chapter does two things. First, it makes sure you can read a chance without being fooled, including the one trap that catches doctors, judges and security teams alike. Then it builds, in about twenty lines of code, a model that learns chances from examples.
 
 There's no heavy maths here. There are a few ideas that, once they click, you'll use for the rest of your career.
 
 ::: {.goals}
 - Say what "a 70% chance" means in a way you could check.
-- Tell apart P(attack) and P(attack | this clue), and know why the difference matters.
-- Spot the base-rate trap before it costs you, using natural frequencies.
-- Update a probability with new evidence by multiplying odds: Bayes' rule without the fear.
+- Spot the base-rate trap before it costs you, and update a probability by multiplying odds.
 - Read precision and recall, and explain why accuracy can lie.
+- Build a model that adds up evidence into a probability, score it with log loss, and train it by rolling downhill.
+- Recognise overfitting and leakage, the two ways a model fools you during training.
 :::
 
 ## What "70%" means
@@ -33,30 +38,15 @@ Was the forecast wrong?
 
 Not necessarily. One day can't tell you. What *can* tell you is the forecaster's track record. Collect every day they said "70%". If it rained on about 70 of every 100 of those days, the forecaster is doing their job, and a dry day is just one of the 30.
 
-![One way to picture a probability. Of 100 days when a forecast said "70% chance of rain", a good forecaster sees rain on about 70.](/figures/ch02/forecast.pdf){#fig-forecast}
+So here's the idea to hold on to: **a probability is a claim about how often something happens among cases like this one.**
 
-So here's the idea to hold on to, in one sentence: **a probability is a claim about how often something happens among cases like this one.**
-
-That definition is useful because it's *checkable*. You can collect cases, count, and see whether the claim holds up. We'll lean on that again and again. When a model tells you an alert is 70% likely to be an attack, it's making the same kind of promise as the weather app, and we can hold it to the same standard.
-
-::: {.deeper}
-Statisticians have argued for two centuries about what probability "really" is. Is it a long-run frequency, or a degree of belief? The Italian mathematician Bruno de Finetti opened his famous textbook with the line *"Probability does not exist"*, meaning it isn't a property of the world but of our knowledge about it. For building decision systems you can hold both views at once: a model's probability is its degree of belief, and we judge that belief by how often it comes true.
-:::
+That definition is useful because it's *checkable*. When a model tells you an alert is 70% likely to be an attack, it's making the same kind of promise as the weather app, and we can hold it to the same standard.
 
 ## The two most important words: "among what?"
 
-That phrase *among cases like this one* is doing a lot of quiet work.
+At Kestrel Logistics, about {{< num ch02 base pct1 >}} of all alerts turn out to be real attacks. That's the probability of an attack **among all alerts**. Among alerts with a threat-intel score of 0.7 or more, the share is much higher. Same question, a different answer depending on *which group* you're asking about.
 
-At Kestrel Logistics, about {{< num ch02 base pct1 >}} of all alerts turn out to be real attacks. That's the probability of an attack **among all alerts**.
-
-But among alerts with a threat-intel score of 0.7 or more, the share is much higher. Among alerts that match an approved IT tool with a change ticket on file, it's much lower. Same question, "is it an attack?", with a different answer depending on *which group* you're asking about.
-
-Statisticians write the second kind with a vertical bar, and you read the bar as "given":
-
-- P(attack) means the chance of an attack, full stop.
-- P(attack | bad score) means the chance of an attack *given* that the score is bad.
-
-Here's where people get tangled. P(attack | bad score) and P(bad score | attack) look like mirror images. They're not.
+Statisticians write the second kind with a vertical bar, read as "given": P(attack | bad score) is the chance of an attack *given* a bad score. And here's where people get tangled. P(attack | bad score) and P(bad score | attack) look like mirror images. They're not.
 
 ::: {.tryit lab="ch02"}
 ```{python}
@@ -69,33 +59,25 @@ print(f"P(bad score | attack)   = {bad[y == 1].mean():.3f}")
 ```
 :::
 
-About {{< num ch02 ioc_attack_share pct >}} of attacks come with a bad score. That doesn't mean a bad score makes an alert {{< num ch02 ioc_attack_share pct >}} likely to be an attack. Those numbers answer two different questions: "how often do attacks look like this?" and "how often is something that looks like this an attack?" Mixing them up has a name in courtrooms, the *prosecutor's fallacy*, and it has put innocent people in prison. In a SOC it just ruins your week.
+About {{< num ch02 ioc_attack_share pct >}} of attacks come with a bad score. That doesn't make a bad-score alert {{< num ch02 ioc_attack_share pct >}} likely to be an attack. "How often do attacks look like this?" and "how often is something that looks like this an attack?" are different questions. Mixing them up has a name in courtrooms, the *prosecutor's fallacy*, and it has put innocent people in prison. In a SOC it just ruins your week.
 
 ## The trap
 
 Here's a puzzle. Try it honestly before reading on.
 
-A new detector catches 99% of real attacks. It also raises a false alarm on 5% of normal activity. Real attacks are rare: one event in every thousand.
+A new detector catches 99% of real attacks. It also raises a false alarm on 5% of normal activity. Real attacks are rare: one event in every thousand. The detector just fired. What's the chance you're looking at a real attack?
 
-The detector just fired. What's the chance you're looking at a real attack?
-
-Most people say something like 95%. The detector is "99% accurate", after all.
+Most people say something like 95%.
 
 The real answer is about 2%.
 
-If that feels wrong, you're in excellent company. In a well-known 1978 study, doctors and students at Harvard Medical School were given the same puzzle about a medical test. The most common answer was 95%. Fewer than one in five got close to the right one [@casscells1978].
-
-The way out isn't a formula. It's counting. Imagine 100,000 events.
+If that feels wrong, you're in excellent company. In a well-known 1978 study, doctors and students at Harvard Medical School were given the same puzzle about a medical test, and the most common answer was 95% [@casscells1978]. The way out isn't a formula. It's counting.
 
 ![The same puzzle, counted out. Of 100,000 events, 100 are attacks and the detector catches 99 of them. But 5% of the 99,900 normal events also set it off: 4,995 false alarms. When the alarm sounds, you're holding one of 5,094 alerts, and only 99 of them are real.](/figures/ch02/base-rate-tree.pdf){#fig-base-rate-tree}
 
-@fig-base-rate-tree is the whole trick. The 5% false-alarm rate sounds small, but it's 5% of a *huge* number. The 99% hit rate sounds large, but it's 99% of a *tiny* one. Rarity wins.
+@fig-base-rate-tree is the whole trick. The 5% false-alarm rate sounds small, but it's 5% of a *huge* number. The 99% hit rate sounds large, but it's 99% of a *tiny* one. The psychologist Gerd Gigerenzer showed that people who reason with counts like these get such puzzles right far more often [@gigerenzer1995]. If a probability ever surprises you, turn it into counts of events. The surprise usually vanishes.
 
-This way of counting has a name, *natural frequencies*, and the psychologist Gerd Gigerenzer showed that people who reason with counts like these get Bayesian puzzles right far more often than people handed percentages [@gigerenzer1995]. I'd go further: if a probability ever surprises you, stop and turn it into counts of people or events. The surprise usually vanishes.
-
-![What the analyst on shift actually sees. Every square stands for 10 alerts from the new detector; the red ones are real attacks.](/figures/ch02/icon-array.pdf){#fig-icon-array}
-
-That's the chance of something *before* you see any evidence, the 1 in 1,000, and it's called the **base rate**. Ignoring it is called the base-rate fallacy, and it's everywhere in AI. It's why a "95% accurate" fraud model can still bury a bank in false alarms, and why every security team feels drowned in noise.
+The chance of something before you see any evidence, the 1 in 1,000, is called the **base rate**. Ignoring it is the base-rate fallacy, and it's why a "95% accurate" fraud model can still bury a bank in false alarms.
 
 ::: {.keyidea}
 Rare things stay rare even after the alarm goes off.
@@ -105,9 +87,7 @@ Rare things stay rare even after the alarm goes off.
 
 So how *should* a new clue change your mind?
 
-The cleanest way I know uses **odds** instead of probabilities. Odds are just "for" compared with "against". A probability of 20% is odds of 20 to 80, or 1 to 4, or 0.25.
-
-Now, every clue has a strength. Ask: *how much more common is this clue among attacks than among harmless alerts?* That ratio is called the **likelihood ratio**. At Kestrel, a threat-intel score of 0.7 or more shows up in {{< num ch02 ioc_attack_share pct >}} of attacks and {{< num ch02 ioc_benign_share pct1 >}} of harmless alerts, so its likelihood ratio is about {{< num ch02 lr_ioc f1 >}}.
+The cleanest way uses **odds**: "for" compared with "against". A probability of 20% is odds of 20 to 80, or 0.25. Every clue has a strength: how much more common is it among attacks than among harmless alerts? That ratio is the **likelihood ratio**. At Kestrel, a threat-intel score of 0.7 or more shows up in {{< num ch02 ioc_attack_share pct >}} of attacks and {{< num ch02 ioc_benign_share pct1 >}} of harmless alerts, so its likelihood ratio is about {{< num ch02 lr_ioc f1 >}}.
 
 Then Bayes' rule, the famous one, fits in a single line:
 
@@ -115,66 +95,102 @@ Then Bayes' rule, the famous one, fits in a single line:
 New odds = old odds × likelihood ratio.
 :::
 
-That's it. A clue that's ten times more common among attacks multiplies the odds by ten. A clue that's equally common in both groups multiplies them by one and changes nothing, which is exactly as it should be.
-
-```{python}
-def likelihood_ratio(mask):
-    return mask[y == 1].mean() / mask[y == 0].mean()
-
-odds = y.mean() / (1 - y.mean())
-clues = [("bad threat intel", alerts.ioc_score >= 0.7),
-         ("after hours", alerts.after_hours),
-         ("new country", alerts.new_geo)]
-for name, mask in clues:
-    lr = likelihood_ratio(mask)
-    odds *= lr
-    print(f"{name:>17}: x{lr:4.1f} -> P = {odds / (1 + odds):.0%}")
-```
-
 ![Starting from the base rate and multiplying the odds by each clue's likelihood ratio. Three ordinary clues take an alert from "probably nothing" to "probably an attack".](/figures/ch02/odds-update.pdf){#fig-odds-update}
 
-@fig-odds-update shows the evidence piling up. An ordinary alert starts at {{< num ch02 base pct >}}. A bad threat-intel score takes it to {{< num ch02 p1 pct >}}. Add "outside business hours" and it's {{< num ch02 p2 pct >}}. Add "sign-in from a new country" and it's {{< num ch02 p3 pct >}}.
+An ordinary alert starts at {{< num ch02 base pct >}}. A bad threat-intel score takes it to {{< num ch02 p1 pct >}}. Add "outside business hours" and it's {{< num ch02 p2 pct >}}; add "sign-in from a new country" and it's {{< num ch02 p3 pct >}} (@fig-odds-update).
 
-One honest caveat. Multiplying likelihood ratios like this assumes each clue tells you something *new*, that the clues are independent given the answer. Real clues often aren't. In Kestrel's data, attackers who use bad infrastructure also tend to work at night, so the two clues overlap. When we look at alerts that have both, the real attack rate is {{< num ch02 real12 pct >}}, not the {{< num ch02 p2 pct >}} our multiplication predicted. The multiplication gave the right direction and the wrong size.
-
-That gap is exactly why we don't do this by hand in practice. We let a model learn how much each clue is worth, *including* how the clues interact. The next chapter shows you the simplest such model, and it turns out to be Bayes' rule in disguise: it adds up evidence on the log-odds scale.
+One honest caveat. Multiplying like this assumes each clue tells you something *new*. Real clues overlap: attackers who use bad infrastructure also tend to work at night. Among alerts with both clues, the real attack rate is {{< num ch02 real12 pct >}}, not the {{< num ch02 p2 pct >}} our multiplication predicted. That gap is why, in practice, we let a model learn how much each clue is worth. We'll build one in a moment.
 
 ## Why accuracy lies
 
-Back to the question that fooled us in Chapter 1: how do we score a rule?
-
-Let's take a concrete one, *raise an alert whenever the threat-intel score is 0.5 or more*, and sort every alert at Kestrel into four boxes.
+First, how do we score a yes-or-no rule? Take *raise an alert whenever the threat-intel score is 0.5 or more*, and sort every alert into four boxes.
 
 ![Every one of the 20,000 alerts, sorted by what the rule said and what really happened. Precision and recall each ignore one of the two columns, and that's what makes them honest about rare events.](/figures/ch02/confusion.pdf){#fig-confusion}
 
-@fig-confusion is called a *confusion matrix*, which is a terrible name for something so clarifying. Two numbers come out of it that you'll see in every chapter from here on.
+**Precision** answers: *when the rule raises an alert, how often is it real?* Here it's {{< num ch02 precision pct >}}. **Recall** answers: *of all the real attacks, how many did the rule catch?* Here it's {{< num ch02 recall pct >}}. And **accuracy**, the share of all alerts put in the right box (@fig-confusion), comes out at {{< num ch02 accuracy pct >}}. That sounds decent, until you notice that a rule that *never raises any alert at all* scores {{< num ch02 always_benign_acc pct >}}. When one outcome is rare, accuracy mostly measures how common the other one is.
 
-**Precision** answers: *when the rule raises an alert, how often is it real?* Here it's {{< num ch02 precision pct >}}. That's how much the analysts can trust the alarm.
+## A model that adds up evidence
 
-**Recall** answers: *of all the real attacks, how many did the rule catch?* Here it's {{< num ch02 recall pct >}}. That's how much the company can trust the silence.
+Now the second half: a machine that learns these probabilities from examples.
 
-And **accuracy**, the share of all alerts put in the right box, comes out at {{< num ch02 accuracy pct >}}. Sounds decent, until you notice that a rule that *never raises any alert at all* scores {{< num ch02 always_benign_acc pct >}}. When one outcome is rare, accuracy mostly measures how common the other outcome is.
+Bayes' rule multiplied odds. Multiplying is awkward and adding is easy, so take the logarithm of the odds, the **log-odds**, and every multiplication becomes an addition. That gives a very simple machine. Start from a baseline number, add a **weight** for each clue, and turn the total back into a probability with an S-shaped curve.
 
-::: {.threshold}
-Precision and recall pull against each other. Lower the rule's threshold from 0.5 to 0.3, and which of the two goes up? Which goes down? If Kestrel's analysts can only look at 300 alerts a day, which number should they care about more?
+![The S-curve (the logistic, or sigmoid, function) turns total evidence into a probability. Every step to the right multiplies the odds by the same amount, which is why the curve flattens out: once you're very sure, more evidence changes the probability only a little.](/figures/ch03/sigmoid.pdf){#fig-sigmoid}
 
-(Recall goes up, precision down: you catch more attacks and raise more false alarms. With a fixed daily budget, precision decides how many real attacks fit inside those 300 looks. Chapter 5 puts both into a single cost.)
+That's the whole model (@fig-sigmoid). It's called **logistic regression**, and it's been used for credit scores and medical risk for decades. Underneath, it's Bayes' rule on the log-odds scale, with one upgrade: the model learns all the weights *together*, so it can discount clues that overlap.
+
+The weights are the knobs. To find good ones, we need a way to say what "good" means.
+
+## Scoring a probability
+
+Counting mistakes doesn't work any more, because the model doesn't say yes or no. It says 0.07, or 0.63.
+
+Think about how *you'd* want to be judged as a forecaster. Say 90% and be right, and you should lose almost nothing. Say 1% and be wrong, and you should be embarrassed, badly, because you were confidently wrong. That score exists. It's called **log loss**, and it measures surprise: the penalty is minus the logarithm of the probability you gave to what actually happened.
+
+![Log loss for a single alert. If it really was an attack (red), the penalty is small when the model gave "attack" a high probability and explodes as that probability heads towards zero. Harmless alerts (blue) work the same way from the other side.](/figures/ch03/logloss.pdf){#fig-logloss}
+
+Saying 90% and being right costs about {{< num ch03 loss_if_right_09 f1 >}}. Saying 1% and being wrong costs about {{< num ch03 loss_if_certain_wrong f1 >}}, nearly fifty times more (@fig-logloss).
+
+Log loss has a deeper property, and it's the reason this book cares so much about it. It's a **proper scoring rule**: the only way to get the best score, on average, is to report the probabilities you actually believe. Say 99% when you believe 80%, and over many cases you lose more than you gain. That's why models trained this way tend to come out reasonably *honest*, a word the next chapter spends its whole length on.
+
+::: {.keyidea}
+Log loss rewards honest confidence and punishes confident mistakes.
 :::
 
-## Small samples wobble
+## Rolling downhill
 
-One last idea, and it's the one that'll save you from embarrassing yourself in meetings.
+Picture the log loss as hilly ground: every combination of weights is a place, and the height is the loss. Learning means finding the lowest point. We can't search every place, but we don't have to. Stand on a hillside in thick fog, feel which way the ground slopes under your feet, take a step downhill, and repeat until the ground is flat.
 
-Say a new detector fires 20 times in its first week, and analysts confirm 3 of those were real. Is the detector's precision 15%?
+::: {.keyidea}
+That's gradient descent.
+:::
 
-Maybe. But with only 20 alerts, the true rate could plausibly be anywhere from about 4% to 35%. Twenty coin flips can easily come up 13 heads.
+The **gradient** is the slope in every direction at once. For logistic regression it has a lovely form: for each alert, take what the model said minus what happened, *p* − *y*, multiply by the alert's clues, and average. Step the other way. How big a step to take is the **learning rate**: too small and you barely move, too big and you overshoot the valley.
 
-![How far a measured rate can wander from the truth, depending on how many alerts you check. The black line is the true attack rate; the shaded band is where 95% of honest samples land; the dots are real random samples. At 20 alerts, the band is enormous. At a few thousand, it's thin.](/figures/ch02/sample-size.pdf){#fig-sample-size}
+![The loss surface for a tiny model with just two knobs. The contours are like a map's height lines. Gradient descent starts from a deliberately bad guess and follows the slope down to the valley floor.](/figures/ch03/descent-2d.pdf){#fig-descent-2d}
 
-@fig-sample-size shows how quickly that uncertainty shrinks as the sample grows, and how slowly it shrinks at first. The practical rule is simple. Whenever you report a rate from a small sample, report the range too. Chapter 21 needs exactly this when it audits the alerts a machine closed on its own: with true miss rates around 1%, you need hundreds of audits before the number means much.
+Here it is, on Kestrel's alerts. We keep 20% of them locked away for testing, because the only honest estimate of how a model will do on new alerts comes from alerts it never saw.
+
+```{python}
+train, calib, test = soc.split(alerts)       # 60/20/20
+X = soc.feature_matrix(train).to_numpy()
+Xt = soc.feature_matrix(test).to_numpy()
+y_tr, y_te = train.malicious.to_numpy(), test.malicious.to_numpy()
+sigmoid = lambda z: 1 / (1 + np.exp(-z))
+log_loss = lambda p, y: -np.mean(y * np.log(p) + (1 - y) * np.log(1 - p))
+
+mu, sd = X.mean(0), X.std(0) + 1e-9          # common scale
+Xs, Xts = (X - mu) / sd, (Xt - mu) / sd
+w, b = np.zeros(X.shape[1]), 0.0             # all knobs at zero
+for step in range(401):
+    p = sigmoid(Xs @ w + b)
+    w -= 0.5 * Xs.T @ (p - y_tr) / len(y_tr)  # step downhill
+    b -= 0.5 * np.mean(p - y_tr)
+print(f"test loss {log_loss(sigmoid(Xts @ w + b), y_te):.4f}")
+```
+
+That loop is the heart of machine learning. Everything else, including the training of LLMs, is this loop with a bigger model, more data and cleverer steps.
+
+Because Kestrel is synthetic, we can compare against the *true* probability of every alert. Our twenty-line model gets within {{< num ch03 gap_pct pct >}} of the best log loss any model could achieve on this data.
+
+## Two ways a model fools you
+
+**Overfitting** is memorising instead of learning. A flexible enough model can shape itself around every quirk of the training data, including the noise, and its training loss keeps falling while it gets *worse* at anything new.
+
+![A decision tree allowed only a few questions learns general patterns. Allowed dozens, it memorises individual training alerts: its loss on them approaches zero while its loss on new alerts climbs.](/figures/ch03/overfit.pdf){#fig-overfit}
+
+A decision tree allowed {{< num ch03 tree_best_depth int >}} levels of questions does best on new alerts. Allowed twenty, it nearly memorises the training set, with a training loss of {{< num ch03 tree_deep_train f3 >}}, and does terribly on alerts it hasn't seen ({{< num ch03 tree_deep_test f2 >}}) (@fig-overfit). The only way to see this is to test on data the model never trained on.
+
+**Leakage** is subtler and nastier. It's when a feature quietly contains the answer.
 
 ::: {.breaks}
-A probability is always "among cases like this", and the world gets to change what "like this" means. If attackers launch a campaign, the base rate jumps, and every probability computed from last month's base rate is suddenly too low. A likelihood ratio measured on one company's data may not hold at another's. And conditional probabilities computed from tiny groups ("alerts from the legal department, on a Sunday, from a new country") are mostly noise. Always ask how many cases sit behind a number.
+Suppose Kestrel's alert database has a field called `analyst_notes`. Train with it and the results look astonishing, because notes like "confirmed phishing" are only written *after* someone has decided. At 2:14 a.m., when the model has to decide, that field is empty. Ask of every feature: *would I actually have this value at the moment of the decision?* And remember that probabilities are always "among cases like this": if attackers launch a campaign, the base rate jumps, and every probability computed from last month is suddenly too low.
+:::
+
+::: {.threshold}
+Precision and recall pull against each other. Lower the rule's threshold from 0.5 to 0.3: which goes up, and which goes down? If Kestrel's analysts can only look at 300 alerts a day, which should they care about more?
+
+(Recall goes up, precision down: you catch more attacks and raise more false alarms. With a fixed daily budget, precision decides how many real attacks fit inside those 300 looks. Chapter 4 puts both into a single cost.)
 :::
 
 ::: {.bookquote by="Pierre-Simon Laplace, A Philosophical Essay on Probabilities, 1814"}
@@ -183,17 +199,17 @@ Probability theory is nothing but common sense reduced to calculation.
 
 ## Where we are
 
-We started with a weather app and a dry day, and found that a probability only means something as a track record. That sent us looking for the right track record, which is why "among what?" matters so much. Asking it carefully exposed the base-rate trap. Escaping the trap meant weighing evidence properly, and that turned out to be Bayes' rule: multiply the odds. And once we tried to score a rule, accuracy flattered it, so we needed precision and recall.
+A probability, we found, only means something as a track record, which is why "among what?" matters so much. Asking it carefully exposed the base-rate trap, and escaping the trap meant multiplying odds: Bayes' rule. Accuracy flattered a rule that caught almost nothing, so we needed precision and recall. Then we built a machine that learns probabilities: it adds evidence on the log-odds scale, is scored by log loss, and rolls downhill, and it came within a whisker of the truth on alerts it never saw.
 
-Every one of those ideas comes back in the next three chapters.
+Log loss *rewards* honesty. That isn't the same as *being* honest, and that's what we have to check next.
 
 ::: {.exercises}
-1. A spam filter catches 98% of spam and wrongly flags 1% of real email. If 20% of a company's incoming email is spam, what fraction of flagged emails are real email? Now redo it for a mailbox where only 1% is spam. Use natural frequencies, not formulas.
+1. A spam filter catches 98% of spam and wrongly flags 1% of real email. If 20% of incoming email is spam, what fraction of flagged emails are real? Redo it for a mailbox where only 1% is spam. Use natural frequencies.
 2. In the lab, find the likelihood ratio of `known_tool` (the alert matches approved IT tooling). Is it above or below 1? What does that mean in plain words?
-3. Explain to a non-technical manager, in three sentences, why a detector with "99% accuracy" might still be a bad purchase.
-4. An analyst says "the new rule has 50% precision; I checked 6 alerts and 3 were real." Sketch roughly how wide the plausible range is, and what you'd say back.
+3. In the lab, change the learning rate from 0.5 to 5, then to 0.01. What happens to the loss over 400 steps?
+4. Add a leaky feature to the lab (`Xs = np.c_[Xs, y_tr]`) and retrain. What happens to the training loss? Why can't you use this model?
 :::
 
 ::: {.nexthook}
-Next: how does a machine actually learn a probability from examples? We'll build the simplest model that does it honestly, and watch it learn by rolling downhill.
+Next: our model says 0.8. Does 0.8 really mean 80%? We'll check, find out where it lies, and fix it.
 :::

@@ -1,5 +1,9 @@
 # What "learning" means {#sec-ch01}
 
+::: {.epigraph by="Edsger W. Dijkstra, 1984"}
+The question of whether a computer can think is no more interesting than the question of whether a submarine can swim.
+:::
+
 If you're trying to get into AI right now, you've probably seen these words everywhere:
 
 AI. Machine learning. Deep learning. LLMs. RAG. Agents.
@@ -35,7 +39,7 @@ A surprising amount of software that gets called "AI" is exactly this. A bank th
 
 [[AUTHOR STORY: AttendX, a rule-based system you built or used, and the day it met a case its rules didn't cover]]
 
-And here's something people rarely say out loud: rules are *good*. They're fast, they're cheap, and when one goes wrong you can open it up and read exactly why. When a rule does the job, use the rule. We'll come back to this in Chapter 20, where plain rules win more than one round of a contest against much fancier models.
+And here's something people rarely say out loud: rules are *good*. They're fast, they're cheap, and when one goes wrong you can open it up and read exactly why. When a rule does the job, use the rule. We'll come back to this in Chapter 13, where plain rules win more than one round of a contest against much fancier models.
 
 The trouble starts when the world won't sit still long enough for a rule.
 
@@ -85,15 +89,9 @@ You'll hear the word *model* constantly, so let's pin it down.
 
 When the computer finishes studying the examples, what's left behind is a thing that takes an input and produces an answer. Give it a new email, it says "phishing" or "fine". Give it a payment, it says "normal" or "odd". That thing is the model.
 
-Think of it as a machine with a lot of knobs. Learning is the process of turning those knobs until the machine gets the examples right as often as possible. Once the knobs are set, you stop turning them and put the machine to work.
+Think of it as a machine with a lot of knobs. Learning is the process of turning those knobs until the machine gets the examples right as often as possible. Once the knobs are set, you stop turning them and put the machine to work, on cases where nobody knows the answer yet. If you already knew the answer, you wouldn't need the model.
 
-![Training happens once, slowly, on examples whose answers we know. Using the model happens every time a new alert arrives, quickly, with no answer available. Same model, two very different jobs.](/figures/ch01/train-then-use.pdf){#fig-train-then-use}
-
-@fig-train-then-use shows the two phases side by side, and the split matters more than it looks. Training is slow and needs examples with answers. Using the model is fast and happens on cases where nobody knows the answer yet. That's the whole point: if you already knew the answer, you wouldn't need the model.
-
-::: {.margin}
-A **model** is what learning leaves behind: a function whose settings came from examples rather than from a programmer.
-:::
+So a **model** is what learning leaves behind: a function whose settings came from examples rather than from a programmer.
 
 ## Meet the alerts
 
@@ -167,7 +165,7 @@ The machine learned exactly what we asked. We asked the wrong question.
 
 This is the most useful failure in the whole book, and it hides two separate problems.
 
-The first: we treated every mistake as equal. But letting a real attacker walk in and bothering an analyst for five minutes aren't equal mistakes, not even close. Chapter 5 fixes this properly.
+The first: we treated every mistake as equal. But letting a real attacker walk in and bothering an analyst for five minutes aren't equal mistakes, not even close. Chapter 4 fixes this properly.
 
 The second is quieter, and it's the one this book is really about. We forced the answer to be *yes* or *no*.
 
@@ -189,7 +187,7 @@ So what do we honestly know about an alert with a score of 0.55?
 
 Not "it's an attack". Not "it's fine". What we know is: *about one in five alerts like this one is an attack.*
 
-That number, a chance, carries far more than a yes or a no. It tells the analyst how worried to be. It lets you sort the queue so the likeliest attacks come first. And, as you'll see in Chapter 5, it lets you set your line in the right place once you've decided what each kind of mistake costs.
+That number, a chance, carries far more than a yes or a no. It tells the analyst how worried to be. It lets you sort the queue so the likeliest attacks come first. And, as you'll see in Chapter 4, it lets you set your line in the right place once you've decided what each kind of mistake costs.
 
 ::: {.keyidea}
 A good model doesn't just answer. It says how sure it is, and it's right about how sure it is.
@@ -200,20 +198,16 @@ That last part, being *right about how sure it is*, has a name, and a whole part
 ::: {.threshold}
 A missed attack costs Kestrel roughly ten times what a false alarm costs. Should the threshold on the threat-intel score go *up* from {{< num ch01 best_t f2 >}} or *down*? Make a guess before you read on.
 
-(Down, a long way. When a miss hurts more, you accept more false alarms to avoid one. Chapter 5 turns that intuition into a formula.)
+(Down, a long way. When a miss hurts more, you accept more false alarms to avoid one. Chapter 4 turns that intuition into a formula.)
 :::
 
 ## Bigger problems, bigger models
 
-Our threat-intel rule had it easy in one way: someone handed it a single useful number. Most real problems don't come with the numbers already picked out.
+Our threat-intel rule had it easy: someone handed it a single useful number. A photo is millions of pixels, and an email is a string of words. Nobody can hand-write the features for "this sounds like a scam". So the next step was models that learn their own features, in many stacked layers. That's **deep learning** (Chapter 5).
 
-A photo is millions of pixels. An email is a string of words. Nobody can hand-write the right features for "this looks like a cat" or "this sounds like a scam". So the next step in the story was models that learn the features themselves, in many stacked layers, each building on the one before. That's **deep learning**, and Chapter 6 opens it up.
+Train a very large deep-learning model on a huge amount of text, with one simple task, guess the next word, and it picks up grammar, facts and even some reasoning along the way. That's a **large language model**, an LLM (Chapter 6).
 
-Then came a surprise. Train a very large deep-learning model on a huge amount of text, with one simple task (guess the next word), and it picks up grammar, facts, tone, even some reasoning, as a side effect. That's a **large language model**, an LLM. It's the thing behind ChatGPT, and Chapter 10 shows how it writes, one piece at a time.
-
-LLMs know a lot about the world and nothing about *your* world: your policies, your tickets, your alerts. So we started letting them look things up first, fetching the right documents and reading them before answering. That's **retrieval-augmented generation**, or RAG (Chapter 12).
-
-And once a model can read and reason, the obvious next wish is for it to *do* things: check a log, block an account, open a ticket, then look at what happened and decide what to do next. A model working in that loop is an **agent** (Chapter 13).
+LLMs know a lot about the world and nothing about *your* world, so we let them look things up before answering. That's **retrieval-augmented generation**, or RAG. And once a model can read, the next wish is for it to *do* things: check a log, block an account, look at what happened, decide what to do next. A model working in that loop is an **agent** (Chapter 7).
 
 ## Where Jev fits
 
@@ -225,7 +219,7 @@ For each of those, the usual approach today is to ask an LLM, get a paragraph ba
 
 ![The same question, two ways. An LLM writes its answer out, piece by piece, and your code has to read the sentence. A decision model returns the answer as data, with a probability for every option, in one pass.](/figures/ch01/generate-vs-decide.pdf){#fig-generate-vs-decide}
 
-In September 2026, a start-up called TypeSafe AI released a model built for exactly those checkbox moments [[VERIFY]]. It's called **Jev**. It doesn't write text at all. You give it the situation and a typed question, like "pick one of these labels" or "is this true, yes or no", and it gives back the answer as data, with a probability attached to every option (@fig-generate-vs-decide). TypeSafe calls it a *System One* model, after the fast, intuitive kind of thinking described by the psychologist Daniel Kahneman, as opposed to slow, deliberate *System Two* thinking [@kahneman2011]. Part IV takes Jev apart properly.
+In September 2026, a start-up called TypeSafe AI released a model built for exactly those checkbox moments [[VERIFY]]. It's called **Jev**. It doesn't write text at all. You give it the situation and a typed question, like "pick one of these labels" or "is this true, yes or no", and it gives back the answer as data, with a probability attached to every option (@fig-generate-vs-decide). TypeSafe calls it a *System One* model, after the fast, intuitive kind of thinking described by the psychologist Daniel Kahneman, as opposed to slow, deliberate *System Two* thinking [@kahneman2011]. Part III takes Jev apart properly.
 
 One thing you should know now, because it shapes every page that follows. I didn't have access to the Jev API while writing this book. So everywhere you see Jev answer a question, the answer comes from `jev-mock-synthetic`, a stand-in I built that speaks Jev's exact public interface through TypeSafe's official Python library. The code is real. The numbers are synthetic, and every one of them is labelled that way.
 
@@ -248,7 +242,7 @@ print("really an attack?", bool(alerts.malicious[99]))
 
 It thinks it's probably an attack. It wasn't. And that's not a bug in the story, it's the story.
 
-A probability of {{< num ch01 mock_p_99 f2 >}} isn't a promise. It's a claim that among alerts like this one, roughly two out of three are attacks. This one happened to be in the other third. Whether a model's "0.68" really does mean two out of three is something we can *test*, and we will, in Chapter 4 for ordinary models and in Chapter 18 for Jev.
+A probability of {{< num ch01 mock_p_99 f2 >}} isn't a promise. It's a claim that among alerts like this one, roughly two out of three are attacks. This one happened to be in the other third. Whether a model's "0.68" really does mean two out of three is something we can *test*, and we will, in Chapter 3 for ordinary models and in Chapter 11 for Jev.
 
 ::: {.bookquote by="George E. P. Box, statistician, 1979"}
 All models are wrong, but some are useful.
@@ -266,7 +260,7 @@ And now, inside those tools and loops, we're finding that most of the work is *d
 
 That's the map (@fig-ai-story-map).
 
-You don't need to understand every box today. Just know where we're going. The next four chapters stay down at the bottom-left corner of this map on purpose, because everything above it, Jev included, is built on one idea we've only just met: a model's answer should be a probability, and the probability should be honest.
+You don't need to understand every box today. Just know where we're going. The next three chapters stay down at the bottom-left corner of this map on purpose, because everything above it, Jev included, is built on one idea we've only just met: a model's answer should be a probability, and the probability should be honest.
 
 ::: {.exercises}
 1. Name one system you use every week that follows rules, and one that learned from examples. What gave it away?

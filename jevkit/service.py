@@ -1,4 +1,4 @@
-"""A small, production-shaped decision service (Chapter 28).
+"""A small, production-shaped decision service (Chapter 21).
 
     svc = DecisionService(config, client=jevkit.client())
     record = svc.decide(alert_fields)          # a DecisionRecord: what it saw, said and did, and why
@@ -43,7 +43,7 @@ class Config:
 
 def fit_config(history, version: str = "triage-2026.10.1", capacity_per_day: int = 240, pages_per_day: int = 40,
                p_col: str = "p", account_for_rules: bool = True) -> Config:
-    """Calibrate on history and choose capacity-aware lines, as in Chapter 21.
+    """Calibrate on history and choose capacity-aware lines, as in Chapter 14.
 
     With `account_for_rules`, the critical-asset rule (which turns some 'act' into 'review') is included when the
     lines are chosen: the queue budget left for the model shrinks until the whole queue, rule included, fits.
@@ -92,7 +92,7 @@ QUESTIONS = {
 
 
 def state_of(alert) -> dict:
-    """The state sent to the model: trusted fields only, never the free text (Chapter 14)."""
+    """The state sent to the model: trusted fields only, never the free text (Chapter 7)."""
     keys = ["title", *soc.FEATURE_FIELDS]
     s = {k: (alert[k].item() if hasattr(alert[k], "item") else alert[k]) for k in keys}
     s["alert"] = s.pop("title")

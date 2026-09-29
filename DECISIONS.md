@@ -134,3 +134,18 @@ Newest decisions are appended at the bottom of each section.
 - **D-57 · Companion widgets** (`site/`) are dependency-free HTML + JS reading `site/data.js`, exported by
   `tools/export_widget_data.py` from the same synthetic data as the book. Tested headless at 900 px and 390 px, light
   and dark, with no page-level horizontal scroll.
+- **D-58 · Restructured to 22 chapters and 6 parts for a 200–250 page print book.** Old chapters 2+3 merged into
+  Chapter 2; old 6–9 into Chapter 5 (deep learning in one chapter); old 10–11 into Chapter 6; old 12–14 into Chapter 7.
+  Parts I and II are labelled prerequisites; calibration (3) and costs (4) stay full chapters because everything from
+  Jev onward depends on them. Chapter files, labs and every "Chapter N"/"Part N" reference use the new numbering.
+  Figure sources, figure folders and results files keep the first draft's ids (figures/src/chNN.py,
+  figures/chNN/, results/chNN.json) and are referenced from chapters by those ids; they never appear in print.
+  Old → new chapter map: 1→1, 2–3→2, 4→3, 5→4, 6–9→5, 10–11→6, 12–14→7, 15–29→8–22.
+- **D-59 · Print layout.** 7×10 in trim, 5.2 in text block with a 0.95 in binding gutter, no margin column, 10.5 pt
+  body, chapters open on any page. Removed: QR codes, chapter-opener progress maps, one-page summaries (they repeated
+  "Where we are"). Draft markers ([[VERIFY]], [[AUTHOR STORY]]) render only with BOOK_DRAFT=1.
+- **D-60 · Epigraphs.** Eighteen chapters open with a short quotation. Only well-documented wording is used; lines
+  that circulate in several forms or are only attributed say so, and carry a [[VERIFY]] in the draft build.
+- **D-61 · Boxes don't split.** Try it, Where this breaks, Set the threshold and Key idea boxes are short, and a split
+  one leaves its tail on the next page with no label. They are now unbreakable and move whole to the next page.
+  Going deeper and sidebars can run long, so they may still break, but only with seven lines free at the start.

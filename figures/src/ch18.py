@@ -1,4 +1,4 @@
-"""Figures for Chapter 18: Testing Jev's calibration yourself."""
+"""Figures for Chapter 11: Testing Jev's calibration yourself."""
 
 from functools import lru_cache
 

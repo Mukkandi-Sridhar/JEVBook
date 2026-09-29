@@ -1,4 +1,4 @@
-"""Figures for Chapter 27: Build your own System One model."""
+"""Figures for Chapter 20: Build your own System One model."""
 
 import json
 from functools import lru_cache

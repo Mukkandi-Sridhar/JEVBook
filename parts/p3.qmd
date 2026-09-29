@@ -1,9 +1,9 @@
-# LLMs, GenAI and agents
+# Jev in depth
 
 ::: {.partintro}
-Large language models write. They also read, summarise, extract and plan, and teams now wire them into loops that take actions in the world.
+Now we can look properly at Jev: a model that doesn't write at all. It answers typed questions with probabilities.
 
-This part explains how an LLM produces text, why "just ask for JSON" is harder than it looks, how retrieval gives a model your documents, and how agents observe, decide and act.
+This part separates what's published from what's claimed, walks through its three question types, shows you how to test its calibration yourself, and asks what happens to an industry when a decision becomes almost free.
 
-It ends with an honest look at where agents break, and at the one step inside every agent that's quietly doing most of the work: the decision.
+Every Jev number in these pages comes from the book's synthetic mock and is labelled that way.
 :::

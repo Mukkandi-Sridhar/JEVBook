@@ -26,52 +26,52 @@ z
    <g id="patch_2">
     <path d="M 256.47873 41.04 
 Q 236.878907 41.04 218.237949 41.04 
-" clip-path="url(#pc1fb466404)" style="fill: none; stroke: #8a919c; stroke-linecap: round"/>
+" clip-path="url(#pfae79eb807)" style="fill: none; stroke: #8a919c; stroke-linecap: round"/>
     <path d="M 220.487949 42.415 
 L 218.237949 41.04 
 L 220.487949 39.665 
 z
-" clip-path="url(#pc1fb466404)" style="fill: #8a919c; stroke: #8a919c; stroke-linecap: round"/>
+" clip-path="url(#pfae79eb807)" style="fill: #8a919c; stroke: #8a919c; stroke-linecap: round"/>
    </g>
    <g id="patch_3">
     <path d="M 256.47873 76.68 
 Q 236.878907 76.68 218.237949 76.68 
-" clip-path="url(#pc1fb466404)" style="fill: none; stroke: #8a919c; stroke-linecap: round"/>
+" clip-path="url(#pfae79eb807)" style="fill: none; stroke: #8a919c; stroke-linecap: round"/>
     <path d="M 220.487949 78.055 
 L 218.237949 76.68 
 L 220.487949 75.305 
 z
-" clip-path="url(#pc1fb466404)" style="fill: #8a919c; stroke: #8a919c; stroke-linecap: round"/>
+" clip-path="url(#pfae79eb807)" style="fill: #8a919c; stroke: #8a919c; stroke-linecap: round"/>
    </g>
    <g id="patch_4">
     <path d="M 256.47873 100.44 
 Q 236.878907 100.44 218.237949 100.44 
-" clip-path="url(#pc1fb466404)" style="fill: none; stroke: #8a919c; stroke-linecap: round"/>
+" clip-path="url(#pfae79eb807)" style="fill: none; stroke: #8a919c; stroke-linecap: round"/>
     <path d="M 220.487949 101.815 
 L 218.237949 100.44 
 L 220.487949 99.065 
 z
-" clip-path="url(#pc1fb466404)" style="fill: #8a919c; stroke: #8a919c; stroke-linecap: round"/>
+" clip-path="url(#pfae79eb807)" style="fill: #8a919c; stroke: #8a919c; stroke-linecap: round"/>
    </g>
    <g id="patch_5">
     <path d="M 256.47873 136.08 
 Q 236.878907 136.08 218.237949 136.08 
-" clip-path="url(#pc1fb466404)" style="fill: none; stroke: #8a919c; stroke-linecap: round"/>
+" clip-path="url(#pfae79eb807)" style="fill: none; stroke: #8a919c; stroke-linecap: round"/>
     <path d="M 220.487949 137.455 
 L 218.237949 136.08 
 L 220.487949 134.705 
 z
-" clip-path="url(#pc1fb466404)" style="fill: #8a919c; stroke: #8a919c; stroke-linecap: round"/>
+" clip-path="url(#pfae79eb807)" style="fill: #8a919c; stroke: #8a919c; stroke-linecap: round"/>
    </g>
    <g id="patch_6">
     <path d="M 256.47873 147.96 
 Q 236.878907 147.96 218.237949 147.96 
-" clip-path="url(#pc1fb466404)" style="fill: none; stroke: #8a919c; stroke-linecap: round"/>
+" clip-path="url(#pfae79eb807)" style="fill: none; stroke: #8a919c; stroke-linecap: round"/>
     <path d="M 220.487949 149.335 
 L 218.237949 147.96 
 L 220.487949 146.585 
 z
-" clip-path="url(#pc1fb466404)" style="fill: #8a919c; stroke: #8a919c; stroke-linecap: round"/>
+" clip-path="url(#pfae79eb807)" style="fill: #8a919c; stroke: #8a919c; stroke-linecap: round"/>
    </g>
    <g id="patch_7">
     <path d="M 7.2 190.08 
@@ -84,7 +84,7 @@ Q 2.88 6.48 2.88 10.8
 L 2.88 185.76 
 Q 2.88 190.08 7.2 190.08 
 z
-" clip-path="url(#pc1fb466404)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pfae79eb807)" style="fill: #ffffff; stroke: #c9ced6; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <text style="font-size: 5.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="10.08" y="19.040281" transform="rotate(-0 10.08 19.040281)">"decision_id": "559edd952158"</text>
@@ -126,7 +126,7 @@ z
     <text style="font-size: 5.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="10.08" y="161.834281" transform="rotate(-0 10.08 161.834281)">"audit": false</text>
    </g>
    <g id="text_14">
-    <text style="font-size: 5.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="10.08" y="173.176" transform="rotate(-0 10.08 173.176)">"latency_ms": 2.3200</text>
+    <text style="font-size: 5.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="10.08" y="173.178438" transform="rotate(-0 10.08 173.178438)">"latency_ms": 1.8500</text>
    </g>
    <g id="text_15">
     <text style="font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="262.08" y="42.623219" transform="rotate(-0 262.08 42.623219)">which config decided, exactly</text>
@@ -146,7 +146,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="pc1fb466404">
+  <clipPath id="pfae79eb807">
    <rect x="2.88" y="2.88" width="338.4" height="187.2"/>
   </clipPath>
  </defs>

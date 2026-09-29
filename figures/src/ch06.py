@@ -1,4 +1,4 @@
-"""Figures for Chapter 6: Neurons to networks."""
+"""Figures for Chapter 5: Neurons to networks."""
 
 from functools import lru_cache
 
@@ -227,7 +227,7 @@ def summary():
         dict(num=3, title="Hinges make any shape", kind="neutral", h=1.45,
              body="ReLU is a hinge. Add enough hinges, and a network can draw almost any curve. Without them, layers collapse into one line."),
         dict(num=4, title="Backpropagation shares the blame", kind="fail", h=1.45,
-             body="Same gradient descent as Chapter 3. The error flows backwards, layer by layer, telling each weight which way to move."),
+             body="Same gradient descent as Chapter 2. The error flows backwards, layer by layer, telling each weight which way to move."),
         dict(num=5, title="Deep = many layers", kind="neutral", h=1.45,
              body="Each layer builds features from the one before. On raw pixels and words, that’s what makes deep learning work."),
         dict(num=6, title="Bigger isn’t automatically better", kind="jev", h=1.45,

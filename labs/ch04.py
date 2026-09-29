@@ -7,27 +7,27 @@
 # ---
 
 # %% [markdown]
-# # Lab 4 · Calibration: when 0.8 really means 80%
+# # Lab 4 · From probabilities to actions
 #
-# *Decide, Don't Generate*, Chapter 4. Synthetic data throughout.
+# *Decide, Don't Generate*, Chapter 4. Illustrative costs, synthetic data.
 #
-# 1. Build a reliability diagram by hand.
-# 2. Compute ECE and the Brier decomposition.
-# 3. Break calibration by rebalancing the training data.
-# 4. Fix it with Platt, temperature and isotonic, fitted on a separate calibration set.
-# 5. Check calibration per alert source.
+# 1. The one-line threshold formula.
+# 2. Check it against a brute-force cost search.
+# 3. See the formula fail on a miscalibrated model.
+# 4. Coverage and risk: deciding only the confident cases.
+
 
 # %%
 import importlib.util, subprocess, sys
 if importlib.util.find_spec("jevkit") is None:
-    subprocess.run([sys.executable, "-m", "pip", "install", "-q", "typesafe-sdk==0.7.2",
+    subprocess.run([sys.executable, "-m", "pip", "install", "-q", "typesafe-sdk==0.7.2", "autograd",
                     "git+https://github.com/Mukkandi-Sridhar/JEVBook"], check=True)
 
 # %%
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
-from jevkit import soc, calibration as cal
+from jevkit import soc, policy as pol
 
 alerts = soc.load()
 train, calib, test = soc.split(alerts)
@@ -35,49 +35,37 @@ F = lambda d: soc.feature_matrix(d).to_numpy()
 model = LogisticRegression(C=1e4, max_iter=5000).fit(F(train), train.malicious)
 p, y = model.predict_proba(F(test))[:, 1], test.malicious.to_numpy()
 
-# %% [markdown]
-# ## A reliability diagram, by hand
-
 # %%
-bins = np.linspace(0, 1, 11)
-which = np.clip(np.digitize(p, bins) - 1, 0, 9)
-table = pd.DataFrame({"bin": which, "p": p, "y": y}).groupby("bin").agg(
-    said=("p", "mean"), happened=("y", "mean"), n=("y", "size"))
-table.round(3)
+false_alarm, miss = 200, 4_000            # wrongly blocking vs letting a threat through
+t = false_alarm / (false_alarm + miss)
+print(f"block when P > {t:.3f}")
 
-# %%
-print("ECE  ", round(cal.ece(p, y), 4))
-print(cal.brier_decomposition(p, y))
+def total_cost(p, t):
+    block = p >= t
+    return (block & (y == 0)).sum() * false_alarm + (~block & (y == 1)).sum() * miss
+
+grid = np.linspace(0.005, 0.9, 300)
+best = grid[np.argmin([total_cost(p, g) for g in grid])]
+print(f"brute-force best {best:.3f}; cost ${total_cost(p, best):,}")
+print(f"formula          {t:.3f}; cost ${total_cost(p, t):,}")
+print(f"the famous 0.5        ; cost ${total_cost(p, 0.5):,}")
 
 # %% [markdown]
-# ## Break it: train on 50/50 rebalanced data
+# ## The formula needs honest probabilities
 
 # %%
 pos = train[train.malicious == 1]
 neg = train[train.malicious == 0].sample(len(pos), random_state=0)
-balanced = pd.concat([pos, neg])
-model_b = LogisticRegression(C=1e4, max_iter=5000).fit(F(balanced), balanced.malicious)
-pb = model_b.predict_proba(F(test))[:, 1]
-print(f"average P: {pb.mean():.1%}   real attack rate: {y.mean():.1%}")
-print(cal.summary(pb, y))
+bal = pd.concat([pos, neg])
+pb = LogisticRegression(C=1e4, max_iter=5000).fit(F(bal), bal.malicious).predict_proba(F(test))[:, 1]
+print(f"rebalanced model at the formula line: ${total_cost(pb, t):,}")
 
 # %% [markdown]
-# ## Fix it, on the calibration set (never the test set)
+# ## Coverage and risk
 
 # %%
-pb_cal = model_b.predict_proba(F(calib))[:, 1]
-for name, fixer in [("Platt", cal.Platt()), ("Temperature", cal.Temperature()), ("Isotonic", cal.Isotonic())]:
-    fixer.fit(pb_cal, calib.malicious)
-    print(f"{name:>12}: ECE {cal.ece(fixer(pb), y):.4f}   log loss {cal.log_loss(fixer(pb), y):.4f}")
-
-# %% [markdown]
-# **Question:** why can't temperature scaling fix this model? (Hint: what does a temperature do to P = 0.5?)
-
-# %% [markdown]
-# ## Calibration per source
-
-# %%
-cols = [c for c in soc.feature_matrix(train).columns if not c.startswith("rule_")]
-generic = LogisticRegression(C=1e4, max_iter=5000).fit(soc.feature_matrix(train)[cols], train.malicious)
-pg = generic.predict_proba(soc.feature_matrix(test)[cols])[:, 1]
-pd.DataFrame({"source": test.source, "said": pg, "happened": y}).groupby("source").mean().round(3)
+confidence = np.maximum(p, 1 - p)
+correct = ((p >= 0.5) == (y == 1)).astype(float)
+coverage, risk, _ = pol.coverage_risk(confidence, correct)
+for c in (0.5, 0.8, 0.9, 1.0):
+    print(f"decide the surest {c:.0%}: error rate {risk[int(c * len(coverage)) - 1]:.2%}")

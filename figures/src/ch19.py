@@ -1,4 +1,4 @@
-"""Figures for Chapter 19: The Jevons paradox of decisions."""
+"""Figures for Chapter 12: The Jevons paradox of decisions."""
 
 from functools import lru_cache
 
@@ -9,7 +9,7 @@ from jevkit import econ
 from jevkit.figs import figure, draw, C, subplots, clean, results, summary_page, synthetic_tag
 
 CH = "ch19"
-CAPACITY = 240          # reviews a day Kestrel's team can clear (Chapter 21)
+CAPACITY = 240          # reviews a day Kestrel's team can clear (Chapter 14)
 ILLUS = "ILLUSTRATIVE MODEL · assumptions, not measurements"
 
 

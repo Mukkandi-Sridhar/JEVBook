@@ -1,4 +1,4 @@
-"""Figures for Chapter 21: Act, review, or escalate."""
+"""Figures for Chapter 14: Act, review, or escalate."""
 
 from functools import lru_cache
 

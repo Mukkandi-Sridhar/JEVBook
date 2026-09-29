@@ -1,4 +1,4 @@
-"""Toy language-model machinery for Part III, all synthetic.
+"""Toy language-model machinery for Part II, all synthetic.
 
 - `BPE`: a tiny byte-pair-encoding tokenizer you can train in a second.
 - `TrigramLM`: a next-token generator trained on the synthetic analyst notes. It writes

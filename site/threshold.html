@@ -7,11 +7,11 @@
 </head>
 <body>
 <main>
-<nav><a href="index.html">Companion widgets</a> · Chapter 21</nav>
+<nav><a href="index.html">Companion widgets</a> · Chapter 14</nav>
 <div class="kicker">Act, review or escalate</div>
 <h1>Threshold simulator</h1>
 <span class="tag">Synthetic: Kestrel's live week, jev-mock-synthetic probabilities after Platt scaling</span>
-<p>Set what mistakes cost at Kestrel. The lines come from the Chapter 21 formulas; the counts come from running those lines over the 5,027 alerts of the live week.</p>
+<p>Set what mistakes cost at Kestrel. The lines come from the Chapter 14 formulas; the counts come from running those lines over the 5,027 alerts of the live week.</p>
 
 <div class="card controls ui">
   <label>Missed real threat: <b id="missV"></b><input id="miss" type="range" min="1000" max="50000" step="500" value="10000"></label>
@@ -27,7 +27,7 @@
   <div class="stats" id="stats"></div>
   <p class="note" id="msg"></p>
 </div>
-<p class="note">Formulas: low = review ÷ (miss × (1 − reviewer miss rate)); high = (page − review) ÷ (page + reviewer miss rate × miss). These assume the probabilities are calibrated, which is why the book tests them first (Chapter 18).</p>
+<p class="note">Formulas: low = review ÷ (miss × (1 − reviewer miss rate)); high = (page − review) ÷ (page + reviewer miss rate × miss). These assume the probabilities are calibrated, which is why the book tests them first (Chapter 11).</p>
 </main>
 <script src="data.js"></script>
 <script>

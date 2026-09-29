@@ -7,13 +7,16 @@
 # ---
 
 # %% [markdown]
-# # Lab 9 · Training at scale, and why big models are overconfident
+# # Lab 9 · Inside Jev: what we know and what we don't
 #
 # *Decide, Don't Generate*, Chapter 9.
 #
-# 1. A miniature "scaling" curve: next-word prediction gets better with more text.
-# 2. Overtrain a network on Kestrel's alerts and watch accuracy stay flat while calibration collapses.
-# 3. Fix it with temperature and Platt scaling, and compare with simply stopping early.
+# 1. See exactly what the official SDK sends and receives (the mock records the exchange).
+# 2. List the models the endpoint offers.
+# 3. Do the vendor's price arithmetic yourself.
+#
+# Prices and demo figures are vendor-reported. Answers come from `jev-mock-synthetic`.
+
 
 # %%
 import importlib.util, subprocess, sys
@@ -22,61 +25,37 @@ if importlib.util.find_spec("jevkit") is None:
                     "git+https://github.com/Mukkandi-Sridhar/JEVBook"], check=True)
 
 # %%
-from collections import Counter, defaultdict
-import numpy as np
-from jevkit import text
+import json
+from typesafe_sdk import Choice, Noul, Score, TypeSafeClient
+from jevkit import MockJevTransport
 
-notes = text.notes_corpus(40000)
-train_notes, test_notes = notes[:30000], notes[30000:33000]
-V = len({w for n in notes for w in n}) + 2
-
-def trigram_loss(n_train):
-    counts = defaultdict(Counter)
-    for s in train_notes[:n_train]:
-        t = ["<s>", "<s>"] + s + ["</s>"]
-        for a, b, c in zip(t, t[1:], t[2:]):
-            counts[(a, b)][c] += 1
-    total, n = 0.0, 0
-    for s in test_notes:
-        t = ["<s>", "<s>"] + s + ["</s>"]
-        for a, b, c in zip(t, t[1:], t[2:]):
-            ctx = counts[(a, b)]
-            total -= np.log((ctx[c] + 0.05) / (sum(ctx.values()) + 0.05 * V))
-            n += 1
-    return total / n
-
-for n in (30, 300, 3000, 30000):
-    print(f"{n:>6} notes: next-word log loss {trigram_loss(n):.3f}")
-
-# %% [markdown]
-# ## Overtraining
+exchanges = []
+client = TypeSafeClient(api_key="mock", transport=MockJevTransport(log=exchanges))
+r = client.system_one(
+    state="I was charged twice. Please fix this ASAP.",
+    questions={
+        "topic": Choice(criteria={"billing": "Payments, refunds, invoices",
+                                  "technical": "Bugs, errors, access", "other": None}),
+        "urgent": Noul(instructions="Does this need a reply today?"),
+        "tone": Score(criteria=["calm", "annoyed", "angry"]),
+    },
+)
+request_body, response_body = exchanges[0]
+print(json.dumps(request_body, indent=2))
+print(json.dumps(response_body, indent=2))
 
 # %%
-import warnings
-from sklearn.neural_network import MLPClassifier
-from jevkit import soc, calibration as cal
-from jevkit.learn import Standardizer
-
-alerts = soc.load()
-train, calib, test = soc.split(alerts)
-F = lambda d: soc.feature_matrix(d).to_numpy()
-st = Standardizer().fit(F(train))
-net = MLPClassifier(hidden_layer_sizes=(128, 128), learning_rate_init=0.002, random_state=0, batch_size=256)
-for epoch in range(1, 201):
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore")
-        net.partial_fit(st(F(train)), train.malicious, classes=[0, 1])
-    if epoch in (3, 20, 60, 200):
-        p = net.predict_proba(st(F(test)))[:, 1]
-        acc = ((p > 0.5) == test.malicious).mean()
-        s = cal.summary(p, test.malicious)
-        print(f"epoch {epoch:3d}: accuracy {acc:.3f}  log loss {s['log_loss']:.3f}  ECE {s['ece']:.3f}")
+print([m.name for m in client.models.list().models])
 
 # %% [markdown]
-# ## Fixing it after the fact
+# ## Price arithmetic (vendor-reported inputs)
 
 # %%
-p_cal = net.predict_proba(st(F(calib)))[:, 1]
-for name, fix in (("temperature", cal.Temperature()), ("Platt", cal.Platt())):
-    fix.fit(p_cal, calib.malicious)
-    print(f"{name:>11}: ECE {cal.ece(fix(p), test.malicious):.3f}  log loss {cal.log_loss(fix(p), test.malicious):.3f}")
+price_per_million_input = 0.042          # vendor-reported
+tokens_per_decision = 500
+per_decision = tokens_per_decision * price_per_million_input / 1e6
+print(f"${per_decision:.6f} per decision; ${per_decision * 1e6:,.0f} per million decisions")
+
+doom_per_hour, decisions_per_second = 7.0, 10   # vendor-reported demo figures
+per_doom_decision = doom_per_hour / (decisions_per_second * 3600)
+print(f"implied input tokens per Doom decision: {per_doom_decision / (price_per_million_input / 1e6):,.0f}")
