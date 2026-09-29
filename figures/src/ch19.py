@@ -219,7 +219,7 @@ def flags():
                                               ("cost_line", "flag when expected loss > review cost", C["jev"]))):
             x = i + (j - 0.5) * (w + 0.03)
             ax.bar(x, d[key], width=w, color=col, zorder=2)
-            ax.text(x, d[key] + 25, f"{d[key]:,}", ha="center", fontsize=6.4, va="bottom")
+            ax.text(x, d[key] + 12, f"{d[key]:,}", ha="center", fontsize=6.2, va="bottom")
             if i == 0:
                 ax.bar(0, 0, color=col, label=name)
     ax.axhline(CAPACITY, color=C["ink"], lw=1, ls=(0, (4, 2)), zorder=3)
@@ -227,7 +227,7 @@ def flags():
     ax.set_xticks([0, 1])
     ax.set_xticklabels([g[0] for g in groups], fontsize=6.4)
     ax.set_xlim(-0.6, 2.0)
-    ax.set_ylim(0, max(fj["top_share"], fj["cost_line"]) * 1.2)
+    ax.set_ylim(0, max(fj["top_share"], fj["cost_line"]) * 1.45)
     ax.set_ylabel("sent to a person per day")
     ax.legend(loc="upper left", fontsize=6.2, frameon=False)
     synthetic_tag(f, ILLUS)

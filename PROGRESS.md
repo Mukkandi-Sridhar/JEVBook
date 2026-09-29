@@ -15,27 +15,27 @@ Resume from here. Each chapter row is updated after its lab runs, it renders, an
 
 | Ch | Title | Words | Pages | Figures | Lab | Voice | Open [[VERIFY]] |
 |---|---|---|---|---|---|---|---|
-| 1 | What “learning” means | 2,790 | 12 (incl. summary) | 6 + summary | ok | pass | 1 (TypeSafe release date) |
-| 2 | Probability is the language of decisions | 1,880 | 12 | 6 + summary | ok | pass | 0 |
-| 3 | Data, loss and gradient descent | 1,870 | 13 | 7 + summary | ok | pass | 0 |
-| 4 | Calibration: when 0.8 really means 80% | – | – | – | – | – | – |
-| 5 | From probabilities to actions | – | – | – | – | – | – |
-| 6 | Neurons to networks | – | – | – | – | – | – |
-| 7 | Embeddings: meaning as geometry | – | – | – | – | – | – |
-| 8 | Attention and transformers, visually | – | – | – | – | – | – |
-| 9 | Training at scale, and why big models are overconfident | – | – | – | – | – | – |
-| 10 | How an LLM writes, one token at a time | – | – | – | – | – | – |
-| 11 | Structured outputs and JSON mode | – | – | – | – | – | – |
-| 12 | RAG and memory | – | – | – | – | – | – |
-| 13 | Agents: Observe, Decide, Act | – | – | – | – | – | – |
-| 14 | Where agents break | – | – | – | – | – | – |
-| 15 | System 1 and System 2 | – | – | – | – | – | – |
-| 16 | Inside Jev: what we know and what we don’t | – | – | – | – | – | – |
-| 17 | The type system: choice, score, noul | – | – | – | – | – | – |
-| 18 | Testing Jev’s calibration yourself | – | – | – | – | – | – |
-| 19 | The Jevons paradox of decisions | – | – | – | – | – | – |
-| 20 | The bake-off: six ways to make a decision | – | – | – | – | – | – |
-| 21 | Act, review, or escalate | 2,660 | 15 (incl. summary) | 7 + summary | ok | pass | 0 |
+| 1 | What “learning” means | 2,780 | 14 | 6 + summary | ok | pass | 1 |
+| 2 | Probability is the language of decisions | 1,899 | 12 | 6 + summary | ok | pass | 0 |
+| 3 | Data, loss and gradient descent | 1,862 | 12 | 7 + summary | ok | pass | 0 |
+| 4 | Calibration: when 0.8 really means 80% | 2,076 | 12 | 6 + summary | ok | pass | 0 |
+| 5 | From probabilities to actions | 1,683 | 12 | 6 + summary | ok | pass | 0 |
+| 6 | Neurons to networks | 1,588 | 10 | 6 + summary | ok | pass | 0 |
+| 7 | Embeddings: meaning as geometry | 1,564 | 12 | 6 + summary | ok | pass | 0 |
+| 8 | Attention and transformers, visually | 1,539 | 10 | 6 + summary | ok | pass | 1 |
+| 9 | Training at scale, and why big models are overconfident | 1,581 | 12 | 6 + summary | ok | pass | 0 |
+| 10 | How an LLM writes, one token at a time | 1,611 | 10 | 5 + summary | ok | pass | 0 |
+| 11 | Structured outputs and JSON mode | 1,680 | 12 | 6 + summary | ok | pass | 0 |
+| 12 | RAG and memory | 1,507 | 10 | 6 + summary | ok | pass | 1 |
+| 13 | Agents: Observe, Decide, Act | 1,500 | 10 | 6 + summary | ok | pass | 0 |
+| 14 | Where agents break | 1,568 | 12 | 5 + summary | ok | pass | 0 |
+| 15 | System 1 and System 2 | 1,527 | 10 | 5 + summary | ok | pass | 1 |
+| 16 | Inside Jev: what we know and what we don’t | 1,606 | 10 | 6 + summary | ok | pass | 8 |
+| 17 | The type system: choice, score, noul | 1,282 | 10 | 6 + summary | ok | pass | 0 |
+| 18 | Testing Jev’s calibration yourself | 1,501 | 10 | 6 + summary | ok | pass | 2 |
+| 19 | The Jevons paradox of decisions | 1,941 | 14 | 6 + summary | ok | pass | 5 |
+| 20 | The bake-off: six ways to make a decision | 1,876 | 12 | 7 + summary | ok | pass | 2 |
+| 21 | Act, review, or escalate | 2,655 | 16 | 7 + summary | ok | pass | 0 |
 | 22 | A catalog of decision patterns | – | – | – | – | – | – |
 | 23 | First calls, and the mock that makes them free | – | – | – | – | – | – |
 | 24 | A hybrid agent: Jev decides, the LLM reasons | – | – | – | – | – | – |
@@ -52,3 +52,4 @@ Resume from here. Each chapter row is updated after its lab runs, it renders, an
 3. Write `chapters/chNN.qmd`, `labs/chNN.py`, `figures/src/chNN.py`.
 4. `python tools/run_labs.py chNN`, `python tools/check_listings.py chNN`, `python tools/voice_check.py chapters/chNN.qmd`.
 5. `quarto render --to pdf`, then look at the pages (`python tools/contact.py _book/*.pdf A B out.png`).
+6. `python tools/progress.py --pdf _book/*.pdf` rewrites the chapter table above.

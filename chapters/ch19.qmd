@@ -19,6 +19,8 @@ A model whose name is short for Jevons [[VERIFY]] invites the question: what's t
 
 It's decisions.
 
+![The pattern Jevons saw in coal, and the same pattern with decisions. Making each unit cheaper opens up uses that weren't worth it before, and total use can rise.](/figures/ch19/loop.pdf){#fig-loop}
+
 ::: {.goals}
 - Explain the Jevons paradox with everyday examples, and say when it happens and when it doesn't.
 - Work out when a decision is worth making at all, from its value, its price and its deadline.
@@ -69,7 +71,7 @@ I've built a small, deliberately simple model of this, and I want to be clear ab
 ```{python}
 for p in econ.POOLS:
     print(f"{p.name:>21}: {p.per_day:>9,} a day, "
-          f"typical value ${p.median_value:g}")
+          f"typical value ${p.median_value:.5f}".rstrip("0").rstrip("."))
 ```
 :::
 

@@ -198,7 +198,12 @@
   {\color{rulec}\rule{1.2in}{0.5pt}}\par\vspace{6pt}\sffamily\fontsize{9.5}{13}\selectfont\color{ink}}{\end{minipage}\par}
 
 % Wide material: extends into the outer margin on both odd and even pages
-\newenvironment{widefig}{\par\begin{adjustwidth*}{0pt}{-\dimexpr\marginparwidth+\marginparsep\relax}}{\end{adjustwidth*}\par}
+\makeatletter
+% Inside a wide block, figures stop floating so they take the widened line width.
+\newenvironment{widefig}{\par\begin{adjustwidth*}{0pt}{-\dimexpr\marginparwidth+\marginparsep\relax}%
+  \renewenvironment{figure}[1][]{\par\medskip\def\@captype{figure}\centering}{\par\medskip}}%
+  {\end{adjustwidth*}\par}
+\makeatother
 
 % Full-page visual summary
 \newenvironment{summarypage}{\clearpage\thispagestyle{plain.scrheadings}\begin{adjustwidth*}{0pt}{-\dimexpr\marginparwidth+\marginparsep\relax}\centering}{\end{adjustwidth*}\clearpage}

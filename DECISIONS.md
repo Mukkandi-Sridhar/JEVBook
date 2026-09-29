@@ -94,3 +94,9 @@ Newest decisions are appended at the bottom of each section.
 - **D-45 · Jev's name.** "Named after Jevons" is recorded as reported (search summary of TypeSafe's statements),
   marked [[VERIFY]] in the text. The early-2025 "Jevons paradox" commentary around cheaper AI models is mentioned
   without quotation, also [[VERIFY]].
+- **D-46 · Bake-off contestants.** The "fine-tuned classifier" is a TF-IDF + logistic-regression text classifier,
+  stated in the text as a floor for trained text models (no GPU or PyTorch in this build). Each method reads its
+  natural input; Jev reads the fields as JSON so it sees the same information as the logistic regression. The text
+  says plainly that the LLM-vs-Jev accuracy gap is built into the mocks (D-xx MockLLM design) and is not evidence.
+- **D-47 · Wide figures don't float.** Inside `{.wide}` the LaTeX `figure` environment is redefined as non-floating,
+  so the figure takes the widened line (a float would reset to the text width).
