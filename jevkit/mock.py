@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import random
 import math
 import threading
 
@@ -82,11 +83,16 @@ class MockJevTransport(httpx2.BaseTransport):
     Args:
         fail_every: if set, every Nth request returns HTTP 503 (for retry lessons).
         rate_limit_every: if set, every Nth request returns HTTP 429 with retry-after.
+        fail_rate: if set, each request independently returns HTTP 503 with this probability (seeded).
         log: if a list, every (request_body, response_body) pair is appended to it.
     """
 
-    def __init__(self, *, fail_every: int | None = None, rate_limit_every: int | None = None, log: list | None = None):
+    def __init__(self, *, fail_every: int | None = None, rate_limit_every: int | None = None, log: list | None = None,
+                 fail_rate: float | None = None, seed: int = 0):
         self.fail_every = fail_every
+        self.fail_rate = fail_rate
+        self._rng = random.Random(seed)
+        self.statuses: list[int] = []
         self.rate_limit_every = rate_limit_every
         self.log = log
         self.calls = 0
@@ -103,8 +109,10 @@ class MockJevTransport(httpx2.BaseTransport):
             r = _err(429, "Rate limit exceeded (simulated)", request)
             r.headers["retry-after-ms"] = "50"
             return r
-        if self.fail_every and n % self.fail_every == 0:
+        if (self.fail_every and n % self.fail_every == 0) or (self.fail_rate and self._rng.random() < self.fail_rate):
+            self.statuses.append(503)
             return _err(503, "Service unavailable (simulated)", request)
+        self.statuses.append(200)
 
         path = request.url.path
         if path == MODELS_PATH and request.method == "GET":

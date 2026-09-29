@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="396.644125pt" height="166.603203pt" viewBox="0 0 396.644125 166.603203" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 166.603203 
+L 396.644125 166.603203 
+L 396.644125 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 99.356125 137.815781 
+L 361.616125 137.815781 
+L 361.616125 26.935781 
+L 99.356125 26.935781 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 99.356125 137.815781 
+L 99.356125 26.935781 
+" clip-path="url(#padbba531af)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_2"/>
+     <g id="text_1">
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="99.356125" y="148.597031" transform="rotate(-0 99.356125 148.597031)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 139.558571 137.815781 
+L 139.558571 26.935781 
+" clip-path="url(#padbba531af)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_4"/>
+     <g id="text_2">
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="139.558571" y="148.597031" transform="rotate(-0 139.558571 148.597031)">100</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 179.761016 137.815781 
+L 179.761016 26.935781 
+" clip-path="url(#padbba531af)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_6"/>
+     <g id="text_3">
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="179.761016" y="148.597031" transform="rotate(-0 179.761016 148.597031)">200</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_7">
+      <path d="M 219.963462 137.815781 
+L 219.963462 26.935781 
+" clip-path="url(#padbba531af)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_8"/>
+     <g id="text_4">
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="219.963462" y="148.597031" transform="rotate(-0 219.963462 148.597031)">300</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_9">
+      <path d="M 260.165907 137.815781 
+L 260.165907 26.935781 
+" clip-path="url(#padbba531af)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_10"/>
+     <g id="text_5">
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="260.165907" y="148.597031" transform="rotate(-0 260.165907 148.597031)">400</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_11">
+      <path d="M 300.368353 137.815781 
+L 300.368353 26.935781 
+" clip-path="url(#padbba531af)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_12"/>
+     <g id="text_6">
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="300.368353" y="148.597031" transform="rotate(-0 300.368353 148.597031)">500</text>
+     </g>
+    </g>
+    <g id="xtick_7">
+     <g id="line2d_13">
+      <path d="M 340.570798 137.815781 
+L 340.570798 26.935781 
+" clip-path="url(#padbba531af)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_14"/>
+     <g id="text_7">
+      <text style="font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="340.570798" y="148.597031" transform="rotate(-0 340.570798 148.597031)">600</text>
+     </g>
+    </g>
+    <g id="text_8">
+     <text style="font-size: 7.8px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="230.486125" y="161.841758" transform="rotate(-0 230.486125 161.841758)">input tokens per call (mean over 800 Kestrel alerts)</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_15"/>
+     <g id="text_9">
+      <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="95.356125" y="42.835794" transform="rotate(-0 95.356125 42.835794)">alert as text, 1 question</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_16"/>
+     <g id="text_10">
+      <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="95.356125" y="71.230161" transform="rotate(-0 95.356125 71.230161)">alert as JSON fields, 1 question</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_17"/>
+     <g id="text_11">
+      <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="95.356125" y="99.624527" transform="rotate(-0 95.356125 99.624527)">text, 4 questions in one call</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_18"/>
+     <g id="text_12">
+      <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="95.356125" y="128.018893" transform="rotate(-0 95.356125 128.018893)">text, 4 questions in 4 calls</text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 99.356125 47.592683 
+L 128.961708 47.592683 
+L 128.961708 31.975781 
+L 99.356125 31.975781 
+z
+" clip-path="url(#padbba531af)" style="fill: #2f6db5"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 99.356125 75.987049 
+L 129.816513 75.987049 
+L 129.816513 60.370147 
+L 99.356125 60.370147 
+z
+" clip-path="url(#padbba531af)" style="fill: #2f6db5"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 99.356125 104.381415 
+L 171.480317 104.381415 
+L 171.480317 88.764514 
+L 99.356125 88.764514 
+z
+" clip-path="url(#padbba531af)" style="fill: #3b9c6e"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 99.356125 132.775781 
+L 237.387704 132.775781 
+L 237.387704 117.15888 
+L 99.356125 117.15888 
+z
+" clip-path="url(#padbba531af)" style="fill: #e07a1f"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 99.356125 137.815781 
+L 99.356125 26.935781 
+" style="fill: none; stroke: #c9ced6; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 99.356125 137.815781 
+L 361.616125 137.815781 
+" style="fill: none; stroke: #c9ced6; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="132.177904" y="41.966849" transform="rotate(-0 132.177904 41.966849)">74 tokens · $3 per million calls</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="133.032709" y="70.361215" transform="rotate(-0 133.032709 70.361215)">76 tokens · $3 per million calls</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="174.696513" y="98.755582" transform="rotate(-0 174.696513 98.755582)">179 tokens · $8 per million calls</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="240.6039" y="127.149948" transform="rotate(-0 240.6039 127.149948)">343 tokens · $14 per million calls</text>
+   </g>
+  </g>
+  <g id="text_17">
+   <g id="patch_9">
+    <path d="M 265.5845 11.055781 
+L 394.324125 11.055781 
+Q 395.164125 11.055781 395.164125 10.215781 
+L 395.164125 2.32 
+Q 395.164125 1.48 394.324125 1.48 
+L 265.5845 1.48 
+Q 264.7445 1.48 264.7445 2.32 
+L 264.7445 10.215781 
+Q 264.7445 11.055781 265.5845 11.055781 
+z
+" style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <text style="font-weight: 500; font-size: 5.6px; font-family: 'Inter'; text-anchor: end; fill: #8a919c" x="393.764125" y="8.305" transform="rotate(-0 393.764125 8.305)">MOCK TOKEN COUNTS · price vendor-reported</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="padbba531af">
+   <rect x="99.356125" y="26.935781" width="262.26" height="110.88"/>
+  </clipPath>
+ </defs>
+</svg>
