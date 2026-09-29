@@ -73,3 +73,16 @@ Newest decisions are appended at the bottom of each section.
   `_quarto.yml` and `assets/latex/before-body.tex`.
 - **D-34 · QR codes** point to `colab.research.google.com/github/Mukkandi-Sridhar/JEVBook/blob/main/labs/chNN.ipynb`;
   they work once the notebooks are on `main`.
+
+## Chapter-level decisions
+
+- **D-40 · Ch 21 split.** Weeks 1–3 (1–21 Sept) are "history" for fitting calibration and thresholds; week 4 is
+  "live". Per-day numbers divide the live week by 7. A fifth "campaign week" (seed 11) boosts link-alert
+  frequency ×3 (lookalike ×2) and shifts their true logit by +1.6 (+1.2) to show drift.
+- **D-41 · Capacity.** An analyst clears 40 reviews per 8-hour shift (12 min each); Kestrel has 6 on the queue
+  (240/day); on-call can absorb 40 pages/day. The capacity search fills the review queue exactly, because moving an
+  alert from act to review always lowers expected cost under our cost model.
+- **D-42 · "Real threat" wording.** A malicious alert is called a "real threat", not a "breach": most would be
+  stopped by other defences, which is why the expected loss per missed one is $10k, not millions.
+- **D-43 · Calibration figure** uses cross-fitting (fit Platt on even days, apply to odd days and vice versa) over all
+  four weeks, so the curve is not noisy and no alert calibrates itself.

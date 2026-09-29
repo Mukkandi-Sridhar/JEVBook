@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="434.16pt" height="563.76pt" viewBox="0 0 434.16 563.76" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 563.76 
+L 434.16 563.76 
+L 434.16 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 7.92 174.24 
+L 207 174.24 
+Q 212.04 174.24 212.04 169.2 
+L 212.04 64.08 
+Q 212.04 59.04 207 59.04 
+L 7.92 59.04 
+Q 2.88 59.04 2.88 64.08 
+L 2.88 169.2 
+Q 2.88 174.24 7.92 174.24 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 2.88 62.64 
+L 212.04 62.64 
+L 212.04 59.04 
+L 2.88 59.04 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #b8323a"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 61.92 142.488 
+L 150.173301 142.488 
+L 150.173301 132.408 
+L 61.92 132.408 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #b7a6e0; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 150.173301 142.488 
+L 203.4 142.488 
+L 203.4 132.408 
+L 150.173301 132.408 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #4b2c8f; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 61.92 164.268 
+L 76.686117 164.268 
+L 76.686117 154.188 
+L 61.92 154.188 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #b7a6e0; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 76.686117 164.268 
+L 136.093981 164.268 
+L 136.093981 154.188 
+L 76.686117 154.188 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #8468c9; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 136.093981 164.268 
+L 203.4 164.268 
+L 203.4 154.188 
+L 136.093981 154.188 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #4b2c8f; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 227.16 174.24 
+L 426.24 174.24 
+Q 431.28 174.24 431.28 169.2 
+L 431.28 64.08 
+Q 431.28 59.04 426.24 59.04 
+L 227.16 59.04 
+Q 222.12 59.04 222.12 64.08 
+L 222.12 169.2 
+Q 222.12 174.24 227.16 174.24 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 222.12 62.64 
+L 431.28 62.64 
+L 431.28 59.04 
+L 222.12 59.04 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #8468c9"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 7.92 299.52 
+L 207 299.52 
+Q 212.04 299.52 212.04 294.48 
+L 212.04 189.36 
+Q 212.04 184.32 207 184.32 
+L 7.92 184.32 
+Q 2.88 184.32 2.88 189.36 
+L 2.88 294.48 
+Q 2.88 299.52 7.92 299.52 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 2.88 187.92 
+L 212.04 187.92 
+L 212.04 184.32 
+L 2.88 184.32 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #4b5563"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 227.16 299.52 
+L 426.24 299.52 
+Q 431.28 299.52 431.28 294.48 
+L 431.28 189.36 
+Q 431.28 184.32 426.24 184.32 
+L 227.16 184.32 
+Q 222.12 184.32 222.12 189.36 
+L 222.12 294.48 
+Q 222.12 299.52 227.16 299.52 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 222.12 187.92 
+L 431.28 187.92 
+L 431.28 184.32 
+L 222.12 184.32 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #3b9c6e"/>
+   </g>
+   <g id="patch_15">
+    <path d="M 7.92 424.8 
+L 207 424.8 
+Q 212.04 424.8 212.04 419.76 
+L 212.04 314.64 
+Q 212.04 309.6 207 309.6 
+L 7.92 309.6 
+Q 2.88 309.6 2.88 314.64 
+L 2.88 419.76 
+Q 2.88 424.8 7.92 424.8 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_16">
+    <path d="M 2.88 313.2 
+L 212.04 313.2 
+L 212.04 309.6 
+L 2.88 309.6 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #2f6db5"/>
+   </g>
+   <g id="patch_17">
+    <path d="M 227.16 424.8 
+L 426.24 424.8 
+Q 431.28 424.8 431.28 419.76 
+L 431.28 314.64 
+Q 431.28 309.6 426.24 309.6 
+L 227.16 309.6 
+Q 222.12 309.6 222.12 314.64 
+L 222.12 419.76 
+Q 222.12 424.8 227.16 424.8 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_18">
+    <path d="M 222.12 313.2 
+L 431.28 313.2 
+L 431.28 309.6 
+L 222.12 309.6 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #4b5563"/>
+   </g>
+   <g id="patch_19">
+    <path d="M 7.92 528.48 
+L 426.24 528.48 
+Q 431.28 528.48 431.28 523.44 
+L 431.28 439.92 
+Q 431.28 434.88 426.24 434.88 
+L 7.92 434.88 
+Q 2.88 434.88 2.88 439.92 
+L 2.88 523.44 
+Q 2.88 528.48 7.92 528.48 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_20">
+    <path d="M 2.88 438.48 
+L 431.28 438.48 
+L 431.28 434.88 
+L 2.88 434.88 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #b8323a"/>
+   </g>
+   <g id="line2d_1">
+    <path d="M 2.88 47.52 
+L 431.28 47.52 
+" clip-path="url(#p8f52e8d8bf)" style="fill: none; stroke: #1f2430; stroke-width: 1.2; stroke-linecap: round"/>
+   </g>
+   <g id="patch_21">
+    <path d="M 230.76 153.18 
+L 269.136 153.18 
+L 269.136 135.36 
+L 230.76 135.36 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #b7a6e0; stroke: #ffffff; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_22">
+    <path d="M 269.136 153.18 
+L 349.7256 153.18 
+L 349.7256 135.36 
+L 269.136 135.36 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #8468c9; stroke: #ffffff; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_23">
+    <path d="M 349.7256 153.18 
+L 422.64 153.18 
+L 422.64 135.36 
+L 349.7256 135.36 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #4b2c8f; stroke: #ffffff; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_2">
+    <path d="M 230.76 262.08 
+L 248.203636 265.990774 
+L 265.647273 273.11486 
+L 283.090909 277.025634 
+L 300.534545 280.214036 
+L 317.978182 285.569555 
+L 335.421818 287.338122 
+L 352.865455 288.409226 
+L 370.309091 289.106689 
+L 387.752727 289.829061 
+L 405.196364 290.551433 
+L 422.64 291.597628 
+" clip-path="url(#p8f52e8d8bf)" style="fill: none; stroke: #3b9c6e; stroke-width: 1.4; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_3">
+    <path d="M 11.52 417.6 
+L 107.46 381.6 
+" clip-path="url(#p8f52e8d8bf)" style="fill: none; stroke-dasharray: 1.4,1.4; stroke-dashoffset: 0; stroke: #8a919c; stroke-width: 0.7"/>
+   </g>
+   <g id="line2d_4">
+    <path d="M 11.52 417.6 
+L 25.225714 408.857143 
+L 38.931429 400.114286 
+L 52.637143 391.371429 
+L 66.342857 382.628571 
+L 80.048571 381.6 
+L 93.754286 381.6 
+L 107.46 381.6 
+" clip-path="url(#p8f52e8d8bf)" style="fill: none; stroke: #b8323a; stroke-width: 1.2; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_5">
+    <path d="M 11.52 417.6 
+L 25.225714 412.302857 
+L 38.931429 407.005714 
+L 52.637143 401.708571 
+L 66.342857 396.411429 
+L 80.048571 391.114286 
+L 93.754286 385.817143 
+L 107.46 380.52 
+" clip-path="url(#p8f52e8d8bf)" style="fill: none; stroke: #3b9c6e; stroke-width: 1.2; stroke-linecap: round"/>
+   </g>
+   <g id="patch_24">
+    <path d="M 235.08 417.6 
+L 418.32 417.6 
+Q 422.64 417.6 422.64 413.28 
+L 422.64 391.68 
+Q 422.64 387.36 418.32 387.36 
+L 235.08 387.36 
+Q 230.76 387.36 230.76 391.68 
+L 230.76 413.28 
+Q 230.76 417.6 235.08 417.6 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #ffffff; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_6">
+    <path d="M 2.88 537.84 
+L 431.28 537.84 
+" clip-path="url(#p8f52e8d8bf)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.8; stroke-linecap: round"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #3b9c6e" x="2.88" y="14.84" transform="rotate(-0 2.88 14.84)">CHAPTER 21 · ON ONE PAGE</text>
+   </g>
+   <g id="text_2">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="2.88" y="34.19375" transform="rotate(-0 2.88 34.19375)">Act, review, or escalate</text>
+   </g>
+   <g id="text_3">
+    <text style="font-weight: 700; font-size: 8.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="25.92" y="77.86291" transform="rotate(-0 25.92 77.86291)">One line is not enough</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(11.52 95.960675)">A single cut at 0.5 auto-closes 37 real threats a</text>
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(11.52 108.711055)">day. Three zones let machines handle the easy ends</text>
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(11.52 121.519655)">and people handle the middle.</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="11.52" y="139.593094" transform="rotate(-0 11.52 139.593094)">one line</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="11.52" y="161.303766" transform="rotate(-0 11.52 161.303766)">three zones</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: start; fill: #8a919c" x="61.92" y="170.44425" transform="rotate(-0 61.92 170.44425)">real threats: auto-closed | reviewed | escalated</text>
+   </g>
+   <g id="text_8">
+    <text style="font-weight: 700; font-size: 8.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="245.16" y="77.86291" transform="rotate(-0 245.16 77.86291)">Act, review, escalate</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(230.76 95.94019)">Act: the machine closes it alone. Review: an analyst</text>
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(230.76 108.73154)">checks. Escalate: someone is paged now.</text>
+   </g>
+   <g id="text_10">
+    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="249.948" y="142.998125" transform="rotate(-0 249.948 142.998125)">ACT</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 5.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="249.948" y="152.641602" transform="rotate(-0 249.948 152.641602)">auto-close</text>
+   </g>
+   <g id="text_12">
+    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="309.4308" y="142.998125" transform="rotate(-0 309.4308 142.998125)">REVIEW</text>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 5.2px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="309.4308" y="152.641602" transform="rotate(-0 309.4308 152.641602)">analyst</text>
+   </g>
+   <g id="text_14">
+    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="386.1828" y="142.998125" transform="rotate(-0 386.1828 142.998125)">ESCALATE</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 5.2px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="386.1828" y="152.641602" transform="rotate(-0 386.1828 152.641602)">page</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 6.1px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="230.76" y="167.314195" transform="rotate(-0 230.76 167.314195)">Kestrel: act below 0.0313, escalate at 0.34 and above</text>
+   </g>
+   <g id="text_17">
+    <text style="font-weight: 700; font-size: 8.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="25.92" y="203.14291" transform="rotate(-0 25.92 203.14291)">Costs set the lines</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(11.52 222.020698)">Write down what each action costs as a function of P.</text>
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(11.52 233.991055)">The cheapest line at each P is your zone.</text>
+   </g>
+   <g id="text_19">
+    <text style="font-weight: 700; font-size: 8.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="245.16" y="203.14291" transform="rotate(-0 245.16 203.14291)">Capacity moves the lines</text>
+   </g>
+   <g id="text_20">
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(230.76 221.22019)">Six analysts can review 240 alerts a day, not 638.</text>
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(230.76 234.06329)">Queue size is a business decision.</text>
+   </g>
+   <g id="text_21">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: start; fill: #8a919c" x="230.76" y="260.0305" transform="rotate(-0 230.76 260.0305)">threats auto-closed / day</text>
+   </g>
+   <g id="text_22">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: end; fill: #8a919c" x="422.64" y="299.534688" transform="rotate(-0 422.64 299.534688)">more analysts →</text>
+   </g>
+   <g id="text_23">
+    <text style="font-weight: 700; font-size: 8.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="25.92" y="328.42291" transform="rotate(-0 25.92 328.42291)">Only honest P can be thresholded</text>
+   </g>
+   <g id="text_24">
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(11.52 346.524448)">The raw mock’s “almost surely fine” alerts were 2.5×</text>
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(11.52 360.047305)">riskier than it claimed. Recalibrate on recent</text>
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(11.52 372.066178)">history before you trust any line.</text>
+   </g>
+   <g id="text_25">
+    <text style="font-size: 5.8px; font-family: 'Inter'; fill: #b8323a" transform="translate(118.9728 387.579072)">raw: says 0.6%,</text>
+    <text style="font-size: 5.8px; font-family: 'Inter'; fill: #b8323a" transform="translate(118.9728 396.702178)">really 1.4%</text>
+   </g>
+   <g id="text_26">
+    <text style="font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #3b9c6e" x="118.9728" y="412.542375" transform="rotate(-0 118.9728 412.542375)">recalibrated</text>
+   </g>
+   <g id="text_27">
+    <text style="font-weight: 700; font-size: 8.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="245.16" y="328.42291" transform="rotate(-0 245.16 328.42291)">Log every decision</text>
+   </g>
+   <g id="text_28">
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(230.76 346.50019)">Jev gives no reasons, so audit the policy and the</text>
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(230.76 359.271055)">evidence: what it saw, what it said, what you did.</text>
+   </g>
+   <g id="text_29">
+    <text style="font-weight: 500; font-size: 6px; font-family: 'JetBrains Mono'; fill: #1f2430" transform="translate(283.5 399.54)">{alert, P, calibrated P,</text>
+    <text style="font-weight: 500; font-size: 6px; font-family: 'JetBrains Mono'; fill: #1f2430" transform="translate(281.7 409.38)"> policy v3, action, time}</text>
+   </g>
+   <g id="text_30">
+    <text style="font-weight: 700; font-size: 8.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="11.52" y="453.70291" transform="rotate(-0 11.52 453.70291)">Watch it every week</text>
+   </g>
+   <g id="text_31">
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(11.52 471.804448)">Zone rates, queue size and calibration drift. Audit a random slice of ACT, because otherwise you never see the</text>
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(11.52 484.758055)">mistakes the machine closed on its own. Fail safe to REVIEW, never to ACT.</text>
+   </g>
+   <g id="text_32">
+    <text style="font-weight: 600; font-size: 7.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="2.88" y="551.979141" transform="rotate(-0 2.88 551.979141)">Next: the patterns that put a decision layer inside real systems.</text>
+   </g>
+   <g id="patch_25">
+    <path d="M 15.12 81 
+C 16.743043 81 18.299829 80.355158 19.447494 79.207494 
+C 20.595158 78.059829 21.24 76.503043 21.24 74.88 
+C 21.24 73.256957 20.595158 71.700171 19.447494 70.552506 
+C 18.299829 69.404842 16.743043 68.76 15.12 68.76 
+C 13.496957 68.76 11.940171 69.404842 10.792506 70.552506 
+C 9.644842 71.700171 9 73.256957 9 74.88 
+C 9 76.503043 9.644842 78.059829 10.792506 79.207494 
+C 11.940171 80.355158 13.496957 81 15.12 81 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #b8323a; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_26">
+    <path d="M 234.36 81 
+C 235.983043 81 237.539829 80.355158 238.687494 79.207494 
+C 239.835158 78.059829 240.48 76.503043 240.48 74.88 
+C 240.48 73.256957 239.835158 71.700171 238.687494 70.552506 
+C 237.539829 69.404842 235.983043 68.76 234.36 68.76 
+C 232.736957 68.76 231.180171 69.404842 230.032506 70.552506 
+C 228.884842 71.700171 228.24 73.256957 228.24 74.88 
+C 228.24 76.503043 228.884842 78.059829 230.032506 79.207494 
+C 231.180171 80.355158 232.736957 81 234.36 81 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #8468c9; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_27">
+    <path d="M 15.12 206.28 
+C 16.743043 206.28 18.299829 205.635158 19.447494 204.487494 
+C 20.595158 203.339829 21.24 201.783043 21.24 200.16 
+C 21.24 198.536957 20.595158 196.980171 19.447494 195.832506 
+C 18.299829 194.684842 16.743043 194.04 15.12 194.04 
+C 13.496957 194.04 11.940171 194.684842 10.792506 195.832506 
+C 9.644842 196.980171 9 198.536957 9 200.16 
+C 9 201.783043 9.644842 203.339829 10.792506 204.487494 
+C 11.940171 205.635158 13.496957 206.28 15.12 206.28 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #4b5563; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_28">
+    <path d="M 234.36 206.28 
+C 235.983043 206.28 237.539829 205.635158 238.687494 204.487494 
+C 239.835158 203.339829 240.48 201.783043 240.48 200.16 
+C 240.48 198.536957 239.835158 196.980171 238.687494 195.832506 
+C 237.539829 194.684842 235.983043 194.04 234.36 194.04 
+C 232.736957 194.04 231.180171 194.684842 230.032506 195.832506 
+C 228.884842 196.980171 228.24 198.536957 228.24 200.16 
+C 228.24 201.783043 228.884842 203.339829 230.032506 204.487494 
+C 231.180171 205.635158 232.736957 206.28 234.36 206.28 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_29">
+    <path d="M 15.12 331.56 
+C 16.743043 331.56 18.299829 330.915158 19.447494 329.767494 
+C 20.595158 328.619829 21.24 327.063043 21.24 325.44 
+C 21.24 323.816957 20.595158 322.260171 19.447494 321.112506 
+C 18.299829 319.964842 16.743043 319.32 15.12 319.32 
+C 13.496957 319.32 11.940171 319.964842 10.792506 321.112506 
+C 9.644842 322.260171 9 323.816957 9 325.44 
+C 9 327.063043 9.644842 328.619829 10.792506 329.767494 
+C 11.940171 330.915158 13.496957 331.56 15.12 331.56 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #2f6db5; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_30">
+    <path d="M 234.36 331.56 
+C 235.983043 331.56 237.539829 330.915158 238.687494 329.767494 
+C 239.835158 328.619829 240.48 327.063043 240.48 325.44 
+C 240.48 323.816957 239.835158 322.260171 238.687494 321.112506 
+C 237.539829 319.964842 235.983043 319.32 234.36 319.32 
+C 232.736957 319.32 231.180171 319.964842 230.032506 321.112506 
+C 228.884842 322.260171 228.24 323.816957 228.24 325.44 
+C 228.24 327.063043 228.884842 328.619829 230.032506 329.767494 
+C 231.180171 330.915158 232.736957 331.56 234.36 331.56 
+z
+" clip-path="url(#p8f52e8d8bf)" style="fill: #4b5563; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_33">
+    <g id="patch_31">
+     <path d="M 31.191562 282.749883 
+L 56.648438 282.749883 
+Q 57.368437 282.749883 57.368437 282.029883 
+L 57.368437 273.810117 
+Q 57.368437 273.090117 56.648438 273.090117 
+L 31.191562 273.090117 
+Q 30.471563 273.090117 30.471563 273.810117 
+L 30.471563 282.029883 
+Q 30.471563 282.749883 31.191562 282.749883 
+z
+" style="fill: #efeaf9; stroke: #b7a6e0; stroke-width: 0.7; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 600; font-size: 6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="43.92" y="280.102617" transform="rotate(-0 43.92 280.102617)">P × miss</text>
+   </g>
+   <g id="text_34">
+    <g id="patch_32">
+     <path d="M 84.029531 282.749883 
+L 131.730469 282.749883 
+Q 132.450469 282.749883 132.450469 282.029883 
+L 132.450469 273.810117 
+Q 132.450469 273.090117 131.730469 273.090117 
+L 84.029531 273.090117 
+Q 83.309531 273.090117 83.309531 273.810117 
+L 83.309531 282.029883 
+Q 83.309531 282.749883 84.029531 282.749883 
+z
+" style="fill: #e4dcf4; stroke: #8468c9; stroke-width: 0.7; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 600; font-size: 6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="107.88" y="280.102617" transform="rotate(-0 107.88 280.102617)">review + misses</text>
+   </g>
+   <g id="text_35">
+    <g id="patch_33">
+     <path d="M 153.094219 282.749883 
+L 190.585781 282.749883 
+Q 191.305781 282.749883 191.305781 282.029883 
+L 191.305781 273.810117 
+Q 191.305781 273.090117 190.585781 273.090117 
+L 153.094219 273.090117 
+Q 152.374219 273.090117 152.374219 273.810117 
+L 152.374219 282.029883 
+Q 152.374219 282.749883 153.094219 282.749883 
+z
+" style="fill: #dad2ec; stroke: #4b2c8f; stroke-width: 0.7; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 600; font-size: 6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="171.84" y="280.102617" transform="rotate(-0 171.84 280.102617)">(1−P) × page</text>
+   </g>
+   <g id="text_36">
+    <g id="patch_34">
+     <path d="M 11.04 515.309883 
+L 42.346875 515.309883 
+Q 43.066875 515.309883 43.066875 514.589883 
+L 43.066875 506.370117 
+Q 43.066875 505.650117 42.346875 505.650117 
+L 11.04 505.650117 
+Q 10.32 505.650117 10.32 506.370117 
+L 10.32 514.589883 
+Q 10.32 515.309883 11.04 515.309883 
+z
+" style="fill: #f1f2f4; stroke: #4b5563; stroke-width: 0.7; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 600; font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="11.52" y="512.662617" transform="rotate(-0 11.52 512.662617)">zone rates</text>
+   </g>
+   <g id="text_37">
+    <g id="patch_35">
+     <path d="M 62.88 515.309883 
+L 116.960625 515.309883 
+Q 117.680625 515.309883 117.680625 514.589883 
+L 117.680625 506.370117 
+Q 117.680625 505.650117 116.960625 505.650117 
+L 62.88 505.650117 
+Q 62.16 505.650117 62.16 506.370117 
+L 62.16 514.589883 
+Q 62.16 515.309883 62.88 515.309883 
+z
+" style="fill: #f1f2f4; stroke: #4b5563; stroke-width: 0.7; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 600; font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="63.36" y="512.662617" transform="rotate(-0 63.36 512.662617)">queue vs capacity</text>
+   </g>
+   <g id="text_38">
+    <g id="patch_36">
+     <path d="M 140.928 515.309883 
+L 190.233937 515.309883 
+Q 190.953937 515.309883 190.953937 514.589883 
+L 190.953937 506.370117 
+Q 190.953937 505.650117 190.233937 505.650117 
+L 140.928 505.650117 
+Q 140.208 505.650117 140.208 506.370117 
+L 140.208 514.589883 
+Q 140.208 515.309883 140.928 515.309883 
+z
+" style="fill: #f1f2f4; stroke: #4b5563; stroke-width: 0.7; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 600; font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="141.408" y="512.662617" transform="rotate(-0 141.408 512.662617)">calibration (ECE)</text>
+   </g>
+   <g id="text_39">
+    <g id="patch_37">
+     <path d="M 218.976 515.309883 
+L 267.364125 515.309883 
+Q 268.084125 515.309883 268.084125 514.589883 
+L 268.084125 506.370117 
+Q 268.084125 505.650117 267.364125 505.650117 
+L 218.976 505.650117 
+Q 218.256 505.650117 218.256 506.370117 
+L 218.256 514.589883 
+Q 218.256 515.309883 218.976 515.309883 
+z
+" style="fill: #f1f2f4; stroke: #4b5563; stroke-width: 0.7; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 600; font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="219.456" y="512.662617" transform="rotate(-0 219.456 512.662617)">audit 3% of ACT</text>
+   </g>
+   <g id="text_40">
+    <g id="patch_38">
+     <path d="M 289.536 515.309883 
+L 343.683187 515.309883 
+Q 344.403187 515.309883 344.403187 514.589883 
+L 344.403187 506.370117 
+Q 344.403187 505.650117 343.683187 505.650117 
+L 289.536 505.650117 
+Q 288.816 505.650117 288.816 506.370117 
+L 288.816 514.589883 
+Q 288.816 515.309883 289.536 515.309883 
+z
+" style="fill: #f1f2f4; stroke: #4b5563; stroke-width: 0.7; stroke-linejoin: miter"/>
+    </g>
+    <text style="font-weight: 600; font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="290.016" y="512.662617" transform="rotate(-0 290.016 512.662617)">fail safe = REVIEW</text>
+   </g>
+   <g id="text_41">
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="15.12" y="77.568879" transform="rotate(-0 15.12 77.568879)">1</text>
+   </g>
+   <g id="text_42">
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="234.36" y="77.568879" transform="rotate(-0 234.36 77.568879)">2</text>
+   </g>
+   <g id="text_43">
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="15.12" y="202.848879" transform="rotate(-0 15.12 202.848879)">3</text>
+   </g>
+   <g id="text_44">
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="234.36" y="202.848879" transform="rotate(-0 234.36 202.848879)">4</text>
+   </g>
+   <g id="text_45">
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="15.12" y="328.128879" transform="rotate(-0 15.12 328.128879)">5</text>
+   </g>
+   <g id="text_46">
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="234.36" y="328.128879" transform="rotate(-0 234.36 328.128879)">6</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p8f52e8d8bf">
+   <rect x="2.88" y="2.88" width="428.4" height="558"/>
+  </clipPath>
+ </defs>
+</svg>

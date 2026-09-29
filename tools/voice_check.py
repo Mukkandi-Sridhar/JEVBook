@@ -25,7 +25,7 @@ BANNED = [
     r"\bnuanced?\b", r"\bfoster", r"\bholistic", r"\bempower",
 ]
 NOT_JUST = re.compile(r"\bnot (just|only|merely)\b[^.]{0,80}?\bbut\b", re.I)
-DEF_OPEN = re.compile(r"^(An?|The)\s+[\w\s-]{1,40}\s+(is|are|refers to)\s+(an?|the)\b")
+DEF_OPEN = re.compile(r"^(An?|The)\s+[\w\s-]{1,40}\s+(is an?|are|refers to|is defined as|means)\b")
 TRIAD = re.compile(r"\b(\w+), (\w+),? and (\w+)\b")
 
 

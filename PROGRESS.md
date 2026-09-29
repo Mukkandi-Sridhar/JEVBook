@@ -7,8 +7,8 @@ Resume from here. Each chapter row is updated after its lab runs, it renders, an
 | Step | What | Status |
 |---|---|---|
 | 1 | Repo: Quarto book (PDF/HTML/EPUB), `jevkit` + tests, SOC generator, figure system, CI, this file | done |
-| 2 | Ch 1 (voice + design benchmark), then Ch 21 | Ch 1 done; Ch 21 in progress |
-| 3 | Remaining chapters in plan order | not started |
+| 2 | Ch 1 (voice + design benchmark), then Ch 21 | done |
+| 3 | Remaining chapters in plan order | in progress |
 | 4 | Front/back matter, widgets, full render ≥ 250 pages | not started |
 
 ## Chapters
@@ -35,7 +35,7 @@ Resume from here. Each chapter row is updated after its lab runs, it renders, an
 | 18 | Testing Jev’s calibration yourself | – | – | – | – | – | – |
 | 19 | The Jevons paradox of decisions | – | – | – | – | – | – |
 | 20 | The bake-off: six ways to make a decision | – | – | – | – | – | – |
-| 21 | Act, review, or escalate | – | – | – | – | – | – |
+| 21 | Act, review, or escalate | 2,660 | 15 (incl. summary) | 7 + summary | ok | pass | 0 |
 | 22 | A catalog of decision patterns | – | – | – | – | – | – |
 | 23 | First calls, and the mock that makes them free | – | – | – | – | – | – |
 | 24 | A hybrid agent: Jev decides, the LLM reasons | – | – | – | – | – | – |

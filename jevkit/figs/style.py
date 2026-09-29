@@ -126,11 +126,11 @@ def save(f, chapter: str, name: str, outdir: str | os.PathLike | None = None, ti
     return out / f"{name}.pdf"
 
 
-def synthetic_tag(f_or_ax, text="SYNTHETIC · not measured on real Jev", loc="br"):
-    """The small label every Jev number carries."""
+def synthetic_tag(f_or_ax, text="SYNTHETIC · not measured on real Jev", loc="tr"):
+    """The small label every Jev number carries. Default: just above the figure's top-right corner."""
     f = f_or_ax.figure if hasattr(f_or_ax, "figure") and not isinstance(f_or_ax, plt.Figure) else f_or_ax
     x, ha = (0.995, "right") if loc.endswith("r") else (0.005, "left")
-    y, va = (0.0, "bottom") if loc.startswith("b") else (1.0, "top")
+    y, va = (0.0, "top") if loc.startswith("b") else (1.0, "bottom")
     f.text(x, y, text, ha=ha, va=va, fontsize=5.6, color=C["muted"], fontweight="medium",
            bbox=dict(boxstyle="round,pad=0.25,rounding_size=0.15", fc="white", ec=C["grid"], lw=0.5))
 

@@ -229,20 +229,25 @@ def _severity(rng, malicious: int, category: str, crit: int, p: float) -> int:
     return int(min(3, base))
 
 
-def generate(n: int = 20000, seed: int = 7) -> list[Alert]:
-    """Generate `n` alerts. Deterministic for a given (n, seed)."""
+def generate(n: int = 20000, seed: int = 7, days: int = 28, start: str = "2026-09-01T00:00",
+             rule_boost: dict | None = None, logit_shift: dict | None = None) -> list[Alert]:
+    """Generate `n` alerts over `days` days. Deterministic for a given set of arguments.
+
+    `rule_boost` multiplies how often a rule fires; `logit_shift` adds to a rule's true logit.
+    Together they simulate a campaign: more alerts of one kind, and more of them real.
+    """
     rng = np.random.default_rng(seed)
     rules = list(RULES)
-    rw = np.array([RULES[r]["weight"] for r in rules], float)
+    rw = np.array([RULES[r]["weight"] * (rule_boost or {}).get(r, 1.0) for r in rules], float)
     rw /= rw.sum()
     out: list[Alert] = []
-    start = np.datetime64("2026-09-01T00:00")
+    start = np.datetime64(start)
     for i in range(n):
         rule = str(rng.choice(rules, p=rw))
         role = str(rng.choice(ROLES, p=[0.72, 0.12, 0.08, 0.08]))
         dept = "it" if role == "admin" and rng.random() < 0.7 else str(rng.choice(DEPARTMENTS))
         crit = int(rng.choice([0, 1, 2, 3], p=[0.3, 0.38, 0.22, 0.10]))
-        minute = int(rng.integers(0, 60 * 24 * 28))
+        minute = int(rng.integers(0, 60 * 24 * days))
         ts = start + np.timedelta64(minute, "m")
         hour = (minute // 60) % 24
         after_hours = bool(hour < 7 or hour >= 20)
@@ -254,6 +259,7 @@ def generate(n: int = 20000, seed: int = 7) -> list[Alert]:
         mfa_ok = bool(rng.random() < 0.7)
         mb_out = float(np.round(rng.lognormal(2.0, 1.4), 1)) if rule in ("large_upload", "public_bucket", "dlp_personal_cloud") else float(np.round(rng.lognormal(-1.0, 1.0), 2))
         z = true_logit(rule, crit, after_hours, ioc, known_tool, prior, new_geo, mfa_ok, mb_out, role)
+        z += (logit_shift or {}).get(rule, 0.0)
         p = float(sigmoid(z))
         mal = int(rng.random() < p)
         cat = _category(rng, rule, mal, known_tool)
@@ -316,3 +322,19 @@ def load(n: int = 20000, seed: int = 7):
     if key not in _CACHE:
         _CACHE[key] = to_frame(generate(n, seed))
     return _CACHE[key].copy()
+
+
+def history_and_live(df=None):
+    """Weeks 1-3 are history (where we set thresholds); week 4 is 'live' (where we check them)."""
+    df = load() if df is None else df
+    ts = df.timestamp.astype("datetime64[ns]")
+    cut = np.datetime64("2026-09-22T00:00")
+    return df[ts < cut].reset_index(drop=True), df[ts >= cut].reset_index(drop=True)
+
+
+def campaign_week(seed: int = 11):
+    """A fifth week with a phishing campaign: link alerts fire 3x as often and far more of them are real."""
+    alerts = generate(n=6200, seed=seed, days=7, start="2026-09-29T00:00",
+                      rule_boost={"suspicious_link": 3.0, "lookalike_domain": 2.0},
+                      logit_shift={"suspicious_link": 1.6, "lookalike_domain": 1.2})
+    return to_frame(alerts)

@@ -125,15 +125,39 @@ def queue_load(review_count_per_day: float, minutes_per_review: float, analysts:
     return review_count_per_day * minutes_per_review / (analysts * hours_per_shift * 60)
 
 
-def best_policy_with_capacity(p, y, max_review_rate: float, costs: Costs | None = None, grid=None) -> ThreeZonePolicy:
-    """Cheapest policy whose review queue stays under `max_review_rate` of all alerts."""
-    grid = grid if grid is not None else np.round(np.concatenate([np.linspace(0.002, 0.05, 25), np.linspace(0.06, 0.95, 90)]), 4)
+def best_policy_with_capacity(p, y, max_review_rate: float, costs: Costs | None = None, highs=None,
+                              max_escalate_rate: float = 1.0) -> ThreeZonePolicy:
+    """Cheapest policy whose review queue holds at most `max_review_rate` of all alerts.
+
+    For each candidate `high`, the best `low` is the smallest one that still fits the queue,
+    because every alert pulled out of 'act' and into 'review' lowers the expected cost.
+    """
+    p = np.asarray(p, float)
+    srt = np.sort(p)
+    cap = int(np.floor(max_review_rate * len(p)))
+    highs = highs if highs is not None else np.round(np.linspace(0.05, 0.95, 91), 3)
     best, best_cost = None, np.inf
-    for lo in grid:
-        for hi in grid:
-            if lo > hi:
-                continue
-            r = evaluate(ThreeZonePolicy(float(lo), float(hi)), p, y, costs)
-            if r["review_rate"] <= max_review_rate and r["cost"] < best_cost:
-                best, best_cost = ThreeZonePolicy(float(lo), float(hi)), r["cost"]
+    for hi in highs:
+        k = int(np.searchsorted(srt, hi, side="left"))      # alerts with p < hi
+        if (len(p) - k) > max_escalate_rate * len(p):
+            continue                                          # the on-call team can't take that many pages
+        lo = 0.0 if k <= cap else float(srt[k - cap])
+        lo = min(lo, float(hi))
+        pol = ThreeZonePolicy(lo, float(hi))
+        c = evaluate(pol, p, y, costs)["cost"]
+        if c < best_cost:
+            best, best_cost = pol, c
     return best
+
+
+def cost_optimal_thresholds(costs: Costs | None = None) -> tuple[float, float]:
+    """Where the expected-cost lines cross, assuming the probabilities are calibrated.
+
+    act costs      p * miss
+    review costs   review + p * miss_rate * miss
+    escalate costs (1 - p) * false_page
+    """
+    c = costs or Costs()
+    low = c.review_cost / (c.auto_close_miss * (1 - c.review_miss_rate))
+    high = (c.escalate_false_alarm - c.review_cost) / (c.escalate_false_alarm + c.review_miss_rate * c.auto_close_miss)
+    return low, high
