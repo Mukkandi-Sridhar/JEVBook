@@ -69,8 +69,6 @@ Extract when the only input you have is text. When structured data exists, use i
 
 **The pattern.** Give the loop's decide step to a decision model. Each decision is a typed question with named options. The LLM is called only when there's something to write.
 
-![The Observe, Decide, Act loop with the decide step made explicit. Most steps are small typed decisions; writing is occasional.](/figures/ch22/oda.pdf){#fig-oda}
-
 ```{python}
 next_step = Choice(
     instructions="Which evidence should the agent gather next?",
@@ -78,10 +76,12 @@ next_step = Choice(
               "policy": None, "none": None})
 a = client.system_one(state=alert.description,
                       questions={"next": next_step})
-print(a.choices["next"].choice)
+print("next step:", a.choices["next"].choice)
 ```
 
 Because each decision comes back with probabilities, the loop can do something an LLM-driven loop can't do cleanly: notice when it's unsure. If no option is clearly ahead, stop and escalate, rather than picking one and carrying on confidently. Chapter 7's compounding arithmetic is the reason that matters: a small error rate per step becomes a large one over ten steps.
+
+![The Observe, Decide, Act loop with the decide step made explicit. Most steps are small typed decisions; writing is occasional.](/figures/ch22/oda.pdf){#fig-oda}
 
 **How it breaks.** Some steps aren't small decisions. Planning a novel investigation is real reasoning, and belongs with the LLM or a person. The skill is sorting the steps honestly, the way Chapter 8 sorted System 1 work from System 2.
 
