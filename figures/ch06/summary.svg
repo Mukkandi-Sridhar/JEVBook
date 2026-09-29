@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="434.16pt" height="563.76pt" viewBox="0 0 434.16 563.76" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 563.76 
+L 434.16 563.76 
+L 434.16 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 7.92 163.44 
+L 207 163.44 
+Q 212.04 163.44 212.04 158.4 
+L 212.04 64.08 
+Q 212.04 59.04 207 59.04 
+L 7.92 59.04 
+Q 2.88 59.04 2.88 64.08 
+L 2.88 158.4 
+Q 2.88 163.44 7.92 163.44 
+z
+" clip-path="url(#p63df0a87e3)" style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 2.88 62.64 
+L 212.04 62.64 
+L 212.04 59.04 
+L 2.88 59.04 
+z
+" clip-path="url(#p63df0a87e3)" style="fill: #2f6db5"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 227.16 163.44 
+L 426.24 163.44 
+Q 431.28 163.44 431.28 158.4 
+L 431.28 64.08 
+Q 431.28 59.04 426.24 59.04 
+L 227.16 59.04 
+Q 222.12 59.04 222.12 64.08 
+L 222.12 158.4 
+Q 222.12 163.44 227.16 163.44 
+z
+" clip-path="url(#p63df0a87e3)" style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 222.12 62.64 
+L 431.28 62.64 
+L 431.28 59.04 
+L 222.12 59.04 
+z
+" clip-path="url(#p63df0a87e3)" style="fill: #b8323a"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 230.76 156.24 
+L 270.36 156.24 
+L 270.36 116.64 
+L 230.76 116.64 
+L 230.76 156.24 
+z
+" clip-path="url(#p63df0a87e3)" style="fill: none; stroke: #e4e7eb; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 288.36 156.24 
+L 327.96 156.24 
+L 327.96 116.64 
+L 288.36 116.64 
+L 288.36 156.24 
+z
+" clip-path="url(#p63df0a87e3)" style="fill: none; stroke: #e4e7eb; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 7.92 277.92 
+L 207 277.92 
+Q 212.04 277.92 212.04 272.88 
+L 212.04 178.56 
+Q 212.04 173.52 207 173.52 
+L 7.92 173.52 
+Q 2.88 173.52 2.88 178.56 
+L 2.88 272.88 
+Q 2.88 277.92 7.92 277.92 
+z
+" clip-path="url(#p63df0a87e3)" style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 2.88 177.12 
+L 212.04 177.12 
+L 212.04 173.52 
+L 2.88 173.52 
+z
+" clip-path="url(#p63df0a87e3)" style="fill: #4b5563"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 227.16 277.92 
+L 426.24 277.92 
+Q 431.28 277.92 431.28 272.88 
+L 431.28 178.56 
+Q 431.28 173.52 426.24 173.52 
+L 227.16 173.52 
+Q 222.12 173.52 222.12 178.56 
+L 222.12 272.88 
+Q 222.12 277.92 227.16 277.92 
+z
+" clip-path="url(#p63df0a87e3)" style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 222.12 177.12 
+L 431.28 177.12 
+L 431.28 173.52 
+L 222.12 173.52 
+z
+" clip-path="url(#p63df0a87e3)" style="fill: #b8323a"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 7.92 392.4 
+L 207 392.4 
+Q 212.04 392.4 212.04 387.36 
+L 212.04 293.04 
+Q 212.04 288 207 288 
+L 7.92 288 
+Q 2.88 288 2.88 293.04 
+L 2.88 387.36 
+Q 2.88 392.4 7.92 392.4 
+z
+" clip-path="url(#p63df0a87e3)" style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 2.88 291.6 
+L 212.04 291.6 
+L 212.04 288 
+L 2.88 288 
+z
+" clip-path="url(#p63df0a87e3)" style="fill: #4b5563"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 227.16 392.4 
+L 426.24 392.4 
+Q 431.28 392.4 431.28 387.36 
+L 431.28 293.04 
+Q 431.28 288 426.24 288 
+L 227.16 288 
+Q 222.12 288 222.12 293.04 
+L 222.12 387.36 
+Q 222.12 392.4 227.16 392.4 
+z
+" clip-path="url(#p63df0a87e3)" style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.8; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_15">
+    <path d="M 222.12 291.6 
+L 431.28 291.6 
+L 431.28 288 
+L 222.12 288 
+z
+" clip-path="url(#p63df0a87e3)" style="fill: #3b9c6e"/>
+   </g>
+   <g id="line2d_1">
+    <path d="M 2.88 47.52 
+L 431.28 47.52 
+" clip-path="url(#p63df0a87e3)" style="fill: none; stroke: #1f2430; stroke-width: 1.2; stroke-linecap: round"/>
+   </g>
+   <g id="QuadContourSet_1">
+    <path d="M 241.436699 156.24 
+L 240.928969 155.568814 
+L 240.827797 155.435072 
+L 240.421236 154.897627 
+L 240.15661 154.547812 
+L 239.913501 154.226441 
+L 239.485424 153.660552 
+L 239.405768 153.555254 
+L 238.898038 152.884068 
+L 238.814237 152.77329 
+L 238.390305 152.212881 
+L 238.143051 151.886031 
+L 237.88257 151.541695 
+L 237.471864 150.998771 
+L 237.374837 150.870508 
+L 236.867107 150.199322 
+L 236.800678 150.111509 
+L 236.359374 149.528136 
+L 236.129492 149.224249 
+L 235.85164 148.856949 
+L 235.458305 148.336989 
+L 235.343906 148.185763 
+L 234.836175 147.514576 
+L 234.787119 147.449727 
+L 234.328443 146.84339 
+L 234.115932 146.562467 
+L 233.820709 146.172203 
+L 233.444746 145.675207 
+L 233.312975 145.501017 
+L 232.805244 144.829831 
+L 232.773559 144.787946 
+L 232.297512 144.158644 
+L 232.102373 143.900685 
+L 231.789778 143.487458 
+L 231.431186 143.013426 
+L 231.282044 142.816271 
+L 230.774313 142.145085 
+L 230.76 142.126164 
+" clip-path="url(#p63df0a87e3)" style="fill: none; stroke: #1f2430"/>
+   </g>
+   <g id="QuadContourSet_2">
+    <path d="M 327.96 135.328104 
+L 327.131001 138.117966 
+L 324.604068 146.372198 
+L 323.633015 147.514576 
+L 319.889809 151.541695 
+L 319.234576 151.784634 
+L 307.071787 152.884068 
+L 299.019039 150.870508 
+L 296.655506 148.185763 
+L 294.339059 145.501017 
+L 293.895669 144.158644 
+L 291.8952 136.104407 
+L 291.8449 135.43322 
+L 292.627476 128.721356 
+L 293.417725 127.378983 
+L 295.743051 123.893393 
+L 297.75661 122.470333 
+L 302.454915 119.304182 
+L 303.797288 118.833377 
+L 309.217212 117.311186 
+L 319.281852 120.667119 
+L 321.248136 122.197082 
+L 325.275254 125.531366 
+L 325.745066 126.707797 
+L 327.96 133.45263 
+L 327.96 133.45263 
+" clip-path="url(#p63df0a87e3)" style="fill: none; stroke: #1f2430"/>
+   </g>
+   <g id="line2d_2">
+    <path d="M 2.88 537.84 
+L 431.28 537.84 
+" clip-path="url(#p63df0a87e3)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.8; stroke-linecap: round"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #3b9c6e" x="2.88" y="14.84" transform="rotate(-0 2.88 14.84)">CHAPTER 6 · ON ONE PAGE</text>
+   </g>
+   <g id="text_2">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="2.88" y="34.19375" transform="rotate(-0 2.88 34.19375)">Neurons to networks</text>
+   </g>
+   <g id="text_3">
+    <text style="font-weight: 700; font-size: 8.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="25.92" y="77.86291" transform="rotate(-0 25.92 77.86291)">A neuron is logistic regression</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(11.52 95.960675)">Weigh the inputs, add them up, squash the total. Part</text>
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(11.52 108.711055)">I already built one.</text>
+   </g>
+   <g id="text_5">
+    <text style="font-weight: 700; font-size: 8.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="245.16" y="77.86291" transform="rotate(-0 245.16 77.86291)">One neuron draws a straight line</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(230.76 95.964448)">It can’t separate “unusual in any direction”. A few</text>
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(230.76 109.487305)">hidden neurons can bend the line.</text>
+   </g>
+   <g id="text_7">
+    <text style="font-weight: 700; font-size: 8.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="25.92" y="192.34291" transform="rotate(-0 25.92 192.34291)">Hinges make any shape</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(11.52 210.440675)">ReLU is a hinge. Add enough hinges, and a network can</text>
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(11.52 223.191055)">draw almost any curve. Without them, layers collapse</text>
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(11.52 236.748413)">into one line.</text>
+   </g>
+   <g id="text_9">
+    <text style="font-weight: 700; font-size: 8.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="245.16" y="192.34291" transform="rotate(-0 245.16 192.34291)">Backpropagation shares the blame</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(230.76 210.454151)">Same gradient descent as Chapter 3. The error flows</text>
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(230.76 223.191055)">backwards, layer by layer, telling each weight which</text>
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(230.76 235.623928)">way to move.</text>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 700; font-size: 8.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="25.92" y="306.82291" transform="rotate(-0 25.92 306.82291)">Deep = many layers</text>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(11.52 324.924448)">Each layer builds features from the one before. On</text>
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(11.52 337.705016)">raw pixels and words, that’s what makes deep learning</text>
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(11.52 351.214397)">work.</text>
+   </g>
+   <g id="text_13">
+    <text style="font-weight: 700; font-size: 8.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="245.16" y="306.82291" transform="rotate(-0 245.16 306.82291)">Bigger isn’t automatically better</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(230.76 324.944932)">On Kestrel’s neat features, logistic regression</text>
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(230.76 337.853797)">scored 0.175; an oversized network 0.511, and it was</text>
+    <text style="font-size: 6.9px; font-family: 'Source Serif 4'; fill: #4b5563" transform="translate(230.76 351.25267)">overconfident.</text>
+   </g>
+   <g id="text_15">
+    <text style="font-weight: 600; font-size: 7.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="2.88" y="551.979141" transform="rotate(-0 2.88 551.979141)">Next: networks need numbers. How does a word become a number that means something?</text>
+   </g>
+   <g id="patch_16">
+    <path d="M 15.12 81 
+C 16.743043 81 18.299829 80.355158 19.447494 79.207494 
+C 20.595158 78.059829 21.24 76.503043 21.24 74.88 
+C 21.24 73.256957 20.595158 71.700171 19.447494 70.552506 
+C 18.299829 69.404842 16.743043 68.76 15.12 68.76 
+C 13.496957 68.76 11.940171 69.404842 10.792506 70.552506 
+C 9.644842 71.700171 9 73.256957 9 74.88 
+C 9 76.503043 9.644842 78.059829 10.792506 79.207494 
+C 11.940171 80.355158 13.496957 81 15.12 81 
+z
+" clip-path="url(#p63df0a87e3)" style="fill: #2f6db5; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_17">
+    <path d="M 234.36 81 
+C 235.983043 81 237.539829 80.355158 238.687494 79.207494 
+C 239.835158 78.059829 240.48 76.503043 240.48 74.88 
+C 240.48 73.256957 239.835158 71.700171 238.687494 70.552506 
+C 237.539829 69.404842 235.983043 68.76 234.36 68.76 
+C 232.736957 68.76 231.180171 69.404842 230.032506 70.552506 
+C 228.884842 71.700171 228.24 73.256957 228.24 74.88 
+C 228.24 76.503043 228.884842 78.059829 230.032506 79.207494 
+C 231.180171 80.355158 232.736957 81 234.36 81 
+z
+" clip-path="url(#p63df0a87e3)" style="fill: #b8323a; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_18">
+    <path d="M 15.12 195.48 
+C 16.743043 195.48 18.299829 194.835158 19.447494 193.687494 
+C 20.595158 192.539829 21.24 190.983043 21.24 189.36 
+C 21.24 187.736957 20.595158 186.180171 19.447494 185.032506 
+C 18.299829 183.884842 16.743043 183.24 15.12 183.24 
+C 13.496957 183.24 11.940171 183.884842 10.792506 185.032506 
+C 9.644842 186.180171 9 187.736957 9 189.36 
+C 9 190.983043 9.644842 192.539829 10.792506 193.687494 
+C 11.940171 194.835158 13.496957 195.48 15.12 195.48 
+z
+" clip-path="url(#p63df0a87e3)" style="fill: #4b5563; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_19">
+    <path d="M 234.36 195.48 
+C 235.983043 195.48 237.539829 194.835158 238.687494 193.687494 
+C 239.835158 192.539829 240.48 190.983043 240.48 189.36 
+C 240.48 187.736957 239.835158 186.180171 238.687494 185.032506 
+C 237.539829 183.884842 235.983043 183.24 234.36 183.24 
+C 232.736957 183.24 231.180171 183.884842 230.032506 185.032506 
+C 228.884842 186.180171 228.24 187.736957 228.24 189.36 
+C 228.24 190.983043 228.884842 192.539829 230.032506 193.687494 
+C 231.180171 194.835158 232.736957 195.48 234.36 195.48 
+z
+" clip-path="url(#p63df0a87e3)" style="fill: #b8323a; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_20">
+    <path d="M 15.12 309.96 
+C 16.743043 309.96 18.299829 309.315158 19.447494 308.167494 
+C 20.595158 307.019829 21.24 305.463043 21.24 303.84 
+C 21.24 302.216957 20.595158 300.660171 19.447494 299.512506 
+C 18.299829 298.364842 16.743043 297.72 15.12 297.72 
+C 13.496957 297.72 11.940171 298.364842 10.792506 299.512506 
+C 9.644842 300.660171 9 302.216957 9 303.84 
+C 9 305.463043 9.644842 307.019829 10.792506 308.167494 
+C 11.940171 309.315158 13.496957 309.96 15.12 309.96 
+z
+" clip-path="url(#p63df0a87e3)" style="fill: #4b5563; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_21">
+    <path d="M 234.36 309.96 
+C 235.983043 309.96 237.539829 309.315158 238.687494 308.167494 
+C 239.835158 307.019829 240.48 305.463043 240.48 303.84 
+C 240.48 302.216957 239.835158 300.660171 238.687494 299.512506 
+C 237.539829 298.364842 235.983043 297.72 234.36 297.72 
+C 232.736957 297.72 231.180171 298.364842 230.032506 299.512506 
+C 228.884842 300.660171 228.24 302.216957 228.24 303.84 
+C 228.24 305.463043 228.884842 307.019829 230.032506 308.167494 
+C 231.180171 309.315158 232.736957 309.96 234.36 309.96 
+z
+" clip-path="url(#p63df0a87e3)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_16">
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="15.12" y="77.568879" transform="rotate(-0 15.12 77.568879)">1</text>
+   </g>
+   <g id="text_17">
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="234.36" y="77.568879" transform="rotate(-0 234.36 77.568879)">2</text>
+   </g>
+   <g id="text_18">
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="15.12" y="192.048879" transform="rotate(-0 15.12 192.048879)">3</text>
+   </g>
+   <g id="text_19">
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="234.36" y="192.048879" transform="rotate(-0 234.36 192.048879)">4</text>
+   </g>
+   <g id="text_20">
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="15.12" y="306.528879" transform="rotate(-0 15.12 306.528879)">5</text>
+   </g>
+   <g id="text_21">
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="234.36" y="306.528879" transform="rotate(-0 234.36 306.528879)">6</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p63df0a87e3">
+   <rect x="2.88" y="2.88" width="428.4" height="558"/>
+  </clipPath>
+ </defs>
+</svg>

@@ -1,3 +1,171 @@
 # Neurons to networks {#sec-ch06}
 
-*Draft in progress.*
+```{python}
+#| include: false
+import numpy as np
+from jevkit.learn import sigmoid, log_loss, fit_logistic
+```
+
+"Deep learning" might be the most intimidating phrase in the field. It sounds like something between neuroscience and magic, and people talk about it with a mix of awe and suspicion.
+
+So here's some good news to start Part II with:
+
+*You've already built one.*
+
+The logistic regression you trained in Chapter 3 is a single artificial neuron. A deep network is many of them, stacked in layers and trained with the same downhill walk you already know. There are a couple of genuinely new ideas in this chapter, and they're both small. What makes deep learning powerful isn't mystery. It's scale.
+
+::: {.goals}
+- Recognise logistic regression as a single artificial neuron.
+- Show why one neuron can only draw a straight line, and why that's a real limit.
+- Explain how hidden layers and a "hinge" (ReLU) let a network draw almost any shape.
+- Describe backpropagation as blame flowing backwards through the network.
+- Say when a bigger network helps, and when it quietly makes things worse.
+:::
+
+## You've already built a neuron
+
+Look at what our Chapter 3 model does to an alert. It takes each clue, multiplies it by a weight, adds everything up with a starting point, and squashes the total through an S-curve to get a probability.
+
+![A single artificial neuron. Inputs are weighted, summed with a bias, and passed through a squashing function. Our logistic regression from Chapter 3 is exactly this.](/figures/ch06/neuron.pdf){#fig-neuron}
+
+That's a **neuron**, at least in the artificial sense. The name comes from a loose analogy with brain cells, which collect signals from their neighbours and "fire" if the total is strong enough. The analogy goes back to the 1940s and the perceptron of the late 1950s [@mcculloch1943; @rosenblatt1958]. Don't lean on it too hard. Real neurons are far more complicated, and deep learning works for mathematical reasons, not biological ones.
+
+## One neuron draws a straight line
+
+A single neuron has a limit you can see.
+
+Imagine two clues about a user account, clue A and clue B: how far today's activity is from that person's usual pattern, measured two different ways. Normal behaviour sits in the middle. Suspicious behaviour is *unusual in any direction*: far too much, far too little, far too early, far too late.
+
+A single neuron adds up weighted clues. The places where that sum equals any particular value form a straight line. So all a single neuron can ever do is cut the space in two with a straight edge: "more of this, less of that".
+
+![A toy problem. Blue dots are normal activity; red dots are suspicious, and they surround the normal cluster on every side. One neuron (left) can only draw a straight line through it, which is useless. With a hidden layer of three neurons (middle), the boundary becomes a triangle. With twelve (right), it's close to a circle.](/figures/ch06/line-limit.pdf){#fig-line-limit}
+
+The left panel of @fig-line-limit is the problem. No straight line separates the middle from the edges. Our logistic regression's log loss on this toy is {{< num ch06 toy_lr f2 >}}, barely better than knowing nothing.
+
+This limit was famous. In 1969 Marvin Minsky and Seymour Papert proved it carefully for single-layer perceptrons, and the result helped cool a whole field's enthusiasm for neural networks for more than a decade [@minsky1969].
+
+The fix was known in principle. Actually making it work took until the 1980s.
+
+## Hidden layers bend the line
+
+Here's the fix: don't send the clues straight to the output. Send them to a few neurons first, each drawing its own straight line, and let the output neuron combine *their* answers.
+
+![A small deep network. Clues enter on the left. Each neuron in a hidden layer computes its own weighted sum of everything in the layer before. The output neuron combines the last layer into a single probability. Every line is a weight to be learned.](/figures/ch06/network.pdf){#fig-network}
+
+Each hidden neuron is asking its own simple question: "is this point on the far side of *my* line?" The output neuron then asks a question about the answers: "is it on the far side of *all three* lines?" Three straight edges, combined, make a triangle. Twelve make something close to a circle, as @fig-line-limit shows. The network's log loss drops from {{< num ch06 toy_lr f2 >}} to {{< num ch06 toy_net12 f2 >}}.
+
+The layers in between are called **hidden** simply because you never see their values directly; they're not inputs and not outputs. A network with several hidden layers is a **deep** network. That's the whole meaning of the word "deep" in deep learning: many layers.
+
+### The hinge that makes it work
+
+There's one small but essential detail. If each hidden neuron just passed its weighted sum straight on, the whole network would collapse. A weighted sum of weighted sums is still just a weighted sum, and you'd be back to one straight line, no matter how many layers you stacked.
+
+So every hidden neuron applies a bend before passing its answer on. The most popular bend today is almost embarrassingly simple, and it's called **ReLU**: if the sum is negative, output zero; otherwise output the sum unchanged. It's a hinge.
+
+![Left: one hinge (ReLU). Middle: three hinges with different positions and slopes. Right: add five hinges together and you can trace a smooth curve closely. That's why networks with enough hidden units can approximate almost any shape.](/figures/ch06/hinges.pdf){#fig-hinges}
+
+@fig-hinges shows why a pile of hinges is so powerful. Each one adds a single bend, and added together they can follow almost any curve. Mathematicians proved decades ago that a network with just one hidden layer can approximate any reasonable function this way, given enough hidden units [@cybenko1989]. Whether it can *learn* that function from a sensible amount of data is a different question, and that's where depth and cleverness come in.
+
+::: {.keyidea}
+Weighted sums draw lines. Hinges bend them. Layers combine the bends.
+:::
+
+## Backpropagation: blame flows backwards
+
+How does the network find good weights? The same way as in Chapter 3: roll downhill on the log loss. The only new problem is working out the slope for a weight buried deep inside the network, several layers away from the output where the error is measured.
+
+The trick is called **backpropagation**, and it was popularised in 1986 by David Rumelhart, Geoffrey Hinton and Ronald Williams [@rumelhart1986]. The idea is intuitive once you picture it as blame.
+
+![Forward, the network turns an input into a prediction. Backward, the error at the output is shared out as blame: each layer passes blame to the one before it, in proportion to how much each weight contributed. Then every weight takes a small step to reduce its share.](/figures/ch06/backprop.pdf){#fig-backprop}
+
+Say the network said 0.9 for an alert that was harmless. The output is too high. Which weights are to blame? The ones in the last layer, in proportion to how strongly the neurons they connect were firing. And how much blame does each hidden neuron carry? Its share of the output's error, passed back through its weight, and zero if its hinge was switched off. Repeat, layer by layer, all the way back to the inputs.
+
+In code, that's two extra lines compared with Chapter 3.
+
+::: {.tryit lab="ch06"}
+A network with twelve hidden neurons, trained from scratch on the toy problem.
+
+```{python}
+rng = np.random.default_rng(3)
+X = rng.uniform(-1, 1, (700, 2))
+far = np.sqrt(((X - [0.1, 0.05]) ** 2).sum(1))
+y = (rng.random(700) < sigmoid(12 * (far - 0.92))).astype(float)
+
+H = 12
+W1 = rng.normal(0, 1, (2, H)); b1 = np.zeros(H)
+W2 = rng.normal(0, 0.3, H);    b2 = 0.0
+for step in range(3001):
+    h_in = X @ W1 + b1
+    h = np.maximum(0, h_in)                  # hinges
+    p = sigmoid(h @ W2 + b2)                 # forward
+    d_out = (p - y) / len(y)                 # blame at output
+    d_h = np.outer(d_out, W2) * (h_in > 0)   # blame, passed back
+    W2 -= 0.3 * h.T @ d_out; b2 -= 0.3 * d_out.sum()
+    W1 -= 0.3 * X.T @ d_h;   b1 -= 0.3 * d_h.sum(0)
+    if step % 1000 == 0:
+        print(f"step {step:4d}  loss {log_loss(p, y):.3f}")
+```
+:::
+
+Every deep-learning library you'll ever use does exactly this, with much bigger matrices, many more layers, and the blame calculation worked out automatically so nobody has to write the backward pass by hand.
+
+## Why "deep" works on pixels and words
+
+On our toy, one hidden layer was enough. So why do real systems use dozens or hundreds?
+
+Because each layer can build on the features the layer before it found. Train a deep network on photos and something remarkable happens without anyone asking for it: the first layers learn to detect edges, the next ones combine edges into textures and corners, later ones into eyes and wheels, and the final layers into whole cats and cars [@lecun2015]. Nobody wrote a rule for "edge" or "eye". The network discovered that those intermediate features were useful for reducing its loss.
+
+That's the real break from Part I. There, a human decided the clues: threat-intel score, time of day, new country. A deep network takes raw input, like pixels, characters or bytes of a log line, and *learns its own clues*. For problems where nobody could write the features down, that changes everything.
+
+Andrej Karpathy put the shift memorably:
+
+::: {.bookquote by="Andrej Karpathy, Software 2.0, 2017"}
+Neural networks are not just another classifier, they represent the beginning of a fundamental shift in how we develop software.
+:::
+
+## Bigger isn't automatically better
+
+Now a reality check, on Kestrel's own alerts.
+
+Our alerts don't arrive as raw pixels. They come with neat features someone already engineered. On data like that, does a network beat logistic regression?
+
+![Reliability diagrams on the test alerts for logistic regression, a small network with 16 hidden units, and a big two-layer network trained for too long. The first two are honest and nearly identical. The big one is both worse and overconfident: its curve falls away below the diagonal.](/figures/ch06/kestrel-nets.pdf){#fig-kestrel-nets}
+
+Not really. The small network ties logistic regression, with a log loss of {{< num ch06 k_small.log_loss f3 >}} against {{< num ch06 k_lr.log_loss f3 >}}. The big network, allowed to train for a long time, memorises the training alerts and gets *much* worse on new ones: log loss {{< num ch06 k_big.log_loss f3 >}}, with an ECE of {{< num ch06 k_big.ece f3 >}}. Worse still, it's overconfident, and a policy built on its numbers would trust it more than it deserves.
+
+::: {.keyidea}
+Deep networks earn their keep on raw, messy input. On neat features, start simple.
+:::
+
+This isn't a knock on deep learning. It's the reason Chapter 20's bake-off includes plain logistic regression and rules alongside LLMs and Jev. The right model depends on what your input looks like and how much data you have.
+
+::: {.breaks}
+Networks need lots of data, and with too little they memorise. They're hard to read: there's no tidy "×2.9 for a new country" like @fig-weights in Chapter 3. And large ones trained for too long drift towards overconfidence, which Chapter 9 explains. Always hold out test data, stop training when the test loss stops improving (this is called *early stopping*), and check calibration before you trust a network's probabilities.
+:::
+
+::: {.threshold}
+Your team replaces Kestrel's logistic regression with the big network above because its training loss is lower. You keep the same act line from Chapter 21, P below 0.031 closes automatically. Will more or fewer real threats be closed without a human? Why?
+
+(More. The big network is overconfident: many of the alerts it pushes near zero aren't really that safe. The act line assumed honest probabilities. Recalibrate first, then re-check the line, or keep the simpler model.)
+:::
+
+## Where we are
+
+We started with a neuron you'd already built, and found that it could only draw straight lines. So we stacked neurons into layers, and gave each a hinge so the layers wouldn't collapse back into one line. Training them needed the slope of weights buried deep inside, so blame learned to flow backwards. Depth then let networks find their own features in pixels and words. And Kestrel's neat alerts reminded us that when someone has already found the features, a small honest model is often all you need.
+
+Next we need to feed a network the rawest input of all, words. And words aren't numbers.
+
+::: {.exercises}
+1. In your own words, why does a network with no hinges (no ReLU) collapse to a single straight line, however many layers it has?
+2. In the lab, change the number of hidden neurons to 2, 3, 6 and 24. Sketch the boundary you expect for each before running it. How close were you?
+3. Remove `* (h_in > 0)` from the backward pass in the lab. The code still runs. What is it now computing, and why does training get worse?
+4. Kestrel's analysts want a model that reads the raw alert *text* instead of the engineered features. Would you expect logistic regression or a deep network to do better on that input? Why?
+:::
+
+::: {.nexthook}
+Next: how does a word become a number that *means* something? The answer is a map where similar words live close together, and it's the idea underneath every LLM.
+:::
+
+::: {.summary}
+![](/figures/ch06/summary.pdf){width=100%}
+:::

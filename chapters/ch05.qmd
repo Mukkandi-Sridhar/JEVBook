@@ -168,7 +168,7 @@ The same goes for cost estimates. The numbers will be wrong. Writing them down, 
 
 Step back and look at what you've built over five chapters.
 
-You know what learning is: adjusting knobs to reduce a score. You know what a probability is: a checkable claim about how often. You can train a model that outputs probabilities, check whether they're honest, and fix them when they're not. And now you can turn them into actions, with lines drawn from what mistakes actually cost, and a third door for the cases a machine shouldn't decide alone.
+In Chapter 1 a machine learned exactly what we asked and was useless, because we asked for yes or no. So we asked for a chance instead, and had to learn what a chance means. That took us to a model that outputs one, and then to the uncomfortable discovery that its number might not be honest. Once we could check and fix that, the last step was the one this chapter took: letting costs, not habit, decide where the lines go, and leaving a door open for the cases a machine shouldn't decide alone.
 
 That's the foundation. Every system in the rest of the book, from deep networks to LLMs to Jev, gets judged by it.
 

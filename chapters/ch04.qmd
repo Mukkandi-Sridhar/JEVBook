@@ -201,7 +201,7 @@ The first principle is that you must not fool yourself, and you are the easiest 
 
 ## Where we are
 
-A probability is only as useful as it is honest. Ranking and honesty are separate skills; most model comparisons measure the first and ignore the second. Check honesty with a reliability diagram, and keep an eye on the counts. Summarise it with ECE, but don't trust the average alone. Fix it on held-out data: Platt first, temperature for plain overconfidence, isotonic when you have lots of data. And check every group you'll act on differently.
+The weather forecasters showed us that honesty is checkable. Then two models with the same ranking and very different honesty showed us why checking matters. Grouping and counting gave us the reliability diagram, and a well-meant rebalancing broke it. A small correction fitted on held-out data put it back. And just when the average looked fine, the EDR alerts reminded us to look inside every group we'll act on.
 
 When Part IV tests Jev's own calibration, it'll use exactly these tools, pointed at the mock, with everything in this chapter as the yardstick.
 

@@ -183,9 +183,9 @@ Probability theory is nothing but common sense reduced to calculation.
 
 ## Where we are
 
-We've got the vocabulary now. A probability is a checkable claim about how often. The bar means "given", and "given what?" is the question that matters most. Rare things stay rare, even after an alarm. Evidence multiplies the odds. Accuracy flatters; precision and recall tell the truth. And small samples wobble.
+We started with a weather app and a dry day, and found that a probability only means something as a track record. That sent us looking for the right track record, which is why "among what?" matters so much. Asking it carefully exposed the base-rate trap. Escaping the trap meant weighing evidence properly, and that turned out to be Bayes' rule: multiply the odds. And once we tried to score a rule, accuracy flattered it, so we needed precision and recall.
 
-That's everything the rest of Part I builds on.
+Every one of those ideas comes back in the next three chapters.
 
 ::: {.exercises}
 1. A spam filter catches 98% of spam and wrongly flags 1% of real email. If 20% of a company's incoming email is spam, what fraction of flagged emails are real email? Now redo it for a mailbox where only 1% is spam. Use natural frequencies, not formulas.

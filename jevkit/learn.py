@@ -39,3 +39,41 @@ def fit_logistic(X, y, lr=0.5, steps=300, record=False):
         if record:
             hist.append(log_loss(p, y))
     return w, b, hist
+
+
+class TinyNet:
+    """A one-hidden-layer network in plain NumPy: ReLU hidden units, a sigmoid output, log loss.
+
+    Trained with full-batch gradient descent plus momentum. Small enough to read in one sitting.
+    """
+
+    def __init__(self, n_in, n_hidden=8, seed=0):
+        rng = np.random.default_rng(seed)
+        self.W1 = rng.normal(0, np.sqrt(2 / n_in), (n_in, n_hidden))
+        self.b1 = np.zeros(n_hidden)
+        self.W2 = rng.normal(0, np.sqrt(1 / n_hidden), n_hidden)
+        self.b2 = 0.0
+
+    def forward(self, X):
+        self.X = X
+        self.h_in = X @ self.W1 + self.b1
+        self.h = np.maximum(0, self.h_in)             # ReLU: the hinge
+        return sigmoid(self.h @ self.W2 + self.b2)
+
+    def fit(self, X, y, lr=0.1, steps=2000, momentum=0.9):
+        vel = [0, 0, 0, 0]
+        for _ in range(steps):
+            p = self.forward(X)
+            d_out = (p - y) / len(y)                   # blame at the output
+            gW2 = self.h.T @ d_out
+            gb2 = d_out.sum()
+            d_h = np.outer(d_out, self.W2) * (self.h_in > 0)   # blame flows back through the hinge
+            gW1 = X.T @ d_h
+            gb1 = d_h.sum(0)
+            for i, (name, g) in enumerate((("W1", gW1), ("b1", gb1), ("W2", gW2), ("b2", gb2))):
+                vel[i] = momentum * vel[i] - lr * g
+                setattr(self, name, getattr(self, name) + vel[i])
+        return self
+
+    def predict(self, X):
+        return self.forward(X)

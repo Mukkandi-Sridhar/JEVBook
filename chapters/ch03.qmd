@@ -175,7 +175,7 @@ Far better an approximate answer to the right question, which is often vague, th
 
 ## Where we are
 
-Every learning system in this book is built from the same three parts. There's a model with knobs. There's a score that says how wrong the knobs are, and for probabilities that score should be a proper one like log loss. And there's a way to improve the knobs, usually some version of rolling downhill. Keep a test set the model never touches, and ask of every feature whether you'd really have it at decision time.
+We needed a model that could turn clues into a probability, so we added up evidence on the log-odds scale. To tell good knobs from bad ones we needed a score, and counting mistakes couldn't handle probabilities, so we measured surprise instead. With millions of possible knob settings we couldn't try them all, so we felt for the slope and rolled downhill. Twenty lines later, the model was nearly as good as the truth, as long as we kept a test set it never saw and features it would really have at decision time.
 
 We now have a model that outputs probabilities, trained with a score that rewards honesty. But "rewards honesty" isn't the same as "is honest". Whether the probabilities can be trusted is something we have to check directly.
 
