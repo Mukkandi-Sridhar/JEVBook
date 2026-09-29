@@ -53,7 +53,9 @@ _SYN = {
     "password": "technical", "broken": "technical", "slow": "technical", "app": "technical", "install": "technical",
     "delivery": "shipping", "delivered": "shipping", "arrived": "shipping", "package": "shipping",
     "parcel": "shipping", "tracking": "shipping", "order": "shipping", "late": "shipping", "courier": "shipping",
-    "urgent": "urgent", "asap": "urgent", "immediately": "urgent", "now": "urgent", "outage": "urgent", "down": "urgent",
+    "urgent": "urgent", "asap": "urgent", "immediately": "urgent", "outage": "urgent", "down": "urgent",
+    "today": "urgent", "soon": "urgent", "urgency": "urgent",
+    "tone": "angry", "upset": "angry", "annoyed": "angry", "hostile": "angry", "rude": "toxic", "abusive": "toxic",
     "furious": "angry", "angry": "angry", "unacceptable": "angry", "terrible": "angry", "worst": "angry",
     "ridiculous": "angry", "thanks": "calm", "thank": "calm", "appreciate": "calm", "great": "happy", "love": "happy",
     "idiot": "toxic", "stupid": "toxic", "hate": "toxic", "shut": "toxic", "moron": "toxic",
@@ -320,7 +322,7 @@ def _generic_answer(state, qtype: str, q: dict, salt: str):
         for l in labels:
             opt = Counter(_tokens(l.replace("_", " ") + " " + _flatten(crit[l])))
             sims.append(_sim(st, opt) + 0.8 * (1.0 if any(t in st for t in _tokens(l.replace("_", " "))) else 0.0))
-        z = np.array(sims) * 7.0 + rng.normal(0, 0.15, len(labels))
+        z = np.array(sims) * 4.5 + rng.normal(0, 0.15, len(labels))
         # "other"/"none" style options soak up probability when nothing matches
         for i, l in enumerate(labels):
             if l.lower() in ("other", "none", "unknown", "unclear"):
@@ -341,9 +343,12 @@ def _generic_answer(state, qtype: str, q: dict, salt: str):
         crit = q["criteria"]
         n = len(crit)
         sims = np.array([_sim(st, Counter(_tokens(_flatten(c)))) for c in crit])
-        intensity = sum(st[w] for w in ("urgent", "angry", "toxic")) / max(1, sum(st.values())) * 12
+        qwords = set(_tokens(instr + " " + " ".join(_flatten(c) for c in crit)))
+        dims = [d for d in ("urgent", "angry", "toxic") if d in qwords] or ["urgent", "angry", "toxic"]
+        total = max(1, sum(st.values()))
+        intensity = min(1.0, sum(st[d] for d in dims) / total * 6)
         pos = np.arange(n) / max(1, n - 1)
-        z = 5.0 * sims - 3.0 * (pos - min(1.0, intensity)) ** 2 + rng.normal(0, 0.1, n)
+        z = 3.0 * sims - 4.0 * (pos - intensity) ** 2 + rng.normal(0, 0.1, n)
         return _score_payload(crit, _round_probs(_softmax(z)))
     raise ValueError(qtype)
 

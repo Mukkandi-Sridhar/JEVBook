@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="344.16pt" height="164.16pt" viewBox="0 0 344.16 164.16" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 164.16 
+L 344.16 164.16 
+L 344.16 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 79.953486 60.387188 
+Q 91.079634 70.559665 101.498112 80.085131 
+" clip-path="url(#p0c944bbffe)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+    <path d="M 100.032598 75.01909 
+L 101.498112 80.085131 
+L 96.321367 79.078249 
+z
+" clip-path="url(#p0c944bbffe)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 80.039619 108.192305 
+Q 91.079204 99.360637 101.370041 91.127967 
+" clip-path="url(#p0c944bbffe)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+    <path d="M 96.13822 91.791706 
+L 101.370041 91.127967 
+L 99.574043 96.086484 
+z
+" clip-path="url(#p0c944bbffe)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 201.81208 83.189048 
+Q 211.679927 64.440139 221.101186 46.539746 
+" clip-path="url(#p0c944bbffe)" style="fill: none; stroke: #8a919c; stroke-linecap: round"/>
+    <path d="M 218.383556 48.160544 
+L 221.101186 46.539746 
+L 221.303786 49.697507 
+z
+" clip-path="url(#p0c944bbffe)" style="fill: #8a919c; stroke: #8a919c; stroke-linecap: round"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 202.828535 84.505342 
+Q 211.682729 82.439363 219.603141 80.591267 
+" clip-path="url(#p0c944bbffe)" style="fill: none; stroke: #8a919c; stroke-linecap: round"/>
+    <path d="M 216.598841 79.597949 
+L 219.603141 80.591267 
+L 217.348699 82.811625 
+z
+" clip-path="url(#p0c944bbffe)" style="fill: #8a919c; stroke: #8a919c; stroke-linecap: round"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 202.026973 86.603994 
+Q 211.680492 100.440705 220.785367 113.491025 
+" clip-path="url(#p0c944bbffe)" style="fill: none; stroke: #8a919c; stroke-linecap: round"/>
+    <path d="M 220.593686 110.332583 
+L 220.785367 113.491025 
+L 217.887267 112.220782 
+z
+" clip-path="url(#p0c944bbffe)" style="fill: #8a919c; stroke: #8a919c; stroke-linecap: round"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 7.2 78.48 
+L 74.16 78.48 
+Q 78.48 78.48 78.48 74.16 
+L 78.48 43.2 
+Q 78.48 38.88 74.16 38.88 
+L 7.2 38.88 
+Q 2.88 38.88 2.88 43.2 
+L 2.88 74.16 
+Q 2.88 78.48 7.2 78.48 
+z
+" clip-path="url(#p0c944bbffe)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 7.2 128.88 
+L 74.16 128.88 
+Q 78.48 128.88 78.48 124.56 
+L 78.48 93.6 
+Q 78.48 89.28 74.16 89.28 
+L 7.2 89.28 
+Q 2.88 89.28 2.88 93.6 
+L 2.88 124.56 
+Q 2.88 128.88 7.2 128.88 
+z
+" clip-path="url(#p0c944bbffe)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 108 110.88 
+L 196.56 110.88 
+Q 200.88 110.88 200.88 106.56 
+L 200.88 63.36 
+Q 200.88 59.04 196.56 59.04 
+L 108 59.04 
+Q 103.68 59.04 103.68 63.36 
+L 103.68 106.56 
+Q 103.68 110.88 108 110.88 
+z
+" clip-path="url(#p0c944bbffe)" style="fill: #f1f2f4; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 226.8 56.88 
+L 333.36 56.88 
+Q 337.68 56.88 337.68 52.56 
+L 337.68 35.28 
+Q 337.68 30.96 333.36 30.96 
+L 226.8 30.96 
+Q 222.48 30.96 222.48 35.28 
+L 222.48 52.56 
+Q 222.48 56.88 226.8 56.88 
+z
+" clip-path="url(#p0c944bbffe)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 226.8 92.88 
+L 333.36 92.88 
+Q 337.68 92.88 337.68 88.56 
+L 337.68 71.28 
+Q 337.68 66.96 333.36 66.96 
+L 226.8 66.96 
+Q 222.48 66.96 222.48 71.28 
+L 222.48 88.56 
+Q 222.48 92.88 226.8 92.88 
+z
+" clip-path="url(#p0c944bbffe)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 226.8 128.88 
+L 333.36 128.88 
+Q 337.68 128.88 337.68 124.56 
+L 337.68 107.28 
+Q 337.68 102.96 333.36 102.96 
+L 226.8 102.96 
+Q 222.48 102.96 222.48 107.28 
+L 222.48 124.56 
+Q 222.48 128.88 226.8 128.88 
+z
+" clip-path="url(#p0c944bbffe)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #b8323a" x="2.88" y="13.286" transform="rotate(-0 2.88 13.286)">ONE POSSIBLE SHAPE · the author’s guess, not TypeSafe’s description</text>
+   </g>
+   <g id="text_2">
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'Inter'; fill: #1f2430" transform="translate(33.0975 55.963656)">state</text>
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'Inter'; fill: #1f2430" transform="translate(18.866 65.701344)">(text or JSON)</text>
+   </g>
+   <g id="text_3">
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'Inter'; fill: #1f2430" transform="translate(16.0135 105.996656)">typed questions</text>
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'Inter'; fill: #1f2430" transform="translate(26.303 115.688844)">+ options</text>
+   </g>
+   <g id="text_4">
+    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; fill: #1f2430" transform="translate(138.3475 77.573813)">a reader:</text>
+    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; fill: #1f2430" transform="translate(127.122 86.726)">sees everything</text>
+    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; fill: #1f2430" transform="translate(140.748 96.767688)">at once</text>
+   </g>
+   <g id="text_5">
+    <text style="font-weight: 700; font-size: 6.3px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="280.08" y="46.304156" transform="rotate(-0 280.08 46.304156)">choice head</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="280.08" y="65.725695" transform="rotate(-0 280.08 65.725695)">softmax over options</text>
+   </g>
+   <g id="text_7">
+    <text style="font-weight: 700; font-size: 6.3px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="280.08" y="82.177664" transform="rotate(-0 280.08 82.177664)">score head</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="280.08" y="101.685883" transform="rotate(-0 280.08 101.685883)">a probability per level</text>
+   </g>
+   <g id="text_9">
+    <text style="font-weight: 700; font-size: 6.3px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="280.08" y="118.177664" transform="rotate(-0 280.08 118.177664)">noul head</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="280.08" y="137.685883" transform="rotate(-0 280.08 137.685883)">one probability</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="2.88" y="154.332406" transform="rotate(-0 2.88 154.332406)">One forward pass, no token-by-token writing. Chapter 27 builds a small model of exactly this shape.</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p0c944bbffe">
+   <rect x="2.88" y="2.88" width="338.4" height="158.4"/>
+  </clipPath>
+ </defs>
+</svg>
