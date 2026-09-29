@@ -29,6 +29,8 @@ def chapter_pages(pdf: str) -> dict:
         m = re.match(r"\s*CHAPTER (\d+)\s*\n", head)
         if m and int(m[1]) not in starts:
             starts[int(m[1])] = i
+        if head.lstrip().startswith("Glossary") and starts:
+            n = min(n, i)                      # back matter starts: the last chapter ends here
     out = {}
     ks = sorted(starts)
     for a, b in zip(ks, ks[1:] + [None]):
