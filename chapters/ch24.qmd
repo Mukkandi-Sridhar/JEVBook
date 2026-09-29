@@ -1,3 +1,126 @@
 # A hybrid agent: Jev decides, the LLM reasons {#sec-ch24}
 
-*Draft in progress.*
+```{python}
+#| include: false
+from collections import Counter
+from jevkit import soc, agent
+alerts = soc.load()
+_, live = soc.history_and_live(alerts)
+```
+
+Chapter 13 built Kestrel an agent. It read an alert, chose which evidence to gather, decided whether it had enough, reached a verdict and acted. We counted its steps, and more than half were small decisions.
+
+This chapter rebuilds that agent properly, as a **hybrid**: Jev makes every decision, and the LLM writes only what a person will read. Then we race it against an all-LLM version of itself.
+
+But first I have to tell you about a bug. It was in Chapter 13's agent all along, it never crashed, and I only found it because of a habit this chapter will try to give you.
+
+::: {.goals}
+- Build an agent where typed decisions drive the loop and an LLM writes only for people.
+- Read an agent's trace step by step, as a timeline and as an audit log.
+- Catch a decision step that's quietly wrong by watching the distribution of its answers.
+- Compare a hybrid agent with an all-LLM one on time, cost, review load and threats missed.
+- Know which work to leave as a decision, and which to simply do.
+:::
+
+## The shape of the hybrid
+
+![The hybrid agent. A cheap lookup always runs first. Jev decides which other evidence to gather, then answers the three verdict questions together. Chapter 21's policy turns the verdict into an action, and the LLM writes a case note or page message only when a person will read it.](/figures/ch24/architecture.pdf){#fig-architecture}
+
+@fig-architecture is the whole design. Everything in green is a typed question to Jev, answered in one pass. Everything in blue is a tool that reads something. The policy is ordinary code. The LLM, in orange, appears once, at the end, and only on the paths where a person is waiting to read something.
+
+Here's one alert going through it. Each line is a step: its kind, its name, how long it took, and what it found or decided.
+
+::: {.tryit lab="ch24"}
+```{python}
+hybrid = agent.SOCAgent(always=("threat_intel",))
+t = hybrid.run(live.iloc[118])
+for s in t.steps:
+    print(f"{s.kind:>8} {s.name:<15} {s.latency_s:4.2f}s {s.detail[:32]}")
+print("action:", t.action)
+```
+:::
+
+That printout is the agent's **trace**, and it's worth more than it looks. It's the debugging tool, the audit log and the explanation all at once. When someone asks next month why alert 118 was closed, you read the trace: which evidence was gathered, what each decision said, with what probability, and which policy line it crossed.
+
+## The bug that didn't crash
+
+Notice the first line of the setup: `always=("threat_intel",)`. That wasn't in Chapter 13's version. Here's why it's there.
+
+When I first ran the agent across the live week, the results looked plausible. Actions were spread across the three zones, every answer parsed, and nothing raised an error. Then I did something I now do for every decision step in every agent: I counted its answers.
+
+![How often the first version of the agent chose each option at its "which evidence next?" step, across 700 live alerts. It never once chose threat intel.](/figures/ch24/never-picked.pdf){#fig-never-picked}
+
+Across {{< num ch24 n int >}} alerts, the "which evidence next?" decision chose host history, the policy lookup and "none" in roughly equal measure. It never chose threat intel. Not once (@fig-never-picked).
+
+So the verdict was always reached without the single most informative fact about an alert, and the model quietly filled the gap with a default. The ranking suffered: AUC {{< num ch24 v1_auc f3 >}}, against the {{< num ch24 v2_auc f3 >}} it reaches with threat intel. And about {{< num ch24 v1_closed_threats_day f1 >}} real threats a day were auto-closed.
+
+![The same agent before and after one change: always fetching threat intel. Real threats auto-closed per day fell by more than half, and the verdict's ranking recovered.](/figures/ch24/fix.pdf){#fig-fix}
+
+I want to be careful about what this says. The mock's evidence choices come from a simple word-matching engine, so I can't tell you real Jev would make the same mistake. What I can tell you is that *any* decision step can fail this way, whichever model answers it, and that nothing downstream will complain. Typed answers are always well-formed. Well-formed and right aren't the same thing.
+
+::: {.keyidea}
+Chart the answers of every decision step. An option that's never chosen, or always chosen, is a warning, even when nothing has crashed.
+:::
+
+The fix wasn't a better prompt or a better model. It was a design change. A threat-intel lookup takes a fraction of a second and costs nothing. Deciding *whether* to look it up costs about as much as just looking. When an observation is cheaper than the decision about it, don't decide. Do it.
+
+## Racing the all-LLM agent
+
+Now the comparison. The all-LLM agent runs the same loop, with the same tools and the same policy lines. The only difference is who decides: every decision is an LLM call returning JSON, and the verdict is the LLM's own answer with its stated confidence. A broken answer goes to review, the fail-safe from Chapter 21.
+
+![One alert's trace as a timeline, for each agent. Blue steps observe, green steps decide, orange steps write, grey steps act. The hybrid's decisions are thin slivers; the all-LLM agent's decisions are most of its time.](/figures/ch24/trace.pdf){#fig-trace}
+
+@fig-trace shows the difference on a single alert, and it's mostly the width of the green bars. Across the whole sample, the hybrid took {{< num ch24 v2_seconds f1 >}} seconds per alert and the all-LLM agent {{< num ch24 llm_seconds f1 >}}, about {{< num ch24 speedup int >}} times as long.
+
+![Four measures for the two agents on the same 700 live alerts, scaled to a day. The LLM's stated confidences sent far more alerts to review than the queue can take, so more real threats were never seen by a person.](/figures/ch24/compare.pdf){#fig-compare}
+
+The bigger difference is the review queue (@fig-compare). The all-LLM agent sent about {{< num ch24 llm_reviews_day int >}} alerts a day to review, against a capacity of 240. You've seen why in Chapter 20: its stated confidences cluster at a few round values, so a line at 0.03 has almost nothing to separate. Most alerts land between the lines. The hybrid sent {{< num ch24 v2_reviews_day int >}}.
+
+A queue more than twice its capacity doesn't get worked twice as hard. The overflow simply isn't looked at, as Chapter 21 put it, in some order nobody chose. Counting both routes to a missed threat, auto-closed or never reached in the queue, the hybrid let about {{< num ch24 v2_missed_day int >}} real threats a day go unseen by a person. The all-LLM agent let about {{< num ch24 llm_missed_day int >}} through.
+
+The simulated bill points the same way: about \${{< num ch24 hybrid_cost_1000 f2 >}} per thousand alerts for the hybrid, most of it the LLM writing case notes, against \${{< num ch24 llm_cost_1000 f2 >}} for the all-LLM agent.
+
+## Where the time goes
+
+![Share of each agent's total time spent on each kind of step. In the hybrid, the largest share is the LLM writing for people. In the all-LLM agent, most of the time goes on deciding.](/figures/ch24/labour.pdf){#fig-labour}
+
+@fig-labour is the chart I find most telling. In the all-LLM agent, most of the time goes on deciding. In the hybrid, the largest share is *writing*: case notes for analysts and messages for on-call. That's the right place for the LLM's time. A person will read those words, and fluent, specific writing is what LLMs do best.
+
+The hybrid doesn't use less LLM because LLMs are bad. It uses the LLM for the work only an LLM can do.
+
+[[AUTHOR STORY: an agent you built where most of the LLM calls turned out to be small decisions, and what changed when you moved them out]]
+
+::: {.breaks}
+Everything here is synthetic: the mock decides, the mock LLM writes, and the timings are simulated. The accuracy gap between the two agents is partly built into the mocks (Chapter 20 explained how), so treat the speed, the queue and the design lessons as the findings, not the verdict quality. The all-LLM agent used the hybrid's policy lines; you could retune them for its clumped confidences, but there are only a few values to put a line between. And the bug in this chapter shows that a hybrid agent has its own failure mode: a decision step that's quietly wrong. Monitoring each step's answers isn't optional.
+:::
+
+::: {.threshold}
+The hybrid agent's "which evidence next?" step can choose "none" to stop gathering. Each extra lookup costs about 0.4 seconds and nothing else. Stopping too early, as the first version showed, can cost a missed threat. If you had to set a rule for when the agent may stop, what would it be, and would you let a probability decide it?
+
+(One reasonable rule: never stop before the lookups that are cheap and always informative, like threat intel, and let the model decide only among the costly ones. Then check the rule the same way as any other decision: count how often "none" is chosen, and look at what it cost on the alerts where it was.)
+:::
+
+::: {.bookquote by="Donald Knuth, Structured Programming with go to Statements, 1974"}
+Premature optimization is the root of all evil.
+:::
+
+Knuth was warning programmers against tuning code before measuring it [@knuth1974] [[VERIFY]]. The first version of this agent optimised the wrong thing: it made "should we look this up?" a clever decision, when simply looking was cheaper. Measure first, then decide what's worth deciding.
+
+## Where we are
+
+We rebuilt Chapter 13's agent as a hybrid. Jev answered every decision and the LLM wrote only for people. Counting one step's answers exposed a bug that had never crashed: the agent never looked up threat intel. The fix was to stop deciding something that was cheaper to just do. Against an all-LLM twin, the hybrid was several times faster. It kept its review queue inside capacity and let fewer real threats go unseen. Most of its LLM time went on the one job that needed an LLM: writing words a person would read.
+
+::: {.exercises}
+1. In the lab, count the answers of the "enough evidence?" step. Is its distribution healthy? What would you expect it to look like?
+2. Add a fourth evidence tool to the agent (say, "check the user's recent password resets"). Which of the rules in this chapter decide whether it should be a decision or an unconditional step?
+3. Retune the all-LLM agent's lines so its review queue fits in 240 a day. What happens to the threats it auto-closes?
+4. Write a monitoring check, in a few lines of code, that fails if any option of any decision step has a share below 1% or above 90% over a day's traces.
+:::
+
+::: {.nexthook}
+Next: the whole SOC triage system, end to end, from a raw alert to a closed case, with every piece from the book in its place.
+:::
+
+::: {.summary}
+![](/figures/ch24/summary.pdf){width=100%}
+:::
