@@ -86,3 +86,11 @@ Newest decisions are appended at the bottom of each section.
   stopped by other defences, which is why the expected loss per missed one is $10k, not millions.
 - **D-43 · Calibration figure** uses cross-fitting (fit Platt on even days, apply to odd days and vice versa) over all
   four weeks, so the curve is not noisy and no alert calibrates itself.
+- **D-44 · Chapter 19's economics are an illustrative model** (`jevkit/econ.py`): six decision pools with stated
+  volumes, value distributions and time budgets. It is labelled "illustrative model · assumptions, not measurements"
+  on every figure. Jev's price and latency are vendor-reported; the LLM's are the book's illustrative figures.
+  The model deliberately shows the bill *falling* within Kestrel's existing jobs, and rising only when a new job is
+  added, because that is what the assumptions give and it is the honest reading of the rebound literature.
+- **D-45 · Jev's name.** "Named after Jevons" is recorded as reported (search summary of TypeSafe's statements),
+  marked [[VERIFY]] in the text. The early-2025 "Jevons paradox" commentary around cheaper AI models is mentioned
+  without quotation, also [[VERIFY]].

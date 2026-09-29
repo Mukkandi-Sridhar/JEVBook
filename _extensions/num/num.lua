@@ -29,6 +29,8 @@ local function fmt(v, f)
   elseif f == "f2" then return string.format("%.2f", v)
   elseif f == "f3" then return string.format("%.3f", v)
   elseif f == "f4" then return string.format("%.4f", v)
+  elseif f == "f5" then return string.format("%.5f", v)
+  elseif f == "f6" then return string.format("%.6f", v)
   else return tostring(v) end
 end
 
