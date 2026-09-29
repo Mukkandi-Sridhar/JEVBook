@@ -97,6 +97,12 @@ Newest decisions are appended at the bottom of each section.
 - **D-46 · Bake-off contestants.** The "fine-tuned classifier" is a TF-IDF + logistic-regression text classifier,
   stated in the text as a floor for trained text models (no GPU or PyTorch in this build). Each method reads its
   natural input; Jev reads the fields as JSON so it sees the same information as the logistic regression. The text
-  says plainly that the LLM-vs-Jev accuracy gap is built into the mocks (D-xx MockLLM design) and is not evidence.
+  says plainly that the LLM-vs-Jev accuracy gap is built into the mocks (D-48) and is not evidence.
 - **D-47 · Wide figures don't float.** Inside `{.wide}` the LaTeX `figure` environment is redefined as non-floating,
   so the figure takes the widened line (a float would reset to the text width).
+- **D-48 · The mock LLM's design** (`jevkit/llm.py`, `MockLLM`). Its internal belief is mock Jev's text-mode
+  probability plus extra logit noise (sd 0.45): it is deliberately a noisier reader than mock Jev. Its label-token
+  probability is sharpened (temperature 0.45), so it is overconfident. Its stated confidence snaps to a few round
+  values, mostly 0.9–0.99. At temperature > 0 it samples. About 2% of free-text JSON answers are wrapped or
+  truncated and 1.5% add an invented field. Latency 0.45 s + tokens/60 s, price $1/M in and $4/M out: all
+  illustrative. Any accuracy comparison between the mock LLM and mock Jev reflects these choices, and the book says so.
