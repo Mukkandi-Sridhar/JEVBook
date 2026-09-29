@@ -1,0 +1,6 @@
+title: num
+author: Decide, Don't Generate
+version: 1.0.0
+contributes:
+  shortcodes:
+    - num.lua

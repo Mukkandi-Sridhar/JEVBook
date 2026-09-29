@@ -1,0 +1,16 @@
+/*-- scss:defaults --*/
+$font-family-sans-serif: "Inter", system-ui, sans-serif;
+$font-family-serif: "Source Serif 4", Georgia, serif;
+$font-family-monospace: "JetBrains Mono", ui-monospace, monospace;
+$body-color: #1F2430;
+$link-color: #2F6DB5;
+$primary: #3B9C6E;
+$code-bg: #F6F7F9;
+$font-size-root: 17px;
+
+/*-- scss:rules --*/
+body { font-family: $font-family-serif; line-height: 1.6; }
+h1, h2, h3, h4, .title, .quarto-title, .sidebar, nav, .figure-caption, figcaption, .box-label, table { font-family: $font-family-sans-serif; }
+h1 { font-weight: 800; letter-spacing: -0.01em; }
+h2 { font-weight: 700; margin-top: 2.2rem; }
+h3 { font-weight: 650; }

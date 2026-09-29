@@ -1,0 +1,22 @@
+:root { --ink:#1F2430; --ink2:#4B5563; --muted:#8A919C; --data:#2F6DB5; --llm:#E07A1F; --jev:#3B9C6E; --fail:#B8323A;
+  --jev-t:#EEF7F2; --fail-t:#FBEFEF; --zone-t:#F3F0FA; --zone:#8468C9; --neutral-t:#F4F5F7; }
+body { background:#fff; color:var(--ink); }
+.bookbox { margin:1.4rem 0; padding:0.9rem 1.1rem; border-radius:4px; font-size:0.94em; }
+.bookbox .box-label { font-size:0.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0.4rem; }
+.tryit { background:var(--jev-t); border-left:3px solid var(--jev); } .tryit .box-label { color:var(--jev); }
+.breaks { background:var(--fail-t); border-left:3px solid var(--fail); } .breaks .box-label { color:var(--fail); }
+.threshold { background:var(--zone-t); border-left:3px solid var(--zone); } .threshold .box-label { color:var(--zone); }
+.deeper, .sidebar.bookbox { background:var(--neutral-t); border-left:3px solid #C9CED6; } .deeper .box-label { color:var(--ink2); }
+.goals { border:1px solid #E4E7EB; } .exercises { border-top:1px solid #C9CED6; border-radius:0; padding-left:0; }
+.keyidea { background:none; padding:0.2rem 0 0.2rem 1rem; border-left:4px solid var(--jev); font-family:Inter, sans-serif; font-weight:700; font-size:1.15em; }
+.bookquote { font-style:italic; font-size:1.12em; padding-left:1.2rem; border-left:none; position:relative; }
+.bookquote::before { content:"\201C"; color:var(--jev); font-size:2.6em; position:absolute; left:-0.2rem; top:-0.7rem; font-style:normal; }
+.bookquote .quote-by { font-style:normal; font-family:Inter, sans-serif; font-size:0.72em; color:var(--ink2); margin-top:0.4rem; }
+.nexthook { font-family:Inter, sans-serif; border-top:1px solid #C9CED6; padding-top:0.8rem; margin-top:2rem; border-radius:0; padding-left:0; }
+.author-story { background:#FFF3C4; border:1px solid #E0B400; padding:0.4rem 0.7rem; border-radius:3px; font-family:Inter, sans-serif; font-size:0.85em; }
+.verify { background:#FFF3C4; font-family:Inter, sans-serif; font-size:0.65em; font-weight:700; padding:0 0.3em; border-radius:2px; }
+img.you-are-here { width:100%; max-width:640px; margin:0 0 1.2rem 0; }
+.summary img { width:100%; }
+.wide img { width:100%; }
+.margin.bookbox { font-family:Inter, sans-serif; font-size:0.8em; color:var(--ink2); padding:0; }
+body { font-family: "Source Serif 4", Georgia, serif; } h1,h2,h3 { font-family: Inter, sans-serif; }

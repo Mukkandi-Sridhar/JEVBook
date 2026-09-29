@@ -1,0 +1,59 @@
+name: book-ci
+on:
+  push:
+  pull_request:
+
+jobs:
+  test-and-labs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: Install
+        run: |
+          pip install -r requirements.txt
+          pip install -e .
+      - name: Unit tests (jevkit)
+        run: pytest -q
+      - name: Run every lab notebook in mock mode
+        run: python tools/run_labs.py
+      - name: Notebooks are in sync with lab sources
+        run: git diff --exit-code -- labs/
+      - name: Figures rebuild without errors
+        run: |
+          bash tools/install_fonts.sh
+          python tools/build_figures.py all
+      - name: Book listings run
+        run: python tools/check_listings.py
+
+  html:
+    runs-on: ubuntu-latest
+    needs: test-and-labs
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: |
+          pip install -r requirements.txt
+          pip install -e .
+      - name: Render the web edition
+        run: quarto render --to html
+
+  pdf:
+    runs-on: ubuntu-latest
+    needs: test-and-labs
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-luatex texlive-latex-extra texlive-fonts-recommended lmodern graphviz poppler-utils
+          pip install -r requirements.txt
+          pip install -e .
+          bash tools/install_fonts.sh
+      - run: quarto render --to pdf
+      - uses: actions/upload-artifact@v4
+        with: { name: book-pdf, path: _book/*.pdf }

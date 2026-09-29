@@ -1,0 +1,133 @@
+project:
+  type: book
+  output-dir: _book
+  pre-render: python3 tools/prerender.py
+  resources:
+    - site/
+
+book:
+  title: "Decide, Don't Generate"
+  subtitle: "Jev, System One Models, and the Decision Layer of Agentic AI"
+  author: "Sridhar Mukkandi"
+  date: "2026"
+  date-format: "YYYY"
+  site-url: https://mukkandi-sridhar.github.io/JEVBook
+  repo-url: https://github.com/Mukkandi-Sridhar/JEVBook
+  downloads: [pdf, epub]
+  chapters:
+    - index.qmd
+    - front/how-to-read.qmd
+    - front/prologue.qmd
+    - part: parts/p1.qmd
+      chapters:
+        - chapters/ch01.qmd
+        - chapters/ch02.qmd
+        - chapters/ch03.qmd
+        - chapters/ch04.qmd
+        - chapters/ch05.qmd
+    - part: parts/p2.qmd
+      chapters:
+        - chapters/ch06.qmd
+        - chapters/ch07.qmd
+        - chapters/ch08.qmd
+        - chapters/ch09.qmd
+    - part: parts/p3.qmd
+      chapters:
+        - chapters/ch10.qmd
+        - chapters/ch11.qmd
+        - chapters/ch12.qmd
+        - chapters/ch13.qmd
+        - chapters/ch14.qmd
+    - part: parts/p4.qmd
+      chapters:
+        - chapters/ch15.qmd
+        - chapters/ch16.qmd
+        - chapters/ch17.qmd
+        - chapters/ch18.qmd
+        - chapters/ch19.qmd
+    - part: parts/p5.qmd
+      chapters:
+        - chapters/ch20.qmd
+        - chapters/ch21.qmd
+        - chapters/ch22.qmd
+    - part: parts/p6.qmd
+      chapters:
+        - chapters/ch23.qmd
+        - chapters/ch24.qmd
+        - chapters/ch25.qmd
+        - chapters/ch26.qmd
+        - chapters/ch27.qmd
+        - chapters/ch28.qmd
+    - part: parts/p7.qmd
+      chapters:
+        - chapters/ch29.qmd
+  appendices:
+    - back/glossary.qmd
+    - back/cheatsheets.qmd
+    - back/bibliography.qmd
+    - back/index-terms.qmd
+
+bibliography: references.bib
+csl: assets/chicago-author-date.csl
+link-citations: true
+lang: en-GB
+
+filters:
+  - filters/book.lua
+
+crossref:
+  fig-title: "Figure"
+  tbl-title: "Table"
+  fig-prefix: "Figure"
+  tbl-prefix: "Table"
+
+execute:
+  echo: true
+  freeze: auto
+  warning: false
+
+format:
+  pdf:
+    pdf-engine: lualatex
+    documentclass: scrbook
+    classoption: [twoside, open=right, fontsize=10.25pt, headings=standardclasses, numbers=noenddot]
+    papersize: custom
+    geometry:
+      - paperwidth=7in
+      - paperheight=10in
+      - top=0.85in
+      - bottom=0.9in
+      - inner=0.72in
+      - textwidth=4.7in
+      - marginparsep=0.2in
+      - marginparwidth=1.1in
+      - headsep=0.3in
+      - footskip=0.45in
+    toc: true
+    toc-depth: 1
+    number-sections: true
+    fig-pos: "htbp"
+    fig-cap-location: bottom
+    tbl-cap-location: top
+    code-block-bg: false
+    code-block-border-left: false
+    highlight-style: assets/book.theme
+    colorlinks: false
+    include-in-header: assets/latex/preamble.tex
+    template-partials:
+      - assets/latex/before-body.tex
+    keep-tex: true
+    cite-method: citeproc
+  html:
+    theme: [cosmo, assets/web/book.scss]
+    css: assets/web/book.css
+    toc: true
+    number-sections: true
+    code-copy: true
+    fig-responsive: true
+    include-in-header: assets/web/head.html
+  epub:
+    css: assets/web/epub.css
+    toc: true
+    number-sections: true
+    epub-cover-image: assets/cover/cover.png

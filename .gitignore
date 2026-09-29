@@ -1,0 +1,15 @@
+_book/
+_freeze/
+/.quarto/
+*.tex
+!assets/latex/*.tex
+*.log
+*.aux
+__pycache__/
+*.egg-info/
+.pytest_cache/
+/tmp/
+index_files/
+*_files/
+site_libs/
+.ipynb_checkpoints/
