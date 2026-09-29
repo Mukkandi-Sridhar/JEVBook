@@ -92,3 +92,28 @@ def flags(price: float, latency: float = 0.0, top_share: float = 0.001, review_c
 def elastic_spend(price_ratio, elasticity: float):
     """Constant-elasticity demand: quantity ~ price^-e, so spend ~ price^(1-e). Returns spend relative to today."""
     return np.asarray(price_ratio, float) ** (1 - elasticity)
+
+
+# An illustrative "decision audit" of one agent task (Chapter 29), reused by its lab.
+TASK = [("read the ticket", "observe", 1), ("which tool next?", "decide", 4), ("is this enough?", "decide", 3),
+        ("fetch records", "observe", 3), ("is this safe to do?", "decide", 1), ("do it", "act", 1),
+        ("write the reply", "generate", 1)]
+
+
+def task_cost(decider: str):
+    """Seconds and dollars for one task, deciding with an LLM or a decision model (illustrative + vendor-reported)."""
+    t = c = 0.0
+    for _, kind, n in TASK:
+        if kind == "decide":
+            if decider == "llm":
+                t += n * llm.MockLLM.simulated_latency_s(40)
+                c += n * llm.MockLLM.simulated_cost_usd(500, 40)
+            else:
+                t += n * JEV_LATENCY[1]
+                c += n * JEV_PRICE
+        elif kind == "generate":
+            t += llm.MockLLM.simulated_latency_s(150)
+            c += llm.MockLLM.simulated_cost_usd(800, 150)
+        else:
+            t += n * 0.3
+    return t, c

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="344.16pt" height="178.56pt" viewBox="0 0 344.16 178.56" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 178.56 
+L 344.16 178.56 
+L 344.16 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 11px; font-family: 'Inter'; text-anchor: start; fill: #b8323a" x="2.88" y="21.284687" transform="rotate(-0 2.88 21.284687)">?</text>
+   </g>
+   <g id="text_2">
+    <text style="font-weight: 600; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="20.88" y="14.7335" transform="rotate(-0 20.88 14.7335)">Does Jev’s calibration hold on data like yours?</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 5.9px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="20.88" y="28.273562" transform="rotate(-0 20.88 28.273562)">Chapter 18 tells you how to find out.</text>
+   </g>
+   <g id="text_4">
+    <text style="font-weight: 700; font-size: 11px; font-family: 'Inter'; text-anchor: start; fill: #b8323a" x="2.88" y="52.964687" transform="rotate(-0 2.88 52.964687)">?</text>
+   </g>
+   <g id="text_5">
+    <text style="font-weight: 600; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="20.88" y="46.4135" transform="rotate(-0 20.88 46.4135)">How fast do System One models improve, and do they drift between versions?</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 5.9px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="20.88" y="60.019477" transform="rotate(-0 20.88 60.019477)">Pin versions; re-test.</text>
+   </g>
+   <g id="text_7">
+    <text style="font-weight: 700; font-size: 11px; font-family: 'Inter'; text-anchor: start; fill: #b8323a" x="2.88" y="84.644687" transform="rotate(-0 2.88 84.644687)">?</text>
+   </g>
+   <g id="text_8">
+    <text style="font-weight: 600; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="20.88" y="78.0935" transform="rotate(-0 20.88 78.0935)">Will prices stay this low?</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 5.9px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="20.88" y="91.580094" transform="rotate(-0 20.88 91.580094)">Early-access prices change. Chapter 19’s model shows what depends on it.</text>
+   </g>
+   <g id="text_10">
+    <text style="font-weight: 700; font-size: 11px; font-family: 'Inter'; text-anchor: start; fill: #b8323a" x="2.88" y="116.324687" transform="rotate(-0 2.88 116.324687)">?</text>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 600; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="20.88" y="110.403" transform="rotate(-0 20.88 110.403)">Who else builds decision models?</text>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 5.9px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="20.88" y="123.313562" transform="rotate(-0 20.88 123.313562)">The interface pattern outlives any one vendor.</text>
+   </g>
+   <g id="text_13">
+    <text style="font-weight: 700; font-size: 11px; font-family: 'Inter'; text-anchor: start; fill: #b8323a" x="2.88" y="148.004687" transform="rotate(-0 2.88 148.004687)">?</text>
+   </g>
+   <g id="text_14">
+    <text style="font-weight: 600; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="20.88" y="142.083" transform="rotate(-0 20.88 142.083)">How will rules on automated decisions evolve?</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 5.9px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="20.88" y="154.940094" transform="rotate(-0 20.88 154.940094)">Keep people deciding where stakes are high.</text>
+   </g>
+  </g>
+ </g>
+</svg>
