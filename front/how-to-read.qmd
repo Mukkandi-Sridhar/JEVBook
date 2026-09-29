@@ -1,3 +1,34 @@
-# how-to-read {.unnumbered}
+# How to read this book {.unnumbered}
 
-*Draft in progress.*
+You don't have to read it front to back. Here are three routes, depending on where you're starting.
+
+![Three routes through the book's seven parts.](/figures/front/paths.pdf){#fig-paths}
+
+**If you're new to machine learning**, read it in order. Part I builds the foundation everything else rests on: probabilities, and how to turn them into actions you can defend. Parts II and III explain neural networks, embeddings, attention, LLMs and agents without assuming you've met any of them before.
+
+**If you already build with LLMs**, read Part I anyway, and don't skip Chapter 4 on calibration or Chapter 5 on costs. Then jump to Part IV. The rest of the book leans on those two chapters more than on anything else.
+
+**If you lead a team or a product**, read Part I, then Chapters 15 to 21, then Chapters 25 and 29. You'll skip the code-heavy chapters and still be able to ask your team the right questions: what does a mistake cost, where's the line, how do we know the probabilities are honest, and who reads the flags?
+
+## The boxes
+
+![The boxes you'll meet in every chapter.](/figures/front/boxes.pdf){#fig-boxes}
+
+Each chapter opens with a short list of what you'll be able to do by the end, and closes with a one-page visual summary, exercises and a hook to the next chapter. In between, a few kinds of box recur (@fig-boxes). The *Try it* boxes contain code you can run; the *Set the threshold* boxes ask you to make a small decision with real costs; the *Where this breaks* boxes are the honest limits of what the chapter just showed. Read those last ones. They're the difference between knowing a technique and knowing when to trust it.
+
+## Running the code
+
+Every listing in the book runs, and a test in the book's repository checks that it still does. The labs are Jupyter notebooks. The QR code beside each chapter's first *Try it* box opens its lab in Google Colab, where it installs everything it needs.
+
+To run things on your own machine:
+
+```bash
+pip install typesafe-sdk==0.7.2
+pip install git+https://github.com/Mukkandi-Sridhar/JEVBook
+```
+
+The second line installs `jevkit`, the book's toolkit. Among other things, it includes the mock that answers the official SDK's calls without a network connection or an API key. If you have a real TypeSafe API key, set `JEVKIT_LIVE=1` and `TYPESAFE_API_KEY`, and the labs call the real service instead; Chapter 23 explains how.
+
+## A word on the numbers
+
+Kestrel Logistics is fictional, and so are its alerts, which come from a generator with a known truth behind every one. That's what makes it possible to measure things exactly, like how many real threats a policy misses. It also means every number is an illustration of a method, not a fact about the world. When a figure is labelled *synthetic*, believe the shape and test the numbers on your own data.

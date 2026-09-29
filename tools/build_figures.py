@@ -21,8 +21,9 @@ def build(ch: str, only: set[str] | None = None) -> int:
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     n = 0
-    figs.save(figs.you_are_here(ch), ch, "map")
-    figs.qr(ch)
+    if ch in CHAPTERS:                       # front and back matter have no map or lab
+        figs.save(figs.you_are_here(ch), ch, "map")
+        figs.qr(ch)
     for name, fn in figs.registered(ch):
         if only and name not in only:
             continue
