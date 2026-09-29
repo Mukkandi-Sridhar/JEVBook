@@ -26,7 +26,7 @@ BANNED = [
 ]
 NOT_JUST = re.compile(r"\bnot (just|only|merely)\b[^.]{0,80}?\bbut\b", re.I)
 DEF_OPEN = re.compile(r"^(An?|The)\s+[\w\s-]{1,40}\s+(is an?|are|refers to|is defined as|means)\b")
-TRIAD = re.compile(r"\b(\w+), (\w+),? and (\w+)\b")
+TRIAD = re.compile(r"\b(\w{3,}), (\w{3,}),? and (\w{3,})\b")
 
 
 def prose_blocks(text: str):
@@ -52,8 +52,23 @@ def prose_blocks(text: str):
         yield "\n".join(buf)
 
 
+def strip_quotes(text: str) -> str:
+    """Quotations are other people's words: never flag them."""
+    out, inq = [], False
+    for line in text.splitlines():
+        if line.startswith("::: {.bookquote"):
+            inq = True
+            continue
+        if inq and line.startswith(":::"):
+            inq = False
+            continue
+        if not inq:
+            out.append(line)
+    return "\n".join(out)
+
+
 def check(path: Path) -> int:
-    text = path.read_text()
+    text = strip_quotes(path.read_text())
     blocks = list(prose_blocks(text))
     prose = "\n".join(b for b in blocks if not b.lstrip().startswith(("#", "|", "- ", "1. ")))
     words = len(re.findall(r"\b\w+\b", prose))

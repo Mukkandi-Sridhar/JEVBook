@@ -1,3 +1,173 @@
 # Training at scale, and why big models are overconfident {#sec-ch09}
 
-*Draft in progress.*
+```{python}
+#| include: false
+import warnings
+import numpy as np
+from sklearn.neural_network import MLPClassifier
+from jevkit import soc, calibration as cal
+from jevkit.learn import Standardizer
+```
+
+Here's a fair question after the last chapter:
+
+*"If a transformer is just attention and small networks stacked up, how did anyone get from that to something that writes essays and passes exams?"*
+
+The honest answer is almost disappointing. Mostly, they made it bigger. Far more data, far more layers, far more computing power, and a training task so simple that it could soak all of that up.
+
+This chapter explains that recipe. Then it explains a side effect of big, long training that matters enormously for anyone who wants to *decide* with a model's output, rather than just read it: big models tend to become overconfident. You'll watch it happen on Kestrel's alerts, and fix it.
+
+::: {.goals}
+- Explain pretraining as "guess the next word", and why that task scales so well.
+- Describe what "scaling laws" say, and what they don't.
+- Walk through how a raw text predictor becomes an assistant: instruction tuning and preference tuning.
+- Watch a network's calibration collapse during long training while its accuracy barely moves.
+- Explain why that happens, and fix it with the tools from Chapter 4.
+:::
+
+## The simplest task in the world
+
+In Part I, every example came with a label someone had to provide. An analyst marked each alert real or harmless. Labels are expensive, so labelled data is always scarce.
+
+Large language models are trained on a task that needs no labels at all. Take any text, hide the next word, and guess it.
+
+![The pretraining task. Show the model some text, hide the next word, ask for a probability for every word it could be, then check against what the text actually says. The label is free: it's just the next word.](/figures/ch09/pretrain-task.pdf){#fig-pretrain-task}
+
+That's it. Every sentence ever written becomes thousands of free training examples. The model's output is a probability for every word in its vocabulary, and it's trained with the log loss you met in Chapter 3: a big penalty whenever the real next word got a low probability.
+
+To get good at this, a model has to learn a startling amount. Grammar, obviously. But also facts ("the capital of France is..."), reasoning patterns ("if all alerts from this host are benign and this alert is from this host, then..."), styles, and a great deal of common sense. None of that was taught directly. All of it made the next word easier to guess. This is called **pretraining**, and it's where almost all of an LLM's knowledge comes from.
+
+## Bigger, more, longer
+
+What happens as you feed the task more text?
+
+You can watch a miniature version with nothing fancier than counting. Take the synthetic analyst notes from Chapter 7, and guess each next word from the two words before it, using counts from the training notes.
+
+![A miniature scaling curve. A simple next-word guesser trained on more and more synthetic analyst notes, tested on notes it hasn't seen. Each tenfold increase in text helps, but a little less than the one before.](/figures/ch09/mini-scaling.pdf){#fig-mini-scaling}
+
+Each tenfold increase in text helps, and each helps a bit less than the last (@fig-mini-scaling). Real LLMs show a strikingly similar pattern, over many more orders of magnitude. In 2020, researchers at OpenAI showed that a language model's loss falls smoothly and predictably as you increase the model's size, the amount of text and the computing power, following simple mathematical curves [@kaplan2020]. Two years later, a team at DeepMind refined the recipe and showed that many big models had been trained on too little text for their size [@hoffmann2022].
+
+Those results, called **scaling laws**, changed the economics of AI. Spending a hundred million dollars training a model is terrifying if you don't know what you'll get. It's a calculated bet if a curve fitted on smaller models predicts the answer. The models that followed, with parameter counts in the hundreds of billions, were built on that bet [@brown2020].
+
+::: {.bookquote by="Richard Sutton, The Bitter Lesson, 2019"}
+The biggest lesson that can be read from 70 years of AI research is that general methods that leverage computation are ultimately the most effective, and by a large margin.
+:::
+
+Scaling laws predict the *loss*, the average surprise at the next word. They don't directly predict which skills will appear, how honest the model's confidence will be, or whether it's any good at *your* problem. We'll come back to that gap.
+
+## From predictor to assistant
+
+A freshly pretrained model isn't an assistant. It's a continuation machine. Ask it "What's the capital of France?" and it might answer, or it might continue with three more quiz questions, because that's what often follows such a question on the internet.
+
+Turning it into something helpful takes two more stages.
+
+![Three stages. Pretraining gives knowledge but only continues text. Instruction tuning, on examples of good answers, teaches the model to follow requests. Preference tuning, on people's ratings of answers, makes it helpful and polite, and can quietly make its confidence less honest.](/figures/ch09/stages.pdf){#fig-stages}
+
+**Instruction tuning** trains the model further on examples of requests paired with good responses. It learns the *shape* of being helpful.
+
+**Preference tuning** goes further. People compare pairs of the model's answers and pick the better one; the model is then trained to produce answers people prefer. The best-known version is called reinforcement learning from human feedback, **RLHF** [@ouyang2022].
+
+Preference tuning is a big part of why modern assistants feel so good to use. It also has a cost that matters for this book. People tend to prefer answers that sound confident. So a model tuned on their preferences learns to sound sure. When OpenAI published its technical report on GPT-4, it included a telling pair of charts: the pretrained model's confidence on multiple-choice questions was well calibrated, and after preference tuning it was noticeably less so [@openai2023]. Earlier work had also found pretrained models "mostly know what they know" when asked in the right format [@kadavath2022].
+
+::: {.keyidea}
+The steps that make a model pleasant to talk to can make its confidence less honest.
+:::
+
+## Watching overconfidence happen
+
+You don't need a giant LLM to see the deeper version of this effect. It shows up whenever a flexible model trains for a long time on log loss. Let's make it happen on purpose.
+
+Take a network much bigger than Kestrel's alerts need, two layers of 128 hidden neurons, and train it for 200 passes over the training alerts. Every so often, check it on the test alerts.
+
+::: {.tryit lab="ch09"}
+```{python}
+alerts = soc.load()
+train, calib, test = soc.split(alerts)
+F = lambda d: soc.feature_matrix(d).to_numpy()
+st = Standardizer().fit(F(train))
+net = MLPClassifier(hidden_layer_sizes=(128, 128),
+                    learning_rate_init=0.002, random_state=0,
+                    batch_size=256)
+for epoch in range(1, 201):
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        net.partial_fit(st(F(train)), train.malicious,
+                        classes=[0, 1])
+    if epoch in (3, 20, 60, 200):
+        p = net.predict_proba(st(F(test)))[:, 1]
+        acc = ((p > 0.5) == test.malicious).mean()
+        s = cal.summary(p, test.malicious)
+        print(f"epoch {epoch:3d}: accuracy {acc:.3f}  "
+              f"log loss {s['log_loss']:.3f}  ECE {s['ece']:.3f}")
+```
+:::
+
+![Three views of the same training run, on test alerts. Accuracy (left) barely changes. Log loss (middle) and calibration error (right) are flat for a while, then climb steeply. If accuracy were the only number you watched, you'd never notice.](/figures/ch09/overtraining.pdf){#fig-overtraining}
+
+Look at @fig-overtraining and imagine you only tracked accuracy, as many teams do. You'd see a line that barely moves and conclude that nothing much happened. Meanwhile, the test log loss went from {{< num ch09 first.log_loss f2 >}} to {{< num ch09 last.log_loss f2 >}}, and the calibration error from {{< num ch09 first.ece f3 >}} to {{< num ch09 last.ece f3 >}}. The model's *ranking* of alerts is nearly unchanged. Its *honesty* has fallen apart.
+
+![Every predicted probability on the test alerts, early in training (blue) and after 200 passes (red), counted on a log scale. The overtrained network pushes far more of its predictions to the extremes: it has become sure.](/figures/ch09/confidence.pdf){#fig-confidence}
+
+## Why it happens
+
+@fig-confidence shows what changed. The overtrained model piles its predictions up near 0 and 1.
+
+Here's the mechanism, and it follows directly from Chapter 3. On the *training* alerts, log loss can always be lowered a tiny bit more by pushing a correct prediction closer to certainty: 0.95 becomes 0.99 becomes 0.999. Once the model gets most training alerts right, that's nearly the only way left to lower the loss. So a flexible model, trained long enough, learns to be extremely sure of what it saw, including the noise and the rare exceptions it has simply memorised. Then it carries that certainty onto new alerts where it hasn't earned it.
+
+The same pressure exists in big modern networks, and researchers documented it clearly in 2017: deeper, wider networks trained with modern techniques are more accurate *and* more overconfident than the smaller networks of a decade earlier [@guo2017].
+
+::: {.keyidea}
+Flexible models trained to squeeze out the last drop of training loss learn to be certain.
+:::
+
+## Fixing it
+
+The good news is that you already know the fixes.
+
+**Stop early.** Watch the loss on held-out data and stop when it stops improving. In our run, the best test log loss came around epoch {{< num ch09 best_epoch int >}}. Everything after that made the model worse at the thing we care about.
+
+**Recalibrate afterwards.** Fit a correction on the calibration set, exactly as in Chapter 4.
+
+![The overtrained network's reliability on test alerts, before (red) and after temperature scaling fitted on the calibration set (green). A single number, T, softens every prediction. It helps, but here it can't fully straighten the curve.](/figures/ch09/temperature-fix.pdf){#fig-temperature-fix}
+
+```{python}
+p_cal = net.predict_proba(st(F(calib)))[:, 1]
+for name, fix in (("temperature", cal.Temperature()),
+                  ("Platt", cal.Platt())):
+    fix.fit(p_cal, calib.malicious)
+    print(f"{name:>11}: ECE {cal.ece(fix(p), test.malicious):.3f}"
+          f"  log loss {cal.log_loss(fix(p), test.malicious):.3f}")
+```
+
+Temperature scaling, the standard fix for overconfident networks, found T = {{< num ch09 temp_T f1 >}} and cut the calibration error from {{< num ch09 last.ece f3 >}} to {{< num ch09 ece_after_T f3 >}} (@fig-temperature-fix). Platt scaling, with its extra shift, did better: ECE {{< num ch09 ece_after_platt f3 >}}. But neither brought the log loss back to where early stopping had it ({{< num ch09 best_ll f3 >}}). A correction can make a model's numbers honest again. It can't give back information the model threw away by memorising.
+
+::: {.breaks}
+You usually can't retrain someone else's big model, and often you can't see its raw probabilities at all. Many LLM APIs return only text, or return token probabilities that describe the next *word*, not the answer to your question (Chapter 11 unpacks that). If a model is going to feed decisions, you need probabilities you can check and correct. That's one of the strongest arguments for a decision model that returns probabilities as its main output, like Jev, and for testing them rather than trusting them, which is Chapter 18's job.
+:::
+
+::: {.threshold}
+A vendor tells you their fine-tuned classifier is "97% accurate" at spotting phishing, and returns a confidence score with every prediction. You plan to auto-quarantine emails when confidence is above 0.9. What two numbers would you ask the vendor for before agreeing, and what would you do if they couldn't provide them?
+
+(Its calibration on data like yours, as ECE or a reliability diagram, and its precision among predictions above 0.9. If they can't provide them, measure them yourself on a few hundred of your own labelled emails, and recalibrate before you set the 0.9 line.)
+:::
+
+## Where we are
+
+We asked how transformers turned into ChatGPT, and the answer was a task with free labels, and the nerve to scale it up along predictable curves. Pretraining gave knowledge; instruction tuning gave manners; preference tuning gave charm, and a habit of sounding surer than the evidence. Then we made a network overconfident on purpose, found that accuracy hid it completely, and fixed it with the tools from Part I.
+
+That's the end of Part II. You now know what's inside an LLM. Next, we watch one work.
+
+::: {.exercises}
+1. Why does "guess the next word" need no human labelling? Name one other task with free labels that you could train a model on using your company's own data.
+2. In the lab, train the network for 400 epochs instead of 200. Predict what happens to accuracy, log loss and ECE before you run it.
+3. Explain in two sentences why preference tuning might make a model less calibrated, even if nobody intended it to.
+4. Our temperature fix helped but didn't fully straighten the curve. Using what you learned in Chapter 4, explain what a temperature can't do that Platt scaling can.
+:::
+
+::: {.nexthook}
+Next, Part III: what does an LLM actually do when it writes? One token at a time, with a probability for every possible next piece. That detail turns out to matter a great deal for decisions.
+:::
+
+::: {.summary}
+![](/figures/ch09/summary.pdf){width=100%}
+:::

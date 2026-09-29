@@ -19,7 +19,7 @@ IDX = {w: i for i, w in enumerate(VOCAB)}
 LENGTH = 6
 
 
-def make_data(n: int = 4000, seed: int = 0):
+def make_data(n: int = 4000, seed: int = 0, noise: float = 0.0):
     rng = np.random.default_rng(seed)
     X = np.zeros((n, LENGTH), int)
     y = np.zeros(n)
@@ -37,6 +37,8 @@ def make_data(n: int = 4000, seed: int = 0):
             words.insert(int(rng.integers(0, len(words) + 1)), "and")
         words = words[:LENGTH]
         label = any(w in THREAT and (j == 0 or words[j - 1] != "not") for j, w in enumerate(words))
+        if noise and rng.random() < noise:          # real labels are messy: some are simply wrong
+            label = not label
         X[i, :len(words)] = [IDX[w] for w in words]
         y[i] = float(label)
         sents.append(words)
@@ -74,7 +76,7 @@ def loss(p, X, y):
     return -anp.mean(y * anp.log(q) + (1 - y) * anp.log(1 - q))
 
 
-def train(X, y, steps: int = 400, lr: float = 0.05, seed: int = 0, batch: int = 256, history=None):
+def train(X, y, steps: int = 400, lr: float = 0.05, seed: int = 0, batch: int = 256, history=None, callback=None, every: int = 100):
     """Adam on minibatches. Deterministic for a given seed."""
     p = init(seed=seed)
     g = grad(loss)
@@ -91,6 +93,8 @@ def train(X, y, steps: int = 400, lr: float = 0.05, seed: int = 0, batch: int = 
             p[k] = p[k] - lr * mh / (np.sqrt(vh) + 1e-8)
         if history is not None and t % 20 == 0:
             history.append((t, float(loss(p, X, y))))
+        if callback is not None and t % every == 0:
+            callback(t, p)
     return p
 
 
