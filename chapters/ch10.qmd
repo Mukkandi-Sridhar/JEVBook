@@ -1,3 +1,179 @@
 # How an LLM writes, one token at a time {#sec-ch10}
 
-*Draft in progress.*
+```{python}
+#| include: false
+from jevkit import llm, text, soc
+```
+
+When ChatGPT answers you, the words appear a few at a time, as if someone were typing.
+
+You've probably wondered whether that's just a nice animation, and whether the whole answer is really sitting there, finished, being revealed slowly for effect.
+
+It isn't. That's genuinely how the model works. It doesn't know the end of its sentence when it writes the beginning. It picks one small piece, then the next, then the next, each time looking back at everything so far.
+
+That one detail, *one piece at a time*, turns out to explain a surprising amount: why long answers are slow, why the same question can get different answers, why you pay per token, and why "just ask the LLM" is an awkward way to make a decision. This chapter opens Part III by watching the loop run.
+
+::: {.goals}
+- Explain what a token is, and why text gets chopped the way it does.
+- Describe the generation loop: predict, pick, append, repeat.
+- Say what the temperature setting does, and connect it to the temperature from Chapter 4.
+- Explain why answer length drives latency and cost.
+- Show why the same question can get different answers, and why fluent isn't the same as true.
+:::
+
+## Text becomes tokens
+
+A language model doesn't read letters, and it doesn't quite read words either. It reads **tokens**: chunks of text that a separate program, the *tokenizer*, chops the input into.
+
+The most common way to build a tokenizer is refreshingly simple. It's called **byte-pair encoding**, BPE for short [@sennrich2016]. Start with single characters. Find the pair of neighbours that appears most often in a big pile of text, and glue them into one new chunk. Repeat a few thousand times. Common words end up as a single chunk; rare words get built from several.
+
+::: {.tryit lab="ch10"}
+A tiny tokenizer, trained on our synthetic analyst notes in about a second.
+
+```{python}
+notes = [" ".join(n) for n in text.notes_corpus(5000)]
+tok = llm.BPE().fit(notes, merges=150)
+for s in ["the ransomware was quarantined", "passw0rd reset",
+          "2026-09-14"]:
+    t = tok.tokenize(s)
+    print(f"{len(t):2d} tokens  {t}")
+```
+:::
+
+![How our toy tokenizer chops three strings. Frequent chunks become single tokens. The typo "passw0rd" and the date fall apart into many small pieces, because nothing like them appeared often in the training notes.](/figures/ch10/tokens.pdf){#fig-tokens}
+
+Real tokenizers are trained on far more text, so they know many more chunks, but the behaviour in @fig-tokens is the same in kind. Three consequences are worth knowing.
+
+You **pay per token**, not per word. Most LLM APIs charge for tokens in and tokens out.
+
+**Numbers are awkward.** A threat-intel score of 0.87, a timestamp or an IP address may be split into pieces that don't line up with their meaning. It's one reason LLMs can be surprisingly clumsy with arithmetic.
+
+**Unusual text costs more.** Hostnames, process names and base64 blobs, all the stuff security logs are made of, tokenize into many small pieces.
+
+## The loop
+
+Now the main event. Here's what happens every time an LLM produces a token:
+
+1. Read all the tokens so far: your prompt plus whatever it has written already.
+2. Produce a score for every token in the vocabulary, often around a hundred thousand of them, and turn the scores into probabilities with a softmax.
+3. Pick one token.
+4. Add it to the end, and go back to step 1.
+
+![The generation loop. The model reads everything so far, produces a probability for every possible next token, one gets picked, it's appended, and the loop runs again. The answer grows one piece at a time.](/figures/ch10/loop.pdf){#fig-loop}
+
+That's all a "generative" model is doing (@fig-loop). Step 2 is the transformer from Chapter 8, a *writer* that can only look backwards. Everything else is a loop around it.
+
+We can run this loop ourselves with a far simpler model: one that guesses the next word from the two words before it, using counts from 30,000 synthetic analyst notes. It's roughly the kind of model Claude Shannon played with in 1948, when he built sentences by drawing words from frequency tables [@shannon1948]. Modern LLMs replace the counting with a transformer holding billions of weights. The loop is identical.
+
+```{python}
+lm = llm.TrigramLM().fit(text.notes_corpus(30000))
+dist = lm.next_distribution("the", "phishing")
+print(sorted(dist.items(), key=lambda kv: -kv[1])[:3])
+```
+
+After "the phishing", the model thinks "attempt" and "email" are about equally likely, and almost nothing else is.
+
+## Picking: the temperature knob
+
+Step 3, *pick one*, hides a choice.
+
+You could always take the most likely token. That's called **greedy** decoding, and it's predictable but often dull and repetitive. Or you could roll a die weighted by the probabilities, so that likely tokens usually win but unlikely ones sometimes get a turn. That's **sampling**, and it's what makes an LLM's writing feel varied.
+
+Most APIs let you control how adventurous the sampling is with a setting called **temperature**. And here's a nice connection: it's exactly the temperature from Chapter 4. Divide every score by *T* before the softmax. Below 1, the favourites become even more favoured. Above 1, the probabilities flatten out and long shots get more chances.
+
+![The model's probabilities for the word after "the phishing", reshaped by three temperatures. At 0.3, two words take nearly everything. At 2, the long tail gets a real chance of being picked.](/figures/ch10/temperature.pdf){#fig-temperature}
+
+Watch what that does to the writing:
+
+```{python}
+for T in (0, 0.7, 1.5):
+    for seed in (0, 1):
+        words = [w for w, p in lm.generate(["the", "phishing"],
+                                           temperature=T, seed=seed)]
+        print(f"T={T:<3}  the phishing {' '.join(words)}")
+```
+
+At temperature 0 you get the single most likely continuation, every time. At 0.7 you get variety, some of it plausible and some of it odd. At 1.5 it starts falling apart into word salad. Real LLMs behave the same way, with a much wider comfortable range because their probabilities are much better.
+
+## Length is time
+
+Because each token has to wait for the one before it, generation is *sequential*. You can't produce token fifty before token forty-nine exists.
+
+That makes the length of the answer the biggest single driver of how long it takes.
+
+![How long an answer takes under simple, illustrative assumptions: a short wait before the first token, then a steady stream. A one-word label is fast. An answer with an explanation takes seconds. Step-by-step reasoning takes tens of seconds.](/figures/ch10/latency.pdf){#fig-latency}
+
+The numbers in @fig-latency are illustrative, not measurements: I've assumed {{< num ch10 ttft f2 >}} seconds before the first token and {{< num ch10 tps int >}} tokens per second after that. Real services vary a lot, and get faster every year. But the shape doesn't change. A one-word answer takes about {{< num ch10 lat_1 f1 >}} seconds; an explanation of a few hundred tokens takes about {{< num ch10 lat_300 f1 >}}; and 1,500 tokens of step-by-step reasoning takes about {{< num ch10 lat_1500 int >}}.
+
+That last row matters more every year. The newest "reasoning" models are trained to write out long chains of thought before answering, and on hard problems that makes them much better. It also makes them much slower and more expensive, because every one of those thinking tokens goes through the loop. That trade-off, careful and slow against quick and intuitive, is the heart of Part IV.
+
+## Same question, different answers
+
+Sampling has another consequence, and for decisions it's a big one.
+
+Ask the same question twice, with any temperature above zero, and you might get two different answers. For writing a poem, that's a feature. For deciding whether an alert is real, it's a problem.
+
+Here I've asked a stand-in LLM, `llm-mock-synthetic`, the same question about the same alert twenty times. Like everything else in this book it's synthetic: a mock designed to behave the way LLMs typically do, not a model of any real product.
+
+```{python}
+alert = soc.load().description[118]
+mock = llm.MockLLM(temperature=0.7)
+answers = [mock.classify(alert)["label"] for _ in range(20)]
+print(alert[:66], "...")
+print({a: answers.count(a) for a in sorted(set(answers))})
+```
+
+Now do that for forty borderline alerts, the ones that really are hard.
+
+![Forty borderline alerts, each asked the same question twenty times at temperature 0.7. The bar shows how often the answer was "malicious". Only a handful got the same answer every time. The rest flipped back and forth.](/figures/ch10/variance.pdf){#fig-variance}
+
+In @fig-variance, {{< num ch10 n_split int >}} of the {{< num ch10 n_alerts int >}} alerts got *both* answers across twenty asks. Which answer an analyst sees depends on the roll of a die. You can set the temperature to zero, and for most providers that makes answers much more repeatable. It doesn't always make them perfectly so, and it doesn't make the *uncertainty* go away. It just hides it: the model is exactly as unsure as before, and you've asked it to stop showing you.
+
+::: {.keyidea}
+Sampling turns a model's uncertainty into randomness in its answers. Temperature zero hides it; it doesn't remove it.
+:::
+
+That sentence is the seed of Chapter 11. If the model *has* a sense of how likely each answer is, we'd much rather see that number than a single sampled word.
+
+## Fluent isn't true
+
+One last property of the loop, and it's the one that gets the most headlines.
+
+The model is trained to produce a *plausible next token*. Nothing in the loop checks whether the sentence it's building is correct. Our trigram model at temperature 0.7 happily wrote "the phishing email asked the admin missed the meeting schedule": every three-word window looks like something from the notes, and the whole thing means nothing.
+
+Big LLMs are vastly better at staying coherent, but the same gap exists at a higher level. They can produce a fluent, confident, completely made-up hostname, statistic or citation, because it's the kind of thing that *would* come next. That's what people call **hallucination**. Chapter 12 looks at the main defence, giving the model real documents to work from. Chapter 11 looks at another: constraining what it's allowed to say.
+
+::: {.breaks}
+Token probabilities describe the *next piece of text*, not the truth of the answer. A model can be 99% sure the next token is "The", which tells you nothing about whether the sentence that follows is right. Output length is also not under your full control: ask for "a short answer" and you'll still get varying lengths, which means varying latency and cost. And because providers update models and serving systems, "temperature 0" behaviour can shift between versions. Pin model versions for anything you'll audit.
+:::
+
+::: {.threshold}
+Kestrel wants an LLM to label alerts as "malicious" or "benign" and auto-close the benign ones. A colleague suggests running each alert three times at temperature 0.7 and auto-closing only if all three answers say "benign". What does that buy you? What does it cost? Is there a better number to put a threshold on?
+
+(It buys a rough, noisy estimate of the model's uncertainty, since agreement across samples means some confidence. It costs three times the tokens and latency. A better number would be a probability for the answer itself, checked for calibration. The next chapter looks at where to get one.)
+:::
+
+::: {.bookquote by="Title of a 2021 paper by Emily Bender, Timnit Gebru, Angelina McMillan-Major and Margaret Mitchell"}
+On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?
+:::
+
+## Where we are
+
+We started by asking whether ChatGPT's typing was just an animation, and found that it's the real mechanism. Text becomes tokens, and tokens come out one at a time, each chosen from a probability for every possible next piece. That loop explains why long answers are slow and costly, why temperature changes the writing, why the same question can get different answers, and why fluent doesn't mean true.
+
+Which leaves an obvious question for anyone who wants a *decision* rather than an essay. What happens when you ask the loop for something with a fixed shape: a label, a score, a JSON object?
+
+::: {.exercises}
+1. In the lab, train the tokenizer with 20 merges and with 500. How does the number of tokens for "the ransomware was quarantined" change? What's the trade-off in having more merges?
+2. Explain in your own words why generation can't be parallelised the way reading can.
+3. Using the illustrative latency numbers, how long would 10,000 alerts take to label one at a time with a one-word answer? With a 300-token explanation? What would you change about the system design?
+4. The mock LLM flipped its answer on most borderline alerts. Why might that be *more* honest than a model that always gives the same answer on borderline cases?
+:::
+
+::: {.nexthook}
+Next: ask an LLM for JSON and you'll usually get it. Usually. Chapter 11 is about getting structured answers out of a writing machine, and about the three different "confidences" you can get back, which don't agree.
+:::
+
+::: {.summary}
+![](/figures/ch10/summary.pdf){width=100%}
+:::
