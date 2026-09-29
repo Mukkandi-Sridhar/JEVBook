@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="357.649961pt" height="178.56pt" viewBox="0 0 357.649961 178.56" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 178.56 
+L 357.649961 178.56 
+L 357.649961 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 90.696797 54.696797 
+Q 103.681422 67.681422 115.988028 79.988028 
+" clip-path="url(#pf4cc265281)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+    <path d="M 114.750591 74.861504 
+L 115.988028 79.988028 
+L 110.861504 78.750591 
+z
+" clip-path="url(#pf4cc265281)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 90.992109 112.732734 
+Q 103.677985 105.121209 115.541641 98.003016 
+" clip-path="url(#pf4cc265281)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+    <path d="M 110.268059 97.960141 
+L 115.541641 98.003016 
+L 113.097786 102.676352 
+z
+" clip-path="url(#pf4cc265281)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 192.08127 89.28 
+Q 200.882994 89.28 208.725854 89.28 
+" clip-path="url(#pf4cc265281)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+    <path d="M 204.225854 86.53 
+L 208.725854 89.28 
+L 204.225854 92.03 
+z
+" clip-path="url(#pf4cc265281)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 7.2 71.28 
+L 84.96 71.28 
+Q 89.28 71.28 89.28 66.96 
+L 89.28 39.6 
+Q 89.28 35.28 84.96 35.28 
+L 7.2 35.28 
+Q 2.88 35.28 2.88 39.6 
+L 2.88 66.96 
+Q 2.88 71.28 7.2 71.28 
+z
+" clip-path="url(#pf4cc265281)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 7.2 136.08 
+L 84.96 136.08 
+Q 89.28 136.08 89.28 131.76 
+L 89.28 95.76 
+Q 89.28 91.44 84.96 91.44 
+L 7.2 91.44 
+Q 2.88 91.44 2.88 95.76 
+L 2.88 131.76 
+Q 2.88 136.08 7.2 136.08 
+z
+" clip-path="url(#pf4cc265281)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 122.4 110.88 
+L 185.76 110.88 
+Q 190.08 110.88 190.08 106.56 
+L 190.08 72 
+Q 190.08 67.68 185.76 67.68 
+L 122.4 67.68 
+Q 118.08 67.68 118.08 72 
+L 118.08 106.56 
+Q 118.08 110.88 122.4 110.88 
+z
+" clip-path="url(#pf4cc265281)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 211.68 103.68 
+L 249.48 103.68 
+L 249.48 74.88 
+L 211.68 74.88 
+z
+" clip-path="url(#pf4cc265281)" style="fill: #b7a6e0; stroke: #ffffff; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 249.48 103.68 
+L 306.18 103.68 
+L 306.18 74.88 
+L 249.48 74.88 
+z
+" clip-path="url(#pf4cc265281)" style="fill: #8468c9; stroke: #ffffff; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 306.18 103.68 
+L 337.68 103.68 
+L 337.68 74.88 
+L 306.18 74.88 
+z
+" clip-path="url(#pf4cc265281)" style="fill: #4b2c8f; stroke: #ffffff; stroke-width: 1.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="line2d_1">
+    <path d="M 211.68 107.28 
+L 211.68 103.68 
+" clip-path="url(#pf4cc265281)" style="fill: none; stroke: #4b5563; stroke-width: 0.6; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_2">
+    <path d="M 249.48 107.28 
+L 249.48 103.68 
+" clip-path="url(#pf4cc265281)" style="fill: none; stroke: #4b5563; stroke-width: 0.6; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_3">
+    <path d="M 306.18 107.28 
+L 306.18 103.68 
+" clip-path="url(#pf4cc265281)" style="fill: none; stroke: #4b5563; stroke-width: 0.6; stroke-linecap: round"/>
+   </g>
+   <g id="line2d_4">
+    <path d="M 337.68 107.28 
+L 337.68 103.68 
+" clip-path="url(#pf4cc265281)" style="fill: none; stroke: #4b5563; stroke-width: 0.6; stroke-linecap: round"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 500; font-size: 6px; font-family: 'Inter'; fill: #1f2430" transform="translate(22.790625 50.122646)">agent proposes:</text>
+    <text style="font-weight: 500; font-size: 6px; font-family: 'Inter'; fill: #1f2430" transform="translate(25.75875 59.963291)">close the alert</text>
+   </g>
+   <g id="text_2">
+    <text style="font-weight: 500; font-size: 5.8px; font-family: 'Inter'; fill: #1f2430" transform="translate(20.975062 106.593658)">trusted facts only:</text>
+    <text style="font-weight: 500; font-size: 5.8px; font-family: 'Inter'; fill: #1f2430" transform="translate(20.831422 115.443359)">SIEM fields, threat</text>
+    <text style="font-weight: 500; font-size: 5.8px; font-family: 'Inter'; fill: #1f2430" transform="translate(26.344594 124.201529)">intel, asset list</text>
+   </g>
+   <g id="text_3">
+    <text style="font-style: italic; font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #b8323a" x="46.08" y="154.032979" transform="rotate(-0 46.08 154.032979)">not the alert’s free text</text>
+   </g>
+   <g id="text_4">
+    <text style="font-weight: 600; font-size: 6px; font-family: 'Inter'; fill: #1f2430" transform="translate(140.865469 82.354043)">Jev noul:</text>
+    <text style="font-weight: 600; font-size: 6px; font-family: 'Inter'; fill: #1f2430" transform="translate(141.173906 91.187344)">P(safe to</text>
+    <text style="font-weight: 600; font-size: 6px; font-family: 'Inter'; fill: #1f2430" transform="translate(145.215937 100.262051)">close)</text>
+   </g>
+   <g id="text_5">
+    <text style="font-weight: 700; font-size: 6px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="230.58" y="91.462617" transform="rotate(-0 230.58 91.462617)">BLOCK</text>
+   </g>
+   <g id="text_6">
+    <text style="font-weight: 700; font-size: 6px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="277.83" y="91.462617" transform="rotate(-0 277.83 91.462617)">ASK</text>
+   </g>
+   <g id="text_7">
+    <text style="font-weight: 700; font-size: 6px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="321.93" y="91.462617" transform="rotate(-0 321.93 91.462617)">ALLOW</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="211.68" y="114.67125" transform="rotate(-0 211.68 114.67125)">0</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="249.48" y="114.67125" transform="rotate(-0 249.48 114.67125)">0.3</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="306.18" y="114.67125" transform="rotate(-0 306.18 114.67125)">0.75</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="337.68" y="114.67125" transform="rotate(-0 337.68 114.67125)">1</text>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 5.5px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="274.32" y="51.209687" transform="rotate(-0 274.32 51.209687)">gate on P(safe): high allows, low blocks, middle asks a person</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pf4cc265281">
+   <rect x="2.88" y="2.88" width="338.4" height="172.8"/>
+  </clipPath>
+ </defs>
+</svg>

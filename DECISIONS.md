@@ -106,3 +106,8 @@ Newest decisions are appended at the bottom of each section.
   values, mostly 0.9–0.99. At temperature > 0 it samples. About 2% of free-text JSON answers are wrapped or
   truncated and 1.5% add an invented field. Latency 0.45 s + tokens/60 s, price $1/M in and $4/M out: all
   illustrative. Any accuracy comparison between the mock LLM and mock Jev reflects these choices, and the book says so.
+- **D-49 · Pattern catalog measurements.** Only patterns with a meaningful synthetic test are measured (extract then
+  decide, the gate via Chapter 14's result, the router). "Check the writer" and "memory controller" are shown as
+  runnable shapes, with an explicit note that the mock's number means nothing there.
+- **D-50 · Batch cache key covers content.** `score_alerts` now keys its cache on every column the state is built
+  from, not only alert IDs, so alerts with edited fields (for example LLM-extracted ones) are scored afresh.

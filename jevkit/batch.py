@@ -29,14 +29,18 @@ def _key(n: int, mode: str) -> str:
 def score_alerts(alerts, mode: str = "structured", client=None, use_cache: bool = True) -> np.ndarray:
     """P(attack) for every alert (a DataFrame from `soc.load()`), asked through the SDK."""
     from . import soc
+    import pandas as pd
     CACHE.mkdir(exist_ok=True)
-    path = CACHE / f"scores-{_key(len(alerts), mode)}-{hashlib.sha1(''.join(alerts.alert_id).encode()).hexdigest()[:10]}.npy"
+    fields = ["alert", "source", "rule", "host", "user", "department"] + [f for f in soc.FEATURE_FIELDS if f != "rule"] + ["description"]
+    # The key covers everything the state is built from, so edited fields never hit a stale cache.
+    cols = [c for c in ["alert_id", "title"] + fields if c in alerts.columns]
+    content = hashlib.sha1(pd.util.hash_pandas_object(alerts[cols].astype(str), index=False).values.tobytes()).hexdigest()[:10]
+    path = CACHE / f"scores-{_key(len(alerts), mode)}-{content}.npy"
     if use_cache and path.exists():
         return np.load(path)
     if client is None:
         from . import client as make_client
         client = make_client()
-    fields = ["alert", "source", "rule", "host", "user", "department"] + [f for f in soc.FEATURE_FIELDS if f != "rule"] + ["description"]
     out = np.empty(len(alerts))
     for i, row in enumerate(alerts.itertuples(index=False)):
         if mode == "text":
