@@ -14,6 +14,7 @@
     "log_loss": 0.20729541132462334
   },
   "n": 4000,
+  "n_distinct_stated": 6,
   "outcomes": {
     "JSON mode": {
       "broken JSON": 0,

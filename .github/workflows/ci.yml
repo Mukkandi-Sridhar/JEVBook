@@ -26,6 +26,8 @@ jobs:
           python tools/build_figures.py all
       - name: Book listings run
         run: python tools/check_listings.py
+      - name: Every number shortcode resolves
+        run: python tools/check_numbers.py
 
   html:
     runs-on: ubuntu-latest
