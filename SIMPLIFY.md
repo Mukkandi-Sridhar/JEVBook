@@ -2323,3 +2323,104 @@ Every change is logged below as a before/after pair, applied by `tools/simplify_
 - `chapters/ch17.qmd`
   - Before: 3. Retune the all-LLM agent's lines so its review queue fits in 240 a day. What happens to the threats it auto-closes?
   - After: 3. Adjust the all-LLM agent's thresholds so its review queue fits in 240 a day. What happens to the threats it auto-closes?
+
+## Chapter 18: Case study
+
+32 changes.
+
+- `chapters/ch18.qmd`
+  - Before: Every chapter so far has taken one piece of Kestrel's problem and looked at it closely. Calibration here, a threshold there, an agent, a pattern.
+  - After: Every chapter so far has taken one piece of Kestrel's problem and looked at it closely: calibration here, a threshold there, an agent, a pattern.
+- `chapters/ch18.qmd`
+  - Before: This chapter puts the pieces back together and runs it end to end, the way a real team would. We'll meet the SOC as it was before any of this. We'll design the new system and run it in silence for a week before trusting it. Then we'll switch it on, and in the week after, a phishing campaign arrives.
+  - After: This chapter puts the pieces back together and runs the whole thing from start to finish, the way a real team would. We'll see the SOC as it was before any of this. We'll design the new system and run it quietly for a week, without letting it act, before trusting it. Then we'll switch it on, and in the week after, a phishing campaign arrives.
+- `chapters/ch18.qmd`
+  - Before: - Assemble the system from the book's pieces, and name which chapter each piece comes from.
+  - After: - Build the system from the book's pieces, and name which chapter each piece comes from.
+- `chapters/ch18.qmd`
+  - Before: - Handle a campaign that breaks the base rate, with monitoring, recalibration and overtime.
+  - After: - Handle a campaign that changes the base rate, with monitoring, recalibration and overtime.
+- `chapters/ch18.qmd`
+  - Before: Before this project, every alert joined one queue. The alerts that the senior analyst's rules flagged went to the front; everything else was first come, first served. Whatever nobody reached within a day aged out and was closed without anyone looking.
+  - After: Before this project, every alert joined one queue. The alerts that the senior analyst's rules flagged went to the front. Everything else was handled in the order it arrived. Any alert nobody reached within a day "aged out": it was closed without anyone looking.
+- `chapters/ch18.qmd`
+  - Before: That's a very ordinary way to run a SOC, and it hides its failures in a particular way: nobody ever sees the alerts that age out, so nobody knows how many of them were real.
+  - After: That's a very ordinary way to run a SOC, and it hides its failures. Nobody ever sees the alerts that age out, so nobody knows how many of them were real.
+- `chapters/ch18.qmd`
+  - Before: The left half of @fig-routes looks similar before and after: most alerts get closed without a person either way. The right half is the difference. Before, alerts were closed by *running out of time*, with no regard for which ones mattered. After, they're closed by a *decision*, and the real threats mostly end up in front of a person.
+  - After: The left half of @fig-routes looks similar before and after: most alerts get closed without a person either way. The right half shows the difference. Before, alerts were closed because time *ran out*, whether or not they mattered. After, they're closed by a *decision*, and the real threats mostly reach a person.
+- `chapters/ch18.qmd`
+  - Before: There's nothing in @fig-system you haven't built. The alert's fields go to Jev as three typed questions (Chapter 10). Platt scaling, fitted on three weeks of history, makes the probabilities trustworthy at Kestrel (Chapters 3 and 11). The three-zone policy, with its lines set by cost and capacity, routes each alert (Chapter 14). The LLM writes the case note for the queue and the message for the page, and nothing else (Chapters 15 and 17). And every decision is logged with its inputs, answers and policy version.
+  - After: There's nothing in @fig-system you haven't built. The alert's fields go to Jev as three typed questions (Chapter 10). Platt scaling, fitted on three weeks of history, makes the probabilities calibrated at Kestrel (Chapters 3 and 11). The three-zone policy, with its thresholds set by cost and capacity, routes each alert (Chapter 14). The LLM writes the case note for the queue and the urgent message for the analyst on call, and nothing else (Chapters 15 and 17). And every decision is logged with its inputs, answers and policy version.
+- `chapters/ch18.qmd`
+  - Before: ## A week in the shadows
+  - After: ## A week in shadow mode
+- `chapters/ch18.qmd`
+  - Before: You don't switch a system like this on and hope. You run it in **shadow mode**: it sees every alert and records what it *would* have done, while the analysts carry on as before. Nothing it decides touches anything.
+  - After: You don't just switch a system like this on and hope. You run it in **shadow mode**. It sees every alert and records what it *would* have done, while the analysts work as before. Nothing it decides has any effect.
+- `chapters/ch18.qmd`
+  - Before: The meeting after a shadow week is mostly about one cell, the red one in @fig-shadow-18: about {{< num ch25 new_threats_closed_per_day f1 >}} real threats a day that the system would have auto-closed. That sounds bad until you compare it with the old queue, which let {{< num ch25 old.threats_unseen_per_day f1 >}} a day age out.
+  - After: The meeting after a shadow week is mostly about one cell, the red one in @fig-shadow-18. It shows about {{< num ch25 new_threats_closed_per_day f1 >}} real threats a day that the system would have auto-closed. That sounds bad, until you compare it with the old queue, which let {{< num ch25 old.threats_unseen_per_day f1 >}} a day age out.
+- `chapters/ch18.qmd`
+  - Before: It's also more than forecast. Before the week began, the same policy on the three history weeks auto-closed about {{< num ch25 forecast_closed_hist f1 >}} real threats a day, and the calibrated probabilities themselves added up to about {{< num ch25 forecast_closed_expected f1 >}}. The live week came in higher, in line with it being a busier week than the ones the lines were fitted on. Say it out loud in the meeting: the forecast was in the right range but optimistic, and the daily monitor is what tells you whether the gap is noise or a trend.
+  - After: It's also more than the forecast. Before the week began, the same policy on the three history weeks auto-closed about {{< num ch25 forecast_closed_hist f1 >}} real threats a day. And the calibrated probabilities themselves added up to about {{< num ch25 forecast_closed_expected f1 >}}. The live week was higher, which fits with it being busier than the weeks the thresholds were fitted on. Say this clearly in the meeting: the forecast was in the right range but too hopeful. The daily monitor will tell you whether the gap is chance or a trend.
+- `chapters/ch18.qmd`
+  - Before: The team's decision was to switch it on, with two conditions from Chapter 14: a random audit of 3% of auto-closed alerts, and a fail-safe that sends an alert to review whenever a call fails.
+  - After: The team decided to switch it on, with two conditions from Chapter 14: a random audit of 3% of auto-closed alerts, and a fail-safe that sends an alert to review whenever a call fails.
+- `chapters/ch18.qmd`
+  - Before: The new review queue is sorted by probability: the alerts most likely to be real are looked at first. What if we'd kept the old habit of first come, first served, with the same alerts in the same queue?
+  - After: The new review queue is sorted by probability: the alerts most likely to be real are looked at first. What if we had kept the old habit of handling alerts in the order they arrived, with the same alerts in the same queue?
+- `chapters/ch18.qmd`
+  - Before: The median real threat in the review queue would wait about {{< num ch25 fifo_wait int >}} minutes. Sorted by probability, it waits about {{< num ch25 prio_wait int >}}.
+  - After: The typical (median) real threat in the review queue would wait about {{< num ch25 fifo_wait int >}} minutes. Sorted by probability, it waits about {{< num ch25 prio_wait int >}}.
+- `chapters/ch18.qmd`
+  - Before: ![How long it takes for a real threat to reach a person. Before, rule-flagged threats were seen quickly and the rest waited up to a day or were never seen. After, pages reach someone in about fifteen minutes and the queue takes the likeliest threats first.]
+  - After: ![How long it takes for a real threat to reach a person. Before, rule-flagged threats were seen quickly and the rest waited up to a day or were never seen. After, urgent calls reach someone in about fifteen minutes and the queue takes the likeliest threats first.]
+- `chapters/ch18.qmd`
+  - Before: @fig-time-to-human shows the full distribution. The old way wasn't slow for everything. Rule-flagged threats jumped the queue and were seen within minutes. Its problem was the long flat stretch: threats the rules didn't flag waited behind everything else, and many never got a turn. After the change, {{< num ch25 new.threats_within_hour_share pct >}} of real threats reach a person within an hour, against {{< num ch25 old.threats_within_hour_share pct >}} before.
+  - After: @fig-time-to-human shows all the waiting times. The old way wasn't slow for everything. Rule-flagged threats went to the front of the queue and were seen within minutes. Its problem was the long flat part of the curve. Threats the rules didn't flag waited behind everything else, and many were never reached. After the change, {{< num ch25 new.threats_within_hour_share pct >}} of real threats reach a person within an hour, against {{< num ch25 old.threats_within_hour_share pct >}} before.
+- `chapters/ch18.qmd`
+  - Before: Link alerts fired three times as often as usual, and far more of them were real. Chapter 14 used this same week to show how drift looks on a monitoring dashboard. @fig-campaign shows what it did to the operation.
+  - After: Alerts about links fired three times as often as usual, and far more of them were real. Chapter 14 used this same week to show how drift looks on a monitoring chart. @fig-campaign shows what it did to the team's work.
+- `chapters/ch18.qmd`
+  - Before: On day 1 the review queue was already over capacity. Its worst day reached {{< num ch25 camp_peak_reviews int >}} alerts against {{< num ch25 capacity int >}}, above the week's average of about {{< num ch21 campaign_reviews_per_day int >}} that Chapter 14 reported. And the probabilities were now too low for link alerts, because they'd been calibrated on weeks when those alerts were mostly harmless. The monitoring from Chapter 14 caught both on day 2: the queue was over its line, and the reviewers were confirming far more link alerts than predicted.
+  - After: On day 1, the review queue was already over capacity. Its worst day reached {{< num ch25 camp_peak_reviews int >}} alerts against {{< num ch25 capacity int >}}, above the week's average of about {{< num ch21 campaign_reviews_per_day int >}} that Chapter 14 reported. And the probabilities were now too low for link alerts. They'd been calibrated on weeks when those alerts were mostly harmless. The monitoring from Chapter 14 caught both problems on day 2. The queue was over its limit, and the reviewers were confirming far more link alerts than predicted.
+- `chapters/ch18.qmd`
+  - Before: On day 3 the team responded in two ways. They re-estimated the base rate for link alerts from what reviewers had confirmed so far, and adjusted those probabilities with the prior-shift correction from Chapter 11. And they approved overtime: two extra analysts' worth of reviews a day.
+  - After: On day 3, the team responded in two ways. They estimated the base rate for link alerts again, from what reviewers had confirmed so far. Then they adjusted those probabilities with the base-rate correction from Chapter 11. And they approved overtime: two extra analysts' worth of reviews a day.
+- `chapters/ch18.qmd`
+  - Before: It helped. Over the week, the real threats never seen by a person fell from about {{< num ch25 camp_missed_base int >}} to about {{< num ch25 camp_missed_resp int >}} (@fig-campaign). But look at the left panel: with recalibrated probabilities, the queue grew *past* the overtime capacity. Once the link alerts' probabilities were corrected, far more of them deserved a look than even the enlarged team could give.
+  - After: It helped. Over the week, the number of real threats never seen by a person fell from about {{< num ch25 camp_missed_base int >}} to about {{< num ch25 camp_missed_resp int >}} (@fig-campaign). But look at the left panel: with recalibrated probabilities, the queue grew *past* the overtime capacity. Once the link alerts' probabilities were corrected, far more of them deserved a look than even the bigger team could manage.
+- `chapters/ch18.qmd`
+  - Before: The campaign week's uncomfortable truth: calibration tells you truthfully how much work there is. It can't make the work smaller. When the world gets more dangerous, the decision layer's job is to make that visible early and to spend scarce attention on the likeliest threats. The rest is staffing.
+  - After: Here is the uncomfortable truth of the campaign week. Calibration tells you truthfully how much work there is. It can't make the work smaller. When the world gets more dangerous, the decision layer's job is to show that early, and to spend the team's limited time on the likeliest threats. The rest is a question of how many people you have.
+- `chapters/ch18.qmd`
+  - Before: @fig-scorecard-18 is the summary I'd put in front of Kestrel's leadership. The analysts looked at about the same number of alerts a day. They weren't working harder. They were looking at different alerts, in a different order, and more real threats reached them, sooner.
+  - After: @fig-scorecard-18 is the summary I'd show Kestrel's leaders. The analysts looked at about the same number of alerts a day. They weren't working harder. They were looking at different alerts, in a different order, and more real threats reached them, sooner.
+- `chapters/ch18.qmd`
+  - Before: One line needs a caveat. The *median* wait for a seen threat went up, from about five minutes to fifteen. That's because the old way's seen threats were mostly the rule-flagged ones that jumped the queue, and because I assumed on-call takes fifteen minutes to respond to a page. The fair comparison is the one above it: the share of all real threats seen within an hour more than doubled.
+  - After: One row needs a warning. The typical (median) wait for a threat that was seen went up, from about five minutes to fifteen. There are two reasons. Under the old way, the threats that were seen were mostly the rule-flagged ones at the front of the queue. And I assumed the analyst on call takes fifteen minutes to respond to an urgent call. The fair comparison is the row above it: the share of all real threats seen within an hour more than doubled.
+- `chapters/ch18.qmd`
+  - Before: This whole case study is a simulation on synthetic alerts, with mock Jev and made-up costs, capacities and response times, so treat every number as an illustration of the method. Real SOCs differ in ways it leaves out: analysts aren't interchangeable, alerts arrive in bursts, and some real threats are caught later by other defences. Shadow mode is only as good as the labels you compare against, and labels for alerts nobody reviewed are precisely the ones you don't have; that's why the random audit matters. And the campaign response used labels from the first two days, which means the system was wrong for two days before anyone could fix it.
+  - After: This whole case study is a simulation on synthetic alerts, with mock Jev and made-up costs, capacities and response times. So treat every number as an example of the method. Real SOCs differ in ways it leaves out. Analysts aren't all the same, alerts arrive in bursts, and some real threats are caught later by other defences. Shadow mode is only as good as the labels you compare against. And the labels you don't have are exactly those for alerts nobody reviewed. That's why the random audit matters. And the campaign response used labels from the first two days. So the system was wrong for two days before anyone could fix it.
+- `chapters/ch18.qmd`
+  - Before: During the campaign, Kestrel can afford overtime for two more analysts, or it can tell the policy to auto-close more link alerts to keep the queue at capacity. A missed threat costs about \$10,000; an analyst-day of overtime costs about \$600. The corrected probabilities say the extra reviews would find roughly one real threat for every six alerts. Which would you choose?
+  - After: During the campaign, Kestrel can pay overtime for two more analysts. Or it can tell the policy to auto-close more link alerts, to keep the queue at capacity. A missed threat costs about \$10,000; one analyst's day of overtime costs about \$600. The corrected probabilities say the extra reviews would find about one real threat for every six alerts. Which would you choose?
+- `chapters/ch18.qmd`
+  - Before: (Each extra analyst clears about 40 alerts a day, which at one threat in six finds about 6 or 7 real threats worth around \$65,000. Roughly a hundred times the cost of the overtime. Staff up, and keep the lines honest: shrinking the queue by closing likely threats just moves the cost to where nobody sees it.)
+  - After: (Each extra analyst clears about 40 alerts a day. At one threat in six, that finds about 6 or 7 real threats, worth around \$65,000. That's about a hundred times the cost of the overtime. Add the people, and keep the thresholds where the costs put them. Making the queue shorter by closing likely threats just moves the cost to where nobody sees it.)
+- `chapters/ch18.qmd`
+  - Before: Deming said something like this often, in talks and seminars. Kestrel's analysts were never the problem. The old queue decided what they saw by accident. The new one decides on purpose.
+  - After: Deming often said something like this in talks and seminars. Kestrel's analysts were never the problem. The old queue decided what they saw by accident. The new one decides on purpose.
+- `chapters/ch18.qmd`
+  - Before: Kestrel's SOC used to decide by running out of time: whatever nobody reached aged out, and a large share of real threats went with it. We assembled the new system from pieces built across the book and ran it in shadow mode. Its mistakes matched its own forecast, so the team switched it on. With the same six analysts, more real threats reached a person, and they got there faster. The cheapest part of that gain came from putting the likeliest threats first. Then a phishing campaign arrived. Recalibration and overtime reduced the damage, and they also showed plainly how much more work the world had created.
+  - After: Kestrel's SOC used to decide by running out of time. Whatever nobody reached aged out, and a large share of real threats went with it. We built the new system from pieces made across the book and ran it in shadow mode. Its mistakes were close to its own forecast, though a little higher, so the team switched it on. With the same six analysts, more real threats reached a person, and they got there faster. The cheapest part of that gain came from putting the likeliest threats first. Then a phishing campaign arrived. Recalibration and overtime reduced the damage. They also showed clearly how much more work the campaign had created.
+- `chapters/ch18.qmd`
+  - Before: 2. Rerun the campaign with a response on day 2 instead of day 3. How many more threats reach a person? What would you need in place to respond a day earlier?
+  - After: 2. Run the campaign again with a response on day 2 instead of day 3. How many more threats reach a person? What would you need to have ready to respond a day earlier?
+- `chapters/ch18.qmd`
+  - Before: 3. The old way sorted rule-flagged alerts first. What if it had sorted by the SIEM's own severity field instead? Sketch how you'd test whether that alone closes most of the gap.
+  - After: 3. The old way put rule-flagged alerts first. What if it had sorted by the SIEM's own severity field instead? Describe how you'd test whether that alone closes most of the gap.
+- `chapters/ch18.qmd`
+  - Before: Next: the same decision layer, a long way from a SOC. An applications gallery, from support tickets to clinical triage, with the questions each one would ask.
+  - After: Next: the same decision layer, far away from a SOC. A tour of other uses, from support tickets to hospital triage, with the questions each one would ask.
