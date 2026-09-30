@@ -34,7 +34,7 @@ Q 92.88 6.48 92.88 10.8
 L 92.88 23.76 
 Q 92.88 28.08 97.2 28.08 
 z
-" clip-path="url(#p862c09554e)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pe7709f8a1b)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 226.8 28.08 
@@ -47,32 +47,32 @@ Q 222.48 6.48 222.48 10.8
 L 222.48 23.76 
 Q 222.48 28.08 226.8 28.08 
 z
-" clip-path="url(#p862c09554e)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pe7709f8a1b)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="line2d_1">
     <path d="M 2.88 57.6 
 L 341.28 57.6 
-" clip-path="url(#p862c09554e)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.6; stroke-linecap: round"/>
+" clip-path="url(#pe7709f8a1b)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.6; stroke-linecap: round"/>
    </g>
    <g id="line2d_2">
     <path d="M 2.88 84.24 
 L 341.28 84.24 
-" clip-path="url(#p862c09554e)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.6; stroke-linecap: round"/>
+" clip-path="url(#pe7709f8a1b)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.6; stroke-linecap: round"/>
    </g>
    <g id="line2d_3">
     <path d="M 2.88 110.88 
 L 341.28 110.88 
-" clip-path="url(#p862c09554e)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.6; stroke-linecap: round"/>
+" clip-path="url(#pe7709f8a1b)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.6; stroke-linecap: round"/>
    </g>
    <g id="line2d_4">
     <path d="M 2.88 137.52 
 L 341.28 137.52 
-" clip-path="url(#p862c09554e)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.6; stroke-linecap: round"/>
+" clip-path="url(#pe7709f8a1b)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.6; stroke-linecap: round"/>
    </g>
    <g id="line2d_5">
     <path d="M 2.88 164.16 
 L 341.28 164.16 
-" clip-path="url(#p862c09554e)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.6; stroke-linecap: round"/>
+" clip-path="url(#pe7709f8a1b)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.6; stroke-linecap: round"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="150.48" y="19.18575" transform="rotate(-0 150.48 19.18575)">System 1</text>
@@ -134,7 +134,7 @@ L 341.28 164.16
   </g>
  </g>
  <defs>
-  <clipPath id="p862c09554e">
+  <clipPath id="pe7709f8a1b">
    <rect x="2.88" y="2.88" width="338.4" height="165.6"/>
   </clipPath>
  </defs>

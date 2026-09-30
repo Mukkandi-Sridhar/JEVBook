@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>3&nbsp; Calibration: when 0.8 really means 80% – Decide, Don't Generate</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/ch04.html" rel="next">
+<link href="../chapters/ch02.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-29f00846dc0b6c361e78d357ae7c4662.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-607c349e4ec5b0e049e1f3a4bfbc4a74.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;display=swap" rel="stylesheet">
+
+
+<link rel="stylesheet" href="../assets/web/book.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/p1.html">Prerequisites: probability and decisions</a></li><li class="breadcrumb-item"><a href="../chapters/ch03.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Calibration: when 0.8 really means 80%</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Decide, Don’t Generate</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/Mukkandi-Sridhar/JEVBook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../Decide,-Don-t-Generate.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../Decide,-Don-t-Generate.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Download ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../front/acknowledgements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgements</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../front/how-to-read.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">How to read this book</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../front/prologue.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prologue: the night shift</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/p1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prerequisites: probability and decisions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">What “learning” means</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Probability, and how a machine learns it</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch03.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Calibration: when 0.8 really means 80%</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">From probabilities to actions</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/p2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prerequisites: networks, language models and agents</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Deep learning in one chapter</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">How an LLM writes, and structured outputs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">RAG, agents, and where they break</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/p3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Jev in depth</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">System 1 and System 2</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Inside Jev: what we know and what we don’t</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">The type system: choice, score, noul</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Testing Jev’s calibration yourself</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">The Jevons paradox of decisions</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/p4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The decision layer</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">The bake-off: six ways to make a decision</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Act, review, or escalate</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch15.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">A catalogue of decision patterns</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/p5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Building</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch16.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">First calls, and the mock that makes them free</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch17.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">A hybrid agent: Jev decides, the LLM reasons</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch18.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Case study: SOC alert triage</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch19.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">An applications gallery</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch20.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Build your own System One model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch21.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Capstone: a production decision service</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/p6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">What changes now</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch22.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">What changes now</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../back/glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Glossary</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../back/cheatsheets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cheat sheets</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../back/bibliography.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bibliography</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../back/index-terms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Index</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../back/about-author.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About the Author</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-weather-forecasters-secret" id="toc-the-weather-forecasters-secret" class="nav-link active" data-scroll-target="#the-weather-forecasters-secret"><span class="header-section-number">3.1</span> The weather forecaster’s secret</a></li>
+  <li><a href="#good-at-ranking-bad-at-honesty" id="toc-good-at-ranking-bad-at-honesty" class="nav-link" data-scroll-target="#good-at-ranking-bad-at-honesty"><span class="header-section-number">3.2</span> Good at ranking, bad at honesty</a></li>
+  <li><a href="#the-reliability-diagram" id="toc-the-reliability-diagram" class="nav-link" data-scroll-target="#the-reliability-diagram"><span class="header-section-number">3.3</span> The reliability diagram</a>
+  <ul class="collapse">
+  <li><a href="#one-number-ece" id="toc-one-number-ece" class="nav-link" data-scroll-target="#one-number-ece"><span class="header-section-number">3.3.1</span> One number: ECE</a></li>
+  </ul></li>
+  <li><a href="#how-calibration-breaks" id="toc-how-calibration-breaks" class="nav-link" data-scroll-target="#how-calibration-breaks"><span class="header-section-number">3.4</span> How calibration breaks</a></li>
+  <li><a href="#fixing-it" id="toc-fixing-it" class="nav-link" data-scroll-target="#fixing-it"><span class="header-section-number">3.5</span> Fixing it</a></li>
+  <li><a href="#honest-on-average-dishonest-in-the-corner" id="toc-honest-on-average-dishonest-in-the-corner" class="nav-link" data-scroll-target="#honest-on-average-dishonest-in-the-corner"><span class="header-section-number">3.6</span> Honest on average, dishonest in the corner</a></li>
+  <li><a href="#where-we-are" id="toc-where-we-are" class="nav-link" data-scroll-target="#where-we-are"><span class="header-section-number">3.7</span> Where we are</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/p1.html">Prerequisites: probability and decisions</a></li><li class="breadcrumb-item"><a href="../chapters/ch03.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Calibration: when 0.8 really means 80%</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-ch03" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Calibration: when 0.8 really means 80%</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="epigraph bookbox" data-by="Lord Kelvin, lecture on electrical units of measurement, 1883">
+<p>When you can measure what you are speaking about, and express it in numbers, you know something about it.</p>
+<div class="quote-by">
+— Lord Kelvin, lecture on electrical units of measurement, 1883
+</div>
+</div>
+<p>Here’s a question that sounds silly until it costs you money:</p>
+<p><em>“If a model says 80%, does that mean 80%?”</em></p>
+<p>Your instinct is probably “obviously”. It’s a probability. That’s what the number is for.</p>
+<p>But a number is just a number. A model can say 0.8 about alerts that turn out to be attacks half the time, or nineteen times out of twenty. Nothing in the maths of the model forces its 0.8 to line up with reality. It lines up only if we built it well, trained it on the right data and checked, and even then it can drift.</p>
+<p>This chapter is about checking. It’s the single most important habit in the book. Every threshold in Chapter 4, every policy in Chapter 14 and every claim about Jev in Part III rests on it.</p>
+<div class="goals bookbox">
+<div class="box-label">
+By the end of this chapter
+</div>
+<ul>
+<li>Say what it means for a model to be <em>calibrated</em>, and why that’s different from being accurate.</li>
+<li>Draw and read a reliability diagram, and compute the expected calibration error (ECE).</li>
+<li>Recognise the everyday mistakes that break calibration, including rebalancing your training data.</li>
+<li>Fix a miscalibrated model with Platt scaling, temperature scaling or isotonic regression, and know which to use.</li>
+<li>Check calibration within the groups you’ll actually act on.</li>
+</ul>
+</div>
+<section id="the-weather-forecasters-secret" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="the-weather-forecasters-secret"><span class="header-section-number">3.1</span> The weather forecaster’s secret</h2>
+<p>Let’s go back to the weather.</p>
+<p>People love to complain about forecasters. But in the 1970s, when researchers checked American weather forecasters’ chance-of-rain forecasts against what actually happened, they found something remarkable. When the forecasters said “30% chance of rain”, it rained on roughly 30% of those days. When they said 70%, it rained roughly 70% of the time. Across the whole range, what they said and what happened lined up almost perfectly <span class="citation" data-cites="murphy1977">(<a href="#ref-murphy1977" role="doc-biblioref">Murphy and Winkler 1977</a>)</span>.</p>
+<p>Compare that with how people usually do. Ask someone to give a range they’re “90% sure” contains the answer to a trivia question, and the truth lands inside far less often than 90% of the time. We are, as a species, reliably too sure of ourselves.</p>
+<div id="fig-forecasters" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-forecasters-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../figures/ch04/forecasters.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-forecasters-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.1: Two forecasters. For each thing they said (“30%”, “70%” and so on), we count how often it actually happened. The careful forecaster sits on the diagonal: their 70% happens about 70% of the time. The overconfident one says 90% about things that happen only about 70% of the time.
+</figcaption>
+</figure>
+</div>
+<p>What makes the weather forecasters good isn’t that they’re always right. They can’t be. It’s that their numbers mean what they say. That property has a name.</p>
+<div class="keyidea bookbox">
+<p>A model is calibrated when its 80% happens about 80% of the time.</p>
+</div>
+<p>And, importantly, calibration is something you can <em>check</em>, with nothing more than grouping and counting. You collect everything the model said “about 80%” to, and count how often it happened.</p>
+</section>
+<section id="good-at-ranking-bad-at-honesty" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="good-at-ranking-bad-at-honesty"><span class="header-section-number">3.2</span> Good at ranking, bad at honesty</h2>
+<p>Before we check anything, one idea needs to land, because people confuse it constantly.</p>
+<p>There are two separate things you might want from a model’s probabilities.</p>
+<p>The first is <strong>ranking</strong>: does the model give attacks higher numbers than harmless alerts? If you sort alerts by the model’s score, do the real attacks rise to the top? That’s what the AUC measures, the number you’ve seen in a few tables already. An AUC of 1 means every attack scored above every harmless alert. An AUC of 0.5 means the scores are no better than a coin flip.</p>
+<p>The second is <strong>honesty</strong>: when the model says 0.3, do three in ten of those alerts turn out to be attacks? That’s calibration.</p>
+<p>The two are independent. A model can rank perfectly and still lie about how sure it is.</p>
+<div id="fig-same-auc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-same-auc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../figures/ch04/same-auc.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-same-auc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.2: Two models, identical at ranking (same AUC) but not at honesty. Model A is the logistic regression from Chapter 2. Model B is the same model with its probabilities distorted: it still sorts the alerts in exactly the same order, but its numbers no longer mean anything.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-same-auc" class="quarto-xref">Figure&nbsp;<span class="quarto-unresolved-ref">fig-same-auc</span></a> shows two models with exactly the same AUC, 0.888. Model B’s numbers are a mess: it says 40% about alerts that are attacks only a few percent of the time. If you only ever sort alerts, Model B is as good as Model A. The moment you put a threshold on its numbers, or add them into a cost, or show them to an analyst, it’ll mislead you.</p>
+<p>That’s the trap: most leaderboards and most model comparisons report ranking metrics like AUC, accuracy or F1. Calibration is often not measured at all. For a decision system it’s usually the thing that matters most.</p>
+</section>
+<section id="the-reliability-diagram" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="the-reliability-diagram"><span class="header-section-number">3.3</span> The reliability diagram</h2>
+<p>So how do we check? Exactly the way the weather researchers did.</p>
+<ol type="1">
+<li>Take a pile of predictions where you know what happened: our test alerts from Chapter 2.</li>
+<li>Sort them into bins by what the model said: 0–10%, 10–20% and so on.</li>
+<li>In each bin, compare two numbers: the model’s <em>average</em> prediction and the share of alerts that really were attacks.</li>
+<li>Plot one against the other.</li>
+</ol>
+<p>That plot is called a <strong>reliability diagram</strong>, and you’ll see a lot of them from here on.</p>
+<div id="fig-anatomy-03" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-anatomy-03-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../figures/ch04/anatomy.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-anatomy-03-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.3: The reliability diagram of our Chapter 2 model on alerts it never saw. Points on the dashed diagonal mean the model’s numbers are honest. Underneath, a histogram (log scale) shows how many alerts fall in each part of the range: most sit near zero, and only a handful above 50%.
+</figcaption>
+</figure>
+</div>
+<p>Look at <a href="#fig-anatomy-03" class="quarto-xref">Figure&nbsp;<span class="quarto-unresolved-ref">fig-anatomy-03</span></a> carefully, top and bottom together, because the bottom panel is the one people forget. Our model’s points sit near the diagonal where there’s lots of data. Up at the right end, the dots jump around, and the histogram tells you why: only a few dozen alerts live up there. A wobbly dot with twelve alerts behind it is weak evidence, as Chapter 2 warned. Always look at the counts before you panic, or relax.</p>
+<div class="tryit bookbox" data-lab="ch03">
+<div class="box-label">
+Try it
+</div>
+<p>Build the diagram’s table yourself: bin, average prediction, observed rate, count.</p>
+<div id="6da72dff" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>alerts <span class="op">=</span> soc.load()</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>train, calib, test <span class="op">=</span> soc.split(alerts)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>F <span class="op">=</span> <span class="kw">lambda</span> d: soc.feature_matrix(d).to_numpy()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LogisticRegression(C<span class="op">=</span><span class="fl">1e4</span>, max_iter<span class="op">=</span><span class="dv">5000</span>).fit(</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    F(train), train.malicious)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> model.predict_proba(F(test))[:, <span class="dv">1</span>]</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> test.malicious.to_numpy()</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>bins <span class="op">=</span> np.clip((p <span class="op">*</span> <span class="dv">10</span>).astype(<span class="bu">int</span>), <span class="dv">0</span>, <span class="dv">9</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>table <span class="op">=</span> (pd.DataFrame({<span class="st">"bin"</span>: bins, <span class="st">"said"</span>: p, <span class="st">"happened"</span>: y})</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>         .groupby(<span class="st">"bin"</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>         .agg(said<span class="op">=</span>(<span class="st">"said"</span>, <span class="st">"mean"</span>), happened<span class="op">=</span>(<span class="st">"happened"</span>, <span class="st">"mean"</span>),</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>              n<span class="op">=</span>(<span class="st">"said"</span>, <span class="st">"size"</span>)))</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(table.<span class="bu">round</span>(<span class="dv">3</span>).head(<span class="dv">6</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      said  happened     n
+bin                       
+0    0.022     0.023  3266
+1    0.142     0.146   315
+2    0.246     0.236   144
+3    0.344     0.253    87
+4    0.451     0.509    55
+5    0.551     0.655    58</code></pre>
+</div>
+</div>
+<p><a href="https://colab.research.google.com/github/Mukkandi-Sridhar/JEVBook/blob/main/labs/ch03.ipynb">Open this chapter's notebook in Colab →</a></p>
+</div>
+<section id="one-number-ece" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="one-number-ece"><span class="header-section-number">3.3.1</span> One number: ECE</h3>
+<p>Pictures are the best way to <em>see</em> calibration, but sometimes you need a single number, to compare models or to raise an alarm when it drifts. The most common is the <strong>expected calibration error</strong>, ECE: the average gap between “said” and “happened” across the bins, weighted by how many predictions each bin holds <span class="citation" data-cites="naeini2015">(<a href="#ref-naeini2015" role="doc-biblioref">Naeini et al. 2015</a>)</span>.</p>
+<div id="22d9df4e" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"ECE: </span><span class="sc">{</span>cal<span class="sc">.</span>ece(p, y)<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>ECE: 0.0077</code></pre>
+</div>
+</div>
+<p>Our logistic regression’s ECE is 0.008, meaning that on average, its probabilities are off by less than one percentage point. That’s good. Model B’s is 0.27.</p>
+<p>ECE has weaknesses worth knowing. It depends on how you choose the bins. And because it’s an average, a model can hide terrible calibration in a small region, such as the high end where the dangerous alerts live, behind excellent calibration where most of the data sits. Report it, but always look at the picture too.</p>
+<div class="deeper bookbox">
+<div class="box-label">
+Going deeper
+</div>
+<p>The Brier score from Chapter 2 splits neatly into three parts, a result due to Allan Murphy <span class="citation" data-cites="murphy1973">(<a href="#ref-murphy1973" role="doc-biblioref">Murphy 1973</a>)</span>: Brier = <em>reliability</em> − <em>resolution</em> + <em>uncertainty</em>. <strong>Uncertainty</strong> is how hard the problem is to begin with (it depends only on the base rate).</p>
+<p><strong>Resolution</strong> is how much the model’s predictions separate cases that turn out differently, which is roughly the ranking skill. <strong>Reliability</strong> is the calibration error: the squared gap between said and happened, bin by bin. For our model: reliability 0.0005, resolution 0.0212, uncertainty 0.0698. A model can improve its Brier score by getting better at ranking, or by getting more honest, and the decomposition tells you which.</p>
+</div>
+</section>
+</section>
+<section id="how-calibration-breaks" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="how-calibration-breaks"><span class="header-section-number">3.4</span> How calibration breaks</h2>
+<p>If log loss rewards honesty, as Chapter 2 said, why would a model ever come out miscalibrated? Because the training setup can quietly lie to it. Here are the usual suspects.</p>
+<p><strong>Rebalancing the data.</strong> This is one of the most common, and it’s usually done with the best intentions. Attacks are rare, only 8% of alerts, so someone decides the model needs to “see more attacks” and trains it on a 50/50 mix: every attack, plus an equal number of randomly chosen harmless alerts. The ranking survives. But the model has learned from a world where attacks are <em>common</em>, and it faithfully reports probabilities for that world.</p>
+<div id="fig-rebalanced" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rebalanced-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../figures/ch04/rebalanced.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rebalanced-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.4: A model trained on 50/50 rebalanced data (red) thinks attacks are about ten times more common than they are, and its probabilities sit far below the diagonal. After Platt scaling fitted on a separate calibration set (green), the same model is honest again.
+</figcaption>
+</figure>
+</div>
+<p>The rebalanced model’s average prediction is 29%. The real attack rate is 8%. Put a threshold on those numbers and you’ll drown your analysts.</p>
+<p><strong>Overfitting.</strong> Flexible models that memorise, like the deep decision tree from Chapter 2, push their probabilities towards 0 and 1, because on the training data they really were that sure. They come out overconfident on new data.</p>
+<p><strong>Scores that were never probabilities.</strong> Some models output a “score” that happens to fall between 0 and 1 but was never trained with a proper scoring rule. Treat it as a ranking until you’ve checked it.</p>
+<p><strong>Big modern networks.</strong> Surprisingly, very large neural networks trained for classification tend to be <em>overconfident</em> <span class="citation" data-cites="guo2017">(<a href="#ref-guo2017" role="doc-biblioref">Guo et al. 2017</a>)</span>. Chapter 5 looks at why. And the “confidence” an LLM states in words is a different animal again. Chapter 6 measures it.</p>
+<p><strong>The world changing.</strong> A model calibrated on last month’s base rate is miscalibrated the day a campaign doubles the number of attacks. Chapter 14 will watch it happen.</p>
+</section>
+<section id="fixing-it" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="fixing-it"><span class="header-section-number">3.5</span> Fixing it</h2>
+<p>Here’s the good news: a model with good ranking and bad calibration is usually easy to fix. You don’t retrain it. You put a small correction on top.</p>
+<p>The recipe is always the same. Hold back a <strong>calibration set</strong>, data the model never trained on. That’s the 20% we set aside in Chapter 2. Run the model on it, and learn a simple function that maps the model’s raw probabilities to honest ones. Then check the result on the <em>test</em> set, which neither the model nor the correction has seen.</p>
+<p>There are three common corrections, and they differ in how flexible they are.</p>
+<div id="fig-fixes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fixes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../figures/ch04/fixes.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fixes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.5: The three corrections, each fitted to the rebalanced model on the calibration set. Platt scaling learns an S-curve that can shift and stretch. Temperature scaling learns one number that only stretches around the middle, and here it barely changes anything. Isotonic regression learns any rising staircase.
+</figcaption>
+</figure>
+</div>
+<p><strong>Platt scaling</strong> fits a tiny logistic regression on top of the model’s log-odds: two numbers, a stretch and a shift <span class="citation" data-cites="platt1999">(<a href="#ref-platt1999" role="doc-biblioref">Platt 1999</a>)</span>. It’s the one I’d reach for first.</p>
+<p><strong>Temperature scaling</strong> fits just one number, <em>T</em>, and divides the log-odds by it <span class="citation" data-cites="guo2017">(<a href="#ref-guo2017" role="doc-biblioref">Guo et al. 2017</a>)</span>. <em>T</em> above 1 softens overconfident predictions; below 1 sharpens timid ones. It’s the standard fix for overconfident neural networks, and it’s what people usually mean when they talk about calibrating an LLM classifier.</p>
+<p><strong>Isotonic regression</strong> fits a staircase that only ever goes up <span class="citation" data-cites="zadrozny2002">(<a href="#ref-zadrozny2002" role="doc-biblioref">Zadrozny and Elkan 2002</a>)</span>. It can fix almost any shape, but it needs more data and can overfit a small calibration set.</p>
+<div id="958e3517" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pos <span class="op">=</span> train[train.malicious <span class="op">==</span> <span class="dv">1</span>]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>neg <span class="op">=</span> train[train.malicious <span class="op">==</span> <span class="dv">0</span>].sample(<span class="bu">len</span>(pos), random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>bal <span class="op">=</span> pd.concat([pos, neg])</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>model_b <span class="op">=</span> LogisticRegression(C<span class="op">=</span><span class="fl">1e4</span>, max_iter<span class="op">=</span><span class="dv">5000</span>).fit(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    F(bal), bal.malicious)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>pb <span class="op">=</span> model_b.predict_proba(F(test))[:, <span class="dv">1</span>]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>pb_cal <span class="op">=</span> model_b.predict_proba(F(calib))[:, <span class="dv">1</span>]</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'no fix'</span><span class="sc">:&gt;12}</span><span class="ss">: ECE </span><span class="sc">{</span>cal<span class="sc">.</span>ece(pb, y)<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, fixer <span class="kw">in</span> [(<span class="st">"Platt"</span>, cal.Platt()),</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>                    (<span class="st">"Temperature"</span>, cal.Temperature()),</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>                    (<span class="st">"Isotonic"</span>, cal.Isotonic())]:</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    fixer.fit(pb_cal, calib.malicious)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">:&gt;12}</span><span class="ss">: ECE </span><span class="sc">{</span>cal<span class="sc">.</span>ece(fixer(pb), y)<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      no fix: ECE 0.216
+       Platt: ECE 0.010
+ Temperature: ECE 0.215
+    Isotonic: ECE 0.013</code></pre>
+</div>
+</div>
+<p>Platt and isotonic fix the rebalanced model almost completely. Temperature scaling doesn’t help at all, and the reason teaches you something. Rebalancing didn’t make the model overconfident. It <em>shifted</em> every prediction upwards, as if attacks were common. A temperature can only stretch or squeeze predictions around 0.5. It can’t slide them all down. Platt can, because it has a shift as well as a stretch.</p>
+<div class="keyidea bookbox">
+<p>Temperature fixes overconfidence. It can’t fix a wrong base rate.</p>
+</div>
+</section>
+<section id="honest-on-average-dishonest-in-the-corner" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="honest-on-average-dishonest-in-the-corner"><span class="header-section-number">3.6</span> Honest on average, dishonest in the corner</h2>
+<p>One more trap, and it’s the one that bites in production.</p>
+<p>A model can be well calibrated <em>overall</em> and badly calibrated for a particular group. Here’s a version of our model trained without knowing which detection rule fired, so it can’t tell an email alert from an endpoint one.</p>
+<div id="fig-by-source" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-by-source-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../figures/ch04/by-source.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-by-source-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.6: Calibration checked separately for each alert source. Across all sources together, this model is honest, with an ECE of about half a percentage point. But it overestimates the risk of DLP and Cloud alerts and underestimates EDR alerts, which are genuinely more dangerous here. Averaging hides both mistakes.
+</figcaption>
+</figure>
+</div>
+<p>Its overall ECE is excellent, 0.005. Yet for endpoint (EDR) alerts it says 6.8% when the truth is 10.4%, and for DLP alerts it says 7.7% when the truth is 4.8%. The over- and under-estimates cancel out in the average.</p>
+<p>If your policy treats every source the same way, you’ll send too many harmless DLP alerts to the queue and close too many real EDR ones. The rule is simple: <strong>check calibration inside every group you’ll act on differently</strong>, and inside every group where a mistake would be especially costly. Sources, customer tiers, languages, regions, and yes, demographic groups when a model touches people’s lives.</p>
+<div class="threshold bookbox">
+<div class="box-label">
+Set the threshold
+</div>
+<p>Kestrel auto-closes any alert under 3%. The model above says EDR alerts average 6.8% risk, but they’re really 10.4%. Roughly how much more often than planned will a real EDR threat be auto-closed? What are two different ways to fix this: one that changes the model, and one that changes only the policy?</p>
+<p>(About half as often again. You could add the source as a feature, or calibrate separately per source, so the model’s numbers become honest. Or you could keep the model and set a stricter act line for EDR alerts. The first is better; the second is quicker.)</p>
+</div>
+<div class="breaks bookbox">
+<div class="box-label">
+Where this breaks
+</div>
+<p>Calibration is always measured <em>on some data</em>, and it’s only guaranteed for data like that. A model calibrated on last quarter’s alerts can drift as tools, attackers and staff change. Isotonic regression fitted on a few hundred examples will overfit and produce jagged, overconfident corrections. And calibration says nothing about any <em>single</em> prediction: a perfectly calibrated 70% is still wrong three times in ten. Keep a fresh calibration set, refit on a schedule, and keep watching the diagram.</p>
+</div>
+<div class="bookquote bookbox" data-by="Richard Feynman, Cargo Cult Science, 1974">
+<p>The first principle is that you must not fool yourself, and you are the easiest person to fool.</p>
+<div class="quote-by">
+— Richard Feynman, Cargo Cult Science, 1974
+</div>
+</div>
+</section>
+<section id="where-we-are" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="where-we-are"><span class="header-section-number">3.7</span> Where we are</h2>
+<p>The weather forecasters showed us that honesty is checkable. Then two models with the same ranking and very different honesty showed us why checking matters. Grouping and counting gave us the reliability diagram, and a well-meant rebalancing broke it. A small correction fitted on held-out data put it back. And just when the average looked fine, the EDR alerts reminded us to look inside every group we’ll act on.</p>
+<p>When Part III tests Jev’s own calibration, it’ll use exactly these tools, pointed at the mock, with everything in this chapter as the yardstick.</p>
+<div class="exercises bookbox" data-lab="ch03">
+<div class="box-label">
+Exercises
+</div>
+<p><a href="https://colab.research.google.com/github/Mukkandi-Sridhar/JEVBook/blob/main/labs/ch03.ipynb">Open this chapter's lab in Colab →</a></p>
+<ol type="1">
+<li>Explain to a colleague, without jargon, the difference between a model that ranks well and a model that’s calibrated. Use a weather example.</li>
+<li>In the lab, train the rebalanced model with a 30/70 mix instead of 50/50. Is it more or less miscalibrated? Predict the answer before you run it.</li>
+<li>Why must the calibration correction be fitted on a separate calibration set, not on the training set? What would go wrong?</li>
+<li>Fit isotonic regression using only 200 alerts from the calibration set. Plot its staircase. What do you notice, and what does that tell you about when to prefer Platt?</li>
+<li>Name three groups in a system you know where calibration might differ, and one decision in each that would go wrong if it did.</li>
+</ol>
+</div>
+<div class="nexthook bookbox">
+<p>Next: we finally have probabilities we can trust. Chapter 4 turns them into actions: what each mistake costs, where the lines go, and how to see the whole trade-off on one page.</p>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-guo2017" class="csl-entry" role="listitem">
+Guo, Chuan, Geoff Pleiss, Yu Sun, and Kilian Q. Weinberger. 2017. <span>‘On Calibration of Modern Neural Networks’</span>. <em>Proceedings of the 34th International Conference on Machine Learning (ICML)</em>.
+</div>
+<div id="ref-murphy1973" class="csl-entry" role="listitem">
+Murphy, Allan H. 1973. <span>‘A New Vector Partition of the Probability Score’</span>. <em>Journal of Applied Meteorology</em> 12 (4): 595–600.
+</div>
+<div id="ref-murphy1977" class="csl-entry" role="listitem">
+Murphy, Allan H., and Robert L. Winkler. 1977. <span>‘Reliability of Subjective Probability Forecasts of Precipitation and Temperature’</span>. <em>Journal of the Royal Statistical Society, Series C (Applied Statistics)</em> 26 (1): 41–47.
+</div>
+<div id="ref-naeini2015" class="csl-entry" role="listitem">
+Naeini, Mahdi Pakdaman, Gregory F. Cooper, and Milos Hauskrecht. 2015. <span>‘Obtaining Well Calibrated Probabilities Using <span>Bayesian</span> Binning’</span>. <em>Proceedings of the AAAI Conference on Artificial Intelligence</em>.
+</div>
+<div id="ref-platt1999" class="csl-entry" role="listitem">
+Platt, John C. 1999. <span>‘Probabilistic Outputs for Support Vector Machines and Comparisons to Regularized Likelihood Methods’</span>. In <em>Advances in Large Margin Classifiers</em>. MIT Press.
+</div>
+<div id="ref-zadrozny2002" class="csl-entry" role="listitem">
+Zadrozny, Bianca, and Charles Elkan. 2002. <span>‘Transforming Classifier Scores into Accurate Multiclass Probability Estimates’</span>. <em>Proceedings of the Eighth ACM SIGKDD International Conference on Knowledge Discovery and Data Mining</em>, 694–99.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/mukkandi-sridhar\.github\.io\/JEVBook");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/ch02.html" class="pagination-link" aria-label="Probability, and how a machine learns it">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Probability, and how a machine learns it</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/ch04.html" class="pagination-link" aria-label="From probabilities to actions">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">From probabilities to actions</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

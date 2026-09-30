@@ -71,7 +71,9 @@ The judge's 1-to-10 rating was never meant to be a probability, and reading it a
 
 ![Ranking on the live week as the trained methods see more labelled alerts, averaged over random samples. Jev and the LLMs need no labels to start, so they're flat lines. Logistic regression draws level with Jev at about 3,000 labels.](/figures/ch20/labels.pdf){#fig-labels}
 
-@fig-labels is the chart I'd show the data scientist in that argument. Logistic regression needs about 3,000 labelled alerts to draw level with Jev, and at a few hundred it's clearly behind. Where would 3,000 labels come from? Not from analysts' reviews alone: at 240 a day, that's nearly two weeks of verdicts. Kestrel's labels are *eventual outcomes*: the incident that was confirmed or ruled out, the user who said "that was me", the alert nobody followed up and nothing came of. Every alert gets one sooner or later, so at about 700 alerts a day, 3,000 labels is around four days of history, which Kestrel happens to have. A team that's just starting, or a new decision nobody has labelled yet, doesn't.
+@fig-labels is the chart I'd show the data scientist in that argument. Logistic regression needs about 3,000 labelled alerts to draw level with Jev, and at a few hundred it's clearly behind.
+
+Where would 3,000 labels come from? Not from analysts' reviews alone: at 240 a day, that's nearly two weeks of verdicts. Kestrel's labels are *eventual outcomes*: the incident that was confirmed or ruled out, the user who said "that was me", the alert nobody followed up and nothing came of. Every alert gets one sooner or later, so at about 700 alerts a day, 3,000 labels is around four days of history, which Kestrel happens to have. A team that's just starting, or a new decision nobody has labelled yet, doesn't.
 
 The text classifier never catches up, even with every label we have. Words alone, counted, don't carry the numbers.
 

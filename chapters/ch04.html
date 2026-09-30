@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>4&nbsp; From probabilities to actions – Decide, Don't Generate</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../parts/p2.html" rel="next">
+<link href="../chapters/ch03.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-29f00846dc0b6c361e78d357ae7c4662.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-607c349e4ec5b0e049e1f3a4bfbc4a74.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;display=swap" rel="stylesheet">
+
+
+<link rel="stylesheet" href="../assets/web/book.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/p1.html">Prerequisites: probability and decisions</a></li><li class="breadcrumb-item"><a href="../chapters/ch04.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">From probabilities to actions</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Decide, Don’t Generate</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/Mukkandi-Sridhar/JEVBook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../Decide,-Don-t-Generate.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="../Decide,-Don-t-Generate.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Download ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../front/acknowledgements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgements</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../front/how-to-read.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">How to read this book</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../front/prologue.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prologue: the night shift</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/p1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prerequisites: probability and decisions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">What “learning” means</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Probability, and how a machine learns it</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Calibration: when 0.8 really means 80%</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch04.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">From probabilities to actions</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/p2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prerequisites: networks, language models and agents</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Deep learning in one chapter</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">How an LLM writes, and structured outputs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">RAG, agents, and where they break</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/p3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Jev in depth</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">System 1 and System 2</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Inside Jev: what we know and what we don’t</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">The type system: choice, score, noul</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Testing Jev’s calibration yourself</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">The Jevons paradox of decisions</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/p4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The decision layer</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">The bake-off: six ways to make a decision</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Act, review, or escalate</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch15.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">A catalogue of decision patterns</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/p5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Building</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch16.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">First calls, and the mock that makes them free</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch17.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">A hybrid agent: Jev decides, the LLM reasons</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch18.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Case study: SOC alert triage</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch19.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">An applications gallery</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch20.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Build your own System One model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch21.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Capstone: a production decision service</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/p6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">What changes now</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/ch22.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">What changes now</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../back/glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Glossary</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../back/cheatsheets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cheat sheets</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../back/bibliography.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bibliography</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../back/index-terms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Index</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../back/about-author.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About the Author</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-umbrella-question" id="toc-the-umbrella-question" class="nav-link active" data-scroll-target="#the-umbrella-question"><span class="header-section-number">4.1</span> The umbrella question</a></li>
+  <li><a href="#one-formula-two-costs" id="toc-one-formula-two-costs" class="nav-link" data-scroll-target="#one-formula-two-costs"><span class="header-section-number">4.2</span> One formula, two costs</a></li>
+  <li><a href="#does-it-work-on-real-alerts" id="toc-does-it-work-on-real-alerts" class="nav-link" data-scroll-target="#does-it-work-on-real-alerts"><span class="header-section-number">4.3</span> Does it work on real alerts?</a></li>
+  <li><a href="#precision-recall-and-the-price-of-each" id="toc-precision-recall-and-the-price-of-each" class="nav-link" data-scroll-target="#precision-recall-and-the-price-of-each"><span class="header-section-number">4.4</span> Precision, recall, and the price of each</a></li>
+  <li><a href="#i-dont-know-is-an-action-too" id="toc-i-dont-know-is-an-action-too" class="nav-link" data-scroll-target="#i-dont-know-is-an-action-too"><span class="header-section-number">4.5</span> “I don’t know” is an action too</a></li>
+  <li><a href="#three-doors" id="toc-three-doors" class="nav-link" data-scroll-target="#three-doors"><span class="header-section-number">4.6</span> Three doors</a></li>
+  <li><a href="#the-end-of-part-i" id="toc-the-end-of-part-i" class="nav-link" data-scroll-target="#the-end-of-part-i"><span class="header-section-number">4.7</span> The end of Part I</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/p1.html">Prerequisites: probability and decisions</a></li><li class="breadcrumb-item"><a href="../chapters/ch04.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">From probabilities to actions</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-ch04" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">From probabilities to actions</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="epigraph bookbox" data-by="William Bruce Cameron, Informal Sociology, 1963">
+<p>Not everything that can be counted counts, and not everything that counts can be counted.</p>
+<div class="quote-by">
+— William Bruce Cameron, Informal Sociology, 1963
+</div>
+</div>
+<p>You made it. You have a model whose probabilities you’ve checked and, where needed, fixed. When it says 20%, about one in five of those alerts really is an attack.</p>
+<p>And now you hit the wall everyone hits:</p>
+<p><em>“Great. So where do I put the line?”</em></p>
+<p>Most people pick 0.5 without thinking about it. It’s the default in almost every library. It <em>feels</em> neutral.</p>
+<p>It isn’t neutral at all. It’s a very specific opinion about your business, and it’s usually the wrong one. This chapter shows you how to put the line where it belongs, with nothing fancier than the arithmetic you already have.</p>
+<div class="goals bookbox">
+<div class="box-label">
+By the end of this chapter
+</div>
+<ul>
+<li>Turn two costs into one threshold, and explain why 0.5 is a special case.</li>
+<li>Check the formula against a brute-force search on real (synthetic) data.</li>
+<li>See why the formula only works when the probabilities are calibrated.</li>
+<li>Read the precision–recall trade-off as a business choice.</li>
+<li>Treat “I don’t know, ask a person” as a real action, and meet the three doors: act, review, escalate.</li>
+</ul>
+</div>
+<section id="the-umbrella-question" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="the-umbrella-question"><span class="header-section-number">4.1</span> The umbrella question</h2>
+<p>Let’s start somewhere dry. Well, somewhere that might not be.</p>
+<p>The forecast says there’s a 30% chance of rain. Do you take an umbrella?</p>
+<p>It depends on two things you already know without thinking about them. Carrying an umbrella you didn’t need is mildly annoying; call it 1 unit of annoyance. Getting soaked on the way to a meeting is much worse; call it 4.</p>
+<p>If you carry it, you pay 1, rain or shine. If you leave it, you pay 4, but only if it rains, so on average you pay 4 × the chance of rain.</p>
+<div id="fig-umbrella" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-umbrella-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../figures/ch05/umbrella.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-umbrella-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.1: The umbrella decision. Carrying always costs 1. Leaving it costs 4 times the chance of rain. The lines cross at 20%: above that, carry it.
+</figcaption>
+</figure>
+</div>
+<p>The two lines in <a href="#fig-umbrella" class="quarto-xref">Figure&nbsp;<span class="quarto-unresolved-ref">fig-umbrella</span></a> cross where 4 × <em>P</em> = 1, which is <em>P</em> = 0.2. Above a 20% chance of rain, carry the umbrella. Below it, leave it at home. At 30%, you take it, even though it probably won’t rain.</p>
+<p>That’s the whole chapter, really. The rest is the same idea wearing work clothes.</p>
+</section>
+<section id="one-formula-two-costs" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="one-formula-two-costs"><span class="header-section-number">4.2</span> One formula, two costs</h2>
+<p>Replace the umbrella with any yes-or-no action. There are two ways to get it wrong:</p>
+<ul>
+<li>a <strong>false alarm</strong>: you act, and you didn’t need to (carried the umbrella; blocked a harmless login);</li>
+<li>a <strong>miss</strong>: you don’t act, and you should have (got soaked; let an attacker in).</li>
+</ul>
+<p>If a false alarm costs <em>C</em><sub>fa</sub> and a miss costs <em>C</em><sub>miss</sub>, the cheapest thing to do, on average, is to act whenever</p>
+<div class="keyidea bookbox">
+<p>P &gt; C<sub>fa</sub> ÷ (C<sub>fa</sub> + C<sub>miss</sub>)</p>
+</div>
+<p>Check it with the umbrella: 1 ÷ (1 + 4) = 0.2. Exactly where the lines crossed.</p>
+<p>Now look at what happens when the two costs are equal. The formula gives 1 ÷ 2 = 0.5. <em>That’s</em> where 0.5 comes from. It’s the right threshold only when a false alarm and a miss hurt exactly the same amount, which is almost never true for anything worth building a model for.</p>
+<div id="fig-threshold-ratio" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-threshold-ratio-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../figures/ch05/threshold-ratio.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-threshold-ratio-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.2: The right threshold for any ratio between the cost of a miss and the cost of a false alarm (both axes on a log scale). Equal costs give 0.5. As misses get more expensive, the line drops fast.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-threshold-ratio" class="quarto-xref">Figure&nbsp;<span class="quarto-unresolved-ref">fig-threshold-ratio</span></a> puts a few real decisions on one curve. Kestrel’s decision in Chapter 14, whether an alert may close itself without any human looking at it, sits in the far bottom-right corner: a miss there is about 630 times worse than an analyst’s twelve minutes, so the line drops to about 0.0016. Different decision, different costs, different line.</p>
+<div class="deeper bookbox">
+<div class="box-label">
+Going deeper
+</div>
+<p>Where the formula comes from. For a single case with probability <em>P</em>, acting costs (1 − <em>P</em>) × <em>C</em><sub>fa</sub> on average (you pay only if it was harmless), and not acting costs <em>P</em> × <em>C</em><sub>miss</sub> (you pay only if it was real). Act when the first is smaller: (1 − <em>P</em>) <em>C</em><sub>fa</sub> &lt; <em>P</em> <em>C</em><sub>miss</sub>, which rearranges to <em>P</em> &gt; <em>C</em><sub>fa</sub> / (<em>C</em><sub>fa</sub> + <em>C</em><sub>miss</sub>). If getting it <em>right</em> also has costs or benefits (say, blocking a real threat earns some credit), the same logic works with a 2×2 table of costs, one for each combination of action and truth. This is the foundation of cost-sensitive learning <span class="citation" data-cites="elkan2001">(<a href="#ref-elkan2001" role="doc-biblioref">Elkan 2001</a>)</span>.</p>
+</div>
+</section>
+<section id="does-it-work-on-real-alerts" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="does-it-work-on-real-alerts"><span class="header-section-number">4.3</span> Does it work on real alerts?</h2>
+<p>A formula is nice. Evidence is better. Let’s test it.</p>
+<p>Here’s a decision Kestrel makes on every alert: <strong>block it or allow it?</strong> Block the sender, the connection or the sign-in, automatically. Wrongly blocking something harmless costs about $200 in disrupted work: a stuck shipment, an angry customer, an engineer locked out. Letting a real threat through at this step costs about $4,000, since other defences still have a chance to catch it later. Those are illustrative numbers, but plausible ones.</p>
+<p>The formula says block when <em>P</em> &gt; 200 ÷ 4,200, which is about 0.048.</p>
+<div class="tryit bookbox" data-lab="ch04">
+<div class="box-label">
+Try it
+</div>
+<p>Compare the formula with a brute-force search over 300 thresholds, using the calibrated logistic regression from Chapter 2 on the test alerts.</p>
+<div id="d35b9edb" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>alerts <span class="op">=</span> soc.load()</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>train, calib, test <span class="op">=</span> soc.split(alerts)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>F <span class="op">=</span> <span class="kw">lambda</span> d: soc.feature_matrix(d).to_numpy()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LogisticRegression(C<span class="op">=</span><span class="fl">1e4</span>, max_iter<span class="op">=</span><span class="dv">5000</span>).fit(</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    F(train), train.malicious)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>p, y <span class="op">=</span> model.predict_proba(F(test))[:, <span class="dv">1</span>], test.malicious.to_numpy()</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>false_alarm, miss <span class="op">=</span> <span class="dv">200</span>, <span class="dv">4_000</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> false_alarm <span class="op">/</span> (false_alarm <span class="op">+</span> miss)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> total_cost(p, t):</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    block <span class="op">=</span> p <span class="op">&gt;=</span> t</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ((block <span class="op">&amp;</span> (y <span class="op">==</span> <span class="dv">0</span>)).<span class="bu">sum</span>() <span class="op">*</span> false_alarm</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>            <span class="op">+</span> (<span class="op">~</span>block <span class="op">&amp;</span> (y <span class="op">==</span> <span class="dv">1</span>)).<span class="bu">sum</span>() <span class="op">*</span> miss)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>grid <span class="op">=</span> np.linspace(<span class="fl">0.005</span>, <span class="fl">0.9</span>, <span class="dv">300</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>best <span class="op">=</span> grid[np.argmin([total_cost(p, g) <span class="cf">for</span> g <span class="kw">in</span> grid])]</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"brute force </span><span class="sc">{</span>best<span class="sc">:.3f}</span><span class="ss">: $</span><span class="sc">{</span>total_cost(p, best)<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"formula     </span><span class="sc">{</span>t<span class="sc">:.3f}</span><span class="ss">: $</span><span class="sc">{</span>total_cost(p, t)<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"0.5              : $</span><span class="sc">{</span>total_cost(p, <span class="fl">0.5</span>)<span class="sc">:,}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>brute force 0.059: $350,400
+formula     0.048: $358,800
+0.5              : $831,400</code></pre>
+</div>
+</div>
+<p><a href="https://colab.research.google.com/github/Mukkandi-Sridhar/JEVBook/blob/main/labs/ch04.ipynb">Open this chapter's notebook in Colab →</a></p>
+</div>
+<p>The formula lands close to the brute-force best, and the cost difference is small. The 0.5 line costs 2.3 times as much.</p>
+<div id="fig-cost-curve" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cost-curve-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../figures/ch05/cost-curve.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cost-curve-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.3: Total cost on the test alerts at every threshold. For the calibrated model (green), the formula’s line sits near the bottom of the valley. For the same model trained on rebalanced data (red), the same line lands halfway up the wall.
+</figcaption>
+</figure>
+</div>
+<p>And now the reason Chapter 3 came first. <a href="#fig-cost-curve" class="quarto-xref">Figure&nbsp;<span class="quarto-unresolved-ref">fig-cost-curve</span></a> also shows the rebalanced model from Chapter 3, which ranks alerts almost as well but whose probabilities are inflated. Put the formula’s line on <em>its</em> numbers and the cost is 62% higher. Its own cheapest line is way out at about 0.38, and there’s no formula that could have told you so. You’d have to find it by trial and error, and redo the search every time the costs change.</p>
+<div class="keyidea bookbox">
+<p>With honest probabilities, costs set the line directly. Without them, you’re guessing.</p>
+</div>
+<p>That’s the practical payoff of calibration, in one sentence. It turns threshold-setting from an endless tuning exercise into a line of arithmetic you can explain to your finance team.</p>
+</section>
+<section id="precision-recall-and-the-price-of-each" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="precision-recall-and-the-price-of-each"><span class="header-section-number">4.4</span> Precision, recall, and the price of each</h2>
+<p>In Chapter 2, precision and recall looked like two scores. Now you can see them for what they are: two ends of the same rope.</p>
+<div id="fig-pr-threshold" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pr-threshold-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../figures/ch05/pr-threshold.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pr-threshold-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.4: As the threshold moves up, precision (how many blocks were real) rises and recall (how many threats got blocked) falls. The grey line shows how much traffic you’re blocking. The vertical line is the cost-based threshold.
+</figcaption>
+</figure>
+</div>
+<p>At the cost-based line in <a href="#fig-pr-threshold" class="quarto-xref">Figure&nbsp;<span class="quarto-unresolved-ref">fig-pr-threshold</span></a>, Kestrel blocks about 30% of alerts. That catches 86% of real threats, but only 21% of the blocks are real ones. That precision sounds poor. Is it?</p>
+<p>Only the costs can say. Each wrong block costs $200; each missed threat $4,000. The line sits at 200 ÷ 4,200, about 0.048: block an alert when the chance it’s real is better than about 1 in 21. That’s a rule about the <em>marginal</em> alert, the one sitting right on the line, where blocking and letting it through cost the same on average.</p>
+<p>Precision is a different thing. It’s an average over <em>every</em> alert above the line, and most of those are far likelier than 1 in 21 to be real, which is why it comes out nearer one in five. Nobody chose that number. It’s a by-product of putting the line where the costs say, and a model with better ranking would push it up without moving the line at all. Arguing about precision or recall on its own, without the costs, is arguing about half a sentence.</p>
+<div class="threshold bookbox">
+<div class="box-label">
+Set the threshold
+</div>
+<p>Kestrel’s sales team complains that blocked customer emails are costing deals, and argues a wrong block costs $800, not $200. Recompute the blocking line. Roughly what happens to the share of alerts blocked, and to recall?</p>
+<p>(800 ÷ 4,800 ≈ 0.17. The line moves up, fewer alerts get blocked and more threats get through. The model didn’t change. The business’s priorities did, and the threshold should follow them.)</p>
+</div>
+</section>
+<section id="i-dont-know-is-an-action-too" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="i-dont-know-is-an-action-too"><span class="header-section-number">4.5</span> “I don’t know” is an action too</h2>
+<p>So far every decision has been yes or no. But there’s almost always a third option, and it’s the most useful one: <em>don’t decide; ask a person</em>.</p>
+<p>The idea is old. In 1970 the engineer C. K. Chow showed that a recogniser allowed to reject its least certain cases could cut its error rate dramatically, and worked out the best trade-off <span class="citation" data-cites="chow1970">(<a href="#ref-chow1970" role="doc-biblioref">Chow 1970</a>)</span>. Today it’s called <em>selective prediction</em>, or classification with a reject option <span class="citation" data-cites="geifman2017">(<a href="#ref-geifman2017" role="doc-biblioref">Geifman and El-Yaniv 2017</a>)</span>.</p>
+<p>Here’s how it looks at Kestrel. Sort the alerts by how confident the model is, surest first. Let the machine decide only the top slice, and send the rest to people. How low does the error rate go?</p>
+<div id="fig-coverage-risk" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-coverage-risk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../figures/ch05/coverage-risk.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-coverage-risk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.5: Coverage against risk. Reading from right to left: if the machine decides every alert, you take its full error rate. Let it decide only the alerts it’s surest about and send the rest to people, and the error rate among its decisions falls steeply. A better model (green) gives you more coverage at the same risk.
+</figcaption>
+</figure>
+</div>
+<p>Deciding every alert, the model gets 6.1% wrong. Deciding only the surest 80%, just 2.2% of its decisions are wrong. Deciding the surest half, 0.9%.</p>
+<p>That curve, from <a href="#fig-coverage-risk" class="quarto-xref">Figure&nbsp;<span class="quarto-unresolved-ref">fig-coverage-risk</span></a>, is one of the most useful pictures you can show a manager. It turns “how good is the model?” into “how much of this work can we safely hand over, at what error rate?”, which is the question they actually have.</p>
+</section>
+<section id="three-doors" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="three-doors"><span class="header-section-number">4.6</span> Three doors</h2>
+<p>Put the two ideas together, cost-based lines and “ask a person”, and a shape appears that we’ll use for the rest of the book.</p>
+<div id="fig-three-doors" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-three-doors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../figures/ch05/three-doors.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-three-doors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.6: The three doors. At one end the model is confident nothing’s needed, so the machine handles it. At the other end it’s confident something’s badly wrong, so a person is pulled in immediately. In between, where it’s unsure, a person looks when they can.
+</figcaption>
+</figure>
+</div>
+<p><strong>Act</strong> when the model is confident the machine can handle it alone. <strong>Review</strong> when it’s unsure, so a person checks in the normal flow of work. <strong>Escalate</strong> when it’s confident something important is wrong, so a person is pulled in right now.</p>
+<p>The two boundaries between the doors come from the same kind of cost arithmetic you’ve just done, with one extra line for each extra action. Chapter 14 does exactly that for Kestrel’s SOC, and then does the part this chapter skips: what happens when you don’t have enough people to staff the middle door.</p>
+<div class="breaks bookbox">
+<div class="box-label">
+Where this breaks
+</div>
+<p>Costs are guesses, and guesses carry the same weight in the formula as facts. Two habits help. First, try your costs at half and double their value and see how much the line moves; if the answer barely changes, stop arguing about the exact number. Second, remember that costs often differ from case to case: a false alarm on the CEO’s laptop isn’t a false alarm on a test server. Per-case costs mean per-case thresholds, which is fine, as long as you write them down. And some costs aren’t money at all: trust, fairness, safety and the law. Put those on the table explicitly, or someone else’s defaults will decide them for you.</p>
+</div>
+<div class="bookquote bookbox" data-by="Dwight D. Eisenhower, as quoted by Richard Nixon in Six Crises, 1962">
+<p>Plans are worthless, but planning is everything.</p>
+<div class="quote-by">
+— Dwight D. Eisenhower, as quoted by Richard Nixon in Six Crises, 1962
+</div>
+</div>
+<p>The same goes for cost estimates. The numbers will be wrong. Writing them down, arguing about them and seeing what they imply is where the value is.</p>
+</section>
+<section id="the-end-of-part-i" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="the-end-of-part-i"><span class="header-section-number">4.7</span> The end of Part I</h2>
+<p>Step back and look at what you’ve built over four chapters.</p>
+<p>In Chapter 1 a machine learned exactly what we asked and was useless, because we asked for yes or no. So we asked for a chance instead, and had to learn what a chance means. That took us to a model that outputs one, and then to the uncomfortable discovery that its number might not be honest. Once we could check and fix that, the last step was the one this chapter took: letting costs, not habit, decide where the lines go, and leaving a door open for the cases a machine shouldn’t decide alone.</p>
+<p>That’s the foundation. Every system in the rest of the book, from deep networks to LLMs to Jev, gets judged by it.</p>
+<div class="exercises bookbox" data-lab="ch04">
+<div class="box-label">
+Exercises
+</div>
+<p><a href="https://colab.research.google.com/github/Mukkandi-Sridhar/JEVBook/blob/main/labs/ch04.ipynb">Open this chapter's lab in Colab →</a></p>
+<ol type="1">
+<li>A hospital test flags a serious but treatable condition. Treating someone who doesn’t have it costs $500 and some discomfort; missing someone who does costs $50,000. What’s the treatment threshold? What would you want to know about the test’s calibration before trusting it?</li>
+<li>In the lab, halve and double both costs (together and separately). When does the threshold move, and when doesn’t it? Why?</li>
+<li>Explain in two sentences why “0.5 is the neutral threshold” is wrong.</li>
+<li>Using the coverage–risk curve, how much of Kestrel’s blocking decision could you automate if the business tolerates a 2% error rate among automated decisions? Where would the rest go?</li>
+<li>Pick a decision at your work or in your life with a natural third option (“ask someone”, “wait a day”, “get a second opinion”). Sketch its three doors and what would move each boundary.</li>
+</ol>
+</div>
+<div class="nexthook bookbox">
+<p>Next, Part II: so far our models were handed neat features like a threat-intel score. What about raw pixels, raw words, raw logs? That’s where deep learning comes in, and it starts with a single artificial neuron.</p>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-chow1970" class="csl-entry" role="listitem">
+Chow, C. K. 1970. <span>‘On Optimum Recognition Error and Reject Tradeoff’</span>. <em>IEEE Transactions on Information Theory</em> 16 (1): 41–46.
+</div>
+<div id="ref-elkan2001" class="csl-entry" role="listitem">
+Elkan, Charles. 2001. <span>‘The Foundations of Cost-Sensitive Learning’</span>. <em>Proceedings of the Seventeenth International Joint Conference on Artificial Intelligence (IJCAI)</em>, 973–78.
+</div>
+<div id="ref-geifman2017" class="csl-entry" role="listitem">
+Geifman, Yonatan, and Ran El-Yaniv. 2017. <span>‘Selective Classification for Deep Neural Networks’</span>. <em>Advances in Neural Information Processing Systems 30 (NeurIPS)</em>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/mukkandi-sridhar\.github\.io\/JEVBook");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/ch03.html" class="pagination-link" aria-label="Calibration: when 0.8 really means 80%">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Calibration: when 0.8 really means 80%</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../parts/p2.html" class="pagination-link" aria-label="Prerequisites: networks, language models and agents">
+        <span class="nav-page-text">Prerequisites: networks, language models and agents</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

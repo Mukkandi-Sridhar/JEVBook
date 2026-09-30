@@ -14,7 +14,9 @@ You don't have to read it front to back. Here are three routes, depending on whe
 
 ![The boxes you'll meet in every chapter.](/figures/front/boxes.pdf){#fig-boxes}
 
-Each chapter opens with a short list of what you'll be able to do by the end, and closes with a short recap, exercises and a hook to the next chapter. In between, a few kinds of box recur (@fig-boxes). The *Try it* boxes contain code you can run; the *Set the threshold* boxes ask you to make a small decision with real costs; the *Where this breaks* boxes are the honest limits of what the chapter just showed. *Going deeper* boxes hold optional maths, and a side box headed with a question, like *Why not just maximise accuracy?*, deals with the objection you're probably already forming. Read the *Where this breaks* boxes above all. They're the difference between knowing a technique and knowing when to trust it.
+Each chapter opens with a short list of what you'll be able to do by the end, and closes with a short recap, exercises and a hook to the next chapter. In between, a few kinds of box recur (@fig-boxes).
+
+The *Try it* boxes contain code you can run; the *Set the threshold* boxes ask you to make a small decision with real costs; the *Where this breaks* boxes are the honest limits of what the chapter just showed. *Going deeper* boxes hold optional maths, and a side box headed with a question, like *Why not just maximise accuracy?*, deals with the objection you're probably already forming. Read the *Where this breaks* boxes above all. They're the difference between knowing a technique and knowing when to trust it.
 
 ## Running the code
 

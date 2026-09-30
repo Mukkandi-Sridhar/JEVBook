@@ -29,7 +29,7 @@ L 429.84 79.747781
 L 429.84 49.507781 
 L 2.88 49.507781 
 z
-" clip-path="url(#p50c08b2295)" style="fill: #f1f2f4"/>
+" clip-path="url(#pcd74ffdc43)" style="fill: #f1f2f4"/>
    </g>
    <g id="patch_3">
     <path d="M 2.88 140.227781 
@@ -37,7 +37,7 @@ L 429.84 140.227781
 L 429.84 109.987781 
 L 2.88 109.987781 
 z
-" clip-path="url(#p50c08b2295)" style="fill: #f1f2f4"/>
+" clip-path="url(#pcd74ffdc43)" style="fill: #f1f2f4"/>
    </g>
    <g id="patch_4">
     <path d="M 2.88 200.707781 
@@ -45,7 +45,7 @@ L 429.84 200.707781
 L 429.84 170.467781 
 L 2.88 170.467781 
 z
-" clip-path="url(#p50c08b2295)" style="fill: #f1f2f4"/>
+" clip-path="url(#pcd74ffdc43)" style="fill: #f1f2f4"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(103.741438 27.193461)">ranking</text>
@@ -266,7 +266,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p50c08b2295">
+  <clipPath id="pcd74ffdc43">
    <rect x="2.88" y="12.067781" width="428.4" height="241.2"/>
   </clipPath>
  </defs>
