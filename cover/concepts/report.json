@@ -1,0 +1,17 @@
+{
+  "a": {
+    "name": "Typographic: Generate breaks into tokens",
+    "title_vs_ground_wcag": 7.27,
+    "thumb_grey_rms_contrast": 39.9
+  },
+  "b": {
+    "name": "Streams of LLM text converge on one typed answer",
+    "title_vs_ground_wcag": 7.27,
+    "thumb_grey_rms_contrast": 39.3
+  },
+  "c": {
+    "name": "A reliability diagram settling on its diagonal",
+    "title_vs_ground_wcag": 3.26,
+    "thumb_grey_rms_contrast": 30.2
+  }
+}

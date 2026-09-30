@@ -124,4 +124,4 @@ format:
     css: assets/web/epub.css
     toc: true
     number-sections: true
-    epub-cover-image: assets/cover/cover.png
+    epub-cover-image: cover/ebook/cover.jpg

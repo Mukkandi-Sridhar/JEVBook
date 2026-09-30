@@ -11,3 +11,8 @@ nbclient>=0.10
 nbformat>=5.9
 ipykernel>=6
 quarto-cli>=1.6
+# cover (cover/README.md)
+Pillow>=10
+pypdf>=4
+segno>=1.6
+pyspellchecker>=0.8

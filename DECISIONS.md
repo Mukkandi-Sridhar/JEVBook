@@ -176,3 +176,38 @@ Newest decisions are appended at the bottom of each section.
 - **D-70 · Sources seen through search only.** The proxy blocked docs.typesafe.ai, typesafe.ai, arxiv.org and every
   article host. The Chapter 9 rewrite, the confidence definition, the Jev-Mem summary and the bibliography URLs rely
   on search-engine excerpts of those pages, consistent across queries. PROGRESS.md lists them under NEEDS AUTHOR.
+- **D-71 · Cover concept: typographic.** Three fronts were drawn and tested at 150 px wide, in greyscale and for
+  contrast (`cover/concepts/report.json`). A, "Generate" breaking into orange tokens under a solid green "Decide,",
+  kept its title readable at thumbnail size (title 7.27:1, thumbnail RMS contrast 39.9). B, streams of LLM text
+  converging on a typed answer, blurred into texture at 150 px. C, a reliability diagonal on paper, was the quietest
+  (3.26:1) and vanished on a white store page. A is the cover; B and C stay in `cover/concepts/`.
+- **D-72 · A dark ground, lifted accents.** The cover is on a near-black blue (#141925) so it stands out among white
+  and pale covers. The interior's green and orange are too dark on it, so the cover uses lighter steps of the same
+  hues (#4FBA85, #F08C35); the purples, fonts and zone bar are the interior's. Every text colour is at least 5:1
+  against its ground (`cover/checks.json`).
+- **D-73 · How the cover is drawn.** Python writes SVG; Chromium (through Playwright) renders it to vector PDF and PNG,
+  with the book's fonts embedded through `@font-face`. Chromium rounds page sizes, so pypdf then sets the media, trim
+  and bleed boxes to the exact inches. Tints are solid mixed colours, not transparency, so the PDFs carry no
+  transparency groups for the printer to flatten.
+- **D-74 · Paper.** Paperback: standard colour (the cover's green and orange echo colour figures inside), 0.002252 in
+  per page. Hardcover: premium colour, the only colour option KDP offers for hardcovers, 0.002347 in per page. Page
+  count is read from the interior PDF (247) and rounded up to even (248), since a printed book has whole sheets.
+  Paperback spine 0.5585 in, wrap 14.8085 × 10.25 in. Hardcover spine 0.7710 in (including KDP's 4.8 mm allowance),
+  wrap 16.3458 × 11.4173 in.
+- **D-75 · KDP geometry, and what couldn't be checked.** KDP's cover calculator and help pages are blocked by this
+  build's proxy. The paper thicknesses, the paperback formula (bleed + back + spine + front + bleed), the hardcover
+  case-laminate numbers (15 mm wrap, 10 mm hinge, boards 5 mm wider and 6 mm taller than trim, spine plus 4.8 mm) and
+  the 79-page minimum for spine text come from KDP help excerpts found through search, agreeing with third-party
+  calculators. The author should lay KDP's own template for the final page count over the guides PDF before upload.
+- **D-76 · Case-study numbers on the back.** The back cover's before/after card reads `results/ch25.json`: 54% → 89%
+  of real threats seen by a person, same six analysts. The brief said 57%; that was the figure before D-68 fixed the
+  queue, and the cover follows the book. It's labelled as the book's synthetic case study.
+- **D-77 · Strap line and QR code.** The front says "130+ figures" (138 numbered figures in the interior PDF, rounded
+  down to a round number that stays true after small edits). The back's QR code points to the GitHub repository and
+  prints its URL beneath, since the companion site isn't deployed yet. This is the only QR code; D-66 covers the
+  interior.
+- **D-78 · Barcode area left empty.** The bottom-right 2 × 1.2 in of the back, 0.25 in inside the trim, is kept clear
+  for KDP's ISBN barcode and drawn only on the guides layer. On the hardcover it sits left of the hinge.
+- **D-79 · No borrowed authority.** No TypeSafe logo or branding, no endorsement implied, and no invented praise: the
+  praise, bio, photo and price are visible placeholders. The EPUB now uses `cover/ebook/cover.jpg`, and the old
+  placeholder in `assets/cover/` is gone.

@@ -1,0 +1,31 @@
+{
+  "contrast_vs_ground": {
+    "title green": 7.27,
+    "white": 15.96,
+    "subtitle": 11.11,
+    "blurb": 12.4,
+    "small captions": 5.53,
+    "orange tokens": 7.12
+  },
+  "contrast_card_caption": 5.0,
+  "spelling": {
+    "words": 203,
+    "unknown": []
+  },
+  "paperback_pdf_in": [
+    14.8085,
+    10.25
+  ],
+  "paperback_expected_in": [
+    14.8085,
+    10.25
+  ],
+  "hardcover_pdf_in": [
+    16.3458,
+    11.4173
+  ],
+  "hardcover_expected_in": [
+    16.3458,
+    11.4173
+  ]
+}
