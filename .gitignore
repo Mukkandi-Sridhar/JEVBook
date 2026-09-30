@@ -16,3 +16,8 @@ site_libs/
 
 **/*.quarto_ipynb
 .cache/
+
+# stray output from interrupted Quarto renders
+*.html
+!site/*.html
+*_files/
