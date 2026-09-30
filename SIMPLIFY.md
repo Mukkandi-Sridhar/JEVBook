@@ -1183,3 +1183,312 @@ Every change is logged below as a before/after pair, applied by `tools/simplify_
 - `chapters/ch04.qmd`
   - Before: Next, Part II: so far our models were handed neat features like a threat-intel score. What about raw pixels, raw words, raw logs? That's where deep learning comes in, and it starts with a single artificial neuron.
   - After: Next, Part II. So far, our models were given neat clues like a threat-intel score. What about raw pixels, raw words, raw logs? That's where deep learning comes in, and it starts with a single artificial neuron.
+
+## Chapter 7: RAG, agents, and where they break
+
+33 changes.
+
+- `chapters/ch07.qmd`
+  - Before: Ask a big LLM what `svc-backup` is allowed to do at Kestrel Logistics and you'll get an answer. A confident, well-written, entirely invented answer.
+  - After: Ask a big LLM what `svc-backup` is allowed to do at Kestrel Logistics and you'll get an answer. It will be a confident, well-written, completely invented answer.
+- `chapters/ch07.qmd`
+  - Before: It isn't lying. It has simply never seen Kestrel's service-account inventory. Nobody outside Kestrel has.
+  - After: It isn't lying. It has simply never seen Kestrel's list of service accounts. Nobody outside Kestrel has.
+- `chapters/ch07.qmd`
+  - Before: So people hand the model the right pages at the right moment. Then they give it tools and a loop, so it can look things up and act on what it finds. Most of today's excitement about AI lives in retrieval and agents. So do most of the silent failures, and this chapter walks through both. Watch closely, because one pattern keeps appearing: nearly every weak point is a small decision.
+  - After: So people give the model the right pages at the right moment. Then they give it tools and a loop, so it can look things up and act on what it finds. Most of today's excitement about AI is about retrieval and agents. So are most of the failures nobody notices, and this chapter goes through both. Watch closely, because one pattern keeps appearing: nearly every weak point is a small decision.
+- `chapters/ch07.qmd`
+  - Before: - Explain why errors compound over a loop.
+  - After: - Explain why errors add up over a loop.
+- `chapters/ch07.qmd`
+  - Before: ## Hand it the right page
+  - After: ## Give it the right page
+- `chapters/ch07.qmd`
+  - Before: The idea fits in one breath. Before the model answers, **search** your documents for the passages most relevant to the question, **paste** them into the prompt, and **ask** the model to answer from them. It's called retrieval-augmented generation, RAG, and it works because the model conditions every token on everything in its context [@lewis2020].
+  - After: The idea is short. Before the model answers, **search** your documents for the passages most relevant to the question. **Paste** them into the prompt, and **ask** the model to answer from them. It's called retrieval-augmented generation, or RAG. It works because every token the model writes depends on everything in its **context window**: the text it can read at once [@lewis2020].
+- `chapters/ch07.qmd`
+  - Before: For Kestrel I wrote a small synthetic knowledge base of {{< num ch12 n_docs int >}} policies and runbooks, and mixed in 300 old alert descriptions that use the same vocabulary and contain none of the answers. Real search indexes are like that: full of near-misses.
+  - After: For Kestrel, I wrote a small synthetic collection of {{< num ch12 n_docs int >}} policies and how-to guides. I mixed in 300 old alert descriptions that use the same words but contain none of the answers. Real search indexes are like that: full of passages that look relevant but aren't.
+- `chapters/ch07.qmd`
+  - Before: The first hit has the answer: `svc-backup` copies snapshots offsite every night between 01:00 and 04:00. Searching by character pieces (so "passw0rd" still overlaps "password"), the right chunk came first {{< num ch12 recall.char.0 pct >}} of the time and was in the top three {{< num ch12 recall.char.2 pct >}} of the time.
+  - After: The first result has the answer: `svc-backup` copies snapshots to another site every night between 01:00 and 04:00. We searched by small pieces of words, so "passw0rd" still matches "password". The right chunk came first {{< num ch12 recall.char.0 pct >}} of the time and was in the top three {{< num ch12 recall.char.2 pct >}} of the time.
+- `chapters/ch07.qmd`
+  - Before: One part decides whether a RAG system is any good, and it isn't the LLM. If the chunk with the answer isn't retrieved, no model can use it. The LLM will produce the most plausible answer from what it *can* see, assembled from the nearest-looking chunk. Fluent, cited, wrong.
+  - After: One part decides whether a RAG system is any good, and it isn't the LLM. If the chunk with the answer isn't found, no model can use it. The LLM will build the most likely-sounding answer from what it *can* see, using the chunk that looks closest. The answer will be fluent, with a source, and wrong.
+- `chapters/ch07.qmd`
+  - Before: Some questions have no answer in the documents at all: "What's our cyber insurance deductible?" A good system says so. There's a simple signal: how well the *best* chunk matches.
+  - After: Some questions have no answer in the documents at all: "How much must we pay ourselves before our cyber insurance pays?" A good system says it doesn't know. There's a simple signal: how well the *best* chunk matches.
+- `chapters/ch07.qmd`
+  - Before: They overlap, but not much. Below a line, the system should decline to answer.]
+  - After: They overlap, but not much. Below a threshold, the system should decline to answer.]
+- `chapters/ch07.qmd`
+  - Before: With the line where I've drawn it, the system answers {{< num ch12 answered_share pct >}} of answerable questions and only {{< num ch12 unans_answered pct >}} of unanswerable ones (@fig-abstain). Where the line should go depends on what a wrong answer costs against an unnecessary "I don't know", which is Chapter 4's arithmetic.
+  - After: With the threshold where I've put it, the system answers {{< num ch12 answered_share pct >}} of answerable questions and only {{< num ch12 unans_answered pct >}} of unanswerable ones (@fig-abstain). Where the threshold should go depends on what a wrong answer costs, compared with an unnecessary "I don't know". That's Chapter 4's arithmetic.
+- `chapters/ch07.qmd`
+  - Before: Notice what just happened. Inside a system built for *generating* answers, the step that decides whether to answer at all is a small yes-or-no decision with a score and a threshold. So is deciding what an agent should remember, which past cases are relevant and which retrieved fact is trustworthy enough to act on. Keep counting.
+  - After: Notice what just happened. This system is built for *writing* answers. But the step that decides whether to answer at all is a small yes-or-no decision with a score and a threshold. So is deciding what an agent should remember, which past cases are relevant, and which retrieved fact is reliable enough to act on. Keep counting.
+- `chapters/ch07.qmd`
+  - Before: "Agent" might be the most overused word in AI right now. Strip away the marketing and it's a simple thing: a model in a **loop**, with **tools**. It looks at the situation, decides what to do, does it, looks at what happened, and goes round again.
+  - After: "Agent" may be the most overused word in AI right now. Without the marketing, it's a simple thing: a model in a **loop**, with **tools**. It looks at the situation, decides what to do, does it, looks at what happened, and goes round again.
+- `chapters/ch07.qmd`
+  - Before: Military strategists had a name for this long before AI did. The US Air Force colonel John Boyd described the OODA loop, observe, orient, decide, act, to explain why fighter pilots who cycled through it faster tended to win [@boyd1987]. I'll use the simpler **Observe, Decide, Act**.
+  - After: Military planners had a name for this long before AI did. The US Air Force colonel John Boyd described the OODA loop: observe, orient, decide, act. He used it to explain why fighter pilots who went through the loop faster tended to win [@boyd1987]. I'll use the simpler **Observe, Decide, Act**.
+- `chapters/ch07.qmd`
+  - Before: A "tool call" makes it sound as if the model reaches out and presses buttons. It doesn't. The model *writes down* which tool it wants and with what arguments, usually as the structured output of Chapter 6 [@yao2023; @schick2023]. Your code checks that request, runs the tool if it's allowed, and hands back the result. Look at what the request is: a choice from a fixed list of tools, plus some values. It's a typed decision wearing a costume. The model proposes; your code disposes.
+  - After: A "tool call" makes it sound as if the model reaches out and presses buttons. It doesn't. The model *writes down* which tool it wants and with what arguments, usually as the structured output of Chapter 6 [@yao2023; @schick2023]. Your code checks that request, runs the tool if it's allowed, and gives back the result. Look at what the request really is: a choice from a fixed list of tools, plus some values. It's a typed decision that looks like text. The model suggests; your code decides.
+- `chapters/ch07.qmd`
+  - Before: The book's SOC agent is deliberately small. For each alert it reads the alert, **decides** which evidence to gather next (threat intel, host history, policies or none), **decides** whether it has enough, **decides** the verdict, and then acts: closing the alert, or writing a case note for an analyst, or writing a page for on-call. Decisions go to the mock Jev as typed questions; writing goes to the mock LLM.
+  - After: The book's SOC agent is small on purpose. For each alert, it reads the alert and **decides** which evidence to collect next (threat intel, host history, policies or none). It **decides** whether it has enough, **decides** the verdict, and then acts. It closes the alert, or writes a case note for an analyst, or writes an urgent message to the analyst on call. Decisions go to the mock Jev as typed questions; writing goes to the mock LLM.
+- `chapters/ch07.qmd`
+  - Before: You could object that I built the agent, so I chose that mix. Fair. Run the same count on any agent you build or buy. I'd be surprised if you found a very different shape: pick a tool, check a result, decide whether to continue, route the case. Writing is the occasional output. Deciding is the everyday work.
+  - After: You could say that I built the agent, so I chose that mix. That's fair. Run the same count on any agent you build or buy. I'd be surprised if you found a very different pattern: pick a tool, check a result, decide whether to continue, send the case somewhere. Writing happens now and then. Deciding is the everyday work.
+- `chapters/ch07.qmd`
+  - Before: ## Errors compound
+  - After: ## Errors add up
+- `chapters/ch07.qmd`
+  - Before: Loops come with some uncomfortable arithmetic. If each step is right 95% of the time, and a task needs ten steps to go right, the whole task succeeds with probability 0.95 multiplied by itself ten times: about {{< num ch13 compound_95_10 pct >}}.
+  - After: Loops come with some uncomfortable arithmetic. Suppose each step is right 95% of the time, and a task needs ten steps to go right. Then the whole task succeeds with probability 0.95 multiplied by itself ten times: about {{< num ch13 compound_95_10 pct >}}.
+- `chapters/ch07.qmd`
+  - Before: That's why agents that shine in a demo stumble in production (@fig-compound). A demo is a few steps on a friendly example. Production is twenty steps on a strange one: at 95% per step, a twenty-step task succeeds about {{< num ch13 compound_95_20 pct >}} of the time. And the direction points at the decisions. They're most of the steps, so they're most of the risk. A decision that comes with a trustworthy probability can be caught before it compounds, by routing it to review or gathering more evidence. A decision that comes back as a confident sentence can't.
+  - After: That's why agents that look great in a demo fail in real use (@fig-compound). A demo is a few steps on an easy example. Real use is twenty steps on an unusual one. At 95% per step, a twenty-step task succeeds about {{< num ch13 compound_95_20 pct >}} of the time. And this points at the decisions. They're most of the steps, so they're most of the risk. A decision that comes with a calibrated probability can be caught early, by sending it to review or collecting more evidence. A decision that comes back as a confident sentence can't.
+- `chapters/ch07.qmd`
+  - Before: Now the most dangerous failure. In a RAG system or an agent, the model reads text that someone else wrote: emails, tickets, web pages, alert descriptions. If an attacker can get text in front of the model, they can write instructions or claims into it. It's called **prompt injection**, and it's usually described as an LLM problem [@greshake2023]. The problem is broader than that. Any model that reads attacker-controlled text can be steered by it, decision models included.
+  - After: Now the most dangerous failure. In a RAG system or an agent, the model reads text that someone else wrote: emails, tickets, web pages, alert descriptions. If an attacker can get text in front of the model, they can write instructions or false claims into it. This is called **prompt injection**, and it's usually described as an LLM problem [@greshake2023]. The problem is wider than that. Any model that reads text an attacker controls can be steered by it, decision models included.
+- `chapters/ch07.qmd`
+  - Before: Take a concrete case. Kestrel's alert text sometimes includes "Matches approved IT tooling (change ticket on file)", one of the strongest signs an alert is harmless. Suppose an attacker adds that one sentence to the alert text, through a command line, an email subject or a file name.
+  - After: Take a real example. Kestrel's alert text sometimes includes "Matches approved IT tooling (change ticket on file)". It's one of the strongest signs that an alert is harmless. Suppose an attacker adds that one sentence to the alert text, through a command line, an email subject or a file name.
+- `chapters/ch07.qmd`
+  - Before: The sentence drags many real threats below the auto-close line.
+  - After: The sentence pulls many real threats below the auto-close threshold.
+- `chapters/ch07.qmd`
+  - Before: One sentence. The share of real threats that would close themselves without a human rose from {{< num ch14 inj_act_before pct >}} to {{< num ch14 inj_act_after pct >}} (@fig-injection). The exact numbers are the mock's, but the lesson isn't. The fix is structural: ask the change-management system whether a ticket exists, and pass the answer as a separate field the attacker can't write. With that, only {{< num ch14 inj_act_trusted pct >}} of threats would auto-close.
+  - After: One sentence. The share of real threats that would close without a person seeing them rose from {{< num ch14 inj_act_before pct >}} to {{< num ch14 inj_act_after pct >}} (@fig-injection). The exact numbers are the mock's, but the lesson is general. The fix is in the design. Ask the system that records approved changes whether a ticket exists. Pass the answer as a separate field that the attacker can't write. With that, only {{< num ch14 inj_act_trusted pct >}} of threats would auto-close.
+- `chapters/ch07.qmd`
+  - Before: Other failures are quieter. Retrieval returns a weak match and nobody checks: {{< num ch14 weak_retrieval pct >}} of the agent's policy lookups fell below the "I don't know" line. Loops run on without a budget. And the worst failures come at the end, where the agent acts: isolating the CEO's laptop mid-meeting, or closing a real incident. When anything goes wrong, from a timeout to a parse failure, the agent should fail towards a person reviewing it, never towards acting.
+  - After: Other failures are harder to notice. Retrieval returns a weak match and nobody checks: {{< num ch14 weak_retrieval pct >}} of the agent's policy lookups fell below the "I don't know" threshold. Loops keep running with no limit. And the worst failures come at the end, where the agent acts: cutting the CEO's laptop off the network during a meeting, or closing a real incident. When anything goes wrong, from a timeout to a parse failure, the agent should send the case to a person, never act on it.
+- `chapters/ch07.qmd`
+  - Before: Look back over this chapter and a pattern appears. Nearly every catch is the same kind of thing: a check, turned into a decision, with a threshold chosen from what mistakes cost.
+  - After: Look back over this chapter and a pattern appears. Nearly every protection is the same kind of thing: a check, turned into a decision, with a threshold chosen from what mistakes cost.
+- `chapters/ch07.qmd`
+  - Before: The agent proposes. The decision layer disposes (@fig-defences). It checks the proposal against what's allowed, asks typed questions and gets calibrated probabilities, applies lines drawn from costs, enforces budgets, and takes risky facts from trusted systems. Then each case leaves through one of three doors: act, review or escalate.
+  - After: The agent suggests; the decision layer decides (@fig-defences). It checks the suggestion against what's allowed. It asks typed questions and gets calibrated probabilities. It applies thresholds set from costs, enforces limits, and takes risky facts from trusted systems. Then each case leaves through one of three doors: act, review or escalate.
+- `chapters/ch07.qmd`
+  - Before: None of that needs a more intelligent model. It needs decisions fast enough to put everywhere, cheap enough to ask often, and honest enough to put a threshold on. A model like Jev is designed for that gap.
+  - After: None of that needs a more intelligent model. It needs decisions that are fast enough to use everywhere, cheap enough to ask often, and calibrated enough to put a threshold on. A model like Jev is designed for that need.
+- `chapters/ch07.qmd`
+  - Before: Retrieved text is untrusted input: separate instructions from data, and never let retrieved text trigger actions directly. A decision layer isn't a shield against everything, either. If the attacker controls a "trusted" system, the trusted field lies too; if every check shares one blind spot, the layers fail together; and thresholds set once and never revisited drift out of date. Red-team your own layer: try to get a real threat through the act door, and see which check catches you.
+  - After: Retrieved text is untrusted input. Keep instructions separate from data, and never let retrieved text start actions directly. A decision layer doesn't protect against everything, either. If the attacker controls a "trusted" system, the trusted field lies too. If every check has the same weakness, the layers all fail together. And thresholds set once and never checked again go out of date. Attack your own layer: try to get a real threat through the act door, and see which check stops you.
+- `chapters/ch07.qmd`
+  - Before: Kestrel's agent can take four actions without a human: close an alert, add a note, block a sender domain and isolate a laptop. Which should be allowed automatically when the model is confident, and which should always need a person?
+  - After: Kestrel's agent can take four actions without a person: close an alert, add a note, block a sender domain, and cut a laptop off the network. Which should be allowed automatically when the model is confident, and which should always need a person?
+- `chapters/ch07.qmd`
+  - Before: (Closing and noting are cheap and reversible, so they're fine automatically with a calibrated line. Blocking a domain is reversible but can cost business, so give it a stricter line and a list of partners it may never block. Isolating a laptop disrupts someone's work and may destroy evidence, so it needs a person.)
+  - After: (Closing and adding notes are cheap and can be undone, so they're fine automatically with a threshold on a calibrated probability. Blocking a domain can be undone but can cost business, so give it a stricter threshold and a list of partners it may never block. Cutting off a laptop stops someone's work and may destroy evidence, so it needs a person.)
+- `chapters/ch07.qmd`
+  - Before: The model didn't know Kestrel, so we handed it the right pages, and retrieval became the step everything depended on. Then we let the model act. An agent turned out to be a model in a loop, whose tool calls are really decisions your code carries out, and when we counted its steps, most were decisions. Errors compounded over the loop, one planted sentence steered a verdict, and nearly every catch was a decision with a threshold.
+  - After: The model didn't know Kestrel, so we gave it the right pages, and retrieval became the step everything depended on. Then we let the model act. An agent turned out to be a model in a loop. Its tool calls are really decisions that your code carries out. When we counted its steps, most were decisions. Errors added up over the loop, and one planted sentence changed a verdict. Nearly every protection was a decision with a threshold.
+
+## Chapter 8: System 1 and System 2
+
+30 changes.
+
+- `chapters/ch08.qmd`
+  - Before: It's both, and the idea deserves unpacking properly before we open Jev up in the next chapter. The name comes from one of the best-known ideas in modern psychology, and that idea describes the software we've been building in this book surprisingly well. Most of the work is fast judgement. A little of it is slow thought. And the art is sending each case to the right one.
+  - After: It's both. The idea deserves a proper explanation before we look inside Jev in the next chapter. The name comes from one of the best-known ideas in modern psychology. That idea describes the software in this book surprisingly well. Most of the work is fast judgement. A little of it is slow thought. And the skill is sending each case to the right one.
+- `chapters/ch08.qmd`
+  - Before: - Map them onto software: which tools behave like each.
+  - After: - Match them to software: which tools behave like each.
+- `chapters/ch08.qmd`
+  - Before: - Route cases between a fast system and a slow one by doubt, and measure what that buys.
+  - After: - Send cases to a fast system or a slow one depending on doubt, and measure what that gains.
+- `chapters/ch08.qmd`
+  - Before: - Say when fast judgement can be trusted, and why honest doubt is the key condition.
+  - After: - Say when fast judgement can be trusted, and why calibrated doubt is the key condition.
+- `chapters/ch08.qmd`
+  - Before: That one felt different. You had to stop, hold numbers in your head, do steps in order. You could feel the effort. Your pupils probably widened.
+  - After: That one felt different. You had to stop, keep numbers in your head, and do steps in order. You could feel the effort. The dark centres of your eyes probably got a little bigger.
+- `chapters/ch08.qmd`
+  - Before: The psychologist Daniel Kahneman used these very examples to introduce two modes of thinking, which he called **System 1** and **System 2** [@kahneman2011]. System 1 is fast, automatic and effortless: recognising a face, reading a word, sensing that a sentence is hostile, knowing that 2 + 2 is 4. System 2 is slow, deliberate and effortful: long multiplication, filling in a tax form, checking an argument.
+  - After: The psychologist Daniel Kahneman used these same examples to describe two ways of thinking. He called them **System 1** and **System 2** [@kahneman2011]. System 1 is fast, automatic and effortless: recognising a face, reading a word, sensing that a sentence is unfriendly, knowing that 2 + 2 is 4. System 2 is slow, careful and effortful: long multiplication, filling in a tax form, checking an argument.
+- `chapters/ch08.qmd`
+  - Before: Neither is better. System 1 runs almost everything you do, and it's usually right. But it can be confidently wrong. Try a famous test of it [@frederick2005]:
+  - After: Neither is better. System 1 runs almost everything you do, and it's usually right. But it can be confidently wrong. Try this famous test [@frederick2005]:
+- `chapters/ch08.qmd`
+  - Before: The answer that jumps out is 10 cents. It's wrong: the ball costs 5 cents. System 1 offered a quick, plausible answer, and unless System 2 stepped in to check, that's the answer you'd have given.
+  - After: The answer that comes to mind first is 10 cents. It's wrong: the ball costs 5 cents. System 1 offered a quick answer that sounded right. Unless System 2 stepped in to check, that's the answer you'd have given.
+- `chapters/ch08.qmd`
+  - Before: Rules and classifiers are System 1–like: fast, automatic, good at familiar patterns, useless outside them. Logistic regression doesn't deliberate. It adds up the evidence and answers in microseconds.
+  - After: Rules and classifiers are like System 1: fast, automatic, good at familiar patterns, and useless outside them. Logistic regression doesn't think things over. It adds up the evidence and answers in millionths of a second.
+- `chapters/ch08.qmd`
+  - Before: Large language models, especially the newer ones that write out their reasoning before answering, are the closest software has come to System 2: slow, effortful, general, able to tackle problems they've never seen. Chapter 6 showed what that costs. Every step of reasoning is tokens in the loop, and tokens are time and money.
+  - After: Large language models are the closest software has come to System 2, especially the newer ones that write out their reasoning before answering. They're slow, effortful and general, and they can work on problems they've never seen. Chapter 6 showed what that costs. Every step of reasoning is tokens in the loop, and tokens cost time and money.
+- `chapters/ch08.qmd`
+  - Before: For the last few years, the industry's instinct has been to use that System 2 machinery for *everything*, including judgements that System 1 handles fine. Chapter 7 counted what that looks like inside an agent: mostly small, familiar decisions, each made by a slow, general reasoner.
+  - After: For the last few years, the industry has tended to use that System 2 machinery for *everything*, including judgements that System 1 handles well. Chapter 7 counted what that looks like inside an agent: mostly small, familiar decisions, each made by a slow, general reasoner.
+- `chapters/ch08.qmd`
+  - Before: ![Tasks in and around a SOC, placed by how often they happen and how much thinking each needs (illustrative). The high-volume ones cluster at the bottom right: quick judgements made hundreds or thousands of times a day. The few that need real reasoning happen rarely.]
+  - After: ![Tasks in and around a SOC, placed by how often they happen and how much thinking each needs (illustrative). The frequent ones are grouped at the bottom right: quick judgements made hundreds or thousands of times a day. The few that need real reasoning happen rarely.]
+- `chapters/ch08.qmd`
+  - Before: @fig-task-map is illustrative, but the shape is familiar to anyone who has worked in operations. A handful of tasks need real thought: reconstructing an attack, writing the incident report, explaining a breach to the board. The overwhelming volume is quick judgement: is this alert real, which queue, which tool next, is this chunk relevant, is this the same incident as that one.
+  - After: @fig-task-map is illustrative, but anyone who has worked in operations knows the pattern. A few tasks need real thought: working out how an attack happened, writing the incident report, explaining a break-in to the company's leaders. Almost all the rest is quick judgement. Is this alert real? Which queue? Which tool next? Is this chunk relevant? Is this the same incident as that one?
+- `chapters/ch08.qmd`
+  - Before: That mismatch is the gap TypeSafe named Jev's model class after. A **System One model**, in their sense, is one built for the high-volume corner of @fig-task-map. It answers typed questions fast and returns probabilities, and it doesn't reason in text at all. Whether Jev fills that gap well is the subject of the rest of Part III, measured with the tools of Part I.
+  - After: TypeSafe named Jev's type of model after that mismatch. A **System One model**, as they use the term, is built for the busy corner of @fig-task-map. It answers typed questions fast, returns probabilities, and doesn't reason in text at all. Whether Jev does this well is the subject of the rest of Part III, measured with the tools of Part I.
+- `chapters/ch08.qmd`
+  - Before: A good analyst already knows the answer. They triage most alerts in seconds, and they *notice* the ones that don't feel right. Those get the slow treatment. The skill isn't only fast judgement. It's fast judgement *plus an honest sense of when it's not enough*.
+  - After: A good analyst already knows the answer. They sort most alerts in seconds, and they *notice* the ones that don't feel right. Those get the slow, careful treatment. The skill isn't only fast judgement. It's fast judgement *plus a true sense of when it's not enough*.
+- `chapters/ch08.qmd`
+  - Before: Let's measure what that design buys at Kestrel. System 1 is the mock decision model reading each alert's raw text, recalibrated on the history weeks. System 2 is a careful investigation, which in our synthetic world I can model perfectly: it learns each alert's *true* probability. That's the best any investigation could do, so it's the upper limit of what System 2 can add.
+  - After: Let's measure what that design gains at Kestrel. System 1 is the mock decision model reading each alert's raw text, recalibrated on the history weeks. System 2 is a careful investigation. In our synthetic world I can model it perfectly: it learns each alert's *true* probability. That's the best any investigation could do, so it's the most that System 2 could add.
+- `chapters/ch08.qmd`
+  - Before: We decide whether each live alert is a threat using the cost line from Chapter 4, with a missed threat at \$10,000 and a false alarm at \$400. Then we send a share of alerts to System 2, either the ones System 1 is least sure about, or a random selection.
+  - After: We decide whether each live alert is a threat using the cost-based threshold from Chapter 4, with a missed threat at \$10,000 and a false alarm at \$400. Then we send a share of alerts to System 2: either the ones System 1 is least sure about, or a random selection.
+- `chapters/ch08.qmd`
+  - Before: The result in @fig-routing-curve is the argument for a dual-process design, in one chart. Sending the 20% of alerts System 1 is least sure about captures {{< num ch15 share_gain_20 pct >}} of everything System 2 could possibly add. Sending a random 20% captures {{< num ch15 share_gain_20_random pct >}}.
+  - After: @fig-routing-curve makes the case for a design with two systems, in one chart. Sending the 20% of alerts System 1 is least sure about gets {{< num ch15 share_gain_20 pct >}} of everything System 2 could possibly add. Sending a random 20% gets {{< num ch15 share_gain_20_random pct >}}.
+- `chapters/ch08.qmd`
+  - Before: And the cost of System 2 is paid only on that 20%. If a careful pass takes 25 seconds and a fast decision 0.15 (illustrative numbers again), then routing by doubt averages about {{< num ch15 time_20 f1 >}} seconds per alert, against 25 for sending everything to the slow system.
+  - After: And you pay for System 2 only on that 20%. Say a careful pass takes 25 seconds and a fast decision takes 0.15 seconds (illustrative numbers again). Then routing by doubt takes about {{< num ch15 time_20 f1 >}} seconds per alert on average, against 25 for sending everything to the slow system.
+- `chapters/ch08.qmd`
+  - Before: A fast system earns its keep twice: by its speed, and by knowing which cases it shouldn't decide.
+  - After: A fast system is valuable in two ways: its speed, and knowing which cases it shouldn't decide.
+- `chapters/ch08.qmd`
+  - Before: That's why calibration keeps coming back in this book. Routing by doubt only works if System 1's doubt is *honest*: if its 0.5 really means "this could go either way" and its 0.02 really means "almost certainly fine". An overconfident System 1 sends the wrong cases to System 2, and keeps the dangerous ones for itself.
+  - After: That's why calibration keeps coming back in this book. Routing by doubt only works if System 1 is *calibrated*: its 0.5 must really mean "this could go either way", and its 0.02 must really mean "almost certainly fine". An overconfident System 1 sends the wrong cases to System 2, and keeps the dangerous ones for itself.
+- `chapters/ch08.qmd`
+  - Before: Psychologists spent years arguing about intuition. Some, like Gary Klein, studied experts such as firefighters and nurses, whose split-second judgements were very good. Others, like Kahneman, catalogued the ways snap judgements go wrong. In 2009 the two of them wrote a joint paper setting out when intuition can be trusted, and found they mostly agreed [@kahneman2009].
+  - After: Psychologists argued about intuition for years. Some, like Gary Klein, studied experts such as firefighters and nurses, whose very fast judgements were very good. Others, like Kahneman, listed the ways quick judgements go wrong. In 2009 the two of them wrote a paper together about when intuition can be trusted. They found they mostly agreed [@kahneman2009].
+- `chapters/ch08.qmd`
+  - Before: Their answer, roughly: trust fast judgement in a **regular** environment, where the same cues keep meaning the same things, after **plenty of practice** with **quick, clear feedback** (@fig-conditions). Don't trust it in chaotic environments, or where feedback is slow and rare, however confident the expert feels.
+  - After: Their answer, roughly: trust fast judgement in a **regular** environment, where the same signs keep meaning the same things. It also needs **plenty of practice** with **quick, clear feedback** (@fig-conditions). Don't trust it where things are unpredictable, or where feedback is slow and rare, however confident the expert feels.
+- `chapters/ch08.qmd`
+  - Before: I've added a fourth condition that I think matters just as much for machines: an honest sense of doubt. A good expert knows when a case is outside their experience. A good System One model should too, and for a model "knowing" means one thing: calibrated probabilities that drop towards uncertainty when the case is unfamiliar.
+  - After: I've added a fourth condition that I think matters just as much for machines: a true sense of doubt. A good expert knows when a case is outside their experience. A good System One model should too. For a model, "knowing" means one thing: calibrated probabilities that move towards uncertainty when the case is unfamiliar.
+- `chapters/ch08.qmd`
+  - Before: SOC triage fits the first three conditions better than most jobs. Alerts come from a fixed set of detectors; there are thousands of examples; analysts find out, eventually, which alerts were real. Novel attack investigations fit badly. So do one-off strategic decisions. It makes a useful rule of thumb for where System One models belong, and where they don't.
+  - After: SOC triage fits the first three conditions better than most jobs. Alerts come from a fixed set of detectors, there are thousands of examples, and analysts find out in the end which alerts were real. Investigating new kinds of attack fits badly. So do one-time business decisions. This gives a useful guide to where System One models belong, and where they don't.
+- `chapters/ch08.qmd`
+  - Before: The two-systems idea is a metaphor, and Kahneman himself was clear that the "systems" are shorthand, not two machines in the brain. Mapping it onto software is looser still: a System One model isn't intuitive in any human sense; it's a trained function. And routing by doubt has a weakness: if System 1 is confidently wrong about a whole class of cases, say a new attack technique it has never seen, it won't route them to System 2, because it doesn't feel unsure. Random audits (Chapter 14) and drift checks are there to catch what doubt misses.
+  - After: The two-systems idea is a comparison, not a fact about the brain. Kahneman himself said the "systems" are a short way of speaking, not two machines in the head. Applying it to software is even less exact: a System One model isn't intuitive in any human sense; it's a trained function. And routing by doubt has a weakness. System 1 may be confidently wrong about a whole type of case, such as a new attack method it has never seen. Then it won't send those cases to System 2, because it doesn't feel unsure. Random audits (Chapter 14) and checks for drift are there to catch what doubt misses.
+- `chapters/ch08.qmd`
+  - Before: Kestrel's System 2 is expensive: a senior analyst's time. The team can afford to send 10% of alerts, not 20%. Using @fig-routing-curve, roughly how much of the benefit do they keep? And if they could make System 1 better calibrated, would the curve move up, down, or change shape?
+  - After: Kestrel's System 2 is expensive: it's a senior analyst's time. The team can afford to send 10% of alerts, not 20%. Using @fig-routing-curve, about how much of the benefit do they keep? And if they could make System 1 better calibrated, would the curve move up, move down, or change shape?
+- `chapters/ch08.qmd`
+  - Before: (They'd keep somewhat over half. Better calibration makes the green curve drop *faster*, because the cases System 1 marks as uncertain would really be the uncertain ones, so each escalation buys more.)
+  - After: (They'd keep a little over half. Better calibration makes the green curve drop *faster*. The cases System 1 marks as uncertain would really be the uncertain ones, so each case sent to System 2 gains more.)
+- `chapters/ch08.qmd`
+  - Before: We started with 2 + 2 and 17 × 24, and found two modes of thinking in each of us. Software, we saw, has mostly used its slow, general mode for every job, even though most jobs are quick judgements. So we put a fast system in front of a slow one and sent across only the cases it doubted, and a fifth of the traffic bought most of the benefit. That only worked because the fast system's doubt was sound, the very condition under which psychologists say intuition can be trusted.
+  - After: We started with 2 + 2 and 17 × 24, and found two ways of thinking in each of us. Software, we saw, has mostly used its slow, general way for every job, even though most jobs are quick judgements. So we put a fast system in front of a slow one, and sent across only the cases it doubted. A fifth of the cases got most of the benefit. That only worked because the fast system was calibrated. That's the same condition under which psychologists say intuition can be trusted.
+- `chapters/ch08.qmd`
+  - Before: 2. In the lab, route the alerts randomly instead of by doubt, and plot both curves. At what share does random routing catch up?
+  - After: 2. In the lab, route the alerts randomly instead of by doubt, and plot both curves. At what share does random routing do as well?
+
+## Chapter 10: The type system
+
+35 changes.
+
+- `chapters/ch10.qmd`
+  - Before: Jev asks you to put every question into one of three shapes. Yes or no. Pick one. Rate it on a scale.
+  - After: Jev asks you to put every question into one of three shapes: yes or no, pick one, or rate it on a scale.
+- `chapters/ch10.qmd`
+  - Before: That's the first thing people push back on:
+  - After: That's the first thing people object to:
+- `chapters/ch10.qmd`
+  - Before: They are. But look back at Chapter 7's agent, or at your own working day, and notice how many of those messy decisions break down into a handful of these three shapes. Is this a real attack? Which team should handle it? How urgent is it? The mess usually lives in how the question is *asked*, not in the shape of the answer.
+  - After: They are. But look back at Chapter 7's agent, or at your own working day. Notice how many of those messy decisions break down into a few questions of these three shapes. Is this a real attack? Which team should handle it? How urgent is it? The mess is usually in how the question is *asked*, not in the shape of the answer.
+- `chapters/ch10.qmd`
+  - Before: This chapter takes each type in turn, with the design choices that make it work and the traps that make it fail. The traps are the more useful part.
+  - After: This chapter takes each type in turn. It covers the design choices that make each one work, and the traps that make it fail. The traps are the more useful part.
+- `chapters/ch10.qmd`
+  - Before: - Read a score's whole distribution, and act on its tails rather than its average.
+  - After: - Read all of a score's probabilities, and act on the levels you care about rather than on its average.
+- `chapters/ch10.qmd`
+  - Before: If they look familiar, they should. Each is something you've already built.
+  - After: If they look familiar, that's because you've already built each of them.
+- `chapters/ch10.qmd`
+  - Before: ![Each type is an old friend. A noul is the S-curve from Chapter 2, turning evidence into one probability.
+  - After: ![You've met each type before. A noul is the S-curve from Chapter 2, turning evidence into one probability.
+- `chapters/ch10.qmd`
+  - Before: The odd name is TypeSafe's, for a yes-or-no question. You give it instructions, a question or a statement, and optionally a description of what counts as yes and what counts as no. You get back one number: the probability of yes.
+  - After: "Noul" is TypeSafe's unusual name for a yes-or-no question. You give it instructions: a question or a statement. You can also describe what counts as yes and what counts as no. You get back one number: the probability of yes.
+- `chapters/ch10.qmd`
+  - Before: A `noul` is the most useful type and the easiest to ask badly. Three habits help.
+  - After: A `noul` is the most useful type, and the easiest to ask badly. Three habits help.
+- `chapters/ch10.qmd`
+  - Before: **One fact per question.** "Is this a real attack on a critical server?" bundles two facts, and the answer can't tell you which one failed. Ask two nouls and combine them in your code, where the logic is visible.
+  - After: **One fact per question.** "Is this a real attack on a critical server?" joins two facts, and a "no" can't tell you which one was false. Ask two nouls and combine them in your code, where the logic is visible.
+- `chapters/ch10.qmd`
+  - Before: **Spell out yes and no.** "Is this malicious?" leaves the edges vague. Is an employee breaking policy malicious? Is a penetration test? Say what counts. The API lets you describe both outcomes:
+  - After: **Say exactly what yes and no mean.** "Is this malicious?" leaves the unclear cases open. Is an employee breaking a company rule malicious? Is a test attack that the company paid for? Say what counts. The API lets you describe both outcomes:
+- `chapters/ch10.qmd`
+  - Before: **No double negatives.** "Is this not unlikely to be benign?" is hard for people and models alike. Ask the question the right way up.
+  - After: **No double negatives.** "Is this not unlikely to be benign?" is hard for people and models. Ask the question in the simple, positive way.
+- `chapters/ch10.qmd`
+  - Before: ![Category probabilities for four alerts. Some are sharply decided; others spread their probability over two or three labels. The spread is information: it tells you how sure the model is, and between what.]
+  - After: ![Category probabilities for four alerts. Some are clearly decided; others spread their probability over two or three labels. The spread is useful: it tells you how sure the model is, and which labels it's choosing between.]
+- `chapters/ch10.qmd`
+  - Before: That "add up to 1" is the property to respect, because it cuts both ways. The model *must* distribute all of its belief across the labels you gave it. If the right answer isn't among them, the probability doesn't vanish. It lands on the wrong labels.
+  - After: That "add up to 1" is important, and it has a downside. The model *must* spread all of its belief across the labels you gave it. If the right answer isn't among them, the probability doesn't disappear. It lands on the wrong labels.
+- `chapters/ch10.qmd`
+  - Before: It looks like this. I asked the mock to classify {{< num ch17 n_harmless int >}} harmless alerts twice: once with the full list of categories, including "benign", and once with only the threat categories.
+  - After: Here's what that looks like. I asked the mock to label {{< num ch17 n_harmless int >}} harmless alerts twice. The first time it had the full list of categories, including "benign". The second time it had only the threat categories.
+- `chapters/ch10.qmd`
+  - Before: With "benign" available, {{< num ch17 full_benign_share pct >}} of the harmless alerts were labelled benign. Without it, every one of them got a threat label, with a median confidence of {{< num ch17 forced_conf_median f2 >}} (@fig-forced). The model wasn't wrong, exactly. You asked it which *threat* each alert was, and it answered. But anyone reading "malware, 0.95" would draw the wrong conclusion.
+  - After: With "benign" available, {{< num ch17 full_benign_share pct >}} of the harmless alerts were labelled benign. Without it, every one of them got a threat label, with a median confidence of {{< num ch17 forced_conf_median f2 >}} (@fig-forced). The model wasn't exactly wrong. You asked it which *threat* each alert was, and it answered. But anyone reading "malware, 0.95" would reach the wrong conclusion.
+- `chapters/ch10.qmd`
+  - Before: So include "benign", "none", "other" or "not enough information" whenever those can happen. Make the options mutually exclusive, too: if two labels can both be true at once ("phishing" and "credential theft"), a choice will split its probability between them and neither will look confident. When things really can overlap, use several nouls instead of one choice.
+  - After: So include "benign", "none", "other" or "not enough information" whenever those can happen. Also make sure only one option can be true at a time. Suppose two labels can both be true at once, like "phishing" and "credential theft". Then a choice will split its probability between them, and neither will look confident. When things really can overlap, use several nouls instead of one choice.
+- `chapters/ch10.qmd`
+  - Before: ## Score: levels in order, and the tails
+  - After: ## Score: levels in order
+- `chapters/ch10.qmd`
+  - Before: A `score` gives the model an ordered list of levels, and returns a probability for each, plus the **expected score**: the probability-weighted average level.
+  - After: A `score` gives the model a list of levels in order. It returns a probability for each level, plus the **expected score**: the average level, weighted by the probabilities.
+- `chapters/ch10.qmd`
+  - Before: That average is convenient, and it can mislead you badly.
+  - After: That average is convenient, but it can badly mislead you.
+- `chapters/ch10.qmd`
+  - Before: Look at the first panel of @fig-severity. The alert's average severity is {{< num ch17 sev_example.expected f2 >}}, which reads as "low: review within a week". But there's hardly any probability *at* low. The model is really saying: *this is either nothing, or it's serious.* There's a {{< num ch17 sev_example.p_high pct >}} chance it's medium or high. An average of two very different possibilities describes neither of them.
+  - After: Look at the first panel of @fig-severity. The alert's average severity is {{< num ch17 sev_example.expected f2 >}}, which reads as "low: review within a week". But there's hardly any probability *at* low. The model is really saying: *this is either nothing, or it's serious.* There's a {{< num ch17 sev_example.p_high pct >}} chance it's medium or high. The average of two very different possibilities describes neither of them.
+- `chapters/ch10.qmd`
+  - Before: That happens whenever the model is unsure about *whether* something is real. A harmless alert would be informational, and a real one would be serious, so the distribution splits into two humps. So act on the tail:
+  - After: That happens whenever the model is unsure *whether* something is real. A harmless alert would be informational, and a real one would be serious. So the probabilities form two peaks, one at each end. Act on the probability of the levels you care about, here the high end:
+- `chapters/ch10.qmd`
+  - Before: "Page someone if P(medium or high) is above 0.3" is a rule you can reason about and set with costs. "Page someone if the average is above 1.5" isn't.
+  - After: "Call someone if P(medium or high) is above 0.3" is a rule you can reason about and set with costs. "Call someone if the average is above 1.5" isn't.
+- `chapters/ch10.qmd`
+  - Before: Averages hide tails. Put thresholds on the probability of the levels you care about.
+  - After: Averages hide the extremes. Put thresholds on the probability of the levels you care about.
+- `chapters/ch10.qmd`
+  - Before: In @fig-expected-cost, "benign" is the top label at 0.40, but 0.60 of the probability says *some kind of threat*. Closing the alert risks all of those. The cheapest action is to route it to the identity team, the most likely *threat*. That's the Chapter 4 formula generalised: for each action, add up what it costs under each possible truth, weighted by that truth's probability, and take the cheapest.
+  - After: In @fig-expected-cost, "benign" is the top label at 0.40, but 0.60 of the probability says *some kind of threat*. Closing the alert risks all of those. The cheapest action is to send it to the identity team, which handles the most likely *threat*. That's the Chapter 4 formula made more general. For each action, add up what it costs under each possible truth, weighted by that truth's probability. Then take the cheapest action.
+- `chapters/ch10.qmd`
+  - Before: It's also why you want probabilities for every option, not just the winning label. A text answer that says "benign" throws away the very information you need here.
+  - After: It's also why you want probabilities for every option, not just the top label. A text answer that says "benign" throws away exactly the information you need here.
+- `chapters/ch10.qmd`
+  - Before: Real decisions usually need a few answers about the same situation. You can ask them together. The state is sent once, and each question gets its own typed answer. The SDK even lets you declare the response as your own class, so your code works with typed fields instead of dictionaries:
+  - After: Real decisions usually need a few answers about the same situation. You can ask the questions together. The state is sent once, and each question gets its own typed answer. The SDK even lets you describe the response as your own class. Then your code works with typed fields instead of dictionaries:
+- `chapters/ch10.qmd`
+  - Before: Three types can't express everything. Numbers on a continuous range ("how many megabytes?"), free-text fields ("which username?") and structured extraction still need something else, often an LLM, as Chapter 15's "extract, then decide" pattern shows. The answers of separate questions in one call aren't guaranteed to be consistent with each other: a low P(attack) alongside a high P(severity high) is possible, and your combining code should expect it. And question wording matters: a clearer description can move the probabilities, so test wording changes like any other change.
+  - After: Three types can't express everything. Some answers still need something else, often an LLM: a number on a continuous range ("how many megabytes?"), free text ("which username?"), or several fields pulled out of a document. Chapter 15's "extract, then decide" pattern shows how. The answers to separate questions in one call may not agree with each other. A low P(attack) next to a high P(severity high) is possible, and the code that combines them should expect it. And wording matters: a clearer description can change the probabilities, so test wording changes like any other change.
+- `chapters/ch10.qmd`
+  - Before: Kestrel pages on-call when P(severity medium or high) is at least some line. A false page costs \$400; a missed serious incident costs about \$10,000 more than handling it in the morning. Using the Chapter 4 formula, where does the line go? Would you use the same line for alerts on critical assets?
+  - After: Kestrel calls the analyst on call when P(severity medium or high) is at least some threshold. A false call costs \$400. A missed serious incident costs about \$10,000 more than handling it in the morning. Using the Chapter 4 formula, where does the threshold go? Would you use the same threshold for alerts on critical assets?
+- `chapters/ch10.qmd`
+  - Before: (400 ÷ 10,400 ≈ 0.04, so page at about 4%. Low, and it would page a lot, which is why Chapter 14 will cap pages by what on-call can absorb. For critical assets a miss costs more, so the line should be even lower.)
+  - After: (400 ÷ 10,400 ≈ 0.04, so call at about 4%. That's low, and it would mean many calls. That's why Chapter 14 limits calls to what the on-call analyst can handle. For critical assets a miss costs more, so the threshold should be even lower.)
+- `chapters/ch10.qmd`
+  - Before: Brooks meant data structures in software. The same holds for decisions: get the *shape* of the question and its answers right, and most of the logic around it becomes obvious.
+  - After: Brooks meant data structures in software. The same is true for decisions: get the *shape* of the question and its answers right, and most of the logic around it becomes obvious.
+- `chapters/ch10.qmd`
+  - Before: Three shapes, we found, cover most small decisions, as long as the questions are asked carefully. A noul wants one fact and a clear idea of what yes means. A choice spreads all its belief over the options you give it, so every real case needs one. A score's average can describe a case that doesn't exist, so thresholds belong on the tails. And for all three, the whole distribution beats the top answer, because decisions are made with costs.
+  - After: Three shapes, we found, cover most small decisions, as long as the questions are asked carefully. A noul needs one fact and a clear idea of what yes means. A choice spreads all its belief over the options you give it, so every real case needs an option. A score's average can describe a case that doesn't exist, so thresholds belong on the probability of the levels you care about. And for all three, the full set of probabilities is better than the top answer, because decisions are made with costs.
+- `chapters/ch10.qmd`
+  - Before: Everything here has assumed the probabilities are honest. Time to check.
+  - After: Everything here has assumed the probabilities are calibrated. Time to check.
+- `chapters/ch10.qmd`
+  - Before: 1. Rewrite each bundled question as separate nouls, and say how you'd combine them: "Is this a phishing email that someone clicked on?"; "Is this login suspicious and from an admin account?"
+  - After: 1. Rewrite each of these two-part questions as separate nouls, and say how you'd combine them: "Is this a phishing email that someone clicked on?"; "Is this login suspicious and from an admin account?"
+- `chapters/ch10.qmd`
+  - Before: 3. Find an alert in the lab whose severity distribution has two humps. What does its P(attack) look like? Why do the two go together?
+  - After: 3. Find an alert in the lab whose severity probabilities have two peaks. What does its P(attack) look like? Why do the two go together?
