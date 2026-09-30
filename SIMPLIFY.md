@@ -2118,3 +2118,208 @@ Every change is logged below as a before/after pair, applied by `tools/simplify_
 - `chapters/ch15.qmd`
   - Before: 4. The "check the writer" pattern can share the writer's blind spots. Describe a test that would reveal that.
   - After: 4. The checker in the "check the writer" pattern can have the same weaknesses as the writer. Describe a test that would show that.
+
+## Chapter 16: First calls
+
+35 changes.
+
+- `chapters/ch16.qmd`
+  - Before: Fifteen chapters in, you know what a System One model is for, how to test it and where to put it. You haven't yet written the ten lines of code that actually call one.
+  - After: After fifteen chapters, you know what a System One model is for, how to test it and where to put it. But you haven't yet written the ten lines of code that actually call one.
+- `chapters/ch16.qmd`
+  - Before: That moment has a particular feeling with any new API. Where does the key go? What does an error look like? Will a bug in a loop cost me money? Will my tests break when the network's down?
+  - After: Starting with any new API raises the same questions. Where does the key go? What does an error look like? Will a bug in a loop cost me money? Will my tests break when the network is down?
+- `chapters/ch16.qmd`
+  - Before: This chapter answers those questions with the official TypeSafe library, `typesafe-sdk`, and the book's mock. By the end you'll have made every kind of call, provoked every kind of error, and written tests that never touch the network. None of it will have cost anything.
+  - After: This chapter answers those questions with the official TypeSafe library, `typesafe-sdk`, and the book's mock. By the end, you'll have made every kind of call, caused every kind of error, and written tests that never use the network. None of it will have cost anything.
+- `chapters/ch16.qmd`
+  - Before: - Tell errors you should retry from errors you should fix, and set retries for your latency budget.
+  - After: - Tell errors you should retry from errors you should fix, and set retries to fit your time limit.
+- `chapters/ch16.qmd`
+  - Before: - Record real answers once and replay them in tests forever.
+  - After: - Record real answers once and replay them in tests as often as you like.
+- `chapters/ch16.qmd`
+  - Before: The response carries more than the answer. `r.nouls`, `r.choices` and `r.scores` hold the typed answers, keyed by the names you gave your questions. `r.usage` counts tokens, which is what you're billed on. `r.request_id` identifies the call, and it's worth logging next to every decision so that you can trace a surprising answer later. And `r.raw_http_response` is there when you need the headers.
+  - After: The response contains more than the answer. `r.nouls`, `r.choices` and `r.scores` hold the typed answers, under the names you gave your questions. `r.usage` counts tokens, which is what you pay for. `r.request_id` identifies the call. Log it next to every decision, so that you can trace a surprising answer later. And `r.raw_http_response` is there when you need the headers.
+- `chapters/ch16.qmd`
+  - Before: ## One argument decides what's on the other end
+  - After: ## One argument decides where the request goes
+- `chapters/ch16.qmd`
+  - Before: A **transport** is the lowest layer of an HTTP client: the part that takes a finished request and returns a response. The SDK lets you supply your own, and that's the seam the book's mock plugs into (@fig-layers). Your code, the SDK's request building, its retries and its parsing all run as they would against the real service. Only the last step is different.
+  - After: A **transport** is the lowest layer of an HTTP client: the part that takes a finished request and returns a response. The SDK lets you supply your own, and that's where the book's mock connects (@fig-layers). Your code, the SDK's request building, its retries and its parsing all run just as they would against the real service. Only the last step is different.
+- `chapters/ch16.qmd`
+  - Before: For the same reason, the mock can be trusted as a stand-in for the *interface*. It accepts the same request shape as the API, returns the same answer shape, and rejects bad requests with the same error codes, which I checked against the SDK's own data models. What it can't stand in for is the *answers*. They come from a small synthetic engine, every response says so in an `x-jevkit-synthetic` header, and the model name it reports is `jev-mock-synthetic`.
+  - After: For the same reason, you can trust the mock as a stand-in for the *interface*. It accepts the same request shape as the API and returns the same answer shape. It rejects bad requests with the same error codes; I checked them against the SDK's own data models. What it can't stand in for is the *answers*. They come from a small synthetic engine. Every response says so in an `x-jevkit-synthetic` header, and the model name it reports is `jev-mock-synthetic`.
+- `chapters/ch16.qmd`
+  - Before: To call the real thing, drop the transport and give it a key:
+  - After: To call the real service, remove the transport and give it a key:
+- `chapters/ch16.qmd`
+  - Before: Or use `jevkit.client()`, which returns the mock unless you set `JEVKIT_LIVE=1` and a key. Every lab in the book runs through it, so each one can be pointed at real Jev with two environment variables.
+  - After: Or use `jevkit.client()`, which returns the mock unless you set `JEVKIT_LIVE=1` and a key. Every lab in the book uses it, so you can point each one at real Jev by setting two environment variables.
+- `chapters/ch16.qmd`
+  - Before: Pin the model if you can. `jev-latest` is an alias, and aliases move. Chapter 9 said the unknowns in a new model include how its behaviour changes between versions; pinning is how you make that a decision rather than a surprise.
+  - After: Use a fixed model version if you can. `jev-latest` is a nickname that can point to a new version at any time. Chapter 9 said one unknown in a new model is how its behaviour changes between versions. Fixing the version turns that into your decision, not a surprise.
+- `chapters/ch16.qmd`
+  - Before: ## What happens on the wire
+  - After: ## What happens during a call
+- `chapters/ch16.qmd`
+  - Before: ![One call's life. The SDK validates and sends the request.
+  - After: ![The steps of one call. The SDK checks and sends the request.
+- `chapters/ch16.qmd`
+  - Before: Most of the time a call goes straight along the top of @fig-lifecycle. The interesting parts are the two ways off it.
+  - After: Most of the time, a call goes straight along the top of @fig-lifecycle. The interesting parts are the two other paths.
+- `chapters/ch16.qmd`
+  - Before: I provoked every error I could think of against the mock and recorded what the SDK did.
+  - After: I caused every error I could think of against the mock, and recorded what the SDK did.
+- `chapters/ch16.qmd`
+  - Before: **Your mistakes** fail fast: no key, a model name that doesn't exist, a question with no options. Some are caught before anything is sent; the rest come back as a 4xx error. Retrying them is pointless, because the same request will fail the same way. Fix the code.
+  - After: **Your mistakes** fail at once: no key, a model name that doesn't exist, a question with no options. Some are caught before anything is sent; the rest come back as a 4xx error. Retrying them is pointless, because the same request will fail the same way. Fix the code.
+- `chapters/ch16.qmd`
+  - Before: **The world's mistakes** are worth retrying: rate limits (429), server errors (5xx) and a network that drops. The SDK retries these by default, twice, waiting a little longer each time.
+  - After: **Problems outside your code** are worth retrying: rate limits (429), server errors (5xx) and a lost network connection. The SDK retries these by default, twice, waiting a little longer each time.
+- `chapters/ch16.qmd`
+  - Before: To see what retries buy, I made the mock fail at random, then counted how many calls succeeded.
+  - After: To see what retries gain, I made the mock fail at random, then counted how many calls succeeded.
+- `chapters/ch16.qmd`
+  - Before: With one request in five failing, only {{< num ch23 ok_20_0 pct >}} of calls succeed with no retries. With the SDK's default two retries, {{< num ch23 ok_20_2 pct1 >}} do (@fig-retries). The arithmetic is simple: if each attempt fails independently with probability *q*, a call with *r* retries fails only with probability *q*^*r*+1^.
+  - After: With one request in five failing, only {{< num ch23 ok_20_0 pct >}} of calls succeed with no retries. With the SDK's default two retries, {{< num ch23 ok_20_2 pct1 >}} do (@fig-retries). The arithmetic is simple. Suppose each attempt fails with probability *q*, independently of the others. Then a call with *r* retries fails only with probability *q*^*r*+1^.
+- `chapters/ch16.qmd`
+  - Before: Retries cost time, though. The default policy waits about half a second, then a second, before retrying. Fine for a batch job; not for Chapter 12's login check, which had three hundred milliseconds in total.
+  - After: Retries cost time, though. The default policy waits about half a second, then a second, before retrying. That's fine for a job that runs in the background. It's not fine for Chapter 12's login check, which had three hundred milliseconds in total.
+- `chapters/ch16.qmd`
+  - Before: So here's the decision-layer way to think about it. A call that fails is just another case your policy must handle. For a tight budget, allow no retries and decide what a failure *means*: for a login, maybe "allow, but flag for review"; for closing an alert, "don't close; send to the queue". Chapter 14 called this a fail-safe. It belongs in the policy, where it's visible, not buried in a retry setting.
+  - After: So here's how to think about it as a decision layer. A call that fails is just another case your policy must handle. With a tight time limit, allow no retries, and decide what a failure *means*. For a login, maybe it means "allow, but flag for review". For closing an alert, "don't close; send to the queue". Chapter 14 called this a fail-safe. It belongs in the policy, where people can see it, not hidden in a retry setting.
+- `chapters/ch16.qmd`
+  - Before: Retry the world's errors, never your own. And when the clock matters, decide in advance what a failed call means.
+  - After: Retry errors from outside your code, never your own. And when time matters, decide in advance what a failed call means.
+- `chapters/ch16.qmd`
+  - Before: Asking Kestrel's four triage questions in one call used about {{< num ch23 tokens_four_one int >}} input tokens. Asking them in four separate calls used {{< num ch23 tokens_four_sep int >}}, because the alert went over the wire four times (@fig-tokens). One call is also one round trip instead of four.
+  - After: Asking Kestrel's four triage questions in one call used about {{< num ch23 tokens_four_one int >}} input tokens. Asking them in four separate calls used {{< num ch23 tokens_four_sep int >}}, because the alert was sent four times (@fig-tokens). One call also means one trip to the server and back instead of four.
+- `chapters/ch16.qmd`
+  - Before: These are the mock's token counts, not the real tokeniser's. But they suggest something worth noticing: a Kestrel alert is short, about {{< num ch23 tokens_text int >}} tokens as text. Chapters 9 and 12 assumed 500 tokens per decision, which was generous. At short states like these, the vendor-reported price works out to a few dollars per million decisions.
+  - After: These are the mock's token counts, not the real tokeniser's. But they show something worth noticing: a Kestrel alert is short, about {{< num ch23 tokens_text int >}} tokens as text. Chapters 9 and 12 assumed 500 tokens per decision, which was more than needed. For short states like these, the vendor-reported price comes to a few dollars per million decisions.
+- `chapters/ch16.qmd`
+  - Before: ## Tests that never touch the network
+  - After: ## Tests that never use the network
+- `chapters/ch16.qmd`
+  - Before: Everything so far runs against the mock, so tests using it are already free, fast and repeatable. But at some point you'll want tests built on *real* answers, and you won't want them to call the API on every run.
+  - After: Everything so far runs against the mock, so tests using it are already free, fast and repeatable. But at some point you'll want tests built on *real* answers. And you won't want them to call the API every time they run.
+- `chapters/ch16.qmd`
+  - Before: ![Record once, replay forever. With a key, a recording transport saves each real request and response to a file.
+  - After: ![Record once, replay many times. With a key, a recording transport saves each real request and response to a file.
+- `chapters/ch16.qmd`
+  - Before: The toolkit includes both halves (@fig-record-replay). `RecordingTransport` wraps any transport and writes each exchange to a JSON-lines file, which testers call a **cassette**. `ReplayTransport` answers from that file, and raises if a test asks something that wasn't recorded, so a changed question can't silently pass.
+  - After: The toolkit includes both parts (@fig-record-replay). `RecordingTransport` wraps any transport and writes each request and response to a JSON-lines file. Testers call this file a **cassette**. `ReplayTransport` answers from that file. It raises an error if a test asks something that wasn't recorded, so a changed question can't pass without anyone noticing.
+- `chapters/ch16.qmd`
+  - Before: The book's own repository works this way. Every lab and every listing runs in CI against the mock on each change. A separate weekly job calls the real API, if a key is configured, and checks that it still has the shape the book teaches, so a change in the interface shows up as a failing check rather than a surprise. Comparing the real *answers* against a recorded baseline is the natural next step, and exercise 3 builds the pieces.
+  - After: The book's own repository works this way. Every lab and every listing runs against the mock on each change, in an automatic test system (CI, continuous integration). A separate weekly job calls the real API, if a key is set up. It checks that the API still has the shape the book teaches. So a change in the interface shows up as a failing check, not a surprise. The natural next step is to compare the real *answers* with recorded ones, and exercise 3 builds the pieces.
+- `chapters/ch16.qmd`
+  - Before: The mock copies the interface, not the model: every answer it gives is synthetic, and its token counts are its own. Behaviour the SDK leaves to the server, such as exact rate limits, timeouts under load and the precise meaning of `confidence`, can only be learned against the real API. Replayed cassettes go stale: they record what the model said on the day you recorded them, so re-record on a schedule and when you change model versions. And retries hide trouble as well as fixing it; count them, because a rising retry rate is often the first sign that something upstream is wrong.
+  - After: The mock copies the interface, not the model. Every answer it gives is synthetic, and its token counts are its own. Some behaviour is decided by the server, not the SDK: exact rate limits, timeouts when the server is busy, and the exact meaning of `confidence`. You can only learn those from the real API. Replayed cassettes go out of date. They record what the model said on the day you recorded them, so record again on a schedule and when you change model versions. And retries hide problems as well as fixing them. Count them, because a rising retry rate is often the first sign that something is wrong at the server.
+- `chapters/ch16.qmd`
+  - Before: Kestrel's login check has a 300 ms budget. If the call to Jev fails or times out, the login must still be decided. Letting a risky login through costs about \$10,000 times its P(attack); blocking an innocent login costs about \$20 of lost work and a help-desk call. The typical login has P(attack) around 0.0001. What should a failed call do?
+  - After: Kestrel's login check has a time limit of 300 ms. If the call to Jev fails or times out, the login must still be decided. Letting a risky login through costs about \$10,000 times its P(attack). Blocking an innocent login costs about \$20 of lost work and a help-desk call. The typical login has P(attack) around 0.0001. What should a failed call do?
+- `chapters/ch16.qmd`
+  - Before: (With no answer, the best estimate is the base rate. Letting it through costs about 0.0001 × \$10,000 = \$1 on average; blocking costs about \$20. So fail open: allow the login, and log it for a later check. For a class of logins with a much higher base rate, such as admin accounts from new countries, the same arithmetic may say fail closed.)
+  - After: (With no answer, the best estimate is the base rate. Letting it through costs about 0.0001 × \$10,000 = \$1 on average; blocking costs about \$20. So when the call fails, allow the login, and log it for a later check. For a group of logins with a much higher base rate, such as admin accounts signing in from new countries, the same arithmetic may say: block when the call fails.)
+- `chapters/ch16.qmd`
+  - Before: Dijkstra's point [@dijkstra1970] is doubly true for a model behind an API: tests against a mock show your code handles the answers. They can't show the answers will be good. That's what Chapter 11's calibration checks are for.
+  - After: Dijkstra's point [@dijkstra1970] is even more true for a model behind an API. Tests against a mock show that your code handles the answers. They can't show that the answers will be good. That's what Chapter 11's calibration checks are for.
+- `chapters/ch16.qmd`
+  - Before: The first call was ten lines, and the only thing that made it a mock was the transport. Errors split into two kinds: our own, which fail fast and should be fixed, and the world's, which the SDK retries. When the clock is tight, a failed call becomes a case for the policy to decide, not a retry setting. Asking four questions in one call sent the alert once instead of four times. And a recording made once with a key can drive every test afterwards, with no key at all.
+  - After: The first call was ten lines, and the only thing that made it a mock was the transport. Errors come in two kinds. Our own fail at once and should be fixed. Errors from outside our code are retried by the SDK. When time is tight, a failed call becomes a case for the policy to decide, not a retry setting. Asking four questions in one call sent the alert once instead of four times. And a recording made once with a key can run every test afterwards, with no key at all.
+
+## Chapter 17: A hybrid agent
+
+30 changes.
+
+- `chapters/ch17.qmd`
+  - Before: Chapter 7 built Kestrel an agent. It read an alert, chose which evidence to gather, decided whether it had enough, reached a verdict and acted. We counted its steps, and more than half were small decisions.
+  - After: Chapter 7 built an agent for Kestrel. It read an alert, chose which evidence to collect, decided whether it had enough, reached a verdict and acted. We counted its steps, and more than half were small decisions.
+- `chapters/ch17.qmd`
+  - Before: This chapter rebuilds that agent properly, as a **hybrid**: Jev makes every decision, and the LLM writes only what a person will read. Then we race it against an all-LLM version of itself.
+  - After: This chapter builds that agent again, properly, as a **hybrid**: Jev makes every decision, and the LLM writes only what a person will read. Then we compare it with a version where the LLM does everything.
+- `chapters/ch17.qmd`
+  - Before: But first I have to tell you about a bug. It was in Chapter 7's agent all along, it never crashed, and I only found it because of a habit this chapter will try to give you.
+  - After: But first I have to tell you about a bug. It was in Chapter 7's agent from the start. It never caused a crash, and I only found it because of a habit this chapter will try to teach you.
+- `chapters/ch17.qmd`
+  - Before: - Catch a decision step that's silently wrong by watching the distribution of its answers.
+  - After: - Find a decision step that's wrong without any error, by counting how often it gives each answer.
+- `chapters/ch17.qmd`
+  - Before: - Know which work to leave as a decision, and which to simply do.
+  - After: - Know which work to leave as a decision, and which to just do.
+- `chapters/ch17.qmd`
+  - Before: Jev decides which other evidence to gather, then answers the three verdict questions together. Chapter 14's policy turns the verdict into an action, and the LLM writes a case note or page message only when a person will read it.]
+  - After: Jev decides which other evidence to collect, then answers the three verdict questions together. Chapter 14's policy turns the verdict into an action, and the LLM writes a case note or urgent message only when a person will read it.]
+- `chapters/ch17.qmd`
+  - Before: @fig-architecture-17 shows the design. Everything in green is a typed question to Jev, answered in one pass. Everything in blue is a tool that reads something. The policy is ordinary code. The LLM, in orange, appears once, at the end, and only on the paths where a person is waiting to read something.
+  - After: @fig-architecture-17 shows the design. Everything in green is a typed question to Jev, answered in one pass. Everything in blue is a tool that reads something. The policy is ordinary code. The LLM, in orange, appears once, at the end. And it appears only on the paths where a person is waiting to read something.
+- `chapters/ch17.qmd`
+  - Before: That printout is the agent's **trace**, and it's more useful than it looks. It's the debugging tool, the audit log and the explanation all at once. When someone asks next month why alert 118 was closed, you read the trace: which evidence was gathered, what each decision said, with what probability, and which policy line it crossed.
+  - After: That printout is the agent's **trace**: the step-by-step record of what it did. It's more useful than it looks. It's a debugging tool, an audit log and an explanation all at once. When someone asks next month why alert 118 was closed, you read the trace. It shows which evidence was collected, what each decision said, with what probability, and which policy threshold it crossed.
+- `chapters/ch17.qmd`
+  - Before: When I first ran the agent across the live week, the results looked plausible. Actions were spread across the three zones, every answer parsed, and nothing raised an error. Then came a check that's worth running on every decision step of every agent: count its answers.
+  - After: When I first ran the agent over the live week, the results looked reasonable. Actions were spread across the three zones, every answer parsed, and nothing raised an error. Then I ran a check that's worth running on every decision step of every agent: count its answers.
+- `chapters/ch17.qmd`
+  - Before: Across {{< num ch24 n int >}} alerts, the "which evidence next?" decision chose host history, the policy lookup and "none" in roughly equal measure. It never chose threat intel. Not once (@fig-never-picked).
+  - After: Across {{< num ch24 n int >}} alerts, the "which evidence next?" decision chose host history, the policy lookup and "none" about equally often. It never chose threat intel. Not once (@fig-never-picked).
+- `chapters/ch17.qmd`
+  - Before: So the verdict was always reached without the single most informative fact about an alert, and the model filled the gap with a default. The ranking suffered: AUC {{< num ch24 v1_auc f3 >}}, against the {{< num ch24 v2_auc f3 >}} it reaches with threat intel. And about {{< num ch24 v1_closed_threats_day f1 >}} real threats a day were auto-closed.
+  - After: So the verdict was always reached without the most useful fact about an alert, and the model used a default value instead. The ranking got worse: AUC {{< num ch24 v1_auc f3 >}}, against the {{< num ch24 v2_auc f3 >}} it reaches with threat intel. And about {{< num ch24 v1_closed_threats_day f1 >}} real threats a day were auto-closed.
+- `chapters/ch17.qmd`
+  - Before: I want to be careful about what this says. The mock's evidence choices come from a simple word-matching engine, so I can't tell you real Jev would make the same mistake. What I can tell you is that *any* decision step can fail this way, whichever model answers it, and that nothing downstream will complain. Typed answers are always well-formed. Well-formed and right aren't the same thing.
+  - After: I want to be careful about what this shows. The mock's evidence choices come from a simple word-matching engine, so I can't tell you real Jev would make the same mistake. What I can tell you is that *any* decision step can fail this way, whichever model answers it. And nothing later in the chain will report a problem. Typed answers always have the right format. The right format and the right answer aren't the same thing.
+- `chapters/ch17.qmd`
+  - Before: Chart the answers of every decision step. An option that's never chosen, or always chosen, is a warning, even when nothing has crashed.
+  - After: Count the answers of every decision step. An option that's never chosen, or always chosen, is a warning, even when nothing has crashed.
+- `chapters/ch17.qmd`
+  - Before: The fix wasn't a better prompt or a better model. It was a design change. A threat-intel lookup takes a fraction of a second and costs nothing. Deciding *whether* to look it up costs about as much as just looking. When an observation is cheaper than the decision about it, don't decide. Do it.
+  - After: The fix wasn't a better prompt or a better model. It was a design change. A threat-intel lookup takes a fraction of a second and costs nothing. Deciding *whether* to look it up costs about as much as just looking. When looking is cheaper than deciding whether to look, don't decide. Just look.
+- `chapters/ch17.qmd`
+  - Before: ## Racing the all-LLM agent
+  - After: ## Comparing with the all-LLM agent
+- `chapters/ch17.qmd`
+  - Before: Now the comparison. The all-LLM agent runs the same loop, with the same tools and the same policy lines. The only difference is who decides: every decision is an LLM call returning JSON, and the verdict is the LLM's own answer with its stated confidence. A broken answer goes to review, the fail-safe from Chapter 14.
+  - After: Now the comparison. The all-LLM agent runs the same loop, with the same tools and the same policy thresholds. The only difference is who decides. Every decision is an LLM call returning JSON, and the verdict is the LLM's own answer with its stated confidence. A broken answer goes to review, the fail-safe from Chapter 14.
+- `chapters/ch17.qmd`
+  - Before: The hybrid's decisions are thin slivers; the all-LLM agent's decisions are most of its time.]
+  - After: The hybrid's decisions are very thin bars; the all-LLM agent's decisions take most of its time.]
+- `chapters/ch17.qmd`
+  - Before: @fig-trace shows the difference on a single alert, and it's mostly the width of the green bars. Across the sample, the hybrid took {{< num ch24 v2_seconds f1 >}} seconds per alert and the all-LLM agent {{< num ch24 llm_seconds f1 >}}, about {{< num ch24 speedup int >}} times as long.
+  - After: @fig-trace shows the difference on a single alert, and it's mostly the width of the green bars. Across the sample, the hybrid took {{< num ch24 v2_seconds f1 >}} seconds per alert. The all-LLM agent took {{< num ch24 llm_seconds f1 >}}, about {{< num ch24 speedup int >}} times as long.
+- `chapters/ch17.qmd`
+  - Before: The bigger difference is the review queue (@fig-compare-17). The all-LLM agent sent about {{< num ch24 llm_reviews_day int >}} alerts a day to review, against a capacity of 240. You've seen why in Chapter 13: its stated confidences cluster at a few round values, so a line at 0.03 has almost nothing to separate. Most alerts land between the lines. The hybrid sent {{< num ch24 v2_reviews_day int >}}.
+  - After: The bigger difference is the review queue (@fig-compare-17). The all-LLM agent sent about {{< num ch24 llm_reviews_day int >}} alerts a day to review, against a capacity of 240. You saw why in Chapter 13. Its stated confidences are grouped at a few round values, so a threshold at 0.03 has almost nothing to separate. Most alerts land between the thresholds. The hybrid sent {{< num ch24 v2_reviews_day int >}}.
+- `chapters/ch17.qmd`
+  - Before: A queue more than twice its capacity doesn't get worked twice as hard. The overflow simply isn't looked at, as Chapter 14 put it, in some order nobody chose. Counting both routes to a missed threat, auto-closed or never reached in the queue, the hybrid let about {{< num ch24 v2_missed_day int >}} real threats a day go unseen by a person. The all-LLM agent let about {{< num ch24 llm_missed_day int >}} through.
+  - After: A queue with more than twice its capacity doesn't get worked twice as hard. As Chapter 14 said, the extra alerts simply aren't looked at, and nobody chooses which ones. A threat can be missed in two ways: auto-closed, or never reached in the queue. Counting both, the hybrid let about {{< num ch24 v2_missed_day int >}} real threats a day go unseen by a person. The all-LLM agent let about {{< num ch24 llm_missed_day int >}} through.
+- `chapters/ch17.qmd`
+  - Before: The simulated bill points the same way: about \${{< num ch24 hybrid_cost_1000 f2 >}} per thousand alerts for the hybrid, most of it the LLM writing case notes, against \${{< num ch24 llm_cost_1000 f2 >}} for the all-LLM agent.
+  - After: The simulated cost shows the same thing. It's about \${{< num ch24 hybrid_cost_1000 f2 >}} per thousand alerts for the hybrid, mostly for the LLM writing case notes. For the all-LLM agent it's \${{< num ch24 llm_cost_1000 f2 >}}.
+- `chapters/ch17.qmd`
+  - Before: @fig-labour is the chart I find most telling. In the all-LLM agent, most of the time goes on deciding. In the hybrid, the largest share is *writing*: case notes for analysts and messages for on-call. The LLM's time belongs there. A person will read those words, and fluent, specific writing is what LLMs do best.
+  - After: @fig-labour is the chart I find most revealing. In the all-LLM agent, most of the time goes on deciding. In the hybrid, the largest share is *writing*: case notes for analysts and messages for the analyst on call. That's where the LLM's time should go. A person will read those words, and fluent, specific writing is what LLMs do best.
+- `chapters/ch17.qmd`
+  - Before: Everything here is synthetic: the mock decides, the mock LLM writes, and the timings are simulated. The accuracy gap between the two agents is partly built into the mocks (Chapter 13 explained how), so treat the speed, the queue and the design lessons as the findings, not the verdict quality. The all-LLM agent used the hybrid's policy lines; you could retune them for its clumped confidences, but there are only a few values to put a line between. And the bug in this chapter shows that a hybrid agent has its own failure mode: a decision step that's wrong without any error. Monitoring each step's answers isn't optional.
+  - After: Everything here is synthetic: the mock decides, the mock LLM writes, and the timings are simulated. The accuracy gap between the two agents is partly built into the mocks (Chapter 13 explained how). So treat the speed, the queue and the design lessons as the findings, not the quality of the verdicts. The all-LLM agent used the hybrid's policy thresholds. You could adjust them for its grouped confidences, but there are only a few values to put a threshold between. And the bug in this chapter shows that a hybrid agent has its own way to fail: a decision step that's wrong without any error. Watching each step's answers isn't optional.
+- `chapters/ch17.qmd`
+  - Before: The hybrid agent's "which evidence next?" step can choose "none" to stop gathering. Each extra lookup costs about 0.4 seconds and nothing else. Stopping too early, as the first version showed, can cost a missed threat. If you had to set a rule for when the agent may stop, what would it be, and would you let a probability decide it?
+  - After: The hybrid agent's "which evidence next?" step can choose "none" to stop collecting evidence. Each extra lookup costs about 0.4 seconds and nothing else. Stopping too early, as the first version showed, can cost a missed threat. If you had to set a rule for when the agent may stop, what would it be? Would you let a probability decide it?
+- `chapters/ch17.qmd`
+  - Before: (One reasonable rule: never stop before the lookups that are cheap and always informative, like threat intel, and let the model decide only among the costly ones. Then check the rule the same way as any other decision: count how often "none" is chosen, and look at what it cost on the alerts where it was.)
+  - After: (One reasonable rule: never stop before the lookups that are cheap and always useful, like threat intel. Let the model decide only among the costly ones. Then check the rule like any other decision. Count how often "none" is chosen, and look at what it cost on the alerts where it was chosen.)
+- `chapters/ch17.qmd`
+  - Before: Knuth was warning programmers against tuning code before measuring it [@knuth1974]. The first version of this agent optimised the wrong thing: it made "should we look this up?" a clever decision, when simply looking was cheaper. Measure first, then decide what's worth deciding.
+  - After: Knuth was warning programmers not to tune code before measuring it [@knuth1974]. The first version of this agent optimised the wrong thing. It made "should we look this up?" a clever decision, when simply looking was cheaper. Measure first, then decide what's worth deciding.
+- `chapters/ch17.qmd`
+  - Before: We rebuilt Chapter 7's agent as a hybrid. Jev answered every decision and the LLM wrote only for people. Counting one step's answers exposed a bug that had never crashed: the agent never looked up threat intel. The fix was to stop deciding something that was cheaper to just do. Against an all-LLM twin, the hybrid was several times faster. It kept its review queue inside capacity and let fewer real threats go unseen. Most of its LLM time went on the one job that needed an LLM: writing words a person would read.
+  - After: We rebuilt Chapter 7's agent as a hybrid. Jev answered every decision and the LLM wrote only for people. Counting one step's answers showed a bug that had never caused a crash: the agent never looked up threat intel. The fix was to stop deciding something that was cheaper to just do. Against the same agent with the LLM doing everything, the hybrid was several times faster. It kept its review queue within capacity and let fewer real threats go unseen. Most of its LLM time went on the one job that needed an LLM: writing words a person would read.
+- `chapters/ch17.qmd`
+  - Before: 1. In the lab, count the answers of the "enough evidence?" step. Is its distribution healthy? What would you expect it to look like?
+  - After: 1. In the lab, count the answers of the "enough evidence?" step. Does the mix of answers look healthy? What would you expect it to look like?
+- `chapters/ch17.qmd`
+  - Before: 2. Add a fourth evidence tool to the agent (say, "check the user's recent password resets"). Which of the rules in this chapter decide whether it should be a decision or an unconditional step?
+  - After: 2. Add a fourth evidence tool to the agent (say, "check the user's recent password resets"). Which of the rules in this chapter decide whether it should be a decision or a step that always runs?
+- `chapters/ch17.qmd`
+  - Before: 3. Retune the all-LLM agent's lines so its review queue fits in 240 a day. What happens to the threats it auto-closes?
+  - After: 3. Adjust the all-LLM agent's thresholds so its review queue fits in 240 a day. What happens to the threats it auto-closes?

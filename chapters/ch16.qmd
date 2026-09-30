@@ -12,18 +12,18 @@ from jevkit import MockJevTransport, soc
 state = soc.load().description[118]
 ```
 
-Fifteen chapters in, you know what a System One model is for, how to test it and where to put it. You haven't yet written the ten lines of code that actually call one.
+After fifteen chapters, you know what a System One model is for, how to test it and where to put it. But you haven't yet written the ten lines of code that actually call one.
 
-That moment has a particular feeling with any new API. Where does the key go? What does an error look like? Will a bug in a loop cost me money? Will my tests break when the network's down?
+Starting with any new API raises the same questions. Where does the key go? What does an error look like? Will a bug in a loop cost me money? Will my tests break when the network is down?
 
-This chapter answers those questions with the official TypeSafe library, `typesafe-sdk`, and the book's mock. By the end you'll have made every kind of call, provoked every kind of error, and written tests that never touch the network. None of it will have cost anything.
+This chapter answers those questions with the official TypeSafe library, `typesafe-sdk`, and the book's mock. By the end, you'll have made every kind of call, caused every kind of error, and written tests that never use the network. None of it will have cost anything.
 
 ::: {.goals}
 - Make a first call with the official SDK and read everything the response contains.
 - Swap between the mock and the real API by changing one argument.
-- Tell errors you should retry from errors you should fix, and set retries for your latency budget.
+- Tell errors you should retry from errors you should fix, and set retries to fit your time limit.
 - Ask several questions in one call, and know what that saves.
-- Record real answers once and replay them in tests forever.
+- Record real answers once and replay them in tests as often as you like.
 :::
 
 ## The first call
@@ -48,46 +48,46 @@ print(r.usage)
 ```
 :::
 
-The response carries more than the answer. `r.nouls`, `r.choices` and `r.scores` hold the typed answers, keyed by the names you gave your questions. `r.usage` counts tokens, which is what you're billed on. `r.request_id` identifies the call, and it's worth logging next to every decision so that you can trace a surprising answer later. And `r.raw_http_response` is there when you need the headers.
+The response contains more than the answer. `r.nouls`, `r.choices` and `r.scores` hold the typed answers, under the names you gave your questions. `r.usage` counts tokens, which is what you pay for. `r.request_id` identifies the call. Log it next to every decision, so that you can trace a surprising answer later. And `r.raw_http_response` is there when you need the headers.
 
-## One argument decides what's on the other end
+## One argument decides where the request goes
 
 Look at the first line of that listing again. Everything that makes it a mock is one argument: `transport=MockJevTransport()`.
 
 ![The official SDK does all the work of building requests, retrying and parsing answers. The transport decides where requests go. The book's mock answers locally; the default sends them over the network to TypeSafe.](/figures/ch23/layers.pdf){#fig-layers}
 
-A **transport** is the lowest layer of an HTTP client: the part that takes a finished request and returns a response. The SDK lets you supply your own, and that's the seam the book's mock plugs into (@fig-layers). Your code, the SDK's request building, its retries and its parsing all run as they would against the real service. Only the last step is different.
+A **transport** is the lowest layer of an HTTP client: the part that takes a finished request and returns a response. The SDK lets you supply your own, and that's where the book's mock connects (@fig-layers). Your code, the SDK's request building, its retries and its parsing all run just as they would against the real service. Only the last step is different.
 
-For the same reason, the mock can be trusted as a stand-in for the *interface*. It accepts the same request shape as the API, returns the same answer shape, and rejects bad requests with the same error codes, which I checked against the SDK's own data models. What it can't stand in for is the *answers*. They come from a small synthetic engine, every response says so in an `x-jevkit-synthetic` header, and the model name it reports is `jev-mock-synthetic`.
+For the same reason, you can trust the mock as a stand-in for the *interface*. It accepts the same request shape as the API and returns the same answer shape. It rejects bad requests with the same error codes; I checked them against the SDK's own data models. What it can't stand in for is the *answers*. They come from a small synthetic engine. Every response says so in an `x-jevkit-synthetic` header, and the model name it reports is `jev-mock-synthetic`.
 
-To call the real thing, drop the transport and give it a key:
+To call the real service, remove the transport and give it a key:
 
 ```python
 client = TypeSafeClient(api_key=os.environ["TYPESAFE_API_KEY"],
                         model="jev-latest")   # better: pin a dated version
 ```
 
-Or use `jevkit.client()`, which returns the mock unless you set `JEVKIT_LIVE=1` and a key. Every lab in the book runs through it, so each one can be pointed at real Jev with two environment variables.
+Or use `jevkit.client()`, which returns the mock unless you set `JEVKIT_LIVE=1` and a key. Every lab in the book uses it, so you can point each one at real Jev by setting two environment variables.
 
-Pin the model if you can. `jev-latest` is an alias, and aliases move. Chapter 9 said the unknowns in a new model include how its behaviour changes between versions; pinning is how you make that a decision rather than a surprise.
+Use a fixed model version if you can. `jev-latest` is a nickname that can point to a new version at any time. Chapter 9 said one unknown in a new model is how its behaviour changes between versions. Fixing the version turns that into your decision, not a surprise.
 
-## What happens on the wire
+## What happens during a call
 
-![One call's life. The SDK validates and sends the request. A success is parsed into typed answers. A rate limit or server error waits and retries. Anything else, or running out of retries, raises an error.](/figures/ch23/lifecycle.pdf){#fig-lifecycle}
+![The steps of one call. The SDK checks and sends the request. A success is parsed into typed answers. A rate limit or server error waits and retries. Anything else, or running out of retries, raises an error.](/figures/ch23/lifecycle.pdf){#fig-lifecycle}
 
-Most of the time a call goes straight along the top of @fig-lifecycle. The interesting parts are the two ways off it.
+Most of the time, a call goes straight along the top of @fig-lifecycle. The interesting parts are the two other paths.
 
 ## Two kinds of error
 
-I provoked every error I could think of against the mock and recorded what the SDK did.
+I caused every error I could think of against the mock, and recorded what the SDK did.
 
 ![What the SDK does for each kind of failure, measured against the mock. Mistakes in your request fail at once. Rate limits and server errors are retried under the default policy.](/figures/ch23/errors.pdf){#fig-errors}
 
 The errors in @fig-errors fall into two families, and they need opposite treatment.
 
-**Your mistakes** fail fast: no key, a model name that doesn't exist, a question with no options. Some are caught before anything is sent; the rest come back as a 4xx error. Retrying them is pointless, because the same request will fail the same way. Fix the code.
+**Your mistakes** fail at once: no key, a model name that doesn't exist, a question with no options. Some are caught before anything is sent; the rest come back as a 4xx error. Retrying them is pointless, because the same request will fail the same way. Fix the code.
 
-**The world's mistakes** are worth retrying: rate limits (429), server errors (5xx) and a network that drops. The SDK retries these by default, twice, waiting a little longer each time.
+**Problems outside your code** are worth retrying: rate limits (429), server errors (5xx) and a lost network connection. The SDK retries these by default, twice, waiting a little longer each time.
 
 ```{python}
 try:
@@ -99,15 +99,15 @@ except TypeSafeError as e:
 
 ## How many retries?
 
-To see what retries buy, I made the mock fail at random, then counted how many calls succeeded.
+To see what retries gain, I made the mock fail at random, then counted how many calls succeeded.
 
 ![The share of calls that succeed, as more retries are allowed, when 1%, 5% or 20% of requests fail at random. Dotted lines show the simple formula: a call fails only if every attempt fails.](/figures/ch23/retries.pdf){#fig-retries}
 
-With one request in five failing, only {{< num ch23 ok_20_0 pct >}} of calls succeed with no retries. With the SDK's default two retries, {{< num ch23 ok_20_2 pct1 >}} do (@fig-retries). The arithmetic is simple: if each attempt fails independently with probability *q*, a call with *r* retries fails only with probability *q*^*r*+1^.
+With one request in five failing, only {{< num ch23 ok_20_0 pct >}} of calls succeed with no retries. With the SDK's default two retries, {{< num ch23 ok_20_2 pct1 >}} do (@fig-retries). The arithmetic is simple. Suppose each attempt fails with probability *q*, independently of the others. Then a call with *r* retries fails only with probability *q*^*r*+1^.
 
-Retries cost time, though. The default policy waits about half a second, then a second, before retrying. Fine for a batch job; not for Chapter 12's login check, which had three hundred milliseconds in total.
+Retries cost time, though. The default policy waits about half a second, then a second, before retrying. That's fine for a job that runs in the background. It's not fine for Chapter 12's login check, which had three hundred milliseconds in total.
 
-So here's the decision-layer way to think about it. A call that fails is just another case your policy must handle. For a tight budget, allow no retries and decide what a failure *means*: for a login, maybe "allow, but flag for review"; for closing an alert, "don't close; send to the queue". Chapter 14 called this a fail-safe. It belongs in the policy, where it's visible, not buried in a retry setting.
+So here's how to think about it as a decision layer. A call that fails is just another case your policy must handle. With a tight time limit, allow no retries, and decide what a failure *means*. For a login, maybe it means "allow, but flag for review". For closing an alert, "don't close; send to the queue". Chapter 14 called this a fail-safe. It belongs in the policy, where people can see it, not hidden in a retry setting.
 
 ```{python}
 fast = TypeSafeClient(api_key="mock", transport=MockJevTransport(),
@@ -115,7 +115,7 @@ fast = TypeSafeClient(api_key="mock", transport=MockJevTransport(),
 ```
 
 ::: {.keyidea}
-Retry the world's errors, never your own. And when the clock matters, decide in advance what a failed call means.
+Retry errors from outside your code, never your own. And when time matters, decide in advance what a failed call means.
 :::
 
 ## Ask together
@@ -124,17 +124,17 @@ Chapter 10 showed that one call can carry several questions about the same state
 
 ![Input tokens per call, averaged over 800 of Kestrel's alerts, and what they'd cost per million calls at Jev's vendor-reported price. Asking four questions in one call sends the alert once; asking them in four calls sends it four times.](/figures/ch23/tokens.pdf){#fig-tokens}
 
-Asking Kestrel's four triage questions in one call used about {{< num ch23 tokens_four_one int >}} input tokens. Asking them in four separate calls used {{< num ch23 tokens_four_sep int >}}, because the alert went over the wire four times (@fig-tokens). One call is also one round trip instead of four.
+Asking Kestrel's four triage questions in one call used about {{< num ch23 tokens_four_one int >}} input tokens. Asking them in four separate calls used {{< num ch23 tokens_four_sep int >}}, because the alert was sent four times (@fig-tokens). One call also means one trip to the server and back instead of four.
 
-These are the mock's token counts, not the real tokeniser's. But they suggest something worth noticing: a Kestrel alert is short, about {{< num ch23 tokens_text int >}} tokens as text. Chapters 9 and 12 assumed 500 tokens per decision, which was generous. At short states like these, the vendor-reported price works out to a few dollars per million decisions.
+These are the mock's token counts, not the real tokeniser's. But they show something worth noticing: a Kestrel alert is short, about {{< num ch23 tokens_text int >}} tokens as text. Chapters 9 and 12 assumed 500 tokens per decision, which was more than needed. For short states like these, the vendor-reported price comes to a few dollars per million decisions.
 
-## Tests that never touch the network
+## Tests that never use the network
 
-Everything so far runs against the mock, so tests using it are already free, fast and repeatable. But at some point you'll want tests built on *real* answers, and you won't want them to call the API on every run.
+Everything so far runs against the mock, so tests using it are already free, fast and repeatable. But at some point you'll want tests built on *real* answers. And you won't want them to call the API every time they run.
 
-![Record once, replay forever. With a key, a recording transport saves each real request and response to a file. In every later test run, a replay transport answers from that file: the same answers, byte for byte, with no key and no cost.](/figures/ch23/record-replay.pdf){#fig-record-replay}
+![Record once, replay many times. With a key, a recording transport saves each real request and response to a file. In every later test run, a replay transport answers from that file: the same answers, byte for byte, with no key and no cost.](/figures/ch23/record-replay.pdf){#fig-record-replay}
 
-The toolkit includes both halves (@fig-record-replay). `RecordingTransport` wraps any transport and writes each exchange to a JSON-lines file, which testers call a **cassette**. `ReplayTransport` answers from that file, and raises if a test asks something that wasn't recorded, so a changed question can't silently pass.
+The toolkit includes both parts (@fig-record-replay). `RecordingTransport` wraps any transport and writes each request and response to a JSON-lines file. Testers call this file a **cassette**. `ReplayTransport` answers from that file. It raises an error if a test asks something that wasn't recorded, so a changed question can't pass without anyone noticing.
 
 ```{python}
 import os, tempfile
@@ -150,27 +150,27 @@ r = replayed.system_one(
 print(round(r.nouls["a"].noul, 3))
 ```
 
-The book's own repository works this way. Every lab and every listing runs in CI against the mock on each change. A separate weekly job calls the real API, if a key is configured, and checks that it still has the shape the book teaches, so a change in the interface shows up as a failing check rather than a surprise. Comparing the real *answers* against a recorded baseline is the natural next step, and exercise 3 builds the pieces.
+The book's own repository works this way. Every lab and every listing runs against the mock on each change, in an automatic test system (CI, continuous integration). A separate weekly job calls the real API, if a key is set up. It checks that the API still has the shape the book teaches. So a change in the interface shows up as a failing check, not a surprise. The natural next step is to compare the real *answers* with recorded ones, and exercise 3 builds the pieces.
 
 ::: {.breaks}
-The mock copies the interface, not the model: every answer it gives is synthetic, and its token counts are its own. Behaviour the SDK leaves to the server, such as exact rate limits, timeouts under load and the precise meaning of `confidence`, can only be learned against the real API. Replayed cassettes go stale: they record what the model said on the day you recorded them, so re-record on a schedule and when you change model versions. And retries hide trouble as well as fixing it; count them, because a rising retry rate is often the first sign that something upstream is wrong.
+The mock copies the interface, not the model. Every answer it gives is synthetic, and its token counts are its own. Some behaviour is decided by the server, not the SDK: exact rate limits, timeouts when the server is busy, and the exact meaning of `confidence`. You can only learn those from the real API. Replayed cassettes go out of date. They record what the model said on the day you recorded them, so record again on a schedule and when you change model versions. And retries hide problems as well as fixing them. Count them, because a rising retry rate is often the first sign that something is wrong at the server.
 :::
 
 ::: {.threshold}
-Kestrel's login check has a 300 ms budget. If the call to Jev fails or times out, the login must still be decided. Letting a risky login through costs about \$10,000 times its P(attack); blocking an innocent login costs about \$20 of lost work and a help-desk call. The typical login has P(attack) around 0.0001. What should a failed call do?
+Kestrel's login check has a time limit of 300 ms. If the call to Jev fails or times out, the login must still be decided. Letting a risky login through costs about \$10,000 times its P(attack). Blocking an innocent login costs about \$20 of lost work and a help-desk call. The typical login has P(attack) around 0.0001. What should a failed call do?
 
-(With no answer, the best estimate is the base rate. Letting it through costs about 0.0001 × \$10,000 = \$1 on average; blocking costs about \$20. So fail open: allow the login, and log it for a later check. For a class of logins with a much higher base rate, such as admin accounts from new countries, the same arithmetic may say fail closed.)
+(With no answer, the best estimate is the base rate. Letting it through costs about 0.0001 × \$10,000 = \$1 on average; blocking costs about \$20. So when the call fails, allow the login, and log it for a later check. For a group of logins with a much higher base rate, such as admin accounts signing in from new countries, the same arithmetic may say: block when the call fails.)
 :::
 
 ::: {.bookquote by="Edsger W. Dijkstra, Notes on Structured Programming, 1972"}
 Program testing can be used to show the presence of bugs, but never to show their absence!
 :::
 
-Dijkstra's point [@dijkstra1970] is doubly true for a model behind an API: tests against a mock show your code handles the answers. They can't show the answers will be good. That's what Chapter 11's calibration checks are for.
+Dijkstra's point [@dijkstra1970] is even more true for a model behind an API. Tests against a mock show that your code handles the answers. They can't show that the answers will be good. That's what Chapter 11's calibration checks are for.
 
 ## Where we are
 
-The first call was ten lines, and the only thing that made it a mock was the transport. Errors split into two kinds: our own, which fail fast and should be fixed, and the world's, which the SDK retries. When the clock is tight, a failed call becomes a case for the policy to decide, not a retry setting. Asking four questions in one call sent the alert once instead of four times. And a recording made once with a key can drive every test afterwards, with no key at all.
+The first call was ten lines, and the only thing that made it a mock was the transport. Errors come in two kinds. Our own fail at once and should be fixed. Errors from outside our code are retried by the SDK. When time is tight, a failed call becomes a case for the policy to decide, not a retry setting. Asking four questions in one call sent the alert once instead of four times. And a recording made once with a key can run every test afterwards, with no key at all.
 
 ::: {.exercises}
 1. In the lab, set `fail_rate=0.5`. How many retries do you need for 99% of calls to succeed? What would that do to your latency?
