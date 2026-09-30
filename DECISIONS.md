@@ -223,3 +223,8 @@ Newest decisions are appended at the bottom of each section.
 - **D-81 · Author block without a photo.** At the author's request the back cover has no photo, and the bio is one
   line built only from what the author gave: "Sridhar Mukkandi is an applied AI engineer who builds agents and the
   decision systems behind them." (`AUTHOR_BIO` in `cover/wrap.py`).
+- **D-82 · Cover revision 3.** The bio is a `[[FINAL BIO]]` placeholder for the author's own text (replacing D-81's
+  line). The independence line moved under the author block, left-aligned; the QR block now sits a short step below it
+  instead of at the foot of the panel. The blurb's last sentence was reworded as the author gave it. The stat card
+  still reads `results/ch25.json`, the file behind Chapter 18's table; the rendered book prints 54% → 89%, and
+  `check.py` confirms the cover matches it.

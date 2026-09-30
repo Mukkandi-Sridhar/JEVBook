@@ -51,7 +51,9 @@ KDP's calculator couldn't be reached from this build (see DECISIONS.md, D-75).
 
 ## Placeholders to fill
 
-The back cover has no photo, and the bio is one line, `AUTHOR_BIO` in `wrap.py`. The only thing left:
+The back cover has no photo. Left to fill:
+
+- `[[FINAL BIO]]`: paste your bio after your name in `AUTHOR_BIO` in `wrap.py` (it wraps to the text width).
 
 - The ISBN barcode: KDP prints it in the bottom-right 2 × 1.2 in area, which is kept empty (it's marked only on the
   guides layer). If you supply your own barcode, place it there.
@@ -64,7 +66,7 @@ Prices aren't printed on the cover; set them in KDP.
   put them in `PRAISE` as `("quote", "Name, role")` pairs and set `SHOW_PRAISE = True`; `check.py` will then flag
   anything that no longer fits. Never fill it with invented quotes.
 - `FRAGMENTS`: the small pieces of "Generate" beside the front title (`[]` for none).
-- `DISCLAIMER`: the independence line above the barcode area.
+- `DISCLAIMER`: the independence line under the author block.
 
 `check.py` also checks that every item on the back sits inside the safe area, clear of the barcode area and of each
 other, and that the before/after figures on the back match Chapter 18's table in the rendered book.

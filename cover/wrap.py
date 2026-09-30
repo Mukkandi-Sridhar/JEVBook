@@ -22,7 +22,7 @@ from concepts import SUB_LINES, zone_bar  # noqa: E402
 REPO_URL = "https://github.com/Mukkandi-Sridhar/JEVBook"
 REPO_LABEL = "github.com/Mukkandi-Sridhar/JEVBook"
 EMAIL = "sridhar.authorhub@gmail.com"
-AUTHOR_BIO = f"{AUTHOR} is an applied AI engineer who builds agents and the decision systems behind them."
+AUTHOR_BIO = f"{AUTHOR} [[FINAL BIO]]"   # paste the final bio after the name
 BG = C["night"]
 # KDP paper: standard colour suits a text-heavy book with colour charts; hardcovers are only offered in premium colour
 PAPERBACK_PAPER = "standard_color"
@@ -125,8 +125,8 @@ BLURB = [
     "expensively, and the model sounds just as sure when it’s wrong.",
     "This book shows you a better way to build the decision layer. You’ll get probabilities you can trust, "
     "lines drawn from what each mistake costs, and a clear rule for when to hand a case to a person. Every step is "
-    "built with runnable code, using a realistic (synthetic) security team as the running example, Jev, a new "
-    "System One model, and a free mock that needs no API key.",
+    "built with runnable code, around a realistic (synthetic) security team. You’ll work with Jev, a new System "
+    "One model, through a free mock that needs no API key.",
 ]
 LEARN = [
     "Check whether a model’s probabilities mean what they say, and fix them when they don’t",
@@ -232,15 +232,18 @@ def back(W, H, wr: Wrap):
     out.append(text(m, y + 9, "About the author", 9.0, C["text_on_dark"], weight=700))
     for k, ln in enumerate(wrap_lines(AUTHOR_BIO, tw, 8.8, "Inter", 400)):
         out.append(text(m, y + 23 + k * 12, ln, 8.8, BODY))
-    out.append(text(m, y + 37 + k * 12, EMAIL, 8.0, C["sub_on_dark"], family="JetBrains Mono"))
-    # bottom row, all inside the safe area: the QR with its URL beneath, and a text column; the barcode area on the
-    # right stays empty, with the independence line just above it
+    ey = y + 37 + k * 12
+    out.append(text(m, ey, EMAIL, 8.0, C["sub_on_dark"], family="JetBrains Mono"))
+    dy = ey + 17
+    out.append(text(m, dy, DISCLAIMER, 7.2, C["faint_on_dark"]))
+    # bottom row: the QR with its URL beneath, and a text column, a short step below the disclaimer (never lower
+    # than the safe area allows); the barcode area on the right stays empty
     safe = 0.25 * PT
-    bx_, by_, bw_, bh_ = barcode_local(W, H)
     qs = 0.62 * PT
     cell = qs / len(list(segno.make(REPO_URL, error="m").matrix))
-    url_y = H - safe - 5                                # URL baseline; its descenders stay above the safe line
-    qy = url_y - 9 - cell * 2 - qs                      # QR plate bottom sits 9 pt above the URL baseline
+    lowest = H - safe - 5 - 9 - cell * 2 - qs           # URL baseline 5 pt above the safe line
+    qy = min(lowest, dy + 30 + cell * 2)
+    url_y = qy + qs + cell * 2 + 9                      # URL baseline 9 pt below the QR plate
     qx = m + cell * 2
     out.append(qr_svg(qx, qy, qs, REPO_URL, BG, C["text_on_dark"], cls="qrplate"))
     out.append(text(m, url_y, REPO_LABEL, 6.3, C["sub_on_dark"], family="JetBrains Mono"))
@@ -248,7 +251,6 @@ def back(W, H, wr: Wrap):
     out.append(text(kx, qy + 8, "Labs, figures and code", 7.6, C["text_on_dark"], weight=600))
     out.append(text(kx, qy + 19, "Scan for the companion repository", 7.2, C["faint_on_dark"]))
     out.append(text(kx, qy + qs - 2, CATEGORY, 7.6, C["sub_on_dark"], weight=600))
-    out.append(text(bx_ + bw_, by_ - 6, DISCLAIMER, 6.8, C["faint_on_dark"], anchor="end"))
     return "\n".join(out)
 
 
