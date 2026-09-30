@@ -2,26 +2,26 @@
 <rect x="0.00" y="0.00" width="504.00" height="806.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
 <text x="34.60" y="253.70" font-family="'Inter'" font-size="117.75" font-weight="800" font-style="normal" fill="#4FBA85" text-anchor="start" letter-spacing="-3.53" >Decide,</text>
 <text x="37.19" y="337.07" font-family="'Inter'" font-size="70.65" font-weight="800" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="-1.77" >Don’t</text>
-<rect x="32.95" y="358.27" width="145.52" height="70.65" rx="7.07" fill="none" stroke="#774D2C" stroke-width="1.27" />
+<rect x="32.95" y="358.27" width="145.52" height="70.65" rx="7.07" fill="none" stroke="#AE6A30" stroke-width="1.55" />
 <text x="37.19" y="414.79" font-family="'Inter'" font-size="70.65" font-weight="800" font-style="normal" fill="#F08C35" text-anchor="start" letter-spacing="-1.77" >Gen</text>
-<rect x="186.95" y="351.20" width="78.86" height="70.65" rx="7.07" fill="none" stroke="#5F402A" stroke-width="1.27" />
-<text x="191.19" y="407.72" font-family="'Inter'" font-size="70.65" font-weight="800" font-style="normal" fill="#C87732" text-anchor="start" letter-spacing="-1.77" >er</text>
-<rect x="277.11" y="339.90" width="115.31" height="70.65" rx="7.07" fill="none" stroke="#453329" stroke-width="1.27" />
-<text x="281.35" y="396.42" font-family="'Inter'" font-size="70.65" font-weight="800" font-style="normal" fill="#9C602F" text-anchor="start" letter-spacing="-1.77" >ate</text>
-<rect x="347.15" y="309.96" width="45.60" height="20.51" rx="3.80" fill="none" stroke="#754C2C" stroke-width="0.80" />
-<text x="351.70" y="324.39" font-family="'JetBrains Mono'" font-size="15.19" font-weight="500" font-style="normal" fill="#945C2E" text-anchor="start" letter-spacing="0.00" >ated</text>
-<rect x="304.43" y="304.48" width="34.57" height="19.46" rx="3.60" fill="none" stroke="#67442B" stroke-width="0.80" />
-<text x="308.75" y="318.17" font-family="'JetBrains Mono'" font-size="14.41" font-weight="500" font-style="normal" fill="#86552D" text-anchor="start" letter-spacing="0.00" >the</text>
-<rect x="238.11" y="293.85" width="57.14" height="18.41" rx="3.41" fill="none" stroke="#5A3D2A" stroke-width="0.80" />
-<text x="242.20" y="306.80" font-family="'JetBrains Mono'" font-size="13.64" font-weight="500" font-style="normal" fill="#784D2C" text-anchor="start" letter-spacing="0.00" >likely</text>
-<rect x="39.31" y="458.59" width="236.21" height="8.87" rx="4.44" fill="#B7A6E0" stroke="none" stroke-width="0.00" />
-<text x="39.31" y="481.17" font-family="'JetBrains Mono'" font-size="8.57" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >act</text>
-<rect x="277.52" y="458.59" width="125.61" height="8.87" rx="4.44" fill="#8468C9" stroke="none" stroke-width="0.00" />
-<text x="277.52" y="481.17" font-family="'JetBrains Mono'" font-size="8.57" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >review</text>
-<rect x="405.14" y="458.59" width="57.55" height="8.87" rx="4.44" fill="#4B2C8F" stroke="none" stroke-width="0.00" />
-<text x="405.14" y="481.17" font-family="'JetBrains Mono'" font-size="8.57" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >escalate</text>
-<text x="39.31" y="580.99" font-family="'Inter'" font-size="22.18" font-weight="500" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >Jev, System One Models, and the</text>
-<text x="39.31" y="609.82" font-family="'Inter'" font-size="22.18" font-weight="500" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >Decision Layer of Agentic AI</text>
+<rect x="182.71" y="355.79" width="78.86" height="70.65" rx="7.07" fill="none" stroke="#995E2F" stroke-width="1.55" />
+<text x="186.95" y="412.31" font-family="'Inter'" font-size="70.65" font-weight="800" font-style="normal" fill="#DE8334" text-anchor="start" letter-spacing="-1.77" >er</text>
+<rect x="265.81" y="353.32" width="115.31" height="70.65" rx="7.07" fill="none" stroke="#84532D" stroke-width="1.55" />
+<text x="270.05" y="409.84" font-family="'Inter'" font-size="70.65" font-weight="800" font-style="normal" fill="#CD7A32" text-anchor="start" letter-spacing="-1.77" >ate</text>
+<rect x="385.64" y="362.58" width="27.93" height="20.98" rx="3.89" fill="none" stroke="#68452B" stroke-width="0.80" />
+<text x="390.30" y="377.34" font-family="'JetBrains Mono'" font-size="15.54" font-weight="500" font-style="normal" fill="#82522D" text-anchor="start" letter-spacing="0.00" class="frag">ne</text>
+<rect x="401.84" y="386.15" width="24.83" height="18.60" rx="3.44" fill="none" stroke="#563C2A" stroke-width="0.80" />
+<text x="405.97" y="399.24" font-family="'JetBrains Mono'" font-size="13.78" font-weight="500" font-style="normal" fill="#70492C" text-anchor="start" letter-spacing="0.00" class="frag">ra</text>
+<rect x="416.30" y="409.73" width="21.61" height="16.21" rx="3.00" fill="none" stroke="#443229" stroke-width="0.80" />
+<text x="419.90" y="421.14" font-family="'JetBrains Mono'" font-size="12.01" font-weight="500" font-style="normal" fill="#5F402A" text-anchor="start" letter-spacing="0.00" class="frag">te</text>
+<rect x="39.31" y="488.82" width="236.21" height="9.68" rx="4.84" fill="#B7A6E0" stroke="none" stroke-width="0.00" />
+<text x="39.31" y="513.01" font-family="'JetBrains Mono'" font-size="9.07" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >act</text>
+<rect x="277.52" y="488.82" width="125.61" height="9.68" rx="4.84" fill="#8468C9" stroke="none" stroke-width="0.00" />
+<text x="277.52" y="513.01" font-family="'JetBrains Mono'" font-size="9.07" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >review</text>
+<rect x="405.14" y="488.82" width="57.55" height="9.68" rx="4.84" fill="#4B2C8F" stroke="none" stroke-width="0.00" />
+<text x="405.14" y="513.01" font-family="'JetBrains Mono'" font-size="9.07" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >escalate</text>
+<text x="39.31" y="624.75" font-family="'Inter'" font-size="26.21" font-weight="500" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >Jev, System One Models, and the</text>
+<text x="39.31" y="658.30" font-family="'Inter'" font-size="26.21" font-weight="500" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >Decision Layer of Agentic AI</text>
 <text x="39.31" y="742.71" font-family="'JetBrains Mono'" font-size="9.83" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >Runnable labs · 130+ figures · no API key needed</text>
 <text x="39.31" y="771.02" font-family="'Inter'" font-size="18.14" font-weight="600" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="0.30" >Sridhar Mukkandi</text>
 </svg>

@@ -55,8 +55,18 @@ All are on the back cover, in `wrap.py`:
 
 - `[[AUTHOR BIO]]`: two or three lines after your name.
 - `[[AUTHOR PHOTO]]`: a square photo in the dashed box beside "About the author".
-- `[[PRAISE]]`: one or two real endorsements, attributed, in the dashed box under the blurb. Leave the box out if
-  there are none; never fill it with invented quotes.
-- `[[PRICE INR]]` and `[[PRICE USD]]`: the list prices.
 - The ISBN barcode: KDP prints it in the bottom-right 2 × 1.2 in area, which is kept empty (it's marked only on the
   guides layer). If you supply your own barcode, place it there.
+
+Prices aren't printed on the cover; set them in KDP.
+
+## Switches in `wrap.py`
+
+- `SHOW_PRAISE` and `PRAISE`: the praise block under the blurb. It's off. When you have real, attributed endorsements,
+  put them in `PRAISE` as `("quote", "Name, role")` pairs and set `SHOW_PRAISE = True`; `check.py` will then flag
+  anything that no longer fits. Never fill it with invented quotes.
+- `FRAGMENTS`: the small pieces of "Generate" beside the front title (`[]` for none).
+- `DISCLAIMER`: the independence line above the barcode area.
+
+`check.py` also checks that every item on the back sits inside the safe area, clear of the barcode area and of each
+other, and that the before/after figures on the back match Chapter 18's table in the rendered book.

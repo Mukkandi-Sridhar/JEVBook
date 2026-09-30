@@ -9,7 +9,6 @@ KDP's per-page paper thickness. The chosen front is concept (a); see cover/READM
 from __future__ import annotations
 
 import json
-import random
 import sys
 from pathlib import Path
 
@@ -28,6 +27,11 @@ BG = C["night"]
 PAPERBACK_PAPER = "standard_color"
 HARDCOVER_PAPER = "premium_color"
 BODY = "#D5D9DF"            # body text on the dark ground
+FRAGMENTS = ["ne", "ra", "te"]   # small pieces of "Generate" beside the title; [] for none
+# the back cover's praise box: switch on only when there are real, attributed quotes to put in it
+SHOW_PRAISE = False
+PRAISE = []                 # [("quote", "Name, role"), ...]
+DISCLAIMER = "An independent guide. Not affiliated with TypeSafe AI."
 
 
 # ---------------------------------------------------------------- front (concept a, refined)
@@ -42,45 +46,40 @@ def front(W, H, strap):
     s2 = s1 * 0.60
     y2 = y1 + s2 * 1.18
     out.append(text(m - s2 * 0.03, y2, "Don’t", s2, C["text_on_dark"], weight=800, ls=-0.025 * s2))
-    # "Generate" comes apart into the tokens an LLM would write it with, drifting and fading
+    # "Generate" split into the tokens an LLM writes it with: small offsets and a light fade, so it still reads as
+    # one word at thumbnail size and in greyscale
     y3 = y2 + s2 * 1.10
-    toks = [("Gen", 0, 0, 0.0), ("er", s2 * 0.10, -s2 * 0.10, 0.18), ("ate", s2 * 0.24, -s2 * 0.26, 0.38)]
+    toks = [("Gen", 0, 0, 0.0), ("er", s2 * 0.05, -s2 * 0.035, 0.08), ("ate", s2 * 0.10, -s2 * 0.07, 0.16)]
     x, last = m - s2 * 0.03, None
     for tok, dx, dy, fade in toks:
         w = measure(tok, s2, "Inter", 800, ls=-0.025 * s2)
         bx, by = x + dx, y3 + dy
         out.append(rect(bx - s2 * 0.06, by - s2 * 0.80, w + s2 * 0.12, s2 * 1.0, "none", rx=s2 * 0.10,
-                        stroke=mix(C["llm_on_dark"], BG, 0.55 + fade * 0.6), sw=max(1.0, s2 * 0.018)))
+                        stroke=mix(C["llm_on_dark"], BG, 0.30 + fade * 1.2), sw=max(1.0, s2 * 0.022)))
         out.append(text(bx, by, tok, s2, mix(C["llm_on_dark"], BG, fade), weight=800, ls=-0.025 * s2))
-        x += w + s2 * 0.14
-        last = (bx + w, by - s2 * 0.80)
-    # the rest of the generation keeps drifting off "ate", up and back towards "Don't", smaller and fainter
-    trail = ["ated", "the", "likely", "Sure", "!", "it", "seems", "\u2026"]
-    rnd = random.Random(5)
-    x0, y0 = last[0], last[1] - s2 * 0.20                 # just above the right end of "ate"
-    x1, y1_ = W * 0.43, y2 - s2 * 0.62                    # the space right of "Don't"
-    cur = x0
-    for i, tok in enumerate(trail):
-        size = s2 * (0.215 - i * 0.011)
-        fade = 0.42 + i * 0.062
-        w = measure(tok, size, "JetBrains Mono", 500)
-        right = cur
-        left = right - w
-        if left < x1:
-            break
-        t_ = (x0 - (left + right) / 2) / (x0 - x1)
-        ty = y0 + (y1_ - y0) * t_ + rnd.uniform(-0.12, 0.12) * s2
-        out.append(rect(left - size * 0.3, ty - size * 0.95, w + size * 0.6, size * 1.35, "none", rx=size * 0.25,
-                        stroke=mix(C["llm_on_dark"], BG, min(0.92, fade + 0.14)), sw=0.8))
-        out.append(text(left, ty, tok, size, mix(C["llm_on_dark"], BG, fade), family="JetBrains Mono", weight=500))
-        cur = left - size * (0.75 + rnd.random() * 0.5)
+        x += w + s2 * 0.13
+        last = (bx + w + s2 * 0.06, by)
+    # a few smaller, fainter pieces of "Generate" trail off to the right of "ate", below the level of "Decide,"
+    if FRAGMENTS:
+        fx, fy = last[0] + s2 * 0.13, last[1] - s2 * 0.46
+        for i, tok in enumerate(FRAGMENTS):
+            size = s2 * (0.22 - i * 0.025)
+            w = measure(tok, size, "JetBrains Mono", 500)
+            if fx + w + size * 0.3 > W - m:
+                break
+            out.append(rect(fx - size * 0.3, fy - size * 0.95, w + size * 0.6, size * 1.35, "none", rx=size * 0.25,
+                            stroke=mix(C["llm_on_dark"], BG, 0.62 + i * 0.08), sw=0.8))
+            out.append(text(fx, fy, tok, size, mix(C["llm_on_dark"], BG, 0.50 + i * 0.08), family="JetBrains Mono",
+                            weight=500, extra='class="frag"'))
+            fx += w * 0.55 + size * 0.35              # each piece steps down and a little to the right
+            fy += s2 * 0.31
     # the three doors: a decision ends in an action
-    by = y3 + s2 * 0.62
-    out += zone_bar(m, by, tw, H * 0.011, label_fill=C["faint_on_dark"], size=W * 0.017)
-    ss = W * 0.044
-    sy = by + H * 0.125 + extra * 0.25
+    by = y3 + s2 * 0.95 + extra * 0.08
+    out += zone_bar(m, by, tw, H * 0.012, label_fill=C["faint_on_dark"], size=W * 0.018)
+    ss = W * 0.052
+    sy = by + H * 0.145 + extra * 0.22
     for i, s in enumerate(SUB_LINES):
-        out.append(text(m, sy + i * ss * 1.30, s, ss, C["sub_on_dark"], weight=500))
+        out.append(text(m, sy + i * ss * 1.28, s, ss, C["sub_on_dark"], weight=500))
     out.append(text(m, H - m * 1.62, strap, W * 0.0195, C["faint_on_dark"], family="JetBrains Mono"))
     out.append(text(m, H - m * 0.9, AUTHOR, W * 0.036, C["text_on_dark"], weight=600, ls=W * 0.0006))
     return "\n".join(out)
@@ -125,13 +124,13 @@ BLURB = [
     "expensively, and the model sounds just as sure when it’s wrong.",
     "This book shows you a better way to build the decision layer. You’ll get probabilities you can trust, "
     "lines drawn from what each mistake costs, and a clear rule for when to hand a case to a person. Every step is "
-    "built with runnable code, on a synthetic but realistic security team, using Jev, a new System One model, and "
-    "a free mock that needs no API key.",
+    "built with runnable code, using a realistic (synthetic) security team as the running example, Jev, a new "
+    "System One model, and a free mock that needs no API key.",
 ]
 LEARN = [
     "Check whether a model’s probabilities mean what they say, and fix them when they don’t",
     "Turn a probability into act, review or escalate, with lines drawn from real costs and real capacity",
-    "Run a fair six-way bake-off: rules, logistic regression, a text classifier, two LLM methods and Jev",
+    "Compare six ways to make the same decision, from hand-written rules to LLMs to Jev",
     "Build a hybrid agent in which Jev decides and the LLM reads and writes",
     "Build your own small System One model, with typed heads and calibration built in",
 ]
@@ -144,12 +143,13 @@ def case_study():
     return r["old"]["threats_seen_share"], r["new"]["threats_seen_share"], 6
 
 
-def qr_svg(x, y, size, url, dark, light):
+def qr_svg(x, y, size, url, dark, light, cls=""):
     q = segno.make(url, error="m")
     mat = list(q.matrix)
     n = len(mat)
     cell = size / n
-    parts = [rect(x - cell * 2, y - cell * 2, size + cell * 4, size + cell * 4, light, rx=cell)]
+    parts = [rect(x - cell * 2, y - cell * 2, size + cell * 4, size + cell * 4, light, rx=cell,
+                  extra=f'class="{cls}"' if cls else "")]
     for r_, row in enumerate(mat):
         run = None
         for c_, v in enumerate(list(row) + [0]):
@@ -168,7 +168,7 @@ def back(W, H, wr: Wrap):
     y = m + 0.30 * PT
     hs = min(fit(HOOK[0], tw, "Inter", 800), fit(HOOK[1], tw, "Inter", 800), 25.0)
     out.append(text(m, y + hs * 0.8, HOOK[0], hs, C["text_on_dark"], weight=800, ls=-0.01 * hs))
-    y += hs * 0.8 + hs * 1.18
+    y += hs * 0.8 + hs * 1.22
     split = HOOK[1].index("It’s")
     out.append(text(m, y, HOOK[1][:split], hs, C["text_on_dark"], weight=800, ls=-0.01 * hs))
     out.append(text(m + measure(HOOK[1][:split], hs, "Inter", 800, ls=-0.01 * hs), y, HOOK[1][split:], hs,
@@ -181,14 +181,17 @@ def back(W, H, wr: Wrap):
             y += lh
             out.append(text(m, y, ln, bs, BODY, family="Source Serif 4"))
         y += lh * 0.45
-    # the praise slot, left empty for real quotes only
-    y += 6
-    ph = 30
-    out.append(rect(m, y, tw, ph, "none", rx=4, stroke=mix(C["faint_on_dark"], BG, 0.35), sw=0.8,
-                    extra='stroke-dasharray="3 3"'))
-    out.append(text(m + tw / 2, y + ph / 2 + 3.2, "[[PRAISE]]", 8.5, C["faint_on_dark"], family="JetBrains Mono",
-                    anchor="middle"))
-    y += ph + 22
+    # praise: only real, attributed quotes, and only when SHOW_PRAISE is on
+    if SHOW_PRAISE and PRAISE:
+        y += 8
+        for quote, who in PRAISE:
+            for ln in wrap_lines(f"\u201c{quote}\u201d", tw, 9.6, "Source Serif 4", 400):
+                y += 13
+                out.append(text(m, y, ln, 9.6, BODY, family="Source Serif 4", style="italic"))
+            y += 12
+            out.append(text(m, y, f"\u2014 {who}", 8.4, C["sub_on_dark"], weight=600))
+            y += 6
+    y += 26
     # two columns: what you'll learn, and one result from the book
     colw = tw * 0.60
     out.append(text(m, y, "Inside, you’ll learn to:", 10.5, C["jev_on_dark"], weight=700))
@@ -236,21 +239,32 @@ def back(W, H, wr: Wrap):
     out.append(text(ax, y + 9, "About the author", 9.0, C["text_on_dark"], weight=700))
     out.append(text(ax, y + 22, f"{AUTHOR} [[AUTHOR BIO]]", 8.6, BODY))
     out.append(text(ax, y + 36, EMAIL, 8.0, C["sub_on_dark"], family="JetBrains Mono"))
-    # bottom row: QR, category and price; the barcode box on the right stays empty
+    # bottom row, all inside the safe area: the QR with its URL beneath, and a text column; the barcode area on the
+    # right stays empty, with the independence line just above it
+    safe = 0.25 * PT
+    bx_, by_, bw_, bh_ = barcode_local(W, H)
     qs = 0.62 * PT
-    qy = H - (0.25 * PT + 0.12 * PT) - qs - 11
-    out.append(qr_svg(m, qy, qs, REPO_URL, BG, C["text_on_dark"]))
-    out.append(text(m - 2, qy + qs + 12, REPO_LABEL, 6.3, C["sub_on_dark"], family="JetBrains Mono"))
-    kx = m + qs + 0.28 * PT
+    cell = qs / len(list(segno.make(REPO_URL, error="m").matrix))
+    url_y = H - safe - 5                                # URL baseline; its descenders stay above the safe line
+    qy = url_y - 9 - cell * 2 - qs                      # QR plate bottom sits 9 pt above the URL baseline
+    qx = m + cell * 2
+    out.append(qr_svg(qx, qy, qs, REPO_URL, BG, C["text_on_dark"], cls="qrplate"))
+    out.append(text(m, url_y, REPO_LABEL, 6.3, C["sub_on_dark"], family="JetBrains Mono"))
+    kx = qx + qs + cell * 2 + 0.22 * PT
     out.append(text(kx, qy + 8, "Labs, figures and code", 7.6, C["text_on_dark"], weight=600))
     out.append(text(kx, qy + 19, "Scan for the companion repository", 7.2, C["faint_on_dark"]))
-    out.append(text(kx, qy + qs - 12, CATEGORY, 7.6, C["sub_on_dark"], weight=600))
-    out.append(text(kx, qy + qs - 1, "[[PRICE INR]]  \u00b7  [[PRICE USD]]", 7.6, C["sub_on_dark"],
-                    family="JetBrains Mono"))
+    out.append(text(kx, qy + qs - 2, CATEGORY, 7.6, C["sub_on_dark"], weight=600))
+    out.append(text(bx_ + bw_, by_ - 6, DISCLAIMER, 6.8, C["faint_on_dark"], anchor="end"))
     return "\n".join(out)
 
 
 # ---------------------------------------------------------------- guides layer
+def barcode_local(W, H):
+    """The barcode area in the back panel's own coordinates (W is the panel minus any hinge)."""
+    bw, bh = 2.0 * PT, 1.2 * PT
+    return W - 0.25 * PT - bw, H - 0.25 * PT - bh, bw, bh
+
+
 def barcode_box(wr: Wrap):
     """KDP places the barcode 0.25 in inside the back cover's bottom-right corner (on the spine side): 2 x 1.2 in."""
     bw, bh = 2.0 * PT, 1.2 * PT
@@ -302,10 +316,10 @@ def wrap_svg(wr: Wrap, strap, with_guides=False):
     pw, ph = wr.panel_w * PT, wr.panel_h * PT
     hinge = wr.hinge * PT if wr.kind == "hardcover" else 0
     # back: laid out on the panel minus the hinge, so no text sits on the fold
-    parts.append(f'<g transform="translate({e:.2f},{e:.2f})"><svg width="{pw - hinge:.2f}" height="{ph:.2f}" '
+    parts.append(f'<g id="back" transform="translate({e:.2f},{e:.2f})"><svg width="{pw - hinge:.2f}" height="{ph:.2f}" '
                  f'overflow="visible">{back(pw - hinge, ph, wr)}</svg></g>')
     parts.append(f'<g transform="translate({wr.spine_x * PT:.2f},{e:.2f})">{spine(wr.spine * PT, ph, wr)}</g>')
-    parts.append(f'<g transform="translate({wr.front_x * PT + hinge:.2f},{e:.2f})"><svg width="{pw - hinge:.2f}" '
+    parts.append(f'<g id="front" transform="translate({wr.front_x * PT + hinge:.2f},{e:.2f})"><svg width="{pw - hinge:.2f}" '
                  f'height="{ph:.2f}" overflow="visible">{front(pw - hinge, ph, strap)}</svg></g>')
     if with_guides:
         parts.append(guides(wr))

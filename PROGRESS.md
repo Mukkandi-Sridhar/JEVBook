@@ -58,8 +58,8 @@ Everything below needs you, or access this build didn't have. `BOOK_DRAFT=1 quar
 - Copyright page (`assets/latex/before-body.tex`): publisher or imprint and city, ISBN for the paperback, ISBN for the
   ebook, and the month of the first edition. The printing line (10 9 8 … 1) is in place.
 - Acknowledgements (`front/acknowledgements.qmd`) and About the Author (`back/about-author.qmd`).
-- Back cover (`cover/wrap.py`): [[AUTHOR BIO]], [[AUTHOR PHOTO]], [[PRAISE]] (real endorsements only, or remove the
-  box), [[PRICE INR]] and [[PRICE USD]]. KDP prints the ISBN barcode in the empty bottom-right area. Then rebuild
+- Back cover (`cover/wrap.py`): [[AUTHOR BIO]] and [[AUTHOR PHOTO]]. KDP prints the ISBN barcode in the empty
+  bottom-right area. Praise is switched off (`SHOW_PRAISE`) until there are real quotes. Then rebuild
   (`cover/README.md`) and lay KDP's cover template for the final page count over `cover/print/cover-*-guides.pdf`.
 
 **Your stories** — [[AUTHOR STORY]] markers: 20, hidden in print. They mark where AttendX, the police

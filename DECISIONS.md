@@ -211,3 +211,12 @@ Newest decisions are appended at the bottom of each section.
 - **D-79 · No borrowed authority.** No TypeSafe logo or branding, no endorsement implied, and no invented praise: the
   praise, bio, photo and price are visible placeholders. The EPUB now uses `cover/ebook/cover.jpg`, and the old
   placeholder in `assets/cover/` is gone.
+- **D-80 · Cover revision.** Front: the drifting LLM words ("ated", "the", "likely", …) are gone; three small, faint
+  pieces of "Generate" ("ne", "ra", "te") step down to the right of "ate", below "Decide,". The "er" and "ate" chips
+  sit closer and fade less, so "Generate" reads as one word at 150 px and in greyscale. The zone bar sits lower and
+  the subtitle is larger (0.052 of the width, from 0.044), filling the lower half. Back: no price on the cover (set in
+  KDP); the praise box is off behind `SHOW_PRAISE` until real quotes exist; the QR, URL and category sit inside the
+  0.25 in safe area; "An independent guide. Not affiliated with TypeSafe AI." sits above the barcode area; blurb and
+  bullet 3 reworded. The stat card still reads `results/ch25.json`, the file behind Chapter 18's table, which prints
+  54% → 89%; `cover/check.py` now fails if the card and the book disagree, and measures every back-cover item
+  against the safe area, the barcode area and its neighbours.

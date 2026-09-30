@@ -9,7 +9,7 @@
   },
   "contrast_card_caption": 5.0,
   "spelling": {
-    "words": 203,
+    "words": 201,
     "unknown": []
   },
   "paperback_pdf_in": [
@@ -27,5 +27,26 @@
   "hardcover_expected_in": [
     16.3458,
     11.4173
-  ]
+  ],
+  "layout": {
+    "paperback": {
+      "items_checked": 59,
+      "problems": []
+    },
+    "hardcover": {
+      "items_checked": 59,
+      "problems": []
+    }
+  },
+  "case_study": {
+    "cover": [
+      "54",
+      "89"
+    ],
+    "chapter18": [
+      "54",
+      "89"
+    ],
+    "match": true
+  }
 }
