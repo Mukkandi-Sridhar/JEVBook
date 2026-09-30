@@ -1492,3 +1492,262 @@ Every change is logged below as a before/after pair, applied by `tools/simplify_
 - `chapters/ch10.qmd`
   - Before: 3. Find an alert in the lab whose severity distribution has two humps. What does its P(attack) look like? Why do the two go together?
   - After: 3. Find an alert in the lab whose severity probabilities have two peaks. What does its P(attack) look like? Why do the two go together?
+
+## Chapter 12: The Jevons paradox of decisions
+
+40 changes.
+
+- `chapters/ch12.qmd`
+  - Before: In 1865 a 29-year-old economist named William Stanley Jevons published a book about coal, and it made him famous almost overnight [@jevons1865].
+  - After: In 1865, a 29-year-old economist named William Stanley Jevons published a book about coal. It made him famous almost immediately [@jevons1865].
+- `chapters/ch12.qmd`
+  - Before: Britain ran on coal. Its factories, mines, ships and railways all burned it, and people had started to worry about how long it would last. The comforting answer was engineering. James Watt's steam engine got far more work out of each ton than the engines before it, and engineers kept improving it. Surely, as engines got more efficient, Britain would need less coal.
+  - After: Britain ran on coal. Its factories, mines, ships and railways all burned it, and people had started to worry about how long it would last. The comforting answer was engineering. James Watt's steam engine got far more work out of each ton of coal than the engines before it, and engineers kept improving it. Surely, as engines used coal better, Britain would need less of it.
+- `chapters/ch12.qmd`
+  - Before: Jevons said no. More efficient engines had made coal-powered work *cheaper*, and cheaper work got used for more things. Engines that had been too costly to run became worth running, in more mills and more mines. Each engine used less coal. Britain used far more.
+  - After: Jevons said no. Better engines had made coal-powered work *cheaper*, and cheaper work got used for more things. Engines that had cost too much to run became worth running, in more factories and more mines. Each engine used less coal. Britain used far more.
+- `chapters/ch12.qmd`
+  - Before: A model whose name is short for Jevons invites the question: what's the coal, this time?
+  - After: Jev's name is short for Jevons. So we should ask: what's the coal this time?
+- `chapters/ch12.qmd`
+  - Before: - See where the paradox really bites: in new uses, not old ones.
+  - After: - See where the paradox really shows up: in new uses, not old ones.
+- `chapters/ch12.qmd`
+  - Before: - Spot the catch: cheap decisions move the load onto the people who review them.
+  - After: - Notice the hidden cost: cheap decisions move work onto the people who review them.
+- `chapters/ch12.qmd`
+  - Before: Think about photographs. When a photo meant film, developing and a trip to the chemist, you took a few dozen on a holiday and chose each one with care. Then each photo cost next to nothing. Nobody takes the same few dozen photos for less money. You take thousands, of receipts and parking spots and whiteboards, because each one is now worth taking.
+  - After: Think about photographs. When a photo meant buying film and paying a shop to print it, you took a few dozen on a holiday and chose each one with care. Then each photo started to cost almost nothing. Nobody takes the same few dozen photos for less money. You take thousands, of receipts and parking spots and whiteboards, because each one is now worth taking.
+- `chapters/ch12.qmd`
+  - Before: Or light. Over the last two centuries, the price of an hour of light fell enormously, from candles to gas to electric bulbs to LEDs. Economic historians who traced it for the UK found that people didn't pocket the savings and keep a candle's worth of light. They lit streets and buildings and kept them lit all night, and use grew far faster than the price fell [@fouquet2006].
+  - After: Or light. Over the last two hundred years, the price of an hour of light fell enormously, from candles to gas to electric bulbs to LEDs. Historians who studied this for the UK found that people didn't keep the savings and use the same small amount of light. They lit streets and buildings and kept them lit all night. Use grew far faster than the price fell [@fouquet2006].
+- `chapters/ch12.qmd`
+  - Before: That pattern has a name. The **Jevons paradox** is what happens when something becomes more efficient to use, each unit of use gets cheaper, and total use rises instead of falling.
+  - After: That pattern has a name. The **Jevons paradox** is when something becomes more efficient to use, each unit gets cheaper, and total use rises instead of falling.
+- `chapters/ch12.qmd`
+  - Before: The paradox isn't a law. Plenty of things got cheaper without anyone using much more of them. Salt is cheap, and you don't eat ten times as much as your great-grandparents did.
+  - After: The paradox isn't a law. Many things got cheaper without anyone using much more of them. Salt is cheap, but you don't eat ten times as much as your great-grandparents did.
+- `chapters/ch12.qmd`
+  - Before: What decides it is how hungry people are for more, which economists measure as **elasticity**: how much the amount people use changes when the price changes. Total spend is price times quantity, so there are three cases.
+  - After: What decides it is how much more people want when the price falls. Economists measure this as **elasticity**: how much the amount people use changes when the price changes. Total spending is price times quantity, so there are three cases.
+- `chapters/ch12.qmd`
+  - Before: If demand is **inelastic**, like salt, a price cut mostly saves money. If demand is **elastic**, like photos or light, a price cut opens up so many new uses that the total bill goes *up* (@fig-elasticity). Economists call the general effect a rebound, and they reserve "backfire" for the case where it more than cancels the saving. How often full backfire happens with energy is still argued over [@sorrell2009].
+  - After: If demand is **inelastic**, like salt, a price cut mostly saves money. If demand is **elastic**, like photos or light, a price cut opens up so many new uses that the total bill goes *up* (@fig-elasticity). Economists call the general effect a "rebound". They use "backfire" only when it more than cancels the saving. Experts still disagree about how often full backfire happens with energy [@sorrell2009].
+- `chapters/ch12.qmd`
+  - Before: So the question for decisions isn't "is the paradox true?" It's: *how elastic is the demand for decisions?* Are there lots of decisions that aren't being made today, only because they cost too much?
+  - After: So the question for decisions isn't "is the paradox true?" It's: *how elastic is the demand for decisions?* Are there many decisions that aren't being made today, only because they cost too much?
+- `chapters/ch12.qmd`
+  - Before: TypeSafe has said the name nods to Jevons: that cheaper intelligence leads to wider use, not less of it. It's a good choice, and a pointed one, because the same idea did the rounds in early 2025, when cheaper AI models briefly rattled investors and several technology leaders reached for Jevons to argue that cheaper AI would mean more AI, not less.
+  - After: TypeSafe has said the name refers to Jevons: cheaper intelligence leads to wider use, not less. It's a good choice, and a deliberate one. The same idea was popular in early 2025. Cheaper AI models briefly worried investors, and several technology leaders used Jevons to argue that cheaper AI would mean more AI, not less.
+- `chapters/ch12.qmd`
+  - Before: We don't need to settle that argument for an entire industry. We can look at one company and count.
+  - After: We don't need to settle that argument for a whole industry. We can look at one company and count.
+- `chapters/ch12.qmd`
+  - Before: Every decision has a **value**: the expected loss it avoids. Chapter 4 gave you the tools to put a number on it. Checking an alert that has a 3% chance of being a \$10,000 breach, when a good decision would stop it, is worth about \$300. A decision is worth making when its value is above its price.
+  - After: Every decision has a **value**: the expected loss it avoids. Chapter 4 gave you the tools to put a number on it. Suppose an alert has a 3% chance of being a \$10,000 break-in, and a good decision would stop it. Then checking it is worth about \$300. A decision is worth making when its value is above its price.
+- `chapters/ch12.qmd`
+  - Before: Look at Kestrel. Its SOC makes a few thousand careful decisions a day. But the company generates millions of *possible* decisions: every inbound email, every login, every line in the logs. Each is almost certainly fine. Each is worth checking for a sliver of a cent.
+  - After: Look at Kestrel. Its SOC makes a few thousand careful decisions a day. But the company produces millions of *possible* decisions: every incoming email, every login, every line in the logs. Each is almost certainly fine. Each is worth checking only if the check costs a tiny fraction of a cent.
+- `chapters/ch12.qmd`
+  - Before: I've built a small, deliberately simple model of this, and I want to be clear about what it is. Every number in it is an assumption, chosen to be plausible and written down in `jevkit/econ.py` where you can change it. It isn't a measurement of Kestrel or anyone else.
+  - After: I've built a small, simple model of this on purpose, and I want to be clear about what it is. Every number in it is an assumption, chosen to be realistic. They're all written down in `jevkit/econ.py`, where you can change them. It isn't a measurement of Kestrel or anyone else.
+- `chapters/ch12.qmd`
+  - Before: Look at the long bottom rows of @fig-pools. There are about {{< num ch19 pool_raw approx >}} log events a day. A typical one is worth about two thousandths of a cent to check. At the book's illustrative LLM price of \${{< num ch19 llm_price f5 >}} a decision, only a sliver of them clear the bar. At Jev's vendor-reported price of \${{< num ch19 jev_price f6 >}}, about half of them do.
+  - After: Look at the long bottom rows of @fig-pools. There are about {{< num ch19 pool_raw approx >}} log events a day. A typical one is worth about two thousandths of a cent to check. At the book's illustrative LLM price of \${{< num ch19 llm_price f5 >}} a decision, only a very small share of them are worth checking. At Jev's vendor-reported price of \${{< num ch19 jev_price f6 >}}, about half of them are.
+- `chapters/ch12.qmd`
+  - Before: Price isn't the only thing that stops a decision being made. Time does too.
+  - After: Price isn't the only thing that stops a decision from being made. Time does too.
+- `chapters/ch12.qmd`
+  - Before: When someone logs in, they're sitting there waiting. You might have a few hundred milliseconds to decide whether the login looks risky before the delay becomes the problem. An email can wait a few seconds before it's delivered. An alert can wait a minute.
+  - After: When someone logs in, they're sitting there waiting. You might have a few hundred milliseconds to decide whether the login looks risky before the delay itself becomes the problem. An email can wait a few seconds before it's delivered. An alert can wait a minute.
+- `chapters/ch12.qmd`
+  - Before: @fig-gates puts both gates on one chart. The LLM's region starts at over a second and at a price that rules out the cheap pools. Jev's region reaches much further left, and further down. Logins are the interesting case: they fall inside Jev's region only if its calls land at the fast end of the vendor's range. You'd measure that before promising anyone real-time login checks.
+  - After: @fig-gates puts both gates on one chart. The LLM's region starts at over a second, and at a price too high for the cheap pools. Jev's region reaches much further left, and further down. Logins are the interesting case. They fall inside Jev's region only if its calls are at the fast end of the vendor's range. You'd measure that before promising anyone instant login checks.
+- `chapters/ch12.qmd`
+  - Before: With both gates applied, the illustrative LLM makes about {{< num ch19 llm_decisions approx >}} decisions a day and spends about \${{< num ch19 llm_spend int >}}. Jev, at the fast end of its range, makes about {{< num ch19 jev_decisions approx >}} and spends about \${{< num ch19 jev_spend int >}}. About {{< num ch19 decisions_ratio int >}} times as many decisions for a quarter of the bill.
+  - After: With both gates applied, the illustrative LLM makes about {{< num ch19 llm_decisions approx >}} decisions a day and spends about \${{< num ch19 llm_spend int >}}. Jev, at the fast end of its range, makes about {{< num ch19 jev_decisions approx >}} and spends about \${{< num ch19 jev_spend int >}}. That's about {{< num ch19 decisions_ratio int >}} times as many decisions for a quarter of the cost.
+- `chapters/ch12.qmd`
+  - Before: Notice what didn't happen. The bill went *down*. Inside Kestrel's existing jobs, demand for decisions is elastic enough to multiply the count, but not elastic enough to raise the spend. The newly affordable decisions are worth so little each that they add only about \${{< num ch19 value_gain int >}} a day of avoided loss.
+  - After: Notice what didn't happen. The bill went *down*. Inside Kestrel's existing jobs, demand for decisions is elastic enough to multiply the number of decisions, but not enough to raise the spending. The newly affordable decisions are each worth so little that together they avoid only about \${{< num ch19 value_gain int >}} a day of loss.
+- `chapters/ch12.qmd`
+  - Before: Suppose cheap decisions let Kestrel build something new: checking every file that's shared outside the company, {{< num ch19 new_job approx >}} a day, each worth about three thousandths of a cent. At LLM prices almost nobody would build that. At Jev's price, the model takes about {{< num ch19 jev_new_taken approx >}} of those checks a day, and Kestrel's decision bill jumps from \${{< num ch19 jev_spend int >}} to about \${{< num ch19 jev_new_spend int >}}.
+  - After: Suppose cheap decisions let Kestrel build something new: checking every file shared outside the company. That's {{< num ch19 new_job approx >}} files a day, each check worth about three thousandths of a cent. At LLM prices, almost nobody would build that. At Jev's price, the model makes about {{< num ch19 jev_new_taken approx >}} of those checks a day. Kestrel's decision bill jumps from \${{< num ch19 jev_spend int >}} to about \${{< num ch19 jev_new_spend int >}}.
+- `chapters/ch12.qmd`
+  - Before: Add two or three more jobs like that and Kestrel spends more on decisions than it ever did with an LLM, while making dozens of times as many. That's Jevons' coal, in miniature, and it's what TypeSafe's Doom demo from Chapter 9 was really showing: an agent making ten decisions a second is a use that simply didn't exist when each decision took a second and cost a tenth of a cent.
+  - After: Add two or three more jobs like that, and Kestrel spends more on decisions than it ever did with an LLM, while making dozens of times as many. That's Jevons' coal again, on a small scale. It's also what TypeSafe's Doom demo from Chapter 9 was really showing. An agent making ten decisions a second is a use that didn't exist when each decision took a second and cost a tenth of a cent.
+- `chapters/ch12.qmd`
+  - Before: ## The catch: where the load goes
+  - After: ## The hidden cost: where the work goes
+- `chapters/ch12.qmd`
+  - Before: There's a second, less comfortable consequence, and it's the one I'd want you to remember on a Monday morning.
+  - After: There's a second, less comfortable result, and it's the one I'd most want you to remember at work.
+- `chapters/ch12.qmd`
+  - Before: ![Alerts sent to a person per day, under two rules (illustrative). A rule that flags a fixed share of what the model looks at scales with the number of decisions, and swamps the team's capacity at Jev volumes. A cost line, which flags only when the expected loss is larger than the cost of a review, barely moves.]
+  - After: ![Alerts sent to a person per day, under two rules (illustrative). A rule that flags a fixed share of what the model looks at grows with the number of decisions, and at Jev volumes it sends far more than the team can handle. A cost-based threshold, which flags only when the expected loss is larger than the cost of a review, barely moves.]
+- `chapters/ch12.qmd`
+  - Before: Only some of those decisions can end with a person, though. Agent steps and checks on LLM outputs never go to a queue, so of the LLM's roughly {{< num ch19 llm_decisions approx >}} decisions a day, about {{< num ch19 reviewable_llm approx >}} are the reviewable kind; at Jev's volume it's about {{< num ch19 reviewable_jev approx >}}. Those are the counts @fig-flags labels.
+  - After: Only some of those decisions can end with a person, though. Agent steps and checks on LLM outputs never go to a queue. So of the LLM's roughly {{< num ch19 llm_decisions approx >}} decisions a day, about {{< num ch19 reviewable_llm approx >}} are the kind a person could review. At Jev's volume it's about {{< num ch19 reviewable_jev approx >}}. Those are the counts shown in @fig-flags.
+- `chapters/ch12.qmd`
+  - Before: Now suppose you carried over a rule that seemed sensible at LLM volumes: send the top 0.1% of the reviewable decisions to a person. That sends {{< num ch19 flags_top_llm int >}} a day, comfortably under the team's capacity of {{< num ch19 capacity int >}}. At Jev volumes, the same rule sends {{< num ch19 flags_top_jev int >}} (@fig-flags). Nobody changed the policy. The queue just grew eightfold.
+  - After: Now suppose you kept a rule that seemed sensible at LLM volumes: send the top 0.1% of the reviewable decisions to a person. That sends {{< num ch19 flags_top_llm int >}} a day, well under the team's capacity of {{< num ch19 capacity int >}}. At Jev volumes, the same rule sends {{< num ch19 flags_top_jev int >}} (@fig-flags). Nobody changed the policy. The queue just grew eight times bigger.
+- `chapters/ch12.qmd`
+  - Before: The cost line from Chapter 4 doesn't have this problem. It flags a case when its expected loss is bigger than the \$15 a review costs, and a log line worth two thousandths of a cent is never going to clear that. It sends {{< num ch19 flags_cost_jev int >}} a day either way.
+  - After: The cost-based threshold from Chapter 4 doesn't have this problem. It flags a case only when its expected loss is bigger than the \$15 a review costs. A log line worth two thousandths of a cent will never reach that. It sends {{< num ch19 flags_cost_jev int >}} a day either way.
+- `chapters/ch12.qmd`
+  - Before: When decisions get cheap, thresholds must be set by cost, not by share. Otherwise the saving on machines turns into a bill for people.
+  - After: When decisions get cheap, thresholds must be set by cost, not by share. Otherwise the money saved on machines is spent on people's time.
+- `chapters/ch12.qmd`
+  - Before: Calibration matters more, not less, as decisions multiply. A cost line only works if the probabilities can be trusted. An overconfident model making a million decisions a day doesn't make a few extra mistakes. It fills the queue.
+  - After: Calibration matters more, not less, as decisions multiply. A cost-based threshold only works if the probabilities are calibrated. An overconfident model making a million decisions a day doesn't make a few extra mistakes. It fills the queue.
+- `chapters/ch12.qmd`
+  - Before: Everything in this chapter's Kestrel model is an assumption: the pools, their sizes, the value of each decision, the time budgets. Change them and the numbers move a lot, which is why the lab lets you. Jev's price and latency are vendor-reported, and early-access prices can change. The "value of a decision" is itself an estimate that depends on calibrated probabilities, which Chapter 11 showed you can't assume. And historical analogies are suggestive, not proof: whether demand for decisions turns out more like light or more like salt is something only the next few years will show.
+  - After: Everything in this chapter's Kestrel model is an assumption: the pools, their sizes, the value of each decision, the time limits. Change them and the numbers move a lot, which is why the lab lets you. Jev's price and latency are vendor-reported, and early-access prices can change. The "value of a decision" is itself an estimate that depends on calibrated probabilities, which Chapter 11 showed you can't assume. And comparisons with history are hints, not proof. Only the next few years will show whether demand for decisions is more like light or more like salt.
+- `chapters/ch12.qmd`
+  - Before: Kestrel wants to check every login in real time. There are 150,000 a day; a typical check is worth about \$0.0005; the budget is 300 milliseconds. At Jev's vendor-reported price, is the check worth making? What would you need to measure before switching it on? And what should the rule be for sending a login to a person?
+  - After: Kestrel wants to check every login as it happens. There are 150,000 a day. A typical check is worth about \$0.0005, and the time limit is 300 milliseconds. At Jev's vendor-reported price, is the check worth making? What would you need to measure before switching it on? And what should the rule be for sending a login to a person?
+- `chapters/ch12.qmd`
+  - Before: (At \$0.000021 a check, yes: a typical login is worth about twenty times the price of checking it. The open question is time, so measure Jev's latency from your own network at your own volumes, including the slow tail. Send a login to a person only when its expected loss exceeds the cost of a review, never as a fixed share.)
+  - After: (At \$0.000021 a check, yes: a typical login is worth about twenty times the price of checking it. The open question is time. Measure Jev's latency from your own network at your own volumes, including the slowest calls. Send a login to a person only when its expected loss is more than the cost of a review, never as a fixed share.)
+- `chapters/ch12.qmd`
+  - Before: Jevons noticed that better engines made coal-powered work cheaper, and cheaper work spread until Britain burned more coal than ever. Decisions, we found, work the same way, with a twist. Inside the jobs a company already does, cheaper decisions multiply the count and shrink the bill. The paradox arrives through new jobs, ones that were never worth doing at a tenth of a cent. And every extra decision can turn into work for a person, unless the lines are drawn by cost.
+  - After: Jevons noticed that better engines made coal-powered work cheaper, and cheaper work spread until Britain burned more coal than ever. Decisions, we found, work the same way, with one difference. Inside the jobs a company already does, cheaper decisions multiply the number of decisions and shrink the bill. The paradox comes through new jobs: ones that were never worth doing at a tenth of a cent. And every extra decision can turn into work for a person, unless the thresholds are set by cost.
+- `chapters/ch12.qmd`
+  - Before: Part III has been about Jev on its own: what it is, what it answers, whether its probabilities can be trusted and what it might do to demand. Part IV puts it in context, against every other way of making the same decision.
+  - After: Part III has been about Jev on its own: what it is, what it answers, whether its probabilities are calibrated, and what it might do to demand. Part IV compares it with every other way of making the same decision.
+- `chapters/ch12.qmd`
+  - Before: 4. The "top 0.1%" rule sounded sensible. Write down a rule from your own work that is set as a share, not a cost. What would happen to it if volume went up tenfold?
+  - After: 4. The "top 0.1%" rule sounded sensible. Write down a rule from your own work that is set as a share, not a cost. What would happen to it if the volume grew ten times?
+
+## Chapter 13: The bake-off
+
+43 changes.
+
+- `chapters/ch13.qmd`
+  - Before: Every SOC has the same argument, and it never quite ends.
+  - After: Every SOC has the same argument, and it never really ends.
+- `chapters/ch13.qmd`
+  - Before: The senior analyst says the rules are fine; they're written by people who know the attacks, and you can read every one. The data scientist says a trained model would beat the rules, if only someone would label enough alerts. The new engineer has wired an LLM into the ticketing system and says it reads alerts better than either of them. And now someone has read about Jev.
+  - After: The senior analyst says the rules are fine. People who know the attacks wrote them, and you can read every one. The data scientist says a trained model would beat the rules, if only someone would label enough alerts. The new engineer has connected an LLM to the ticket system and says it reads alerts better than either of them. And now someone has read about Jev.
+- `chapters/ch13.qmd`
+  - Before: Each of them is right about something. The argument never ends because they're scoring on different things: one on explainability, one on accuracy, one on flexibility, and one on price. Nobody puts all the numbers on one sheet.
+  - After: Each of them is right about something. The argument never ends because they're judging different things. One cares about explaining decisions, one about accuracy, one about flexibility, and one about price. Nobody puts all the numbers on one page.
+- `chapters/ch13.qmd`
+  - Before: So let's do that. Six methods, one dataset, one fair contest, and a scorecard with every column that matters. I'll tell you now that Jev doesn't win every round.
+  - After: So let's do that: six methods, one dataset, one fair contest, and a scorecard with every column that matters. We'll call it a "bake-off", the name for a contest where everyone makes the same thing. I'll tell you now that Jev doesn't win every round.
+- `chapters/ch13.qmd`
+  - Before: - Tell which results come from how the synthetic contestants were built, and which would carry over to your own test.
+  - After: - Tell which results come from how the synthetic contestants were built, and which would also appear in your own test.
+- `chapters/ch13.qmd`
+  - Before: The decision is Kestrel's: is this alert a real threat? Every method gets the three history weeks, {{< num ch20 n_hist int >}} alerts with analysts' verdicts, to train or tune on. Every method is then scored on the fourth week, {{< num ch20 n_live int >}} alerts it has never seen, of which {{< num ch20 live_threats int >}} are real.
+  - After: The decision is Kestrel's: is this alert a real threat? Every method gets the three history weeks to train or tune on: {{< num ch20 n_hist int >}} alerts with analysts' verdicts. Then every method is scored on the fourth week, the "live week": {{< num ch20 n_live int >}} alerts it has never seen, of which {{< num ch20 live_threats int >}} are real.
+- `chapters/ch13.qmd`
+  - Before: Each reads what it would naturally read in practice (@fig-contenders).
+  - After: Each one reads what it would normally read in practice (@fig-contenders).
+- `chapters/ch13.qmd`
+  - Before: The **text classifier** needs a word of explanation. It stands in for a fine-tuned model: a classic word-counting classifier (word weights plus logistic regression) trained on the history labels, which re-trains in seconds on any laptop. A fine-tuned transformer, even a small one of the MiniLM kind, would usually read the text better, so treat this row as a floor for what a trained text model can do.
+  - After: The **text classifier** needs a short explanation. It stands in for a fine-tuned model. It's a classic classifier that counts words (word weights plus logistic regression), trained on the history labels. It re-trains in seconds on any laptop. A fine-tuned transformer, even a small one, would usually read the text better. So treat this row as the lowest result a trained text model should get.
+- `chapters/ch13.qmd`
+  - Before: One warning before any results, and it's the most important paragraph in this chapter. Both LLM contestants are the book's mock, and I built it as a *noisier reader* than mock Jev (the repository's `docs/mock-design.md` explains how). So when the LLM ranks alerts worse than Jev below, that's a consequence of how the mocks were made. It isn't evidence about real LLMs or real Jev. What *does* carry over is the shape of the other results: how stated confidences behave, how often free-text JSON breaks, what happens when you ask twice, what labels cost. Those come from how each kind of method works, not from my choice of noise.
+  - After: One warning before any results, and it's the most important paragraph in this chapter. Both LLM contestants are the book's mock, and I built it to read alerts *less accurately* than mock Jev (the repository's `docs/mock-design.md` explains how). So when the LLM ranks alerts worse than Jev below, that's because of how the mocks were made. It isn't evidence about real LLMs or real Jev. What you *can* rely on is the pattern of the other results. That means how stated confidences behave, how often free-text JSON breaks, what happens when you ask twice, and what labels cost. Those come from how each kind of method works, not from choices I made in the mocks.
+- `chapters/ch13.qmd`
+  - Before: Logistic regression wins round one, narrowly: an AUC of {{< num ch20 logistic_auc f3 >}} against Jev's {{< num ch20 jev_auc f3 >}} (@fig-scores). With Kestrel's review capacity of 240 alerts a day, it catches {{< num ch20 logistic_caught pct >}} of real threats; Jev catches {{< num ch20 jev_caught pct >}}.
+  - After: Logistic regression wins round one, by a small margin: an AUC of {{< num ch20 logistic_auc f3 >}} against Jev's {{< num ch20 jev_auc f3 >}} (@fig-scores). With Kestrel's review capacity of 240 alerts a day, it catches {{< num ch20 logistic_caught pct >}} of real threats; Jev catches {{< num ch20 jev_caught pct >}}.
+- `chapters/ch13.qmd`
+  - Before: That isn't a fluke. The logistic regression was trained on fifteen thousand of Kestrel's own labelled alerts, on clean structured fields, for a decision that's nearly linear in those fields. Classic machine learning is at home here. A general model reading the same fields with no training on Kestrel at all shouldn't be expected to beat it there, and it doesn't.
+  - After: That isn't luck. The logistic regression was trained on fifteen thousand of Kestrel's own labelled alerts, on clean structured fields. And the decision depends on those fields in a nearly straight-line way. This is exactly the kind of problem classic machine learning is good at. A general model reading the same fields, with no training on Kestrel at all, shouldn't be expected to beat it here, and it doesn't.
+- `chapters/ch13.qmd`
+  - Before: The rules come last on ranking, with an AUC of {{< num ch20 rules_auc f2 >}}, for a structural reason: a rule says yes or no. Among the hundreds of alerts it says yes to, it has no way to say which to look at first.
+  - After: The rules come last on ranking, with an AUC of {{< num ch20 rules_auc f2 >}}. The reason is simple: a rule only says yes or no. Among the hundreds of alerts it says yes to, it has no way to say which to look at first.
+- `chapters/ch13.qmd`
+  - Before: Give Jev the raw text instead of the fields, and its AUC drops to {{< num ch20 jev_text_auc f3 >}}. Still well ahead of the trained text classifier's {{< num ch20 text_clf_auc f3 >}}, because reading "threat intel score: 0.82" as a number is what a word-counting classifier is worst at.
+  - After: Give Jev the raw text instead of the fields, and its AUC drops to {{< num ch20 jev_text_auc f3 >}}. That's still well ahead of the trained text classifier's {{< num ch20 text_clf_auc f3 >}}. A classifier that counts words is worst at reading "threat intel score: 0.82" as a number.
+- `chapters/ch13.qmd`
+  - Before: ## Round two: honesty
+  - After: ## Round two: calibration
+- `chapters/ch13.qmd`
+  - Before: Ranking is only half the job. Chapter 14 will draw lines at probabilities, and lines only work if the probabilities mean what they say.
+  - After: Ranking is only half the job. Chapter 14 will put thresholds on probabilities, and thresholds only work if the probabilities mean what they say.
+- `chapters/ch13.qmd`
+  - Before: The LLM's stated confidences cluster on a few values; the judge's ratings, read as probabilities, are far too high in the middle.]
+  - After: The LLM's stated confidences are grouped on a few values; the judge's ratings, read as probabilities, are far too high in the middle.]
+- `chapters/ch13.qmd`
+  - Before: Most of the contestants are close to the line (@fig-reliability). The logistic regression was fitted with log loss on this company's data, the recipe Chapter 2 said produces honest probabilities. Mock Jev was designed to be well calibrated at Kestrel, and Chapter 11 showed that's worth checking at your own company, not assuming.
+  - After: Most of the contestants are close to the diagonal (@fig-reliability). The logistic regression was fitted with log loss on this company's data. Chapter 2 said that method produces calibrated probabilities. Mock Jev was designed to be well calibrated at Kestrel. Chapter 11 showed that you should check this at your own company, not assume it.
+- `chapters/ch13.qmd`
+  - Before: The LLM's stated confidence came from the JSON it wrote: `"confidence": 0.95`. Across five thousand alerts, it used only {{< num ch20 conf_levels int >}} distinct values, mostly 0.9, 0.95 and 0.99. Chapter 6 predicted as much. A number that a model *writes* is text, and text tends to be round. It can't rank finely, which is why the LLM's AUC is the lowest of the probability methods.
+  - After: The LLM's stated confidence came from the JSON it wrote: `"confidence": 0.95`. Across five thousand alerts, it used only {{< num ch20 conf_levels int >}} different values, mostly 0.9, 0.95 and 0.99. Chapter 6 predicted this. A number that a model *writes* is text, and text tends to use round numbers. So it can't rank alerts finely. That's why the LLM's AUC is the lowest of the methods that give probabilities.
+- `chapters/ch13.qmd`
+  - Before: The judge's 1-to-10 rating was never meant to be a probability, and reading it as one gives the worst calibration in the contest: {{< num ch20 llm_judge_ece f3 >}}. You could fix that with Platt scaling on a few hundred labels, as Chapter 3 showed. But then you're no longer comparing a zero-label method.
+  - After: In the LLM-as-judge method, the LLM rates each alert from 1 to 10. That rating was never meant to be a probability. Reading it as one gives the worst calibration in the contest: {{< num ch20 llm_judge_ece f3 >}}. You could fix that with Platt scaling on a few hundred labels, as Chapter 3 showed. But then it's no longer a method that needs zero labels.
+- `chapters/ch13.qmd`
+  - Before: "Logistic regression wins" comes with a price tag: fifteen thousand labels. What if you have fewer?
+  - After: "Logistic regression wins" comes at a cost: fifteen thousand labels. What if you have fewer?
+- `chapters/ch13.qmd`
+  - Before: Jev and the LLMs need no labels to start, so they're flat lines. Logistic regression draws level with Jev at about 3,000 labels.]
+  - After: Jev and the LLMs need no labels to start, so they're flat lines. Logistic regression catches up with Jev at about 3,000 labels.]
+- `chapters/ch13.qmd`
+  - Before: @fig-labels is the chart I'd show the data scientist in that argument. Logistic regression needs about 3,000 labelled alerts to draw level with Jev, and at a few hundred it's clearly behind.
+  - After: @fig-labels is the chart I'd show the data scientist in that argument. Logistic regression needs about 3,000 labelled alerts to catch up with Jev. With a few hundred, it's clearly behind.
+- `chapters/ch13.qmd`
+  - Before: Where would 3,000 labels come from? Not from analysts' reviews alone: at 240 a day, that's nearly two weeks of verdicts. Kestrel's labels are *eventual outcomes*: the incident that was confirmed or ruled out, the user who said "that was me", the alert nobody followed up and nothing came of. Every alert gets one sooner or later, so at about 700 alerts a day, 3,000 labels is around four days of history, which Kestrel happens to have. A team that's just starting, or a new decision nobody has labelled yet, doesn't.
+  - After: Where would 3,000 labels come from? Not from analysts' reviews alone: at 240 a day, that's nearly two weeks of verdicts. Kestrel's labels are *what finally happened*: the incident that was confirmed or ruled out, the user who said "that was me", the alert nobody followed up that turned out to be nothing. Every alert gets a label sooner or later. So at about 700 alerts a day, 3,000 labels is about four days of history, and Kestrel has that. A team that's just starting doesn't, and neither does a new decision nobody has labelled yet.
+- `chapters/ch13.qmd`
+  - Before: The text classifier never catches up, even with every label we have. Words alone, counted, don't carry the numbers.
+  - After: The text classifier never catches up, even with every label we have. Counting words doesn't capture the numbers in the text.
+- `chapters/ch13.qmd`
+  - Before: Labels are the hidden cost of trained models. A method that needs none can start today; a method that needs thousands has to wait for them, and needs them again when things change.
+  - After: Labels are the hidden cost of trained models. A method that needs none can start today. A method that needs thousands has to wait for them, and needs them again when things change.
+- `chapters/ch13.qmd`
+  - Before: ![Time and cost per decision for each method, on log scales. Classic models run in microseconds for fractions of a cent per million (an assumption: compute only).
+  - After: ![Time and cost per decision for each method, on log scales. Classic models run in millionths of a second, for fractions of a cent per million decisions (an assumption: computing cost only).
+- `chapters/ch13.qmd`
+  - Before: Nothing beats a rule on speed or price, and the classic models are close behind (@fig-cost-latency). They run in microseconds, on hardware you already own. Jev's vendor-reported figures put it in between: about \${{< num ch20 jev_cost_m int >}} per million decisions, in tens to hundreds of milliseconds. The illustrative LLM costs about \${{< num ch20 llm_json_cost_m int >}} per million and takes about {{< num ch20 llm_json_latency f1 >}} seconds. A little more than Chapter 9's figures, because the bake-off's JSON answer carries four fields (verdict, confidence, rule and threat-intel score), about 60 output tokens rather than 40.
+  - After: Nothing beats a rule on speed or price, and the classic models are close behind (@fig-cost-latency). They run in millionths of a second, on computers you already own. Jev's vendor-reported figures put it in between: about \${{< num ch20 jev_cost_m int >}} per million decisions, in tens to hundreds of milliseconds. The illustrative LLM costs about \${{< num ch20 llm_json_cost_m int >}} per million and takes about {{< num ch20 llm_json_latency f1 >}} seconds. That's a little more than Chapter 9's figures. The bake-off's JSON answer has four fields (verdict, confidence, rule and threat-intel score), so it's about 60 output tokens rather than 40.
+- `chapters/ch13.qmd`
+  - Before: If a decision can be made well by a rule or a logistic regression, one of those is the cheapest, fastest option, by orders of magnitude. Jev's price advantage is against *LLMs*, not against everything.
+  - After: If a rule or a logistic regression can make a decision well, use one of them. It's the cheapest and fastest option by a factor of a thousand or more. Jev's price advantage is against *LLMs*, not against everything.
+- `chapters/ch13.qmd`
+  - Before: Ask the LLM the same question five times at a temperature of 0.7, and {{< num ch20 flip_rate pct1 >}} of verdicts change at least once (@fig-variance-13). At temperature 0 the mock is repeatable, and real APIs mostly are too, though not always perfectly. And {{< num ch20 parse_fail pct1 >}} of its JSON answers were broken badly enough to fail parsing. We fell back to the base rate for those, but in a real system each one is an exception to handle.
+  - After: Ask the LLM the same question five times at a temperature of 0.7, and {{< num ch20 flip_rate pct1 >}} of verdicts change at least once (@fig-variance-13). At temperature 0, the mock always gives the same answer. Real APIs mostly do too, though not always. And {{< num ch20 parse_fail pct1 >}} of its JSON answers were so broken that they couldn't be parsed. We used the base rate for those, but in a real system each one is an error your code has to handle.
+- `chapters/ch13.qmd`
+  - Before: Jev's typed answers can't fail to parse: the probabilities arrive as numbers in a fixed shape. The mock always gives the same answer to the same question. Whether real Jev does is something to check.
+  - After: Jev's typed answers can't fail to parse: the probabilities arrive as numbers in a fixed shape. The mock always gives the same answer to the same question. You should check whether real Jev does.
+- `chapters/ch13.qmd`
+  - Before: Now put everything on one sheet.
+  - After: Now put everything on one page.
+- `chapters/ch13.qmd`
+  - Before: ![The whole contest on one sheet. Bold marks the best in each numeric column.
+  - After: ![The whole contest on one page. Bold marks the best in each numeric column.
+- `chapters/ch13.qmd`
+  - Before: If you have thousands of labels, clean fields and a decision that doesn't change much, logistic regression is hard to beat: it ranks best, it's calibrated, it's nearly free, and you can read its weights. Jev loses there, and plainly.
+  - After: If you have thousands of labels, clean fields and a decision that doesn't change much, logistic regression is hard to beat. It ranks best, it's calibrated, it's nearly free, and you can read its weights. Jev clearly loses there.
+- `chapters/ch13.qmd`
+  - Before: If you need to explain every decision to an auditor, rules win the last column outright, and nothing else comes close.
+  - After: If you need to explain every decision to an auditor, rules clearly win the last column, and nothing else comes close.
+- `chapters/ch13.qmd`
+  - Before: If you have no labels, raw text, or many different decisions to make, Jev's row is the strongest. It starts with zero labels, ranks nearly as well as the trained model, gives probabilities you can draw lines on after a check, answers in a shape that can't break, and costs a small fraction of an LLM call.
+  - After: If you have no labels, raw text, or many different decisions to make, Jev's row is the strongest. It starts with zero labels and ranks nearly as well as the trained model. After a calibration check, you can put thresholds on its probabilities. Its answers come in a shape that can't break, and it costs a small fraction of an LLM call.
+- `chapters/ch13.qmd`
+  - Before: And the LLM? In this contest it's the weakest decider, partly by construction. But notice what it's good at that no other row even attempts: it reads anything, and it *writes*. That's why Chapter 15's first pattern gives it the job of extracting and explaining, and gives the decision to something else.
+  - After: And the LLM? In this contest it's the weakest at deciding, partly because of how the mock was built. But notice what it does that no other row even tries: it reads anything, and it *writes*. That's why Chapter 15's first pattern gives it the job of extracting and explaining, and gives the decision to something else.
+- `chapters/ch13.qmd`
+  - Before: This is one decision, on one synthetic company, with mocks standing in for the LLM and for Jev. The LLM-versus-Jev accuracy gap was built into the mocks and tells you nothing about the real models. The text classifier is a weak stand-in for a fine-tuned model. And a single live week has only about four hundred real threats, so differences in the second decimal place of AUC are within noise. The value of a bake-off is the *method*: run the same contest on your own data, with the real models, and fill in your own scorecard.
+  - After: This is one decision, at one synthetic company, with mocks standing in for the LLM and for Jev. The accuracy gap between the LLM and Jev was built into the mocks. It says nothing about the real models. The text classifier is a weak stand-in for a fine-tuned model. And a single live week has only about four hundred real threats, so differences in the second decimal place of AUC could be chance. The value of a bake-off is the *method*. Run the same contest on your own data, with the real models, and fill in your own scorecard.
+- `chapters/ch13.qmd`
+  - Before: A new team at Kestrel is taking over cloud-storage alerts, a decision nobody has labelled. They'll get about 300 labels a week from their own reviews. Which method would you start with, and when would you consider switching? What would you use the first 300 labels for?
+  - After: A new team at Kestrel is taking over cloud-storage alerts, a decision nobody has labelled. They'll get about 300 labels a week from their own reviews. Which method would you start with, and when would you think about switching? What would you use the first 300 labels for?
+- `chapters/ch13.qmd`
+  - Before: (Start with a zero-label method, Jev in this contest, and use the first 300 labels to check and fix its calibration, as in Chapter 11. After three or four weeks of labels, train a logistic regression alongside it and compare on the next week. If the two agree closely, keep the cheaper one. If they disagree, look at the alerts where they do.)
+  - After: (Start with a method that needs no labels, Jev in this contest. Use the first 300 labels to check and fix its calibration, as in Chapter 11. After three or four weeks of labels, train a logistic regression next to it and compare them on the next week. If the two agree closely, keep the cheaper one. If they disagree, look at the alerts where they disagree.)
+- `chapters/ch13.qmd`
+  - Before: Wolpert and Macready proved that about search and optimisation [@wolpert1997], but it's the right spirit for any bake-off. There is no best method, only a best method for a decision.
+  - After: Wolpert and Macready proved this about search and optimisation [@wolpert1997], but the idea fits any bake-off. There is no best method, only a best method for a particular decision.
+- `chapters/ch13.qmd`
+  - Before: Six methods sat the same exam. The trained logistic regression won on ranking and calibration, because it had fifteen thousand labels on clean fields. It needed about three thousand of them just to draw level with a method that needed none. The rules won on explanation and price. The LLM's stated confidences turned out to be round numbers, and its free-text JSON broke often enough to matter. Jev's row was the strongest wherever labels were scarce or the input was raw text. None of that tells you what real models will do on your data. It tells you which columns to measure when you try.
+  - After: Six methods took the same test. The trained logistic regression won on ranking and calibration, because it had fifteen thousand labels on clean fields. It needed about three thousand of them just to catch up with a method that needed none. The rules won on explanation and price. The LLM's stated confidences turned out to be round numbers, and its free-text JSON broke often enough to matter. Jev's row was the strongest wherever labels were few or the input was raw text. None of that tells you what real models will do on your data. It tells you which columns to measure when you try.
+- `chapters/ch13.qmd`
+  - Before: 3. Rerun the labels curve with the text classifier using bigrams only. Does it help? Why might a fine-tuned transformer do better?
+  - After: 3. Run the labels curve again with the text classifier using bigrams (pairs of words) only. Does it help? Why might a fine-tuned transformer do better?
+- `chapters/ch13.qmd`
+  - Before: Next: a probability isn't an action. Chapter 14 turns these numbers into three doors, act, review and escalate, and puts the lines where the costs say they belong.
+  - After: Next: a probability isn't an action. Chapter 14 turns these numbers into three doors, act, review and escalate, and puts the thresholds where the costs say they belong.
