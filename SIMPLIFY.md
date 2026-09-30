@@ -2424,3 +2424,104 @@ Every change is logged below as a before/after pair, applied by `tools/simplify_
 - `chapters/ch18.qmd`
   - Before: Next: the same decision layer, a long way from a SOC. An applications gallery, from support tickets to clinical triage, with the questions each one would ask.
   - After: Next: the same decision layer, far away from a SOC. A tour of other uses, from support tickets to hospital triage, with the questions each one would ask.
+
+## Chapter 20: Build your own System One model
+
+32 changes.
+
+- `chapters/ch20.qmd`
+  - Before: For nineteen chapters you've been calling a System One model from the outside. You've sent it states and typed questions, read its probabilities, tested them and drawn lines on them.
+  - After: For nineteen chapters, you've been calling a System One model from the outside. You've sent it states and typed questions, read its probabilities, tested them and put thresholds on them.
+- `chapters/ch20.qmd`
+  - Before: Their model, yes. Ours will be tiny, about two thousand numbers, and it will only know about Kestrel's alerts. But it will have the same *shape*: one pass, three kinds of typed answer, and probabilities trained to be honest. Building it is the best way I know to understand why each part of that shape is there. And at the end, you'll plug it into the official SDK and run the book's own code against it.
+  - After: Their model, yes. Ours will be tiny, about two thousand numbers, and it will only know about Kestrel's alerts. But it will have the same *shape*: one pass, three kinds of typed answer, and probabilities trained to be calibrated. Building it is the best way I know to understand why each part of that shape is there. And at the end, you'll connect it to the official SDK and run the book's own code against it.
+- `chapters/ch20.qmd`
+  - Before: You already have every piece. Chapter 5 built networks and embeddings, Chapter 2 log loss and Chapter 3 temperature scaling. This chapter snaps them together.
+  - After: You already have every piece. Chapter 5 built networks and embeddings, Chapter 2 built log loss, and Chapter 3 built temperature scaling. This chapter puts them together.
+- `chapters/ch20.qmd`
+  - Before: - Build a shared encoder that reads an alert's fields in one pass.
+  - After: - Build a shared **encoder**: the part of the network that reads an alert's fields in one pass.
+- `chapters/ch20.qmd`
+  - Before: - Train all three at once with log loss, and see why that rewards honest probabilities.
+  - After: - Train all three at once with log loss, and see why that rewards calibrated probabilities.
+- `chapters/ch20.qmd`
+  - Before: - Catch the overconfidence training still leaves, and fix it with one temperature per head.
+  - After: - Find the overconfidence that training still leaves, and fix it with one temperature per head.
+- `chapters/ch20.qmd`
+  - Before: - Plug your model into the official SDK so the book's code runs against it unchanged.
+  - After: - Connect your model to the official SDK so the book's code runs against it unchanged.
+- `chapters/ch20.qmd`
+  - Before: Start from the interface. A request carries a state and some typed questions. The response carries a probability for every option. Chapter 9 guessed at a design that fits that shape, and here it is, small enough to hold in your head.
+  - After: Start from the interface. A request contains a state and some typed questions. The response contains a probability for every option. Chapter 9 guessed at a design that fits that shape. Here it is, small enough to keep in your head.
+- `chapters/ch20.qmd`
+  - Before: The **encoder** reads the alert once and produces a summary of 32 numbers (@fig-architecture-20). The rule name, like `impossible_travel`, isn't a number, so it gets an embedding, just as words did in Chapter 5. The **heads** each read the same summary and answer one kind of question.
+  - After: The encoder reads the alert once and produces a summary of 32 numbers (@fig-architecture-20). The rule name, like `impossible_travel`, isn't a number, so it gets an embedding, just as words did in Chapter 5. The **heads** are small parts at the end of the network. Each one reads the same summary and answers one kind of question.
+- `chapters/ch20.qmd`
+  - Before: That sharing is the point. The encoder learns what matters about an alert *in general*, and every head benefits. Learning which category a threat belongs to teaches the encoder things that help decide whether it's a threat at all.
+  - After: That sharing is the point. The encoder learns what matters about an alert *in general*, and every head benefits. Learning which category a threat belongs to teaches the encoder things that also help decide whether it's a threat at all.
+- `chapters/ch20.qmd`
+  - Before: ![The three heads. A noul turns one number into P(yes) with the S-curve. A choice turns one number per label into probabilities that add up to 1. A score turns one number into probabilities for ordered levels by cutting it at points that must stay in order.]
+  - After: ![The three heads. A noul turns one number into P(yes) with the S-curve. A choice turns one number per label into probabilities that add up to 1. A score turns one number into probabilities for levels in order, by cutting it at points that must stay in order.]
+- `chapters/ch20.qmd`
+  - Before: The **noul head** is logistic regression sitting on top of the encoder: one number, through the S-curve from Chapter 2, gives P(attack).
+  - After: The **noul head** is logistic regression on top of the encoder: one number, through the S-curve from Chapter 2, gives P(attack).
+- `chapters/ch20.qmd`
+  - Before: The **score head** is the interesting one. Severity levels have an order: "high" is more than "medium", which is more than "low". A softmax would throw that order away and treat the levels like unrelated labels. So the score head makes *one* number, a sort of severity dial, and cuts it at three points that are forced to stay in order (@fig-heads, right). The probability of each level is the share of the dial between its cut points. Statisticians call this an **ordinal** model.
+  - After: The **score head** is the interesting one. Severity levels have an order: "high" is more than "medium", which is more than "low". A softmax would ignore that order and treat the levels like unrelated labels. So the score head makes *one* number, like a severity dial. It cuts the dial at three points that must stay in order (@fig-heads, right). The probability of each level is the share of the dial between its cut points. Statisticians call this an **ordinal** model: a model for values that come in order.
+- `chapters/ch20.qmd`
+  - Before: That design has a limitation worth knowing. One dial can move a single hump up and down the scale and make it wider or narrower, but it can't split an alert between two distant levels while skipping the one in between. Chapter 10's mock Jev gave uncertain alerts that very shape, two humps: "informational if it's harmless, serious if it's real". TinyJev's score head can't express it, and would smear such an alert across the middle levels instead. One more reason to ask "is it real?" as its own noul rather than reading it off the severity.
+  - After: That design has a limit worth knowing. One dial can move a single peak up and down the scale, and make it wider or narrower. But it can't split an alert between two distant levels while skipping the one in between. Chapter 10's mock Jev gave uncertain alerts exactly that shape, with two peaks: "informational if it's harmless, serious if it's real". TinyJev's score head can't express that. It would spread such an alert across the middle levels instead. That's one more reason to ask "is it real?" as its own noul, rather than reading it from the severity.
+- `chapters/ch20.qmd`
+  - Before: Untrained, those numbers are noise. Training is what gives them meaning.
+  - After: Before training, those numbers are random. Training is what gives them meaning.
+- `chapters/ch20.qmd`
+  - Before: We train all three heads at once, on two weeks of Kestrel's labelled alerts, by adding their log losses together and running gradient descent, as in Chapter 2.
+  - After: We train all three heads at once, on two weeks of Kestrel's labelled alerts. We add their log losses together and run gradient descent, as in Chapter 2.
+- `chapters/ch20.qmd`
+  - Before: Log loss matters here for a reason Chapter 2 made precise. It's a **proper scoring rule**: the way to get the best average score is to report your honest probability, not to exaggerate. Training with log loss rewards calibration directly, and it does so for every head. A rule like this is the most likely way a model like Jev is trained to be calibrated, and in Chapter 9 I guessed that TypeSafe's RLCD might build on a rule like it.
+  - After: Log loss matters here for a reason Chapter 2 explained. It's a **proper scoring rule**: the way to get the best average score is to report your honest probability, not to exaggerate. So training with log loss rewards calibration directly, for every head. A rule like this is the most likely way a model like Jev is trained to be calibrated. In Chapter 9, I guessed that TypeSafe's RLCD might build on a rule like it.
+- `chapters/ch20.qmd`
+  - Before: Right: a bigger network trained four times as long with no penalty on large weights. It keeps improving on the weeks it has seen and gets steadily worse on the week it hasn't.]
+  - After: Right: a bigger network trained four times as long, with no penalty on large weights. It keeps improving on the weeks it has seen, and keeps getting worse on the week it hasn't.]
+- `chapters/ch20.qmd`
+  - Before: The left panel of @fig-curves is what healthy training looks like: both curves fall, then flatten, with a small gap between them. The right panel is what happens if you make the network bigger, take away the small penalty on large weights and let it run. It memorises the training weeks. Its loss there falls to {{< num ch27 over_train_noul f3 >}}, while on the week it hasn't seen, loss climbs to {{< num ch27 over_val_noul f3 >}}. That's Chapter 2's overfitting, and Chapter 5's overconfidence, happening in front of you.
+  - After: The left panel of @fig-curves shows healthy training: both curves fall, then become flat, with a small gap between them. The right panel shows what happens if you make the network bigger, remove the small penalty on large weights, and let it run longer. It memorises the training weeks. Its loss there falls to {{< num ch27 over_train_noul f3 >}}, while on the week it hasn't seen, loss rises to {{< num ch27 over_val_noul f3 >}}. That's Chapter 2's overfitting and Chapter 5's overconfidence, happening in front of you.
+- `chapters/ch20.qmd`
+  - Before: ## Honest, but not quite
+  - After: ## Calibrated, but not quite
+- `chapters/ch20.qmd`
+  - Before: The fix is Chapter 3's: hold back a week, and fit one number per head, a **temperature**, that softens its answers until they match what happened. The temperatures came out at about {{< num ch27 T_noul f2 >}} for the noul, {{< num ch27 T_choice f2 >}} for the choice and {{< num ch27 T_score f2 >}} for the score. All three above 1: all three a bit overconfident.
+  - After: The fix is Chapter 3's. Keep back a week, and fit one number per head, a **temperature**, that softens its answers until they match what happened. The temperatures came out at about {{< num ch27 T_noul f2 >}} for the noul, {{< num ch27 T_choice f2 >}} for the choice and {{< num ch27 T_score f2 >}} for the score. All three are above 1, so all three heads were a bit overconfident.
+- `chapters/ch20.qmd`
+  - Before: The overtrained network is the cautionary tale. As trained, its calibration error on the live week was {{< num ch27 over_ece f3 >}} (the right-hand panel). Its fitted temperature was {{< num ch27 T_over f1 >}}, a huge correction, and afterwards the error was {{< num ch27 over_ece_temp f3 >}}: no better at all. A temperature can soften an answer. It can't put back what the model forgot about the world while it was memorising.
+  - After: The overtrained network is the warning. As trained, its calibration error on the live week was {{< num ch27 over_ece f3 >}} (the right-hand panel). Its fitted temperature was {{< num ch27 T_over f1 >}}, a huge correction. Afterwards, the error was {{< num ch27 over_ece_temp f3 >}}: no better at all. A temperature can soften an answer. It can't put back what the model lost about the world while it was memorising.
+- `chapters/ch20.qmd`
+  - Before: ![TinyJev against the book's other models on the live week. It ranks a little worse than logistic regression trained on three weeks of labels and a little worse than mock Jev, and it's as well calibrated as either. The overtrained network is worse at both.]
+  - After: ![TinyJev against the book's other models on the live week. It ranks a little worse than logistic regression trained on three weeks of labels, and a little worse than mock Jev. It's as well calibrated as either. The overtrained network is worse at both.]
+- `chapters/ch20.qmd`
+  - Before: Respectable, not magic. It trained on two weeks rather than three, and a two-layer network has no advantage over logistic regression on a problem that's nearly linear in its inputs, which Chapter 13 found this one is. Where a model like this earns its keep is when there are many questions to answer about the same state, so that one encoder is shared across all of them.
+  - After: That's good, but not magic. It trained on two weeks rather than three. And a two-layer network has no advantage over logistic regression on a problem that depends on its inputs in a nearly straight-line way, as Chapter 13 found this one does. A model like this is most worth building when there are many questions to answer about the same state, so that one encoder is shared across all of them.
+- `chapters/ch20.qmd`
+  - Before: ## Plug it in
+  - After: ## Connect it to the SDK
+- `chapters/ch20.qmd`
+  - Before: The response comes back in just the shape the SDK expects, with the model name `tinyjev-your-own` (@fig-plugin). Point any lab in the book at this transport and it runs against the model you just trained: the bake-off, the three zones, the hybrid agent. Now you have two decision models behind the same interface, and you can test one against the other with everything Part IV taught you.
+  - After: The response comes back in exactly the shape the SDK expects, with the model name `tinyjev-your-own` (@fig-plugin). Point any lab in the book at this transport, and it runs against the model you just trained: the bake-off, the three zones, the hybrid agent. Now you have two decision models behind the same interface. You can test one against the other with everything Part IV taught you.
+- `chapters/ch20.qmd`
+  - Before: TinyJev reads structured fields, not free text; a real System One model reads text and JSON of any shape, which needs an attention-based reader like Chapter 5's, and far more data. It knows one company's alerts from two weeks, so it will drift the moment the world does, as Chapter 18's campaign showed. Its temperatures were fitted on one week, which is a small sample, and Chapter 11 showed how noisy calibration measurements are with few labels. And nothing here tells you how Jev is actually built; this is a design the interface suggests, built to understand the interface, not a copy of anything.
+  - After: TinyJev reads structured fields, not free text. A real System One model reads text and JSON of any shape. That needs a reader built on attention, like Chapter 5's, and far more data. TinyJev knows one company's alerts from two weeks, so it will drift as soon as the world changes, as Chapter 18's campaign showed. Its temperatures were fitted on one week, which is a small sample. Chapter 11 showed how unreliable calibration measurements are with few labels. And nothing here tells you how Jev is actually built. This is a design that the interface suggests, built to understand the interface, not a copy of anything.
+- `chapters/ch20.qmd`
+  - Before: Your TinyJev feeds Kestrel's three-zone policy. After two weeks in production, the weekly calibration check shows the noul head's temperature has drifted from 1.2 to 1.6. What does that tell you, and what would you do before touching the policy's lines?
+  - After: Your TinyJev feeds Kestrel's three-zone policy. After two weeks of real use, the weekly calibration check shows the noul head's temperature has moved from 1.2 to 1.6. What does that tell you? What would you do before changing the policy's thresholds?
+- `chapters/ch20.qmd`
+  - Before: (A higher temperature means the model has become more overconfident on current data: the world has moved away from its training weeks. Before moving any line, refit the temperature on recent labelled alerts and check calibration again. If the temperature keeps climbing week after week, retrain the model on recent data; the lines were set for calibrated probabilities, and that's what needs restoring.)
+  - After: (A higher temperature means the model has become more overconfident on current data: the world has moved away from its training weeks. Before moving any threshold, refit the temperature on recent labelled alerts and check calibration again. If the temperature keeps rising week after week, retrain the model on recent data. The thresholds were set for calibrated probabilities, and that's what needs fixing.)
+- `chapters/ch20.qmd`
+  - Before: Feynman's blackboard is the best argument for this chapter. You don't need to build a System One model to use one. But having built a small one, you know what its probabilities are made of, why they drift and how to fix them.
+  - After: Feynman's words are the best argument for this chapter. You don't need to build a System One model to use one. But having built a small one, you know what its probabilities are made of, why they drift and how to fix them.
+- `chapters/ch20.qmd`
+  - Before: We built a System One model in miniature. A shared encoder read each alert once, and three heads answered three typed questions: a sigmoid for the noul, a softmax for the choice, and an ordinal dial for the score. Log loss trained every head towards honest probabilities. Calibrated on the training weeks still meant overconfident on new ones, and one temperature per head fixed that. Training too long broke it in a way no temperature could repair. The model ranked alerts respectably, and once plugged into the official SDK, it ran the book's code unchanged.
+  - After: We built a small System One model. A shared encoder read each alert once, and three heads answered three typed questions: a sigmoid for the noul, a softmax for the choice, and an ordinal dial for the score. Log loss trained every head towards calibrated probabilities. But calibrated on the training weeks still meant overconfident on new ones, and one temperature per head fixed that. Training too long broke it in a way no temperature could repair. The model ranked alerts well, and once connected to the official SDK, it ran the book's code unchanged.
+- `chapters/ch20.qmd`
+  - Before: 4. Point Chapter 14's lab at `TinyJevTransport`. Do the policy's lines need to move? Why?
+  - After: 4. Point Chapter 14's lab at `TinyJevTransport`. Do the policy's thresholds need to move? Why?
