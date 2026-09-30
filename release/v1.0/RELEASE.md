@@ -1,7 +1,8 @@
-# Release v1.0.1: *Decide, Don't Generate*
+# Release v1.0.2: *Decide, Don't Generate*
 
-Built 30 September 2026 from branch `claude/compassionate-planck-ao0jvq`, tag `v1.0.1` (the folder keeps its v1.0
-name so links to it don't break). What changed since v1.0 is under "v1.0.1: polish pass" below. Every check below was run on
+Built 30 September 2026 from branch `claude/compassionate-planck-ao0jvq`, tag `v1.0.2` (the folder keeps its v1.0
+name so links to it don't break). What changed since v1.0 is under "v1.0.1: polish pass" and "v1.0.2:
+code listings" below. Every check below was run on
 the files in this folder; the raw results are in `checks.json`.
 
 ## What's here
@@ -132,6 +133,7 @@ python3 cover/wrap.py && python3 cover/mockup.py && python3 cover/check.py
 python3 tools/release.py /tmp/interior.pdf /tmp/book.epub v1.0
 python3 cover/print_shop.py
 python3 tools/release_check.py release/v1.0
+python3 tools/check_code_wrap.py release/v1.0/print/Decide-Dont-Generate-interior.pdf
 ```
 
 ## Changes made in the v1.0 build
@@ -186,6 +188,31 @@ interior, both previews, both covers and the EPUB (pandas `[["col"]]` in the app
 EPUBCheck: 0 fatals, 0 errors, 0 warnings; 138 images, all with alt text; no overflow at 360 px. Covers rebuilt for
 256 pages: spine 0.6008 in (paperback) and 0.7898 in (hardcover); `cover/check.py` passes; cover and interior agree
 on the case study (54% → 89%) and the figure count (138, "130+").
+
+## v1.0.2: code listings
+
+- **No code line wraps.** `tools/check_code_wrap.py` compares every listing line in the kept LaTeX file with the
+  monospace lines of the PDF, and lists any line that doesn't fit on one printed line. Before this release, three code
+  lines wrapped. In the Python appendix (printed p. 222), two long end-of-line comments now sit on their own line
+  above the code. In Chapter 17, the trace printout's `shorten(...)` call moved to its own line, and the output is
+  unchanged. All 117 listings and outputs were checked: 0 code lines wrap. Four *output* lines still wrap, because
+  each is one long record: an alert's description (Chapter 1) and three JSON decision records (Chapter 14). They are
+  data printed one per line, so they are left as they are.
+- **Indentation.** The printed layout was already right: in the Chapter 5 `softmax` / `self_attention` listing,
+  `return` sits under `e =` and `weights =`. But the PDF's text layer held no leading spaces, so text copied from
+  the PDF lost its indentation (`e` got one space, `return` none) and pasted Python failed. Spaces in code are now
+  real space characters of the same width (`\fvset{showspaces}` with a plain space glyph, in
+  `assets/latex/preamble.tex`). Copied code keeps its indentation, and the printed layout doesn't change.
+- **Text.** Python appendix: "`groupby` splits the table into groups and summarises each one." Chapter 5, after the
+  cosine output: "Real text would give something like 0.7 to 0.9. Our synthetic notes use these words almost
+  interchangeably, so they come out identical." Both are logged in `SIMPLIFY.md`.
+
+**Checks on this build.** `pytest` 15 passed, 1 skipped; every listing runs (23 files); voice check clean on the
+changed files. Interior still **256 pages** (255 plus a closing blank), so both covers stay as built: spine 0.6008
+in (paperback, 256 × 0.002347 in) and 0.7898 in (hardcover). All 458 fonts are embedded, no raster is under
+300 ppi, no text sits outside the text block, and there are 12 intentional blank pages. Placeholders: 0 in the
+interior, both previews, both covers and the EPUB. EPUBCheck: 0 fatals, 0 errors, 0 warnings; 138 images, all with
+alt text. Cover and interior agree (54% → 89%; 138 figures, "130+").
 
 ## Decisions for you
 

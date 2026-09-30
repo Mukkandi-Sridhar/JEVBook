@@ -40,7 +40,8 @@ from textwrap import shorten
 hybrid = agent.SOCAgent(always=("threat_intel",))
 t = hybrid.run(live.iloc[118])
 for s in t.steps:
-    print(f"{s.kind:>8} {s.name:<15} {s.latency_s:4.2f}s {shorten(s.detail, 34, placeholder='…')}")
+    detail = shorten(s.detail, 34, placeholder='…')
+    print(f"{s.kind:>8} {s.name:<15} {s.latency_s:4.2f}s {detail}")
 print("action:", t.action)
 ```
 :::

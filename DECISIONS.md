@@ -255,3 +255,8 @@ Newest decisions are appended at the bottom of each section.
   Numbers, code, figures, citations, quotations and structure unchanged. The one-new-term-per-paragraph rule was
   applied by reading, not by a script. The book grew from 248 to 256 pages; spines 0.6008 in (paperback) and
   0.7898 in (hardcover).
+- **D-87 · v1.0.2 code listings.** No code line may wrap in the PDF; `tools/check_code_wrap.py` checks it. Long
+  comments move to their own line above the code, and a long call moves to its own variable (Chapter 17), so the
+  printed output stays the same. Cell outputs that are single long records (an alert description, JSON decision
+  records) may wrap: shortening them would change what the code prints. Code spaces are now real space glyphs
+  (`showspaces` with `\FancyVerbSpace` set to a plain space), so indentation survives copying from the PDF.

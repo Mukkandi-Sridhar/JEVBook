@@ -13,6 +13,7 @@ Resume from here. Each chapter row is updated after its lab runs, it renders, an
 | 5 | Print edition: 22 chapters in six parts, prerequisites merged, QR codes and summary pages removed, epigraphs, 200–250 pages | done: 238 pages, all 22 labs and every listing pass, every chapter passes the voice check |
 | 6 | Release v1.0: print, ebook, previews, marketing, KDP guide (`release/v1.0/`) | done: 248 pages |
 | 7 | v1.0.1 polish: spacing, index ranges, Python appendix, glossary terms, plain-language pass (`SIMPLIFY.md`) | done: 256 pages, grade 6.3 → 5.7 |
+| 8 | v1.0.2: no wrapped code lines, copyable indentation, two text additions | done: 256 pages |
 
 ## Chapters
 
@@ -52,7 +53,7 @@ Resume from here. Each chapter row is updated after its lab runs, it renders, an
 
 ## NEEDS AUTHOR
 
-Everything below needs you, or access this build didn't have. Release v1.0.1 is in `release/v1.0/`; its RELEASE.md
+Everything below needs you, or access this build didn't have. Release v1.0.2 is in `release/v1.0/`; its RELEASE.md
 ends with the decisions still open. The draft markers were removed for the release; `docs/verify-ledger.md` lists
 what they marked.
 

@@ -128,6 +128,9 @@
 \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},fontsize=\codesize,
   breaklines, breakanywhere, breaksymbolleft={}, breaksymbolright={}}
 \fvset{fontsize=\codesize, breaklines, breakanywhere, breaksymbolleft={}, breaksymbolright={}, breakindent=1.2em}
+% Spaces in code are real space glyphs (same width), so text copied from the PDF keeps Python's indentation
+\fvset{showspaces}
+\renewcommand{\FancyVerbSpace}{\char32\relax}
 % Cell outputs (plain verbatim) get a lighter, open style
 \makeatletter
 \renewenvironment{verbatim}{%

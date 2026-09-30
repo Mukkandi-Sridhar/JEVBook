@@ -2917,3 +2917,20 @@ Triage
   - After: It's also the engine inside RAG (Chapter 7).
 
 But it has a weakness worth remembering. Here's a test:
+
+## v1.0.2 touch-up
+
+2 changes.
+
+- `back/python.qmd`
+  - Before: `groupby` splits the table into groups and sums up each group.
+  - After: `groupby` splits the table into groups and summarises each one.
+- `chapters/ch05.qmd`
+  - Before: print(f"{a:>9} vs {b:<8} {cos(a, b):+.2f}")
+```
+:::
+  - After: print(f"{a:>9} vs {b:<8} {cos(a, b):+.2f}")
+```
+:::
+
+Real text would give something like 0.7 to 0.9. Our synthetic notes use these words almost interchangeably, so they come out identical.
