@@ -16,7 +16,7 @@ This chapter puts the pieces back together and runs it end to end, the way a rea
 
 *"Is this where it all works perfectly?"*
 
-No. A case study exists for that. You'll see where it helps a lot, where it helps less than you'd hope, and the one assumption that turned out to matter most.
+No. That's the point of a case study. You'll see where it helps a lot, where it helps less than you'd hope, and the one assumption that turned out to matter most.
 
 ::: {.goals}
 - Describe a SOC's triage before a decision layer, and measure what it misses without anyone noticing.
@@ -28,7 +28,7 @@ No. A case study exists for that. You'll see where it helps a lot, where it help
 
 ## Before: the queue
 
-Kestrel's SOC gets about {{< num ch21 live_per_day int >}} alerts a day. Six analysts can each clear about forty, so a day's capacity is {{< num ch25 capacity int >}}. Before this project, every alert joined one queue. The alerts that the senior analyst's rules flagged went to the front; everything else was first come, first served. Whatever nobody reached within a day aged out and was closed without anyone looking.
+Kestrel's SOC gets about {{< num ch21 live_per_day int >}} alerts a day in the live week. Six analysts can each clear about forty, so a day's capacity is {{< num ch25 capacity int >}}. Before this project, every alert joined one queue. The alerts that the senior analyst's rules flagged went to the front; everything else was first come, first served. Whatever nobody reached within a day aged out and was closed without anyone looking.
 
 That's a very ordinary way to run a SOC, and it hides its failures in a particular way: nobody ever sees the alerts that age out, so nobody knows how many of them were real.
 
@@ -133,7 +133,7 @@ Kestrel's SOC used to decide by running out of time: whatever nobody reached age
 1. In the lab, set `ops.PAGE_RESPONSE_MIN` to 45. How does the scorecard change? Which row moves most?
 2. Rerun the campaign with a response on day 2 instead of day 3. How many more threats reach a person? What would you need in place to respond a day earlier?
 3. The old way sorted rule-flagged alerts first. What if it had sorted by the SIEM's own severity field instead? Sketch how you'd test whether that alone closes most of the gap.
-4. Write the one-page shadow-mode report you'd send to Kestrel's head of security. What would you put first?
+4. Write the one-page shadow-mode report you'd send to Kestrel's CISO (chief information security officer, the person in charge of security). What would you put first?
 :::
 
 ::: {.nexthook}

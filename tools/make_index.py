@@ -2,9 +2,11 @@
 
 Writes two things:
 
-- back/index-terms.json: the terms the print edition indexes by page. The Lua filter (filters/book.lua) reads it and
-  adds a LaTeX \\index entry where each term is defined in bold, and, for specific terms, at its first mention in
-  each chapter. makeindex then turns those into page numbers.
+- back/index-terms.json: the terms the print edition indexes by page. The Lua filter (filters/book.lua) reads it.
+  A term listed in TAUGHT gets a page range in each chapter that teaches it (from its first to its last mention
+  there) and nothing elsewhere, so the index sends readers to explanations, not to every passing use. Other terms
+  get an entry where they're defined in bold and, unless strict, at their first mention in each chapter. makeindex
+  turns those into page numbers.
 - back/index-terms.qmd: the index page. In print it's the page index; on the web, where pages don't exist, it lists
   the chapters that use each term.
 
@@ -53,7 +55,7 @@ TERMS = {
     "Jevons paradox": (["jevons paradox"], False),
     "JSON mode": (["json mode", "constrained decoding"], False),
     "Label": (["label", "labels"], True),
-    "LLM (large language model)": (["large language model*"], True),
+    "LLM (large language model)": (["large language model*", "llm", "llms"], True),
     "LLM-as-judge": (["llm-as-judge", "llm-as-a-judge"], False),
     "Log loss": (["log loss"], False),
     "Logistic regression": (["logistic regression"], False),
@@ -111,6 +113,25 @@ TERMS = {
 }
 CODE = {"jevkit", "typesafe-sdk"}          # shown in code type; sorted as words
 
+# term -> the chapters that teach it; the index gives a page range in each and ignores other uses
+TAUGHT = {
+    "Act, review, escalate": [14], "Agent": [7, 17], "Attention": [5], "Audit (random)": [14], "AUC": [3],
+    "Bake-off": [13], "Base rate": [2], "Brier score": [2], "Calibration": [3, 11], "Capacity": [14],
+    "Cassette": [16], "Choice (question type)": [10], "Confidence": [9], "Context window": [7], "Cost line": [4],
+    "Decision record": [21], "Drift": [14], "ECE (expected calibration error)": [3], "Elasticity": [12],
+    "Embedding": [5], "Escape option": [10], "Extract, then decide": [15], "Fail-safe": [14, 21],
+    "Fine-tuning": [5], "Gradient descent": [2], "Guardrail gate": [15], "Hallucination": [6],
+    "Hybrid agent": [17], "Isotonic regression": [3], "Jevons paradox": [12], "JSON mode": [6], "Label": [1],
+    "LLM (large language model)": [6], "LLM-as-judge": [13], "Log loss": [2], "Logistic regression": [2],
+    "Loss": [2], "Mock": [16], "Noul": [10], "Observe, Decide, Act": [7], "Ordinal": [20], "Overconfidence": [5],
+    "Overfitting": [2], "Platt scaling": [3], "Policy": [14], "Prior shift": [11], "Prompt injection": [7],
+    "Proper scoring rule": [2], "RAG (retrieval-augmented generation)": [7], "Reliability diagram": [3],
+    "RLCD": [9], "RLHF": [5], "Router": [15], "Score (question type)": [10], "Shadow mode": [18, 21],
+    "Softmax": [5], "State": [9], "Structured output": [6], "System 1, System 2": [8], "System One model": [8],
+    "Temperature (calibration)": [3], "Temperature (sampling)": [6], "Three-zone policy": [14], "Token": [6],
+    "Trace": [17], "Transformer": [5], "Transport": [16], "Typed question": [10], "Vendor-reported": [9],
+}
+
 
 def chapters():
     out = []
@@ -141,21 +162,22 @@ def fmt(chs):
 
 
 def main():
-    spec = [dict(display=t, sort=t.lower().replace("'", ""), patterns=p, strict=s, code=t in CODE)
-            for t, (p, s) in TERMS.items()]
+    assert set(TAUGHT) <= set(TERMS), set(TAUGHT) - set(TERMS)
+    spec = [dict(display=t, sort=t.lower().replace("'", ""), patterns=p, strict=s, code=t in CODE,
+                 taught=TAUGHT.get(t, [])) for t, (p, s) in TERMS.items()]
     (ROOT / "back" / "index-terms.json").write_text(json.dumps(dict(terms=spec), indent=1) + "\n")
 
     chs = chapters()
     rows = []
     for t, (p, _) in TERMS.items():
-        hits = [n for n, text in chs if regex(p).search(text)]
+        hits = [n for n, text in chs if regex(p).search(text) and (t not in TAUGHT or n in TAUGHT[t])]
         if hits:
             rows.append((t.lower().replace("'", ""), t, fmt(hits)))
     rows.sort()
     out = ["# Index {.unnumbered}", "",
            "::: {.content-visible when-format=\"pdf\"}", "```{=latex}", "\\printindex", "```", ":::", "",
            "::: {.content-visible unless-format=\"pdf\"}",
-           "Chapters where each term appears. The glossary gives a one-sentence definition of most of them.", "",
+           "Chapters that explain each term. The glossary gives a one-sentence definition of most of them.", "",
            "::: {.indexlist}"]
     letter = None
     for key, term, f in rows:

@@ -9,7 +9,10 @@
     "three zones"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    14
+   ]
   },
   {
    "display": "Agent",
@@ -19,7 +22,11 @@
     "agents"
    ],
    "strict": true,
-   "code": false
+   "code": false,
+   "taught": [
+    7,
+    17
+   ]
   },
   {
    "display": "Attention",
@@ -28,7 +35,10 @@
     "attention"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    5
+   ]
   },
   {
    "display": "Audit (random)",
@@ -38,7 +48,10 @@
     "audit"
    ],
    "strict": true,
-   "code": false
+   "code": false,
+   "taught": [
+    14
+   ]
   },
   {
    "display": "AUC",
@@ -47,7 +60,10 @@
     "auc"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    3
+   ]
   },
   {
    "display": "Base rate",
@@ -57,7 +73,10 @@
     "base-rate"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    2
+   ]
   },
   {
    "display": "Brier score",
@@ -66,7 +85,10 @@
     "brier"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    2
+   ]
   },
   {
    "display": "Calibration",
@@ -75,7 +97,11 @@
     "calibrat*"
    ],
    "strict": true,
-   "code": false
+   "code": false,
+   "taught": [
+    3,
+    11
+   ]
   },
   {
    "display": "Capacity",
@@ -84,7 +110,10 @@
     "capacity"
    ],
    "strict": true,
-   "code": false
+   "code": false,
+   "taught": [
+    14
+   ]
   },
   {
    "display": "Cassette",
@@ -93,7 +122,10 @@
     "cassette*"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    16
+   ]
   },
   {
    "display": "Choice (question type)",
@@ -102,7 +134,10 @@
     "choice"
    ],
    "strict": true,
-   "code": false
+   "code": false,
+   "taught": [
+    10
+   ]
   },
   {
    "display": "Confidence",
@@ -111,7 +146,10 @@
     "confidence"
    ],
    "strict": true,
-   "code": false
+   "code": false,
+   "taught": [
+    9
+   ]
   },
   {
    "display": "Context window",
@@ -120,7 +158,10 @@
     "context window*"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    7
+   ]
   },
   {
    "display": "Cost line",
@@ -131,7 +172,10 @@
     "cost-based threshold"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    4
+   ]
   },
   {
    "display": "Decision layer",
@@ -140,7 +184,8 @@
     "decision layer*"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": []
   },
   {
    "display": "Decision record",
@@ -149,7 +194,10 @@
     "decision record*"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    21
+   ]
   },
   {
    "display": "Drift",
@@ -158,7 +206,10 @@
     "drift*"
    ],
    "strict": true,
-   "code": false
+   "code": false,
+   "taught": [
+    14
+   ]
   },
   {
    "display": "ECE (expected calibration error)",
@@ -168,7 +219,10 @@
     "expected calibration error"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    3
+   ]
   },
   {
    "display": "Elasticity",
@@ -177,7 +231,10 @@
     "elastic*"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    12
+   ]
   },
   {
    "display": "Embedding",
@@ -186,7 +243,10 @@
     "embedding*"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    5
+   ]
   },
   {
    "display": "Escape option",
@@ -197,7 +257,10 @@
     "not enough information"
    ],
    "strict": true,
-   "code": false
+   "code": false,
+   "taught": [
+    10
+   ]
   },
   {
    "display": "Extract, then decide",
@@ -207,7 +270,10 @@
     "extracts, jev decides"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    15
+   ]
   },
   {
    "display": "Fail-safe",
@@ -216,7 +282,11 @@
     "fail-safe*"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    14,
+    21
+   ]
   },
   {
    "display": "Fine-tuning",
@@ -225,7 +295,10 @@
     "fine-tun*"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    5
+   ]
   },
   {
    "display": "Gradient descent",
@@ -234,7 +307,10 @@
     "gradient descent"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    2
+   ]
   },
   {
    "display": "Guardrail gate",
@@ -243,7 +319,10 @@
     "guardrail*"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    15
+   ]
   },
   {
    "display": "Hallucination",
@@ -252,7 +331,10 @@
     "hallucinat*"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    6
+   ]
   },
   {
    "display": "Hybrid agent",
@@ -262,7 +344,10 @@
     "hybrid"
    ],
    "strict": true,
-   "code": false
+   "code": false,
+   "taught": [
+    17
+   ]
   },
   {
    "display": "Isotonic regression",
@@ -271,7 +356,10 @@
     "isotonic"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    3
+   ]
   },
   {
    "display": "Jevons paradox",
@@ -280,7 +368,10 @@
     "jevons paradox"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    12
+   ]
   },
   {
    "display": "JSON mode",
@@ -290,7 +381,10 @@
     "constrained decoding"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    6
+   ]
   },
   {
    "display": "Label",
@@ -300,16 +394,24 @@
     "labels"
    ],
    "strict": true,
-   "code": false
+   "code": false,
+   "taught": [
+    1
+   ]
   },
   {
    "display": "LLM (large language model)",
    "sort": "llm (large language model)",
    "patterns": [
-    "large language model*"
+    "large language model*",
+    "llm",
+    "llms"
    ],
    "strict": true,
-   "code": false
+   "code": false,
+   "taught": [
+    6
+   ]
   },
   {
    "display": "LLM-as-judge",
@@ -319,7 +421,10 @@
     "llm-as-a-judge"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    13
+   ]
   },
   {
    "display": "Log loss",
@@ -328,7 +433,10 @@
     "log loss"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    2
+   ]
   },
   {
    "display": "Logistic regression",
@@ -337,7 +445,10 @@
     "logistic regression"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    2
+   ]
   },
   {
    "display": "Loss",
@@ -346,7 +457,10 @@
     "loss"
    ],
    "strict": true,
-   "code": false
+   "code": false,
+   "taught": [
+    2
+   ]
   },
   {
    "display": "Mock",
@@ -355,7 +469,10 @@
     "mock"
    ],
    "strict": true,
-   "code": false
+   "code": false,
+   "taught": [
+    16
+   ]
   },
   {
    "display": "Noul",
@@ -365,7 +482,10 @@
     "nouls"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    10
+   ]
   },
   {
    "display": "Observe, Decide, Act",
@@ -375,7 +495,10 @@
     "ooda"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    7
+   ]
   },
   {
    "display": "Ordinal",
@@ -384,7 +507,10 @@
     "ordinal"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    20
+   ]
   },
   {
    "display": "Overconfidence",
@@ -393,7 +519,10 @@
     "overconfiden*"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    5
+   ]
   },
   {
    "display": "Overfitting",
@@ -402,7 +531,10 @@
     "overfit*"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    2
+   ]
   },
   {
    "display": "Platt scaling",
@@ -411,7 +543,10 @@
     "platt scaling"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    3
+   ]
   },
   {
    "display": "Policy",
@@ -420,7 +555,10 @@
     "policy"
    ],
    "strict": true,
-   "code": false
+   "code": false,
+   "taught": [
+    14
+   ]
   },
   {
    "display": "Prior shift",
@@ -430,7 +568,10 @@
     "prior-shift"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    11
+   ]
   },
   {
    "display": "Prompt injection",
@@ -439,7 +580,10 @@
     "prompt injection"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    7
+   ]
   },
   {
    "display": "Proper scoring rule",
@@ -448,7 +592,10 @@
     "proper scoring rule*"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    2
+   ]
   },
   {
    "display": "RAG (retrieval-augmented generation)",
@@ -458,7 +605,10 @@
     "retrieval-augmented"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    7
+   ]
   },
   {
    "display": "Reliability diagram",
@@ -467,7 +617,10 @@
     "reliability diagram*"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    3
+   ]
   },
   {
    "display": "RLCD",
@@ -476,7 +629,10 @@
     "rlcd"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    9
+   ]
   },
   {
    "display": "RLHF",
@@ -485,7 +641,10 @@
     "rlhf"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    5
+   ]
   },
   {
    "display": "Router",
@@ -495,7 +654,10 @@
     "routing"
    ],
    "strict": true,
-   "code": false
+   "code": false,
+   "taught": [
+    15
+   ]
   },
   {
    "display": "Score (question type)",
@@ -504,7 +666,10 @@
     "score"
    ],
    "strict": true,
-   "code": false
+   "code": false,
+   "taught": [
+    10
+   ]
   },
   {
    "display": "Shadow mode",
@@ -513,7 +678,11 @@
     "shadow"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    18,
+    21
+   ]
   },
   {
    "display": "Softmax",
@@ -522,7 +691,10 @@
     "softmax"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    5
+   ]
   },
   {
    "display": "State",
@@ -531,7 +703,10 @@
     "state"
    ],
    "strict": true,
-   "code": false
+   "code": false,
+   "taught": [
+    9
+   ]
   },
   {
    "display": "Structured output",
@@ -540,7 +715,10 @@
     "structured output*"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    6
+   ]
   },
   {
    "display": "System 1, System 2",
@@ -550,7 +728,10 @@
     "system 2"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    8
+   ]
   },
   {
    "display": "System One model",
@@ -559,7 +740,10 @@
     "system one model*"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    8
+   ]
   },
   {
    "display": "Temperature (calibration)",
@@ -569,7 +753,10 @@
     "fitted temperature"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    3
+   ]
   },
   {
    "display": "Temperature (sampling)",
@@ -580,7 +767,10 @@
     "temperature of"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    6
+   ]
   },
   {
    "display": "Three-zone policy",
@@ -589,7 +779,10 @@
     "three-zone"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    14
+   ]
   },
   {
    "display": "Token",
@@ -599,7 +792,10 @@
     "tokens"
    ],
    "strict": true,
-   "code": false
+   "code": false,
+   "taught": [
+    6
+   ]
   },
   {
    "display": "Trace",
@@ -609,7 +805,10 @@
     "traces"
    ],
    "strict": true,
-   "code": false
+   "code": false,
+   "taught": [
+    17
+   ]
   },
   {
    "display": "Transformer",
@@ -618,7 +817,10 @@
     "transformer*"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    5
+   ]
   },
   {
    "display": "Transport",
@@ -627,7 +829,10 @@
     "transport"
    ],
    "strict": true,
-   "code": false
+   "code": false,
+   "taught": [
+    16
+   ]
   },
   {
    "display": "Typed question",
@@ -636,7 +841,10 @@
     "typed question*"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    10
+   ]
   },
   {
    "display": "Vendor-reported",
@@ -645,7 +853,10 @@
     "vendor-reported"
    ],
    "strict": true,
-   "code": false
+   "code": false,
+   "taught": [
+    9
+   ]
   },
   {
    "display": "Bake-off",
@@ -654,7 +865,10 @@
     "bake-off"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": [
+    13
+   ]
   },
   {
    "display": "Bayes' rule",
@@ -663,7 +877,8 @@
     "bayes"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": []
   },
   {
    "display": "Doom demo",
@@ -672,7 +887,8 @@
     "doom"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": []
   },
   {
    "display": "Harbor Pharma",
@@ -681,7 +897,8 @@
     "harbor"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": []
   },
   {
    "display": "Jev-Mem",
@@ -690,7 +907,8 @@
     "jev-mem"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": []
   },
   {
    "display": "Jevons, William Stanley",
@@ -699,7 +917,8 @@
     "jevons"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": []
   },
   {
    "display": "jevkit",
@@ -708,7 +927,8 @@
     "jevkit"
    ],
    "strict": false,
-   "code": true
+   "code": true,
+   "taught": []
   },
   {
    "display": "Kahneman, Daniel",
@@ -717,7 +937,8 @@
     "kahneman"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": []
   },
   {
    "display": "Molas, Alex",
@@ -726,7 +947,8 @@
     "molas"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": []
   },
   {
    "display": "Murphy, Allan",
@@ -735,7 +957,8 @@
     "murphy"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": []
   },
   {
    "display": "Phishing campaign",
@@ -744,7 +967,8 @@
     "campaign"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": []
   },
   {
    "display": "Reasoning models",
@@ -753,7 +977,8 @@
     "reasoning model*"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": []
   },
   {
    "display": "ReAct",
@@ -762,7 +987,8 @@
     "ReAct"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": []
   },
   {
    "display": "Threat intel",
@@ -771,7 +997,8 @@
     "threat intel*"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": []
   },
   {
    "display": "TinyJev",
@@ -780,7 +1007,8 @@
     "tinyjev"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": []
   },
   {
    "display": "TypeSafe AI",
@@ -789,7 +1017,8 @@
     "typesafe"
    ],
    "strict": false,
-   "code": false
+   "code": false,
+   "taught": []
   },
   {
    "display": "typesafe-sdk",
@@ -799,7 +1028,8 @@
     "typesafeclient"
    ],
    "strict": false,
-   "code": true
+   "code": true,
+   "taught": []
   }
  ]
 }

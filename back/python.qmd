@@ -1,0 +1,104 @@
+# The Python you'll see {.unnumbered #sec-python}
+
+The labs use only a small part of Python. If you know loops, functions and lists, four more tools cover almost
+everything else: NumPy arrays and masks, pandas tables, `lambda`, and f-strings. This appendix shows each one on a
+few of Kestrel's alerts. Every example runs as shown.
+
+## NumPy arrays and masks
+
+A NumPy **array** holds many numbers of the same kind. Maths on an array works on every number at once, so you don't
+need a loop.
+
+```{python}
+import numpy as np
+
+p = np.array([0.02, 0.91, 0.40, 0.07, 0.66])   # the model's probability for five alerts
+is_threat = np.array([0, 1, 0, 0, 1])          # what each alert turned out to be (1 = real threat)
+
+print(p * 100)          # every probability as a percentage
+print(p.mean().round(3)) # the average probability
+```
+
+A comparison on an array gives a **mask**: an array of `True` and `False`, one for each number. Put a mask inside
+square brackets to keep only the numbers where it's `True`.
+
+```{python}
+high = p > 0.5
+print(high)             # which alerts are above 0.5
+print(p[high])          # only those probabilities
+print(high.sum())       # how many: True counts as 1, False as 0
+print(is_threat[high].mean())   # the share of them that were real threats
+```
+
+To combine two masks, use `&` for "and" and `|` for "or", with brackets around each comparison:
+`p[(p > 0.05) & (p < 0.5)]` keeps the probabilities between 0.05 and 0.5.
+
+## pandas tables, filtering and groupby
+
+A pandas **DataFrame** is a table. Each column has a name, and each row is one alert. The labs load Kestrel's
+alerts as a DataFrame with `soc.load()`; here is a small one built by hand.
+
+```{python}
+import pandas as pd
+
+alerts = pd.DataFrame({
+    "source":    ["Email", "EDR", "Email", "DLP", "EDR", "Email"],
+    "p":         [0.02, 0.91, 0.40, 0.07, 0.66, 0.05],
+    "is_threat": [0, 1, 0, 0, 1, 0],
+})
+print(alerts)
+```
+
+`alerts["p"]` is one column. A mask on a column picks rows, just as it did with arrays:
+
+```{python}
+print(alerts[alerts["p"] > 0.5])                                # rows above 0.5
+print(alerts[(alerts["source"] == "Email") & (alerts["p"] < 0.1)])   # two conditions
+```
+
+`groupby` splits the table into groups and sums up each group. Chapter 3 uses the same idea to check calibration
+inside each alert source: it compares the average probability the model gave with the share of alerts that were real.
+
+```{python}
+print(alerts.groupby("source")[["p", "is_threat"]].mean())
+```
+
+Read each row as "for this source, the model said this on average, and this share were real". With six alerts the
+numbers mean little; with thousands, a gap between the two columns shows the model is not calibrated for that group.
+
+## lambda
+
+A `lambda` is a small function with no name, written on one line. These two do the same thing:
+
+```{python}
+def zone(p):
+    return "act" if p < 0.031 else ("escalate" if p >= 0.34 else "review")
+
+zone = lambda p: "act" if p < 0.031 else ("escalate" if p >= 0.34 else "review")
+print(zone(0.02), zone(0.20), zone(0.91))
+```
+
+The two lines, 0.031 and 0.34, are the ones Chapter 14 settles on. Lambdas are handy when you pass a function to
+something else, such as `apply`, which runs a function on every value in a column:
+
+```{python}
+alerts["zone"] = alerts["p"].apply(zone)
+print(alerts[["source", "p", "zone"]])
+```
+
+## f-strings
+
+An **f-string** is a string with an `f` before the quote. Anything inside `{ }` is worked out and put into the text.
+After a colon you can say how to format it: `.2f` means two decimal places, `.1%` means a percentage with one decimal
+place, and `>6` means "right-align in 6 characters".
+
+```{python}
+n = len(alerts)
+share = alerts["is_threat"].mean()
+print(f"{n} alerts, {share:.1%} real threats")
+for _, row in alerts.iterrows():
+    print(f"{row['source']:>6}  p = {row['p']:.2f}  ->  {row['zone']}")
+```
+
+That's all the Python the book needs beyond the basics. When a listing uses something else, the text around it
+explains it.

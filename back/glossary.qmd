@@ -36,6 +36,9 @@ Capacity
 Cassette
 : A file of recorded requests and responses that a test can replay without calling the real API (Chapter 16).
 
+CISO
+: Chief information security officer: the person in charge of an organisation's security (Chapter 18).
+
 Choice
 : A typed question with a set of named options; the answer is a probability for each option, adding up to 1 (Chapter 10).
 
@@ -57,6 +60,9 @@ Decision record
 Drift
 : A change in the world, or in the data, that makes a model's probabilities less accurate than when they were checked (Chapter 14).
 
+DLP (data loss prevention)
+: Security tools that warn when company data may be leaving the organisation, such as a large file sent to a personal email address (Chapter 3).
+
 ECE (expected calibration error)
 : The average gap between what a model said and what happened, across groups of similar predictions (Chapter 3).
 
@@ -66,11 +72,17 @@ Elasticity
 Embedding
 : A list of numbers that places a word, sentence or item in a space where similar things sit close together (Chapter 5).
 
+Epoch
+: One full pass of training over all the training examples (Chapter 5).
+
 Escape option
 : The "other", "none" or "not enough information" option that gives cases fitting nowhere somewhere to go (Chapter 10).
 
 Extract, then decide
 : A pattern in which an LLM turns messy input into fields and a decision model decides on those fields (Chapter 15).
+
+F1
+: One score that balances how many flagged cases are real and how many real cases get flagged; it measures ranking and labelling, not calibration (Chapter 3).
 
 Fail-safe
 : The decided meaning of a failure, such as "if the call fails, send the case to review" (Chapters 14 and 21).
@@ -170,6 +182,9 @@ Score
 
 Shadow mode
 : Running a new system or version beside the current one, recording what it would do without letting it act (Chapters 18 and 21).
+
+SIEM (security information and event management)
+: The tool that collects a company's logs and raises security alerts; Kestrel's alerts come from one (Chapter 13).
 
 Softmax
 : The function that turns a list of scores into probabilities that add up to 1 (Chapters 5 and 10).

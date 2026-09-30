@@ -64,7 +64,7 @@ The two are independent. A model can rank perfectly and still lie about how sure
 
 @fig-same-auc shows two models with the same AUC, {{< num ch04 lr.auc f3 >}}. Model B's numbers are a mess: it says 40% about alerts that are attacks only a few percent of the time. If you only ever sort alerts, Model B is as good as Model A. The moment you put a threshold on its numbers, or add them into a cost, or show them to an analyst, it'll mislead you.
 
-Here lies the trap: most leaderboards and most model comparisons report ranking metrics like AUC, accuracy or F1. Calibration is often not measured at all. For a decision system it's usually the thing that matters most.
+Here lies the trap: most leaderboards and most model comparisons report ranking metrics like AUC, accuracy or F1. (F1 is one score that balances two things: how many of the cases a model flags are real, and how many of the real cases it flags.) Calibration is often not measured at all. For a decision system it's usually the thing that matters most.
 
 ## The reliability diagram
 
@@ -185,7 +185,7 @@ A model can be well calibrated *overall* and badly calibrated for a particular g
 
 ![Calibration checked separately for each alert source. Across all sources together, this model is well calibrated, with an ECE of about half a percentage point. But it overestimates the risk of DLP and Cloud alerts and underestimates EDR alerts, which really are more dangerous here. Averaging hides both mistakes.](/figures/ch04/by-source.pdf){#fig-by-source}
 
-Its overall ECE is excellent, {{< num ch04 generic.ece f3 >}}. Yet for endpoint (EDR) alerts it says {{< num ch04 by_source.EDR.pred pct1 >}} when the truth is {{< num ch04 by_source.EDR.actual pct1 >}}, and for DLP alerts it says {{< num ch04 by_source.DLP.pred pct1 >}} when the truth is {{< num ch04 by_source.DLP.actual pct1 >}}. The over- and under-estimates cancel out in the average.
+Its overall ECE is excellent, {{< num ch04 generic.ece f3 >}}. Yet for endpoint (EDR) alerts it says {{< num ch04 by_source.EDR.pred pct1 >}} when the truth is {{< num ch04 by_source.EDR.actual pct1 >}}, and for DLP alerts (data loss prevention: warnings that company data may be leaving the building) it says {{< num ch04 by_source.DLP.pred pct1 >}} when the truth is {{< num ch04 by_source.DLP.actual pct1 >}}. The over- and under-estimates cancel out in the average.
 
 If your policy treats every source the same way, you'll send too many harmless DLP alerts to the queue and close too many real EDR ones. The rule is simple: **check calibration inside every group you'll act on differently**, and inside every group where a mistake would be especially costly. Sources, customer tiers, languages, regions, and yes, demographic groups when a model touches people's lives.
 

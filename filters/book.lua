@@ -196,20 +196,31 @@ local function index_matches(text, lower, patterns)
   return false
 end
 
-local function index_entry(t)
+local function index_entry(t, suffix)
   local shown = t.display:gsub("([&%%#_])", "\\%1")
   if t.code then shown = "\\texttt{" .. shown .. "}" end
   local key = t.sort:gsub("[!@|\"]", "")
-  return pandoc.RawInline("latex", "\\index{" .. key .. "@" .. shown .. "}")
+  return pandoc.RawInline("latex", "\\index{" .. key .. "@" .. shown .. (suffix or "") .. "}")
 end
 
+local function taught_in(t, chapter)
+  for _, c in ipairs(t.taught or {}) do if c == chapter then return true end end
+  return false
+end
+
+-- Two passes over the same blocks, in the same order. Pass 1 numbers the paragraphs of each chapter and finds the
+-- first and last paragraph that mention each taught term; pass 2 writes the entries: a page range (|( ... |)) for a
+-- taught term in a chapter that teaches it, nothing for it elsewhere, and for other terms an entry at a bold
+-- definition or (unless strict) at the first mention in each chapter.
 local function index_blocks(blocks, st)
   for i = 1, #blocks do
     local b = blocks[i]
     if b.t == "Header" and b.level == 1 then
       local id = b.identifier or ""
-      if id:match("^sec%-ch%d+") then st.chapter, st.seen = id, {} else st.chapter = nil end
+      local n = id:match("^sec%-ch(%d+)")
+      if n then st.chapter, st.seen, st.para = tonumber(n), {}, 0 else st.chapter = nil end
     elseif st.chapter and (b.t == "Para" or b.t == "Plain") then
+      st.para = st.para + 1
       local text = pandoc.utils.stringify(b)
       local lower = text:lower()
       local strong = {}
@@ -218,11 +229,26 @@ local function index_blocks(blocks, st)
       local slower = stext:lower()
       local adds = {}
       for _, t in ipairs(st.terms) do
-        local defined = #strong > 0 and index_matches(stext, slower, t.patterns)
-        local first = (not t.strict) and (not st.seen[t.display]) and index_matches(text, lower, t.patterns)
-        if defined or first then
-          st.seen[t.display] = true
-          adds[#adds + 1] = index_entry(t)
+        if #(t.taught or {}) > 0 then
+          if taught_in(t, st.chapter) and index_matches(text, lower, t.patterns) then
+            local key = t.display .. "@" .. st.chapter
+            if st.pass == 1 then
+              st.span[key] = st.span[key] or {first = st.para}
+              st.span[key].last = st.para
+            else
+              local sp = st.span[key]
+              if sp.first == sp.last then adds[#adds + 1] = index_entry(t)
+              elseif st.para == sp.first then adds[#adds + 1] = index_entry(t, "|(")
+              elseif st.para == sp.last then adds[#adds + 1] = index_entry(t, "|)") end
+            end
+          end
+        elseif st.pass == 2 then
+          local defined = #strong > 0 and index_matches(stext, slower, t.patterns)
+          local first = (not t.strict) and (not st.seen[t.display]) and index_matches(text, lower, t.patterns)
+          if defined or first then
+            st.seen[t.display] = true
+            adds[#adds + 1] = index_entry(t)
+          end
         end
       end
       if #adds > 0 then
@@ -246,6 +272,8 @@ function Pandoc(doc)
   if not is_latex then return nil end
   local terms = load_index_terms()
   if #terms == 0 then return nil end
-  doc.blocks = index_blocks(doc.blocks, {terms = terms, chapter = nil, seen = {}})
+  local span = {}
+  index_blocks(doc.blocks:clone(), {terms = terms, chapter = nil, seen = {}, span = span, pass = 1, para = 0})
+  doc.blocks = index_blocks(doc.blocks, {terms = terms, chapter = nil, seen = {}, span = span, pass = 2, para = 0})
   return doc
 end

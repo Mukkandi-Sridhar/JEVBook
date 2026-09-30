@@ -7,7 +7,8 @@
 \setmainfont{Source Serif 4}[
   UprightFont = *-Regular, BoldFont = *-Semibold, ItalicFont = *-Italic,
   BoldItalicFont = *-SemiboldItalic, Extension = .ttf, Path = ./assets/fonts/,
-  Numbers = {Proportional,OldStyle}, Ligatures = TeX]
+  Numbers = {Proportional,OldStyle}, Ligatures = TeX,
+  WordSpace = {1.0, 1.4, 0.55}]      % word spaces may stretch more and shrink less than the font's default
 \setsansfont{Inter}[
   UprightFont = *-Regular, BoldFont = *-Bold, ItalicFont = *-Italic,
   BoldItalicFont = *-BoldItalic, Extension = .ttf, Path = ./assets/fonts/,
@@ -20,7 +21,8 @@
 \newfontfamily\serifsemi{SourceSerif4}[UprightFont = *-Semibold, Extension = .ttf, Path = ./assets/fonts/, Numbers = Lining]
 \newfontfamily\liningserif{SourceSerif4}[UprightFont = *-Regular, ItalicFont = *-Italic, Extension = .ttf, Path = ./assets/fonts/, Numbers = Lining]
 
-\microtypesetup{protrusion=true,expansion=true}
+% Hanging punctuation only: no font expansion, so letters keep their shapes and lines loosen at the word spaces.
+\microtypesetup{protrusion=true,expansion=false,tracking=false}
 \linespread{1.08}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.5em plus 0.15em minus 0.05em}
@@ -29,7 +31,8 @@
 \widowpenalty=10000
 \clubpenalty=10000
 \brokenpenalty=5000
-\emergencystretch=1.5em
+\tolerance=800
+\emergencystretch=3em
 
 % ---------- Colours (keep in sync with jevkit/figs/style.py) --------------
 \definecolor{ink}{HTML}{1F2430}

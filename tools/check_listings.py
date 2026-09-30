@@ -22,7 +22,8 @@ def cells(qmd: Path) -> list[str]:
 
 
 def main(names):
-    files = sorted((ROOT / "chapters").glob("ch*.qmd")) + sorted((ROOT / "front").glob("*.qmd"))
+    files = (sorted((ROOT / "chapters").glob("ch*.qmd")) + sorted((ROOT / "front").glob("*.qmd"))
+             + sorted((ROOT / "back").glob("*.qmd")))
     if names:
         files = [f for f in files if f.stem in names]
     bad = 0

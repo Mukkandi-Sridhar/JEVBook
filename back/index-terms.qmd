@@ -7,64 +7,62 @@
 :::
 
 ::: {.content-visible unless-format="pdf"}
-Chapters where each term appears. The glossary gives a one-sentence definition of most of them.
+Chapters that explain each term. The glossary gives a one-sentence definition of most of them.
 
 ::: {.indexlist}
 
 **A**
 
-Act, review, escalate · 4, 7, 13–15, 17, 20\
-Agent · 1, 6–12, 14–20, 22\
-Attention · 5, 18, 20, 22\
-AUC · 3, 5, 6, 13, 15, 17, 19, 20\
-Audit (random) · 6, 8, 9, 11, 14, 15, 17–19, 21, 22\
+Act, review, escalate · 14\
+Agent · 7, 17\
+Attention · 5\
+AUC · 3\
+Audit (random) · 14\
 
 **B**
 
-Bake-off · 13, 20\
-Base rate · 2, 3, 11, 13, 16, 18\
+Bake-off · 13\
+Base rate · 2\
 Bayes' rule · 2, 11\
-Brier score · 3\
 
 **C**
 
-Calibration · 3–16, 18–22\
-Capacity · 12–14, 17, 18, 21, 22\
+Calibration · 3, 11\
+Capacity · 14\
 Cassette · 16\
-Choice (question type) · 4, 6, 7, 9–15, 19–21\
-Confidence · 2, 3, 5, 6, 9–11, 13, 14, 16, 17\
-Cost line · 4, 8, 12, 14\
+Choice (question type) · 10\
+Confidence · 9\
+Cost line · 4\
 
 **D**
 
 Decision layer · 7, 9, 14, 15, 18, 19, 22\
 Decision record · 21\
 Doom demo · 9, 12\
-Drift · 3, 7, 8, 14, 18, 20–22\
+Drift · 14\
 
 **E**
 
-ECE (expected calibration error) · 3, 5, 6, 11, 13\
+ECE (expected calibration error) · 3\
 Elasticity · 12\
-Embedding · 5, 20, 22\
-Escape option · 10, 15, 19\
-Extract, then decide · 10, 14, 15\
+Embedding · 5\
+Escape option · 10\
+Extract, then decide · 15\
 
 **F**
 
-Fail-safe · 14, 16–18, 22\
-Fine-tuning · 13\
+Fail-safe · 14\
 
 **G**
 
-Gradient descent · 2, 20\
-Guardrail gate · 14, 15\
+Gradient descent · 2\
+Guardrail gate · 15\
 
 **H**
 
 Hallucination · 6\
 Harbor Pharma · 11\
-Hybrid agent · 17, 20, 22\
+Hybrid agent · 17\
 
 **I**
 
@@ -84,76 +82,75 @@ Kahneman, Daniel · 1, 8\
 
 **L**
 
-Label · 1, 5–7, 9–15, 18–20, 22\
-LLM (large language model) · 1, 8, 12\
-LLM-as-judge · 13, 15\
-Log loss · 2, 3, 5, 9, 13, 20\
-Logistic regression · 2–5, 8, 13, 14, 20\
-Loss · 2, 3, 5, 9, 12–15, 20, 21\
+Label · 1\
+LLM (large language model) · 6\
+LLM-as-judge · 13\
+Log loss · 2\
+Logistic regression · 2\
+Loss · 2\
 
 **M**
 
-Mock · 1, 3, 6–11, 13–20, 22\
+Mock · 16\
 Molas, Alex · 11\
 Murphy, Allan · 3\
 
 **N**
 
-Noul · 9–11, 14–16, 19, 20\
+Noul · 10\
 
 **O**
 
-Observe, Decide, Act · 7, 15\
+Observe, Decide, Act · 7\
 Ordinal · 20\
-Overconfidence · 3, 5, 6, 8, 12, 14, 20\
-Overfitting · 2, 3, 20\
+Overconfidence · 5\
+Overfitting · 2\
 
 **P**
 
 Phishing campaign · 2, 3, 14, 18, 20, 21\
-Platt scaling · 3, 11, 13, 14, 18\
-Policy · 3, 7, 9, 10, 12, 14–18, 20–22\
-Prior shift · 11, 18\
+Platt scaling · 3\
+Policy · 14\
+Prior shift · 11\
 Prompt injection · 7\
-Proper scoring rule · 2, 3, 9, 20\
+Proper scoring rule · 2\
 
 **R**
 
-RAG (retrieval-augmented generation) · 1, 5, 7, 13, 15\
+RAG (retrieval-augmented generation) · 7\
 Reasoning models · 15\
-Reliability diagram · 3, 11, 13\
-RLCD · 9, 11, 20\
-RLHF · 9\
-Router · 7, 8, 14, 15, 19\
+Reliability diagram · 3\
+RLCD · 9\
+Router · 15\
 
 **S**
 
-Score (question type) · 1–7, 9–11, 13–15, 20\
-Shadow mode · 18, 21, 22\
-Softmax · 5, 10, 20\
-State · 9, 10, 13, 15, 16, 19–21\
-Structured output · 6, 7, 13\
-System 1, System 2 · 8, 15, 19\
-System One model · 1, 8, 16, 19, 20\
+Score (question type) · 10\
+Shadow mode · 18, 21\
+Softmax · 5\
+State · 9\
+Structured output · 6\
+System 1, System 2 · 8\
+System One model · 8\
 
 **T**
 
-Temperature (calibration) · 3, 11, 20\
-Temperature (sampling) · 6, 13\
+Temperature (calibration) · 3\
+Temperature (sampling) · 6\
 Threat intel · 7, 13, 17\
-Three-zone policy · 14, 18, 20\
+Three-zone policy · 14\
 TinyJev · 20\
-Token · 5–9, 13, 16\
-Trace · 5, 16, 17\
-Transformer · 5, 6, 13\
-Transport · 14, 16, 20\
-Typed question · 1, 6–10, 14, 15, 17–22\
+Token · 6\
+Trace · 17\
+Transformer · 5\
+Transport · 16\
+Typed question · 10\
 TypeSafe AI · 1, 8–12, 16, 20\
 `typesafe-sdk` · 9, 16\
 
 **V**
 
-Vendor-reported · 9, 12, 13, 16, 22\
+Vendor-reported · 9\
 
 :::
 :::

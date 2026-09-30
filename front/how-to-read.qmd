@@ -29,6 +29,8 @@ pip install typesafe-sdk==0.7.2
 pip install git+https://github.com/Mukkandi-Sridhar/JEVBook
 ```
 
+If some of the Python is new to you, read the appendix [The Python you'll see](#sec-python) first. It explains the four tools the labs use most: NumPy arrays and masks, pandas tables, `lambda` and f-strings.
+
 The second line installs `jevkit`, the book's toolkit. Among other things, it includes the mock that answers the official SDK's calls without a network connection or an API key. If you have a real TypeSafe API key, set `JEVKIT_LIVE=1` and `TYPESAFE_API_KEY`, and the labs call the real service instead; Chapter 16 explains how.
 
 The listings use short names for `jevkit`'s modules, imported at the top of each chapter's lab:

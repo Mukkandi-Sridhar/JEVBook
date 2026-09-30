@@ -31,7 +31,7 @@ The decision is Kestrel's: is this alert a real threat? Every method gets the th
 
 ![The six contestants: what each one reads, what it returns, and what it needs before it can start.](/figures/ch20/contenders.pdf){#fig-contenders}
 
-Each reads what it would naturally read in practice (@fig-contenders). The rules and the logistic regression get the alert's structured fields from the SIEM. The text classifier and both LLM methods get the raw alert text. Jev gets the fields as a JSON state, the same information the logistic regression sees.
+Each reads what it would naturally read in practice (@fig-contenders). The rules and the logistic regression get the alert's structured fields from the SIEM. A SIEM (security information and event management system) is the tool that collects the company's logs and raises the alerts. The text classifier and both LLM methods get the raw alert text. Jev gets the fields as a JSON state, the same information the logistic regression sees.
 
 The **text classifier** needs a word of explanation. It stands in for a fine-tuned model: a classic word-counting classifier (word weights plus logistic regression) trained on the history labels, which re-trains in seconds on any laptop. A fine-tuned transformer, even a small one of the MiniLM kind, would usually read the text better, so treat this row as a floor for what a trained text model can do.
 
