@@ -9,7 +9,7 @@
   - `soc`: the synthetic Kestrel Logistics SOC alert generator (known true probabilities)
   - `calibration`, `policy`: reliability diagrams, ECE/Brier, Platt/temperature/isotonic, act/review/escalate
   - `figs`: the book's figure system
-- `labs/`: one notebook per chapter (`chNN.py` source, `chNN.ipynb` for Colab)
+- `labs/`: one notebook per chapter (`chNN.py` source, `chNN.ipynb` to run)
 - `figures/src/`: the code behind every figure; `figures/chNN/` the generated PDF + SVG
   (figure folders and `results/` keep the first draft's ids; see D-58 in `DECISIONS.md` and `jevkit/figs/bookmap.py`)
 - `site/`: companion widgets (calibration playground, threshold simulator, bake-off explorer, cost calculator)
@@ -34,7 +34,7 @@ print(r.choices["category"])
 pip install -r requirements.txt && pip install -e .
 make fonts      # install the book fonts (OFL)
 make test       # jevkit tests
-make figures    # rebuild every figure from code, the lab QR codes and the index terms
+make figures    # rebuild every figure from code and the index terms
 make labs       # execute every notebook in mock mode
 make pdf        # 7x10in print PDF (needs LuaLaTeX)
 make html       # web edition

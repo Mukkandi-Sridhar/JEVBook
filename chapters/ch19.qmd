@@ -114,7 +114,7 @@ Maslow was talking about scientists and their methods [@maslow1966] [[VERIFY]]. 
 
 We toured six decision layers and found the same parts in every one: a state, a few typed questions, and an option for what fits nowhere. What changed from job to job was who decides. Where decisions are many and cheap, the model decides and people audit. Where they're few and costly, the model orders the queue and a person decides. The Chapter 4 formula put the line anywhere from 5% to 0.3%, depending only on costs. And running one stop for real, support tickets, showed why you measure first: the mock that did well at Kestrel stumbled on a new kind of text, and routing only when it was sure recovered most of the damage.
 
-::: {.exercises lab="ch19"}
+::: {.exercises}
 1. Pick a decision from your own work. Write its card in the style of @fig-cards: state, typed questions, the escape option, who decides.
 2. In the lab, rewrite the `account` description to separate it from `technical`. What happens to accuracy on each team?
 3. Using the threshold formula, find the refund amount at which the line in the box above crosses 50%.

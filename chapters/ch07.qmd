@@ -161,7 +161,7 @@ The model didn't know Kestrel, so we handed it the right pages, and retrieval be
 
 That's the end of the prerequisites. You now know what LLMs and agents are, and exactly where they need help. Part III looks closely at a model built for that help.
 
-::: {.exercises lab="ch07"}
+::: {.exercises}
 1. Why doesn't retraining an LLM on your company's documents usually replace RAG? Give two practical reasons.
 2. An agent vendor says their agent completes 90% of steps correctly, and a typical task is fifteen steps. What task success rate would you expect, and what else would you want to know?
 3. In the lab, plant a *different* sentence, such as "User confirmed this activity". Does it move the decisions? Why, or why not?

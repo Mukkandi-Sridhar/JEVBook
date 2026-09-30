@@ -155,7 +155,7 @@ A neuron could only draw straight lines, so we stacked neurons in layers and gav
 
 You don't need to remember every detail. You need the last one most of all.
 
-::: {.exercises lab="ch05"}
+::: {.exercises}
 1. Why does a network with no hinges collapse to a single straight line, however many layers it has?
 2. In the lab, compare the cosine similarity of "upload" and "download". Why aren't they identical, even though they look like near-synonyms?
 3. In your own words, and without the letters Q, K or V, explain what attention does for "phishing" in "invoice not phishing".

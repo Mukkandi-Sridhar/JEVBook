@@ -262,7 +262,7 @@ That's the map (@fig-ai-story-map).
 
 You don't need to understand every box today. Just know where we're going. The next three chapters stay down at the bottom-left corner of this map on purpose, because everything above it, Jev included, is built on one idea we've only just met: a model's answer should be a probability, and the probability should be honest.
 
-::: {.exercises lab="ch01"}
+::: {.exercises}
 1. Name one system you use every week that follows rules, and one that learned from examples. What gave it away?
 2. In the lab, swap the threat-intel score for `prior_alerts_24h` (how many related alerts fired in the last day). Which threshold makes the fewest mistakes now? Is that rule any more *useful*?
 3. Our best rule made {{< num ch01 best_mistakes int >}} mistakes and caught almost nothing. Write one sentence describing the question you *wish* we had asked the machine instead.

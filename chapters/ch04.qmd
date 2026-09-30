@@ -178,7 +178,7 @@ In Chapter 1 a machine learned exactly what we asked and was useless, because we
 
 That's the foundation. Every system in the rest of the book, from deep networks to LLMs to Jev, gets judged by it.
 
-::: {.exercises lab="ch04"}
+::: {.exercises}
 1. A hospital test flags a serious but treatable condition. Treating someone who doesn't have it costs \$500 and some discomfort; missing someone who does costs \$50,000. What's the treatment threshold? What would you want to know about the test's calibration before trusting it?
 2. In the lab, halve and double both costs (together and separately). When does the threshold move, and when doesn't it? Why?
 3. Explain in two sentences why "0.5 is the neutral threshold" is wrong.

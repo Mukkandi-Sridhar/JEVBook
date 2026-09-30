@@ -1,4 +1,4 @@
-"""Recurring book graphics: the 'you are here' strip, QR codes and the one-page visual summary."""
+"""Recurring book graphics: the 'you are here' strip, and the one-page visual summary."""
 
 from __future__ import annotations
 
@@ -10,7 +10,6 @@ from .bookmap import PARTS, CHAPTERS
 from .style import C, ROOT, setup, TEXT_W, WIDE_W, save
 from . import draw
 
-LAB_BASE = "https://colab.research.google.com/github/Mukkandi-Sridhar/JEVBook/blob/main/labs"
 SITE_BASE = "https://mukkandi-sridhar.github.io/JEVBook"
 
 PART_KIND = {"I": "data", "II": "data", "III": "llm", "IV": "jev", "V": "jev", "VI": "jev"}
@@ -46,16 +45,6 @@ def you_are_here(chapter: str):
     return f
 
 
-def qr(chapter: str, url: str | None = None, outdir: Path | None = None) -> Path:
-    """Vector QR code (PDF + SVG) for a chapter's lab notebook."""
-    import segno
-    url = url or f"{LAB_BASE}/{chapter}.ipynb"
-    out = Path(outdir) if outdir else ROOT / "figures" / chapter
-    out.mkdir(parents=True, exist_ok=True)
-    q = segno.make(url, error="m")
-    q.save(str(out / "qr.svg"), scale=4, border=0, dark=C["ink"])
-    q.save(str(out / "qr.pdf"), scale=4, border=0, dark=C["ink"])
-    return out / "qr.pdf"
 
 
 def summary_page(chapter: str, title: str, panels: list[dict], footer: str | None = None, height: float = 7.75):

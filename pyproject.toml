@@ -19,7 +19,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-figs = ["matplotlib>=3.8", "segno>=1.6"]
+figs = ["matplotlib>=3.8"]
 dev = ["pytest>=8", "jupytext>=1.16", "nbclient>=0.10", "nbformat>=5.9", "ipykernel>=6"]
 
 [tool.setuptools.packages.find]

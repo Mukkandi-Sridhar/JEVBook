@@ -144,7 +144,7 @@ Vogels has said this in many talks [[VERIFY]]. A decision service is built aroun
 
 We built the service from the book's pieces. One versioned config held the model, calibration, lines and rules. Every decision left a record that explains it. A dry run caught a rule and a set of lines that didn't fit together, and fitting them together fixed it. A deliberate failure test showed why failures must fall back to review. A daily monitor kept quiet through a normal week and spoke up on the first day of a campaign. And a shadow run put a price on the next change before anyone paid it.
 
-::: {.exercises lab="ch21"}
+::: {.exercises}
 1. In the lab, set `fallback="escalate"`. What happens to the pager on a day when 30% of calls fail? Which fallback would you choose, and why?
 2. Add a new check to `daily_report`: flag the day if the share of "none" answers from any choice question moves by more than ten points from last week (Chapter 17's lesson).
 3. Read a week of decision records and answer, from the log alone: which alert with P above 0.3 was auto-closed, and why?

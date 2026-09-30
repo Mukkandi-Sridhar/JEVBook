@@ -160,7 +160,7 @@ Feynman's blackboard [[VERIFY]] is the best argument for this chapter. You don't
 
 We built a System One model in miniature. A shared encoder read each alert once, and three heads answered three typed questions: a sigmoid for the noul, a softmax for the choice, and an ordinal dial for the score. Log loss trained every head towards honest probabilities. Honest on the training weeks still meant overconfident on new ones, and one temperature per head fixed that. Training too long broke it in a way no temperature could repair. The model ranked alerts respectably, and once plugged into the official SDK, it ran the book's code unchanged.
 
-::: {.exercises lab="ch20"}
+::: {.exercises}
 1. Train TinyJev with only the noul head (set the other two loss weights to zero). Does its AUC go up or down? What does that suggest about sharing an encoder?
 2. Replace the score head with a plain softmax over the four levels. Compare the two on "within one level" accuracy. Which mistakes does the ordinal head avoid?
 3. In the lab, run the overtraining experiment and plot the held-out loss. At which step would you have stopped? How would you choose that step automatically?

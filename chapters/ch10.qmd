@@ -164,7 +164,7 @@ Three shapes, we found, cover most small decisions, as long as the questions are
 
 Everything here has assumed the probabilities are honest. Time to check.
 
-::: {.exercises lab="ch10"}
+::: {.exercises}
 1. Rewrite each bundled question as separate nouls, and say how you'd combine them: "Is this a phishing email that someone clicked on?"; "Is this login suspicious and from an admin account?"
 2. In the lab, remove "benign" and "policy_violation" from the choice for 50 harmless alerts. What's the mean confidence? Then add an "other" option instead. What changes?
 3. Find an alert in the lab whose severity distribution has two humps. What does its P(attack) look like? Why do the two go together?

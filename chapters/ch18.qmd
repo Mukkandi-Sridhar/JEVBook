@@ -131,7 +131,7 @@ Deming said something like this often, in talks and seminars [[VERIFY]]. Kestrel
 
 Kestrel's SOC used to decide by running out of time: whatever nobody reached aged out, and a large share of real threats went with it. We assembled the new system from pieces built across the book and ran it in shadow mode. Its mistakes matched its own forecast, so the team switched it on. With the same six analysts, more real threats reached a person, and they got there faster. The cheapest part of that gain came from putting the likeliest threats first. Then a phishing campaign arrived. Recalibration and overtime reduced the damage, and they also showed plainly how much more work the world had created.
 
-::: {.exercises lab="ch18"}
+::: {.exercises}
 1. In the lab, set `ops.PAGE_RESPONSE_MIN` to 45. How does the scorecard change? Which row moves most?
 2. Rerun the campaign with a response on day 2 instead of day 3. How many more threats reach a person? What would you need in place to respond a day earlier?
 3. The old way sorted rule-flagged alerts first. What if it had sorted by the SIEM's own severity field instead? Sketch how you'd test whether that alone closes most of the gap.

@@ -139,9 +139,6 @@ function Div(div)
     end
     local keep = cls == "deeper" and "\\needspace{7\\baselineskip}" or ""
     blocks:insert(latex(keep .. "\\begin{" .. ENVS[cls] .. "}"))
-    if cls == "exercises" and div.attributes["lab"] then
-      blocks:insert(latex("\\labqr{" .. div.attributes["lab"] .. "}"))
-    end
     blocks:extend(div.content)
     blocks:insert(latex("\\end{" .. ENVS[cls] .. "}"))
     return blocks
@@ -155,15 +152,6 @@ function Div(div)
   end
   if (cls == "bookquote" or cls == "epigraph") and div.attributes["by"] then
     div.content:insert(pandoc.Div({pandoc.Plain({pandoc.Str("\u{2014} " .. div.attributes["by"])})}, pandoc.Attr("", {"quote-by"})))
-  end
-  if cls == "exercises" and div.attributes["lab"] then
-    local url = "https://colab.research.google.com/github/Mukkandi-Sridhar/JEVBook/blob/main/labs/" .. div.attributes["lab"] .. ".ipynb"
-    div.content:insert(2, pandoc.Para({pandoc.Link({pandoc.Str("Open this chapter's lab in Colab \u{2192}")}, url)}))
-  end
-  if cls == "tryit" and div.attributes["lab"] then
-    local ch = div.attributes["lab"]
-    local url = "https://colab.research.google.com/github/Mukkandi-Sridhar/JEVBook/blob/main/labs/" .. ch .. ".ipynb"
-    div.content:insert(pandoc.Para({pandoc.Link({pandoc.Str("Open this chapter's notebook in Colab \u{2192}")}, url)}))
   end
   div.classes:insert("bookbox")
   return div

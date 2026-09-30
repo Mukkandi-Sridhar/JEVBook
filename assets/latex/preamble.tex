@@ -190,13 +190,6 @@
   {\sffamily\bfseries\fontsize{7}{9}\selectfont\color{ink}\addfontfeature{LetterSpace=10}EXERCISES}\par
   \vspace{2pt}{\color{rulec}\rule{\linewidth}{0.5pt}}\par\vspace{2pt}\small}{\par\nopagebreak[4]\vspace{6pt}}
 
-% The chapter's lab: a QR code to its Colab notebook (tools/make_qr.py), at the top of the exercises
-\newcommand{\labqr}[1]{\par\noindent
-  \begin{minipage}[c]{0.42in}\includegraphics[width=0.42in]{figures/qr/#1.pdf}\end{minipage}\hspace{0.8em}%
-  \begin{minipage}[c]{\dimexpr\linewidth-0.42in-0.8em\relax}\raggedright\sffamily\footnotesize\color{ink2}
-  \textbf{\color{ink}This chapter's lab.} Scan to open it in Google Colab, or open \texttt{labs/#1.ipynb} in the
-  repository. It runs on the mock: no API key needed.\end{minipage}\par\vspace{4pt}}
-
 % Chapter goals ("By the end...")
 \newenvironment{goals}{\par\vspace{6pt}\begin{tcolorbox}[enhanced, colback=white, colframe=gridc, boxrule=0.6pt, arc=2pt,
   left=9pt, right=8pt, top=7pt, bottom=6pt, fontupper=\small]
@@ -221,7 +214,6 @@
 \newenvironment{summarypage}{\clearpage\thispagestyle{plain.scrheadings}\begin{adjustwidth*}{0pt}{-\dimexpr\marginparwidth+\marginparsep\relax}\centering}{\end{adjustwidth*}\clearpage}
 
 % Margin items
-\newcommand{\marginqr}[2]{\marginnote{\raggedright\includegraphics[width=0.62in]{#1}\\[3pt]{\sffamily\bfseries\fontsize{6.5}{8}\selectfont\color{jevgreen}LAB NOTEBOOK}\\{\sffamily\fontsize{6.2}{8}\selectfont\color{ink2}#2}}}
 \newcommand{\sidenote}[1]{\marginnote{\raggedright\sffamily\fontsize{7}{9.2}\selectfont\color{ink2}#1}}
 % A short aside set in the text column (the print layout has no margin notes)
 \newenvironment{asidenote}{\par\vspace{2pt}\begingroup\leftskip=1.2em\sffamily\fontsize{8.5}{11.5}\selectfont\color{ink2}}{\par\endgroup\vspace{2pt}}

@@ -86,8 +86,6 @@ huggingface.co and every article host, so these rest on search-engine excerpts t
 - The companion site: the book prints https://mukkandi-sridhar.github.io/JEVBook/ (from `_quarto.yml`), but no
   GitHub Pages deployment exists yet. Turn on Pages for the rendered `_book/` (or change the URL in
   `front/how-to-read.qmd` and `_quarto.yml`).
-- The lab QR codes and Colab links point at `labs/chNN.ipynb` on `main`. Merge this branch before printing, or the
-  codes open a 404.
 
 **Not done here**
 

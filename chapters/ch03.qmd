@@ -211,7 +211,7 @@ The weather forecasters showed us that honesty is checkable. Then two models wit
 
 When Part III tests Jev's own calibration, it'll use exactly these tools, pointed at the mock, with everything in this chapter as the yardstick.
 
-::: {.exercises lab="ch03"}
+::: {.exercises}
 1. Explain to a colleague, without jargon, the difference between a model that ranks well and a model that's calibrated. Use a weather example.
 2. In the lab, train the rebalanced model with a 30/70 mix instead of 50/50. Is it more or less miscalibrated? Predict the answer before you run it.
 3. Why must the calibration correction be fitted on a separate calibration set, not on the training set? What would go wrong?

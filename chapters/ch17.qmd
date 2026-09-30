@@ -117,7 +117,7 @@ Knuth was warning programmers against tuning code before measuring it [@knuth197
 
 We rebuilt Chapter 7's agent as a hybrid. Jev answered every decision and the LLM wrote only for people. Counting one step's answers exposed a bug that had never crashed: the agent never looked up threat intel. The fix was to stop deciding something that was cheaper to just do. Against an all-LLM twin, the hybrid was several times faster. It kept its review queue inside capacity and let fewer real threats go unseen. Most of its LLM time went on the one job that needed an LLM: writing words a person would read.
 
-::: {.exercises lab="ch17"}
+::: {.exercises}
 1. In the lab, count the answers of the "enough evidence?" step. Is its distribution healthy? What would you expect it to look like?
 2. Add a fourth evidence tool to the agent (say, "check the user's recent password resets"). Which of the rules in this chapter decide whether it should be a decision or an unconditional step?
 3. Retune the all-LLM agent's lines so its review queue fits in 240 a day. What happens to the threats it auto-closes?

@@ -203,7 +203,7 @@ A probability, we found, only means something as a track record, which is why "a
 
 Log loss *rewards* honesty. That isn't the same as *being* honest, and that's what we have to check next.
 
-::: {.exercises lab="ch02"}
+::: {.exercises}
 1. A spam filter catches 98% of spam and wrongly flags 1% of real email. If 20% of incoming email is spam, what fraction of flagged emails are real? Redo it for a mailbox where only 1% is spam. Use natural frequencies.
 2. In the lab, find the likelihood ratio of `known_tool` (the alert matches approved IT tooling). Is it above or below 1? What does that mean in plain words?
 3. In the lab, change the learning rate from 0.5 to 5, then to 0.01. What happens to the loss over 400 steps?

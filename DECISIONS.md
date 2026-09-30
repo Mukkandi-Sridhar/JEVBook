@@ -162,9 +162,9 @@ Newest decisions are appended at the bottom of each section.
   not at every use. Terms and patterns live in `tools/make_index.py`. The web edition keeps a chapter list.
 - **D-65 · Real spaces in the PDF.** LaTeX doesn't write space characters, so text copied or extracted from the PDF
   could lose word gaps on tight lines. `tagpdf`'s `interwordspace` (with `\DocumentMetadata`) writes real ones.
-- **D-66 · Lab QR codes.** The first draft's margin QR codes were removed for a cleaner page (D-59). The pre-print
-  review asked for them back, so each chapter's exercises now open with one small QR code to its Colab notebook
-  (`tools/make_qr.py`). The links point at the `main` branch.
+- **D-66 · No QR codes or Colab links.** The pre-print review briefly brought back one QR code per chapter, linking to
+  its Colab notebook. The author asked again for none, so the print book has no QR codes and the web edition no Colab
+  links. The labs are still in `labs/` and run anywhere Jupyter does.
 - **D-67 · Results always recorded.** Some figure sources wrote their numbers only from the (now skipped) summary
   figure. `tools/build_figures.py` now calls each source's `record()` before drawing, so `results/` stays current.
 - **D-68 · The queue stops at the end of the week.** `ops.serve` used to keep working the queue for a day after the

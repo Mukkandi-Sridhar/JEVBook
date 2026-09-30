@@ -174,7 +174,7 @@ Dijkstra's point [@dijkstra1970] [[VERIFY]] is doubly true for a model behind an
 
 The first call was ten lines, and the only thing that made it a mock was the transport. Errors split into two kinds: our own, which fail fast and should be fixed, and the world's, which the SDK retries. When the clock is tight, a failed call becomes a case for the policy to decide, not a retry setting. Asking four questions in one call sent the alert once instead of four times. And a recording made once with a key can drive every test afterwards, with no key at all.
 
-::: {.exercises lab="ch16"}
+::: {.exercises}
 1. In the lab, set `fail_rate=0.5`. How many retries do you need for 99% of calls to succeed? What would that do to your latency?
 2. Write a small function `decide_or_fallback(state)` that returns P(attack) from Jev, or a fallback value of your choosing if the call fails within 300 ms. What fallback did you choose, and why?
 3. Record a cassette for five alerts, change one question's wording, and replay. What happens? Why is that the behaviour you want?

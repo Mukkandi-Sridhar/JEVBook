@@ -140,7 +140,7 @@ Extraordinary claims require extraordinary evidence.
 
 I started without an API key, so we sorted what can be known into three piles. The interface was verifiable, and small: state and typed questions in, probabilities out. The speed and training method were the vendor's claims, and we could reason about them without accepting them. The prices let us do our own arithmetic, and the vendor's numbers turned out to agree with each other. What remained unknown was exactly what a decision layer depends on, which means the next job is testing.
 
-::: {.exercises lab="ch09"}
+::: {.exercises}
 1. Find a claim about Jev in a recent article and put it in one of the three piles. What would it take to move it to "verified"?
 2. In the lab, send a `score` question with five levels instead of three. Look at the raw response. What does `score` mean when it's 2.4?
 3. Redo the Doom check with a different assumption: suppose each decision read 500 tokens. What hourly cost would that imply? What would you conclude if the vendor had quoted that figure instead?

@@ -20,7 +20,7 @@ The *Try it* boxes contain code you can run; the *Set the threshold* boxes ask y
 
 ## Running the code
 
-Every listing in the book runs, and a test in the book's repository checks that it still does. The labs are Jupyter notebooks. Chapter 1's lab is `labs/ch01.ipynb`, Chapter 2's is `labs/ch02.ipynb`, and so on; each one opens in Google Colab and installs everything it needs.
+Every listing in the book runs, and a test in the book's repository checks that it still does. The labs are Jupyter notebooks. Chapter 1's lab is `labs/ch01.ipynb`, Chapter 2's is `labs/ch02.ipynb`, and so on; each one installs everything it needs the first time you run it.
 
 To run things on your own machine:
 

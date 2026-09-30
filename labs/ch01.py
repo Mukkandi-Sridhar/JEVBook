@@ -23,7 +23,7 @@
 
 
 # %%
-# Setup: installs the book's toolkit when running on Colab. Does nothing if it's already installed.
+# Setup: installs the book's toolkit in a fresh environment. Does nothing if it's already installed.
 import importlib.util, subprocess, sys
 if importlib.util.find_spec("jevkit") is None:
     subprocess.run([sys.executable, "-m", "pip", "install", "-q", "typesafe-sdk==0.7.2", "autograd",

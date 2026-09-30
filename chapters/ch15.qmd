@@ -193,7 +193,7 @@ We lined up six patterns, and all of them had the same spine. Something else wri
 
 That closes Part IV. We've compared the methods, drawn the lines and named the patterns. Part V builds them.
 
-::: {.exercises lab="ch15"}
+::: {.exercises}
 1. In the lab, change the router's line from 0.8 to 0.6 and to 0.9. Which would you choose if a misroute costs an hour and the general queue costs twenty minutes per alert?
 2. Design a guardrail gate for an email agent that can send messages to customers. What's the typed question? Which facts are trusted? Where do the lines go?
 3. Take an agent you've seen or built. List its steps and sort them into observe, decide, generate and act. How many decide steps could be typed questions?

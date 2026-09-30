@@ -151,7 +151,7 @@ Jevons noticed that better engines made coal-powered work cheaper, and cheaper w
 
 Part III has been about Jev on its own: what it is, what it answers, whether its probabilities can be trusted and what it might do to demand. Part IV puts it in context, against every other way of making the same decision.
 
-::: {.exercises lab="ch12"}
+::: {.exercises}
 1. Name something in your own life that got much cheaper, and say whether you use more of it, the same, or more *and* spend more in total. Which case in @fig-elasticity is it?
 2. In the lab, halve the value of every raw log event. How many fewer decisions does Jev make? Does the bill change much? Why not?
 3. Add a new job of your own design to the model. What value per decision and daily volume does it need before Kestrel's Jev bill doubles?

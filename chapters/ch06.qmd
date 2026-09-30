@@ -168,7 +168,7 @@ ChatGPT's typing turned out to be the real mechanism: tokens come out one at a t
 
 An LLM also only knows what it was trained on, not your company. Next: giving it your documents, and letting it act.
 
-::: {.exercises lab="ch06"}
+::: {.exercises}
 1. Explain in your own words why generation can't be parallelised the way reading can.
 2. Using the illustrative latency numbers, how long would 10,000 alerts take to label one at a time with a one-word answer? With a 300-token explanation?
 3. In the lab, change `extra="forbid"` to `extra="ignore"`. What gets through now? When might that be acceptable?

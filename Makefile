@@ -10,7 +10,6 @@ test:
 
 figures:
 	python3 tools/build_figures.py all
-	python3 tools/make_qr.py
 	python3 tools/make_index.py
 
 labs:

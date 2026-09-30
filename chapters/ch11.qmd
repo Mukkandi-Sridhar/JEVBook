@@ -168,7 +168,7 @@ Two claims collided, and we tested instead of taking sides. The same model was h
 
 Next, the bigger picture: what happens when decisions like these become almost free.
 
-::: {.exercises lab="ch11"}
+::: {.exercises}
 1. Explain to a manager, in three sentences, why a model can be calibrated at one company and not another, even with identical inputs.
 2. In the lab, generate a third company where attacks are *more* common than at Kestrel (use `logit_shift` of +1.0). Which way does the reliability curve bend? Does the odds adjustment fix it?
 3. You have 150 labelled alerts and measure ECE 0.05. A colleague says the model is badly calibrated. What would you say, and what would you do next?

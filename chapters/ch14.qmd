@@ -312,7 +312,7 @@ For a decision layer, I'd put it slightly differently: the purpose of a probabil
 
 We started with one probability and ended with a policy. Costs gave us two lines, and the lines sent every alert through one of three doors: act, review or escalate. Checking calibration against recent outcomes made those lines mean what they say. Capacity turned the cheapest policy on paper into the cheapest one the team can actually run, and put a price on two more analysts. With several answers per alert, stakes overrode confidence. Then the policy went into production with a log, an audit and a daily watch, and that watch caught the week the world changed.
 
-::: {.exercises lab="ch14"}
+::: {.exercises}
 1. In the lab, rerun the capacity search for 4, 8 and 10 analysts. Plot threats auto-closed per day against team size. Where does the curve flatten out, and what does that suggest about where extra money is best spent?
 2. Change the false-page cost from \$400 to \$2,000. Recompute both cost-optimal thresholds by hand, then check your answer with `cost_optimal_thresholds`. Which line moved, and why only that one?
 3. The decision log in this chapter records a hash of the alert text rather than the text itself. Give one reason that's a good idea and one situation where you'd regret it.

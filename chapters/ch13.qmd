@@ -148,7 +148,7 @@ Wolpert and Macready proved that about search and optimisation [@wolpert1997] [[
 
 Six methods sat the same exam. The trained logistic regression won on ranking and calibration, because it had fifteen thousand labels on clean fields. It needed about three thousand of them just to draw level with a method that needed none. The rules won on explanation and price. The LLM's stated confidences turned out to be round numbers, and its free-text JSON broke often enough to matter. Jev's row was the strongest wherever labels were scarce or the input was raw text. None of that tells you what real models will do on your data. It tells you exactly which columns to measure when you try.
 
-::: {.exercises lab="ch13"}
+::: {.exercises}
 1. In the lab, write a better hand-written rule. How close to the logistic regression can you get? What did you have to add?
 2. Fit Platt scaling to the LLM-as-judge ratings using 300 history alerts. What happens to its ECE? To its AUC? Why does one change and not the other?
 3. Rerun the labels curve with the text classifier using bigrams only. Does it help? Why might a fine-tuned transformer do better?
