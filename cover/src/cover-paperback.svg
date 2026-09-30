@@ -1,25 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="14.8321in" height="10.25in" viewBox="0 0 1067.911 738.000">
-<rect x="0.00" y="0.00" width="1067.91" height="738.00" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<svg xmlns="http://www.w3.org/2000/svg" width="14.8508in" height="10.25in" viewBox="0 0 1069.258 738.000">
+<rect x="0.00" y="0.00" width="1069.26" height="738.00" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
 <g id="back" transform="translate(9.00,9.00)"><svg width="504.00" height="720.00" overflow="visible"><rect x="0.00" y="0.00" width="504.00" height="720.00" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
 <text x="40.32" y="81.92" font-family="'Inter'" font-size="25.00" font-weight="800" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="-0.25" >Most of what an AI agent does</text>
 <text x="40.32" y="112.42" font-family="'Inter'" font-size="25.00" font-weight="800" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="-0.25" >isn’t writing. </text>
 <text x="197.72" y="112.42" font-family="'Inter'" font-size="25.00" font-weight="800" font-style="normal" fill="#4FBA85" text-anchor="start" letter-spacing="-0.25" >It’s deciding.</text>
-<text x="40.32" y="151.17" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >Is this alert real? Which team gets this ticket? Is this action safe? Most agents hand</text>
-<text x="40.32" y="166.17" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >every one of those small decisions to a large language model, then dig the answer</text>
-<text x="40.32" y="181.17" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >out of a paragraph. It works, slowly and expensively, and the model sounds just as</text>
-<text x="40.32" y="196.17" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >sure when it’s wrong.</text>
-<text x="40.32" y="217.92" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >This book shows you a better way to build the decision layer. You’ll get</text>
-<text x="40.32" y="232.92" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >probabilities you can trust, lines drawn from what each mistake costs, and a clear</text>
-<text x="40.32" y="247.92" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >rule for when to hand a case to a person. Every step is built with runnable code,</text>
-<text x="40.32" y="262.92" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >around a realistic (synthetic) security team. You’ll work with Jev, a new System</text>
-<text x="40.32" y="277.92" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >One model, through a free mock that needs no API key.</text>
+<text x="40.32" y="151.17" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >Is this alert real? Which team gets this ticket? Is this action safe? Most agents give</text>
+<text x="40.32" y="166.17" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >every one of those small decisions to a large language model. Then code has to</text>
+<text x="40.32" y="181.17" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >find the answer inside a paragraph. It works, but it’s slow and expensive, and the</text>
+<text x="40.32" y="196.17" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >model sounds just as sure when it’s wrong.</text>
+<text x="40.32" y="217.92" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >This book shows you a better way to build the decision layer. You’ll get calibrated</text>
+<text x="40.32" y="232.92" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >probabilities that mean what they say, thresholds set by what each mistake costs,</text>
+<text x="40.32" y="247.92" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >and a clear rule for when to give a case to a person. Every step is built with</text>
+<text x="40.32" y="262.92" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >runnable code, around a realistic (synthetic) security team. You’ll work with Jev, a</text>
+<text x="40.32" y="277.92" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >new System One model, through a free mock that needs no API key.</text>
 <text x="40.32" y="310.67" font-family="'Inter'" font-size="10.50" font-weight="700" font-style="normal" fill="#4FBA85" text-anchor="start" letter-spacing="0.00" >Inside, you’ll learn to:</text>
 <circle cx="43.32" cy="328.61" r="1.90" fill="#4FBA85" stroke="none" stroke-width="0.00"/>
 <text x="52.32" y="331.68" font-family="'Inter'" font-size="9.30" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >Check whether a model’s probabilities mean what they</text>
 <text x="52.32" y="344.28" font-family="'Inter'" font-size="9.30" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >say, and fix them when they don’t</text>
 <circle cx="43.32" cy="358.22" r="1.90" fill="#4FBA85" stroke="none" stroke-width="0.00"/>
 <text x="52.32" y="361.29" font-family="'Inter'" font-size="9.30" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >Turn a probability into act, review or escalate, with</text>
-<text x="52.32" y="373.89" font-family="'Inter'" font-size="9.30" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >lines drawn from real costs and real capacity</text>
+<text x="52.32" y="373.89" font-family="'Inter'" font-size="9.30" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >thresholds set by real costs and real capacity</text>
 <circle cx="43.32" cy="387.83" r="1.90" fill="#4FBA85" stroke="none" stroke-width="0.00"/>
 <text x="52.32" y="390.90" font-family="'Inter'" font-size="9.30" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >Compare six ways to make the same decision, from</text>
 <text x="52.32" y="403.50" font-family="'Inter'" font-size="9.30" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >hand-written rules to LLMs to Jev</text>
@@ -341,18 +341,18 @@
 <text x="106.21" y="619.43" font-family="'Inter'" font-size="7.60" font-weight="600" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="0.00" >Labs, figures and code</text>
 <text x="106.21" y="630.43" font-family="'Inter'" font-size="7.20" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >Scan for the companion repository</text>
 <text x="106.21" y="654.07" font-family="'Inter'" font-size="7.60" font-weight="600" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >Artificial Intelligence / Machine Learning</text></svg></g>
-<g transform="translate(513.00,9.00)"><rect x="0.00" y="0.00" width="41.91" height="720.00" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
-<g transform="translate(27.50,32.40) rotate(90)">
+<g transform="translate(513.00,9.00)"><rect x="0.00" y="0.00" width="43.26" height="720.00" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<g transform="translate(28.17,32.40) rotate(90)">
 <text x="0.00" y="0.00" font-family="'Inter'" font-size="18.00" font-weight="800" font-style="normal" fill="#4FBA85" text-anchor="start" letter-spacing="0.00" >Decide,</text>
 <text x="71.43" y="0.00" font-family="'Inter'" font-size="18.00" font-weight="800" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="0.00" >Don’t Generate</text>
 </g>
-<g transform="translate(25.66,537.96) rotate(90)">
+<g transform="translate(26.34,537.96) rotate(90)">
 <text x="0.00" y="0.00" font-family="'Inter'" font-size="12.96" font-weight="600" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >Sridhar Mukkandi</text>
 </g>
-<rect x="18.02" y="663.12" width="5.87" height="12.51" rx="2.93" fill="#B7A6E0" stroke="none" stroke-width="0.00" />
-<rect x="18.02" y="676.83" width="5.87" height="6.14" rx="2.93" fill="#8468C9" stroke="none" stroke-width="0.00" />
-<rect x="18.02" y="684.17" width="5.87" height="2.23" rx="2.93" fill="#4B2C8F" stroke="none" stroke-width="0.00" /></g>
-<g id="front" transform="translate(554.91,9.00)"><svg width="504.00" height="720.00" overflow="visible"><rect x="0.00" y="0.00" width="504.00" height="720.00" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="18.60" y="663.12" width="6.06" height="12.51" rx="3.03" fill="#B7A6E0" stroke="none" stroke-width="0.00" />
+<rect x="18.60" y="676.83" width="6.06" height="6.14" rx="3.03" fill="#8468C9" stroke="none" stroke-width="0.00" />
+<rect x="18.60" y="684.17" width="6.06" height="2.23" rx="3.03" fill="#4B2C8F" stroke="none" stroke-width="0.00" /></g>
+<g id="front" transform="translate(556.26,9.00)"><svg width="504.00" height="720.00" overflow="visible"><rect x="0.00" y="0.00" width="504.00" height="720.00" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
 <text x="34.60" y="219.58" font-family="'Inter'" font-size="117.75" font-weight="800" font-style="normal" fill="#4FBA85" text-anchor="start" letter-spacing="-3.53" >Decide,</text>
 <text x="37.19" y="302.94" font-family="'Inter'" font-size="70.65" font-weight="800" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="-1.77" >Don’t</text>
 <rect x="32.95" y="324.14" width="145.52" height="70.65" rx="7.07" fill="none" stroke="#AE6A30" stroke-width="1.55" />

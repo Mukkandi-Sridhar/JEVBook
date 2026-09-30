@@ -19,8 +19,9 @@ from coverlib import AUTHOR, SUBTITLE, TITLE, figure_count  # noqa: E402
 from wrap import case_study  # noqa: E402
 
 PATTERNS = [r"\[\[", r"TODO", r"VERIFY", r"[Pp]laceholder"]
-# Python's textwrap.shorten(..., placeholder=" …") appears in three code listings; it's an argument name, not a gap
-ALLOWED = [r"placeholder\s*=\s*['\"]"]
+# Code, not gaps: Python's textwrap.shorten(..., placeholder=" …") in three listings, and pandas column selection
+# such as alerts[["p", "zone"]] in the Python appendix
+ALLOWED = [r"placeholder\s*=\s*['\"]", r"\[\[\s*[\"']"]
 
 
 def run(*cmd):

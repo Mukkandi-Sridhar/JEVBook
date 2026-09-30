@@ -80,7 +80,9 @@ for a, b in [("invoice", "bill"), ("invoice", "trojan"),
 ```
 :::
 
-The same trick works for whole alerts. Similar alerts land near each other, so an analyst can ask "show me past alerts like this one". It's also the engine inside RAG (Chapter 7). But it has a weakness worth remembering. Here's a test: for each alert, find Kestrel's 50 most similar past alerts by their text, and count how many were attacks. That gives a calibrated probability, with a calibration error of {{< num ch07 knn.ece f3 >}}. But it ranks alerts poorly: its AUC is {{< num ch07 knn.auc f2 >}}, against {{< num ch07 lr.auc f2 >}} for logistic regression on the fields. To an embedding, two "large upload" alerts look the same whether the threat-intel score is 0.05 or 0.95.
+The same trick works for whole alerts. Similar alerts land near each other, so an analyst can ask "show me past alerts like this one". It's also the engine inside RAG (Chapter 7).
+
+But it has a weakness worth remembering. Here's a test: for each alert, find Kestrel's 50 most similar past alerts by their text, and count how many were attacks. That gives a calibrated probability, with a calibration error of {{< num ch07 knn.ece f3 >}}. But it ranks alerts poorly: its AUC is {{< num ch07 knn.auc f2 >}}, against {{< num ch07 lr.auc f2 >}} for logistic regression on the fields. To an embedding, two "large upload" alerts look the same whether the threat-intel score is 0.05 or 0.95.
 
 ::: {.keyidea}
 Embeddings capture what things are about. They're poor at the exact numbers inside them.

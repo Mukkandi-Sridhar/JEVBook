@@ -2907,3 +2907,13 @@ Triage
 - `back/glossary.qmd`
   - Before: : In a Jev `choice` or `score` answer, a number from 0 to 1 computed from the shape of the probabilities: high when they're concentrated on one option, low when they're spread out. It isn't simply the top probability (TypeSafe's quick-start shows 0.78 beside 0.85). The book's mock uses the top probability as a stand-in (Chapter 9).
   - After: : In a Jev `choice` or `score` answer, a number from 0 to 1 computed from the shape of the probabilities. It's high when most of the probability is on one option, and low when it's spread out. It isn't simply the top probability (TypeSafe's quick-start shows 0.78 beside 0.85). The book's mock uses the top probability as a stand-in (Chapter 9).
+
+## Chapter 5 (paragraph split)
+
+1 changes.
+
+- `chapters/ch05.qmd`
+  - Before: It's also the engine inside RAG (Chapter 7). But it has a weakness worth remembering. Here's a test:
+  - After: It's also the engine inside RAG (Chapter 7).
+
+But it has a weakness worth remembering. Here's a test:

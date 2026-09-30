@@ -9,23 +9,23 @@
   },
   "contrast_card_caption": 5.0,
   "spelling": {
-    "words": 206,
+    "words": 210,
     "unknown": []
   },
   "paperback_pdf_in": [
-    14.8321,
+    14.8508,
     10.25
   ],
   "paperback_expected_in": [
-    14.8321,
+    14.8508,
     10.25
   ],
   "hardcover_pdf_in": [
-    16.3458,
+    16.3646,
     11.4173
   ],
   "hardcover_expected_in": [
-    16.3458,
+    16.3646,
     11.4173
   ],
   "layout": {
@@ -34,7 +34,7 @@
       "problems": []
     },
     "hardcover": {
-      "items_checked": 57,
+      "items_checked": 58,
       "problems": []
     }
   },

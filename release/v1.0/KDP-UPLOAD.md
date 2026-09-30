@@ -19,23 +19,24 @@ label differs, choose the closest match. Prices, dates and your account details 
 | Primary audience | Not sexually explicit; reading age: leave blank or 18+ |
 | Low-content book / Large print | No / No |
 
-**Description** (about 150 words, in the back-cover voice):
+**Description** (about 170 words, in the back-cover voice):
 
 > Most of what an AI agent does isn't writing. It's deciding.
 >
-> Is this alert real? Is this action safe? Most agents hand every one of those small
-> decisions to a large language model, then dig the answer out of a paragraph. It works, slowly and expensively,
-> and the model sounds just as sure when it's wrong.
+> Is this alert real? Is this action safe? Most agents give every one of those small decisions to a large
+> language model. Then code has to find the answer inside a paragraph. It works, but it's slow and expensive, and
+> the model sounds just as sure when it's wrong.
 >
 > This book shows you a better way to build the decision layer. You'll learn to check whether a model's
-> probabilities mean what they say, turn them into act, review or escalate with lines drawn from real costs, compare
-> six ways to make the same decision, and build a hybrid agent in which a decision model decides and the LLM
-> writes. Every step is runnable code, built around a realistic (synthetic) security team, using Jev, a new
-> System One model, through a free mock that needs no API key.
+> probabilities are calibrated, which means they say what really happens. You'll set thresholds from what each
+> mistake costs, so each case is handled automatically, reviewed or escalated. You'll compare six ways to make the
+> same decision, and build a hybrid agent in which a decision model decides and the LLM writes. Every step is
+> runnable code, built around a realistic (synthetic) security team. You'll work with Jev, a new System One model,
+> through a free mock that needs no API key.
 >
 > For students, engineers building agents, and tech leads deciding what to build.
 
-(156 words. It repeats the back cover's hook and blurb; the book's numbers stay off the listing.)
+(172 words. It repeats the back cover's hook and blurb; the book's numbers stay off the listing.)
 
 **Keywords** (seven boxes, each under 50 characters):
 
@@ -93,8 +94,8 @@ copyright page; that is your call and isn't in this build.
 | Barcode | Leave KDP's option to add the barcode on (the empty area is bottom right of the back cover) |
 | AI-generated content | as section 2 |
 
-KDP's previewer should report 248 pages and a spine of about 0.582 in. If it reports a different page count, stop:
-the cover's spine was built for 248.
+KDP's previewer should report 256 pages and a spine of about 0.601 in. If it reports a different page count, stop:
+the cover's spine was built for 256.
 
 ## 4. Hardcover content
 
@@ -108,7 +109,7 @@ the cover's spine was built for 248.
 | Cover finish | **Matte** (case laminate) |
 | Book cover | `print/cover-hardcover.pdf` |
 
-KDP should report 248 pages and a spine of about 0.771 in.
+KDP should report 256 pages and a spine of about 0.790 in.
 
 ## 5. Kindle ebook
 

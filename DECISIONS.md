@@ -243,3 +243,15 @@ Newest decisions are appended at the bottom of each section.
   export at 300 ppi; the EPUB uses 300 dpi PNG figures with captions as alt text, and its CSS wraps code, URLs and
   wide maths. No bleed: nothing prints to the page edge. KDP's calculator and help pages stayed blocked, so margins
   and cover sizes follow KDP's published rules (D-75) and the author should check KDP's templates.
+- **D-86 · v1.0.1 polish pass.** Justification: a fixed word-space range on the body font, microtype expansion off,
+  `\tolerance=800` and `\emergencystretch=3em`, so justified lines stay even without stretching letters. The missing
+  spaces reported ("question.You", "outloud", "metin") are not in the sources or the PDF text layer; they come from
+  viewers joining lines on copy, so no source change. Index: main terms (the `TAUGHT` list in `tools/make_index.py`)
+  get page ranges only in the chapters that teach them, built from the first to the last paragraph that mentions the
+  term there; other uses are left out. New appendix "The Python you'll see" before the glossary. Plain-language pass
+  for a first-year, ESL reader (rules at the top of `SIMPLIFY.md`, every change logged there): "calibrated" is the
+  one term for honest probabilities and "threshold" the one term for a cut-off on the probability scale ("Cost line"
+  in the glossary and index became "Cost-based threshold"); idioms replaced with plain words; long sentences split.
+  Numbers, code, figures, citations, quotations and structure unchanged. The one-new-term-per-paragraph rule was
+  applied by reading, not by a script. The book grew from 248 to 256 pages; spines 0.6008 in (paperback) and
+  0.7898 in (hardcover).
