@@ -220,3 +220,6 @@ Newest decisions are appended at the bottom of each section.
   bullet 3 reworded. The stat card still reads `results/ch25.json`, the file behind Chapter 18's table, which prints
   54% → 89%; `cover/check.py` now fails if the card and the book disagree, and measures every back-cover item
   against the safe area, the barcode area and its neighbours.
+- **D-81 · Author block without a photo.** At the author's request the back cover has no photo, and the bio is one
+  line built only from what the author gave: "Sridhar Mukkandi is an applied AI engineer who builds agents and the
+  decision systems behind them." (`AUTHOR_BIO` in `cover/wrap.py`).

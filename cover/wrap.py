@@ -22,6 +22,7 @@ from concepts import SUB_LINES, zone_bar  # noqa: E402
 REPO_URL = "https://github.com/Mukkandi-Sridhar/JEVBook"
 REPO_LABEL = "github.com/Mukkandi-Sridhar/JEVBook"
 EMAIL = "sridhar.authorhub@gmail.com"
+AUTHOR_BIO = f"{AUTHOR} is an applied AI engineer who builds agents and the decision systems behind them."
 BG = C["night"]
 # KDP paper: standard colour suits a text-heavy book with colour charts; hardcovers are only offered in premium colour
 PAPERBACK_PAPER = "standard_color"
@@ -226,19 +227,12 @@ def back(W, H, wr: Wrap):
     out.append(text(m, y, FOR_LINE, 9.3, C["sub_on_dark"], weight=500))
     y += 16
     out.append(line(m, y, m + tw, y, mix(C["faint_on_dark"], BG, 0.55), 0.6))
-    # about the author
+    # about the author: text only, no photo
     y += 14
-    photo = 46
-    out.append(rect(m, y, photo, photo, "none", rx=3, stroke=mix(C["faint_on_dark"], BG, 0.3), sw=0.8,
-                    extra='stroke-dasharray="2 2"'))
-    out.append(text(m + photo / 2, y + photo / 2 - 1, "[[AUTHOR", 5.4, C["faint_on_dark"], family="JetBrains Mono",
-                    anchor="middle"))
-    out.append(text(m + photo / 2, y + photo / 2 + 6, "PHOTO]]", 5.4, C["faint_on_dark"], family="JetBrains Mono",
-                    anchor="middle"))
-    ax = m + photo + 12
-    out.append(text(ax, y + 9, "About the author", 9.0, C["text_on_dark"], weight=700))
-    out.append(text(ax, y + 22, f"{AUTHOR} [[AUTHOR BIO]]", 8.6, BODY))
-    out.append(text(ax, y + 36, EMAIL, 8.0, C["sub_on_dark"], family="JetBrains Mono"))
+    out.append(text(m, y + 9, "About the author", 9.0, C["text_on_dark"], weight=700))
+    for k, ln in enumerate(wrap_lines(AUTHOR_BIO, tw, 8.8, "Inter", 400)):
+        out.append(text(m, y + 23 + k * 12, ln, 8.8, BODY))
+    out.append(text(m, y + 37 + k * 12, EMAIL, 8.0, C["sub_on_dark"], family="JetBrains Mono"))
     # bottom row, all inside the safe area: the QR with its URL beneath, and a text column; the barcode area on the
     # right stays empty, with the independence line just above it
     safe = 0.25 * PT

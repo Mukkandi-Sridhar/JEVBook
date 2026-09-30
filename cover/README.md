@@ -51,10 +51,8 @@ KDP's calculator couldn't be reached from this build (see DECISIONS.md, D-75).
 
 ## Placeholders to fill
 
-All are on the back cover, in `wrap.py`:
+The back cover has no photo, and the bio is one line, `AUTHOR_BIO` in `wrap.py`. The only thing left:
 
-- `[[AUTHOR BIO]]`: two or three lines after your name.
-- `[[AUTHOR PHOTO]]`: a square photo in the dashed box beside "About the author".
 - The ISBN barcode: KDP prints it in the bottom-right 2 × 1.2 in area, which is kept empty (it's marked only on the
   guides layer). If you supply your own barcode, place it there.
 

@@ -44,12 +44,9 @@
 <text x="319.74" y="417.17" font-family="'Inter'" font-size="6.80" font-weight="400" font-style="italic" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >case study (Chapter 18)</text>
 <text x="40.32" y="482.72" font-family="'Inter'" font-size="9.30" font-weight="500" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >For students, engineers building agents, and tech leads deciding what to build.</text>
 <line x1="40.32" y1="498.72" x2="463.68" y2="498.72" stroke="#494F5B" stroke-width="0.60"/>
-<rect x="40.32" y="512.72" width="46.00" height="46.00" rx="3.00" fill="none" stroke="#676D78" stroke-width="0.80" stroke-dasharray="2 2"/>
-<text x="63.32" y="534.72" font-family="'JetBrains Mono'" font-size="5.40" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="middle" letter-spacing="0.00" >[[AUTHOR</text>
-<text x="63.32" y="541.72" font-family="'JetBrains Mono'" font-size="5.40" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="middle" letter-spacing="0.00" >PHOTO]]</text>
-<text x="98.32" y="521.72" font-family="'Inter'" font-size="9.00" font-weight="700" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="0.00" >About the author</text>
-<text x="98.32" y="534.72" font-family="'Inter'" font-size="8.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >Sridhar Mukkandi [[AUTHOR BIO]]</text>
-<text x="98.32" y="548.72" font-family="'JetBrains Mono'" font-size="8.00" font-weight="400" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >sridhar.authorhub@gmail.com</text>
+<text x="40.32" y="521.72" font-family="'Inter'" font-size="9.00" font-weight="700" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="0.00" >About the author</text>
+<text x="40.32" y="535.72" font-family="'Inter'" font-size="8.80" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >Sridhar Mukkandi is an applied AI engineer who builds agents and the decision systems behind them.</text>
+<text x="40.32" y="549.72" font-family="'JetBrains Mono'" font-size="8.00" font-weight="400" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >sridhar.authorhub@gmail.com</text>
 <rect x="40.32" y="637.95" width="50.05" height="50.05" rx="1.35" fill="#F3F4F6" stroke="none" stroke-width="0.00" class="qrplate"/>
 <rect x="43.03" y="640.65" width="9.52" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
 <rect x="53.85" y="640.65" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
