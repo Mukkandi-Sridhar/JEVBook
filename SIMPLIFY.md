@@ -1978,3 +1978,143 @@ Every change is logged below as a before/after pair, applied by `tools/simplify_
 - `chapters/ch14.qmd`
   - Before: Next: you now know how to turn one decision into an action. Chapter 15 shows the recurring shapes that decision layers take inside real systems, from "LLM extracts, Jev decides" to guardrails, judges and routers.
   - After: Next: you now know how to turn one decision into an action. Chapter 15 shows the common designs that decision layers use inside real systems, from "LLM extracts, Jev decides" to guardrails, judges and routers.
+
+## Chapter 15: A catalogue of decision patterns
+
+45 changes.
+
+- `chapters/ch15.qmd`
+  - Before: When you learn to cook, you start with recipes. After a while you notice that most recipes are the same few moves in different clothes: brown something, add liquid, reduce. Once you can see the moves, you stop needing the recipe.
+  - After: When you learn to cook, you start with recipes. After a while, you notice that most recipes use the same few steps with different ingredients: fry something until brown, add liquid, cook until it thickens. Once you can see the steps, you stop needing the recipe.
+- `chapters/ch15.qmd`
+  - Before: Software has moves like that too, and people call them **patterns**. A pattern is a shape of solution that keeps turning up, with a name, so that a team can say "put a gate in front of that" and everyone knows what they mean.
+  - After: Software has steps like that too, and people call them **patterns**. A pattern is a common kind of solution with a name. Then a team can say "put a gate in front of that" and everyone knows what they mean.
+- `chapters/ch15.qmd`
+  - Before: We've already met most of the decision patterns in this book, one at a time, inside Kestrel's story. This chapter lines them up. There are six. For each one: what it's for, what it looks like, what we measured where we could, and how it goes wrong.
+  - After: We've already met most of the decision patterns in this book, one at a time, inside Kestrel's story. This chapter puts them side by side. There are six. For each one, we look at what it's for, what it looks like, what we measured where we could, and how it goes wrong.
+- `chapters/ch15.qmd`
+  - Before: - Recognise six recurring ways to put a decision model inside a larger system.
+  - After: - Recognise six common ways to put a decision model inside a larger system.
+- `chapters/ch15.qmd`
+  - Before: Look at @fig-catalog before reading on and notice the common thread. In every pattern, the decision model never writes anything and never acts on its own. It answers a typed question, and ordinary code turns the answer into an action. That separation is what a decision layer is.
+  - After: Look at @fig-catalog before reading on, and notice what the patterns share. In every pattern, the decision model never writes anything and never acts on its own. It answers a typed question, and ordinary code turns the answer into an action. That separation is what a decision layer is.
+- `chapters/ch15.qmd`
+  - Before: **The problem.** Your input is messy: an email, a chat message, a PDF, an alert written for humans. The decision you need is small and sharp. LLMs read messy input brilliantly. Chapter 13 showed they're weaker at the decision itself.
+  - After: **The problem.** Your input is messy: an email, a chat message, a PDF, an alert written for people. The decision you need is small and clear. LLMs read messy input very well. Chapter 13 showed they're weaker at the decision itself.
+- `chapters/ch15.qmd`
+  - Before: **The pattern.** Let the LLM turn the mess into fields. Let the decision model decide on the fields.
+  - After: **The pattern.** Let the LLM turn the messy input into fields. Let the decision model decide based on the fields.
+- `chapters/ch15.qmd`
+  - Before: ![Extract, then decide. The LLM reads the raw text and writes structured fields; a decision model answers a typed question about them; policy lines turn the answer into an action.
+  - After: ![Extract, then decide. The LLM reads the raw text and writes structured fields; a decision model answers a typed question about them; policy thresholds turn the answer into an action.
+- `chapters/ch15.qmd`
+  - Before: We ran this on Kestrel's live week, alongside three other ways of making the same decision.
+  - After: We ran this on Kestrel's live week, next to three other ways of making the same decision.
+- `chapters/ch15.qmd`
+  - Before: Extracting fields first beats letting the LLM decide, and edges out Jev reading the raw text.
+  - After: Extracting fields first beats letting the LLM decide, and is slightly better than Jev reading the raw text.
+- `chapters/ch15.qmd`
+  - Before: Extracting first lifted the AUC from {{< num ch22 llm_decides_auc f3 >}}, when the LLM decided on its own, to {{< num ch22 extract_then_jev_auc f3 >}} (@fig-extract-results). It also edged out Jev reading the raw text directly, at {{< num ch22 jev_text_auc f3 >}}. The LLM's misreads, about {{< num ch22 misread pct >}} of alerts with a wrong number, were a small cost.
+  - After: Extracting first raised the AUC from {{< num ch22 llm_decides_auc f3 >}}, when the LLM decided on its own, to {{< num ch22 extract_then_jev_auc f3 >}} (@fig-extract-results). It was also slightly better than Jev reading the raw text directly, at {{< num ch22 jev_text_auc f3 >}}. The LLM misread about {{< num ch22 misread pct >}} of alerts, writing a wrong number, but that cost little.
+- `chapters/ch15.qmd`
+  - Before: But look at the bottom row. The SIEM's own fields scored {{< num ch22 jev_fields_auc f3 >}}, better than any extraction. The extractor isn't to blame. The alert text simply never mentions some of what the SIEM knows, like how critical the machine is or the user's role, and no extractor can recover a fact that isn't written down.
+  - After: But look at the bottom row. The SIEM's own fields scored {{< num ch22 jev_fields_auc f3 >}}, better than any extraction. The extractor isn't to blame. The alert text simply never mentions some of what the SIEM knows, like how critical the machine is or the user's job. No extractor can find a fact that isn't written down.
+- `chapters/ch15.qmd`
+  - Before: **How it breaks.** The extracted fields are LLM output, so everything Chapter 7 said applies: a planted sentence in the text can become a planted value in a field. Validate fields against types and ranges, and prefer trusted sources for anything that matters. One more thing: one extraction can feed many typed questions, so the LLM's cost is paid once per case, not once per decision.
+  - After: **How it breaks.** The extracted fields are LLM output, so everything Chapter 7 said applies: a planted sentence in the text can become a planted value in a field. Check fields against types and allowed ranges, and use trusted sources for anything that matters. One more thing: one extraction can feed many typed questions. So you pay for the LLM once per case, not once per decision.
+- `chapters/ch15.qmd`
+  - Before: **The problem.** An agent runs a loop: observe, decide, act, repeat. Chapter 7 counted Kestrel's agent making about {{< num ch22 decide_per_alert f1 >}} small decisions per alert, and writing something only about {{< num ch22 generate_per_alert f2 >}} times. Yet most agent frameworks send every one of those decisions to the LLM, as text.
+  - After: **The problem.** An agent runs a loop: observe, decide, act, repeat. Chapter 7 counted Kestrel's agent making about {{< num ch22 decide_per_alert f1 >}} small decisions per alert, and writing something only about {{< num ch22 generate_per_alert f2 >}} times. Yet most agent frameworks (the libraries people use to build agents) send every one of those decisions to the LLM, as text.
+- `chapters/ch15.qmd`
+  - Before: Because each decision comes back with probabilities, the loop can do something an LLM-driven loop can't do cleanly: notice when it's unsure. If no option is clearly ahead, stop and escalate, rather than picking one and carrying on confidently. Chapter 7's compounding arithmetic is the reason that matters: a small error rate per step becomes a large one over ten steps.
+  - After: Each decision comes back with probabilities. So the loop can do something an LLM-driven loop can't easily do: notice when it's unsure. If no option is clearly ahead, stop and escalate, instead of picking one and continuing confidently. Chapter 7's arithmetic shows why that matters: a small error rate per step becomes a large one over ten steps.
+- `chapters/ch15.qmd`
+  - Before: **How it breaks.** Some steps aren't small decisions. Planning a novel investigation is real reasoning, and belongs with the LLM or a person. The skill is sorting the steps truthfully, the way Chapter 8 sorted System 1 work from System 2.
+  - After: **How it breaks.** Some steps aren't small decisions. Planning the investigation of a new kind of attack is real reasoning, and belongs with the LLM or a person. The skill is sorting the steps honestly, the way Chapter 8 separated System 1 work from System 2.
+- `chapters/ch15.qmd`
+  - Before: **The problem.** Agents take actions: closing alerts, disabling accounts, sending emails. Chapter 7 showed how one planted sentence in an alert's text could talk the model into closing real threats. Auto-close among real threats went from {{< num ch22 inj_before pct >}} to {{< num ch22 inj_after pct >}}.
+  - After: **The problem.** Agents take actions: closing alerts, disabling accounts, sending emails. Chapter 7 showed how one planted sentence in an alert's text could make the model close real threats. The share of real threats that were auto-closed went from {{< num ch22 inj_before pct >}} to {{< num ch22 inj_after pct >}}.
+- `chapters/ch15.qmd`
+  - Before: **The pattern.** Before any risky action runs, ask a typed question about it, using only trusted facts, and gate on the answer.
+  - After: **The pattern.** Before any risky action runs, ask a typed question about it, using only trusted facts. Let the answer decide whether the action may go ahead.
+- `chapters/ch15.qmd`
+  - Before: In Chapter 7, reading only the trusted fields held auto-close at {{< num ch22 inj_trusted pct >}} under the same attack. The gate didn't need to be clever. It needed to look at the right things.
+  - After: In Chapter 7, reading only the trusted fields kept auto-close at {{< num ch22 inj_trusted pct >}} under the same attack. The gate didn't need to be clever. It needed to look at the right things.
+- `chapters/ch15.qmd`
+  - Before: The three outcomes are the three zones of Chapter 14, pointed at actions instead of alerts. The lines come from the same arithmetic: what a wrongly allowed action costs, against what it costs to ask a person.
+  - After: The three outcomes are the three zones of Chapter 14, used for actions instead of alerts. The thresholds come from the same arithmetic: what a wrongly allowed action costs, against what it costs to ask a person.
+- `chapters/ch15.qmd`
+  - Before: **How it breaks.** A gate is only as good as its idea of "trusted". If the attacker can write to a field you trust, the gate trusts the attacker. And a gate that asks a person too often gets clicked through; watch its ask rate the way Chapter 14 watched the review queue.
+  - After: **How it breaks.** A gate is only as good as its idea of "trusted". If the attacker can write to a field you trust, the gate trusts the attacker. And people start approving everything from a gate that asks them too often without reading. Watch how often it asks, the way Chapter 14 watched the review queue.
+- `chapters/ch15.qmd`
+  - Before: **The problem.** Some outputs have to be written: an incident note, a customer reply, a summary for the board. LLMs write them well. They also sometimes state things the evidence doesn't support.
+  - After: **The problem.** Some outputs have to be written: an incident note, a customer reply, a summary for the company's leaders. LLMs write them well. They also sometimes state things the evidence doesn't support.
+- `chapters/ch15.qmd`
+  - Before: **The pattern.** After the LLM writes, ask typed questions *about* the draft. Is every claim supported by the evidence? Does it name the affected host? Is the tone appropriate for a customer? Ship it, send it back once with the gaps named, or hand it to a person.
+  - After: **The pattern.** After the LLM writes, ask typed questions *about* the draft. Is every claim supported by the evidence? Does it name the affected host? Is the tone right for a customer? Then send it, return it once with the problems listed, or give it to a person.
+- `chapters/ch15.qmd`
+  - Before: the answer decides whether the draft ships, goes back once for a redraft, or goes to a person.]
+  - After: the answer decides whether the draft is sent, goes back once to be rewritten, or goes to a person.]
+- `chapters/ch15.qmd`
+  - Before: The listing stops short of printing the answer on purpose. The book's mock can't really check claims against evidence, so any number it gave here would be noise dressed up as a result. The shape is what matters, and it's the same shape as the LLM-as-judge from Chapter 13, with two differences. The answer is a probability you can calibrate and put lines on, not a 1-to-10 rating. And the check is cheap enough to run on every draft, not a sample.
+  - After: The listing doesn't print the answer, on purpose. The book's mock can't really check claims against evidence, so any number it gave here would be meaningless, even though it would look like a result. The design is what matters. It's the same design as the LLM-as-judge from Chapter 13, with two differences. The answer is a probability you can calibrate and put thresholds on, not a 1-to-10 rating. And the check is cheap enough to run on every draft, not just a sample.
+- `chapters/ch15.qmd`
+  - Before: **How it breaks.** A checker that shares the writer's blind spots will wave its mistakes through. Test the checker on drafts you know are wrong. And cap the redrafts: a loop of "write, reject, rewrite" can run forever, so after one retry a person takes over.
+  - After: **How it breaks.** A checker with the same weaknesses as the writer will let its mistakes through. Test the checker on drafts you know are wrong. And limit the rewrites: a loop of "write, reject, rewrite" can run forever. After one retry, a person takes over.
+- `chapters/ch15.qmd`
+  - Before: **The problem.** Cases need to go somewhere: the identity team, the malware team, the data-loss team. A wrong route costs a handoff and a delay.
+  - After: **The problem.** Cases need to go somewhere: the identity team, the malware team, the data-loss team. Sending a case to the wrong team costs a transfer and a delay.
+- `chapters/ch15.qmd`
+  - Before: **The pattern.** Ask a `choice` with one option per destination. Route automatically only when the top option is clearly ahead; send the rest to a general queue, where a person routes them.
+  - After: **The pattern.** Ask a `choice` with one option per team. Send the case automatically only when the top option is clearly ahead. Send the rest to a general queue, where a person decides where they go.
+- `chapters/ch15.qmd`
+  - Before: On a sample of the live week, routing every alert by the top label sent {{< num ch22 route_all_acc pct >}} to the right team. Routing only when the top probability was at least {{< num ch22 route_line f1 >}} covered {{< num ch22 route_cov pct >}} of alerts, and {{< num ch22 route_acc pct >}} of those went to the right place (@fig-router-15). Chapter 4's coverage trade-off again, and the curve lets you choose where to stand on it.
+  - After: On a sample of the live week, routing every alert by the top label sent {{< num ch22 route_all_acc pct >}} to the right team. Routing only when the top probability was at least {{< num ch22 route_line f1 >}} covered {{< num ch22 route_cov pct >}} of alerts, and {{< num ch22 route_acc pct >}} of those went to the right place (@fig-router-15). It's Chapter 4's coverage trade-off again, and the curve lets you choose your point on it.
+- `chapters/ch15.qmd`
+  - Before: The same pattern routes between *models*: a cheap one for the confident cases, a slow one for the rest. That's Chapter 8's route by doubt, and it's probably the most valuable single use of calibrated probabilities.
+  - After: The same pattern can choose between *models*: a cheap one for the confident cases, a slow one for the rest. That's Chapter 8's routing by doubt, and it's probably the most valuable single use of calibrated probabilities.
+- `chapters/ch15.qmd`
+  - Before: **How it breaks.** Remember Chapter 10: a choice must give every real case somewhere to go. A router without an "other" or "not sure" option will confidently misroute the cases that fit nowhere.
+  - After: **How it breaks.** Remember Chapter 10: a choice must give every real case somewhere to go. A router without an "other" or "not sure" option will confidently send the cases that fit nowhere to the wrong team.
+- `chapters/ch15.qmd`
+  - Before: **The problem.** Agents need memory: past cases, what a host usually does, which policies apply. Every step raises small questions about it. Is this worth remembering? Which store should I look in? Is this old note still true? Chapter 7 showed that retrieving the wrong thing is one of the commonest ways a RAG system fails.
+  - After: **The problem.** Agents need memory: past cases, what a host usually does, which policies apply. Every step raises small questions about it. Is this worth remembering? Where should I look? Is this old note still true? Chapter 7 showed that retrieving the wrong thing is one of the most common ways a RAG system fails.
+- `chapters/ch15.qmd`
+  - Before: **The pattern.** Treat each read and write as a typed decision. A noul decides whether a new fact is worth keeping. A choice decides which store to search, including "none". Only after the memory work is done does the LLM reason over what was fetched.
+  - After: **The pattern.** Treat each read and write as a typed decision. A noul decides whether a new fact is worth keeping. A choice decides which store to search, including "none". Only after the memory work is done does the LLM reason about what was found.
+- `chapters/ch15.qmd`
+  - Before: Jev-Mem works much like this. In the design by Jiang, Li and Li at the University of Texas at Dallas, a System One controller decides how each memory is typed and linked, and at query time chooses the route, the retrieval budget and when to stop, calling a slower reasoning model only to compose the final answer [@jevmem2026]. On the LoCoMo long-conversation benchmark the authors report an LLM-as-judge score of 0.777, 11% above their strongest baseline, with memory built 6.6 times faster and queries answered in 0.93 seconds on average, 37% faster; those are the authors' numbers, not a replication.
+  - After: Jev-Mem works much like this. It was designed by Jiang, Li and Li at the University of Texas at Dallas [@jevmem2026]. A System One controller decides how each memory is typed and linked. When a question comes in, it chooses where to look, how much to retrieve and when to stop. It calls a slower reasoning model only to write the final answer. The authors tested it on LoCoMo, a benchmark of long conversations. They report an LLM-as-judge score of 0.777, 11% above the best system they compared it with. Memory was built 6.6 times faster, and questions were answered in 0.93 seconds on average, 37% faster. Those are the authors' numbers; nobody has repeated the test here.
+- `chapters/ch15.qmd`
+  - Before: The idea underneath is the one this book keeps returning to: memory operations are frequent, small and typed, which makes them the kind of decision a decision model is for.
+  - After: The idea underneath is the one this book keeps coming back to. Memory operations are frequent, small and typed. That makes them exactly the kind of decision a decision model is for.
+- `chapters/ch15.qmd`
+  - Before: **How it breaks.** Memory decisions fail without a sound. A fact wrongly discarded never shows up as an error; it just isn't there when it's needed. Log what the controller discards, and audit a sample, as Chapter 14 did with auto-closed alerts.
+  - After: **How it breaks.** Memory decisions fail silently. A fact thrown away by mistake never shows up as an error; it just isn't there when it's needed. Log what the controller throws away, and audit a sample, as Chapter 14 did with auto-closed alerts.
+- `chapters/ch15.qmd`
+  - Before: Only patterns 1, 3 and 5 have measurements in this chapter, and all of them are synthetic. The others are shapes, drawn from how the pieces work, and each needs testing on real data before you trust it. Combining patterns multiplies failure points: an extractor feeding a gate feeding a router has three places to be wrong, and the errors can compound as Chapter 7 showed. And every pattern here assumes the decision model's probabilities hold on your data, which Chapter 11 said you must check, not assume.
+  - After: Only patterns 1, 3 and 5 have measurements in this chapter, and all of them are synthetic. The others are designs based on how the pieces work, and each needs testing on real data before you trust it. Combining patterns adds more places to fail. An extractor feeding a gate feeding a router has three places to be wrong, and the errors can add up, as Chapter 7 showed. And every pattern here assumes the decision model is calibrated on your data. Chapter 11 said you must check that, not assume it.
+- `chapters/ch15.qmd`
+  - Before: Kestrel's agent wants to disable a user account when it suspects stolen credentials. Disabling a real attacker's account early saves about \$10,000. Disabling an innocent user's account costs about \$300 in lost work and a help-desk call. Asking the on-call analyst costs about \$15 and a few minutes. Where would you put the gate's two lines on P(attack)?
+  - After: Kestrel's agent wants to disable a user account when it suspects a stolen password. Disabling a real attacker's account early saves about \$10,000. Disabling an innocent user's account costs about \$300 in lost work and a help-desk call. Asking the analyst on call costs about \$15 and a few minutes. Where would you put the gate's two thresholds on P(attack)?
+- `chapters/ch15.qmd`
+  - Before: (Allow when disabling is clearly worth it and asking adds nothing, block when it clearly isn't. Using Chapter 14's arithmetic: asking beats blocking once P × \$10,000 exceeds about \$15, so above roughly 0.2%; allowing beats asking once the expected cost of a wrong disable, (1 − P) × \$300, drops below \$15, so above about 0.95. Most cases land in the middle and go to a person, which is fine at Kestrel's volume. At a hundred times the volume, it wouldn't be.)
+  - After: (Allow when disabling is clearly worth it and asking adds nothing. Block when it clearly isn't worth it. Using Chapter 14's arithmetic: asking is better than blocking once P × \$10,000 is more than about \$15, so above about 0.2%. Allowing is better than asking once the expected cost of a wrong disable, (1 − P) × \$300, drops below \$15, so above about 0.95. Most cases land in the middle and go to a person. That's fine at Kestrel's volume. At a hundred times the volume, it wouldn't be.)
+- `chapters/ch15.qmd`
+  - Before: Alexander was an architect writing about towns and buildings [@alexander1977]. Software engineers borrowed his idea, and it fits decision layers well: the same few shapes, never quite the same twice.
+  - After: Alexander was an architect writing about towns and buildings [@alexander1977]. Software engineers borrowed his idea, and it fits decision layers well: the same few designs, never used in exactly the same way twice.
+- `chapters/ch15.qmd`
+  - Before: We lined up six patterns, and all of them had the same spine. Something else writes, reads or acts, and a typed question decides. Letting the LLM extract fields and Jev decide beat letting the LLM decide, though nothing beat the facts the SIEM already had. Gates kept a planted sentence from closing real threats because they looked only at trusted facts. A router that stepped aside when unsure was right far more often than one that always answered. Checking drafts and managing memory are decisions too, and so are the small steps inside every agent loop.
+  - After: We put six patterns side by side, and all of them had the same structure. Something else writes, reads or acts, and a typed question decides. Letting the LLM extract fields and Jev decide beat letting the LLM decide, though nothing beat the facts the SIEM already had. Gates stopped a planted sentence from closing real threats, because they looked only at trusted facts. A router that passed cases on when unsure was right far more often than one that always answered. Checking drafts and managing memory are decisions too, and so are the small steps inside every agent loop.
+- `chapters/ch15.qmd`
+  - Before: That closes Part IV. We've compared the methods, drawn the lines and named the patterns. Part V builds them.
+  - After: That ends Part IV. We've compared the methods, set the thresholds and named the patterns. Part V builds them.
+- `chapters/ch15.qmd`
+  - Before: 1. In the lab, change the router's line from 0.8 to 0.6 and to 0.9. Which would you choose if a misroute costs an hour and the general queue costs twenty minutes per alert?
+  - After: 1. In the lab, change the router's threshold from 0.8 to 0.6 and to 0.9. Which would you choose if sending an alert to the wrong team costs an hour and the general queue costs twenty minutes per alert?
+- `chapters/ch15.qmd`
+  - Before: 2. Design a guardrail gate for an email agent that can send messages to customers. What's the typed question? Which facts are trusted? Where do the lines go?
+  - After: 2. Design a guardrail gate for an email agent that can send messages to customers. What's the typed question? Which facts are trusted? Where do the thresholds go?
+- `chapters/ch15.qmd`
+  - Before: 4. The "check the writer" pattern can share the writer's blind spots. Describe a test that would reveal that.
+  - After: 4. The checker in the "check the writer" pattern can have the same weaknesses as the writer. Describe a test that would show that.
