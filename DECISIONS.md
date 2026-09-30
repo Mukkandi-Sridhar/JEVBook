@@ -228,3 +228,6 @@ Newest decisions are appended at the bottom of each section.
   instead of at the foot of the panel. The blurb's last sentence was reworded as the author gave it. The stat card
   still reads `results/ch25.json`, the file behind Chapter 18's table; the rendered book prints 54% → 89%, and
   `check.py` confirms the cover matches it.
+- **D-83 · Final back-cover bio.** The author supplied the bio: "Sridhar Mukkandi is an applied AI engineer who builds
+  agents and the decision systems behind them. He writes for engineers who want AI systems they can trust." The email
+  stays beneath it. No photo or photo placeholder appears anywhere on the cover.

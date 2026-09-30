@@ -22,7 +22,8 @@ from concepts import SUB_LINES, zone_bar  # noqa: E402
 REPO_URL = "https://github.com/Mukkandi-Sridhar/JEVBook"
 REPO_LABEL = "github.com/Mukkandi-Sridhar/JEVBook"
 EMAIL = "sridhar.authorhub@gmail.com"
-AUTHOR_BIO = f"{AUTHOR} [[FINAL BIO]]"   # paste the final bio after the name
+AUTHOR_BIO = (f"{AUTHOR} is an applied AI engineer who builds agents and the decision systems behind them. "
+              "He writes for engineers who want AI systems they can trust.")
 BG = C["night"]
 # KDP paper: standard colour suits a text-heavy book with colour charts; hardcovers are only offered in premium colour
 PAPERBACK_PAPER = "standard_color"

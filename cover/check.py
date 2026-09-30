@@ -20,7 +20,7 @@ from wrap import BG, BODY, HARDCOVER_PAPER, PAPERBACK_PAPER, barcode_local, case
 from coverlib import strapline  # noqa: E402
 
 ALLOW = {"jev", "mukkandi", "sridhar", "jevbook", "llm", "llms", "soc", "api", "inr", "usd", "praise", "author", "bio",
-         "photo", "price", "authorhub", "typesafe", "final", "ne", "ra", "te", "gmail", "github", "com", "ated", "er", "ate", "gen", "ai", "agentic", "tech"}
+         "price", "authorhub", "typesafe", "ne", "ra", "te", "gmail", "github", "com", "ated", "er", "ate", "gen", "ai", "agentic", "tech"}
 
 
 def boxes(html_file, selector):

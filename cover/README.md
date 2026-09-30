@@ -51,9 +51,7 @@ KDP's calculator couldn't be reached from this build (see DECISIONS.md, D-75).
 
 ## Placeholders to fill
 
-The back cover has no photo. Left to fill:
-
-- `[[FINAL BIO]]`: paste your bio after your name in `AUTHOR_BIO` in `wrap.py` (it wraps to the text width).
+The back cover has no photo; the bio is `AUTHOR_BIO` in `wrap.py`. Left to fill:
 
 - The ISBN barcode: KDP prints it in the bottom-right 2 × 1.2 in area, which is kept empty (it's marked only on the
   guides layer). If you supply your own barcode, place it there.
