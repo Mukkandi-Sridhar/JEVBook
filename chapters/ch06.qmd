@@ -13,11 +13,11 @@ from jevkit import llm, text, soc
 
 When ChatGPT answers you, the words appear a few at a time, as if someone were typing.
 
-You've probably wondered whether that's just a nice animation, with the whole answer sitting there, finished, revealed slowly for effect.
+You may have wondered if that's just a nice animation. Maybe the whole answer is already finished, and it's shown slowly for effect.
 
-It isn't an animation. The model really works like that: it doesn't know the end of its sentence when it writes the beginning. It picks one small piece, then the next, each time looking back at everything so far.
+It isn't an animation. The model really works like that. It doesn't know the end of its sentence when it writes the beginning. It picks one small piece, then the next. Each time, it looks back at everything written so far.
 
-That one detail explains a surprising amount: why long answers are slow, why the same question can get different answers, why you pay per token, and why "just ask the LLM" is an awkward way to make a decision. It also explains why getting a clean, trustworthy *decision* out of a writing machine is harder than adding "reply in JSON" to a prompt.
+That one detail explains a lot. It explains why long answers are slow, why the same question can get different answers, and why you pay per token. It also explains why "just ask the LLM" is an awkward way to make a decision. Getting a clean, calibrated *decision* out of a writing machine is harder than adding "reply in JSON" to a prompt.
 
 ::: {.goals}
 - Describe the generation loop: predict, pick, append, repeat.
@@ -28,7 +28,7 @@ That one detail explains a surprising amount: why long answers are slow, why the
 
 ## One token at a time
 
-A language model reads **tokens**: chunks of text, often parts of words, made by a separate program called a tokeniser. Common words become one chunk; rare ones, like hostnames, typos and base64 blobs, the stuff security logs are made of, break into many small pieces. You pay per token, and numbers such as 0.87 or an IP address may be split in ways that don't line up with their meaning, which is one reason LLMs can be clumsy with arithmetic.
+A language model reads **tokens**: chunks of text, often parts of words. A separate program, called a tokeniser, cuts the text into tokens. Common words become one chunk. Rare ones break into many small pieces, and security logs are full of rare strings: hostnames, typos and encoded data. You pay per token. Numbers such as 0.87, or an IP address, may be split in ways that don't match their meaning. That's one reason LLMs can be clumsy with arithmetic.
 
 ::: {.tryit lab="ch06"}
 A tiny tokeniser, trained on synthetic analyst notes in about a second.
@@ -45,21 +45,21 @@ Every time an LLM produces a token, it runs the same loop.
 
 ![The generation loop. The model reads everything so far, produces a probability for every possible next token, one gets picked, it's appended, and the loop runs again.](/figures/ch10/loop.pdf){#fig-loop-06}
 
-Read everything so far. Produce a probability for every token in the vocabulary, often around a hundred thousand of them. Pick one. Append it, and go round again (@fig-loop-06). The probability step is the transformer from Chapter 5, a *writer* that can only look backwards. Everything else is a loop around it.
+Read everything so far. Produce a probability for every token in the vocabulary, often about a hundred thousand of them. Pick one. Add it to the end, and go round again (@fig-loop-06). The probability step is the transformer from Chapter 5, a *writer* that can only look backwards. Everything else is a loop around it.
 
-The picking hides a choice. Always taking the most likely token, **greedy** decoding, is predictable but dull. Rolling a die weighted by the probabilities, **sampling**, gives variety. A setting called **temperature** controls how adventurous the die is: divide every score by *T* before turning scores into probabilities, so below 1 the favourites win more, and above 1 long shots get a real chance. (It's the same temperature Chapter 3 used to soften overconfident models, pointed the other way.)
+The picking step hides a choice. You can always take the most likely token. That's called **greedy** decoding, and it's predictable but dull. Or you can roll a die weighted by the probabilities. That's called **sampling**, and it gives variety. A setting called **temperature** controls how bold the die is. Every score is divided by *T* before the scores become probabilities. Below 1, the likely tokens win more often. Above 1, unlikely tokens get a real chance. (It's the same temperature Chapter 3 used to soften overconfident models, used the other way round.)
 
 ## Length is time
 
-Because each token waits for the one before it, generation is *sequential*: token fifty can't exist before token forty-nine. So the length of the answer drives how long it takes.
+Each token waits for the one before it, so generation is *sequential*: token fifty can't exist before token forty-nine. So the length of the answer sets how long it takes.
 
 ![How long an answer takes under simple, illustrative assumptions: a short wait before the first token, then a steady stream. A one-word label is fast. An explanation takes seconds. Step-by-step reasoning takes tens of seconds.](/figures/ch10/latency.pdf){#fig-latency-06}
 
-Assuming {{< num ch10 ttft f2 >}} seconds before the first token and {{< num ch10 tps int >}} tokens a second after (illustrative, not measured), a one-word answer takes about {{< num ch10 lat_1 f1 >}} seconds, an explanation of a few hundred tokens about {{< num ch10 lat_300 f1 >}}, and 1,500 tokens of step-by-step reasoning about {{< num ch10 lat_1500 int >}} (@fig-latency-06). The newest "reasoning" models write long chains of thought before answering, which makes them much better on hard problems and much slower, because every thinking token goes through the loop. That trade-off, careful and slow against quick and intuitive, is the heart of Part III.
+Assume {{< num ch10 ttft f2 >}} seconds before the first token and {{< num ch10 tps int >}} tokens a second after that (illustrative numbers, not measured). Then a one-word answer takes about {{< num ch10 lat_1 f1 >}} seconds. An explanation of a few hundred tokens takes about {{< num ch10 lat_300 f1 >}}. And 1,500 tokens of step-by-step reasoning take about {{< num ch10 lat_1500 int >}} (@fig-latency-06). The newest "reasoning" models write long chains of thought before they answer. This makes them much better on hard problems, and much slower, because every thinking token goes through the loop. That trade-off, careful and slow against quick and intuitive, is the centre of Part III.
 
 ## Same question, different answers
 
-Sampling has another consequence, and for decisions it's a big one. Ask the same question twice at any temperature above zero, and you might get two different answers. For a poem, that's a feature. For deciding whether an alert is real, it's a problem.
+Sampling has another effect, and for decisions it's a big one. Ask the same question twice at any temperature above zero, and you might get two different answers. For a poem, that's useful. For deciding whether an alert is real, it's a problem.
 
 ```{python}
 alert = soc.load().description[118]
@@ -68,17 +68,17 @@ answers = [mock.classify(alert)["label"] for _ in range(20)]
 print({a: answers.count(a) for a in sorted(set(answers))})
 ```
 
-This is the book's stand-in LLM, `llm-mock-synthetic`, built to behave the way LLMs typically do; it isn't a model of any real product. Across forty borderline alerts, each asked twenty times, most got *both* answers.
+This is the book's stand-in LLM, `llm-mock-synthetic`. It's built to behave the way LLMs usually do; it isn't a copy of any real product. We asked it about forty borderline alerts, twenty times each. Most alerts got *both* answers.
 
 ![Forty borderline alerts, each asked the same question twenty times at temperature 0.7. The bar shows how often the answer was "malicious". All but one of them got different answers across the twenty runs.](/figures/ch10/variance.pdf){#fig-variance-06}
 
-In @fig-variance-06, {{< num ch10 n_split int >}} of the {{< num ch10 n_alerts int >}} alerts flipped. Set the temperature to zero and answers become much more repeatable, but the *uncertainty* doesn't go away. It just stops showing.
+In @fig-variance-06, {{< num ch10 n_split int >}} of the {{< num ch10 n_alerts int >}} alerts flipped between answers. Set the temperature to zero and the answers repeat much more often. But the *uncertainty* doesn't go away. You just stop seeing it.
 
 ::: {.keyidea}
 Sampling turns a model's uncertainty into randomness in its answers. Temperature zero hides it; it doesn't remove it.
 :::
 
-And nothing in the loop checks whether the sentence is *true*. The model produces a plausible next token. It can write a fluent, confident, completely made-up hostname or citation, because that's the kind of thing that *would* come next. That's **hallucination**.
+And nothing in the loop checks whether the sentence is *true*. The model produces a likely-sounding next token. It can write a fluent, confident, completely made-up hostname or citation, because that's the kind of thing that *would* come next. That's called **hallucination**.
 
 ::: {.bookquote by="Title of a 2021 paper by Emily Bender, Timnit Gebru, Angelina McMillan-Major and Margaret Mitchell"}
 On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?
@@ -86,21 +86,21 @@ On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?
 
 ## Asking for JSON
 
-Software can't read a paragraph. It needs `verdict = "malicious"`: a field, a value. So every team wiring an LLM into a pipeline adds a line to the prompt: *"Reply only with JSON."* And it works. Almost always.
+Software can't read a paragraph. It needs `verdict = "malicious"`: a field and a value. So every team that connects an LLM to other software adds a line to the prompt: *"Reply only with JSON."* And it works. Almost always.
 
-But "almost" adds up. Over 4,000 alerts, {{< num ch11 prompt_fail_share pct1 >}} of the answers came back broken, wrapped or padded with an extra field. At seven hundred alerts a day, that's about {{< num ch11 prompt_fail_per_day int >}} failures every day.
+But "almost" adds up. Over 4,000 alerts, {{< num ch11 prompt_fail_share pct1 >}} of the answers came back broken, wrapped in extra text, or with an extra field. At seven hundred alerts a day, that's about {{< num ch11 prompt_fail_per_day int >}} failures every day.
 
 ![What came back when we asked for JSON, over 4,000 alerts. With only the prompt, some responses were wrapped in friendly chat, some were cut off mid-object, and some were valid JSON with a field nobody asked for. With JSON mode on, the first two problems vanish. The third doesn't.](/figures/ch11/json-failures.pdf){#fig-json-failures}
 
-The three classic failures are in @fig-json-failures: chatty text around the JSON ("Sure! Here is..."), a response cut off mid-object, and valid JSON with an invented field, here an `attacker_country` that isn't in the alert at all. That last one is the worst, because it parses fine and slips made-up data into your system.
+The three common failures are in @fig-json-failures. The first is chatty text around the JSON ("Sure! Here is..."). The second is a response cut off in the middle. The third is valid JSON with an invented field: here, an `attacker_country` that isn't in the alert at all. That last one is the worst. It parses fine, so made-up data gets into your system without anyone noticing.
 
-The generation loop gives us a lever. At each step, we can forbid every token that would break the required format. That's **constrained decoding**, sold as "JSON mode" or "structured outputs" [@willard2023]. It guarantees the *shape* of the answer.
+The generation loop gives us a way to control this. At each step, we can forbid every token that would break the required format. That's called **constrained decoding**, and providers sell it as "JSON mode" or "structured outputs" [@willard2023]. It guarantees the *shape* of the answer.
 
 ::: {.keyidea}
 Constrained decoding makes the answer parse. It doesn't make it right.
 :::
 
-A constrained model can still say "benign" for a real attack, in perfect syntax. So whatever the provider promises, treat model output like text typed into a web form by a stranger. Parse it into a strict type that rejects unknown fields and wrong values, and if it fails, send the case to a person, never to an automatic action.
+A constrained model can still say "benign" for a real attack, in perfect syntax. So whatever the provider promises, treat model output like text a stranger typed into a web form. Parse it into a strict type that rejects unknown fields and wrong values. If parsing fails, send the case to a person, never to an automatic action.
 
 ```{python}
 class Verdict(BaseModel):
@@ -128,17 +128,17 @@ print(f"valid: {ok} of {len(test)}")
 
 Now say the JSON is perfect: `"verdict": "malicious", "confidence": 0.95`. Can Kestrel put a threshold on that 0.95?
 
-There are three different numbers you might use. **The confidence the model wrote** is text: the characters "0", ".", "9", "5", picked like any other tokens. **The token probability** is the probability the model gave to "malicious" as the next token, which many APIs will return. And **a probability from a decision model** is one whose actual output is a probability for each option.
+There are three different numbers you might use. **The confidence the model wrote** is text: the characters "0", ".", "9", "5", picked like any other tokens. **The token probability** is the probability the model gave to "malicious" as the next token; many APIs will return it. And **a probability from a decision model** comes from a model whose real output is a probability for each option.
 
 ![Reliability of three "confidences" on the same test alerts, all reading the same raw text. The stated confidence barely separates attacks from harmless alerts. The token probability ranks well but is overconfident. The decision model ranks best and also sits close to the diagonal. Synthetic: the mocks reflect design choices, not measurements of real models.](/figures/ch11/three-confidences.pdf){#fig-three-confidences}
 
-The mock wrote only {{< num ch11 n_distinct_stated int >}} different confidence values, {{< num ch11 share_stated_ge_09 pct >}} of them 0.9 or higher, a pattern many people have noticed with real models. Stated confidence ranks poorly, with an AUC of {{< num ch11 verbal.auc f2 >}}. The token probability ranks much better ({{< num ch11 token.auc f2 >}}) but is overconfident (ECE {{< num ch11 token.ece f3 >}}). The decision model ranks slightly better again ({{< num ch11 jev_text.auc f2 >}}) and is also well calibrated, with an ECE of {{< num ch11 jev_text.ece f3 >}} (@fig-three-confidences).
+The mock wrote only {{< num ch11 n_distinct_stated int >}} different confidence values, and {{< num ch11 share_stated_ge_09 pct >}} of them were 0.9 or higher. Many people have noticed the same pattern with real models. Stated confidence ranks alerts poorly, with an AUC of {{< num ch11 verbal.auc f2 >}}. The token probability ranks much better ({{< num ch11 token.auc f2 >}}) but is overconfident (ECE {{< num ch11 token.ece f3 >}}). The decision model ranks slightly better again ({{< num ch11 jev_text.auc f2 >}}). It's also well calibrated, with an ECE of {{< num ch11 jev_text.ece f3 >}} (@fig-three-confidences).
 
-Look closely and the stated confidence has the lowest ECE of the three, {{< num ch11 verbal.ece f3 >}}. That isn't a win. When a model says nearly the same thing about every alert, it can be right *on average* and still tell you almost nothing about which alert is which. It's Chapter 3's lesson again: calibration and ranking are separate, and you need both.
+Look closely: the stated confidence has the lowest ECE of the three, {{< num ch11 verbal.ece f3 >}}. That isn't a win. A model that says nearly the same thing about every alert can be right *on average*. But it tells you almost nothing about which alert is which. It's Chapter 3's lesson again: calibration and ranking are separate, and you need both.
 
-Research on real models is mixed here; one study found stated confidence *better* calibrated than token probabilities for some tuned models [@tian2023], another found it badly overconfident [@xiong2024]. The only safe rule is to measure yours.
+Research on real models gives mixed results here. One study found stated confidence *better* calibrated than token probabilities for some tuned models [@tian2023]. Another found it badly overconfident [@xiong2024]. The only safe rule is to measure your own model.
 
-Why isn't a token probability the probability of the answer? Because the model is choosing between tens of thousands of tokens, not two answers. "malicious", "Malicious" and " malicious" with a space are all different tokens, and some probability goes to the model starting a sentence instead of answering. You can add up the right ones and renormalise, but by then you're building a decision model by hand on top of a writing model.
+Why isn't a token probability the probability of the answer? Because the model is choosing between tens of thousands of tokens, not between two answers. "malicious", "Malicious" and " malicious" with a space are all different tokens. Some probability also goes to the model starting a sentence instead of answering. You can add up the right tokens and rescale so they sum to 1. But then you're building a decision model by hand, on top of a writing model.
 
 ::: {.keyidea}
 The probability of a token isn't the probability of an answer.
@@ -146,25 +146,25 @@ The probability of a token isn't the probability of an answer.
 
 ## The typed alternative
 
-Which brings us to a different way of asking. Instead of asking a writer to produce text in a decision-shaped format, ask a model whose native output *is* the decision. Declare the question and its possible answers as types, and get back data, with a probability for every option.
+That leads to a different way of asking. Don't ask a writer to produce text shaped like a decision. Ask a model whose natural output *is* the decision. Declare the question and its possible answers as types. You get back data, with a probability for every option.
 
 ![The same question, two ways. On the left, an LLM writes JSON, including a confidence it wrote as text. On the right, a typed question returns data: a probability for a yes-or-no question, and one for every label of a choice.](/figures/ch11/typed-vs-text.pdf){#fig-typed-vs-text}
 
-Jev's interface looks like this (@fig-typed-vs-text): nothing to parse, no format to break, labels that can only be the ones you listed, and a number designed to be a probability, which makes it a claim you can check. Part III takes it apart.
+Jev's interface looks like this (@fig-typed-vs-text). There's nothing to parse and no format to break. The labels can only be the ones you listed. And the number is designed to be a probability, so it's a claim you can check. Part III looks at Jev in detail.
 
 ::: {.breaks}
-Token probabilities describe the next piece of text, not the truth of the answer. JSON mode doesn't stop a model choosing the wrong value or copying an attacker's text into a field, and strict validation doesn't catch a value that's valid but wrong: a threat-intel score misread as 0.18 instead of 0.81 passes every schema. Providers update models, so "temperature 0" behaviour can shift between versions; pin versions for anything you'll audit. And typed decision APIs have their own limits: probabilities without reasons, and calibration that still has to be tested on your data.
+Token probabilities describe the next piece of text, not the truth of the answer. JSON mode doesn't stop a model from choosing the wrong value, or from copying an attacker's text into a field. Strict checking doesn't catch a value that's valid but wrong: a threat-intel score misread as 0.18 instead of 0.81 passes every schema. Providers update their models, so "temperature 0" behaviour can change between versions. Fix the model version for anything you'll audit. And typed decision APIs have their own limits: they give probabilities without reasons, and their calibration still has to be tested on your data.
 :::
 
 ::: {.threshold}
-Kestrel wants to auto-close alerts the LLM labels "benign" with stated confidence at least 0.95. Would you trust that line? What would you threshold instead?
+Kestrel wants to auto-close alerts that the LLM labels "benign" with a stated confidence of at least 0.95. Would you trust that threshold? What would you put a threshold on instead?
 
-(No. 0.95 and 0.99 are the mock's favourite values, so the line filters almost nothing. Put the line on the best-calibrated probability you have, checked on recent history, with its position set by what mistakes cost, as Chapter 4 shows.)
+(No. 0.95 and 0.99 are the mock's favourite values, so the threshold filters almost nothing. Put the threshold on the best-calibrated probability you have, checked on recent history. Set its position by what mistakes cost, as Chapter 4 shows.)
 :::
 
 ## Where we are
 
-ChatGPT's typing turned out to be the real mechanism: tokens come out one at a time, each chosen from a probability for every possible next piece. That loop explained why long answers are slow, why the same question can get different answers, and why fluent doesn't mean true. Then we asked the loop for decisions. The format broke a few times in every hundred, constrained decoding fixed the format but not the content, and of three candidates for "how sure", only one was designed to be thresholded.
+ChatGPT's typing turned out to be how the model really works. Tokens come out one at a time, each chosen from a probability for every possible next piece. That loop explained why long answers are slow, why the same question can get different answers, and why fluent doesn't mean true. Then we asked the loop for decisions. The format broke a few times in every hundred. Constrained decoding fixed the format but not the content. And of three candidates for "how sure", only one was designed to have a threshold put on it.
 
 An LLM also only knows what it was trained on, not your company. Next: giving it your documents, and letting it act.
 
@@ -176,5 +176,5 @@ An LLM also only knows what it was trained on, not your company. Next: giving it
 :::
 
 ::: {.nexthook}
-Next: an LLM knows the internet, not your company. Retrieval hands it the right documents, agents let it act, and both open new ways to fail.
+Next: an LLM knows the internet, not your company. Retrieval gives it the right documents, and agents let it act. Both bring new ways to fail.
 :::

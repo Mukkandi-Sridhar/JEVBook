@@ -11,15 +11,15 @@ from jevkit import soc, calibration as cal
 from jevkit.batch import score_alerts
 ```
 
-A week after Jev launched, two claims were circling.
+A week after Jev launched, people were repeating two claims.
 
-TypeSafe's: Jev returns *calibrated* probabilities. Its training method, RLCD, is named after that goal [@typesafe2026].
+The first was TypeSafe's: Jev returns *calibrated* probabilities. Its training method, RLCD, is named after that goal [@typesafe2026].
 
-And a blunt reply from the data scientist Alex Molas, in a post titled "Jev can't be calibrated": useful, yes, but treat its outputs as scores, not probabilities, because calibration depends on *your* data, which Jev never sees [@molas2026].
+The second was a direct reply from the data scientist Alex Molas, in a post titled "Jev can't be calibrated". Jev is useful, he said, but treat its outputs as scores, not probabilities. Calibration depends on *your* data, and Jev never sees your data [@molas2026].
 
 *"So which is it?"*
 
-Both, and neither, and that's the point of this chapter. You already have everything you need to settle it for your own use: Chapter 3's reliability diagram, a few hundred labelled cases, and an afternoon. This chapter shows why the critic's argument is right in a precise sense, how to measure it, and how to fix it when it bites.
+Both, and neither, and that's the point of this chapter. You already have everything you need to answer it for your own use: Chapter 3's reliability diagram, a few hundred labelled cases, and an afternoon. This chapter shows in what exact sense the critic is right. It shows how to measure the problem, and how to fix it when it happens.
 
 ![Two claims about the same model. The way to settle them is the same either way: test on your own labelled cases.](/figures/ch18/two-claims.pdf){#fig-two-claims}
 
@@ -35,9 +35,9 @@ Both, and neither, and that's the point of this chapter. You already have everyt
 
 In plain terms, the argument goes like this.
 
-Chapter 2 said a probability is a claim about *how often, among cases like this one*. Now imagine two companies send Jev the same alert text. Jev, reading the same input, returns the same probability to both. But suppose one company is a frequent target and the other rarely is. Among alerts that look exactly like this one, the true share of attacks can differ between them. A single number can't be right for both.
+Chapter 2 said a probability is a claim about *how often, among cases like this one*. Now imagine two companies send Jev the same alert text. Jev reads the same input, so it returns the same probability to both. But suppose one company is attacked often and the other rarely. Among alerts that look exactly like this one, the true share of attacks can be different at the two companies. A single number can't be right for both.
 
-That's the base-rate trap from Chapter 2, turned on the model. It's called *prior shift* or *label shift*: the mix of outcomes changes while the way each outcome looks stays the same. A model trained or tuned on one mix can be perfectly calibrated there, and systematically off everywhere the mix is different.
+That's the base-rate trap from Chapter 2, now catching the model. It's called *prior shift* or *label shift*: the mix of outcomes changes, but the way each outcome looks stays the same. A model trained or tuned on one mix can be perfectly calibrated there. But it will be wrong in the same direction everywhere the mix is different.
 
 ::: {.keyidea}
 Calibration is a property of a model *and the data it's used on*.
@@ -45,7 +45,7 @@ Calibration is a property of a model *and the data it's used on*.
 
 ## Two companies, one model
 
-Let's see it happen. Alongside Kestrel Logistics I've generated a second synthetic company, Harbor Pharma. Its alerts come from the same detectors and look the same, but real attacks are less common there: {{< num ch18 harbor_base pct1 >}} of alerts, against Kestrel's {{< num ch18 kestrel_base pct1 >}}.
+Let's see it happen. Next to Kestrel Logistics, I've made a second synthetic company, Harbor Pharma. Its alerts come from the same detectors and look the same. But real attacks are less common there: {{< num ch18 harbor_base pct1 >}} of alerts, against Kestrel's {{< num ch18 kestrel_base pct1 >}}.
 
 Send both through the same decision model and check each one's reliability.
 
@@ -66,17 +66,17 @@ for name, p, df in (("Kestrel", p_k, kestrel), ("Harbor", p_h, harbor)):
 
 ![The same model's reliability at two companies. At Kestrel, whose mix of alerts matches what the mock was built around, it sits close to the diagonal. At Harbor, where attacks are rarer, every probability is too high.](/figures/ch18/two-companies.pdf){#fig-two-companies}
 
-At Kestrel, the ECE is {{< num ch18 ece_kestrel f3 >}}. At Harbor, it's {{< num ch18 ece_harbor f3 >}}, and the direction is consistent: Harbor's average predicted risk is {{< num ch18 harbor_mean_p pct1 >}} when the real attack rate is {{< num ch18 harbor_base pct1 >}}. Put Chapter 14's act line on those numbers and Harbor sends roughly twice as many alerts to review as it needs to (@fig-two-companies).
+At Kestrel, the ECE is {{< num ch18 ece_kestrel f3 >}}. At Harbor, it's {{< num ch18 ece_harbor f3 >}}, and the error always goes the same way. Harbor's average predicted risk is {{< num ch18 harbor_mean_p pct1 >}} when the real attack rate is {{< num ch18 harbor_base pct1 >}}. Use Chapter 14's act threshold on those numbers, and Harbor sends about twice as many alerts to review as it needs to (@fig-two-companies).
 
 Nothing about the model changed. Only the world did.
 
-As always, the mock is synthetic and I built Harbor to make the point cleanly. I can't tell you how much real Jev's calibration varies between real companies. What I can tell you is that the mechanism is general, and it applies to every model that returns probabilities without seeing your base rate.
+As always, the mock is synthetic, and I built Harbor to show the point clearly. I can't tell you how much real Jev's calibration varies between real companies. What I can tell you is that the cause is general. It applies to every model that returns probabilities without seeing your base rate.
 
 ## Fixing it
 
-The good news is very good. This kind of miscalibration is often easy to fix.
+The good news is very good: this kind of miscalibration is often easy to fix.
 
-**Adjust for the base rate.** If the model's probabilities were right for one base rate, and you know yours, you can correct them with one line of arithmetic. Multiply the odds by the ratio of the two base rates' odds. That's Bayes' rule from Chapter 2 again: the new evidence is the same, only the starting point moved [@saerens2002].
+**Adjust for the base rate.** Suppose the model's probabilities were right for one base rate, and you know yours. Then you can correct them with one line of arithmetic: multiply the odds by the ratio of the two base rates' odds. That's Bayes' rule from Chapter 2 again. The evidence is the same; only the starting point moved [@saerens2002].
 
 ```{python}
 rng = np.random.default_rng(0)
@@ -94,75 +94,75 @@ print(f"Platt, 300:    ECE {cal.ece(platt(p_h[rest]), y[rest]):.3f}")
 
 ![Harbor's alerts, on the cases not used for fitting: as returned (red), after adjusting the odds for Harbor's base rate (blue), and after Platt scaling on 300 labelled alerts (green). Both fixes bring the curve most of the way back to the diagonal.](/figures/ch18/harbor-fixes.pdf){#fig-harbor-fixes}
 
-With the base rate known exactly, the odds adjustment brings Harbor's ECE down to {{< num ch18 ece_prior_known f3 >}}. With the base rate *estimated* from just 300 labelled alerts, it gets {{< num ch18 ece_prior_est f3 >}}. Platt scaling fitted on the same 300 labels does best of all, {{< num ch18 ece_platt300 f3 >}} (@fig-harbor-fixes), because it can correct a stretch as well as a shift.
+With the base rate known exactly, the odds adjustment brings Harbor's ECE down to {{< num ch18 ece_prior_known f3 >}}. With the base rate *estimated* from just 300 labelled alerts, it gets {{< num ch18 ece_prior_est f3 >}}. Platt scaling fitted on the same 300 labels does best of all, {{< num ch18 ece_platt300 f3 >}} (@fig-harbor-fixes). That's because it can correct probabilities that are too spread out or too bunched together, not only ones that are all too high.
 
-The adjustment rests on an assumption: that alerts of each kind look the same at both places, and only how common each kind is has changed. When that's not true, when your attackers use different techniques or your detectors fire differently, only fitting on your own labels will do. One more reason the labels matter.
+The adjustment depends on one assumption: alerts of each kind look the same at both places, and only how common each kind is has changed. Sometimes that's not true. Your attackers may use different methods, or your detectors may fire differently. Then only fitting on your own labels will work. That's one more reason the labels matter.
 
 ## How many labels?
 
-"A few hundred labels" is the answer I've been giving. It's time to be precise, because small samples play a nasty trick on calibration measurements.
+"A few hundred labels" is the answer I've been giving. It's time to be exact, because small samples can badly mislead calibration measurements.
 
-Take the mock at Kestrel, whose ECE on all 20,000 alerts is {{< num ch18 ece_full f3 >}}. Now pretend you only had a random 100 labelled alerts, and measure ECE on those. Do it 200 times with different random samples.
+Take the mock at Kestrel. Its ECE on all 20,000 alerts is {{< num ch18 ece_full f3 >}}. Now pretend you only had 100 labelled alerts, chosen at random, and measure ECE on those. Do it 200 times, with different random samples.
 
 ![The ECE you'd measure from a random sample of labelled alerts, for different sample sizes, on a model whose ECE over all 20,000 alerts is shown by the black line. With a hundred labels the measurement is both noisy and biased upwards: an honest model looks dishonest. The bias shrinks as samples grow.](/figures/ch18/ece-noise.pdf){#fig-ece-noise}
 
-With 100 labels, the typical measured ECE is {{< num ch18 ece_n100 f3 >}}, over three times the real value, and one sample in twenty reads as high as {{< num ch18 ece_n100_hi f3 >}} (@fig-ece-noise). That isn't the model being worse; it's the measurement. With few cases per bin, every bin's observed rate wobbles, and ECE adds up the *size* of the wobbles regardless of direction, so noise always pushes it up. By 3,200 labels, the measurement is close to the truth.
+With 100 labels, the typical measured ECE is {{< num ch18 ece_n100 f3 >}}, over three times the real value. One sample in twenty gives a value as high as {{< num ch18 ece_n100_hi f3 >}} (@fig-ece-noise). The model isn't worse; the measurement is. With few cases per bin, each bin's observed rate moves up and down by chance. ECE adds up the *size* of those random errors, whatever their direction, so noise always pushes it up. By 3,200 labels, the measurement is close to the truth.
 
 ::: {.keyidea}
 With few labels, ECE is biased upwards. Report a range, and don't call a model miscalibrated on a hundred cases.
 :::
 
-The practical upshot is a trade-off. A few hundred labels are enough to *fix* a big, systematic problem like Harbor's base rate. Checking that a model is calibrated to within a percentage point or two takes a few thousand. Use `ece_interval()`, or plot the diagram with the counts showing, and let the range guide you.
+In practice, this is a trade-off. A few hundred labels are enough to *fix* a big problem that always goes the same way, like Harbor's base rate. Checking that a model is calibrated to within a percentage point or two takes a few thousand. Use `ece_interval()`, or plot the diagram with the counts showing, and let the range guide you.
 
 ## Choices and scores
 
 Everything so far has been about yes-or-no. Chapter 10's other types need checking too.
 
-For a **choice**, start with the simplest version: is the top label's confidence calibrated? Among all the times the model's top label had confidence around 0.8, was it right about 80% of the time?
+For a **choice**, start with the simplest version: is the top label's confidence calibrated? Take all the times the model's top label had confidence around 0.8. Was it right about 80% of the time?
 
 ![Top-label calibration for the category question on 2,500 of Kestrel's alerts: the confidence of the model's top category against how often that category was right.](/figures/ch18/top-label.pdf){#fig-top-label}
 
-For the mock's category answers, the top label's average confidence is {{< num ch18 top_conf_mean pct >}} and it's right {{< num ch18 top_acc pct >}} of the time, with an ECE of {{< num ch18 top_ece f3 >}} (@fig-top-label). Then go further: check each label's probability on its own (*is "phishing" at 0.3 right 30% of the time?*), especially the labels you act on.
+For the mock's category answers, the top label's average confidence is {{< num ch18 top_conf_mean pct >}}. It's right {{< num ch18 top_acc pct >}} of the time, with an ECE of {{< num ch18 top_ece f3 >}} (@fig-top-label). Then go further. Check each label's probability on its own (*is "phishing" at 0.3 right 30% of the time?*), especially the labels you act on.
 
-For a **score**, check the probability of each tail you put a threshold on, such as P(severity is medium or high), just as you would a noul.
+For a **score**, check the probability you put a threshold on, such as P(severity is medium or high). Test it just as you would test a noul.
 
 ## A routine you can repeat
 
 ![A testing routine for any model that returns probabilities, Jev included.](/figures/ch18/protocol.pdf){#fig-protocol}
 
-@fig-protocol is a routine for checking any model's probabilities before you trust them for a decision, and on a schedule afterwards.
+@fig-protocol is a routine for checking any model's probabilities. Run it before you use them for a decision, and then again on a regular schedule.
 
-1. **Collect labels.** Recent cases with known outcomes, and a few thousand if you can get them. In a SOC, include random audits of auto-closed alerts, as Chapter 14 will insist, or your labels will only cover the cases people looked at.
-2. **Plot, don't just score.** A reliability diagram with the counts showing, and ECE with a range. Look hardest near your thresholds.
-3. **Slice.** Every group you'll act on differently: source, customer tier, language, region.
-4. **Fix.** A base-rate adjustment if that's the problem and you know the rate; Platt or temperature scaling on your labels otherwise.
-5. **Re-test.** On a schedule, and whenever the model version or your data changes. Aliases like `jev-latest` can move under you.
+1. **Collect labels.** Use recent cases with known outcomes, a few thousand if you can get them. In a SOC, include random audits of auto-closed alerts, as Chapter 14 explains. Otherwise your labels will only cover the cases people looked at.
+2. **Plot, don't just score.** Draw a reliability diagram with the counts showing, and report ECE with a range. Look most closely near your thresholds.
+3. **Slice.** Check every group you'll treat differently: source, customer tier, language, region.
+4. **Fix.** Use a base-rate adjustment if that's the problem and you know the rate. Otherwise, use Platt or temperature scaling on your labels.
+5. **Test again.** Do it on a schedule, and whenever the model version or your data changes. A name like `jev-latest` can point to a new version without warning.
 
-So, back to the two claims. The vendor may well be right that Jev is calibrated on the data they tested it on. The critic is right that this doesn't make it calibrated on yours. The routine turns the argument into a measurement.
+So, back to the two claims. The vendor may well be right that Jev is calibrated on the data they tested it on. The critic is right that this doesn't make it calibrated on yours. The routine turns the argument into something you can measure.
 
 ::: {.keyidea}
 Treat a new model's outputs as scores until you've tested them on your data. After that, treat them as probabilities.
 :::
 
 ::: {.breaks}
-Labels are themselves imperfect. Analysts disagree, some attacks are never discovered, and labels arrive late: an alert closed today may turn out to be part of an intrusion found next month. Calibration measured on today's labels will look better than it is. Keep a "mature labels" set, cases old enough that their outcomes have settled, and measure on that. And be careful with labels that exist only because of the model's own decisions: if the model auto-closed a case, nobody labelled it, and your sample is biased towards the cases it sent to people.
+Labels aren't perfect either. Analysts disagree, some attacks are never found, and labels arrive late. An alert closed today may turn out to be part of a break-in found next month. So calibration measured on today's labels will look better than it is. Keep a set of "mature labels": cases old enough that their outcomes are settled. Measure on that set. And be careful with labels that exist only because of the model's own decisions. If the model auto-closed a case, nobody labelled it. Your sample then leans towards the cases it sent to people.
 :::
 
 ::: {.threshold}
-Harbor adopts Kestrel's act line of 0.031 without checking calibration. Given that Harbor's probabilities run about twice too high, is Harbor's line effectively stricter or looser than Kestrel's? What happens to Harbor's review queue, and to its missed threats?
+Harbor copies Kestrel's act threshold of 0.031 without checking calibration. Harbor's probabilities are about twice too high. So is Harbor's threshold, in effect, stricter or looser than Kestrel's? What happens to Harbor's review queue, and to its missed threats?
 
-(Stricter. With inflated probabilities, fewer alerts fall below 0.031, so Harbor auto-closes less than it safely could. Its queue swells, and its missed threats go *down*, at the cost of analyst time it may not have. Fix the calibration, then recompute the line from Harbor's own costs.)
+(Stricter. With probabilities that are too high, fewer alerts fall below 0.031, so Harbor auto-closes less than it safely could. Its queue grows, and its missed threats go *down*, but it costs analyst time Harbor may not have. Fix the calibration, then work out the threshold again from Harbor's own costs.)
 :::
 
 ::: {.bookquote by="Bruno de Finetti, Theory of Probability, 1974"}
 Probability does not exist.
 :::
 
-De Finetti meant that probability isn't a physical property of the world, but a statement of belief given what you know. For a model, "what it knows" never includes your base rate, unless you tell it.
+De Finetti meant that probability isn't a physical property of the world. It's a statement of belief, given what you know. For a model, "what it knows" never includes your base rate, unless you tell it.
 
 ## Where we are
 
-Two claims collided, and we tested instead of taking sides. The same model was honest at one company and inflated at another, because a probability depends on its data as well as its model. A one-line odds adjustment or a few hundred labels fixed the gap. Then we found that a few hundred labels can't *prove* calibration, because small samples make good models look bad. What remains is a routine you can run on Jev or on anything else.
+Two claims disagreed, and we tested instead of taking sides. The same model was calibrated at one company and too high at another, because a probability depends on its data as well as its model. A one-line odds adjustment, or a few hundred labels, fixed the gap. Then we found that a few hundred labels can't *prove* calibration, because small samples make good models look bad. What's left is a routine you can run on Jev or on any other model.
 
 Next, the bigger picture: what happens when decisions like these become almost free.
 
@@ -170,9 +170,9 @@ Next, the bigger picture: what happens when decisions like these become almost f
 1. Explain to a manager, in three sentences, why a model can be calibrated at one company and not another, even with identical inputs.
 2. In the lab, generate a third company where attacks are *more* common than at Kestrel (use `logit_shift` of +1.0). Which way does the reliability curve bend? Does the odds adjustment fix it?
 3. You have 150 labelled alerts and measure ECE 0.05. A colleague says the model is badly calibrated. What would you say, and what would you do next?
-4. Design the labelling plan for testing Jev's calibration at your organisation, or one you know: how many labels, from which cases, how you'd avoid only labelling what the model sent to people, and how often you'd repeat it.
+4. Plan how you'd collect labels to test Jev's calibration at your organisation, or one you know. How many labels, from which cases? How would you avoid labelling only what the model sent to people? How often would you repeat it?
 :::
 
 ::: {.nexthook}
-Next: TypeSafe named the model after a Victorian economist who noticed something strange about coal. Chapter 12 is about why that might be the most important thing about it.
+Next: TypeSafe named the model after a 19th-century economist who noticed something strange about coal. Chapter 12 explains why that might be the most important thing about it.
 :::

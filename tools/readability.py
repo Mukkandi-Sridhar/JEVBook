@@ -29,6 +29,7 @@ def prose(text: str) -> str:
             continue
         out.append(line)
     text = "\n".join(out)
+    text = text.replace("\\$", "USD ")                                         # escaped dollar signs are money
     text = re.sub(r"\$\$.*?\$\$", " ", text, flags=re.S)
     text = re.sub(r"\$[^$\n]+\$", "x", text)                                  # inline maths reads as one word
     text = re.sub(r"\s*\[-?@[^\]]*\]", "", text)                              # citations

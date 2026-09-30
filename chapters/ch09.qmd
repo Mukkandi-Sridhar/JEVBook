@@ -11,13 +11,13 @@ from typesafe_sdk import Choice, Noul, Score, TypeSafeClient
 from jevkit import MockJevTransport
 ```
 
-A confession shapes this chapter: I've never called Jev.
+I have to admit something that shapes this chapter: I've never called Jev.
 
-When I wrote this book, Jev had been public for a couple of weeks, in early access, and I didn't have an API key. What I did have was TypeSafe's official Python library, which anyone can download and read, TypeSafe's public documentation, a stream of launch coverage and early commentary, and a growing pile of research papers from people who *had* used it.
+When I wrote this book, Jev had been public for a couple of weeks, in early access, and I didn't have an API key. But I did have four things. I had TypeSafe's official Python library, which anyone can download and read, and TypeSafe's public documentation. I had the news coverage and early comments from the launch. And I had a growing number of research papers from people who *had* used it.
 
 *"So how much can anyone actually say about what's inside it?"*
 
-More than you'd think, and less than most articles imply. The trick is to sort every claim into one of three piles: what you can verify yourself, what the vendor says, and what nobody outside the company knows. That habit is worth more than any single fact in this chapter, because Jev won't be the last new model you have to evaluate from the outside.
+More than you'd think, and less than most articles suggest. The trick is to sort every claim into one of three piles: what you can check yourself, what the vendor says, and what nobody outside the company knows. That habit is worth more than any single fact in this chapter. Jev won't be the last new model you have to judge from the outside.
 
 ::: {.goals}
 - Sort claims about a new model into verified, vendor-reported and unknown.
@@ -35,15 +35,15 @@ More than you'd think, and less than most articles imply. The trick is to sort e
 
 **Verified** means I read it myself in something anyone can inspect. For Jev, that's mainly the `typesafe-sdk` library on PyPI, version 0.7.2, including the data models generated from the API's own specification.
 
-**Vendor-reported** means TypeSafe, or coverage quoting TypeSafe, said it. It may well be true. It hasn't been independently checked here, and every such number carries that label.
+**Vendor-reported** means TypeSafe said it, or an article quoting TypeSafe did. It may well be true. It hasn't been checked independently here, and every such number carries that label.
 
-**Unknown** means it hasn't been published, so any statement about it is a guess, and I'll say so when I guess.
+**Unknown** means it hasn't been published. Any statement about it is a guess, and I'll say so when I guess.
 
-Treat every vendor number in this book as a claim to check, not a fact. A good habit: when a claim about a model appears without a pile attached, ask which pile it belongs in.
+Treat every vendor number in this book as a claim to check, not a fact. Here's a good habit: when you see a claim about a model with no pile attached, ask which pile it belongs in.
 
 ## What we can verify: the interface
 
-Jev's interface is refreshingly small. You send one request to one endpoint, `POST /v1/systemone`, with three things:
+Jev's interface is pleasantly small. You send one request to one address, `POST /v1/systemone`, with three things:
 
 - **state**: the situation, as text, a JSON object or a list;
 - **model**: which model to use (the library's default is `jev-latest`);
@@ -53,7 +53,7 @@ And you get back, for each question, a typed answer with probabilities, plus a c
 
 ![A real request as the official SDK builds it, and the response. The answers here come from the book's mock, but their shape is just what the SDK's own data models expect.](/figures/ch16/anatomy.pdf){#fig-anatomy-09}
 
-You don't have to take my word for the shape. This is the exchange as the SDK actually sends it. The mock records it on the way through.
+You don't have to trust me about the shape. This is the exchange as the SDK actually sends it; the mock records it as it passes through.
 
 ::: {.tryit lab="ch09"}
 ```{python}
@@ -72,64 +72,64 @@ print(json.dumps(request_body, indent=1))
 ```
 :::
 
-A few details from the SDK and TypeSafe's documentation are worth knowing [@typesafedocs2026]. A `choice` answer includes the chosen label, a `confidence` and a probability for every label. A `score` answer includes an expected score, a `confidence`, the rubric as a legend and a probability for every level. A `noul` (yes or no) answer is a single number, the probability of "yes", with no `confidence` attached. The schema describes output tokens as "currently free of charge". And the library handles retries and rate limits for you, which Chapter 16 puts to use.
+A few details from the SDK and TypeSafe's documentation are worth knowing [@typesafedocs2026]. A `choice` answer includes the chosen label, a `confidence` and a probability for every label. A `score` answer includes an expected score, a `confidence`, the scoring guide (the rubric) and a probability for every level. A `noul` (yes or no) answer is a single number: the probability of "yes", with no `confidence`. The schema describes output tokens as "currently free of charge". And the library handles retries and rate limits for you, which Chapter 16 uses.
 
-What about `confidence`? TypeSafe's documentation describes it as a statistic computed from the *shape* of the answer's probabilities: high when they're piled on one option, low when they're spread across several. It doesn't publish the formula. Its quick-start example shows why that matters: a support ticket goes to "technical" with probability 0.85, and the answer's confidence is 0.78. So real confidence isn't simply the top probability. The book's mock uses that simplest stand-in anyway, the top option's probability, and the repository's `docs/mock-design.md` says so. With a real key, read the `probabilities` and test `confidence` on your own labels before you set a threshold on it.
+What about `confidence`? TypeSafe's documentation describes it as a number computed from the *shape* of the answer's probabilities. It's high when the probability is mostly on one option, and low when it's spread across several. The formula isn't published. Its quick-start example shows why that matters: a support ticket goes to "technical" with probability 0.85, and the answer's confidence is 0.78. So real confidence isn't simply the top probability. The book's mock uses the simplest stand-in anyway, the top option's probability, and the repository's `docs/mock-design.md` says so. With a real key, read the `probabilities`, and test `confidence` on your own labels before you set a threshold on it.
 
 ## What TypeSafe says: two ideas
 
-Two claims sit at the centre of how TypeSafe describes Jev: a new architecture with a "parallel sampler", and a training method it calls RLCD [@typesafe2026; @typesafedocs2026].
+Two claims are at the centre of how TypeSafe describes Jev. One is a new design with a "parallel sampler". The other is a training method it calls RLCD [@typesafe2026; @typesafedocs2026].
 
-**A "parallel sampler".** An LLM, as Chapter 6 showed, writes one token at a time, each waiting for the last. TypeSafe says Jev instead produces all its outputs *in a single pass*. It doesn't write an answer; it computes one. TypeSafe presents this as the source of the speed. According to the documentation, each question in a call is answered separately but at the same time, all against the same state, which is why asking a few more questions hardly slows a call down [@typesafedocs2026].
+**A "parallel sampler".** As Chapter 6 showed, an LLM writes one token at a time, and each token waits for the one before. TypeSafe says Jev instead produces all its outputs *in a single pass*. It doesn't write an answer; it computes one. TypeSafe says this is where the speed comes from. According to the documentation, each question in a call is answered separately but at the same time, all from the same state. That's why asking a few more questions hardly slows a call down [@typesafedocs2026].
 
-**RLCD: reinforcement learning for calibrated decisions.** TypeSafe contrasts this with RLHF, which rewards answers people prefer (Chapter 5), and with reinforcement learning from verifiable rewards, which rewards answers a program can check. RLCD, they say, rewards *honest probabilities*.
+**RLCD: reinforcement learning for calibrated decisions.** TypeSafe compares this with RLHF, which rewards answers people prefer (Chapter 5). It also compares it with reinforcement learning from verifiable rewards, which rewards answers a program can check. RLCD, they say, rewards *calibrated* probabilities: honest ones.
 
-We don't know the details of either. But you already have the background to think about them clearly. Chapter 2 showed that a **proper scoring rule**, like log loss, makes honesty the best possible strategy: you can't improve your average score by exaggerating. If RLCD's reward is built on a rule like that, calibration is what it would be pushing towards. That's an inference, not something TypeSafe has published, and it still wouldn't guarantee calibration on *your* data, as Chapter 11 will show.
+We don't know the details of either claim. But you already know enough to think about them clearly. Chapter 2 showed that with a **proper scoring rule**, like log loss, honesty is the best strategy: you can't improve your average score by exaggerating. If RLCD's reward is built on a rule like that, it would push the model towards calibration. That's my own reasoning, not something TypeSafe has published. And it still wouldn't guarantee calibration on *your* data, as Chapter 11 will show.
 
 ![One possible shape for a model like this: a reader that looks at the state and the questions together, then typed "heads" that each turn the result into probabilities, all in one pass. This is my guess, based on the interface and Chapter 5, and not TypeSafe's description.](/figures/ch16/guess.pdf){#fig-guess}
 
-If you want a mental model, @fig-guess is mine, and I want to be very clear that it's a guess. It's built from what the interface demands and from what Chapter 5 said about readers and writers. You can also build it yourself, and Chapter 20 does.
+If you want a picture in your head, @fig-guess is mine. I want to be very clear that it's a guess. It's built from what the interface needs and from what Chapter 5 said about readers and writers. You can also build it yourself, and Chapter 20 does.
 
 ## The numbers: speed and price
 
-TypeSafe and its launch coverage report end-to-end latency of roughly 70 to 500 milliseconds, and "two orders of magnitude" faster than LLMs on System One tasks. Both are vendor-reported.
+TypeSafe and the launch articles report a total response time (latency) of about 70 to 500 milliseconds. They also say Jev is "two orders of magnitude", about a hundred times, faster than LLMs on System One tasks. Both claims are vendor-reported.
 
 ![Time per decision on a log scale: the vendor-reported range for Jev, and the illustrative LLM figures used throughout this book. The LLM figures aren't measurements; they're the stated assumptions from Chapter 6.](/figures/ch16/latency.pdf){#fig-latency-09}
 
-One critic pointed out that the most dramatic speed multipliers in the launch material compare Jev with slow *reasoning* models, which think for a long time before answering [@regolo2026]. Fair for some uses, unfair for others. Against a fast, non-reasoning LLM asked for a one-word label, the gap is much smaller. Always ask: faster than *what*, doing *what*?
+One critic pointed out a problem with the biggest speed claims in the launch material. They compare Jev with slow *reasoning* models, which think for a long time before answering [@regolo2026]. That comparison is fair for some uses and unfair for others. Against a fast LLM that doesn't reason, asked for a one-word label, the gap is much smaller. Always ask: faster than *what*, doing *what*?
 
-The price is where the story gets interesting. The listed price is \$0.042 per million input tokens, with output free. For a decision that reads about 500 tokens of state and questions, that's about \${{< num ch16 jev_cost_per_million int >}} per million decisions.
+The price is the most interesting part. The listed price is \$0.042 per million input tokens, and output is free. Suppose a decision reads about 500 tokens of state and questions. Then a million decisions cost about \${{< num ch16 jev_cost_per_million int >}}.
 
 ![Cost per million decisions of 500 input tokens each: Jev at its vendor-reported price, and an LLM at this book's illustrative mid-range price, which is an assumption, not a quote.](/figures/ch16/cost.pdf){#fig-cost}
 
-Using this book's illustrative LLM prices (\${{< num ch16 llm_price_in f2 >}} per million input tokens, \${{< num ch16 llm_price_out f2 >}} per million output, and 40 output tokens for a small JSON answer), the same million decisions would cost about \${{< num ch16 llm_cost_per_million int >}}. Roughly {{< num ch16 ratio int >}} times more (@fig-cost). Real LLM prices range over two orders of magnitude, so treat the ratio as a shape. Chapter 12 is about why that shape might matter more than any benchmark.
+Now use this book's illustrative LLM prices: \${{< num ch16 llm_price_in f2 >}} per million input tokens, \${{< num ch16 llm_price_out f2 >}} per million output tokens, and 40 output tokens for a small JSON answer. The same million decisions would cost about \${{< num ch16 llm_cost_per_million int >}}, roughly {{< num ch16 ratio int >}} times more (@fig-cost). Real LLM prices vary by a factor of a hundred, so treat the ratio as a rough size, not an exact number. Chapter 12 explains why that size might matter more than any benchmark.
 
 ## Check the claims against each other
 
-Take one habit away from this chapter. When a vendor gives you several numbers, see whether they agree with *each other*.
+If you remember one habit from this chapter, make it this one. When a vendor gives you several numbers, check whether they agree with *each other*.
 
-TypeSafe's launch demo had Jev playing the video game Doom, making decisions from a text description of the game state about ten times a second, at a reported cost of about \$7 an hour. Do those numbers hang together with the listed price?
+In TypeSafe's launch demo, Jev played the video game Doom. It made decisions from a text description of the game, about ten times a second, at a reported cost of about \$7 an hour. Do those numbers fit with the listed price?
 
 ![A consistency check using only the vendor's own numbers. Ten decisions a second at \$7 an hour means each decision costs about two hundredths of a cent, which at the listed price implies each decision read around 4,600 input tokens: a large but plausible description of a game state.](/figures/ch16/doom-check.pdf){#fig-doom-check}
 
-Ten decisions a second is {{< num ch16 doom_decisions_per_hour int >}} an hour. At \$7 an hour, each decision costs about \${{< num ch16 doom_cost_per_decision f4 >}}. At \$0.042 per million input tokens, that implies about {{< num ch16 doom_implied_tokens int >}} tokens of game state per decision. Plausible, for a detailed text description of a game screen (@fig-doom-check). The numbers are consistent. That doesn't prove them, but if they'd implied three tokens per decision, or three million, you'd have learned something important.
+Ten decisions a second is {{< num ch16 doom_decisions_per_hour int >}} an hour. At \$7 an hour, each decision costs about \${{< num ch16 doom_cost_per_decision f4 >}}. At \$0.042 per million input tokens, that means about {{< num ch16 doom_implied_tokens int >}} tokens of game description per decision. That's believable for a detailed text description of a game screen (@fig-doom-check). The numbers agree with each other. That doesn't prove them. But if they had meant three tokens per decision, or three million, you'd have learned something important.
 
 ## What we don't know
 
-Now the uncomfortable part: the unknowns are the very things a decision layer depends on.
+Now the uncomfortable part: the unknowns are exactly what a decision layer depends on.
 
-We don't know the model's size, its architecture or its training data. We don't know how well its probabilities are calibrated on data like yours. We don't know how it behaves on adversarial input, like the planted sentence from Chapter 7. We don't know how stable its behaviour is across versions: `jev-latest` is an alias, and aliases move. And by design, it gives no reasons, only probabilities. Some early critics called that a compliance problem for regulated uses [@datacamp2026]. Chapter 14 will answer it with decision logs that audit the policy rather than the model.
+We don't know the model's size, its design or its training data. We don't know how well its probabilities are calibrated on data like yours. We don't know how it behaves on input written by an attacker, like the planted sentence from Chapter 7. We don't know how much its behaviour changes between versions: `jev-latest` is a nickname that can point to a new version at any time. And by design, it gives no reasons, only probabilities. Some early critics said that's a problem for regulated uses [@datacamp2026]. Chapter 14 answers it with decision logs that audit the policy rather than the model.
 
-None of those unknowns are reasons to avoid a new model. They're reasons to *test* it, on your own data, with the tools you already have. The next two chapters do just that: first by understanding each question type properly, then by testing calibration the way Chapter 3 taught.
+None of those unknowns are reasons to avoid a new model. They're reasons to *test* it, on your own data, with the tools you already have. The next two chapters do just that. First we look at each question type properly. Then we test calibration the way Chapter 3 taught.
 
 ::: {.breaks}
-Vendor numbers are measured on the vendor's tasks, in the vendor's setup, against comparisons the vendor chose. Early-access models change quickly, so behaviour you test this month may shift next month. Pin a model version where you can, rather than `jev-latest`, and re-run your checks when it changes. And be wary of third-party "benchmarks" that appeared within days of launch: some are careful, some aren't, and most can't tell you how the model behaves on your data.
+Vendor numbers are measured on the vendor's tasks, in the vendor's setup, against comparisons the vendor chose. Early-access models change quickly, so behaviour you test this month may change next month. Use a fixed model version where you can, rather than `jev-latest`, and run your checks again when it changes. And be careful with "benchmarks" from other people that appeared within days of the launch. Some are careful and some aren't, and most can't tell you how the model behaves on your data.
 :::
 
 ::: {.threshold}
-Kestrel's agent makes about 3,700 small decisions a day (Chapter 7's count, scaled up). At the vendor-reported price and 500 tokens each, what would a year of those decisions cost? At the illustrative LLM price? At what daily volume would the difference be worth a week of an engineer's time to switch?
+Kestrel's agent makes about 3,700 small decisions a day (Chapter 7's count, scaled up). At the vendor-reported price and 500 tokens each, what would a year of those decisions cost? What would they cost at the illustrative LLM price? At what daily volume would the saving pay for a week of an engineer's time to switch?
 
-(About 1.35 million decisions a year: roughly \$28 at the Jev price and about \$900 at the illustrative LLM price. At Kestrel's volume, price alone doesn't justify a switch. Speed and calibration might. At a hundred times the volume, price becomes a real argument.)
+(About 1.35 million decisions a year: roughly \$28 at the Jev price and about \$900 at the illustrative LLM price. At Kestrel's volume, price alone isn't a reason to switch. Speed and calibration might be. At a hundred times the volume, price becomes a real reason.)
 :::
 
 ::: {.bookquote by="Carl Sagan, Cosmos, 1980"}
@@ -138,15 +138,15 @@ Extraordinary claims require extraordinary evidence.
 
 ## Where we are
 
-I started without an API key, so we sorted what can be known into three piles. The interface was verifiable, and small: state and typed questions in, probabilities out. The speed and training method were the vendor's claims, and we could reason about them without accepting them. The prices let us do our own arithmetic, and the vendor's numbers turned out to agree with each other. What remained unknown was what a decision layer depends on most, which means the next job is testing.
+I started without an API key, so we sorted what can be known into three piles. The interface could be checked, and it was small: state and typed questions in, probabilities out. The speed and the training method were the vendor's claims. We could reason about them without accepting them. The prices let us do our own arithmetic, and the vendor's numbers turned out to agree with each other. What stayed unknown was what a decision layer depends on most. So the next job is testing.
 
 ::: {.exercises}
 1. Find a claim about Jev in a recent article and put it in one of the three piles. What would it take to move it to "verified"?
-2. In the lab, send a `score` question with five levels instead of three. Look at the raw response. What does `score` mean when it's 2.4?
+2. In the lab, send a `score` question with five levels instead of three. Look at the raw response. What does `score` mean when its value is 2.4?
 3. Redo the Doom check with a different assumption: suppose each decision read 500 tokens. What hourly cost would that imply? What would you conclude if the vendor had quoted that figure instead?
 4. Write three questions you'd ask TypeSafe before using Jev for a decision that affects customers. Which pile would each answer go in?
 :::
 
 ::: {.nexthook}
-Next: the three question types, `choice`, `score` and `noul`, one at a time, with the design choices that make each work well.
+Next: the three question types, `choice`, `score` and `noul`, one at a time, and the design choices that make each one work well.
 :::
