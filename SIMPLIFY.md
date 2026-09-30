@@ -603,3 +603,583 @@ Every change is logged below as a before/after pair, applied by `tools/simplify_
 - `chapters/ch21.qmd`
   - Before: Next: the last chapter. What changes when deciding becomes cheap, fast and trustworthy, for the industry, and for you.
   - After: Next: the last chapter. What changes, for the industry and for you, when deciding becomes cheap, fast and calibrated?
+
+## Chapter 1: What "learning" means
+
+50 changes.
+
+- `chapters/ch01.qmd`
+  - Before: After a while, a nagging thought starts to form:
+  - After: After a while, a worrying thought starts to form:
+- `chapters/ch01.qmd`
+  - Before: The short answer: you need less than you fear, but you need it in the right order. These words aren't a list of separate subjects. They're chapters of one story, and each one exists because the one before it ran into a wall.
+  - After: The short answer: you need less than you fear, but you need it in the right order. These words aren't a list of separate subjects. They're chapters of one story. Each one exists because the one before it hit a problem it couldn't solve.
+- `chapters/ch01.qmd`
+  - Before: So let's walk the story. Slowly, with real examples, and without pretending you already know things you don't.
+  - After: So let's go through the story. We'll go slowly, with real examples, and without pretending you already know things you don't.
+- `chapters/ch01.qmd`
+  - Before: A computer following a rule, nothing more. I told it what to do, step by step. It didn't figure anything out. It just checks a number and acts.
+  - After: That's a computer following a rule, nothing more. I told it what to do, step by step. It didn't work anything out. It just checks a number and acts.
+- `chapters/ch01.qmd`
+  - Before: A surprising amount of software that gets called "AI" is no more than this. A bank that blocks card payments over a limit. A spam filter that bins any email containing "lottery". An office system that marks you absent if you haven't badged in by 10 a.m.
+  - After: A lot of software that people call "AI" is no more than this. A bank blocks card payments over a limit. A spam filter deletes any email containing "lottery". An office system marks you absent if you haven't scanned your badge by 10 a.m.
+- `chapters/ch01.qmd`
+  - Before: And here's something people rarely say out loud: rules are *good*. They're fast, they're cheap, and when one goes wrong you can open it up and read why. When a rule does the job, use the rule. We'll come back to this in Chapter 13, where plain rules win more than one round of a contest against much fancier models.
+  - After: And here's something people rarely say: rules are *good*. They're fast and cheap. When one goes wrong, you can open it up and read why. When a rule does the job, use the rule. We'll come back to this in Chapter 13, where plain rules win more than one round of a contest against much more complex models.
+- `chapters/ch01.qmd`
+  - Before: The trouble starts when the world won't sit still long enough for a rule.
+  - After: The trouble starts when the world changes faster than you can write rules.
+- `chapters/ch01.qmd`
+  - Before: But what if the cat is hiding behind a sofa and you can only see its tail? What if it's black, on a black cushion, in a dark room? What if it's a kitten, all head and no legs?
+  - After: But what if the cat is hiding behind a sofa and you can only see its tail? What if it's black, on a black cushion, in a dark room? What if it's a tiny kitten with a big head and short legs?
+- `chapters/ch01.qmd`
+  - Before: This isn't only a cat problem. Anyone who defends a company's computers faces it every day.
+  - After: This isn't only a problem with cats. Anyone who protects a company's computers faces it every day.
+- `chapters/ch01.qmd`
+  - Before: Picture the security team at Kestrel Logistics, a freight company we'll follow to the last page. They want to catch phishing emails, the ones that trick staff into typing a password into a fake page. So someone writes the obvious rule: *if an email mentions "password", flag it.*
+  - After: Picture the security team at Kestrel Logistics, a shipping company we'll follow to the last page. They want to catch phishing emails: emails that trick staff into typing a password into a fake page. So someone writes the obvious rule: *if an email mentions "password", flag it.*
+- `chapters/ch01.qmd`
+  - Before: Friday, the attacker stops writing the word at all and puts it inside an image. Then they drop the text entirely and send a link to a shared document that looks exactly like the real ones.
+  - After: Friday, the attacker stops writing the word at all and puts it inside an image. Then they remove the text completely and send a link to a shared document that looks exactly like the real ones.
+- `chapters/ch01.qmd`
+  - Before: @fig-rules-vs-examples shows where this ends. The rulebook grows, and it's always one trick behind, because the attacker gets to read your rules by testing them and you don't get to read theirs.
+  - After: @fig-rules-vs-examples shows where this ends. The list of rules grows, and it's always one trick behind. The attacker can learn your rules by testing them, but you can't read theirs.
+- `chapters/ch01.qmd`
+  - Before: So we flip the job around.
+  - After: So we turn the job around.
+- `chapters/ch01.qmd`
+  - Before: Instead of telling the computer every rule, we give it a pile of emails where we already know the answer. This one was phishing. This one was fine. This one was phishing. Thousands of them.
+  - After: Instead of telling the computer every rule, we give it a large set of emails where we already know the answer. This one was phishing. This one was fine. This one was phishing. Thousands of them.
+- `chapters/ch01.qmd`
+  - Before: You've been on the receiving end of this for years. When your bank texts *"Did you just spend \$640 at an electronics shop in another city?"*, no one at the bank wrote a rule about you, that shop and that amount. A system learned what your normal spending looks like from millions of past payments, and this one didn't fit. When Netflix puts a documentary at the top of your screen, it's the same move. Nobody wrote "people who watched these three shows want this one". The pattern came from examples.
+  - After: Machine learning has been making decisions about you for years. Your bank may text you: *"Did you just spend \$640 at an electronics shop in another city?"* No one at the bank wrote a rule about you, that shop and that amount. A system learned what your normal spending looks like from millions of past payments, and this one didn't fit. When Netflix puts a documentary at the top of your screen, it's the same idea. Nobody wrote "people who watched these three shows want this one". The pattern came from examples.
+- `chapters/ch01.qmd`
+  - Before: You'll hear the word *model* constantly, so let's pin it down.
+  - After: You'll hear the word *model* all the time, so let's define it clearly.
+- `chapters/ch01.qmd`
+  - Before: When the computer finishes studying the examples, what's left behind is a thing that takes an input and produces an answer. Give it a new email, it says "phishing" or "fine". Give it a payment, it says "normal" or "odd". That thing is the model.
+  - After: When the computer finishes studying the examples, it leaves behind something that takes an input and produces an answer. Give it a new email, and it says "phishing" or "fine". Give it a payment, and it says "normal" or "odd". That thing is the model.
+- `chapters/ch01.qmd`
+  - Before: Think of it as a machine with a lot of knobs. Learning is the process of turning those knobs until the machine gets the examples right as often as possible. Once the knobs are set, you stop turning them and put the machine to work, on cases where nobody knows the answer yet. If you already knew the answer, you wouldn't need the model.
+  - After: Think of it as a machine with a lot of knobs. Learning means turning those knobs until the machine gets the examples right as often as possible. Once the knobs are set, you stop turning them and put the machine to work on cases where nobody knows the answer yet. If you already knew the answer, you wouldn't need the model.
+- `chapters/ch01.qmd`
+  - Before: Before we go further, let's get our hands on something real enough to learn from.
+  - After: Before we go further, let's look at some data that's realistic enough to learn from.
+- `chapters/ch01.qmd`
+  - Before: Kestrel Logistics has a small security operations centre, a SOC. Every system the company runs, from laptops and email to cloud storage and sign-ins, produces *alerts*: short, messy notes that say "this looked suspicious". Over four weeks the SOC receives {{< num ch01 n_alerts int >}} of them. About {{< num ch01 per_day int >}} a day, for a handful of analysts.
+  - After: Kestrel Logistics has a small security operations centre, or SOC: the team that watches for attacks. Every system the company runs, from laptops and email to cloud storage and sign-ins, produces *alerts*. An alert is a short, messy note that says "this looked suspicious". Over four weeks the SOC receives {{< num ch01 n_alerts int >}} of them. That's about {{< num ch01 per_day int >}} a day, for a few analysts.
+- `chapters/ch01.qmd`
+  - Before: I'll be straight with you about one thing: Kestrel Logistics doesn't exist. Every alert in this book comes from a generator I wrote, and the reason is a good one. With real security data you never know the true answer for sure, and you're never allowed to publish it anyway. With synthetic data we know what happened in every single case, so we can check every model's work, all book long.
+  - After: I'll be honest with you about one thing: Kestrel Logistics doesn't exist. Every alert in this book comes from a program I wrote, and there's a good reason. With real security data, you never know the true answer for sure, and you're never allowed to publish it anyway. With synthetic (made-up) data, we know what happened in every case. So we can check every model's work, all through the book.
+- `chapters/ch01.qmd`
+  - Before: Look at that alert for a second. Someone received a flood of sign-in approval requests on their phone in the middle of the night, and one was approved. Attackers do exactly this: they spam your phone until you tap "yes" just to make it stop.
+  - After: Look at that alert for a moment. Someone received a large number of sign-in approval requests on their phone in the middle of the night, and one was approved. Attackers do exactly this. They send request after request until you tap "yes" just to make it stop.
+- `chapters/ch01.qmd`
+  - Before: Real attack, or not? Hold that question. We'll come back to this exact alert.
+  - After: Real attack, or not? Keep that question in mind. We'll come back to this exact alert.
+- `chapters/ch01.qmd`
+  - Before: Every alert comes with a *threat-intel score* between 0 and 1. It's a rough measure of how bad the outside world thinks the website, address or sender involved is. A reasonable-sounding rule would be: flag the alert if the score is at least some number, call it *t*.
+  - After: Every alert comes with a *threat-intel score* between 0 and 1. It's a rough measure of how dangerous outside security sources think the website, address or sender is. A sensible-sounding rule would be: flag the alert if the score is at least some number, *t*. A number like this, which splits cases into two groups, is called a **threshold**. Think of it as a line on the scale from 0 to 1.
+- `chapters/ch01.qmd`
+  - Before: The machine searched every threshold and found the one with the fewest mistakes. It picked {{< num ch01 best_t f2 >}}, which means it flags only the alerts with the very worst scores. Almost nothing gets flagged. And a "strategy" of never flagging anything at all makes only a few more mistakes.
+  - After: The machine searched every threshold and found the one with the fewest mistakes. It picked {{< num ch01 best_t f2 >}}, so it flags only the alerts with the very worst scores. Almost nothing gets flagged. And a "strategy" of never flagging anything at all makes only a few more mistakes.
+- `chapters/ch01.qmd`
+  - Before: ![Every possible threshold, and the mistakes it makes. Low thresholds drown the team in false alarms; high ones miss attacks. The total bottoms out at the far right, barely below the dashed line for "flag nothing at all".]
+  - After: ![Every possible threshold, and the mistakes it makes. Low thresholds give the team far too many false alarms; high ones miss attacks. The total is lowest at the far right, just below the dashed line for "flag nothing at all".]
+- `chapters/ch01.qmd`
+  - Before: @fig-threshold-search shows why. There are so many harmless alerts that every false alarm costs the rule more than a missed attack helps it. So the search slides the threshold up and up until it has almost stopped raising alarms. Of {{< num ch01 attacks int >}} real attacks, the "best" rule catches {{< num ch01 best_caught int >}}.
+  - After: @fig-threshold-search shows why. There are so many harmless alerts that each false alarm hurts the rule's score more than catching an attack helps it. So the search moves the threshold higher and higher, until the rule has almost stopped raising alarms. Of {{< num ch01 attacks int >}} real attacks, the "best" rule catches {{< num ch01 best_caught int >}}.
+- `chapters/ch01.qmd`
+  - Before: The first: we treated every mistake as equal. But letting a real attacker walk in and bothering an analyst for five minutes aren't equal mistakes, not even close. Chapter 4 fixes this properly.
+  - After: The first: we treated every mistake as equal. But letting a real attacker in and bothering an analyst for five minutes are very different mistakes. Chapter 4 fixes this properly.
+- `chapters/ch01.qmd`
+  - Before: The second is subtler, and it's the one this book is really about. We forced the answer to be *yes* or *no*.
+  - After: The second is harder to see, and it's the one this book is really about. We forced the answer to be *yes* or *no*.
+- `chapters/ch01.qmd`
+  - Before: A learned model only knows the world its examples came from. If attackers invent a trick that isn't in the training data, the model has never seen it, and it won't tell you that it hasn't. Its answer will look just as confident as always. Labels can be wrong too: analysts disagree, and some attacks are never discovered, so they sit in the data marked "fine". A model will happily learn those mistakes as if they were truth.
+  - After: A learned model only knows the world its examples came from. If attackers invent a trick that isn't in the training data, the model has never seen it, and it won't tell you so. Its answer will look just as confident as always. Labels can be wrong too. Analysts disagree, and some attacks are never found, so they stay in the data marked "fine". A model will learn those mistakes as if they were true.
+- `chapters/ch01.qmd`
+  - Before: Let's look at the same data from a different angle. Instead of asking "attack or not?", let's ask: *among alerts with a given score, how many turned out to be attacks?*
+  - After: Let's look at the same data in a different way. Instead of asking "attack or not?", let's ask: *among alerts with a given score, how many turned out to be attacks?*
+- `chapters/ch01.qmd`
+  - Before: There's no clean line where alerts switch from harmless to dangerous. Among the lowest-scoring alerts, about {{< num ch01 bottom_bin_rate pct >}} were attacks. That sounds tiny, but that bucket holds {{< num ch01 bottom_bin_n int >}} alerts, so it's well over a hundred real attacks hiding among the most harmless-looking noise. Among the highest-scoring alerts, {{< num ch01 top_bin_rate pct >}} were attacks. Which means more than a third of the scariest-looking ones were nothing.
+  - After: There's no clear point where alerts switch from harmless to dangerous. Among the lowest-scoring alerts, about {{< num ch01 bottom_bin_rate pct >}} were attacks. That sounds tiny. But that group holds {{< num ch01 bottom_bin_n int >}} alerts, so well over a hundred real attacks are hiding among the most harmless-looking alerts. Among the highest-scoring alerts, {{< num ch01 top_bin_rate pct >}} were attacks. So more than a third of the scariest-looking ones were nothing.
+- `chapters/ch01.qmd`
+  - Before: That number, a chance, carries far more than a yes or a no. It tells the analyst how worried to be. It lets you sort the queue so the likeliest attacks come first. And, as you'll see in Chapter 4, it lets you set your line in the right place once you've decided what each kind of mistake costs.
+  - After: That number, a chance, tells you far more than a yes or a no. It tells the analyst how worried to be. It lets you sort the queue so the likeliest attacks come first. And, as you'll see in Chapter 4, it lets you put your threshold in the right place, once you've decided what each kind of mistake costs.
+- `chapters/ch01.qmd`
+  - Before: That last part, being *right about how sure it is*, has a name, and a whole part of this book to itself. For now, just notice that it's a very different goal from "make the fewest mistakes".
+  - After: That last part, being *right about how sure it is*, has a name: **calibration**. A model that gets it right is *calibrated*: its probabilities are honest. Chapter 3 is about it. For now, just notice that it's a very different goal from "make the fewest mistakes".
+- `chapters/ch01.qmd`
+  - Before: (Down, a long way. When a miss hurts more, you accept more false alarms to avoid one. Chapter 4 turns that intuition into a formula.)
+  - After: (Down, by a lot. When a miss hurts more, you accept more false alarms to avoid one. Chapter 4 turns that idea into a formula.)
+- `chapters/ch01.qmd`
+  - Before: Our threat-intel rule had it easy: someone handed it a single useful number. A photo is millions of pixels, and an email is a string of words. Nobody can hand-write the features for "this sounds like a scam". So the next step was models that learn their own features, in many stacked layers. The name for that is **deep learning** (Chapter 5).
+  - After: Our threat-intel rule had an easy job: someone gave it a single useful number. But a photo is millions of pixels, and an email is a string of words. Nobody can write the clues for "this sounds like a scam" by hand. So the next step was models that learn their own clues, in many stacked layers. The name for that is **deep learning** (Chapter 5).
+- `chapters/ch01.qmd`
+  - Before: Train a very large deep-learning model on a huge amount of text, with one simple task, guess the next word, and it picks up grammar, facts and even some reasoning along the way. The result is a **large language model**, an LLM (Chapter 6).
+  - After: Train a very large deep-learning model on a huge amount of text, with one simple task: guess the next word. Along the way, it learns grammar, facts and even some reasoning. The result is a **large language model**, or LLM (Chapter 6).
+- `chapters/ch01.qmd`
+  - Before: LLMs know a lot about the world and nothing about *your* world, so we let them look things up before answering. The technique is called **retrieval-augmented generation**, or RAG. And once a model can read, the next wish is for it to *do* things: check a log, block an account, look at what happened, decide what to do next. A model working in that loop is an **agent** (Chapter 7).
+  - After: LLMs know a lot about the world and nothing about *your* world, so we let them look things up before answering. That method is called **retrieval-augmented generation**, or RAG. And once a model can read, we want it to *do* things: check a log, block an account, look at what happened, decide what to do next. A model working in that loop is an **agent** (Chapter 7).
+- `chapters/ch01.qmd`
+  - Before: Most of its steps aren't writing essays. They're small decisions. Is this alert real? Which queue does this ticket go in? Is this action safe to take? Did that tool call work? Hundreds of little judgements, each with a known set of possible answers.
+  - After: Most of its steps aren't writing essays. They're small decisions. Is this alert real? Which queue does this ticket go in? Is this action safe to take? Did that tool call work? There are hundreds of these small judgements, each with a known set of possible answers.
+- `chapters/ch01.qmd`
+  - Before: For each of those, the usual approach today is to ask an LLM, get a paragraph back, and then write code to dig the answer out of the paragraph. It works. It's also a bit like hiring a novelist to tick a checkbox.
+  - After: For each one, the usual approach today is to ask an LLM, get a paragraph back, and then write code to find the answer inside the paragraph. It works. But it's a bit like hiring a novelist to tick a checkbox.
+- `chapters/ch01.qmd`
+  - Before: In September 2026, a start-up called TypeSafe AI released a model built for those checkbox moments. It's called **Jev**. It doesn't write text at all. You give it the situation and a typed question, like "pick one of these labels" or "is this true, yes or no", and it gives back the answer as data, with a probability attached to every option (@fig-generate-vs-decide). TypeSafe calls it a *System One* model, after the fast, intuitive kind of thinking described by the psychologist Daniel Kahneman, as opposed to slow, deliberate *System Two* thinking [@kahneman2011]. Part III takes Jev apart properly.
+  - After: In September 2026, a start-up called TypeSafe AI released a model built for those checkbox moments. It's called **Jev**. It doesn't write text at all. You give it the situation and a typed question, like "pick one of these labels" or "is this true, yes or no". It gives back the answer as data, with a probability for every option (@fig-generate-vs-decide). TypeSafe calls it a *System One* model. The name comes from the psychologist Daniel Kahneman, who described fast, intuitive thinking (System One) and slow, careful thinking (System Two) [@kahneman2011]. Part III looks at Jev in detail.
+- `chapters/ch01.qmd`
+  - Before: One thing you should know now, because it shapes every page that follows. I didn't have access to the Jev API while writing this book. So everywhere you see Jev answer a question, the answer comes from `jev-mock-synthetic`, a stand-in I built that speaks Jev's exact public interface through TypeSafe's official Python library. The code is real. The numbers are synthetic, and every one of them is labelled that way.
+  - After: You should know one thing now, because it affects every page that follows. I didn't have access to the Jev API while writing this book. So everywhere you see Jev answer a question, the answer comes from `jev-mock-synthetic`. It's a stand-in I built, and it uses Jev's exact public interface through TypeSafe's official Python library. The code is real. The numbers are synthetic, and every one of them is labelled that way.
+- `chapters/ch01.qmd`
+  - Before: Time for your first question to it. Same alert as before, the flood of sign-in requests at night.
+  - After: Time for your first question to it. It's the same alert as before: the many sign-in requests at night.
+- `chapters/ch01.qmd`
+  - Before: It thinks it's probably an attack. It wasn't. And that's not a bug in the story, it's the story.
+  - After: It thinks it's probably an attack. It wasn't. And that's not a mistake in the story; it's the point of the story.
+- `chapters/ch01.qmd`
+  - Before: A probability of {{< num ch01 mock_p_99 f2 >}} is a claim, not a promise: among alerts like this one, roughly two out of three are attacks. This one happened to be in the other third. Whether a model's "0.68" really does mean two out of three is something we can *test*, and we will, in Chapter 3 for ordinary models and in Chapter 11 for Jev.
+  - After: A probability of {{< num ch01 mock_p_99 f2 >}} is a claim, not a promise: among alerts like this one, about two out of three are attacks. This one happened to be in the other third. We can *test* whether a model's "0.68" really means two out of three. We will, in Chapter 3 for ordinary models and in Chapter 11 for Jev.
+- `chapters/ch01.qmd`
+  - Before: We wanted computers to do intelligent things. Rules weren't enough, so we taught machines from examples. As problems got harder, our models got bigger and started learning their own features. Some of them learned language. We gave them documents to read, then tools to use.
+  - After: We wanted computers to do intelligent things. Rules weren't enough, so we taught machines from examples. As problems got harder, our models got bigger and started learning their own clues. Some of them learned language. We gave them documents to read, then tools to use.
+- `chapters/ch01.qmd`
+  - Before: And now, inside those tools and loops, we're finding that most of the work is *deciding*. Quickly, cheaply, and with an honest sense of how sure we are.
+  - After: And now, inside those tools and loops, we're finding that most of the work is *deciding*: quickly, cheaply, and with calibrated probabilities that honestly say how sure we are.
+- `chapters/ch01.qmd`
+  - Before: ![The story so far. Each step exists because the one before it hit a wall. System One models like Jev branch off deep learning and slot into the "decide" step of an agent.]
+  - After: ![The story so far. Each step exists because the one before it hit a problem it couldn't solve. System One models like Jev grow out of deep learning and fit into the "decide" step of an agent.]
+- `chapters/ch01.qmd`
+  - Before: You don't need to understand every box today. Just know where we're going. The next three chapters stay down at the bottom-left corner of this map on purpose, because everything above it, Jev included, is built on one idea we've only just met: a model's answer should be a probability, and the probability should mean what it says.
+  - After: You don't need to understand every box today. Just know where we're going. The next three chapters stay in the bottom-left corner of this map on purpose. Everything above it, Jev included, is built on one idea we've only just met: a model's answer should be a probability, and the probability should mean what it says.
+- `chapters/ch01.qmd`
+  - Before: Next: that "how likely" idea. It sounds like a small change. It's the most important idea in the book, and it hides a trap that fools doctors, judges and security teams alike.
+  - After: Next: that "how likely" idea. It sounds like a small change. It's the most important idea in the book, and it hides a trap that fools doctors, judges and security teams.
+
+## Chapter 2: Probability
+
+38 changes.
+
+- `chapters/ch02.qmd`
+  - Before: A reasonable thought, and the most expensive mistake people make in this field.
+  - After: It's a reasonable thought. It's also the most costly mistake people make in this field.
+- `chapters/ch02.qmd`
+  - Before: In the last chapter, a machine learned what we asked and still ended up useless, because we asked for yes-or-no answers. The fix was to ask for a *chance* instead. This chapter does two things. First, it makes sure you can read a chance without being fooled, including the one trap that catches doctors, judges and security teams alike. Then it builds, in about twenty lines of code, a model that learns chances from examples.
+  - After: In the last chapter, a machine learned what we asked and was still useless, because we asked for yes-or-no answers. The fix was to ask for a *chance* instead. This chapter does two things. First, it makes sure you can read a chance without being fooled. That includes the one trap that catches doctors, judges and security teams. Then it builds a model that learns chances from examples, in about twenty lines of code.
+- `chapters/ch02.qmd`
+  - Before: There's no heavy maths here. There are a few ideas that, once they click, you'll use for the rest of your career.
+  - After: There's no difficult maths here. There are a few ideas that, once you understand them, you'll use for the rest of your career.
+- `chapters/ch02.qmd`
+  - Before: - Spot the base-rate trap before it costs you, and update a probability by multiplying odds.
+  - After: - Notice the base-rate trap before it costs you, and update a probability by multiplying odds.
+- `chapters/ch02.qmd`
+  - Before: Not necessarily. One day can't tell you. What *can* tell you is the forecaster's track record. Collect every day they said "70%". If it rained on about 70 of every 100 of those days, the forecaster is doing their job, and a dry day is just one of the 30.
+  - After: Not necessarily. One day can't tell you. What *can* tell you is the forecaster's record. Collect every day they said "70%". If it rained on about 70 of every 100 of those days, the forecaster is doing their job. A dry day is just one of the 30.
+- `chapters/ch02.qmd`
+  - Before: So here's the idea to hold on to: **a probability is a claim about how often something happens among cases like this one.**
+  - After: So here's the idea to remember: **a probability is a claim about how often something happens among cases like this one.**
+- `chapters/ch02.qmd`
+  - Before: That definition is useful because it's *checkable*. When a model tells you an alert is 70% likely to be an attack, it's making the same kind of promise as the weather app, and we can hold it to the same standard.
+  - After: That definition is useful because you can *check* it. When a model tells you an alert is 70% likely to be an attack, it's making the same kind of promise as the weather app. We can check it in the same way.
+- `chapters/ch02.qmd`
+  - Before: At Kestrel Logistics, about {{< num ch02 base pct1 >}} of all alerts turn out to be real attacks: the probability of an attack **among all alerts**. Among alerts with a threat-intel score of 0.7 or more, the share is much higher. Same question, a different answer depending on *which group* you're asking about.
+  - After: At Kestrel Logistics, about {{< num ch02 base pct1 >}} of all alerts turn out to be real attacks. That's the probability of an attack **among all alerts**. Among alerts with a threat-intel score of 0.7 or more, the share is much higher. It's the same question, but the answer depends on *which group* you're asking about.
+- `chapters/ch02.qmd`
+  - Before: Statisticians write the second kind with a vertical bar, read as "given": P(attack | bad score) is the chance of an attack *given* a bad score. And here's where people get tangled. P(attack | bad score) and P(bad score | attack) look like mirror images. They're not.
+  - After: Statisticians write the second kind with a vertical bar, read as "given": P(attack | bad score) is the chance of an attack *given* a bad score. And here's where people get confused. P(attack | bad score) and P(bad score | attack) look like the same thing reversed. They're not the same.
+- `chapters/ch02.qmd`
+  - Before: About {{< num ch02 ioc_attack_share pct >}} of attacks come with a bad score. That doesn't make a bad-score alert {{< num ch02 ioc_attack_share pct >}} likely to be an attack. "How often do attacks look like this?" and "how often is something that looks like this an attack?" are different questions. Mixing them up has a name in courtrooms, the *prosecutor's fallacy*, and it has put innocent people in prison. In a SOC it just ruins your week.
+  - After: About {{< num ch02 ioc_attack_share pct >}} of attacks come with a bad score. That doesn't make a bad-score alert {{< num ch02 ioc_attack_share pct >}} likely to be an attack. "How often do attacks look like this?" and "how often is something that looks like this an attack?" are different questions. In courts, mixing them up has a name: the *prosecutor's fallacy*. It has put innocent people in prison. In a SOC, it causes a lot of wasted work.
+- `chapters/ch02.qmd`
+  - Before: If that feels wrong, you're in excellent company. In a well-known 1978 study, doctors and students at Harvard Medical School were given the same puzzle about a medical test, and the most common answer was 95% [@casscells1978]. The way out is counting, not a formula.
+  - After: If that feels wrong, you're not alone. In a well-known 1978 study, doctors and students at Harvard Medical School got the same puzzle about a medical test. The most common answer was 95% [@casscells1978]. The way to solve it is to count, not to use a formula.
+- `chapters/ch02.qmd`
+  - Before: @fig-base-rate-tree holds the trick. The 5% false-alarm rate sounds small, but it's 5% of a *huge* number. The 99% hit rate sounds large, but it's 99% of a *tiny* one. The psychologist Gerd Gigerenzer showed that people who reason with counts like these get such puzzles right far more often [@gigerenzer1995]. If a probability ever surprises you, turn it into counts of events. The surprise usually vanishes.
+  - After: @fig-base-rate-tree shows the answer. The 5% false-alarm rate sounds small, but it's 5% of a *huge* number. The 99% hit rate sounds large, but it's 99% of a *tiny* one. The psychologist Gerd Gigerenzer showed that people who think in counts like these get such puzzles right far more often [@gigerenzer1995]. If a probability ever surprises you, turn it into counts of events. The surprise usually goes away.
+- `chapters/ch02.qmd`
+  - Before: The chance of something before you see any evidence, the 1 in 1,000, is called the **base rate**. Ignoring it is the base-rate fallacy, and it's why a "95% accurate" fraud model can still bury a bank in false alarms.
+  - After: The chance of something before you see any evidence, here 1 in 1,000, is called the **base rate**. Ignoring it is the base-rate fallacy. It's why a "95% accurate" fraud model can still give a bank far too many false alarms.
+- `chapters/ch02.qmd`
+  - Before: ## Bayes' rule, without the fear
+  - After: ## Bayes' rule, made simple
+- `chapters/ch02.qmd`
+  - Before: The cleanest way uses **odds**: "for" compared with "against". A probability of 20% is odds of 20 to 80, or 0.25. Every clue has a strength: how much more common is it among attacks than among harmless alerts? That ratio is the **likelihood ratio**. At Kestrel, a threat-intel score of 0.7 or more shows up in {{< num ch02 ioc_attack_share pct >}} of attacks and {{< num ch02 ioc_benign_share pct1 >}} of harmless alerts, so its likelihood ratio is about {{< num ch02 lr_ioc f1 >}}.
+  - After: The simplest way uses **odds**: "for" compared with "against". A probability of 20% is odds of 20 to 80, or 0.25. Every clue has a strength: how much more common is it among attacks than among harmless alerts? That ratio is the **likelihood ratio**. At Kestrel, a threat-intel score of 0.7 or more shows up in {{< num ch02 ioc_attack_share pct >}} of attacks and {{< num ch02 ioc_benign_share pct1 >}} of harmless alerts. So its likelihood ratio is about {{< num ch02 lr_ioc f1 >}}.
+- `chapters/ch02.qmd`
+  - Before: One caveat. Multiplying like this assumes each clue tells you something *new*. Real clues overlap: attackers who use bad infrastructure also tend to work at night. Among alerts with both clues, the real attack rate is {{< num ch02 real12 pct >}}, not the {{< num ch02 p2 pct >}} our multiplication predicted. That gap is why, in practice, we let a model learn how much each clue is worth. We'll build one in a moment.
+  - After: One warning. Multiplying like this assumes each clue tells you something *new*. Real clues overlap: attackers who use known-bad servers also tend to work at night. Among alerts with both clues, the real attack rate is {{< num ch02 real12 pct >}}, not the {{< num ch02 p2 pct >}} our multiplication predicted. That gap is why, in practice, we let a model learn how much each clue is worth. We'll build one in a moment.
+- `chapters/ch02.qmd`
+  - Before: First, how do we score a yes-or-no rule? Take *raise an alert whenever the threat-intel score is 0.5 or more*, and sort every alert into four boxes.
+  - After: First, how do we score a yes-or-no rule? Take the rule *raise an alert whenever the threat-intel score is 0.5 or more*. Sort every alert into four boxes.
+- `chapters/ch02.qmd`
+  - Before: **Precision** answers: *when the rule raises an alert, how often is it real?* Here it's {{< num ch02 precision pct >}}. **Recall** answers: *of all the real attacks, how many did the rule catch?* Here it's {{< num ch02 recall pct >}}. And **accuracy**, the share of all alerts put in the right box (@fig-confusion), comes out at {{< num ch02 accuracy pct >}}. That sounds decent, until you notice that a rule that *never raises any alert at all* scores {{< num ch02 always_benign_acc pct >}}. When one outcome is rare, accuracy mostly measures how common the other one is.
+  - After: **Precision** answers: *when the rule raises an alert, how often is it real?* Here it's {{< num ch02 precision pct >}}. **Recall** answers: *of all the real attacks, how many did the rule catch?* Here it's {{< num ch02 recall pct >}}. And **accuracy** is the share of all alerts put in the right box (@fig-confusion). It comes out at {{< num ch02 accuracy pct >}}. That sounds good, until you notice that a rule that *never raises any alert at all* scores {{< num ch02 always_benign_acc pct >}}. When one outcome is rare, accuracy mostly measures how common the other one is.
+- `chapters/ch02.qmd`
+  - Before: Bayes' rule multiplied odds. Multiplying is awkward and adding is easy, so take the logarithm of the odds, the **log-odds**, and every multiplication becomes an addition. That gives a very simple machine. Start from a baseline number, add a **weight** for each clue, and turn the total back into a probability with an S-shaped curve.
+  - After: Bayes' rule multiplied odds. Multiplying is awkward and adding is easy. So take the logarithm of the odds, called the **log-odds**, and every multiplication becomes an addition. That gives a very simple machine. Start from a starting number, add a **weight** for each clue, and turn the total back into a probability with an S-shaped curve.
+- `chapters/ch02.qmd`
+  - Before: And that's the model (@fig-sigmoid): **logistic regression**, used for credit scores and medical risk for decades. Underneath, it's Bayes' rule on the log-odds scale, with one upgrade: the model learns all the weights *together*, so it can discount clues that overlap.
+  - After: And that's the model (@fig-sigmoid): **logistic regression**. It has been used for credit scores and medical risk for decades. Underneath, it's Bayes' rule on the log-odds scale, with one improvement. The model learns all the weights *together*, so it can give less weight to clues that overlap.
+- `chapters/ch02.qmd`
+  - Before: Think about how *you'd* want to be judged as a forecaster. Say 90% and be right, and you should lose almost nothing. Say 1% and be wrong, and you should be embarrassed, badly, because you were confidently wrong. That score exists. **Log loss** measures surprise: the penalty is minus the logarithm of the probability you gave to what actually happened.
+  - After: Think about how *you'd* want to be judged as a forecaster. Say 90% and be right, and you should lose almost nothing. Say 1% and be wrong, and you should lose a lot, because you were confidently wrong. That score exists. **Log loss** measures surprise. The penalty is minus the logarithm of the probability you gave to what actually happened.
+- `chapters/ch02.qmd`
+  - Before: ![Log loss for a single alert. If it really was an attack (red), the penalty is small when the model gave "attack" a high probability and explodes as that probability heads towards zero. Harmless alerts (blue) work the same way from the other side.]
+  - After: ![Log loss for a single alert. If it really was an attack (red), the penalty is small when the model gave "attack" a high probability. It grows very fast as that probability gets close to zero. Harmless alerts (blue) work the same way from the other side.]
+- `chapters/ch02.qmd`
+  - Before: Log loss has a deeper property, and it's the reason this book cares so much about it. It's a **proper scoring rule**: the only way to get the best score, on average, is to report the probabilities you actually believe. Say 99% when you believe 80%, and over many cases you lose more than you gain. So models trained this way tend to come out reasonably *honest*, a word the next chapter spends all its pages on.
+  - After: Log loss has a deeper property, and it's why this book cares so much about it. It's a **proper scoring rule**: the only way to get the best score, on average, is to report the probabilities you actually believe. Say 99% when you believe 80%, and over many cases you lose more than you gain. So models trained this way tend to come out fairly well *calibrated*: their probabilities are close to honest. The next chapter is all about calibration.
+- `chapters/ch02.qmd`
+  - Before: Log loss rewards honest confidence and punishes confident mistakes.
+  - After: Log loss rewards honest probabilities and punishes confident mistakes.
+- `chapters/ch02.qmd`
+  - Before: Picture the log loss as hilly ground: every combination of weights is a place, and the height is the loss. Learning means finding the lowest point. We can't search every place, but we don't have to. Stand on a hillside in thick fog, feel which way the ground slopes under your feet, take a step downhill, and repeat until the ground is flat.
+  - After: Picture the log loss as hilly ground. Every combination of weights is a place, and the height is the loss. Learning means finding the lowest point. We can't search every place, but we don't have to. Stand on a hill in thick fog. Feel which way the ground slopes under your feet, take a step downhill, and repeat until the ground is flat.
+- `chapters/ch02.qmd`
+  - Before: The **gradient** is the slope in every direction at once. For logistic regression it has a lovely form: for each alert, take what the model said minus what happened, *p* − *y*, multiply by the alert's clues, and average. Step the other way. How big a step to take is the **learning rate**: too small and you barely move, too big and you overshoot the valley.
+  - After: The **gradient** is the slope in every direction at once. For logistic regression it's simple to compute. For each alert, take what the model said minus what happened, *p* − *y*. Multiply by the alert's clues, and average. Then step the other way. The size of each step is the **learning rate**. Too small and you barely move; too big and you step right over the lowest point.
+- `chapters/ch02.qmd`
+  - Before: Here it is, on Kestrel's alerts. We keep 20% of them locked away for testing, because the only fair estimate of how a model will do on new alerts comes from alerts it never saw.
+  - After: Here it is, on Kestrel's alerts. We keep 20% of them aside for testing. The only fair way to estimate how a model will do on new alerts is to test it on alerts it never saw.
+- `chapters/ch02.qmd`
+  - Before: That loop is the heart of machine learning. Everything else, including the training of LLMs, is this loop with a bigger model, more data and cleverer steps.
+  - After: That loop is the centre of machine learning. Everything else, including the training of LLMs, is this loop with a bigger model, more data and smarter steps.
+- `chapters/ch02.qmd`
+  - Before: **Overfitting** is memorising instead of learning. A flexible enough model can shape itself around every quirk of the training data, including the noise, and its training loss keeps falling while it gets *worse* at anything new.
+  - After: **Overfitting** is memorising instead of learning. A flexible enough model can fit every small detail of the training data, including the noise. Its training loss keeps falling while it gets *worse* at anything new.
+- `chapters/ch02.qmd`
+  - Before: A decision tree allowed {{< num ch03 tree_best_depth int >}} levels of questions does best on new alerts. Allowed twenty, it nearly memorises the training set, with a training loss of {{< num ch03 tree_deep_train f3 >}}, and does terribly on alerts it hasn't seen ({{< num ch03 tree_deep_test f2 >}}) (@fig-overfit). The only way to see this is to test on data the model never trained on.
+  - After: A decision tree is a model that asks a series of yes-or-no questions about an alert. Allowed {{< num ch03 tree_best_depth int >}} levels of questions, it does best on new alerts. Allowed twenty, it nearly memorises the training set, with a training loss of {{< num ch03 tree_deep_train f3 >}}. And it does very badly on alerts it hasn't seen ({{< num ch03 tree_deep_test f2 >}}) (@fig-overfit). The only way to see this is to test on data the model never trained on.
+- `chapters/ch02.qmd`
+  - Before: **Leakage** is subtler and nastier. A feature carries the answer in disguise.
+  - After: **Leakage** is harder to spot and more dangerous. It's when a clue secretly contains the answer.
+- `chapters/ch02.qmd`
+  - Before: Suppose Kestrel's alert database has a field called `analyst_notes`. Train with it and the results look astonishing, because notes like "confirmed phishing" are only written *after* someone has decided. At 2:14 a.m., when the model has to decide, that field is empty. Ask of every feature: *would I actually have this value at the moment of the decision?* And remember that probabilities are always "among cases like this": if attackers launch a campaign, the base rate jumps, and every probability computed from last month is suddenly too low.
+  - After: Suppose Kestrel's alert database has a field called `analyst_notes`. Train with it and the results look amazing, because notes like "confirmed phishing" are only written *after* someone has decided. At 2:14 a.m., when the model has to decide, that field is empty. Ask this about every clue: *would I actually have this value at the moment of the decision?* And remember that probabilities are always "among cases like this". If attackers start a campaign, the base rate jumps. Then every probability computed from last month is suddenly too low.
+- `chapters/ch02.qmd`
+  - Before: Precision and recall pull against each other. Lower the rule's threshold from 0.5 to 0.3: which goes up, and which goes down? If Kestrel's analysts can only look at 300 alerts a day, which should they care about more?
+  - After: Precision and recall pull in opposite directions. Lower the rule's threshold from 0.5 to 0.3. Which one goes up, and which goes down? If Kestrel's analysts can only look at 300 alerts a day, which should they care about more?
+- `chapters/ch02.qmd`
+  - Before: (Recall goes up, precision down: you catch more attacks and raise more false alarms. With a fixed daily budget, precision decides how many real attacks fit inside those 300 looks. Chapter 4 puts both into a single cost.)
+  - After: (Recall goes up and precision goes down: you catch more attacks and raise more false alarms. With a fixed daily limit, precision decides how many real attacks are among those 300 alerts. Chapter 4 puts both into a single cost.)
+- `chapters/ch02.qmd`
+  - Before: A probability, we found, only means something as a track record, which is why "among what?" matters so much. Asking it carefully exposed the base-rate trap, and escaping the trap meant multiplying odds: Bayes' rule. Accuracy flattered a rule that caught almost nothing, so we needed precision and recall. Then we built a machine that learns probabilities: it adds evidence on the log-odds scale, is scored by log loss, and rolls downhill, and it came within a whisker of the truth on alerts it never saw.
+  - After: A probability, we found, only means something as a record over many cases. That's why "among what?" matters so much. Asking it carefully showed us the base-rate trap, and getting out of the trap meant multiplying odds: Bayes' rule. Accuracy made a rule that caught almost nothing look good, so we needed precision and recall. Then we built a machine that learns probabilities. It adds up evidence on the log-odds scale, is scored by log loss, and rolls downhill. On alerts it never saw, it came very close to the truth.
+- `chapters/ch02.qmd`
+  - Before: Log loss *rewards* honesty. That isn't the same as *being* honest, and that's what we have to check next.
+  - After: Log loss *rewards* calibrated probabilities. That isn't the same as *producing* them, and that's what we have to check next.
+- `chapters/ch02.qmd`
+  - Before: 1. A spam filter catches 98% of spam and wrongly flags 1% of real email. If 20% of incoming email is spam, what fraction of flagged emails are real? Redo it for a mailbox where only 1% is spam. Use natural frequencies.
+  - After: 1. A spam filter catches 98% of spam and wrongly flags 1% of real email. If 20% of incoming email is spam, what fraction of flagged emails are real? Do it again for a mailbox where only 1% is spam. Use counts, as in @fig-base-rate-tree.
+- `chapters/ch02.qmd`
+  - Before: Next: our model says 0.8. Does 0.8 really mean 80%? We'll check, find out where it lies, and fix it.
+  - After: Next: our model says 0.8. Does 0.8 really mean 80%? We'll check, find out where it's wrong, and fix it.
+
+## Chapter 3: Calibration
+
+49 changes.
+
+- `chapters/ch03.qmd`
+  - Before: A question that sounds silly until it costs you money:
+  - After: Here's a question that sounds silly until it costs you money:
+- `chapters/ch03.qmd`
+  - Before: Your instinct is probably "obviously": it's a probability, and that's what the number is for.
+  - After: Your first answer is probably "of course": it's a probability, and that's what the number is for.
+- `chapters/ch03.qmd`
+  - Before: But a number is just a number. A model can say 0.8 about alerts that turn out to be attacks half the time, or nineteen times out of twenty. Nothing in the maths of the model forces its 0.8 to line up with reality. It lines up only if we built it well, trained it on the right data and checked, and even then it can drift.
+  - After: But a number is just a number. A model can say 0.8 about alerts that turn out to be attacks half the time, or nineteen times out of twenty. Nothing in the maths of the model forces its 0.8 to match reality. It matches only if we built it well, trained it on the right data and checked it. Even then, it can slowly go wrong over time.
+- `chapters/ch03.qmd`
+  - Before: This chapter is about checking, the single most important habit in the book. Every threshold in Chapter 4, every policy in Chapter 14 and every claim about Jev in Part III rests on it.
+  - After: This chapter is about checking, the most important habit in the book. Every threshold in Chapter 4, every policy in Chapter 14 and every claim about Jev in Part III depends on it.
+- `chapters/ch03.qmd`
+  - Before: People love to complain about forecasters. But in the 1970s, when researchers checked American weather forecasters' chance-of-rain forecasts against what actually happened, they found something surprising. When the forecasters said "30% chance of rain", it rained on roughly 30% of those days. When they said 70%, it rained roughly 70% of the time. Across the whole range, what they said and what happened lined up almost perfectly [@murphy1977].
+  - After: People love to complain about weather forecasters. But in the 1970s, researchers checked American forecasters' chance-of-rain forecasts against what actually happened. They found something surprising. When the forecasters said "30% chance of rain", it rained on about 30% of those days. When they said 70%, it rained about 70% of the time. Across the whole range, what they said and what happened matched almost perfectly [@murphy1977].
+- `chapters/ch03.qmd`
+  - Before: Compare that with how people usually do. Ask someone to give a range they're "90% sure" contains the answer to a trivia question, and the truth lands inside far less often than 90% of the time. We are, as a species, reliably too sure of ourselves.
+  - After: Compare that with most people. Ask someone for a range they're "90% sure" contains the answer to a quiz question. The true answer falls inside it far less often than 90% of the time. As a rule, people are too sure of themselves.
+- `chapters/ch03.qmd`
+  - Before: What makes the weather forecasters good isn't that they're always right. They can't be. It's that their numbers mean what they say. That property has a name.
+  - After: The weather forecasters aren't good because they're always right. They can't be. They're good because their numbers mean what they say. That property has a name: **calibration**.
+- `chapters/ch03.qmd`
+  - Before: And, importantly, calibration is something you can *check*, with nothing more than grouping and counting. You collect everything the model said "about 80%" to, and count how often it happened.
+  - After: And, importantly, you can *check* calibration with nothing more than grouping and counting. Collect everything the model said "about 80%" to, and count how often it happened. A calibrated model's probabilities are honest: they mean what they say.
+- `chapters/ch03.qmd`
+  - Before: ## Good at ranking, bad at honesty
+  - After: ## Good at ranking, badly calibrated
+- `chapters/ch03.qmd`
+  - Before: Before we check anything, one idea needs to land, because people confuse it constantly.
+  - After: Before we check anything, you need one idea, because people confuse it all the time.
+- `chapters/ch03.qmd`
+  - Before: The first is **ranking**: does the model give attacks higher numbers than harmless alerts? If you sort alerts by the model's score, do the real attacks rise to the top? The AUC measures this, the number you've seen in a few tables already. An AUC of 1 means every attack scored above every harmless alert. An AUC of 0.5 means the scores are no better than a coin flip.
+  - After: The first is **ranking**: does the model give attacks higher numbers than harmless alerts? If you sort alerts by the model's score, do the real attacks rise to the top? The **AUC** measures this. It's the chance that a real attack, picked at random, scores higher than a harmless alert picked at random. An AUC of 1 means every attack scored above every harmless alert. An AUC of 0.5 means the scores are no better than tossing a coin.
+- `chapters/ch03.qmd`
+  - Before: The second is **honesty**: when the model says 0.3, do three in ten of those alerts turn out to be attacks? That's calibration.
+  - After: The second is **calibration**: when the model says 0.3, do three in ten of those alerts turn out to be attacks?
+- `chapters/ch03.qmd`
+  - Before: The two are independent. A model can rank perfectly and still lie about how sure it is.
+  - After: The two are separate. A model can rank perfectly and still be wrong about how sure it is.
+- `chapters/ch03.qmd`
+  - Before: @fig-same-auc shows two models with the same AUC, {{< num ch04 lr.auc f3 >}}. Model B's numbers are a mess: it says 40% about alerts that are attacks only a few percent of the time. If you only ever sort alerts, Model B is as good as Model A. The moment you put a threshold on its numbers, or add them into a cost, or show them to an analyst, it'll mislead you.
+  - After: @fig-same-auc shows two models with the same AUC, {{< num ch04 lr.auc f3 >}}. Model B's numbers are badly wrong: it says 40% about alerts that are attacks only a few percent of the time. If you only ever sort alerts, Model B is as good as Model A. But as soon as you put a threshold on its numbers, use them in a cost, or show them to an analyst, it'll mislead you.
+- `chapters/ch03.qmd`
+  - Before: Here lies the trap: most leaderboards and most model comparisons report ranking metrics like AUC, accuracy or F1.
+  - After: This is the trap: most leaderboards and model comparisons report ranking measures like AUC, accuracy or F1.
+- `chapters/ch03.qmd`
+  - Before: Calibration is often not measured at all. For a decision system it's usually the thing that matters most.
+  - After: Calibration is often not measured at all. But for a decision system, it's usually what matters most.
+- `chapters/ch03.qmd`
+  - Before: 1. Take a pile of predictions where you know what happened: our test alerts from Chapter 2.
+  - After: 1. Take a set of predictions where you know what happened: our test alerts from Chapter 2.
+- `chapters/ch03.qmd`
+  - Before: ![The reliability diagram of our Chapter 2 model on alerts it never saw. Points on the dashed diagonal mean the model's numbers can be taken at face value. Underneath, a histogram (log scale) shows how many alerts fall in each part of the range: most sit near zero, and only a handful above 50%.]
+  - After: ![The reliability diagram of our Chapter 2 model on alerts it never saw. Points on the dashed diagonal mean the model's numbers can be trusted as they are. Underneath, a histogram (log scale) shows how many alerts fall in each part of the range: most are near zero, and only a few are above 50%.]
+- `chapters/ch03.qmd`
+  - Before: Look at @fig-anatomy-03 carefully, top and bottom together, because the bottom panel is the one people forget. Our model's points sit near the diagonal where there's lots of data. Up at the right end, the dots jump around, and the histogram tells you why: only a few dozen alerts live up there. A wobbly dot with twelve alerts behind it is weak evidence, as Chapter 2 warned. Always look at the counts before you panic, or relax.
+  - After: Look at @fig-anatomy-03 carefully, top and bottom together, because people forget the bottom panel. Our model's points are near the diagonal where there's lots of data. At the right end, the dots jump around, and the histogram tells you why: only a few dozen alerts are there. A dot based on twelve alerts is weak evidence, as Chapter 2 warned. Always look at the counts before you worry, or before you relax.
+- `chapters/ch03.qmd`
+  - Before: Pictures are the best way to *see* calibration, but sometimes you need a single number, to compare models or to raise an alarm when it drifts. The most common is the **expected calibration error**, ECE: the average gap between "said" and "happened" across the bins, weighted by how many predictions each bin holds [@naeini2015].
+  - After: Pictures are the best way to *see* calibration. But sometimes you need a single number, to compare models or to raise an alarm when calibration gets worse. The most common is the **expected calibration error**, or ECE. It's the average gap between "said" and "happened" across the bins, weighted by how many predictions each bin holds [@naeini2015].
+- `chapters/ch03.qmd`
+  - Before: Our logistic regression's ECE is {{< num ch04 lr.ece f3 >}}, meaning that on average, its probabilities are off by less than one percentage point. Good. Model B's is {{< num ch04 squashed.ece f2 >}}.
+  - After: Our logistic regression's ECE is {{< num ch04 lr.ece f3 >}}. That means its probabilities are off by less than one percentage point on average. Good. Model B's is {{< num ch04 squashed.ece f2 >}}.
+- `chapters/ch03.qmd`
+  - Before: ECE has weaknesses worth knowing. It depends on how you choose the bins. And because it's an average, a model can hide terrible calibration in a small region, such as the high end where the dangerous alerts live, behind excellent calibration where most of the data sits. Report it, but always look at the picture too.
+  - After: ECE has weaknesses worth knowing. It depends on how you choose the bins. And because it's an average, it can hide very bad calibration in a small region. The high end, where the dangerous alerts are, can be badly calibrated while the rest of the data is fine. Report ECE, but always look at the picture too.
+- `chapters/ch03.qmd`
+  - Before: The Brier score from Chapter 2 splits neatly into three parts, a result due to Allan Murphy [@murphy1973]: Brier = *reliability* − *resolution* + *uncertainty*. **Uncertainty** is how hard the problem is to begin with (it depends only on the base rate).
+  - After: The **Brier score** is the average squared gap between a predicted probability and what happened (1 or 0). Allan Murphy showed that it splits into three parts [@murphy1973]: Brier = *reliability* − *resolution* + *uncertainty*. **Uncertainty** is how hard the problem is to begin with (it depends only on the base rate).
+- `chapters/ch03.qmd`
+  - Before: **Resolution** is how much the model's predictions separate cases that turn out differently, which is roughly the ranking skill. **Reliability** is the calibration error: the squared gap between said and happened, bin by bin. For our model: reliability {{< num ch04 decomposition.reliability f4 >}}, resolution {{< num ch04 decomposition.resolution f4 >}}, uncertainty {{< num ch04 decomposition.uncertainty f4 >}}. A model can improve its Brier score by getting better at ranking, or by getting better calibrated, and the decomposition tells you which.
+  - After: **Resolution** is how well the model's predictions separate cases that turn out differently; it's close to ranking skill. **Reliability** is the calibration error: the squared gap between said and happened, bin by bin. For our model: reliability {{< num ch04 decomposition.reliability f4 >}}, resolution {{< num ch04 decomposition.resolution f4 >}}, uncertainty {{< num ch04 decomposition.uncertainty f4 >}}. A model can improve its Brier score by ranking better or by being better calibrated. The three parts tell you which.
+- `chapters/ch03.qmd`
+  - Before: If log loss rewards honesty, as Chapter 2 said, why would a model ever come out miscalibrated? Because the training setup can mislead it. Here are the usual suspects.
+  - After: If log loss rewards calibrated probabilities, as Chapter 2 said, why would a model ever come out miscalibrated? Because the way it's trained can mislead it. Here are the usual causes.
+- `chapters/ch03.qmd`
+  - Before: **Rebalancing the data.** This is one of the most common, and it's usually done with the best intentions. Attacks are rare, only {{< num ch04 base pct >}} of alerts, so someone decides the model needs to "see more attacks" and trains it on a 50/50 mix: every attack, plus an equal number of randomly chosen harmless alerts. The ranking survives. But the model has learned from a world where attacks are *common*, and it faithfully reports probabilities for that world.
+  - After: **Rebalancing the data.** This is one of the most common causes, and people usually do it with good intentions. Attacks are rare, only {{< num ch04 base pct >}} of alerts. So someone decides the model needs to "see more attacks" and trains it on a 50/50 mix: every attack, plus the same number of harmless alerts chosen at random. The ranking is still fine. But the model has learned from a world where attacks are *common*, and it correctly reports probabilities for that world, not ours.
+- `chapters/ch03.qmd`
+  - Before: The rebalanced model's average prediction is {{< num ch04 bal_mean_pred pct >}}. The real attack rate is {{< num ch04 base pct >}}. Put a threshold on those numbers and you'll drown your analysts.
+  - After: The rebalanced model's average prediction is {{< num ch04 bal_mean_pred pct >}}. The real attack rate is {{< num ch04 base pct >}}. Put a threshold on those numbers and you'll send your analysts far more alerts than they can handle.
+- `chapters/ch03.qmd`
+  - Before: **Scores that were never probabilities.** Some models output a "score" that happens to fall between 0 and 1 but was never trained with a proper scoring rule. Treat it as a ranking until you've checked it.
+  - After: **Scores that were never probabilities.** Some models output a "score" that happens to be between 0 and 1 but was never trained with a proper scoring rule. Treat it as a ranking until you've checked it.
+- `chapters/ch03.qmd`
+  - Before: **Big modern networks.** Surprisingly, very large neural networks trained for classification tend to be *overconfident* [@guo2017]. Chapter 5 looks at why. And the "confidence" an LLM states in words is a different animal again. Chapter 6 measures it.
+  - After: **Big modern networks.** Surprisingly, very large neural networks trained to sort things into classes tend to be *overconfident* [@guo2017]. Chapter 5 looks at why. The "confidence" an LLM states in words is a different thing again; Chapter 6 measures it.
+- `chapters/ch03.qmd`
+  - Before: **The world changing.** A model calibrated on last month's base rate is miscalibrated the day a campaign doubles the number of attacks. Chapter 14 will watch it happen.
+  - After: **The world changing.** A model calibrated on last month's base rate is miscalibrated on the day an attack campaign doubles the number of attacks. Chapter 14 shows this happening.
+- `chapters/ch03.qmd`
+  - Before: The good news: a model with good ranking and bad calibration is usually easy to fix. You don't retrain it. You put a small correction on top.
+  - After: The good news: a model that ranks well but is badly calibrated is usually easy to fix. You don't retrain it. You add a small correction on top.
+- `chapters/ch03.qmd`
+  - Before: The recipe is always the same. Hold back a **calibration set**, data the model never trained on. That's the 20% we set aside in Chapter 2. Run the model on it, and learn a simple function that maps the model's raw probabilities to calibrated ones. Then check the result on the *test* set, which neither the model nor the correction has seen.
+  - After: The method is always the same. Keep back a **calibration set**: data the model never trained on. Run the model on it, and learn a simple function that turns the model's raw probabilities into calibrated ones. Then check the result on the *test* set, which neither the model nor the correction has seen.
+- `chapters/ch03.qmd`
+  - Before: **Platt scaling** fits a tiny logistic regression on top of the model's log-odds: two numbers, a stretch and a shift [@platt1999]. It's the usual first choice.
+  - After: **Platt scaling** fits a tiny logistic regression on top of the model's log-odds. It learns two numbers: a stretch and a shift [@platt1999]. It's the usual first choice.
+- `chapters/ch03.qmd`
+  - Before: **Temperature scaling** fits just one number, *T*, and divides the log-odds by it [@guo2017]. *T* above 1 softens overconfident predictions; below 1 sharpens timid ones. It's the standard fix for overconfident neural networks, and it's what people usually mean when they talk about calibrating an LLM classifier.
+  - After: **Temperature scaling** fits just one number, *T*, and divides the log-odds by it [@guo2017]. A *T* above 1 softens overconfident predictions; a *T* below 1 sharpens predictions that are too cautious. It's the standard fix for overconfident neural networks. It's also what people usually mean by calibrating an LLM classifier.
+- `chapters/ch03.qmd`
+  - Before: **Isotonic regression** fits a staircase that only ever goes up [@zadrozny2002]. It can fix almost any shape, but it needs more data and can overfit a small calibration set.
+  - After: **Isotonic regression** fits a staircase that only ever goes up [@zadrozny2002]. It can fix almost any shape, but it needs more data, and it can overfit a small calibration set.
+- `chapters/ch03.qmd`
+  - Before: Platt and isotonic fix the rebalanced model almost completely. Temperature scaling doesn't help at all, and the reason teaches you something. Rebalancing didn't make the model overconfident. It *shifted* every prediction upwards, as if attacks were common. A temperature can only stretch or squeeze predictions around 0.5. It can't slide them all down. Platt can, because it has a shift as well as a stretch.
+  - After: Platt and isotonic fix the rebalanced model almost completely. Temperature scaling doesn't help at all, and the reason teaches you something. Rebalancing didn't make the model overconfident. It *moved* every prediction up, as if attacks were common. A temperature can only stretch or squeeze predictions around 0.5. It can't move them all down. Platt can, because it has a shift as well as a stretch.
+- `chapters/ch03.qmd`
+  - Before: ## Honest on average, dishonest in the corner
+  - After: ## Calibrated on average, wrong for one group
+- `chapters/ch03.qmd`
+  - Before: One more trap, and it's the one that bites in production.
+  - After: There's one more trap, and it's the one that causes problems in real systems.
+- `chapters/ch03.qmd`
+  - Before: A model can be well calibrated *overall* and badly calibrated for a particular group. Take a version of our model trained without knowing which detection rule fired, so it can't tell an email alert from an endpoint one.
+  - After: A model can be well calibrated *overall* and badly calibrated for one group. Take a version of our model trained without knowing which detection rule fired. It can't tell an email alert from an alert on a laptop or server (an "endpoint").
+- `chapters/ch03.qmd`
+  - Before: Its overall ECE is excellent, {{< num ch04 generic.ece f3 >}}. Yet for endpoint (EDR) alerts it says
+  - After: Its overall ECE is excellent, {{< num ch04 generic.ece f3 >}}. Yet for endpoint alerts, which come from EDR (endpoint detection and response) tools, it says
+- `chapters/ch03.qmd`
+  - Before: The over- and under-estimates cancel out in the average.
+  - After: The estimates that are too high and too low cancel out in the average.
+- `chapters/ch03.qmd`
+  - Before: If your policy treats every source the same way, you'll send too many harmless DLP alerts to the queue and close too many real EDR ones. The rule is simple: **check calibration inside every group you'll act on differently**, and inside every group where a mistake would be especially costly. Sources, customer tiers, languages, regions, and yes, demographic groups when a model touches people's lives.
+  - After: If your policy treats every source the same way, you'll send too many harmless DLP alerts to the queue and close too many real EDR ones. The rule is simple: **check calibration inside every group you'll treat differently**, and inside every group where a mistake would be especially costly. That means sources, customer tiers, languages and regions. It also means groups of people, such as age or gender, when a model affects people's lives.
+- `chapters/ch03.qmd`
+  - Before: Kestrel auto-closes any alert under 3%. The model above says EDR alerts average {{< num ch04 by_source.EDR.pred pct1 >}} risk, but they're really {{< num ch04 by_source.EDR.actual pct1 >}}. Roughly how much more often than planned will a real EDR threat be auto-closed? What are two different ways to fix this: one that changes the model, and one that changes only the policy?
+  - After: Kestrel auto-closes any alert under 3%. The model above says EDR alerts average {{< num ch04 by_source.EDR.pred pct1 >}} risk, but they're really {{< num ch04 by_source.EDR.actual pct1 >}}. About how much more often than planned will a real EDR threat be auto-closed? Name two ways to fix this: one that changes the model, and one that changes only the policy.
+- `chapters/ch03.qmd`
+  - Before: (About half as often again. You could add the source as a feature, or calibrate separately per source, so the model's numbers hold up for every source. Or you could keep the model and set a stricter act line for EDR alerts. The first is better; the second is quicker.)
+  - After: (About 50% more often. You could add the source as a clue, or calibrate separately for each source, so the model is calibrated for every source. Or you could keep the model and set a stricter act threshold for EDR alerts. The first is better; the second is quicker.)
+- `chapters/ch03.qmd`
+  - Before: Calibration is always measured *on some data*, and it's only guaranteed for data like that. A model calibrated on last quarter's alerts can drift as tools, attackers and staff change. Isotonic regression fitted on a few hundred examples will overfit and produce jagged, overconfident corrections. And calibration says nothing about any *single* prediction: a perfectly calibrated 70% is still wrong three times in ten. Keep a fresh calibration set, refit on a schedule, and keep watching the diagram.
+  - After: Calibration is always measured *on some data*, and it only holds for data like that. A model calibrated on last quarter's alerts can become less calibrated as tools, attackers and staff change. Isotonic regression fitted on a few hundred examples will overfit and produce rough, overconfident corrections. And calibration says nothing about any *single* prediction: a perfectly calibrated 70% is still wrong three times in ten. Keep a fresh calibration set, refit on a schedule, and keep watching the diagram.
+- `chapters/ch03.qmd`
+  - Before: The weather forecasters showed us that honesty is checkable. Then two models with the same ranking and very different calibration showed us why checking matters. Grouping and counting gave us the reliability diagram, and a well-meant rebalancing broke it. A small correction fitted on held-out data put it back. And just when the average looked fine, the EDR alerts reminded us to look inside every group we'll act on.
+  - After: The weather forecasters showed us that calibration can be checked. Then two models with the same ranking and very different calibration showed us why checking matters. Grouping and counting gave us the reliability diagram, and a well-meant rebalancing broke calibration. A small correction fitted on held-out data fixed it. And just when the average looked fine, the EDR alerts reminded us to look inside every group we'll treat differently.
+- `chapters/ch03.qmd`
+  - Before: When Part III tests Jev's own calibration, it'll use these same tools, pointed at the mock, with everything in this chapter as the yardstick.
+  - After: When Part III tests Jev's own calibration, it'll use these same tools on the mock, and measure it against everything in this chapter.
+- `chapters/ch03.qmd`
+  - Before: 1. Explain to a colleague, without jargon, the difference between a model that ranks well and a model that's calibrated. Use a weather example.
+  - After: 1. Explain to a colleague, without technical words, the difference between a model that ranks well and a model that's calibrated. Use a weather example.
+- `chapters/ch03.qmd`
+  - Before: Next: we finally have probabilities we can trust. Chapter 4 turns them into actions: what each mistake costs, where the lines go, and how to see the whole trade-off on one page.
+  - After: Next: we finally have calibrated probabilities. Chapter 4 turns them into actions: what each mistake costs, where the thresholds go, and how to see the whole trade-off on one page.
+
+## Chapter 3 (continued)
+
+3 changes.
+
+- `chapters/ch03.qmd`
+  - Before: Yet for endpoint alerts, which come from EDR (endpoint detection and response) tools, it says {{< num ch04 by_source.EDR.pred pct1 >}} when the truth is {{< num ch04 by_source.EDR.actual pct1 >}}, and for DLP alerts (data loss prevention: warnings that company data may be leaving the building) it says {{< num ch04 by_source.DLP.pred pct1 >}} when the truth is {{< num ch04 by_source.DLP.actual pct1 >}}.
+  - After: Endpoint alerts come from EDR (endpoint detection and response) tools. For them, it says {{< num ch04 by_source.EDR.pred pct1 >}} when the truth is {{< num ch04 by_source.EDR.actual pct1 >}}. DLP (data loss prevention) alerts warn that company data may be leaving the building. For them, it says {{< num ch04 by_source.DLP.pred pct1 >}} when the truth is {{< num ch04 by_source.DLP.actual pct1 >}}.
+- `chapters/ch03.qmd`
+  - Before: Its overall ECE is excellent, {{< num ch04 generic.ece f3 >}}.
+  - After: Its overall ECE is excellent: {{< num ch04 generic.ece f3 >}}.
+- `chapters/ch03.qmd`
+  - Before: **Overfitting.** Flexible models that memorise, like the deep decision tree from Chapter 2, push their probabilities towards 0 and 1, because on the training data they really were that sure.
+  - After: **Overfitting.** Flexible models that memorise, like the deep decision tree from Chapter 2, push their probabilities towards 0 and 1. On the training data, they really were that sure.
+
+## Chapter 4: From probabilities to actions
+
+45 changes.
+
+- `chapters/ch04.qmd`
+  - Before: And now you hit the wall everyone hits:
+  - After: And now you reach the problem everyone reaches:
+- `chapters/ch04.qmd`
+  - Before: *"Great. So where do I put the line?"*
+  - After: *"Great. So where do I put the threshold?"*
+- `chapters/ch04.qmd`
+  - Before: Most people pick 0.5 without thinking about it. It's the default in almost every library. It *feels* neutral.
+  - After: Most people pick 0.5 without thinking about it. It's the default in almost every library. It *feels* neutral.
+- `chapters/ch04.qmd`
+  - Before: It isn't neutral at all. It's a very specific opinion about your business, and it's usually the wrong one. This chapter shows you how to put the line where it belongs, with nothing fancier than the arithmetic you already have.
+  - After: It isn't neutral at all. It's a very specific opinion about your business, and it's usually the wrong one. This chapter shows you how to put the threshold where it belongs, using only the arithmetic you already know.
+- `chapters/ch04.qmd`
+  - Before: - Check the formula against a brute-force search on real (synthetic) data.
+  - After: - Check the formula against a search that tries every threshold, on realistic (synthetic) data.
+- `chapters/ch04.qmd`
+  - Before: Let's start somewhere dry. Well, somewhere that might not be.
+  - After: Let's start with the weather again.
+- `chapters/ch04.qmd`
+  - Before: It depends on two things you already know without thinking about them. Carrying an umbrella you didn't need is mildly annoying; call it 1 unit of annoyance. Getting soaked on the way to a meeting is much worse; call it 4.
+  - After: It depends on two things you already know without thinking about them. Carrying an umbrella you didn't need is a little annoying; call it 1 unit of annoyance. Getting very wet on the way to a meeting is much worse; call it 4.
+- `chapters/ch04.qmd`
+  - Before: If you carry it, you pay 1, rain or shine. If you leave it, you pay 4, but only if it rains, so on average you pay 4 × the chance of rain.
+  - After: If you carry it, you pay 1, rain or not. If you leave it, you pay 4, but only if it rains. So on average you pay 4 × the chance of rain.
+- `chapters/ch04.qmd`
+  - Before: - a **false alarm**: you act, and you didn't need to (carried the umbrella; blocked a harmless login);
+  - After: - a **false alarm**: you act, and you didn't need to (you carried the umbrella; you blocked a harmless login);
+- `chapters/ch04.qmd`
+  - Before: - a **miss**: you don't act, and you should have (got soaked; let an attacker in).
+  - After: - a **miss**: you don't act, and you should have (you got wet; you let an attacker in).
+- `chapters/ch04.qmd`
+  - Before: Check it with the umbrella: 1 ÷ (1 + 4) = 0.2. Exactly where the lines crossed.
+  - After: Check it with the umbrella: 1 ÷ (1 + 4) = 0.2. That's exactly where the two lines crossed.
+- `chapters/ch04.qmd`
+  - Before: Now look at what happens when the two costs are equal. The formula gives 1 ÷ 2 = 0.5. *That's* where 0.5 comes from. It's the right threshold only when a false alarm and a miss hurt the same amount, which is almost never true for anything worth building a model for.
+  - After: Now look at what happens when the two costs are equal. The formula gives 1 ÷ 2 = 0.5. *That's* where 0.5 comes from. It's the right threshold only when a false alarm and a miss hurt the same amount. That's almost never true for anything worth building a model for.
+- `chapters/ch04.qmd`
+  - Before: ![The right threshold for any ratio between the cost of a miss and the cost of a false alarm (both axes on a log scale). Equal costs give 0.5. As misses get more expensive, the line drops fast.]
+  - After: ![The right threshold for any ratio between the cost of a miss and the cost of a false alarm (both axes on a log scale). Equal costs give 0.5. As misses get more expensive, the threshold drops fast.]
+- `chapters/ch04.qmd`
+  - Before: @fig-threshold-ratio puts a few real decisions on one curve. Kestrel's decision in Chapter 14, whether an alert may close itself without any human looking at it, sits in the far bottom-right corner: a miss there is about 630 times worse than an analyst's twelve minutes, so the line drops to about {{< num ch05 soc_review_t f4 >}}. Different decision, different costs, different line.
+  - After: @fig-threshold-ratio puts a few real decisions on one curve. In Chapter 14, Kestrel decides whether an alert may close itself without any person looking at it. That decision is in the far bottom-right corner. A miss there is about 630 times worse than twelve minutes of an analyst's time, so the threshold drops to about {{< num ch05 soc_review_t f4 >}}. A different decision has different costs, so it gets a different threshold.
+- `chapters/ch04.qmd`
+  - Before: Where the formula comes from. For a single case with probability *P*, acting costs (1 − *P*) × *C*~fa~ on average (you pay only if it was harmless), and not acting costs *P* × *C*~miss~ (you pay only if it was real). Act when the first is smaller: (1 − *P*) *C*~fa~ < *P* *C*~miss~, which rearranges to *P* > *C*~fa~ / (*C*~fa~ + *C*~miss~). If getting it *right* also has costs or benefits (say, blocking a real threat earns some credit), the same logic works with a 2×2 table of costs, one for each combination of action and truth. This is the foundation of cost-sensitive learning [@elkan2001].
+  - After: Where the formula comes from. For a single case with probability *P*, acting costs (1 − *P*) × *C*~fa~ on average, because you pay only if it was harmless. Not acting costs *P* × *C*~miss~, because you pay only if it was real. Act when the first is smaller: (1 − *P*) *C*~fa~ < *P* *C*~miss~. Rearranged, that's *P* > *C*~fa~ / (*C*~fa~ + *C*~miss~). Getting it *right* can also have costs or benefits; for example, blocking a real threat might earn some credit. Then the same logic works with a 2×2 table of costs, one for each combination of action and truth. This is the basis of cost-sensitive learning [@elkan2001].
+- `chapters/ch04.qmd`
+  - Before: A formula is nice. Evidence is better. Let's test it.
+  - After: A formula is nice, but evidence is better. Let's test it.
+- `chapters/ch04.qmd`
+  - Before: Kestrel makes one decision on every alert: **block it or allow it?** Block the sender, the connection or the sign-in, automatically. Wrongly blocking something harmless costs about \$200 in disrupted work: a stuck shipment, an angry customer, an engineer locked out. Letting a real threat through at this step costs about \$4,000, since other defences still have a chance to catch it later. Those are illustrative numbers, but plausible ones.
+  - After: Kestrel makes one decision on every alert: **block it or allow it?** Blocking means automatically stopping the sender, the connection or the sign-in. Wrongly blocking something harmless costs about \$200 in lost work: a delayed shipment, an angry customer, an engineer who can't sign in. Letting a real threat through at this step costs about \$4,000, since other defences still have a chance to catch it later. Those numbers are illustrative, but realistic.
+- `chapters/ch04.qmd`
+  - Before: Compare the formula with a brute-force search over 300 thresholds, using the calibrated logistic regression from Chapter 2 on the test alerts.
+  - After: Compare the formula with a search that tries 300 thresholds, using the calibrated logistic regression from Chapter 2 on the test alerts.
+- `chapters/ch04.qmd`
+  - Before: The formula lands close to the brute-force best, and the cost difference is small. The 0.5 line costs {{< num ch05 half_penalty f1 >}} times as much.
+  - After: The formula lands close to the best threshold the search found, and the cost difference is small. A threshold of 0.5 costs {{< num ch05 half_penalty f1 >}} times as much.
+- `chapters/ch04.qmd`
+  - Before: ![Total cost on the test alerts at every threshold. For the calibrated model (green), the formula's line sits near the bottom of the valley. For the same model trained on rebalanced data (red), the same line lands halfway up the wall.]
+  - After: ![Total cost on the test alerts at every threshold. For the calibrated model (green), the formula's threshold is near the lowest point of the curve. For the same model trained on rebalanced data (red), the same threshold lands far from its lowest point.]
+- `chapters/ch04.qmd`
+  - Before: And now the reason Chapter 3 came first. @fig-cost-curve also shows the rebalanced model from Chapter 3, which ranks alerts almost as well but whose probabilities are inflated. Put the formula's line on *its* numbers and the cost is {{< num ch05 bal_penalty pct >}} higher. Its own cheapest line is way out at about {{< num ch05 t_bal_best f2 >}}, and there's no formula that could have told you so. You'd have to find it by trial and error, and redo the search every time the costs change.
+  - After: And now you can see why Chapter 3 came first. @fig-cost-curve also shows the rebalanced model from Chapter 3. It ranks alerts almost as well, but its probabilities are too high. Use the formula's threshold on *its* numbers and the cost is {{< num ch05 bal_penalty pct >}} higher. Its own cheapest threshold is far away, at about {{< num ch05 t_bal_best f2 >}}, and no formula could have told you so. You'd have to find it by trial and error, and search again every time the costs change.
+- `chapters/ch04.qmd`
+  - Before: With calibrated probabilities, costs set the line directly. Without them, you're guessing.
+  - After: With calibrated probabilities, costs set the threshold directly. Without them, you're guessing.
+- `chapters/ch04.qmd`
+  - Before: That's the practical payoff of calibration, in one sentence. It turns threshold-setting from an endless tuning exercise into a line of arithmetic you can explain to your finance team.
+  - After: That's the practical value of calibration, in one sentence. It turns setting a threshold from endless trial and error into one line of arithmetic you can explain to your finance team.
+- `chapters/ch04.qmd`
+  - Before: In Chapter 2, precision and recall looked like two scores. Now you can see them for what they are: two ends of the same rope.
+  - After: In Chapter 2, precision and recall looked like two separate scores. Now you can see what they really are: two sides of one trade-off. When one goes up, the other goes down.
+- `chapters/ch04.qmd`
+  - Before: ![As the threshold moves up, precision (how many blocks were real) rises and recall (how many threats got blocked) falls. The grey line shows how much traffic you're blocking. The vertical line is the cost-based threshold.]
+  - After: ![As the threshold moves up, precision (how many blocks were real) rises and recall (how many threats got blocked) falls. The grey curve shows how much traffic you're blocking. The vertical line is the cost-based threshold.]
+- `chapters/ch04.qmd`
+  - Before: At the cost-based line in @fig-pr-threshold, Kestrel blocks about {{< num ch05 blocked_frac pct >}} of alerts. That catches {{< num ch05 caught pct >}} of real threats, but only {{< num ch05 precision pct >}} of the blocks are real ones. That precision sounds poor. Is it?
+  - After: At the cost-based threshold in @fig-pr-threshold, Kestrel blocks about {{< num ch05 blocked_frac pct >}} of alerts. That catches {{< num ch05 caught pct >}} of real threats, but only {{< num ch05 precision pct >}} of the blocks are real ones. That precision sounds poor. Is it?
+- `chapters/ch04.qmd`
+  - Before: Only the costs can say. Each wrong block costs \$200; each missed threat \$4,000. The line sits at 200 ÷ 4,200, about {{< num ch05 t_formula f3 >}}: block an alert when the chance it's real is better than about 1 in 21. The rule is about the *marginal* alert, the one sitting right on the line, where blocking and letting it through cost the same on average.
+  - After: Only the costs can say. Each wrong block costs \$200; each missed threat costs \$4,000. The threshold is 200 ÷ 4,200, about {{< num ch05 t_formula f3 >}}: block an alert when the chance it's real is better than about 1 in 21. The rule is about the alert that sits *exactly* on the threshold. For that alert, blocking it and letting it through cost the same on average.
+- `chapters/ch04.qmd`
+  - Before: Precision is a different thing: an average over *every* alert above the line, and most of those are far likelier than 1 in 21 to be real, which is why it comes out nearer one in five. Nobody chose that number; it falls out of putting the line where the costs say, and a model with better ranking would push it up without moving the line at all. Arguing about precision or recall on its own, without the costs, is arguing about half a sentence.
+  - After: Precision is a different thing. It's an average over *every* alert above the threshold, and most of those are far more likely than 1 in 21 to be real. That's why precision comes out nearer one in five. Nobody chose that number. It's simply what happens when you put the threshold where the costs say. A model that ranks better would raise precision without moving the threshold at all. So precision or recall alone, without the costs, tells you only part of the story.
+- `chapters/ch04.qmd`
+  - Before: Kestrel's sales team complains that blocked customer emails are costing deals, and argues a wrong block costs \$800, not \$200. Recompute the blocking line. Roughly what happens to the share of alerts blocked, and to recall?
+  - After: Kestrel's sales team complains that blocked customer emails are losing them sales. They say a wrong block costs \$800, not \$200. Work out the blocking threshold again. About what happens to the share of alerts blocked, and to recall?
+- `chapters/ch04.qmd`
+  - Before: (800 ÷ 4,800 ≈ 0.17. The line moves up, fewer alerts get blocked and more threats get through. The model didn't change. The business's priorities did, and the threshold should follow them.)
+  - After: (800 ÷ 4,800 ≈ 0.17. The threshold moves up, fewer alerts get blocked, and more threats get through. The model didn't change. The business's priorities did, and the threshold should follow them.)
+- `chapters/ch04.qmd`
+  - Before: The idea is old. In 1970 the engineer C. K. Chow showed that a recogniser allowed to reject its least certain cases could cut its error rate dramatically, and worked out the best trade-off [@chow1970]. Today it's called *selective prediction*, or classification with a reject option [@geifman2017].
+  - After: The idea is old. In 1970, the engineer C. K. Chow showed something about systems that recognise characters. If they were allowed to refuse their least certain cases, their error rate fell sharply. He also worked out the best trade-off [@chow1970]. Today this is called *selective prediction*, or classification with a reject option [@geifman2017].
+- `chapters/ch04.qmd`
+  - Before: At Kestrel it works like this. Sort the alerts by how confident the model is, surest first. Let the machine decide only the top slice, and send the rest to people. How low does the error rate go?
+  - After: At Kestrel it works like this. Sort the alerts by how confident the model is, surest first. Let the machine decide only the top part of the list, and send the rest to people. How low does the error rate go?
+- `chapters/ch04.qmd`
+  - Before: Deciding every alert, the model gets {{< num ch05 risk_100 pct1 >}} wrong. Deciding only the surest 80%, just {{< num ch05 risk_80 pct1 >}} of its decisions are wrong. Deciding the surest half, {{< num ch05 risk_50 pct1 >}}.
+  - After: Deciding every alert, the model gets {{< num ch05 risk_100 pct1 >}} wrong. Deciding only the surest 80%, just {{< num ch05 risk_80 pct1 >}} of its decisions are wrong. Deciding the surest half, only {{< num ch05 risk_50 pct1 >}} are wrong.
+- `chapters/ch04.qmd`
+  - Before: That curve, from @fig-coverage-risk, is one of the most useful pictures you can show a manager. It turns "how good is the model?" into "how much of this work can we safely hand over, at what error rate?", which is the question they actually have.
+  - After: That curve, in @fig-coverage-risk, is one of the most useful pictures you can show a manager. It changes the question from "how good is the model?" to "how much of this work can we safely hand over, at what error rate?". That's the question managers actually have.
+- `chapters/ch04.qmd`
+  - Before: Put the two ideas together, cost-based lines and "ask a person", and a shape appears that we'll use for the rest of the book.
+  - After: Put the two ideas together, cost-based thresholds and "ask a person", and you get a design we'll use for the rest of the book.
+- `chapters/ch04.qmd`
+  - Before: ![The three doors. At one end the model is confident nothing's needed, so the machine handles it. At the other end it's confident something's badly wrong, so a person is pulled in immediately. In between, where it's unsure, a person looks when they can.]
+  - After: ![The three doors. At one end the model is confident nothing's needed, so the machine handles it. At the other end it's confident something's badly wrong, so a person is called in immediately. In between, where it's unsure, a person looks when they can.]
+- `chapters/ch04.qmd`
+  - Before: **Act** when the model is confident the machine can handle it alone. **Review** when it's unsure, so a person checks in the normal flow of work. **Escalate** when it's confident something important is wrong, so a person is pulled in right now.
+  - After: **Act** when the model is confident the machine can handle it alone. **Review** when it's unsure, so a person checks it as part of normal work. **Escalate** when it's confident something important is wrong, so a person is called in right now. These three choices are the book's three zones: act, review and escalate.
+- `chapters/ch04.qmd`
+  - Before: The two boundaries between the doors come from the same kind of cost arithmetic you've just done, with one extra line for each extra action. Chapter 14 does that for Kestrel's SOC, and then does the part this chapter skips: what happens when you don't have enough people to staff the middle door.
+  - After: The two boundaries between the zones come from the same kind of cost arithmetic you've just done, with one extra threshold for each extra action. Chapter 14 does that for Kestrel's SOC. Then it does the part this chapter skips: what happens when you don't have enough people for the middle zone.
+- `chapters/ch04.qmd`
+  - Before: Costs are guesses, and guesses carry the same weight in the formula as facts. Two habits help. First, try your costs at half and double their value and see how much the line moves; if the answer barely changes, stop arguing about the exact number. Second, remember that costs often differ from case to case: a false alarm on the CEO's laptop isn't a false alarm on a test server. Per-case costs mean per-case thresholds, which is fine, as long as you write them down. And some costs aren't money at all: trust, fairness, safety and the law. Put those on the table explicitly, or someone else's defaults will decide them for you.
+  - After: Costs are guesses, and the formula treats guesses exactly like facts. Two habits help. First, try your costs at half and at double their value, and see how much the threshold moves. If the answer barely changes, stop arguing about the exact number. Second, remember that costs often differ from case to case. A false alarm on the CEO's laptop costs more than a false alarm on a test server. Different costs for different cases mean different thresholds, and that's fine, as long as you write them down. And some costs aren't money at all: trust, fairness, safety and the law. Discuss those openly, or someone else's default settings will decide them for you.
+- `chapters/ch04.qmd`
+  - Before: The same goes for cost estimates. The numbers will be wrong. Writing them down, arguing about them and seeing what they imply is where the value is.
+  - After: The same is true of cost estimates. The numbers will be wrong. The value comes from writing them down, discussing them and seeing what they lead to.
+- `chapters/ch04.qmd`
+  - Before: In Chapter 1 a machine learned what we asked and was useless, because we asked for yes or no. So we asked for a chance instead, and had to learn what a chance means. That took us to a model that outputs one, and then to the uncomfortable discovery that its number might not be honest. Once we could check and fix that, the last step was the one this chapter took: letting costs, not habit, decide where the lines go, and leaving a door open for the cases a machine shouldn't decide alone.
+  - After: In Chapter 1, a machine learned what we asked and was useless, because we asked for yes or no. So we asked for a chance instead, and had to learn what a chance means. That led to a model that outputs one, and then to an uncomfortable discovery: its number might not be calibrated. Once we could check and fix that, this chapter took the last step. We let costs, not habit, decide where the thresholds go. And we left a door open for the cases a machine shouldn't decide alone.
+- `chapters/ch04.qmd`
+  - Before: Everything else stands on this. Every system in the rest of the book, from deep networks to LLMs to Jev, gets judged by it.
+  - After: Everything else is built on this. Every system in the rest of the book, from deep networks to LLMs to Jev, is judged by it.
+- `chapters/ch04.qmd`
+  - Before: 4. Using the coverage–risk curve, how much of Kestrel's blocking decision could you automate if the business tolerates a 2% error rate among automated decisions? Where would the rest go?
+  - After: 4. Using the coverage–risk curve, how much of Kestrel's blocking decision could you automate if the business accepts a 2% error rate among automated decisions? Where would the rest go?
+- `chapters/ch04.qmd`
+  - Before: 5. Pick a decision at your work or in your life with a natural third option ("ask someone", "wait a day", "get a second opinion"). Sketch its three doors and what would move each boundary.
+  - After: 5. Pick a decision at your work or in your life with a natural third option ("ask someone", "wait a day", "get a second opinion"). Draw its three doors and say what would move each boundary.
+- `chapters/ch04.qmd`
+  - Before: Next, Part II: so far our models were handed neat features like a threat-intel score. What about raw pixels, raw words, raw logs? That's where deep learning comes in, and it starts with a single artificial neuron.
+  - After: Next, Part II. So far, our models were given neat clues like a threat-intel score. What about raw pixels, raw words, raw logs? That's where deep learning comes in, and it starts with a single artificial neuron.

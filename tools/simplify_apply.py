@@ -15,7 +15,7 @@ LOG = ROOT / "SIMPLIFY.md"
 
 
 def main(label: str, edits_file: str):
-    edits = runpy.run_path(edits_file)["EDITS"]
+    edits = [e for e in runpy.run_path(edits_file)["EDITS"] if e[1] != e[2]]   # ignore no-op pairs
     texts: dict[str, str] = {}
     for f, before, after in edits:
         texts.setdefault(f, (ROOT / f).read_text())
