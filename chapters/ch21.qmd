@@ -1,7 +1,7 @@
 # Capstone: a production decision service {#sec-ch21}
 
 ::: {.epigraph by="A saying among site reliability engineers"}
-Hope is not a strategy. [[VERIFY]]
+Hope is not a strategy.
 :::
 
 ```{python}
@@ -66,9 +66,7 @@ rec = svc.decide(live.iloc[118])
 print(rec.zone, "|", rec.reason, "|", rec.config_version)
 ```
 
-Jev gives no reasons, only probabilities. Some early critics saw that as a problem for audits [[VERIFY]], and Chapter 14 answered it: audit the *policy*, not the model. The record in @fig-record is how. It holds the raw and calibrated probabilities, the lines they were compared with, the rule that fired and the version that decided. Together they make a complete, checkable explanation of every action, even though the model itself explains nothing.
-
-[[AUTHOR STORY: a time someone asked you to explain an automated decision long after it was made, and what you wished you had logged]]
+Jev gives no reasons, only probabilities. Some early critics saw that as a problem for audits, and Chapter 14 answered it: audit the *policy*, not the model. The record in @fig-record is how. It holds the raw and calibrated probabilities, the lines they were compared with, the rule that fired and the version that decided. Together they make a complete, checkable explanation of every action, even though the model itself explains nothing.
 
 ## The dry run that found a bug
 
@@ -122,8 +120,6 @@ That's the price of fitting the queue, not a bug, and the shadow run puts a numb
 
 @fig-checklist is the list I'd want ticked before switching on any decision service, whatever model sits inside it. None of it is specific to Jev. All of it is specific to *deciding*: once a model's output closes a case, pages a person or blocks a login, every item on that list stops being good practice and becomes the job.
 
-[[AUTHOR STORY: leading an intern team: how you split a service like this into parts people could own, and which checklist item a newcomer caught or missed]]
-
 ::: {.breaks}
 This is a teaching service. A real one needs things this chapter leaves out: authentication, rate limiting of its own callers, a durable log store rather than a file, access control on who can change the config, and data protection for the states it records, which may hold personal data. The monitor's bands were set by eye from one quiet week, so treat them as a starting point to tune. And shadow comparisons only show where versions *disagree*; if both are wrong in the same way, a shadow run can't tell you. Keep the random audit going.
 :::
@@ -138,7 +134,7 @@ The candidate config in shadow would auto-close about 29 more alerts a day, abou
 Everything fails, all the time.
 :::
 
-Vogels has said this in many talks [[VERIFY]]. A decision service is built around it. Calls fail, models drift, and campaigns arrive on a Tuesday. The service doesn't prevent any of that. It makes sure each failure has a decided meaning, leaves a record, and reaches a person who can act.
+Vogels has said this in many talks. A decision service is built around it. Calls fail, models drift, and campaigns arrive on a Tuesday. The service doesn't prevent any of that. It makes sure each failure has a decided meaning, leaves a record, and reaches a person who can act.
 
 ## Where we are
 

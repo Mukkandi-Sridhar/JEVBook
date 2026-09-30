@@ -73,7 +73,7 @@ Untrained, those numbers are noise. Training is what gives them meaning.
 
 We train all three heads at once, on two weeks of Kestrel's labelled alerts, by adding their log losses together and running gradient descent, as in Chapter 2.
 
-Log loss matters here for a reason Chapter 2 made precise. It's a **proper scoring rule**: the way to get the best average score is to report your honest probability, not to exaggerate. Training with log loss rewards calibration directly, and it does so for every head. A rule like this is the most likely way a model like Jev is trained to be calibrated, and in Chapter 9 I guessed that TypeSafe's RLCD might build on a rule like it [[VERIFY]].
+Log loss matters here for a reason Chapter 2 made precise. It's a **proper scoring rule**: the way to get the best average score is to report your honest probability, not to exaggerate. Training with log loss rewards calibration directly, and it does so for every head. A rule like this is the most likely way a model like Jev is trained to be calibrated, and in Chapter 9 I guessed that TypeSafe's RLCD might build on a rule like it.
 
 ::: {.tryit lab="ch20"}
 ```{python}
@@ -138,8 +138,6 @@ print(round(r.nouls["attack"].noul, 4), r.choices["kind"].choice)
 
 The response comes back in just the shape the SDK expects, with the model name `tinyjev-your-own` (@fig-plugin). Point any lab in the book at this transport and it runs against the model you just trained: the bake-off, the three zones, the hybrid agent. Now you have two decision models behind the same interface, and you can test one against the other with everything Part IV taught you.
 
-[[AUTHOR STORY: the first model you trained whose probabilities you had to fix before anyone could use them, and how you noticed]]
-
 ::: {.breaks}
 TinyJev reads structured fields, not free text; a real System One model reads text and JSON of any shape, which needs an attention-based reader like Chapter 5's, and far more data. It knows one company's alerts from two weeks, so it will drift the moment the world does, as Chapter 18's campaign showed. Its temperatures were fitted on one week, which is a small sample, and Chapter 11 showed how noisy calibration measurements are with few labels. And nothing here tells you how Jev is actually built; this is a design the interface suggests, built to understand the interface, not a copy of anything.
 :::
@@ -154,7 +152,7 @@ Your TinyJev feeds Kestrel's three-zone policy. After two weeks in production, t
 What I cannot create, I do not understand.
 :::
 
-Feynman's blackboard [[VERIFY]] is the best argument for this chapter. You don't need to build a System One model to use one. But having built a small one, you know what its probabilities are made of, why they drift and how to fix them.
+Feynman's blackboard is the best argument for this chapter. You don't need to build a System One model to use one. But having built a small one, you know what its probabilities are made of, why they drift and how to fix them.
 
 ## Where we are
 

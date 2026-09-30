@@ -25,8 +25,8 @@ EMAIL = "sridhar.authorhub@gmail.com"
 AUTHOR_BIO = (f"{AUTHOR} is an applied AI engineer who builds agents and the decision systems behind them. "
               "He writes for engineers who want AI systems they can trust.")
 BG = C["night"]
-# KDP paper: standard colour suits a text-heavy book with colour charts; hardcovers are only offered in premium colour
-PAPERBACK_PAPER = "standard_color"
+# KDP paper: premium colour for both editions (hardcovers are only offered in premium colour)
+PAPERBACK_PAPER = "premium_color"
 HARDCOVER_PAPER = "premium_color"
 BODY = "#D5D9DF"            # body text on the dark ground
 FRAGMENTS = ["ne", "ra", "te"]   # small pieces of "Generate" beside the title; [] for none

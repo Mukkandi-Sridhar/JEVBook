@@ -20,3 +20,15 @@ img.you-are-here { width:100%; max-width:640px; margin:0 0 1.2rem 0; }
 .wide img { width:100%; }
 .margin.bookbox { font-family:Inter, sans-serif; font-size:0.8em; color:var(--ink2); padding:0; }
 body { font-family: "Source Serif 4", Georgia, serif; } h1,h2,h3 { font-family: Inter, sans-serif; }
+/* code never runs off the screen: long lines wrap, and the type is a little smaller */
+pre, pre code, div.sourceCode { white-space: pre-wrap; word-wrap: break-word; overflow-wrap: anywhere; }
+pre { font-size: 0.8em; line-height: 1.35; }
+img { max-width: 100%; height: auto; }
+/* pandoc's inline styles set white-space: pre on highlighted code; wrap it anyway, with a hanging indent */
+pre > code.sourceCode { white-space: pre-wrap !important; }
+pre > code.sourceCode > span { display: inline !important; }
+/* figures use the full width (browsers indent <figure> by default); long URLs break instead of running off */
+figure { margin: 1em 0; }
+a, .csl-entry { overflow-wrap: anywhere; word-break: break-word; }
+/* a wide display equation scrolls inside its own box on a narrow screen instead of widening the page */
+math[display="block"] { display: block; max-width: 100%; overflow-x: auto; }

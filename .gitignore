@@ -21,3 +21,6 @@ site_libs/
 *.html
 !site/*.html
 *_files/
+
+# ebook figure PNGs, made by tools/epub_figures.py
+figures/**/*.png

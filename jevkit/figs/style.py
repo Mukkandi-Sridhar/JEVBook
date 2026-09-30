@@ -97,6 +97,7 @@ def setup():
         "pdf.fonttype": 42,
         "svg.fonttype": "none",
         "figure.dpi": 150,
+        "savefig.dpi": 300,           # raster parts (heatmaps) print at 300 dpi or more
         "axes.prop_cycle": mpl.cycler(color=[C["data"], C["llm"], C["jev"], C["fail"], C["slate"], C["gold"]]),
     })
     _ready = True

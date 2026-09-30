@@ -6,7 +6,7 @@ Not about artificial intelligence in general, though you'll learn a good deal of
 
 Software makes millions of those decisions every day, and for the last few years we've been handing more and more of them to large language models. LLMs are extraordinary at reading and writing. But a decision is a different thing from a paragraph: a choice between a few options, made under uncertainty, with a cost for getting it wrong. To make it well you need a probability you can trust and a line drawn from what mistakes cost. And you need to know when to hand the case to a person.
 
-In 2026 a company called TypeSafe AI released Jev, which it describes as the first of a new class of **System One models**: models that don't write at all, only answer typed questions with probabilities, in a single fast pass [@typesafe2026] [[VERIFY]]. Whether Jev lives up to its claims is something you'll learn to test for yourself. But the idea behind it is worth understanding whatever happens to any one product. Some decisions belong in a separate, fast, measurable layer of an AI system, and that layer needs different skills from the rest.
+In 2026 a company called TypeSafe AI released Jev, which it describes as the first of a new class of **System One models**: models that don't write at all, only answer typed questions with probabilities, in a single fast pass [@typesafe2026]. Whether Jev lives up to its claims is something you'll learn to test for yourself. But the idea behind it is worth understanding whatever happens to any one product. Some decisions belong in a separate, fast, measurable layer of an AI system, and that layer needs different skills from the rest.
 
 ## Who this book is for
 
@@ -25,6 +25,4 @@ Every figure is drawn by code, and almost every number in the book is computed b
 **Vendor claims are labelled.** When I report what TypeSafe says about Jev, such as its speed or its price, I say it's vendor-reported and cite where it came from.
 
 **Claims have piles.** Everything said about Jev is sorted into what I could verify, what the vendor reports and what nobody outside the company knows yet. Chapter 9 explains how, and I'd encourage you to keep the same three piles for anything you read about new models, including this book.
-
-[[AUTHOR STORY: why you wrote this book: the moment you realised most of your agent's work was small decisions]]
 

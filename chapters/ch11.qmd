@@ -13,9 +13,9 @@ from jevkit.batch import score_alerts
 
 A week after Jev launched, two claims were circling.
 
-TypeSafe's: Jev returns *calibrated* probabilities. Its training method, RLCD, is named after that goal [@typesafe2026] [[VERIFY]].
+TypeSafe's: Jev returns *calibrated* probabilities. Its training method, RLCD, is named after that goal [@typesafe2026].
 
-And a blunt reply from the data scientist Alex Molas, in a post titled "Jev can't be calibrated": useful, yes, but treat its outputs as scores, not probabilities, because calibration depends on *your* data, which Jev never sees [@molas2026] [[VERIFY]].
+And a blunt reply from the data scientist Alex Molas, in a post titled "Jev can't be calibrated": useful, yes, but treat its outputs as scores, not probabilities, because calibration depends on *your* data, which Jev never sees [@molas2026].
 
 *"So which is it?"*
 
@@ -101,8 +101,6 @@ The adjustment rests on an assumption: that alerts of each kind look the same at
 ## How many labels?
 
 "A few hundred labels" is the answer I've been giving. It's time to be precise, because small samples play a nasty trick on calibration measurements.
-
-[[AUTHOR STORY: SIGNAL or the police FIR agent: where the first few hundred labels came from, and whose time they cost]]
 
 Take the mock at Kestrel, whose ECE on all 20,000 alerts is {{< num ch18 ece_full f3 >}}. Now pretend you only had a random 100 labelled alerts, and measure ECE on those. Do it 200 times with different random samples.
 

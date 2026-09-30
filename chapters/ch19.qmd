@@ -72,7 +72,7 @@ It didn't go that well, and I want to show you why.
 
 The mock routed {{< num ch26 topic_acc pct >}} of tickets to the right team. Billing was perfect. Account problems went to the right place only {{< num ch26 per_topic.account pct >}} of the time; login trouble kept landing in "technical" (@fig-tickets). And its answers to "does this need a reply today?" barely ranked the urgent tickets above the rest, with an AUC of {{< num ch26 urgent_auc f2 >}}.
 
-The reason is a little embarrassing: outside the SOC, the book's mock is a simple word-matcher, and "I can't log in" shares words with "the app isn't working". Real Jev would do better or worse; I can't say which [[VERIFY]]. What I can say is that you'd only know by measuring, and the test took twenty lines.
+The reason is a little embarrassing: outside the SOC, the book's mock is a simple word-matcher, and "I can't log in" shares words with "the app isn't working". Real Jev would do better or worse; I can't say which. What I can say is that you'd only know by measuring, and the test took twenty lines.
 
 Two things rescue the situation, and neither needs a better model. First, route only when sure: routing tickets only when the top label's probability was at least 0.6 covered {{< num ch26 cov60 pct >}} of them and got {{< num ch26 acc60 pct >}} right, with the rest going to a person. Second, fix the options. "Technical" and "account" overlap, and Chapter 10 warned that overlapping options split belief. Sharper descriptions, or a separate noul for "is this about signing in?", are the first thing to try.
 
@@ -84,9 +84,7 @@ In the red domains, the design flips. The model doesn't close anything. It reads
 
 Keep the log. When the model says 0.4 and the clinician says "routine", and the clinician is right, that's a label. When the model says 0.4 and the clinician says "routine" and is wrong, that's a lesson. Either way it's evidence for the next calibration check.
 
-Some decisions also carry legal weight. Lending, hiring, benefits and medical decisions face rules in many places about automated decision-making and the right to a human review [[VERIFY]]. I'm not a lawyer, and this isn't legal advice. But the design above, a person deciding with the model as an assistant and every step logged, is the one most likely to survive a question from a regulator.
-
-[[AUTHOR STORY: a decision in the police FIR agent or AttendX where you deliberately kept a person as the final decider, and what the model did instead]]
+Some decisions also carry legal weight. Lending, hiring, benefits and medical decisions face rules in many places about automated decision-making and the right to a human review. I'm not a lawyer, and this isn't legal advice. But the design above, a person deciding with the model as an assistant and every step logged, is the one most likely to survive a question from a regulator.
 
 ## Where it doesn't fit
 
@@ -108,7 +106,7 @@ An online shop wants to auto-approve refunds under \$50. A wrongly approved frau
 I suppose it is tempting, if the only tool you have is a hammer, to treat everything as if it were a nail.
 :::
 
-Maslow was talking about scientists and their methods [@maslow1966] [[VERIFY]]. It's a fair warning for this chapter too. Once you've learned to see decision layers, it's tempting to see nothing else. The checklist in @fig-fit is there to stop you reaching for it by habit.
+Maslow was talking about scientists and their methods [@maslow1966]. It's a fair warning for this chapter too. Once you've learned to see decision layers, it's tempting to see nothing else. The checklist in @fig-fit is there to stop you reaching for it by habit.
 
 ## Where we are
 

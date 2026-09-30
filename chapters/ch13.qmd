@@ -95,7 +95,7 @@ If a decision can be made well by a rule or a logistic regression, one of those 
 
 Ask the LLM the same question five times at a temperature of 0.7, and {{< num ch20 flip_rate pct1 >}} of verdicts change at least once (@fig-variance-13). At temperature 0 the mock is repeatable, and real APIs mostly are too, though not always perfectly. And {{< num ch20 parse_fail pct1 >}} of its JSON answers were broken badly enough to fail parsing. We fell back to the base rate for those, but in a real system each one is an exception to handle.
 
-Jev's typed answers can't fail to parse: the probabilities arrive as numbers in a fixed shape. The mock always gives the same answer to the same question. Whether real Jev does is something to check [[VERIFY]].
+Jev's typed answers can't fail to parse: the probabilities arrive as numbers in a fixed shape. The mock always gives the same answer to the same question. Whether real Jev does is something to check.
 
 ## The scorecard
 
@@ -126,8 +126,6 @@ for m in B.METHODS:
 ```
 :::
 
-[[AUTHOR STORY: AttendX or VMG-RAG: a time you chose a simple rule or a classic model over something newer, and why that was the right call]]
-
 ::: {.breaks}
 This is one decision, on one synthetic company, with mocks standing in for the LLM and for Jev. The LLM-versus-Jev accuracy gap was built into the mocks and tells you nothing about the real models. The text classifier is a weak stand-in for a fine-tuned model. And a single live week has only about four hundred real threats, so differences in the second decimal place of AUC are within noise. The value of a bake-off is the *method*: run the same contest on your own data, with the real models, and fill in your own scorecard.
 :::
@@ -142,7 +140,7 @@ A new team at Kestrel is taking over cloud-storage alerts, a decision nobody has
 For any algorithm, any elevated performance over one class of problems is offset by performance over another class.
 :::
 
-Wolpert and Macready proved that about search and optimisation [@wolpert1997] [[VERIFY]], but it's the right spirit for any bake-off. There is no best method, only a best method for a decision.
+Wolpert and Macready proved that about search and optimisation [@wolpert1997], but it's the right spirit for any bake-off. There is no best method, only a best method for a decision.
 
 ## Where we are
 

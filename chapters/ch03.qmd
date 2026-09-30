@@ -126,8 +126,6 @@ If log loss rewards honesty, as Chapter 2 said, why would a model ever come out 
 
 **Rebalancing the data.** This is one of the most common, and it's usually done with the best intentions. Attacks are rare, only {{< num ch04 base pct >}} of alerts, so someone decides the model needs to "see more attacks" and trains it on a 50/50 mix: every attack, plus an equal number of randomly chosen harmless alerts. The ranking survives. But the model has learned from a world where attacks are *common*, and it faithfully reports probabilities for that world.
 
-[[AUTHOR STORY: AttendX or SIGNAL: a model trained on rebalanced or filtered data, and what its probabilities looked like once it met the real mix]]
-
 ![A model trained on 50/50 rebalanced data (red) thinks attacks are about ten times more common than they are, and its probabilities sit far below the diagonal. After Platt scaling fitted on a separate calibration set (green), the same model is well calibrated again.](/figures/ch04/rebalanced.pdf){#fig-rebalanced}
 
 The rebalanced model's average prediction is {{< num ch04 bal_mean_pred pct >}}. The real attack rate is {{< num ch04 base pct >}}. Put a threshold on those numbers and you'll drown your analysts.

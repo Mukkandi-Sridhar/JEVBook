@@ -14,7 +14,7 @@ from PIL import Image, ImageDraw, ImageFilter
 
 sys.path.insert(0, str(Path(__file__).parent))
 from coverlib import C, COVER, PT, Wrap, interior_pages, rect, svg_doc, text, to_png  # noqa: E402
-from wrap import BG, HOOK, spine  # noqa: E402
+from wrap import BG, HOOK, PAPERBACK_PAPER, spine  # noqa: E402
 
 
 POST_BG = "#2A3346"      # a lighter slate than the cover, so the book stands off it
@@ -84,9 +84,31 @@ def book_3d(front_png: Path, spine_png: Path, size=(2000, 1400), bg=("#EEF0F3", 
     return canvas.convert("RGB")
 
 
+def banner(book: Image.Image):
+    """A 1200 x 628 link banner: title, subtitle and author on the left, the book on the right."""
+    from coverlib import SUBTITLE, AUTHOR, measure
+    buf = io.BytesIO()
+    book.save(buf, "PNG")
+    uri = "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
+    W, H = 12.0 * PT, 6.28 * PT                           # rendered at 100 px per inch
+    parts = [rect(0, 0, W, H, POST_BG),
+             f'<image href="{uri}" x="{W * 0.40:.1f}" y="{H * 0.04:.1f}" width="{W * 0.66:.1f}" '
+             f'height="{W * 0.66 * 1120 / 1600:.1f}"/>']
+    x, ts = W * 0.06, H * 0.13
+    parts.append(text(x, H * 0.30, "Decide,", ts, C["jev_on_dark"], weight=800, ls=-0.02 * ts))
+    parts.append(text(x, H * 0.30 + ts * 1.05, "Don\u2019t Generate", ts, C["text_on_dark"], weight=800,
+                      ls=-0.02 * ts))
+    ss = H * 0.046
+    sub = SUBTITLE.split(", and ")
+    parts.append(text(x, H * 0.62, sub[0] + ",", ss, C["sub_on_dark"], weight=500))
+    parts.append(text(x, H * 0.62 + ss * 1.3, "and " + sub[1], ss, C["sub_on_dark"], weight=500))
+    parts.append(text(x, H * 0.86, AUTHOR, H * 0.045, C["text_on_dark"], weight=600))
+    to_png(svg_doc(12, 6.28, "\n".join(parts)), COVER / "marketing" / "banner-1200x628.png", 1200, 628)
+
+
 def main():
     front_png = COVER / "src" / "front.png"
-    wr = Wrap("paperback", pages=interior_pages())
+    wr = Wrap("paperback", pages=interior_pages(), paper=PAPERBACK_PAPER)
     sw = wr.spine * PT
     svg = svg_doc(round(wr.spine, 4), 10, spine(sw, 10 * PT, wr))
     spine_png = COVER / "src" / "spine.png"
@@ -111,6 +133,7 @@ def main():
     parts.append(text(x2, S * 0.12 + hs * 1.2, "It" + HOOK[1].split("It", 1)[1], hs, C["jev_on_dark"], weight=800,
                       ls=-0.01 * hs))
     to_png(svg_doc(7.5, 7.5, "\n".join(parts)), COVER / "marketing" / "post-square-1080.png", 1080, 1080)
+    banner(small)
     print("mockups written")
 
 

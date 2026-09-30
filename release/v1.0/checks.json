@@ -1,0 +1,157 @@
+{
+ "interior": {
+  "pages": 248,
+  "size_in": [
+   7.0,
+   10.0
+  ],
+  "fonts": {
+   "count": 458,
+   "not_embedded": []
+  },
+  "raster_images": [
+   {
+    "page": 65,
+    "px": "267x266",
+    "ppi": [
+     300,
+     300
+    ]
+   },
+   {
+    "page": 65,
+    "px": "266x266",
+    "ppi": [
+     300,
+     300
+    ]
+   },
+   {
+    "page": 65,
+    "px": "266x266",
+    "ppi": [
+     300,
+     300
+    ]
+   },
+   {
+    "page": 202,
+    "px": "399x399",
+    "ppi": [
+     300,
+     300
+    ]
+   }
+  ],
+  "raster_below_300ppi": [],
+  "outside": [],
+  "blank_pages": [
+   2,
+   14,
+   16,
+   60,
+   88,
+   134,
+   170,
+   172,
+   224,
+   226,
+   248
+  ]
+ },
+ "placeholders": {
+  "interior": [],
+  "Decide-Dont-Generate-COMPLETE.pdf": [],
+  "sample-chapters.pdf": [],
+  "cover-hardcover.pdf": [],
+  "cover-paperback.pdf": [],
+  "book.epub": []
+ },
+ "epub": {
+  "images": 138,
+  "empty_alt": 0,
+  "png": 138
+ },
+ "fonts": {
+  "preview/Decide-Dont-Generate-COMPLETE.pdf": {
+   "count": 482,
+   "not_embedded": 0,
+   "size_in": [
+    7.0,
+    10.0
+   ],
+   "pages": 249
+  },
+  "preview/sample-chapters.pdf": {
+   "count": 73,
+   "not_embedded": 0,
+   "size_in": [
+    7.0,
+    10.0
+   ],
+   "pages": 25
+  },
+  "print/Decide-Dont-Generate-interior.pdf": {
+   "count": 458,
+   "not_embedded": 0,
+   "size_in": [
+    7.0,
+    10.0
+   ],
+   "pages": 248
+  },
+  "print/cover-hardcover.pdf": {
+   "count": 20,
+   "not_embedded": 0,
+   "size_in": [
+    16.3458,
+    11.4173
+   ],
+   "pages": 1
+  },
+  "print/cover-paperback.pdf": {
+   "count": 20,
+   "not_embedded": 0,
+   "size_in": [
+    14.8321,
+    10.25
+   ],
+   "pages": 1
+  },
+  "print/guides/cover-hardcover-guides.pdf": {
+   "count": 23,
+   "not_embedded": 0,
+   "size_in": [
+    16.3458,
+    11.4173
+   ],
+   "pages": 1
+  },
+  "print/guides/cover-paperback-guides.pdf": {
+   "count": 22,
+   "not_embedded": 0,
+   "size_in": [
+    14.8321,
+    10.25
+   ],
+   "pages": 1
+  }
+ },
+ "agreement": {
+  "title in interior": true,
+  "subtitle in interior": true,
+  "author on cover and interior": true,
+  "case study on cover": [
+   "54%",
+   "89%"
+  ],
+  "case study in Chapter 18": [
+   "54%",
+   "89%"
+  ],
+  "figures in interior": 138,
+  "cover strap": "130+ figures",
+  "case study matches": true,
+  "strap true": true
+ }
+}

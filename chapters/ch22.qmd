@@ -1,7 +1,7 @@
 # What changes now {#sec-ch22}
 
 ::: {.epigraph by="William Gibson, attributed"}
-The future is already here. It's just not very evenly distributed. [[VERIFY]]
+The future is already here. It's just not very evenly distributed.
 :::
 
 ```{python}
@@ -68,15 +68,13 @@ Which is why the book's first part, which may have felt like a long detour, was 
 
 What matters less *on its own* is prompting for everything, and reaching for the biggest model by default. Both still have their place. They're just no longer all of it.
 
-[[AUTHOR STORY: how your own work changed once you started treating decisions and generation as different jobs, in SIGNAL or the FIR agent]]
-
 ## What nobody knows yet
 
 I've tried throughout to keep three piles: what's verified, what's vendor-reported and what's unknown. @fig-unknowns is the unknown pile, as it stands.
 
 ![Open questions, and what you can do about each today.](/figures/ch29/unknowns.pdf){#fig-unknowns}
 
-Every item in @fig-unknowns is open [[VERIFY]]. None of them is a reason to wait. Calibration on your data is a test you can run this week. Drift between versions is a pin and a monitor. Prices are a spreadsheet with a sensitivity column. And the question of who else builds decision models matters less than it seems, because the pattern outlives any vendor. A typed question in, a probability out, and a policy in your own code: you can move that to a different model on a Tuesday afternoon.
+Every item in @fig-unknowns is open. None of them is a reason to wait. Calibration on your data is a test you can run this week. Drift between versions is a pin and a monitor. Prices are a spreadsheet with a sensitivity column. And the question of who else builds decision models matters less than it seems, because the pattern outlives any vendor. A typed question in, a probability out, and a policy in your own code: you can move that to a different model on a Tuesday afternoon.
 
 ::: {.keyidea}
 You don't need to predict how this plays out. You need decisions you can measure, lines you can move and a model you can swap.

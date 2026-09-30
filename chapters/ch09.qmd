@@ -13,7 +13,7 @@ from jevkit import MockJevTransport
 
 A confession shapes this chapter: I've never called Jev.
 
-When I wrote this book, Jev had been public for a couple of weeks, in early access, and I didn't have an API key [[VERIFY]]. What I did have was TypeSafe's official Python library, which anyone can download and read, TypeSafe's public documentation, a stream of launch coverage and early commentary, and a growing pile of research papers from people who *had* used it.
+When I wrote this book, Jev had been public for a couple of weeks, in early access, and I didn't have an API key. What I did have was TypeSafe's official Python library, which anyone can download and read, TypeSafe's public documentation, a stream of launch coverage and early commentary, and a growing pile of research papers from people who *had* used it.
 
 *"So how much can anyone actually say about what's inside it?"*
 
@@ -92,13 +92,13 @@ If you want a mental model, @fig-guess is mine, and I want to be very clear that
 
 ## The numbers: speed and price
 
-TypeSafe and its launch coverage report end-to-end latency of roughly 70 to 500 milliseconds, and "two orders of magnitude" faster than LLMs on System One tasks [[VERIFY]]. Both are vendor-reported.
+TypeSafe and its launch coverage report end-to-end latency of roughly 70 to 500 milliseconds, and "two orders of magnitude" faster than LLMs on System One tasks. Both are vendor-reported.
 
 ![Time per decision on a log scale: the vendor-reported range for Jev, and the illustrative LLM figures used throughout this book. The LLM figures aren't measurements; they're the stated assumptions from Chapter 6.](/figures/ch16/latency.pdf){#fig-latency-09}
 
-One critic pointed out that the most dramatic speed multipliers in the launch material compare Jev with slow *reasoning* models, which think for a long time before answering [@regolo2026] [[VERIFY]]. Fair for some uses, unfair for others. Against a fast, non-reasoning LLM asked for a one-word label, the gap is much smaller. Always ask: faster than *what*, doing *what*?
+One critic pointed out that the most dramatic speed multipliers in the launch material compare Jev with slow *reasoning* models, which think for a long time before answering [@regolo2026]. Fair for some uses, unfair for others. Against a fast, non-reasoning LLM asked for a one-word label, the gap is much smaller. Always ask: faster than *what*, doing *what*?
 
-The price is where the story gets interesting. The listed price is \$0.042 per million input tokens, with output free [[VERIFY]]. For a decision that reads about 500 tokens of state and questions, that's about \${{< num ch16 jev_cost_per_million int >}} per million decisions.
+The price is where the story gets interesting. The listed price is \$0.042 per million input tokens, with output free. For a decision that reads about 500 tokens of state and questions, that's about \${{< num ch16 jev_cost_per_million int >}} per million decisions.
 
 ![Cost per million decisions of 500 input tokens each: Jev at its vendor-reported price, and an LLM at this book's illustrative mid-range price, which is an assumption, not a quote.](/figures/ch16/cost.pdf){#fig-cost}
 
@@ -108,7 +108,7 @@ Using this book's illustrative LLM prices (\${{< num ch16 llm_price_in f2 >}} pe
 
 Take one habit away from this chapter. When a vendor gives you several numbers, see whether they agree with *each other*.
 
-TypeSafe's launch demo had Jev playing the video game Doom, making decisions from a text description of the game state about ten times a second, at a reported cost of about \$7 an hour [[VERIFY]]. Do those numbers hang together with the listed price?
+TypeSafe's launch demo had Jev playing the video game Doom, making decisions from a text description of the game state about ten times a second, at a reported cost of about \$7 an hour. Do those numbers hang together with the listed price?
 
 ![A consistency check using only the vendor's own numbers. Ten decisions a second at \$7 an hour means each decision costs about two hundredths of a cent, which at the listed price implies each decision read around 4,600 input tokens: a large but plausible description of a game state.](/figures/ch16/doom-check.pdf){#fig-doom-check}
 
@@ -118,7 +118,7 @@ Ten decisions a second is {{< num ch16 doom_decisions_per_hour int >}} an hour. 
 
 Now the uncomfortable part: the unknowns are the very things a decision layer depends on.
 
-We don't know the model's size, its architecture or its training data. We don't know how well its probabilities are calibrated on data like yours. We don't know how it behaves on adversarial input, like the planted sentence from Chapter 7. We don't know how stable its behaviour is across versions: `jev-latest` is an alias, and aliases move. And by design, it gives no reasons, only probabilities. Some early critics called that a compliance problem for regulated uses [@datacamp2026] [[VERIFY]]. Chapter 14 will answer it with decision logs that audit the policy rather than the model.
+We don't know the model's size, its architecture or its training data. We don't know how well its probabilities are calibrated on data like yours. We don't know how it behaves on adversarial input, like the planted sentence from Chapter 7. We don't know how stable its behaviour is across versions: `jev-latest` is an alias, and aliases move. And by design, it gives no reasons, only probabilities. Some early critics called that a compliance problem for regulated uses [@datacamp2026]. Chapter 14 will answer it with decision logs that audit the policy rather than the model.
 
 None of those unknowns are reasons to avoid a new model. They're reasons to *test* it, on your own data, with the tools you already have. The next two chapters do just that: first by understanding each question type properly, then by testing calibration the way Chapter 3 taught.
 

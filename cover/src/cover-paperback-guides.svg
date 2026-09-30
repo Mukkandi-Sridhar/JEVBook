@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="14.8085in" height="10.25in" viewBox="0 0 1066.212 738.000">
-<rect x="0.00" y="0.00" width="1066.21" height="738.00" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<svg xmlns="http://www.w3.org/2000/svg" width="14.8321in" height="10.25in" viewBox="0 0 1067.911 738.000">
+<rect x="0.00" y="0.00" width="1067.91" height="738.00" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
 <g id="back" transform="translate(9.00,9.00)"><svg width="504.00" height="720.00" overflow="visible"><rect x="0.00" y="0.00" width="504.00" height="720.00" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
 <text x="40.32" y="81.92" font-family="'Inter'" font-size="25.00" font-weight="800" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="-0.25" >Most of what an AI agent does</text>
 <text x="40.32" y="112.42" font-family="'Inter'" font-size="25.00" font-weight="800" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="-0.25" >isn’t writing. </text>
@@ -341,18 +341,18 @@
 <text x="106.21" y="619.43" font-family="'Inter'" font-size="7.60" font-weight="600" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="0.00" >Labs, figures and code</text>
 <text x="106.21" y="630.43" font-family="'Inter'" font-size="7.20" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >Scan for the companion repository</text>
 <text x="106.21" y="654.07" font-family="'Inter'" font-size="7.60" font-weight="600" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >Artificial Intelligence / Machine Learning</text></svg></g>
-<g transform="translate(513.00,9.00)"><rect x="0.00" y="0.00" width="40.21" height="720.00" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
-<g transform="translate(26.65,32.40) rotate(90)">
+<g transform="translate(513.00,9.00)"><rect x="0.00" y="0.00" width="41.91" height="720.00" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<g transform="translate(27.50,32.40) rotate(90)">
 <text x="0.00" y="0.00" font-family="'Inter'" font-size="18.00" font-weight="800" font-style="normal" fill="#4FBA85" text-anchor="start" letter-spacing="0.00" >Decide,</text>
 <text x="71.43" y="0.00" font-family="'Inter'" font-size="18.00" font-weight="800" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="0.00" >Don’t Generate</text>
 </g>
-<g transform="translate(24.82,537.96) rotate(90)">
+<g transform="translate(25.66,537.96) rotate(90)">
 <text x="0.00" y="0.00" font-family="'Inter'" font-size="12.96" font-weight="600" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >Sridhar Mukkandi</text>
 </g>
-<rect x="17.29" y="663.12" width="5.63" height="12.51" rx="2.81" fill="#B7A6E0" stroke="none" stroke-width="0.00" />
-<rect x="17.29" y="676.83" width="5.63" height="6.14" rx="2.81" fill="#8468C9" stroke="none" stroke-width="0.00" />
-<rect x="17.29" y="684.17" width="5.63" height="2.23" rx="2.81" fill="#4B2C8F" stroke="none" stroke-width="0.00" /></g>
-<g id="front" transform="translate(553.21,9.00)"><svg width="504.00" height="720.00" overflow="visible"><rect x="0.00" y="0.00" width="504.00" height="720.00" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="18.02" y="663.12" width="5.87" height="12.51" rx="2.93" fill="#B7A6E0" stroke="none" stroke-width="0.00" />
+<rect x="18.02" y="676.83" width="5.87" height="6.14" rx="2.93" fill="#8468C9" stroke="none" stroke-width="0.00" />
+<rect x="18.02" y="684.17" width="5.87" height="2.23" rx="2.93" fill="#4B2C8F" stroke="none" stroke-width="0.00" /></g>
+<g id="front" transform="translate(554.91,9.00)"><svg width="504.00" height="720.00" overflow="visible"><rect x="0.00" y="0.00" width="504.00" height="720.00" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
 <text x="34.60" y="219.58" font-family="'Inter'" font-size="117.75" font-weight="800" font-style="normal" fill="#4FBA85" text-anchor="start" letter-spacing="-3.53" >Decide,</text>
 <text x="37.19" y="302.94" font-family="'Inter'" font-size="70.65" font-weight="800" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="-1.77" >Don’t</text>
 <rect x="32.95" y="324.14" width="145.52" height="70.65" rx="7.07" fill="none" stroke="#AE6A30" stroke-width="1.55" />
@@ -378,15 +378,15 @@
 <text x="39.31" y="656.31" font-family="'JetBrains Mono'" font-size="9.83" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >Runnable labs · 130+ figures · no API key needed</text>
 <text x="39.31" y="684.62" font-family="'Inter'" font-size="18.14" font-weight="600" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="0.30" >Sridhar Mukkandi</text></svg></g>
 <g id="guides" font-family="JetBrains Mono">
-<rect x="9.00" y="9.00" width="1048.21" height="720.00" rx="0.00" fill="none" stroke="#00A6D6" stroke-width="0.60" />
+<rect x="9.00" y="9.00" width="1049.91" height="720.00" rx="0.00" fill="none" stroke="#00A6D6" stroke-width="0.60" />
 <line x1="513.00" y1="0.00" x2="513.00" y2="738.00" stroke="#00A6D6" stroke-width="0.60"/>
-<line x1="553.21" y1="0.00" x2="553.21" y2="738.00" stroke="#00A6D6" stroke-width="0.60"/>
-<rect x="517.50" y="9.00" width="31.21" height="720.00" rx="0.00" fill="none" stroke="#E0198A" stroke-width="0.50" stroke-dasharray="2 2"/>
+<line x1="554.91" y1="0.00" x2="554.91" y2="738.00" stroke="#00A6D6" stroke-width="0.60"/>
+<rect x="517.50" y="9.00" width="32.91" height="720.00" rx="0.00" fill="none" stroke="#E0198A" stroke-width="0.50" stroke-dasharray="2 2"/>
 <rect x="27.00" y="27.00" width="468.00" height="684.00" rx="0.00" fill="none" stroke="#E0198A" stroke-width="0.50" stroke-dasharray="4 3"/>
-<rect x="571.21" y="27.00" width="468.00" height="684.00" rx="0.00" fill="none" stroke="#E0198A" stroke-width="0.50" stroke-dasharray="4 3"/>
+<rect x="572.91" y="27.00" width="468.00" height="684.00" rx="0.00" fill="none" stroke="#E0198A" stroke-width="0.50" stroke-dasharray="4 3"/>
 <rect x="351.00" y="624.60" width="144.00" height="86.40" rx="0.00" fill="#FFF6CC" stroke="#E0B000" stroke-width="0.80" />
 <text x="423.00" y="663.80" font-family="'Inter'" font-size="8.00" font-weight="400" font-style="normal" fill="#6B5800" text-anchor="middle" letter-spacing="0.00" >BARCODE AREA</text>
 <text x="423.00" y="675.80" font-family="'Inter'" font-size="6.50" font-weight="400" font-style="normal" fill="#6B5800" text-anchor="middle" letter-spacing="0.00" >2 x 1.2 in, keep clear</text>
-<text x="13.00" y="735.00" font-family="'Inter'" font-size="6.50" font-weight="400" font-style="normal" fill="#00A6D6" text-anchor="start" letter-spacing="0.00" >paperback  14.8085 x 10.2500 in  spine 0.5585 in  248 pages  standard_color</text>
+<text x="13.00" y="735.00" font-family="'Inter'" font-size="6.50" font-weight="400" font-style="normal" fill="#00A6D6" text-anchor="start" letter-spacing="0.00" >paperback  14.8321 x 10.2500 in  spine 0.5821 in  248 pages  premium_color</text>
 </g>
 </svg>

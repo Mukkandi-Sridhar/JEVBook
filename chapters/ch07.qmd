@@ -60,8 +60,6 @@ Some questions have no answer in the documents at all: "What's our cyber insuran
 
 With the line where I've drawn it, the system answers {{< num ch12 answered_share pct >}} of answerable questions and only {{< num ch12 unans_answered pct >}} of unanswerable ones (@fig-abstain). Where the line should go depends on what a wrong answer costs against an unnecessary "I don't know", which is Chapter 4's arithmetic.
 
-[[AUTHOR STORY: VMG-RAG: how you decided when the system should say "I don't know" rather than answer from a weak match]]
-
 Notice what just happened. Inside a system built for *generating* answers, the step that decides whether to answer at all is a small yes-or-no decision with a score and a threshold. So is deciding what an agent should remember, which past cases are relevant and which retrieved fact is trustworthy enough to act on. Keep counting.
 
 ## A model in a loop
@@ -100,8 +98,6 @@ Loops come with some uncomfortable arithmetic. If each step is right 95% of the 
 
 That's why agents that shine in a demo stumble in production (@fig-compound). A demo is a few steps on a friendly example. Production is twenty steps on a strange one: at 95% per step, a twenty-step task succeeds about {{< num ch13 compound_95_20 pct >}} of the time. And the direction points at the decisions. They're most of the steps, so they're most of the risk. A decision that comes with a trustworthy probability can be caught before it compounds, by routing it to review or gathering more evidence. A decision that comes back as a confident sentence can't.
 
-[[AUTHOR STORY: SIGNAL, or another agent you built: the moment you realised most of its steps were small decisions]]
-
 ## Inputs can lie
 
 Now the most dangerous failure. In a RAG system or an agent, the model reads text that someone else wrote: emails, tickets, web pages, alert descriptions. If an attacker can get text in front of the model, they can write instructions or claims into it. It's called **prompt injection**, and it's usually described as an LLM problem [@greshake2023]. The problem is broader than that. Any model that reads attacker-controlled text can be steered by it, decision models included.
@@ -128,8 +124,6 @@ Take the facts that lower suspicion from systems attackers can't write to, never
 :::
 
 Other failures are quieter. Retrieval returns a weak match and nobody checks: {{< num ch14 weak_retrieval pct >}} of the agent's policy lookups fell below the "I don't know" line. Loops run on without a budget. And the worst failures come at the end, where the agent acts: isolating the CEO's laptop mid-meeting, or closing a real incident. When anything goes wrong, from a timeout to a parse failure, the agent should fail towards a person reviewing it, never towards acting.
-
-[[AUTHOR STORY: the police FIR agent: a case where an automated step should never have been allowed to act alone]]
 
 ## The decision layer
 

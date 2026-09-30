@@ -235,3 +235,11 @@ Newest decisions are appended at the bottom of each section.
   as given: independently published, first edition 2026, MIT code licence, TypeSafe AI independence and trademark
   notice, the synthetic-numbers note (now naming Harbor Pharma too), no-warranty and no-advice notice, fonts, and
   contact email. The ISBN and printing lines are gone; with a KDP-assigned ISBN, KDP prints it in the cover barcode.
+- **D-85 · Release v1.0.** Built into `release/v1.0/` (see its RELEASE.md and KDP-UPLOAD.md). Choices made there:
+  the hidden [[VERIFY]] and [[AUTHOR STORY]] markers were removed from the source with the printed text unchanged,
+  and recorded in `docs/verify-ledger.md`; the placeholder Acknowledgements page is out of this edition; About the
+  Author uses the approved bio; the paperback moves to premium colour paper (spine 0.5821 in at 248 pages), which
+  supersedes D-74's standard colour; the interior is padded to an even 248 pages with a final blank; figure rasters
+  export at 300 ppi; the EPUB uses 300 dpi PNG figures with captions as alt text, and its CSS wraps code, URLs and
+  wide maths. No bleed: nothing prints to the page edge. KDP's calculator and help pages stayed blocked, so margins
+  and cover sizes follow KDP's published rules (D-75) and the author should check KDP's templates.

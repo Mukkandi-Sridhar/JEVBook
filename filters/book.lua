@@ -19,6 +19,7 @@
 --   [[VERIFY]]               (inline)         -> marker in draft builds, hidden in print
 
 local is_latex = quarto.doc.is_format("latex") or quarto.doc.is_format("pdf")
+local is_epub = quarto.doc.is_format("epub")
 -- Draft markers ([[AUTHOR STORY]], [[VERIFY]]) show only in a draft build: BOOK_DRAFT=1 quarto render
 local draft = os.getenv("BOOK_DRAFT") == "1"
 local is_html = quarto.doc.is_format("html") or quarto.doc.is_format("epub")
@@ -48,7 +49,8 @@ end
 -- ---------------------------------------------------------------- images
 function Image(img)
   if not is_latex and img.src:match("%.pdf$") and img.src:match("figures/") then
-    img.src = img.src:gsub("%.pdf$", ".svg")
+    -- the ebook gets 300 dpi PNGs (made by tools/epub_figures.py); e-readers handle them better than SVG
+    img.src = img.src:gsub("%.pdf$", is_epub and ".png" or ".svg")
   end
   if is_latex and img.src:sub(1, 1) == "/" then
     img.src = img.src:sub(2)

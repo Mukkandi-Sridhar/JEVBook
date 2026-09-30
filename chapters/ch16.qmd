@@ -126,7 +126,7 @@ Chapter 10 showed that one call can carry several questions about the same state
 
 Asking Kestrel's four triage questions in one call used about {{< num ch23 tokens_four_one int >}} input tokens. Asking them in four separate calls used {{< num ch23 tokens_four_sep int >}}, because the alert went over the wire four times (@fig-tokens). One call is also one round trip instead of four.
 
-These are the mock's token counts, not the real tokeniser's [[VERIFY]]. But they suggest something worth noticing: a Kestrel alert is short, about {{< num ch23 tokens_text int >}} tokens as text. Chapters 9 and 12 assumed 500 tokens per decision, which was generous. At short states like these, the vendor-reported price works out to a few dollars per million decisions.
+These are the mock's token counts, not the real tokeniser's. But they suggest something worth noticing: a Kestrel alert is short, about {{< num ch23 tokens_text int >}} tokens as text. Chapters 9 and 12 assumed 500 tokens per decision, which was generous. At short states like these, the vendor-reported price works out to a few dollars per million decisions.
 
 ## Tests that never touch the network
 
@@ -152,10 +152,8 @@ print(round(r.nouls["a"].noul, 3))
 
 The book's own repository works this way. Every lab and every listing runs in CI against the mock on each change. A separate weekly job calls the real API, if a key is configured, and checks that it still has the shape the book teaches, so a change in the interface shows up as a failing check rather than a surprise. Comparing the real *answers* against a recorded baseline is the natural next step, and exercise 3 builds the pieces.
 
-[[AUTHOR STORY: the first time an API change or an unpinned model version broke something of yours in production, and how you found out]]
-
 ::: {.breaks}
-The mock copies the interface, not the model: every answer it gives is synthetic, and its token counts are its own. Behaviour the SDK leaves to the server, such as exact rate limits, timeouts under load and the precise meaning of `confidence`, can only be learned against the real API [[VERIFY]]. Replayed cassettes go stale: they record what the model said on the day you recorded them, so re-record on a schedule and when you change model versions. And retries hide trouble as well as fixing it; count them, because a rising retry rate is often the first sign that something upstream is wrong.
+The mock copies the interface, not the model: every answer it gives is synthetic, and its token counts are its own. Behaviour the SDK leaves to the server, such as exact rate limits, timeouts under load and the precise meaning of `confidence`, can only be learned against the real API. Replayed cassettes go stale: they record what the model said on the day you recorded them, so re-record on a schedule and when you change model versions. And retries hide trouble as well as fixing it; count them, because a rising retry rate is often the first sign that something upstream is wrong.
 :::
 
 ::: {.threshold}
@@ -168,7 +166,7 @@ Kestrel's login check has a 300 ms budget. If the call to Jev fails or times out
 Program testing can be used to show the presence of bugs, but never to show their absence!
 :::
 
-Dijkstra's point [@dijkstra1970] [[VERIFY]] is doubly true for a model behind an API: tests against a mock show your code handles the answers. They can't show the answers will be good. That's what Chapter 11's calibration checks are for.
+Dijkstra's point [@dijkstra1970] is doubly true for a model behind an API: tests against a mock show your code handles the answers. They can't show the answers will be good. That's what Chapter 11's calibration checks are for.
 
 ## Where we are
 

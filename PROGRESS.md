@@ -50,20 +50,20 @@ Resume from here. Each chapter row is updated after its lab runs, it renders, an
 
 ## NEEDS AUTHOR
 
-Everything below needs you, or access this build didn't have. `BOOK_DRAFT=1 quarto render --to pdf` shows every
-[[VERIFY]] and [[AUTHOR STORY]] marker in place; `[[AUTHOR: …]]` placeholders show in every build.
+Everything below needs you, or access this build didn't have. Release v1.0 is in `release/v1.0/`; its RELEASE.md
+ends with the decisions still open. The draft markers were removed for the release; `docs/verify-ledger.md` lists
+what they marked.
 
 **Placeholders to fill (visible in print until you do)**
 
 - Copyright page: final text in place (independently published, first edition 2026). If you buy your own ISBN
   rather than using KDP's free one, add it there.
-- Acknowledgements (`front/acknowledgements.qmd`) and About the Author (`back/about-author.qmd`).
+- Acknowledgements: left out of v1.0 (no approved text). About the Author uses the approved bio.
 - Back cover (`cover/wrap.py`): KDP prints the ISBN barcode in the empty bottom-right area. Praise is switched off (`SHOW_PRAISE`) until there are real quotes. Then rebuild
   (`cover/README.md`) and lay KDP's cover template for the final page count over `cover/print/cover-*-guides.pdf`.
 
-**Your stories** — [[AUTHOR STORY]] markers: 20, hidden in print. They mark where AttendX, the police
-FIR agent, SIGNAL, VMG-RAG or leading the intern team belongs. `grep -n "AUTHOR STORY" chapters/*.qmd index.qmd`
-lists them with their topics.
+**Your stories** — 20 places where AttendX, the police FIR agent, SIGNAL, VMG-RAG or leading the intern team
+belongs; listed with their topics in `docs/verify-ledger.md`.
 
 **Checks against sources this build couldn't open.** The network blocked docs.typesafe.ai, typesafe.ai, arxiv.org,
 huggingface.co and every article host, so these rest on search-engine excerpts that agreed across several queries:
@@ -77,9 +77,9 @@ huggingface.co and every article host, so these rest on search-engine excerpts t
 - Bibliography: URLs and the access date (29 September 2026) for TypeSafe's blog and docs, DataCamp, regolo.ai and
   Alex Molas. Search results show the DataCamp article under two titles ("…That Never Hallucinates" and
   "…Explained"); the book uses the first. Confirm on the page.
-- The Doom demo (Chapter 9: about ten decisions a second, about \$7 an hour) keeps its [[VERIFY]]: find TypeSafe's
+- The Doom demo (Chapter 9: about ten decisions a second, about \$7 an hour) is still unverified: find TypeSafe's
   own post or video and cite it.
-- [[VERIFY]] marks in total: 36, mostly vendor numbers (latency, price, speed-ups) and attributed quotes
+- Claims that were marked for checking in total: 37 (now listed in `docs/verify-ledger.md`), mostly vendor numbers (latency, price, speed-ups) and attributed quotes
   (Simon, Amara, Tyson, Gibson, "Hope is not a strategy"). `docs/jev-facts.md` is the ledger.
 
 **Things to switch on**

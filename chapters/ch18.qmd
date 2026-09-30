@@ -1,7 +1,7 @@
 # Case study: SOC alert triage {#sec-ch18}
 
 ::: {.epigraph by="Mike Tyson, attributed"}
-Everybody has a plan until they get punched in the mouth. [[VERIFY]]
+Everybody has a plan until they get punched in the mouth.
 :::
 
 ```{python}
@@ -43,8 +43,6 @@ The left half of @fig-routes looks similar before and after: most alerts get clo
 ![The whole system, with the chapter each piece comes from. Alerts go to Jev as typed questions, the answers are calibrated, the policy routes each alert, and people see the queue and the pages. The LLM writes only for them. Everything is logged and monitored, and labels from reviews and a random audit feed back into calibration.](/figures/ch25/system.pdf){#fig-system}
 
 There's nothing in @fig-system you haven't built. The alert's fields go to Jev as three typed questions (Chapter 10). Platt scaling, fitted on three weeks of history, makes the probabilities trustworthy at Kestrel (Chapters 3 and 11). The three-zone policy, with its lines set by cost and capacity, routes each alert (Chapter 14). The LLM writes the case note for the queue and the message for the page, and nothing else (Chapters 15 and 17). And every decision is logged with its inputs, answers and policy version.
-
-[[AUTHOR STORY: what the first design review of a system like this looked like, and the question from a stakeholder you didn't expect]]
 
 ## A week in the shadows
 
@@ -125,7 +123,7 @@ During the campaign, Kestrel can afford overtime for two more analysts, or it ca
 A bad system will beat a good person every time.
 :::
 
-Deming said something like this often, in talks and seminars [[VERIFY]]. Kestrel's analysts were never the problem. The old queue decided what they saw by accident. The new one decides on purpose.
+Deming said something like this often, in talks and seminars. Kestrel's analysts were never the problem. The old queue decided what they saw by accident. The new one decides on purpose.
 
 ## Where we are
 

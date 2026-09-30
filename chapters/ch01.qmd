@@ -37,8 +37,6 @@ A computer following a rule, nothing more. I told it what to do, step by step. I
 
 A surprising amount of software that gets called "AI" is no more than this. A bank that blocks card payments over a limit. A spam filter that bins any email containing "lottery". An office system that marks you absent if you haven't badged in by 10 a.m.
 
-[[AUTHOR STORY: AttendX, a rule-based system you built or used, and the day it met a case its rules didn't cover]]
-
 And here's something people rarely say out loud: rules are *good*. They're fast, they're cheap, and when one goes wrong you can open it up and read why. When a rule does the job, use the rule. We'll come back to this in Chapter 13, where plain rules win more than one round of a contest against much fancier models.
 
 The trouble starts when the world won't sit still long enough for a rule.
@@ -219,7 +217,7 @@ For each of those, the usual approach today is to ask an LLM, get a paragraph ba
 
 ![The same question, two ways. An LLM writes its answer out, piece by piece, and your code has to read the sentence. A decision model returns the answer as data, with a probability for every option, in one pass.](/figures/ch01/generate-vs-decide.pdf){#fig-generate-vs-decide}
 
-In September 2026, a start-up called TypeSafe AI released a model built for those checkbox moments [[VERIFY]]. It's called **Jev**. It doesn't write text at all. You give it the situation and a typed question, like "pick one of these labels" or "is this true, yes or no", and it gives back the answer as data, with a probability attached to every option (@fig-generate-vs-decide). TypeSafe calls it a *System One* model, after the fast, intuitive kind of thinking described by the psychologist Daniel Kahneman, as opposed to slow, deliberate *System Two* thinking [@kahneman2011]. Part III takes Jev apart properly.
+In September 2026, a start-up called TypeSafe AI released a model built for those checkbox moments. It's called **Jev**. It doesn't write text at all. You give it the situation and a typed question, like "pick one of these labels" or "is this true, yes or no", and it gives back the answer as data, with a probability attached to every option (@fig-generate-vs-decide). TypeSafe calls it a *System One* model, after the fast, intuitive kind of thinking described by the psychologist Daniel Kahneman, as opposed to slow, deliberate *System Two* thinking [@kahneman2011]. Part III takes Jev apart properly.
 
 One thing you should know now, because it shapes every page that follows. I didn't have access to the Jev API while writing this book. So everywhere you see Jev answer a question, the answer comes from `jev-mock-synthetic`, a stand-in I built that speaks Jev's exact public interface through TypeSafe's official Python library. The code is real. The numbers are synthetic, and every one of them is labelled that way.
 

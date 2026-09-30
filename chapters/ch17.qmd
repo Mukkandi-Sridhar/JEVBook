@@ -63,8 +63,6 @@ So the verdict was always reached without the single most informative fact about
 
 I want to be careful about what this says. The mock's evidence choices come from a simple word-matching engine, so I can't tell you real Jev would make the same mistake. What I can tell you is that *any* decision step can fail this way, whichever model answers it, and that nothing downstream will complain. Typed answers are always well-formed. Well-formed and right aren't the same thing.
 
-[[AUTHOR STORY: the police FIR agent or SIGNAL: a step that never crashed but quietly did the wrong thing, and how reading its answers, not its errors, found it]]
-
 ::: {.keyidea}
 Chart the answers of every decision step. An option that's never chosen, or always chosen, is a warning, even when nothing has crashed.
 :::
@@ -95,8 +93,6 @@ The simulated bill points the same way: about \${{< num ch24 hybrid_cost_1000 f2
 
 The hybrid doesn't use less LLM because LLMs are bad. It uses the LLM for the work only an LLM can do.
 
-[[AUTHOR STORY: an agent you built where most of the LLM calls turned out to be small decisions, and what changed when you moved them out]]
-
 ::: {.breaks}
 Everything here is synthetic: the mock decides, the mock LLM writes, and the timings are simulated. The accuracy gap between the two agents is partly built into the mocks (Chapter 13 explained how), so treat the speed, the queue and the design lessons as the findings, not the verdict quality. The all-LLM agent used the hybrid's policy lines; you could retune them for its clumped confidences, but there are only a few values to put a line between. And the bug in this chapter shows that a hybrid agent has its own failure mode: a decision step that's wrong without any error. Monitoring each step's answers isn't optional.
 :::
@@ -111,7 +107,7 @@ The hybrid agent's "which evidence next?" step can choose "none" to stop gatheri
 Premature optimization is the root of all evil.
 :::
 
-Knuth was warning programmers against tuning code before measuring it [@knuth1974] [[VERIFY]]. The first version of this agent optimised the wrong thing: it made "should we look this up?" a clever decision, when simply looking was cheaper. Measure first, then decide what's worth deciding.
+Knuth was warning programmers against tuning code before measuring it [@knuth1974]. The first version of this agent optimised the wrong thing: it made "should we look this up?" a clever decision, when simply looking was cheaper. Measure first, then decide what's worth deciding.
 
 ## Where we are
 

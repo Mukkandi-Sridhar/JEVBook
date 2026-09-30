@@ -169,8 +169,6 @@ print(round(r.nouls["keep"].noul, 2))
 
 **How it breaks.** Memory decisions fail without a sound. A fact wrongly discarded never shows up as an error; it just isn't there when it's needed. Log what the controller discards, and audit a sample, as Chapter 14 did with auto-closed alerts.
 
-[[AUTHOR STORY: which of these patterns you reached for first in a real system (the police FIR agent, SIGNAL or AttendX), and what went wrong before you did]]
-
 ::: {.breaks}
 Only patterns 1, 3 and 5 have measurements in this chapter, and all of them are synthetic. The others are shapes, drawn from how the pieces work, and each needs testing on real data before you trust it. Combining patterns multiplies failure points: an extractor feeding a gate feeding a router has three places to be wrong, and the errors can compound as Chapter 7 showed. And every pattern here assumes the decision model's probabilities hold on your data, which Chapter 11 said you must check, not assume.
 :::
@@ -185,7 +183,7 @@ Kestrel's agent wants to disable a user account when it suspects stolen credenti
 Each pattern describes a problem which occurs over and over again in our environment, and then describes the core of the solution to that problem, in such a way that you can use this solution a million times over, without ever doing it the same way twice.
 :::
 
-Alexander was an architect writing about towns and buildings [@alexander1977] [[VERIFY]]. Software engineers borrowed his idea, and it fits decision layers well: the same few shapes, never quite the same twice.
+Alexander was an architect writing about towns and buildings [@alexander1977]. Software engineers borrowed his idea, and it fits decision layers well: the same few shapes, never quite the same twice.
 
 ## Where we are
 

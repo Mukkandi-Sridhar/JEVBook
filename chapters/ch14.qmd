@@ -80,8 +80,6 @@ In this book, **act** means the system handles the case by itself, **review** me
 
 Look at @fig-zones-strip for a moment, because the entire problem is in it. The grey dots pile up on the left: the easy harmless alerts. The red dots lean right. But there are red dots scattered through the middle and even a few in the far-left crowd, and grey dots sitting in the escalate zone. No placement of two lines makes every dot land in the right zone. Our job is to place the lines so the *mistakes we can't avoid* are the cheap ones.
 
-[[AUTHOR STORY: the police FIR agent, and how you decided which complaints an officer had to read before anything else happened]]
-
 ## Let the costs draw the lines
 
 So where do the lines go? Not where they look nice. Where the money says.

@@ -1,7 +1,7 @@
 # System 1 and System 2 {#sec-ch08}
 
 ::: {.epigraph by="Herbert Simon, as quoted by Daniel Kahneman, 2011"}
-Intuition is nothing more and nothing less than recognition. [[VERIFY]]
+Intuition is nothing more and nothing less than recognition.
 :::
 
 ```{python}
@@ -11,7 +11,7 @@ from jevkit import soc, calibration as cal
 from jevkit.batch import score_alerts
 ```
 
-When TypeSafe AI released Jev, it didn't call it a better LLM. It called it the first of a new class: a **System One model** [@typesafe2026] [[VERIFY]].
+When TypeSafe AI released Jev, it didn't call it a better LLM. It called it the first of a new class: a **System One model** [@typesafe2026].
 
 *"Is that a real idea, or just a clever name?"*
 

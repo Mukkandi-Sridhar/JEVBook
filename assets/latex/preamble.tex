@@ -255,6 +255,9 @@
 \makeatletter\@openrightfalse\makeatother
 % Quarto puts a \cleardoublepage before the appendix; with open=any it should only start a new page.
 \let\cleardoublepage\clearpage
+% Part entries in the table of contents are bold; give their page numbers room so three digits stay inside the
+% margin. (Before the patch below: redeclaring \part afterwards would drop it.)
+\RedeclareSectionCommand[tocpagenumberwidth=2.4em]{part}
 % Part pages open on the right, like a printed book's.
 \pretocmd{\part}{\cleardoubleoddemptypage}{}{}
 % Roman numerals run through the front matter and Part I's opener; Chapter 1 is page 1. Quarto calls \mainmatter
@@ -283,3 +286,5 @@
 % Reference matter in small type: the bibliography here; the glossary and cheat sheets set it in their own files.
 \AtBeginEnvironment{CSLReferences}{\small}
 
+% PDF bookmarks carry part and chapter numbers.
+\AtBeginDocument{\bookmarksetup{numbered}}

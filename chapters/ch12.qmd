@@ -1,7 +1,7 @@
 # The Jevons paradox of decisions {#sec-ch12}
 
 ::: {.epigraph by="Roy Amara, attributed"}
-We tend to overestimate the effect of a technology in the short run and underestimate the effect in the long run. [[VERIFY]]
+We tend to overestimate the effect of a technology in the short run and underestimate the effect in the long run.
 :::
 
 ```{python}
@@ -19,7 +19,7 @@ Jevons said no. More efficient engines had made coal-powered work *cheaper*, and
 It is wholly a confusion of ideas to suppose that the economical use of fuel is equivalent to a diminished consumption. The very contrary is the truth.
 :::
 
-A model whose name is short for Jevons [[VERIFY]] invites the question: what's the coal, this time?
+A model whose name is short for Jevons invites the question: what's the coal, this time?
 
 It's decisions.
 
@@ -39,7 +39,7 @@ You already know this pattern, even if you've never heard Jevons' name.
 
 Think about photographs. When a photo meant film, developing and a trip to the chemist, you took a few dozen on a holiday and chose each one with care. Then each photo cost next to nothing. Nobody takes the same few dozen photos for less money. You take thousands, of receipts and parking spots and whiteboards, because each one is now worth taking.
 
-Or light. Over the last two centuries, the price of an hour of light fell enormously, from candles to gas to electric bulbs to LEDs. Economic historians who traced it for the UK found that people didn't pocket the savings and keep a candle's worth of light. They lit streets and buildings and kept them lit all night, and use grew far faster than the price fell [@fouquet2006] [[VERIFY]].
+Or light. Over the last two centuries, the price of an hour of light fell enormously, from candles to gas to electric bulbs to LEDs. Economic historians who traced it for the UK found that people didn't pocket the savings and keep a candle's worth of light. They lit streets and buildings and kept them lit all night, and use grew far faster than the price fell [@fouquet2006].
 
 That pattern has a name. The **Jevons paradox** is what happens when something becomes more efficient to use, each unit of use gets cheaper, and total use rises instead of falling.
 
@@ -51,15 +51,13 @@ What decides it is how hungry people are for more, which economists measure as *
 
 ![Three ways demand can respond to a falling price (illustrative). If people use only a little more when it's cheaper, total spend falls. If use grows as fast as the price falls, spend stays flat. If use grows faster, spend rises: that's the Jevons paradox.](/figures/ch19/elasticity.pdf){#fig-elasticity}
 
-If demand is **inelastic**, like salt, a price cut mostly saves money. If demand is **elastic**, like photos or light, a price cut opens up so many new uses that the total bill goes *up* (@fig-elasticity). Economists call the general effect a rebound, and they reserve "backfire" for the case where it more than cancels the saving. How often full backfire happens with energy is still argued over [@sorrell2009] [[VERIFY]].
+If demand is **inelastic**, like salt, a price cut mostly saves money. If demand is **elastic**, like photos or light, a price cut opens up so many new uses that the total bill goes *up* (@fig-elasticity). Economists call the general effect a rebound, and they reserve "backfire" for the case where it more than cancels the saving. How often full backfire happens with energy is still argued over [@sorrell2009].
 
 So the question for decisions isn't "is the paradox true?" It's: *how elastic is the demand for decisions?* Are there lots of decisions that aren't being made today, only because they cost too much?
 
 ## Why a model would be named after it
 
-TypeSafe has said the name nods to Jevons: that cheaper intelligence leads to wider use, not less of it [[VERIFY]]. It's a good choice, and a pointed one, because the same idea did the rounds in early 2025, when cheaper AI models briefly rattled investors and several technology leaders reached for Jevons to argue that cheaper AI would mean more AI, not less [[VERIFY]].
-
-[[AUTHOR STORY: a decision you once wanted a system to make on every item, but couldn't justify the cost or wait, e.g. in AttendX or SIGNAL]]
+TypeSafe has said the name nods to Jevons: that cheaper intelligence leads to wider use, not less of it. It's a good choice, and a pointed one, because the same idea did the rounds in early 2025, when cheaper AI models briefly rattled investors and several technology leaders reached for Jevons to argue that cheaper AI would mean more AI, not less.
 
 We don't need to settle that argument for an entire industry. We can look at one company and count.
 
