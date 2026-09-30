@@ -2525,3 +2525,71 @@ Every change is logged below as a before/after pair, applied by `tools/simplify_
 - `chapters/ch20.qmd`
   - Before: 4. Point Chapter 14's lab at `TinyJevTransport`. Do the policy's lines need to move? Why?
   - After: 4. Point Chapter 14's lab at `TinyJevTransport`. Do the policy's thresholds need to move? Why?
+
+## Chapter 22: What changes now
+
+21 changes.
+
+- `chapters/ch22.qmd`
+  - Before: You've learned quite a lot of it since. Probability and calibration, neural networks, embeddings, attention, LLMs, agents. Then a new kind of model, and everything it takes to use one well. This last chapter is shorter. It steps back and asks what all of that adds up to, for the industry and for you.
+  - After: You've learned quite a lot of it since: probability and calibration, neural networks, embeddings, attention, LLMs and agents. Then a new kind of model, and everything it takes to use one well. This last chapter is shorter. It steps back and asks what all of that means, for the industry and for you.
+- `chapters/ch22.qmd`
+  - Before: I'll try to be careful here. It's easy to end a book like this with predictions, and most predictions about AI age badly. So I'll stick to three things: what the book showed, what it suggests, and what nobody knows yet.
+  - After: I'll try to be careful here. It's easy to end a book like this with predictions, and most predictions about AI soon turn out wrong. So I'll keep to three things: what the book showed, what it suggests, and what nobody knows yet.
+- `chapters/ch22.qmd`
+  - Before: - Keep an honest list of what isn't known yet.
+  - After: - Keep a clear list of what isn't known yet.
+- `chapters/ch22.qmd`
+  - Before: The right-hand side of @fig-stack is the shape this book kept arriving at, chapter after chapter. The LLM does what only an LLM can do: read anything, and write for people. The decision layer answers small typed questions in one pass, with probabilities you can test. The policy draws the lines, from costs and capacity. And underneath, tools act and people review.
+  - After: The right-hand side of @fig-stack is the design this book kept reaching, chapter after chapter. The LLM does what only an LLM can do: read anything, and write for people. The decision layer answers small typed questions in one pass, with probabilities you can test. The policy sets the thresholds, from costs and capacity. And underneath, tools act and people review.
+- `chapters/ch22.qmd`
+  - Before: Each layer is smaller than the system it serves. Each can be tested on its own, with the tools from Part I. And each can be replaced without rebuilding the others: a better LLM, a different decision model, new lines. That, more than any benchmark, is why I think the split will last.
+  - After: Each layer is smaller than the system it serves. Each can be tested on its own, with the tools from Part I. And each can be replaced without rebuilding the others: a better LLM, a different decision model, new thresholds. That, more than any benchmark, is why I think this split will last.
+- `chapters/ch22.qmd`
+  - Before: Take one task, sketched the way Chapter 7 counted Kestrel's agent: a ticket comes in, an agent picks tools, checks whether it has enough, checks whether an action is safe, does it and writes a reply.
+  - After: Take one task, described the way Chapter 7 counted Kestrel's agent. A ticket comes in. An agent picks tools, checks whether it has enough, checks whether an action is safe, does it, and writes a reply.
+- `chapters/ch22.qmd`
+  - Before: With the book's illustrative LLM figures and Jev's vendor-reported ones, the task drops from about {{< num ch29 task_llm_s int >}} seconds to {{< num ch29 task_jev_s int >}}, and the bill falls by about three quarters (@fig-task). What's left is mostly the one step where an LLM writes something a person will read. Chapter 17 measured the same shape on Kestrel's agent, which ran about {{< num ch29 ch24_speedup int >}} times faster as a hybrid.
+  - After: With the book's illustrative LLM figures and Jev's vendor-reported ones, the task drops from about {{< num ch29 task_llm_s int >}} seconds to {{< num ch29 task_jev_s int >}}. The cost falls by about three quarters (@fig-task). What's left is mostly the one step where an LLM writes something a person will read. Chapter 17 measured the same pattern on Kestrel's agent, which ran about {{< num ch29 ch24_speedup int >}} times faster as a hybrid.
+- `chapters/ch22.qmd`
+  - Before: Then Chapter 12's warning applies. When decisions get this cheap, we won't make the same decisions for less. We'll make many more of them: every login checked, every retrieved passage judged, every agent step gated. Most of the change will happen there. It won't come from doing today's work more cheaply. It'll come from the work that becomes worth doing.
+  - After: Then Chapter 12's warning applies. When decisions get this cheap, we won't make the same decisions for less. We'll make many more of them: every login checked, every retrieved passage judged, every agent step passed through a gate. Most of the change will happen there. It won't come from doing today's work more cheaply. It'll come from the work that becomes worth doing.
+- `chapters/ch22.qmd`
+  - Before: Judgement about the decision itself. Someone still has to decide what a mistake costs, where the lines go, how much the review queue can take, and whether the probabilities are still honest this week. The model can't do any of that for you.
+  - After: Judgement about the decision itself. Someone still has to decide what a mistake costs, where the thresholds go, how much the review queue can take, and whether the probabilities are still calibrated this week. The model can't do any of that for you.
+- `chapters/ch22.qmd`
+  - Before: Which is why the book's first part, which may have felt like a long detour, was worth the time. Thinking in probabilities and testing calibration were the foundations, not the preamble (@fig-skills). They're what separates a system that makes a million cheap decisions well from one that makes a million cheap mistakes.
+  - After: That's why the book's first part was worth the time, even if it felt like a long way round. Thinking in probabilities and testing calibration were the foundations, not just an introduction (@fig-skills). They're the difference between a system that makes a million cheap decisions well and one that makes a million cheap mistakes.
+- `chapters/ch22.qmd`
+  - Before: What matters less *on its own* is prompting for everything, and reaching for the biggest model by default. Both still have their place. They're just no longer all of it.
+  - After: What matters less *on its own* is writing prompts for everything, and choosing the biggest model by default. Both are still useful. They're just no longer the whole job.
+- `chapters/ch22.qmd`
+  - Before: I've tried throughout to keep three piles: what's verified, what's vendor-reported and what's unknown. @fig-unknowns is the unknown pile, as it stands.
+  - After: Throughout the book, I've tried to keep three piles: what's verified, what's vendor-reported and what's unknown. @fig-unknowns is the unknown pile, as it is today.
+- `chapters/ch22.qmd`
+  - Before: Every item in @fig-unknowns is open. None of them is a reason to wait. Calibration on your data is a test you can run this week. Drift between versions is a pin and a monitor. Prices are a spreadsheet with a sensitivity column. And the question of who else builds decision models matters less than it seems, because the pattern outlives any vendor. A typed question in, a probability out, and a policy in your own code: you can move that to a different model on a Tuesday afternoon.
+  - After: Every item in @fig-unknowns is still open. None of them is a reason to wait. Calibration on your data is a test you can run this week. Changes between versions are handled by a fixed version number and a monitor. Prices are a spreadsheet where you try different values. And it matters less than it seems who else builds decision models, because the pattern will last longer than any one vendor. A typed question in, a probability out, and a policy in your own code: you can move that to a different model in an afternoon.
+- `chapters/ch22.qmd`
+  - Before: You don't need to predict how this plays out. You need decisions you can measure, lines you can move and a model you can swap.
+  - After: You don't need to predict how this turns out. You need decisions you can measure, thresholds you can move and a model you can replace.
+- `chapters/ch22.qmd`
+  - Before: Then pick *one*. Get a few hundred labels. Test it the way Chapter 11 did. Put prices on its mistakes, draw its lines and run it in shadow. Switch it on with a fail-safe and a monitor. Then do the next one.
+  - After: Then pick *one*. Get a few hundred labels. Test it the way Chapter 11 did. Put prices on its mistakes, set its thresholds and run it in shadow mode. Switch it on with a fail-safe and a monitor. Then do the next one.
+- `chapters/ch22.qmd`
+  - Before: It isn't glamorous. It's how every system in this book got better.
+  - After: It isn't exciting. It's how every system in this book got better.
+- `chapters/ch22.qmd`
+  - Before: This chapter is the most speculative in the book. The cost and speed figures are illustrative, and Jev's are vendor-reported from its early access. The claim that a decision layer will become a standard part of AI systems is my reading of the evidence here, not a finding. It could be wrong if general-purpose models become fast and well calibrated enough that splitting stops paying off. If that happens, the skills in @fig-skills still apply; only the box they live in changes.
+  - After: This chapter is the least certain in the book. The cost and speed figures are illustrative, and Jev's are vendor-reported from its early access. The claim that a decision layer will become a standard part of AI systems is my reading of the evidence here, not a finding. It could be wrong if general models become fast enough and well calibrated enough that splitting stops being worth it. If that happens, the skills in @fig-skills still apply; only the box they sit in changes.
+- `chapters/ch22.qmd`
+  - Before: Your own system: pick the decision in it that happens most often. What does a wrong "yes" cost? A wrong "no"? Where does the line go? And how would you know, a month from now, whether the probabilities behind it are still honest?
+  - After: Your own system: pick the decision in it that happens most often. What does a wrong "yes" cost? A wrong "no"? Where does the threshold go? And how would you know, a month from now, whether the probabilities behind it are still calibrated?
+- `chapters/ch22.qmd`
+  - Before: Read @fig-journey from the top and you have the book in six lines. That's the map, and you know where everything on it is now. What's left is choosing the first decision in your own work that deserves the care.
+  - After: Read @fig-journey from the top and you have the book in six lines. That's the map, and you now know where everything on it is. What's left is choosing the first decision in your own work that deserves this care.
+- `chapters/ch22.qmd`
+  - Before: 4. Write a one-page memo to your team proposing the first decision to move, using the vocabulary of this book: costs, lines, calibration, shadow, fail-safe.
+  - After: 4. Write a one-page note to your team suggesting the first decision to move. Use the words of this book: costs, thresholds, calibration, shadow mode, fail-safe.
+- `chapters/ch22.qmd`
+  - Before: Thank you for reading. The labs, the mock and every figure's code are in the companion repository, waiting for your own data.
+  - After: Thank you for reading. The labs, the mock and every figure's code are in the companion repository, ready for your own data.
