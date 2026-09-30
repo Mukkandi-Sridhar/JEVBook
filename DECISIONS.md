@@ -231,3 +231,7 @@ Newest decisions are appended at the bottom of each section.
 - **D-83 · Final back-cover bio.** The author supplied the bio: "Sridhar Mukkandi is an applied AI engineer who builds
   agents and the decision systems behind them. He writes for engineers who want AI systems they can trust." The email
   stays beneath it. No photo or photo placeholder appears anywhere on the cover.
+- **D-84 · Final copyright page.** The author supplied the copyright page text, now in `assets/latex/before-body.tex`
+  as given: independently published, first edition 2026, MIT code licence, TypeSafe AI independence and trademark
+  notice, the synthetic-numbers note (now naming Harbor Pharma too), no-warranty and no-advice notice, fonts, and
+  contact email. The ISBN and printing lines are gone; with a KDP-assigned ISBN, KDP prints it in the cover barcode.
