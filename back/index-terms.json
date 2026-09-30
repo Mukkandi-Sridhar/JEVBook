@@ -164,12 +164,12 @@
    ]
   },
   {
-   "display": "Cost line",
-   "sort": "cost line",
+   "display": "Cost-based threshold",
+   "sort": "cost-based threshold",
    "patterns": [
     "cost line*",
     "cost-based line",
-    "cost-based threshold"
+    "cost-based threshold*"
    ],
    "strict": false,
    "code": false,
@@ -782,6 +782,20 @@
    "code": false,
    "taught": [
     14
+   ]
+  },
+  {
+   "display": "Threshold",
+   "sort": "threshold",
+   "patterns": [
+    "threshold",
+    "thresholds"
+   ],
+   "strict": true,
+   "code": false,
+   "taught": [
+    1,
+    4
    ]
   },
   {

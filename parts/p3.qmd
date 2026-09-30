@@ -3,7 +3,7 @@
 ::: {.partintro}
 Now we can look properly at Jev: a model that doesn't write at all. It answers typed questions with probabilities.
 
-This part separates what's published from what's claimed, walks through its three question types, shows you how to test its calibration yourself, and asks what happens to an industry when a decision becomes almost free.
+This part separates what's published from what's claimed. It explains Jev's three question types and shows you how to test its calibration yourself. Then it asks what happens to an industry when a decision becomes almost free.
 
 Every Jev number in these pages comes from the book's synthetic mock and is labelled that way.
 :::

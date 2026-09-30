@@ -4,9 +4,9 @@
 \begingroup\small
 ```
 
-Everything on these pages is explained properly in the chapter given in brackets. They're here for the day you need the formula and not the story.
+Everything on these pages is explained fully in the chapter given in brackets. They're here for the day you need the formula and not the explanation.
 
-## Drawing the line (Chapter 4)
+## Setting the threshold (Chapter 4)
 
 For a yes-or-no decision, act when the probability of a problem is above
 
@@ -18,14 +18,14 @@ A false alarm costing \$400 and a miss costing \$10,000 give $p^{*} = 400 / 10{,
 
 ## Three zones (Chapter 14)
 
-With a review that costs $C_r$ and catches all but a share $m$ of real problems, a miss $C_{\text{miss}}$ and a false page $C_{\text{page}}$, the cost-optimal lines for calibrated probabilities are
+Say a review costs $C_r$ and misses a share $m$ of real problems. A miss costs $C_{\text{miss}}$ and a false urgent call costs $C_{\text{page}}$. Then the cheapest thresholds for calibrated probabilities are
 
 $$
 \text{low} = \frac{C_r}{C_{\text{miss}}\,(1-m)} \qquad
 \text{high} = \frac{C_{\text{page}} - C_r}{C_{\text{page}} + m\,C_{\text{miss}}}
 $$
 
-Then check the queue. If the review zone holds more cases than people can clear, raise the low line until it fits, and write down what that costs.
+Then check the queue. If the review zone holds more cases than people can clear, raise the low (act) threshold until it fits, and write down what that costs.
 
 ## Measuring probabilities (Chapters 2 and 3)
 
@@ -46,7 +46,7 @@ where each bin $b$ holds $n_b$ predictions with average $\bar p_b$ and observed 
 
 | Method | What it fits | Use when |
 |---|---|---|
-| Temperature | $p' = \sigma(z / T)$, one number | the model is uniformly over- or underconfident |
+| Temperature | $p' = \sigma(z / T)$, one number | the model is too confident (or not confident enough) everywhere |
 | Platt scaling | $p' = \sigma(a z + b)$, two numbers | a few hundred labels; the usual first fix |
 | Isotonic | any increasing curve | thousands of labels |
 | Prior shift | odds × $\dfrac{b'/(1-b')}{b/(1-b)}$ | only the base rate changed, from $b$ to $b'$ |
@@ -57,9 +57,9 @@ Here $z = \log\frac{p}{1-p}$ and $\sigma$ is the S-curve.
 
 1. Collect labels for a random sample of real cases, not just the interesting ones.
 2. Measure ranking (AUC) and calibration (ECE, with a bootstrap range) separately.
-3. Compare the average predicted probability with the observed base rate. A big gap usually means prior shift.
-4. Fix the base rate first; then Platt scaling on a few hundred labels if needed.
-5. Re-test on labels you didn't fit on. Repeat on a schedule and whenever the model version changes.
+3. Compare the average predicted probability with the observed base rate. A big gap usually means the base rate has changed (prior shift).
+4. Fix the base rate first; then use Platt scaling on a few hundred labels if needed.
+5. Test again on labels you didn't fit on. Repeat on a schedule and whenever the model version changes.
 
 ## Designing typed questions (Chapter 10)
 
@@ -67,7 +67,7 @@ Here $z = \log\frac{p}{1-p}$ and $\sigma$ is the S-curve.
 - **Choice**: options that don't overlap; always an escape option ("other", "none", "not enough information").
 - **Score**: put thresholds on the probability of the levels you care about, not on the average level.
 - Ask related questions in one call: the state is sent once.
-- Decide with the whole distribution and the costs of each action, not the top label.
+- Decide with all the probabilities and the costs of each action, not just the top label.
 
 ## The official SDK (Chapters 9, 10 and 16)
 
@@ -100,12 +100,12 @@ Retry rate limits (429) and server errors (5xx). Never retry 4xx errors: fix the
 | thousands of labels, clean fields, one stable decision | logistic regression |
 | a rule an expert can write and an auditor must read | rules |
 | no labels, raw text or many different decisions | a decision model, checked on a few hundred labels |
-| messy input and a sharp decision | an LLM to extract, a decision model to decide |
+| messy input and a clear decision | an LLM to extract, a decision model to decide |
 | output a person must read | an LLM, checked by typed questions |
 
 ## Before a decision service runs (Chapter 21)
 
-Pinned model · a versioned, fingerprinted config · a meaning for every failure · a record for every decision · random audits of automatic actions · a daily monitor · shadow runs for new versions · an owner who can switch it all to review.
+A fixed model version · a config with a version number and a fingerprint · a meaning for every failure · a record for every decision · random audits of automatic actions · a daily monitor · shadow runs for new versions · an owner who can switch everything to review.
 
 ```{=latex}
 \par\endgroup

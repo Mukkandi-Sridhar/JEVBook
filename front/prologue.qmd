@@ -2,33 +2,33 @@
 
 It's 2:14 a.m. at Kestrel Logistics, and you're the only analyst on shift.
 
-The building is quiet. The coffee isn't. On your left screen, the alert queue is scrolling the way it always does at this hour: a sign-in from an unusual country, a script that ran from a temp folder, an email with a link to a domain registered last week, a laptop talking to a server nobody recognises.
+The building is quiet. On your left screen, the alert queue is moving the way it always does at this hour: a sign-in from an unusual country, a program that ran from a temporary folder, an email with a link to a website created last week, a laptop talking to a server nobody recognises.
 
-Most of them are nothing. You know that. A salesperson on a trip, an IT tool doing its job, a newsletter with a tracking link. After a few months on nights, you can feel which ones are nothing before you finish reading them.
+Most of them are nothing. You know that. A salesperson on a trip, an IT tool doing its job, a newsletter with a tracking link. After a few months of night shifts, you can feel which ones are nothing before you finish reading them.
 
 But not always. And *not always* is the whole job.
 
-You open the next alert. Twelve minutes later, you've pulled the logs, checked the user's history, looked up the domain and decided: fine. Close it. Next.
+You open the next alert. Twelve minutes later, you've read the logs, checked the user's history, looked up the website and decided: fine. Close it. Next.
 
 At five alerts an hour, you'll get through about thirty-five tonight. The queue will get about two hundred.
 
-![One night at Kestrel, midnight to 7 a.m. Each line is an alert; red lines are the real ones. Working first come, first served, you open the ones on the left and the rest wait for the morning.](/figures/front/night.pdf){#fig-night}
+![One night at Kestrel, midnight to 7 a.m. Each line is an alert; red lines are the real ones. Working in the order they arrive, you open the ones on the left and the rest wait for the morning.](/figures/front/night.pdf){#fig-night}
 
-@fig-night shows the night from above, a view you never get from your desk. There were {{< num front night_alerts int >}} alerts between midnight and seven. {{< num front night_threats int >}} of them were real. Working through the queue in order, you opened {{< num front night_opened int >}}.
+@fig-night shows the whole night at once, a view you never get from your desk. There were {{< num front night_alerts int >}} alerts between midnight and seven. {{< num front night_threats int >}} of them were real. Working through the queue in order, you opened {{< num front night_opened int >}}.
 
 {{< num front night_threats_opened int >}} of those were real.
 
-You didn't do anything wrong. You were careful and quick, and you got every one you opened right. The problem is that the queue decided what you'd look at, and the queue doesn't know anything. It just knows what arrived first.
+You didn't do anything wrong. You were careful and quick, and you got every one you opened right. The problem is that the queue decided what you'd look at, and the queue doesn't know anything. It only knows what arrived first.
 
 Now imagine a different night.
 
-Every alert that arrives is read in a fraction of a second by a model that doesn't write a report or explain itself. It answers three small questions: how likely is this to be real, what kind of threat would it be, and how bad? Its answers are probabilities, and someone checked last week that they hold up: of the alerts it calls one in ten, about one in ten turn out to be real.
+A model reads every alert that arrives in a fraction of a second. It doesn't write a report or explain itself. It answers three small questions: how likely is this to be real, what kind of threat would it be, and how bad? Its answers are probabilities. Someone checked last week that they're calibrated: of the alerts it calls one in ten, about one in ten turn out to be real.
 
-The alerts it's nearly certain are nothing get closed, and a random few of those go into a pile for you to spot-check. The ones it's fairly sure are serious wake up the on-call responder straight away. Everything in between comes to you, likeliest first.
+The alerts it's nearly certain are nothing get closed, and a random few of those go into a pile for you to check. For the ones it's fairly sure are serious, the analyst on call is woken up straight away. Everything in between comes to you, likeliest first.
 
-You still make the calls that matter. You just make them on the right alerts.
+You still make the decisions that matter. You just make them on the right alerts.
 
-That second night is what this book builds, piece by piece. That takes surprisingly little new technology and quite a lot of careful thinking. You need to know what a probability is and how to tell whether one can be trusted. You need to know how much a mistake costs, and where to draw a line so that the cheapest mistakes are the ones you make. And you need to know what to do when the world changes, as it will on some ordinary Tuesday.
+That second night is what this book builds, piece by piece. It takes surprisingly little new technology and quite a lot of careful thinking. You need to know what a probability is and how to tell whether one can be trusted. You need to know how much a mistake costs, and where to set a threshold so that the mistakes you make are the cheap ones. And you need to know what to do when the world changes, as it will, on some ordinary day.
 
 We'll start at the very beginning, with the simplest question of all.
 

@@ -2593,3 +2593,317 @@ Every change is logged below as a before/after pair, applied by `tools/simplify_
 - `chapters/ch22.qmd`
   - Before: Thank you for reading. The labs, the mock and every figure's code are in the companion repository, waiting for your own data.
   - After: Thank you for reading. The labs, the mock and every figure's code are in the companion repository, ready for your own data.
+
+## Front matter and part openers
+
+37 changes.
+
+- `index.qmd`
+  - Before: Not about artificial intelligence in general, though you'll learn a good deal of that along the way. The subject is one narrow, very common job: looking at a situation and choosing what to do about it. Is this email phishing? Which team should get this ticket? Is this login safe? Should this agent call that tool?
+  - After: It isn't about artificial intelligence in general, though you'll learn a lot of that along the way. The subject is one narrow, very common job: looking at a situation and choosing what to do about it. Is this email phishing? Which team should get this ticket? Is this login safe? Should this agent call that tool?
+- `index.qmd`
+  - Before: Software makes millions of those decisions every day, and for the last few years we've been handing more and more of them to large language models. LLMs are extraordinary at reading and writing. But a decision is a different thing from a paragraph: a choice between a few options, made under uncertainty, with a cost for getting it wrong. To make it well you need a probability you can trust and a line drawn from what mistakes cost. And you need to know when to hand the case to a person.
+  - After: Software makes millions of those decisions every day. For the last few years, we've been giving more and more of them to large language models. LLMs are extremely good at reading and writing. But a decision is different from a paragraph. It's a choice between a few options, made without being sure, with a cost for getting it wrong. To make it well, you need a calibrated probability, one that means what it says, and a threshold set by what mistakes cost. And you need to know when to give the case to a person.
+- `index.qmd`
+  - Before: In 2026 a company called TypeSafe AI released Jev, which it describes as the first of a new class of **System One models**: models that don't write at all, only answer typed questions with probabilities, in a single fast pass [@typesafe2026]. Whether Jev lives up to its claims is something you'll learn to test for yourself. But the idea behind it is worth understanding whatever happens to any one product. Some decisions belong in a separate, fast, measurable layer of an AI system, and that layer needs different skills from the rest.
+  - After: In 2026, a company called TypeSafe AI released Jev. It describes Jev as the first of a new kind of model, a **System One model**. These models don't write at all. They only answer typed questions with probabilities, in a single fast pass [@typesafe2026]. You'll learn to test for yourself whether Jev does what its makers claim. But the idea behind it is worth understanding whatever happens to any one product. Some decisions belong in a separate, fast, measurable layer of an AI system, and that layer needs different skills from the rest.
+- `index.qmd`
+  - Before: It's for anyone who builds, buys or runs systems that make decisions. If you're new to machine learning, Part I starts from the beginning and assumes only that you're comfortable with a little arithmetic and a little Python. If you already build with LLMs, you'll move quickly through Part II and find the substance in Parts III to V. If you lead a team, "How to read this book" suggests a shorter route.
+  - After: It's for anyone who builds, buys or runs systems that make decisions. If you're new to machine learning, Part I starts from the beginning. It assumes only that you're comfortable with a little arithmetic and a little Python. If you already build with LLMs, you'll move quickly through Part II and find the main content in Parts III to V. If you lead a team, "How to read this book" suggests a shorter route.
+- `index.qmd`
+  - Before: Every chapter follows one fictional company, Kestrel Logistics, and its security operations centre, where a small team triages hundreds of alerts a day. SOC triage turned out to be a near-perfect teaching example: lots of decisions, a real price on mistakes, and a queue of people with limited time.
+  - After: Every chapter follows one made-up company, Kestrel Logistics, and its security operations centre (SOC). There, a small team triages hundreds of alerts a day: it sorts them by how likely they are to be real and how urgent they are. SOC triage turned out to be an almost perfect teaching example. It has lots of decisions, a real cost for mistakes, and a queue of people with limited time.
+- `index.qmd`
+  - Before: Every figure is drawn by code, and almost every number in the book is computed by it. Each chapter has a lab, a notebook in the book's repository, that reproduces its numbers and lets you change them.
+  - After: Every figure is drawn by code, and almost every number in the book is computed by it. Each chapter has a lab: a notebook in the book's repository that recreates its numbers and lets you change them.
+- `index.qmd`
+  - Before: **No invented measurements.** I didn't have access to Jev's API while writing, so every Jev number in this book comes from a mock model called `jev-mock-synthetic`, built to copy the real API's shape through TypeSafe's official Python library. Those numbers are marked *synthetic*, every time. They show you how to reason and test; they are not claims about the real model.
+  - After: **No invented measurements.** I didn't have access to Jev's API while writing. So every Jev number in this book comes from a mock model called `jev-mock-synthetic`. It's built to copy the real API's shape, through TypeSafe's official Python library. Those numbers are marked *synthetic*, every time. They show you how to reason and test; they are not claims about the real model.
+- `index.qmd`
+  - Before: **Claims have piles.** Everything said about Jev is sorted into what I could verify, what the vendor reports and what nobody outside the company knows yet. Chapter 9 explains how, and I'd encourage you to keep the same three piles for anything you read about new models, including this book.
+  - After: **Claims go in piles.** Everything said about Jev is sorted into three piles: what I could check, what the vendor reports, and what nobody outside the company knows yet. Chapter 9 explains how. I'd encourage you to keep the same three piles for anything you read about new models, including this book.
+- `front/how-to-read.qmd`
+  - Before: **If you're new to machine learning**, read it in order. Part I builds the foundation everything else rests on: probabilities, and how to turn them into actions you can defend. Part II is a short tour of neural networks, LLMs and agents that assumes you haven't met any of them before.
+  - After: **If you're new to machine learning**, read it in order. Part I builds the foundation for everything else: probabilities, and how to turn them into actions you can explain and defend. Part II is a short tour of neural networks, LLMs and agents. It assumes you haven't met any of them before.
+- `front/how-to-read.qmd`
+  - Before: **If you already build with LLMs**, read Part I anyway, and don't skip Chapter 3 on calibration or Chapter 4 on costs. Then jump to Part III. The rest of the book leans on those two chapters more than on anything else.
+  - After: **If you already build with LLMs**, read Part I anyway, and don't skip Chapter 3 on calibration or Chapter 4 on costs. Then go to Part III. The rest of the book depends on those two chapters more than on anything else.
+- `front/how-to-read.qmd`
+  - Before: **If you lead a team or a product**, read Part I, then Chapters 8 to 14, then Chapters 18 and 22. You'll skip the code-heavy chapters and still be able to ask your team the right questions: what does a mistake cost, where's the line, how do we know the probabilities are honest, and who reads the flags?
+  - After: **If you lead a team or a product**, read Part I, then Chapters 8 to 14, then Chapters 18 and 22. You'll skip the chapters with the most code and still be able to ask your team the right questions. What does a mistake cost? Where's the threshold? How do we know the probabilities are calibrated? Who reads the warnings?
+- `front/how-to-read.qmd`
+  - Before: Each chapter opens with a short list of what you'll be able to do by the end, and closes with a short recap, exercises and a hook to the next chapter. In between, a few kinds of box recur (@fig-boxes).
+  - After: Each chapter opens with a short list of what you'll be able to do by the end. It closes with a short summary, exercises and a link to the next chapter. In between, a few kinds of box appear again and again (@fig-boxes).
+- `front/how-to-read.qmd`
+  - Before: The *Try it* boxes contain code you can run; the *Set the threshold* boxes ask you to make a small decision with real costs; the *Where this breaks* boxes mark the limits of what the chapter just showed. *Going deeper* boxes hold optional maths, and a side box headed with a question, like *Why not just maximise accuracy?*, deals with the objection you're probably already forming. Read the *Where this breaks* boxes above all. They're the difference between knowing a technique and knowing when to trust it.
+  - After: The *Try it* boxes contain code you can run. The *Set the threshold* boxes ask you to make a small decision with real costs. The *Where this breaks* boxes show the limits of what the chapter just taught. *Going deeper* boxes hold optional maths. A side box with a question as its title, like *Why not just maximise accuracy?*, answers the objection you're probably already thinking of. Read the *Where this breaks* boxes most of all. They're the difference between knowing a method and knowing when to trust it.
+- `front/how-to-read.qmd`
+  - Before: Every listing in the book runs, and a test in the book's repository checks that it still does. The labs are Jupyter notebooks. Chapter 1's lab is `labs/ch01.ipynb`, Chapter 2's is `labs/ch02.ipynb`, and so on; each one installs everything it needs the first time you run it.
+  - After: Every code listing in the book runs, and a test in the book's repository checks that it still does. The labs are Jupyter notebooks. Chapter 1's lab is `labs/ch01.ipynb`, Chapter 2's is `labs/ch02.ipynb`, and so on. Each one installs everything it needs the first time you run it.
+- `front/how-to-read.qmd`
+  - Before: The second line installs `jevkit`, the book's toolkit. Among other things, it includes the mock that answers the official SDK's calls without a network connection or an API key. If you have a real TypeSafe API key, set `JEVKIT_LIVE=1` and `TYPESAFE_API_KEY`, and the labs call the real service instead; Chapter 16 explains how.
+  - After: The second line installs `jevkit`, the book's toolkit. It includes the mock that answers the official SDK's calls without a network connection or an API key. If you have a real TypeSafe API key, set `JEVKIT_LIVE=1` and `TYPESAFE_API_KEY`, and the labs call the real service instead. Chapter 16 explains how.
+- `front/how-to-read.qmd`
+  - Before: The listings use short names for `jevkit`'s modules, imported at the top of each chapter's lab:
+  - After: The listings use short names for `jevkit`'s modules. Each chapter's lab imports them at the top:
+- `front/how-to-read.qmd`
+  - Before: | `pol` | `jevkit.policy` | costs, lines and the three zones |
+  - After: | `pol` | `jevkit.policy` | costs, thresholds and the three zones |
+- `front/how-to-read.qmd`
+  - Before: Four small browser tools let you move the book's numbers yourself: a threshold simulator (Chapter 14), a calibration playground (Chapters 3 and 11), a bake-off explorer (Chapter 13) and a decision cost calculator (Chapters 9, 12 and 16). They're in the `site/` folder of the repository and on the book's website, [mukkandi-sridhar.github.io/JEVBook](https://mukkandi-sridhar.github.io/JEVBook/), and they run entirely in your browser.
+  - After: Four small browser tools let you change the book's numbers yourself: a threshold simulator (Chapter 14), a calibration tool (Chapters 3 and 11), a bake-off explorer (Chapter 13) and a decision cost calculator (Chapters 9, 12 and 16). They're in the `site/` folder of the repository and on the book's website, [mukkandi-sridhar.github.io/JEVBook](https://mukkandi-sridhar.github.io/JEVBook/). They run entirely in your browser.
+- `front/how-to-read.qmd`
+  - Before: Kestrel Logistics is fictional, and so are its alerts, which come from a generator with a known truth behind every one. Knowing the truth is what makes it possible to measure things exactly, like how many real threats a policy misses. It also means every number is an illustration of a method, not a fact about the world. When a figure is labelled *synthetic*, believe the shape and test the numbers on your own data.
+  - After: Kestrel Logistics is made up, and so are its alerts. They come from a program that knows the true answer for every one. Knowing the truth lets us measure things exactly, like how many real threats a policy misses. It also means every number is an example of a method, not a fact about the world. When a figure is labelled *synthetic*, trust the pattern, and test the numbers on your own data.
+- `front/prologue.qmd`
+  - Before: The building is quiet. The coffee isn't. On your left screen, the alert queue is scrolling the way it always does at this hour: a sign-in from an unusual country, a script that ran from a temp folder, an email with a link to a domain registered last week, a laptop talking to a server nobody recognises.
+  - After: The building is quiet. On your left screen, the alert queue is moving the way it always does at this hour: a sign-in from an unusual country, a program that ran from a temporary folder, an email with a link to a website created last week, a laptop talking to a server nobody recognises.
+- `front/prologue.qmd`
+  - Before: Most of them are nothing. You know that. A salesperson on a trip, an IT tool doing its job, a newsletter with a tracking link. After a few months on nights, you can feel which ones are nothing before you finish reading them.
+  - After: Most of them are nothing. You know that. A salesperson on a trip, an IT tool doing its job, a newsletter with a tracking link. After a few months of night shifts, you can feel which ones are nothing before you finish reading them.
+- `front/prologue.qmd`
+  - Before: You open the next alert. Twelve minutes later, you've pulled the logs, checked the user's history, looked up the domain and decided: fine. Close it. Next.
+  - After: You open the next alert. Twelve minutes later, you've read the logs, checked the user's history, looked up the website and decided: fine. Close it. Next.
+- `front/prologue.qmd`
+  - Before: ![One night at Kestrel, midnight to 7 a.m. Each line is an alert; red lines are the real ones. Working first come, first served, you open the ones on the left and the rest wait for the morning.]
+  - After: ![One night at Kestrel, midnight to 7 a.m. Each line is an alert; red lines are the real ones. Working in the order they arrive, you open the ones on the left and the rest wait for the morning.]
+- `front/prologue.qmd`
+  - Before: @fig-night shows the night from above, a view you never get from your desk.
+  - After: @fig-night shows the whole night at once, a view you never get from your desk.
+- `front/prologue.qmd`
+  - Before: You didn't do anything wrong. You were careful and quick, and you got every one you opened right. The problem is that the queue decided what you'd look at, and the queue doesn't know anything. It just knows what arrived first.
+  - After: You didn't do anything wrong. You were careful and quick, and you got every one you opened right. The problem is that the queue decided what you'd look at, and the queue doesn't know anything. It only knows what arrived first.
+- `front/prologue.qmd`
+  - Before: Every alert that arrives is read in a fraction of a second by a model that doesn't write a report or explain itself. It answers three small questions: how likely is this to be real, what kind of threat would it be, and how bad? Its answers are probabilities, and someone checked last week that they hold up: of the alerts it calls one in ten, about one in ten turn out to be real.
+  - After: A model reads every alert that arrives in a fraction of a second. It doesn't write a report or explain itself. It answers three small questions: how likely is this to be real, what kind of threat would it be, and how bad? Its answers are probabilities. Someone checked last week that they're calibrated: of the alerts it calls one in ten, about one in ten turn out to be real.
+- `front/prologue.qmd`
+  - Before: The alerts it's nearly certain are nothing get closed, and a random few of those go into a pile for you to spot-check. The ones it's fairly sure are serious wake up the on-call responder straight away. Everything in between comes to you, likeliest first.
+  - After: The alerts it's nearly certain are nothing get closed, and a random few of those go into a pile for you to check. For the ones it's fairly sure are serious, the analyst on call is woken up straight away. Everything in between comes to you, likeliest first.
+- `front/prologue.qmd`
+  - Before: You still make the calls that matter. You just make them on the right alerts.
+  - After: You still make the decisions that matter. You just make them on the right alerts.
+- `front/prologue.qmd`
+  - Before: That second night is what this book builds, piece by piece. That takes surprisingly little new technology and quite a lot of careful thinking. You need to know what a probability is and how to tell whether one can be trusted. You need to know how much a mistake costs, and where to draw a line so that the cheapest mistakes are the ones you make. And you need to know what to do when the world changes, as it will on some ordinary Tuesday.
+  - After: That second night is what this book builds, piece by piece. It takes surprisingly little new technology and quite a lot of careful thinking. You need to know what a probability is and how to tell whether one can be trusted. You need to know how much a mistake costs, and where to set a threshold so that the mistakes you make are the cheap ones. And you need to know what to do when the world changes, as it will, on some ordinary day.
+- `parts/p1.qmd`
+  - Before: These four chapters build the answer from the ground up. What learning is. What a probability means, and how a machine learns one. How to check whether it's honest. And how to turn it into an action, once you know what each mistake costs.
+  - After: These four chapters build the answer from the beginning. What learning is. What a probability means, and how a machine learns one. How to check whether it's calibrated. And how to turn it into an action, once you know what each mistake costs.
+- `parts/p1.qmd`
+  - Before: Everything later in the book stands on these pages. If you only read one part slowly, make it this one.
+  - After: Everything later in the book is built on these pages. If you read only one part slowly, make it this one.
+- `parts/p2.qmd`
+  - Before: The models in Part I were handed neat clues. The real world hands you pixels and messy logs. Today's AI systems are built from models that find their own clues, and from models that write text and act in loops.
+  - After: The models in Part I were given neat clues. The real world gives you pixels and messy logs. Today's AI systems are built from models that find their own clues, and from models that write text and act in loops.
+- `parts/p2.qmd`
+  - Before: You don't need every detail. You need to see where the decisions hide.
+  - After: You don't need every detail. You need to see where the decisions are hidden.
+- `parts/p3.qmd`
+  - Before: This part separates what's published from what's claimed, walks through its three question types, shows you how to test its calibration yourself, and asks what happens to an industry when a decision becomes almost free.
+  - After: This part separates what's published from what's claimed. It explains Jev's three question types and shows you how to test its calibration yourself. Then it asks what happens to an industry when a decision becomes almost free.
+- `parts/p4.qmd`
+  - Before: A model is not a system. Between a probability and an action sits a decision layer, and most of what goes wrong lives there.
+  - After: A model is not a system. Between a probability and an action there is a decision layer, and most of what goes wrong happens there.
+- `parts/p4.qmd`
+  - Before: This part puts six ways of deciding into one fair contest, turns probabilities into act, review and escalate, and collects the patterns that keep turning up when decision models meet real software.
+  - After: This part compares six ways of deciding in one fair contest. It turns probabilities into act, review and escalate. And it collects the patterns that keep appearing when decision models are used in real software.
+- `parts/p5.qmd`
+  - Before: Time to build. First calls through the official SDK, a hybrid agent where Jev decides and an LLM writes, a full SOC triage case study and a gallery of other applications.
+  - After: Time to build: first calls through the official SDK, a hybrid agent where Jev decides and an LLM writes, a full SOC triage case study, and a tour of other uses.
+
+## Part openers (continued)
+
+2 changes.
+
+- `parts/p5.qmd`
+  - Before: Time to build: first calls through the official SDK, a hybrid agent where Jev decides and an LLM writes, a full SOC triage case study, and a tour of other uses.
+  - After: Time to build. You'll make your first calls through the official SDK. You'll build a hybrid agent, where Jev decides and an LLM writes. Then come a full SOC triage case study and a tour of other uses.
+- `parts/p2.qmd`
+  - Before: These three chapters are a fast tour: deep learning in one chapter, how an LLM writes and why asking it for a decision is awkward, and what retrieval and agents do, including where they break.
+  - After: These three chapters are a fast tour. The first covers deep learning. The second shows how an LLM writes, and why asking it for a decision is awkward. The third shows what retrieval and agents do, and where they break.
+
+## Cheat sheets
+
+11 changes.
+
+- `back/cheatsheets.qmd`
+  - Before: Everything on these pages is explained properly in the chapter given in brackets. They're here for the day you need the formula and not the story.
+  - After: Everything on these pages is explained fully in the chapter given in brackets. They're here for the day you need the formula and not the explanation.
+- `back/cheatsheets.qmd`
+  - Before: ## Drawing the line (Chapter 4)
+  - After: ## Setting the threshold (Chapter 4)
+- `back/cheatsheets.qmd`
+  - Before: With a review that costs $C_r$ and catches all but a share $m$ of real problems, a miss $C_{\text{miss}}$ and a false page $C_{\text{page}}$, the cost-optimal lines for calibrated probabilities are
+  - After: Say a review costs $C_r$ and misses a share $m$ of real problems. A miss costs $C_{\text{miss}}$ and a false urgent call costs $C_{\text{page}}$. Then the cheapest thresholds for calibrated probabilities are
+- `back/cheatsheets.qmd`
+  - Before: Then check the queue. If the review zone holds more cases than people can clear, raise the low line until it fits, and write down what that costs.
+  - After: Then check the queue. If the review zone holds more cases than people can clear, raise the low (act) threshold until it fits, and write down what that costs.
+- `back/cheatsheets.qmd`
+  - Before: | Temperature | $p' = \sigma(z / T)$, one number | the model is uniformly over- or underconfident |
+  - After: | Temperature | $p' = \sigma(z / T)$, one number | the model is too confident (or not confident enough) everywhere |
+- `back/cheatsheets.qmd`
+  - Before: 3. Compare the average predicted probability with the observed base rate. A big gap usually means prior shift.
+  - After: 3. Compare the average predicted probability with the observed base rate. A big gap usually means the base rate has changed (prior shift).
+- `back/cheatsheets.qmd`
+  - Before: 4. Fix the base rate first; then Platt scaling on a few hundred labels if needed.
+  - After: 4. Fix the base rate first; then use Platt scaling on a few hundred labels if needed.
+- `back/cheatsheets.qmd`
+  - Before: 5. Re-test on labels you didn't fit on. Repeat on a schedule and whenever the model version changes.
+  - After: 5. Test again on labels you didn't fit on. Repeat on a schedule and whenever the model version changes.
+- `back/cheatsheets.qmd`
+  - Before: - Decide with the whole distribution and the costs of each action, not the top label.
+  - After: - Decide with all the probabilities and the costs of each action, not just the top label.
+- `back/cheatsheets.qmd`
+  - Before: | messy input and a sharp decision | an LLM to extract, a decision model to decide |
+  - After: | messy input and a clear decision | an LLM to extract, a decision model to decide |
+- `back/cheatsheets.qmd`
+  - Before: Pinned model · a versioned, fingerprinted config · a meaning for every failure · a record for every decision · random audits of automatic actions · a daily monitor · shadow runs for new versions · an owner who can switch it all to review.
+  - After: A fixed model version · a config with a version number and a fingerprint · a meaning for every failure · a record for every decision · random audits of automatic actions · a daily monitor · shadow runs for new versions · an owner who can switch everything to review.
+
+## Glossary
+
+7 changes.
+
+- `back/glossary.qmd`
+  - Before: One plain sentence for each term, and the chapter where it's explained properly.
+  - After: One plain sentence for each term, and the chapter where it's explained fully.
+- `back/glossary.qmd`
+  - Before: : A model is calibrated when the things it calls 70% likely happen about 70% of the time (Chapter 3).
+  - After: : A model is calibrated when the things it calls 70% likely happen about 70% of the time: its probabilities are honest (Chapter 3).
+- `back/glossary.qmd`
+  - Before: Cost line
+: The probability above which acting is cheaper than not acting, set by what each kind of mistake costs (Chapter 4).
+  - After: Cost-based threshold
+: The probability above which acting is cheaper than not acting, set by what each kind of mistake costs (Chapter 4).
+- `back/glossary.qmd`
+  - Before: : The part of a system that turns probabilities into actions: typed questions, calibration, lines, rules and fail-safes (Part IV).
+  - After: : The part of a system that turns probabilities into actions: typed questions, calibration, thresholds, rules and fail-safes (Part IV).
+- `back/glossary.qmd`
+  - Before: : The rules that turn a probability into an action, usually as lines between zones (Chapter 14).
+  - After: : The rules that turn a probability into an action, usually as thresholds between zones (Chapter 14).
+- `back/glossary.qmd`
+  - Before: Three-zone policy
+: A policy with two lines, splitting cases into act, review and escalate (Chapter 14).
+  - After: Three-zone policy
+: A policy with two thresholds, splitting cases into act, review and escalate (Chapter 14).
+
+Threshold
+: A number that splits cases into two groups, like a line on the probability scale: above it you do one thing, below it another (Chapters 1 and 4).
+- `back/glossary.qmd`
+  - Before: Transport
+: The lowest layer of an HTTP client, which sends a finished request and returns a response; the book's mock is one (Chapter 16).
+  - After: Transport
+: The lowest layer of an HTTP client, which sends a finished request and returns a response; the book's mock is one (Chapter 16).
+
+Triage
+: Sorting cases by how likely they are to be real and how urgent they are, so the most important ones are handled first (Preface, Chapter 18).
+
+## Back cover
+
+3 changes.
+
+- `cover/wrap.py`
+  - Before: "Is this alert real? Which team gets this ticket? Is this action safe? Most agents hand every one of those "
+    "small decisions to a large language model, then dig the answer out of a paragraph. It works, slowly and "
+    "expensively, and the model sounds just as sure when it’s wrong.",
+  - After: "Is this alert real? Which team gets this ticket? Is this action safe? Most agents give every one of those "
+    "small decisions to a large language model. Then code has to find the answer inside a paragraph. It works, "
+    "but it’s slow and expensive, and the model sounds just as sure when it’s wrong.",
+- `cover/wrap.py`
+  - Before: "This book shows you a better way to build the decision layer. You’ll get probabilities you can trust, "
+    "lines drawn from what each mistake costs, and a clear rule for when to hand a case to a person. Every step is "
+  - After: "This book shows you a better way to build the decision layer. You’ll get calibrated probabilities that "
+    "mean what they say, thresholds set by what each mistake costs, and a clear rule for when to give a case to "
+    "a person. Every step is "
+- `cover/wrap.py`
+  - Before: "Turn a probability into act, review or escalate, with lines drawn from real costs and real capacity",
+  - After: "Turn a probability into act, review or escalate, with thresholds set by real costs and real capacity",
+
+## Whole-book sweep
+
+4 changes.
+
+- `chapters/ch11.qmd`
+  - Before: With a hundred labels the measurement is both noisy and biased upwards: an honest model looks dishonest. The bias shrinks as samples grow.]
+  - After: With a hundred labels the measurement is both noisy and too high on average: a calibrated model looks miscalibrated. The error shrinks as samples grow.]
+- `chapters/ch15.qmd`
+  - Before: The skill is sorting the steps honestly, the way Chapter 8 separated System 1 work from System 2.
+  - After: The skill is sorting the steps correctly, the way Chapter 8 separated System 1 work from System 2.
+- `chapters/ch19.qmd`
+  - Before: ![Where the line falls in each domain, from its (illustrative) costs of a miss and a false alarm.
+  - After: ![Where the threshold falls in each domain, from its (illustrative) costs of a miss and a false alarm.
+- `back/python.qmd`
+  - Before: The two lines, 0.031 and 0.34, are the ones Chapter 14 settles on.
+  - After: The two thresholds, 0.031 and 0.34, are the ones Chapter 14 settles on.
+
+## Glossary (shorter sentences)
+
+18 changes.
+
+- `back/glossary.qmd`
+  - Before: : The chance that a model gives a randomly chosen real case a higher score than a randomly chosen harmless one; it measures ranking, not calibration (Chapter 3).
+  - After: : The chance that a model gives a randomly chosen real case a higher score than a randomly chosen harmless one. It measures ranking, not calibration (Chapter 3).
+- `back/glossary.qmd`
+  - Before: : The average squared gap between a predicted probability and what happened; lower is better (Chapters 2 and 3).
+  - After: : The average squared gap between a predicted probability and what happened. Lower is better (Chapters 2 and 3).
+- `back/glossary.qmd`
+  - Before: : How many cases the people in the loop can handle in a day; a policy that ignores it isn't a policy (Chapter 14).
+  - After: : How many cases the people in the loop can handle in a day. A policy that ignores it isn't a policy (Chapter 14).
+- `back/glossary.qmd`
+  - Before: : A typed question with a set of named options; the answer is a probability for each option, adding up to 1 (Chapter 10).
+  - After: : A typed question with a set of named options. The answer is a probability for each option, adding up to 1 (Chapter 10).
+- `back/glossary.qmd`
+  - Before: : One score that balances how many flagged cases are real and how many real cases get flagged; it measures ranking and labelling, not calibration (Chapter 3).
+  - After: : One score that balances how many flagged cases are real and how many real cases get flagged. It measures ranking and labelling, not calibration (Chapter 3).
+- `back/glossary.qmd`
+  - Before: : A calibration method that learns any increasing mapping from scores to probabilities; flexible, but needs more data than Platt scaling (Chapter 3).
+  - After: : A calibration method that learns any increasing mapping from scores to probabilities. It's flexible, but needs more data than Platt scaling (Chapter 3).
+- `back/glossary.qmd`
+  - Before: : A score that punishes confident wrong answers heavily; a proper scoring rule (Chapter 2).
+  - After: : A score that punishes confident wrong answers heavily. A proper scoring rule (Chapter 2).
+- `back/glossary.qmd`
+  - Before: : A number that measures how wrong a model is on some examples; training tries to make it smaller (Chapter 2).
+  - After: : A number that measures how wrong a model is on some examples. Training tries to make it smaller (Chapter 2).
+- `back/glossary.qmd`
+  - Before: : A stand-in for a real service that answers in the same shape; this book's is `jev-mock-synthetic` (Chapter 16).
+  - After: : A stand-in for a real service that answers in the same shape. This book's is `jev-mock-synthetic` (Chapter 16).
+- `back/glossary.qmd`
+  - Before: : TypeSafe's name for a yes-or-no question; the answer is the probability of yes (Chapter 10).
+  - After: : TypeSafe's name for a yes-or-no question. The answer is the probability of yes (Chapter 10).
+- `back/glossary.qmd`
+  - Before: : Having a meaningful order, like severity levels; an ordinal model keeps that order in its probabilities (Chapter 20).
+  - After: : Having a meaningful order, like severity levels. An ordinal model keeps that order in its probabilities (Chapter 20).
+- `back/glossary.qmd`
+  - Before: : Probabilities that are more extreme than the evidence justifies; common in large models and in overtrained small ones (Chapter 5).
+  - After: : Probabilities that are more extreme than the evidence justifies. It's common in large models and in overtrained small ones (Chapter 5).
+- `back/glossary.qmd`
+  - Before: : A change in the base rate between where a model was calibrated and where it's used; correctable if the new base rate is known (Chapter 11).
+  - After: : A change in the base rate between where a model was calibrated and where it's used. You can correct it if you know the new base rate (Chapter 11).
+- `back/glossary.qmd`
+  - Before: : A chart of what a model said against what happened; a calibrated model sits on the diagonal (Chapter 3).
+  - After: : A chart of what a model said against what happened. A calibrated model sits on the diagonal (Chapter 3).
+- `back/glossary.qmd`
+  - Before: : TypeSafe's name for reinforcement learning for calibrated decisions, which it says trains Jev; details unpublished (Chapter 9).
+  - After: : TypeSafe's name for reinforcement learning for calibrated decisions, which it says trains Jev. Details unpublished (Chapter 9).
+- `back/glossary.qmd`
+  - Before: : A typed question with ordered levels; the answer is a probability for each level and an expected level (Chapter 10).
+  - After: : A typed question with ordered levels. The answer is a probability for each level and an expected level (Chapter 10).
+- `back/glossary.qmd`
+  - Before: : The tool that collects a company's logs and raises security alerts; Kestrel's alerts come from one (Chapter 13).
+  - After: : The tool that collects a company's logs and raises security alerts. Kestrel's alerts come from one (Chapter 13).
+- `back/glossary.qmd`
+  - Before: : The lowest layer of an HTTP client, which sends a finished request and returns a response; the book's mock is one (Chapter 16).
+  - After: : The lowest layer of an HTTP client, which sends a finished request and returns a response. The book's mock is one (Chapter 16).
+
+## Glossary (continued)
+
+3 changes.
+
+- `back/glossary.qmd`
+  - Before: : A score that punishes confident wrong answers heavily. A proper scoring rule (Chapter 2).
+  - After: : A score that punishes confident wrong answers heavily. It's a proper scoring rule (Chapter 2).
+- `back/glossary.qmd`
+  - Before: : TypeSafe's name for reinforcement learning for calibrated decisions, which it says trains Jev. Details unpublished (Chapter 9).
+  - After: : TypeSafe's name for reinforcement learning for calibrated decisions, which it says trains Jev. The details aren't published (Chapter 9).
+- `back/glossary.qmd`
+  - Before: : In a Jev `choice` or `score` answer, a number from 0 to 1 computed from the shape of the probabilities: high when they're concentrated on one option, low when they're spread out. It isn't simply the top probability (TypeSafe's quick-start shows 0.78 beside 0.85). The book's mock uses the top probability as a stand-in (Chapter 9).
+  - After: : In a Jev `choice` or `score` answer, a number from 0 to 1 computed from the shape of the probabilities. It's high when most of the probability is on one option, and low when it's spread out. It isn't simply the top probability (TypeSafe's quick-start shows 0.78 beside 0.85). The book's mock uses the top probability as a stand-in (Chapter 9).

@@ -45,7 +45,7 @@ Every number in that chart is an assumption, chosen to be realistic for a mid-si
 
 This surprises people. In every domain, the same formula sets the threshold where you should start treating a case as a problem. It's the formula from Chapter 4: the cost of a false alarm, divided by the cost of a false alarm plus the cost of a miss.
 
-![Where the line falls in each domain, from its (illustrative) costs of a miss and a false alarm. Support tickets flag at about 5%; clinical intake at about 0.3%. Same formula, different jobs.](/figures/ch26/lines.pdf){#fig-lines}
+![Where the threshold falls in each domain, from its (illustrative) costs of a miss and a false alarm. Support tickets flag at about 5%; clinical intake at about 0.3%. Same formula, different jobs.](/figures/ch26/lines.pdf){#fig-lines}
 
 ::: {.tryit lab="ch19"}
 ```{python}

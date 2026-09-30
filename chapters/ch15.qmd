@@ -83,7 +83,7 @@ Each decision comes back with probabilities. So the loop can do something an LLM
 
 ![The Observe, Decide, Act loop with the decide step made explicit. Most steps are small typed decisions; writing is occasional.](/figures/ch22/oda.pdf){#fig-oda}
 
-**How it breaks.** Some steps aren't small decisions. Planning the investigation of a new kind of attack is real reasoning, and belongs with the LLM or a person. The skill is sorting the steps honestly, the way Chapter 8 separated System 1 work from System 2.
+**How it breaks.** Some steps aren't small decisions. Planning the investigation of a new kind of attack is real reasoning, and belongs with the LLM or a person. The skill is sorting the steps correctly, the way Chapter 8 separated System 1 work from System 2.
 
 ## Pattern 3: the guardrail gate
 

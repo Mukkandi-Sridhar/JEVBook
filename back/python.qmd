@@ -78,7 +78,7 @@ zone = lambda p: "act" if p < 0.031 else ("escalate" if p >= 0.34 else "review")
 print(zone(0.02), zone(0.20), zone(0.91))
 ```
 
-The two lines, 0.031 and 0.34, are the ones Chapter 14 settles on. Lambdas are handy when you pass a function to
+The two thresholds, 0.031 and 0.34, are the ones Chapter 14 settles on. Lambdas are handy when you pass a function to
 something else, such as `apply`, which runs a function on every value in a column:
 
 ```{python}

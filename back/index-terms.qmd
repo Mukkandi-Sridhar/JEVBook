@@ -32,11 +32,12 @@ Capacity · 14\
 Cassette · 16\
 Choice (question type) · 10\
 Confidence · 9\
-Cost line · 4\
+Context window · 7\
+Cost-based threshold · 4\
 
 **D**
 
-Decision layer · 7, 9, 14, 15, 18, 19, 22\
+Decision layer · 7, 9, 14–16, 18, 19, 22\
 Decision record · 21\
 Doom demo · 9, 12\
 Drift · 14\
@@ -139,6 +140,7 @@ Temperature (calibration) · 3\
 Temperature (sampling) · 6\
 Threat intel · 7, 13, 17\
 Three-zone policy · 14\
+Threshold · 1, 4\
 TinyJev · 20\
 Token · 6\
 Trace · 17\

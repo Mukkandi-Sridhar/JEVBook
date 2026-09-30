@@ -4,23 +4,23 @@ You don't have to read it front to back. Here are three routes, depending on whe
 
 ![Three routes through the book's six parts.](/figures/front/paths.pdf){#fig-paths}
 
-**If you're new to machine learning**, read it in order. Part I builds the foundation everything else rests on: probabilities, and how to turn them into actions you can defend. Part II is a short tour of neural networks, LLMs and agents that assumes you haven't met any of them before.
+**If you're new to machine learning**, read it in order. Part I builds the foundation for everything else: probabilities, and how to turn them into actions you can explain and defend. Part II is a short tour of neural networks, LLMs and agents. It assumes you haven't met any of them before.
 
-**If you already build with LLMs**, read Part I anyway, and don't skip Chapter 3 on calibration or Chapter 4 on costs. Then jump to Part III. The rest of the book leans on those two chapters more than on anything else.
+**If you already build with LLMs**, read Part I anyway, and don't skip Chapter 3 on calibration or Chapter 4 on costs. Then go to Part III. The rest of the book depends on those two chapters more than on anything else.
 
-**If you lead a team or a product**, read Part I, then Chapters 8 to 14, then Chapters 18 and 22. You'll skip the code-heavy chapters and still be able to ask your team the right questions: what does a mistake cost, where's the line, how do we know the probabilities are honest, and who reads the flags?
+**If you lead a team or a product**, read Part I, then Chapters 8 to 14, then Chapters 18 and 22. You'll skip the chapters with the most code and still be able to ask your team the right questions. What does a mistake cost? Where's the threshold? How do we know the probabilities are calibrated? Who reads the warnings?
 
 ## The boxes
 
 ![The boxes you'll meet in every chapter.](/figures/front/boxes.pdf){#fig-boxes}
 
-Each chapter opens with a short list of what you'll be able to do by the end, and closes with a short recap, exercises and a hook to the next chapter. In between, a few kinds of box recur (@fig-boxes).
+Each chapter opens with a short list of what you'll be able to do by the end. It closes with a short summary, exercises and a link to the next chapter. In between, a few kinds of box appear again and again (@fig-boxes).
 
-The *Try it* boxes contain code you can run; the *Set the threshold* boxes ask you to make a small decision with real costs; the *Where this breaks* boxes mark the limits of what the chapter just showed. *Going deeper* boxes hold optional maths, and a side box headed with a question, like *Why not just maximise accuracy?*, deals with the objection you're probably already forming. Read the *Where this breaks* boxes above all. They're the difference between knowing a technique and knowing when to trust it.
+The *Try it* boxes contain code you can run. The *Set the threshold* boxes ask you to make a small decision with real costs. The *Where this breaks* boxes show the limits of what the chapter just taught. *Going deeper* boxes hold optional maths. A side box with a question as its title, like *Why not just maximise accuracy?*, answers the objection you're probably already thinking of. Read the *Where this breaks* boxes most of all. They're the difference between knowing a method and knowing when to trust it.
 
 ## Running the code
 
-Every listing in the book runs, and a test in the book's repository checks that it still does. The labs are Jupyter notebooks. Chapter 1's lab is `labs/ch01.ipynb`, Chapter 2's is `labs/ch02.ipynb`, and so on; each one installs everything it needs the first time you run it.
+Every code listing in the book runs, and a test in the book's repository checks that it still does. The labs are Jupyter notebooks. Chapter 1's lab is `labs/ch01.ipynb`, Chapter 2's is `labs/ch02.ipynb`, and so on. Each one installs everything it needs the first time you run it.
 
 To run things on your own machine:
 
@@ -31,15 +31,15 @@ pip install git+https://github.com/Mukkandi-Sridhar/JEVBook
 
 If some of the Python is new to you, read the appendix [The Python you'll see](#sec-python) first. It explains the four tools the labs use most: NumPy arrays and masks, pandas tables, `lambda` and f-strings.
 
-The second line installs `jevkit`, the book's toolkit. Among other things, it includes the mock that answers the official SDK's calls without a network connection or an API key. If you have a real TypeSafe API key, set `JEVKIT_LIVE=1` and `TYPESAFE_API_KEY`, and the labs call the real service instead; Chapter 16 explains how.
+The second line installs `jevkit`, the book's toolkit. It includes the mock that answers the official SDK's calls without a network connection or an API key. If you have a real TypeSafe API key, set `JEVKIT_LIVE=1` and `TYPESAFE_API_KEY`, and the labs call the real service instead. Chapter 16 explains how.
 
-The listings use short names for `jevkit`'s modules, imported at the top of each chapter's lab:
+The listings use short names for `jevkit`'s modules. Each chapter's lab imports them at the top:
 
 | Name | Module | What's in it |
 |---|---|---|
 | `soc` | `jevkit.soc` | Kestrel's synthetic alerts |
 | `cal` | `jevkit.calibration` | reliability diagrams, ECE, Platt and temperature scaling |
-| `pol` | `jevkit.policy` | costs, lines and the three zones |
+| `pol` | `jevkit.policy` | costs, thresholds and the three zones |
 | `llm` | `jevkit.llm` | the mock LLM |
 | `kb`, `agent` | `jevkit.kb`, `jevkit.agent` | the knowledge base and the SOC agent (Chapters 7 and 17) |
 | `B` | `jevkit.bakeoff` | the six contestants (Chapter 13) |
@@ -49,8 +49,8 @@ The listings use short names for `jevkit`'s modules, imported at the top of each
 
 ## The companion widgets
 
-Four small browser tools let you move the book's numbers yourself: a threshold simulator (Chapter 14), a calibration playground (Chapters 3 and 11), a bake-off explorer (Chapter 13) and a decision cost calculator (Chapters 9, 12 and 16). They're in the `site/` folder of the repository and on the book's website, [mukkandi-sridhar.github.io/JEVBook](https://mukkandi-sridhar.github.io/JEVBook/), and they run entirely in your browser.
+Four small browser tools let you change the book's numbers yourself: a threshold simulator (Chapter 14), a calibration tool (Chapters 3 and 11), a bake-off explorer (Chapter 13) and a decision cost calculator (Chapters 9, 12 and 16). They're in the `site/` folder of the repository and on the book's website, [mukkandi-sridhar.github.io/JEVBook](https://mukkandi-sridhar.github.io/JEVBook/). They run entirely in your browser.
 
 ## A word on the numbers
 
-Kestrel Logistics is fictional, and so are its alerts, which come from a generator with a known truth behind every one. Knowing the truth is what makes it possible to measure things exactly, like how many real threats a policy misses. It also means every number is an illustration of a method, not a fact about the world. When a figure is labelled *synthetic*, believe the shape and test the numbers on your own data.
+Kestrel Logistics is made up, and so are its alerts. They come from a program that knows the true answer for every one. Knowing the truth lets us measure things exactly, like how many real threats a policy misses. It also means every number is an example of a method, not a fact about the world. When a figure is labelled *synthetic*, trust the pattern, and test the numbers on your own data.

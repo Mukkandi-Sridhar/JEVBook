@@ -121,17 +121,18 @@ def spine(sw, H, wr: Wrap):
 # ---------------------------------------------------------------- back
 HOOK = ["Most of what an AI agent does", "isn’t writing. It’s deciding."]
 BLURB = [
-    "Is this alert real? Which team gets this ticket? Is this action safe? Most agents hand every one of those "
-    "small decisions to a large language model, then dig the answer out of a paragraph. It works, slowly and "
-    "expensively, and the model sounds just as sure when it’s wrong.",
-    "This book shows you a better way to build the decision layer. You’ll get probabilities you can trust, "
-    "lines drawn from what each mistake costs, and a clear rule for when to hand a case to a person. Every step is "
+    "Is this alert real? Which team gets this ticket? Is this action safe? Most agents give every one of those "
+    "small decisions to a large language model. Then code has to find the answer inside a paragraph. It works, "
+    "but it’s slow and expensive, and the model sounds just as sure when it’s wrong.",
+    "This book shows you a better way to build the decision layer. You’ll get calibrated probabilities that "
+    "mean what they say, thresholds set by what each mistake costs, and a clear rule for when to give a case to "
+    "a person. Every step is "
     "built with runnable code, around a realistic (synthetic) security team. You’ll work with Jev, a new System "
     "One model, through a free mock that needs no API key.",
 ]
 LEARN = [
     "Check whether a model’s probabilities mean what they say, and fix them when they don’t",
-    "Turn a probability into act, review or escalate, with lines drawn from real costs and real capacity",
+    "Turn a probability into act, review or escalate, with thresholds set by real costs and real capacity",
     "Compare six ways to make the same decision, from hand-written rules to LLMs to Jev",
     "Build a hybrid agent in which Jev decides and the LLM reads and writes",
     "Build your own small System One model, with typed heads and calibration built in",

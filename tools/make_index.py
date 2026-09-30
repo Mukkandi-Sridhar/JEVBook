@@ -36,7 +36,7 @@ TERMS = {
     "Choice (question type)": (["choice"], True),
     "Confidence": (["confidence"], True),
     "Context window": (["context window*"], False),
-    "Cost line": (["cost line*", "cost-based line", "cost-based threshold"], False),
+    "Cost-based threshold": (["cost line*", "cost-based line", "cost-based threshold*"], False),
     "Decision layer": (["decision layer*"], False),
     "Decision record": (["decision record*"], False),
     "Drift": (["drift*"], True),
@@ -86,6 +86,7 @@ TERMS = {
     "Temperature (calibration)": (["temperature scaling", "fitted temperature"], False),
     "Temperature (sampling)": (["temperature 0", "temperature 0.7", "temperature of"], False),
     "Three-zone policy": (["three-zone"], False),
+    "Threshold": (["threshold", "thresholds"], True),
     "Token": (["token", "tokens"], True),
     "Trace": (["trace", "traces"], True),
     "Transformer": (["transformer*"], False),
@@ -117,7 +118,7 @@ CODE = {"jevkit", "typesafe-sdk"}          # shown in code type; sorted as words
 TAUGHT = {
     "Act, review, escalate": [14], "Agent": [7, 17], "Attention": [5], "Audit (random)": [14], "AUC": [3],
     "Bake-off": [13], "Base rate": [2], "Brier score": [2], "Calibration": [3, 11], "Capacity": [14],
-    "Cassette": [16], "Choice (question type)": [10], "Confidence": [9], "Context window": [7], "Cost line": [4],
+    "Cassette": [16], "Choice (question type)": [10], "Confidence": [9], "Context window": [7], "Cost-based threshold": [4],
     "Decision record": [21], "Drift": [14], "ECE (expected calibration error)": [3], "Elasticity": [12],
     "Embedding": [5], "Escape option": [10], "Extract, then decide": [15], "Fail-safe": [14, 21],
     "Fine-tuning": [5], "Gradient descent": [2], "Guardrail gate": [15], "Hallucination": [6],
@@ -128,7 +129,7 @@ TAUGHT = {
     "Proper scoring rule": [2], "RAG (retrieval-augmented generation)": [7], "Reliability diagram": [3],
     "RLCD": [9], "RLHF": [5], "Router": [15], "Score (question type)": [10], "Shadow mode": [18, 21],
     "Softmax": [5], "State": [9], "Structured output": [6], "System 1, System 2": [8], "System One model": [8],
-    "Temperature (calibration)": [3], "Temperature (sampling)": [6], "Three-zone policy": [14], "Token": [6],
+    "Temperature (calibration)": [3], "Temperature (sampling)": [6], "Three-zone policy": [14], "Threshold": [1, 4], "Token": [6],
     "Trace": [17], "Transformer": [5], "Transport": [16], "Typed question": [10], "Vendor-reported": [9],
 }
 

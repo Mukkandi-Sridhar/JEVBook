@@ -3,9 +3,9 @@
 ::: {.partintro}
 Before any neural network, any LLM or any Jev, every AI system has to answer one question well: *how sure are you?*
 
-These four chapters build the answer from the ground up. What learning is. What a probability means, and how a machine learns one. How to check whether it's honest. And how to turn it into an action, once you know what each mistake costs.
+These four chapters build the answer from the beginning. What learning is. What a probability means, and how a machine learns one. How to check whether it's calibrated. And how to turn it into an action, once you know what each mistake costs.
 
-Everything later in the book stands on these pages. If you only read one part slowly, make it this one.
+Everything later in the book is built on these pages. If you read only one part slowly, make it this one.
 :::
 
 ```{=latex}
