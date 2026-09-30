@@ -80,7 +80,7 @@ What about `confidence`? TypeSafe's documentation describes it as a statistic co
 
 Two claims sit at the centre of how TypeSafe describes Jev: a new architecture with a "parallel sampler", and a training method it calls RLCD [@typesafe2026; @typesafedocs2026].
 
-**A "parallel sampler".** An LLM, as Chapter 6 showed, writes one token at a time, each waiting for the last. TypeSafe says Jev instead produces all its outputs *in a single pass*. It doesn't write an answer; it computes one. That's the claimed source of the speed. The documentation adds that every question is evaluated in parallel and in isolation against the same state, so adding questions barely changes the response time [@typesafedocs2026].
+**A "parallel sampler".** An LLM, as Chapter 6 showed, writes one token at a time, each waiting for the last. TypeSafe says Jev instead produces all its outputs *in a single pass*. It doesn't write an answer; it computes one. That's the claimed source of the speed. According to the documentation, each question in a call is answered separately but at the same time, all against the same state, which is why asking a few more questions hardly slows a call down [@typesafedocs2026].
 
 **RLCD: reinforcement learning for calibrated decisions.** TypeSafe contrasts this with RLHF, which rewards answers people prefer (Chapter 5), and with reinforcement learning from verifiable rewards, which rewards answers a program can check. RLCD, they say, rewards *honest probabilities*.
 

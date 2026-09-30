@@ -97,7 +97,7 @@ The three classic failures are in @fig-json-failures: chatty text around the JSO
 The generation loop gives us a lever. At each step, we can forbid every token that would break the required format. That's **constrained decoding**, sold as "JSON mode" or "structured outputs" [@willard2023]. It guarantees the *shape* of the answer.
 
 ::: {.keyidea}
-Constrained decoding guarantees the shape of the answer, never its truth.
+Constrained decoding makes the answer parse. It doesn't make it right.
 :::
 
 A constrained model can still say "benign" for a real attack, in perfect syntax. So whatever the provider promises, treat model output like text typed into a web form by a stranger. Parse it into a strict type that rejects unknown fields and wrong values, and if it fails, send the case to a person, never to an automatic action.

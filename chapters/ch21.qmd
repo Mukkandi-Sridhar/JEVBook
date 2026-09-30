@@ -100,7 +100,7 @@ The service writes every record to a log. Once a day, a small report reads the l
 
 ![Two weeks of the daily monitor: the live week, then the phishing campaign. Top: the review queue, red on days a flag was raised. Bottom: for alerts people saw, the share the model predicted to be real against the share they confirmed. The campaign opens a gap on its first day.](/figures/ch28/monitor.pdf){#fig-monitor}
 
-The live week raised no flags at all. That matters as much as what comes next: a monitor that cries wolf gets ignored, which is why the queue check allows a tenth over capacity before it complains.
+The live week raised no flags at all. That matters as much as what comes next: a monitor that raises false alarms soon stops being read, which is why the queue check allows a tenth over capacity before it complains.
 
 On the first day of the campaign week, two flags went up: the queue was well over capacity, and the alerts people saw were real far more often than predicted (@fig-monitor). That second flag is the one I'd most want in any decision service. It says, in plain numbers, "the probabilities have stopped being honest", which is what Chapter 11 taught you to test for and Chapter 18 showed you how to fix.
 
