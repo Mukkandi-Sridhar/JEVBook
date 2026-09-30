@@ -1751,3 +1751,230 @@ Every change is logged below as a before/after pair, applied by `tools/simplify_
 - `chapters/ch13.qmd`
   - Before: Next: a probability isn't an action. Chapter 14 turns these numbers into three doors, act, review and escalate, and puts the lines where the costs say they belong.
   - After: Next: a probability isn't an action. Chapter 14 turns these numbers into three doors, act, review and escalate, and puts the thresholds where the costs say they belong.
+
+## Chapter 14: Act, review, or escalate
+
+74 changes.
+
+- `chapters/ch14.qmd`
+  - Before: You've spent a good part of this book earning that number. You know it's a probability, you know how to check it against reality, and you know how it compares with what an LLM or a logistic regression would have said.
+  - After: You've spent a good part of this book learning about that number. You know it's a probability, you know how to check it against reality, and you know how it compares with what an LLM or a logistic regression would have said.
+- `chapters/ch14.qmd`
+  - Before: And now someone in the SOC is standing behind you asking the only question that matters at 2:14 a.m.:
+  - After: And now someone in the SOC is standing behind you, asking the only question that matters at 2:14 a.m.:
+- `chapters/ch14.qmd`
+  - Before: This chapter is about that moment: the step from a number to an action. It's the least glamorous part of any AI system, and it's where most of the money is won or lost.
+  - After: This chapter is about that moment: the step from a number to an action. It's the least exciting part of any AI system, and it's where most of the money is saved or lost.
+- `chapters/ch14.qmd`
+  - Before: - Explain why a single cut-off at 0.5 is almost always the wrong policy.
+  - After: - Explain why a single threshold at 0.5 is almost always the wrong policy.
+- `chapters/ch14.qmd`
+  - Before: - Derive the zone boundaries from what mistakes cost, then adjust them for how many people you actually have.
+  - After: - Work out the zone thresholds from what mistakes cost, then adjust them for how many people you actually have.
+- `chapters/ch14.qmd`
+  - Before: - Run the policy in production: decision logs, fail-safes, audits, and drift.
+  - After: - Run the policy in real use: decision logs, fail-safes, audits, and drift.
+- `chapters/ch14.qmd`
+  - Before: Let's try it on a real week. We'll use the first three weeks of Kestrel's alerts as history and treat the fourth week as "live", the way you would if you were switching this on for real.
+  - After: Let's try it on a realistic week. We'll use the first three weeks of Kestrel's alerts as history. We'll treat the fourth week as "live", the way you would if you were switching this on for real.
+- `chapters/ch14.qmd`
+  - Before: About {{< num ch21 naive.act int >}} alerts a day close themselves, which sounds wonderful until you read the next line. Every day, roughly {{< num ch21 naive.missed_by_automation int >}} of them were real threats: genuine phishing, genuine malware, a genuine stranger with someone's password. The machine closed them on its own and nobody ever looked.
+  - After: About {{< num ch21 naive.act int >}} alerts a day close themselves. That sounds wonderful until you read the next line. Every day, about {{< num ch21 naive.missed_by_automation int >}} of them were real threats: real phishing, real malware, a real stranger with someone's password. The machine closed them on its own, and nobody ever looked.
+- `chapters/ch14.qmd`
+  - Before: Because 0.5 silently assumes two things that aren't true here. It assumes a missed threat and a false alarm cost the same, which you already know from Chapter 4 is absurd for a SOC. And it assumes there are only two things you can do with an alert.
+  - After: Because 0.5 quietly assumes two things that aren't true here. It assumes a missed threat and a false alarm cost the same. You know from Chapter 4 that this is far from true for a SOC. And it assumes there are only two things you can do with an alert.
+- `chapters/ch14.qmd`
+  - Before: The first door is the one nobody sees. The alert is closed, or handled by an automated playbook, and no human ever reads it. Most alerts should leave this way, because most alerts are noise.
+  - After: The first door is the one nobody sees. The alert is closed, or handled by an automatic procedure, and no person ever reads it. Most alerts should leave this way, because most alerts are harmless.
+- `chapters/ch14.qmd`
+  - Before: The second door leads to the queue. An analyst picks the alert up, pulls the logs, maybe messages the user, and makes the call. It costs about twelve minutes of a skilled person's time.
+  - After: The second door leads to the queue. An analyst picks up the alert, reads the logs, maybe messages the user, and decides. It costs about twelve minutes of a skilled person's time.
+- `chapters/ch14.qmd`
+  - Before: The third door is the loud one. Someone's phone rings. An on-call responder drops what they're doing, at 2:14 a.m. if necessary, because this one can't wait.
+  - After: The third door is the loud one. Someone's phone rings. The analyst on call stops what they're doing, at 2:14 a.m. if necessary, because this one can't wait.
+- `chapters/ch14.qmd`
+  - Before: Act, review, escalate. Machines take the easy ends; people take the middle.
+  - After: Act, review, escalate. Machines handle the clear cases at each end; people handle the middle.
+- `chapters/ch14.qmd`
+  - Before: In this book, **act** means the system handles the case by itself, **review** means a person checks it in the normal course of work, and **escalate** means a person is pulled in right now. The names are general on purpose. In customer support, act might be an automatic reply, review a human agent, escalate a supervisor. In content moderation, it might be auto-approve, human review, and legal.
+  - After: In this book, **act** means the system handles the case by itself. **Review** means a person checks it as part of normal work. **Escalate** means a person is called in right now. The names are general on purpose. In customer support, act might be an automatic reply, review a human agent, and escalate a supervisor. In checking social media posts, it might be automatic approval, human review, and the legal team.
+- `chapters/ch14.qmd`
+  - Before: Note the log scale: most alerts are crowded at the far left, where the model is confident they're harmless. The red dots, real threats, gather to the right, but not all of them.]
+  - After: Note the log scale: most alerts are crowded at the far left, where the model is confident they're harmless. The red dots, real threats, are mostly to the right, but not all of them.]
+- `chapters/ch14.qmd`
+  - Before: Look at @fig-zones-strip for a moment, because the entire problem is in it. The grey dots pile up on the left: the easy harmless alerts. The red dots lean right. But there are red dots scattered through the middle and even a few in the far-left crowd, and grey dots sitting in the escalate zone. No placement of two lines makes every dot land in the right zone. Our job is to place the lines so the *mistakes we can't avoid* are the cheap ones.
+  - After: Look at @fig-zones-strip for a moment, because the whole problem is in it. The grey dots are crowded on the left: the easy, harmless alerts. The red dots are mostly to the right. But some red dots are spread through the middle, and a few are even in the crowd on the far left. And some grey dots sit in the escalate zone. No two thresholds can put every dot in the right zone. Our job is to place the thresholds so that the *mistakes we can't avoid* are the cheap ones.
+- `chapters/ch14.qmd`
+  - Before: ## Let the costs draw the lines
+  - After: ## Let the costs set the thresholds
+- `chapters/ch14.qmd`
+  - Before: So where do the lines go? Not where they look nice. Where the money says.
+  - After: So where do the thresholds go? Not where they look nice, but where the costs say.
+- `chapters/ch14.qmd`
+  - Before: For every action, we can write down what it costs *on average*, given the probability *P* that the alert is real. Here are Kestrel's numbers. They're my estimates for a company this size, not industry figures, and the method matters far more than the exact values.
+  - After: For every action, we can write down what it costs *on average*, given the probability *P* that the alert is real. Here are Kestrel's numbers. They're my estimates for a company this size, not industry figures. The method matters far more than the exact values.
+- `chapters/ch14.qmd`
+  - Before: - **Act** (auto-close). If the alert was real, we've let a threat through. Other defences catch much of what slips past, so the *expected* loss per missed threat is about \$10,000. Expected cost: *P* × \$10,000.
+  - After: - **Act** (auto-close). If the alert was real, we've let a threat through. Other defences catch much of what gets past, so the *expected* loss per missed threat is about \$10,000. Expected cost: *P* × \$10,000.
+- `chapters/ch14.qmd`
+  - Before: - **Review.** Twelve minutes of an analyst at \$75 an hour is \$15. Analysts are human and miss about one threat in twenty. Expected cost: \$15 + *P* × 5% × \$10,000.
+  - After: - **Review.** Twelve minutes of an analyst's time at \$75 an hour is \$15. Analysts are human and miss about one threat in twenty. Expected cost: \$15 + *P* × 5% × \$10,000.
+- `chapters/ch14.qmd`
+  - Before: - **Escalate** (page on-call). If the alert was harmless, we've woken someone up for nothing. Call it \$400. Expected cost: (1 − *P*) × \$400.
+  - After: - **Escalate** (call the analyst on call). If the alert was harmless, we've woken someone up for nothing. Call that \$400. Expected cost: (1 − *P*) × \$400.
+- `chapters/ch14.qmd`
+  - Before: Now draw all three as lines against *P* and, at every value of *P*, pick the cheapest one.
+  - After: Now draw all three as lines against *P*. At every value of *P*, pick the cheapest one.
+- `chapters/ch14.qmd`
+  - Before: The lines in @fig-cost-lines cross in just two places, and those two crossings are your thresholds. You can find them with a pencil. Acting beats reviewing when *P* × 10,000 < 15 + *P* × 500, which works out to *P* below about 0.0016. Escalating beats reviewing when *P* rises above about 0.43.
+  - After: The lines in @fig-cost-lines cross in just two places, and those two crossings are your thresholds. You can find them with a pencil. Acting is cheaper than reviewing when *P* × 10,000 < 15 + *P* × 500. That works out to *P* below about 0.0016. Escalating is cheaper than reviewing when *P* rises above about 0.43.
+- `chapters/ch14.qmd`
+  - Before: That first number deserves a second look. It says: only let the machine close an alert on its own if it's more than 99.8% sure the alert is harmless. When closing a real threat unseen costs about 630 times more than a review (\$9,500 extra, once you allow for the 5% a reviewer would miss anyway, against \$15), that's what "cheap mistakes only" means.
+  - After: That first number deserves a second look. It says: only let the machine close an alert on its own if it's more than 99.8% sure the alert is harmless. Closing a real threat without anyone seeing it costs about 630 times more than a review. That's \$9,500 extra, once you allow for the 5% a reviewer would miss anyway, against \$15. At those costs, "only make cheap mistakes" means exactly this.
+- `chapters/ch14.qmd`
+  - Before: Suppose Kestrel invests in better endpoint protection, and the expected loss from a missed threat falls from \$10,000 to \$2,000. Recompute the *act* line using the same formula: 15 ÷ (2,000 × 0.95). Does it move up or down? By roughly how much? What happens to the number of alerts the machine can close alone?
+  - After: Suppose Kestrel buys better protection for its laptops and servers, and the expected loss from a missed threat falls from \$10,000 to \$2,000. Work out the *act* threshold again with the same formula: 15 ÷ (2,000 × 0.95). Does it move up or down? By about how much? What happens to the number of alerts the machine can close alone?
+- `chapters/ch14.qmd`
+  - Before: (It moves up, to about 0.008, five times higher, so far more alerts can safely close themselves. Cheaper misses buy you more automation.)
+  - After: (It moves up, to about 0.008, five times higher, so far more alerts can safely close themselves. When misses cost less, you can automate more.)
+- `chapters/ch14.qmd`
+  - Before: ## Before you trust a line, check the number under it
+  - After: ## Before you trust a threshold, check the probability
+- `chapters/ch14.qmd`
+  - Before: There's a catch hiding in @fig-cost-lines, and it's the catch this whole book has been building towards.
+  - After: There's a hidden problem in @fig-cost-lines, and it's the problem this whole book has been leading to.
+- `chapters/ch14.qmd`
+  - Before: The cost lines are drawn as if *P* means what it says. As if, among all the alerts the model scores at 0.001, one in a thousand really is a threat. If the model is overconfident, and says 0.001 when the truth is 0.003, then your "cheapest action" isn't the cheapest at all, and the machine is closing threats you never agreed to close.
+  - After: The cost lines are drawn as if *P* means what it says: as if, among all the alerts the model scores at 0.001, one in a thousand really is a threat. Suppose the model is overconfident, and says 0.001 when the truth is 0.003. Then your "cheapest action" isn't the cheapest at all. The machine is closing threats you never agreed to close.
+- `chapters/ch14.qmd`
+  - Before: So before we move a single line, we check. We take the history weeks, where we know how every alert turned out, and ask the question from Chapter 3: when the model says *x*, does *x* happen?
+  - After: So before we set any threshold, we check. We take the history weeks, where we know how every alert turned out. And we ask the question from Chapter 3: when the model says *x*, does *x* happen?
+- `chapters/ch14.qmd`
+  - Before: The result is uncomfortable. Among live alerts the raw model called "under 2% likely", it claimed an average of about {{< num ch21 raw_believed pct1 >}}. The real rate was {{< num ch21 raw_actual pct1 >}}. Its "almost certainly harmless" alerts were about {{< num ch21 raw_ratio f1 >}} times riskier than it said.
+  - After: The result is uncomfortable. Take the live alerts the raw model called "under 2% likely". For those, it said the chance was about {{< num ch21 raw_believed pct1 >}} on average. The real rate was {{< num ch21 raw_actual pct1 >}}. Its "almost certainly harmless" alerts were about {{< num ch21 raw_ratio f1 >}} times riskier than it said.
+- `chapters/ch14.qmd`
+  - Before: That's not a bug I planted for drama. The mock is built to be slightly overconfident at the extremes (the repository's `docs/mock-design.md` gives the settings), because that's how most real models behave, as Chapter 5 explained. Whether *real* Jev behaves this way on *your* data is the kind of thing you should never assume and always measure. Chapter 11 shows how.
+  - After: That's not a bug I added for effect. The mock is built to be slightly overconfident at the extremes (the repository's `docs/mock-design.md` gives the settings). That's how most real models behave, as Chapter 5 explained. You should never assume whether *real* Jev behaves this way on *your* data. Always measure it. Chapter 11 shows how.
+- `chapters/ch14.qmd`
+  - Before: ![Zoomed in on the low end, where the ACT zone lives. Raw scores (red) sit above the diagonal: the model was more confident than reality justified. After Platt scaling fitted on other days (green), the curve hugs the diagonal much more closely.]
+  - After: ![A close-up of the low end, where the act zone is. Raw scores (red) sit above the diagonal: the model was more confident than it should have been. After Platt scaling fitted on other days (green), the curve stays much closer to the diagonal.]
+- `chapters/ch14.qmd`
+  - Before: After Platt scaling, fitted only on the three history weeks, the picture improves (@fig-calibration-zones). Not perfect, but much closer. So here is the rule, stated properly:
+  - After: After Platt scaling, fitted only on the three history weeks, the picture improves (@fig-calibration-zones). It's not perfect, but it's much closer. So here is the rule, stated properly:
+- `chapters/ch14.qmd`
+  - Before: From here on, every line we draw is on the *calibrated* scale.
+  - After: From here on, every threshold we set is on the *calibrated* probabilities.
+- `chapters/ch14.qmd`
+  - Before: ## Then reality walks in: the queue
+  - After: ## Then the real limit appears: the queue
+- `chapters/ch14.qmd`
+  - Before: We have cost-optimal thresholds and calibrated probabilities. Let's switch it on.
+  - After: We have the cheapest thresholds for our costs and calibrated probabilities. Let's switch it on.
+- `chapters/ch14.qmd`
+  - Before: Under the pure-cost policy, the live week sends about {{< num ch21 ideal.review int >}} alerts a day to review. At twelve minutes each, that's the full working day of about {{< num ch21 ideal_reviews_analysts int >}} analysts.
+  - After: Under the policy based only on costs, the live week sends about {{< num ch21 ideal.review int >}} alerts a day to review. At twelve minutes each, that's a full working day for about {{< num ch21 ideal_reviews_analysts int >}} analysts.
+- `chapters/ch14.qmd`
+  - Before: Kestrel has {{< num ch21 analysts int >}}. Each can clear about 40 alerts in a shift, so the queue can take {{< num ch21 capacity int >}} a day. The on-call responders can absorb about {{< num ch21 pages_cap int >}} pages a day before the pages themselves become the problem.
+  - After: Kestrel has {{< num ch21 analysts int >}}. Each can clear about 40 alerts in a shift, so the queue can take {{< num ch21 capacity int >}} a day. The analysts on call can handle about {{< num ch21 pages_cap int >}} urgent calls a day before the calls themselves become the problem.
+- `chapters/ch14.qmd`
+  - Before: A policy that ignores capacity isn't a policy. It's a wish. Anything beyond {{< num ch21 capacity int >}} simply doesn't get looked at, in some order nobody chose.
+  - After: A policy that ignores capacity isn't a policy. It's a wish. Anything beyond {{< num ch21 capacity int >}} simply doesn't get looked at, and nobody chooses which ones are skipped.
+- `chapters/ch14.qmd`
+  - Before: So we ask a better question: *among all the policies that fit the team we actually have, which is cheapest?* That search is quick, because for any escalation line the best review line is the one that fills the queue and no more.
+  - After: So we ask a better question: *among all the policies that fit the team we actually have, which is cheapest?* That search is quick. For any escalate threshold, the best act threshold is the one that fills the queue and no more.
+- `chapters/ch14.qmd`
+  - Before: Fitted on history, checked on the live week. The machine now closes about {{< num ch21 chosen.act int >}} alerts a day by itself, the analysts get {{< num ch21 chosen.review int >}}, on-call gets {{< num ch21 chosen.escalate int >}} pages, and the number of real threats closed without a human falls from {{< num ch21 naive.missed_by_automation int >}} a day to about {{< num ch21 chosen.missed_by_automation f1 >}}.
+  - After: We fitted the policy on history and checked it on the live week. The machine now closes about {{< num ch21 chosen.act int >}} alerts a day by itself. The analysts get {{< num ch21 chosen.review int >}}, and the analyst on call gets {{< num ch21 chosen.escalate int >}} urgent calls. The number of real threats closed without a person falls from {{< num ch21 naive.missed_by_automation int >}} a day to about {{< num ch21 chosen.missed_by_automation f1 >}}.
+- `chapters/ch14.qmd`
+  - Before: Look closely and the live week slightly overshoots the team: about {{< num ch21 chosen.review int >}} reviews against a capacity of {{< num ch21 capacity int >}}, and {{< num ch21 chosen.escalate int >}} pages against {{< num ch21 pages_cap int >}}. The lines were fitted to fill capacity on the history weeks, and the live week happens to be a little busier. Expect that. Lines fitted on the past are a forecast, not a guarantee, which is why Chapter 21's service watches the queue every day and flags when it runs over.
+  - After: Look closely, and the live week is slightly more than the team can handle: about {{< num ch21 chosen.review int >}} reviews against a capacity of {{< num ch21 capacity int >}}, and {{< num ch21 chosen.escalate int >}} urgent calls against {{< num ch21 pages_cap int >}}. The thresholds were fitted to fill capacity on the history weeks, and the live week happens to be a little busier. Expect that. Thresholds fitted on the past are a forecast, not a promise. That's why Chapter 21's service watches the queue every day and raises a flag when it runs over.
+- `chapters/ch14.qmd`
+  - Before: ![Where the live week's real threats (left) and harmless alerts (right) end up each day, under one line at 0.5 and under the capacity-aware three-zone policy. The light segment on the left is the number that matters: threats closed with no human involved.]
+  - After: ![Where the live week's real threats (left) and harmless alerts (right) end up each day, under one threshold at 0.5 and under the three-zone policy that respects capacity. The light segment on the left is the number that matters: threats closed with no person involved.]
+- `chapters/ch14.qmd`
+  - Before: @fig-one-vs-three puts the two policies side by side. Notice what didn't change much: the number of harmless alerts the machine closes. Notice what did: the "act" segment on the threat side (the lightest purple) shrank from the biggest to the smallest.
+  - After: @fig-one-vs-three puts the two policies side by side. Notice what didn't change much: the number of harmless alerts the machine closes. Notice what did: the "act" segment on the threat side (the lightest purple) went from the biggest to the smallest.
+- `chapters/ch14.qmd`
+  - Before: But about six a day is still not zero, and here's where I want you to stop thinking like a modeller and start thinking like the person who signs the budget.
+  - After: But about six a day is still not zero. Here I want you to stop thinking like someone who builds models, and start thinking like the person who approves the budget.
+- `chapters/ch14.qmd`
+  - Before: ![Threats auto-closed per day, for every team size from 3 to 14 analysts, with thresholds re-fitted for each. The gap between the two curves is what better input is worth: the same model reading structured alert fields instead of raw alert text.]
+  - After: ![Threats auto-closed per day, for every team size from 3 to 14 analysts, with thresholds fitted again for each. The gap between the two curves is what better input is worth: the same model reading structured alert fields instead of raw alert text.]
+- `chapters/ch14.qmd`
+  - Before: @fig-capacity is the most useful chart in this chapter. Every point on the green curve is a fully optimised policy; the only thing that changes is how many people are on the queue. Going from six analysts to eight cuts the threats closed without review from {{< num ch21 chosen.missed_by_automation f1 >}} a day to {{< num ch21 eight.missed_by_automation f1 >}}. With Kestrel's cost estimates, two extra salaries buy back roughly {{< num ch21 saved_money_per_day money >}} of expected loss a day. The model doesn't get to make that call, and neither do you on your own. But now it's a decision with a visible price instead of a hunch.
+  - After: @fig-capacity is the most useful chart in this chapter. Every point on the green curve is the best policy for that team; the only thing that changes is how many people work on the queue. Going from six analysts to eight cuts the threats closed without review from {{< num ch21 chosen.missed_by_automation f1 >}} a day to {{< num ch21 eight.missed_by_automation f1 >}}. With Kestrel's cost estimates, two extra salaries avoid about {{< num ch21 saved_money_per_day money >}} of expected loss a day. The model doesn't get to make that decision, and neither do you on your own. But now it's a decision with a clear price, not a guess.
+- `chapters/ch14.qmd`
+  - Before: The grey curve is worth a look too. It's the same mock, scoring the same alerts, but reading only the raw alert text instead of clean structured fields. At every team size it does worse. Better input buys you the same thing as more analysts. The same idea drives the "LLM extracts, Jev decides" pattern in the next chapter.
+  - After: The grey curve is worth a look too. It's the same mock, scoring the same alerts, but reading only the raw alert text instead of clean structured fields. At every team size it does worse. Better input gives you the same benefit as more analysts. The same idea is behind the "LLM extracts, Jev decides" pattern in the next chapter.
+- `chapters/ch14.qmd`
+  - Before: Because accuracy counts every mistake as one mistake. With 8% of alerts being real, a policy that closes everything is 92% accurate and catastrophic. Chapter 1 made the same mistake on purpose. Costs and capacity are what turn "a good model" into "a good decision".
+  - After: Because accuracy counts every mistake as one mistake. When 8% of alerts are real, a policy that closes everything is 92% accurate, and a disaster. Chapter 1 made the same mistake on purpose. Costs and capacity are what turn "a good model" into "a good decision".
+- `chapters/ch14.qmd`
+  - Before: So far the model has answered one yes-or-no question. Real triage asks several at once, and Jev's typed questions make that cheap: in one call you can ask whether it's real (a `Noul`), what kind of threat it is (a `Choice`), and how severe (a `Score`).
+  - After: So far the model has answered one yes-or-no question. Real triage asks several at once, and Jev's typed questions make that cheap. In one call you can ask whether it's real (a `Noul`), what kind of threat it is (a `Choice`), and how severe it is (a `Score`).
+- `chapters/ch14.qmd`
+  - Before: A model can be 99% sure an alert on the payroll database server is harmless. The 1% still lives on the payroll database server. So the policy looks at *what's at risk* as well as *how likely*:
+  - After: A model can be 99% sure that an alert on the payroll database server is harmless. But the other 1% is still on the payroll database server. So the policy looks at *what's at risk* as well as *how likely*:
+- `chapters/ch14.qmd`
+  - Before: Two details in `route()` are worth copying. The *act* door has an extra lock: nothing on a critical asset closes itself, however confident the model is. And the final line sends everything that doesn't clearly qualify for the other doors to a human. When in doubt, review.
+  - After: Two details in `route()` are worth copying. The *act* door has an extra rule: nothing on a critical asset closes itself, however confident the model is. And the final line of code sends everything that doesn't clearly belong behind the other doors to a person. When in doubt, review.
+- `chapters/ch14.qmd`
+  - Before: The same shape works for any typed decision. For a `Choice` such as "which queue?", act on the top label only when its probability clears your line, and send the rest to review. It's Chapter 4's coverage-and-risk trade-off, one label at a time.
+  - After: The same design works for any typed decision. For a `Choice` such as "which queue?", act on the top label only when its probability is above your threshold. Send the rest to review. It's Chapter 4's coverage-and-risk trade-off, one label at a time.
+- `chapters/ch14.qmd`
+  - Before: A policy that works in a notebook is maybe a third of the job. The rest is what happens on the day the model is down, the week the attackers change tactics, and the month an auditor asks why an alert was closed.
+  - After: A policy that works in a notebook is maybe a third of the job. The rest is what happens on the day the model stops working, the week the attackers change methods, and the month an auditor asks why an alert was closed.
+- `chapters/ch14.qmd`
+  - Before: ![The decision loop in production. Every alert flows through the model, calibration and a versioned policy into one of three doors.
+  - After: ![The decision loop in real use. Every alert flows through the model, calibration and a versioned policy into one of three doors.
+- `chapters/ch14.qmd`
+  - Before: @fig-production-loop shows the loop. Four habits make it trustworthy.
+  - After: @fig-production-loop shows the loop. Four habits make it reliable.
+- `chapters/ch14.qmd`
+  - Before: **Write the policy down as code, and version it.** Thresholds that live in someone's head change without anyone noticing. `policy v3: act below 0.031, escalate at 0.34, fitted on 1–21 September, six analysts` is something you can review, test and roll back.
+  - After: **Write the policy down as code, and give it a version number.** Thresholds that exist only in someone's head change without anyone noticing. `policy v3: act below 0.031, escalate at 0.34, fitted on 1–21 September, six analysts` is something you can review, test and go back to.
+- `chapters/ch14.qmd`
+  - Before: **Log every decision.** Jev returns probabilities, not reasons, and critics are right that this makes a single answer hard to explain. But you can make the *system* explainable. Record what the model saw, what it said, which policy version turned that into an action, and when. Then any decision can be replayed and questioned later.
+  - After: **Log every decision.** Jev returns probabilities, not reasons, and critics are right that this makes a single answer hard to explain. But you can make the *system* explainable. Record what the model saw, what it said, which policy version turned that into an action, and when. Then anyone can repeat and question any decision later.
+- `chapters/ch14.qmd`
+  - Before: **Fail safe towards review, never towards act.** If the model times out, returns an error or is simply unavailable, the alert goes to a human. A decision system should never close alerts unseen because a dependency went down.
+  - After: **When something fails, send the case to review, never to act.** If the model times out, returns an error or is simply unavailable, the alert goes to a person. A decision system should never close alerts unseen because another system it depends on stopped working.
+- `chapters/ch14.qmd`
+  - Before: Every alert that goes to review or escalation comes back with an answer: an analyst decided. Alerts the machine closed come back with *nothing*. If you only learn from the alerts people looked at, you will never see the machine's own mistakes, and your calibration checks will slowly go blind in the one zone where they matter.
+  - After: Every alert that goes to review or escalation comes back with an answer: an analyst decided. Alerts the machine closed come back with *nothing*. If you only learn from the alerts people looked at, you will never see the machine's own mistakes. Your calibration checks will slowly stop seeing the one zone where they matter most.
+- `chapters/ch14.qmd`
+  - Before: So send a small random slice of auto-closed alerts, say 3%, to an analyst anyway. At Kestrel's volume that's about a dozen a day. It isn't free, and at a true miss rate around 1% you'll need a few weeks of audits before the estimate is tight. It's still the only clear window into the act zone.
+  - After: So send a small random share of auto-closed alerts, say 3%, to an analyst anyway. At Kestrel's volume that's about a dozen a day. It isn't free. And if the true miss rate is about 1%, you'll need a few weeks of audits before the estimate is precise. It's still the only clear view of the act zone.
+- `chapters/ch14.qmd`
+  - Before: Thresholds are fitted to the past, and attackers live in the future. If an attacker learns what makes your model relax, for example alerts that look like approved IT tooling, they will shape their activity to land in the act zone. Random audits, never exposing scores outside the SOC, and rules that keep critical assets out of the act zone all make this harder. None make it impossible. The cost figures are guesses too. Revisit them when the business changes, not just when the model does.
+  - After: Thresholds are fitted to the past, but attackers act in the future. If an attacker learns what makes your model relax, such as alerts that look like approved IT tools, they will shape their activity to land in the act zone. Three things make this harder: random audits, never showing scores outside the SOC, and rules that keep critical assets out of the act zone. None make it impossible. The cost figures are guesses too. Check them again when the business changes, not just when the model does.
+- `chapters/ch14.qmd`
+  - Before: In week five, Kestrel is hit by a phishing campaign. Link alerts fire three times as often as usual, and far more of them are real. Nothing about any individual alert looks unusual. The model scores them just as it scored last month's.
+  - After: In week five, Kestrel is hit by a phishing campaign. Alerts about links fire three times as often as usual, and far more of them are real. Nothing about any single alert looks unusual. The model scores them just as it scored last month's.
+- `chapters/ch14.qmd`
+  - Before: In week five (shaded), reality pulls away from the model, and the queue overflows.]
+  - After: In week five (shaded), reality moves away from the model, and the queue overflows.]
+- `chapters/ch14.qmd`
+  - Before: @fig-drift-watch shows two things going wrong at once. The model expected about {{< num ch21 campaign_pred pct >}} of alerts to be threats; the real figure was {{< num ch21 campaign_actual pct >}}. And the review queue climbed to an average of about {{< num ch21 campaign_reviews_per_day int >}} a day over the campaign week against a capacity of {{< num ch21 capacity int >}}, so work that nobody chose to skip started getting skipped.
+  - After: @fig-drift-watch shows two things going wrong at once. The model expected about {{< num ch21 campaign_pred pct >}} of alerts to be threats; the real figure was {{< num ch21 campaign_actual pct >}}. And the review queue rose to an average of about {{< num ch21 campaign_reviews_per_day int >}} a day over the campaign week, against a capacity of {{< num ch21 capacity int >}}. So work that nobody chose to skip started getting skipped.
+- `chapters/ch14.qmd`
+  - Before: Neither problem is visible from a single alert. Both are obvious on a daily chart. That's why the weekly check in @fig-production-loop tracks three numbers: the share of alerts in each zone, the queue against capacity, and predicted threats against confirmed ones. When they diverge, three responses are available, and a human should pick among them: refit calibration on the most recent week, temporarily move the act line down for the affected alert type, or add review capacity until the campaign passes.
+  - After: You can't see either problem from a single alert. Both are obvious on a daily chart. That's why the weekly check in @fig-production-loop tracks three numbers: the share of alerts in each zone, the queue against capacity, and predicted threats against confirmed ones. When they move apart, there are three possible responses, and a person should choose. Refit calibration on the most recent week. Or move the act threshold down for the affected type of alert, for a while. Or add review capacity until the campaign ends.
+- `chapters/ch14.qmd`
+  - Before: For a decision layer, I'd put it slightly differently: the purpose of a probability is an action. Everything in this chapter is the machinery for getting from one to the other without fooling yourself along the way.
+  - After: For a decision layer, I'd say it slightly differently: the purpose of a probability is an action. Everything in this chapter is the machinery for getting from one to the other without fooling yourself.
+- `chapters/ch14.qmd`
+  - Before: We started with one probability and ended with a policy. Costs gave us two lines, and the lines sent every alert through one of three doors: act, review or escalate. Checking calibration against recent outcomes made those lines mean what they say. Capacity turned the cheapest policy on paper into the cheapest one the team can actually run, and put a price on two more analysts. With several answers per alert, stakes overrode confidence. Then the policy went into production with a log, an audit and a daily watch, and that watch caught the week the world changed.
+  - After: We started with one probability and ended with a policy. Costs gave us two thresholds, and the thresholds sent every alert through one of three doors: act, review or escalate. Checking calibration against recent outcomes made those thresholds mean what they say. Capacity turned the cheapest policy in theory into the cheapest one the team can actually run, and put a price on two more analysts. With several answers per alert, what's at stake mattered more than confidence. Then the policy went into use with a log, an audit and a daily check. That check caught the week the world changed.
+- `chapters/ch14.qmd`
+  - Before: 1. In the lab, rerun the capacity search for 4, 8 and 10 analysts. Plot threats auto-closed per day against team size. Where does the curve flatten out, and what does that suggest about where extra money is best spent?
+  - After: 1. In the lab, run the capacity search again for 4, 8 and 10 analysts. Plot threats auto-closed per day against team size. Where does the curve become flat, and what does that suggest about where extra money is best spent?
+- `chapters/ch14.qmd`
+  - Before: 2. Change the false-page cost from \$400 to \$2,000. Recompute both cost-optimal thresholds by hand, then check your answer with `cost_optimal_thresholds`. Which line moved, and why only that one?
+  - After: 2. Change the cost of a false urgent call from \$400 to \$2,000. Work out both cost-based thresholds by hand, then check your answer with `cost_optimal_thresholds`. Which threshold moved, and why only that one?
+- `chapters/ch14.qmd`
+  - Before: 4. Your audit samples 3% of the act zone. After four weeks, analysts have found 11 real threats among 1,200 audited alerts. Estimate the true miss rate in the act zone, and say roughly how uncertain that estimate is. (Hint: this is a proportion, and Chapter 2's tools are enough.)
+  - After: 4. Your audit checks 3% of the act zone. After four weeks, analysts have found 11 real threats among 1,200 audited alerts. Estimate the true miss rate in the act zone, and say about how uncertain that estimate is. (Hint: this is a proportion, and Chapter 2's tools are enough.)
+- `chapters/ch14.qmd`
+  - Before: Next: you now know how to turn one decision into an action. Chapter 15 shows the recurring shapes that decision layers take inside real systems, from "LLM extracts, Jev decides" to guardrails, judges and routers.
+  - After: Next: you now know how to turn one decision into an action. Chapter 15 shows the common designs that decision layers use inside real systems, from "LLM extracts, Jev decides" to guardrails, judges and routers.
