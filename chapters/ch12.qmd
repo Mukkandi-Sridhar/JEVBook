@@ -37,7 +37,7 @@ It's decisions.
 
 You already know this pattern, even if you've never heard Jevons' name.
 
-Think about photographs. When a photo meant film, developing and a trip to the chemist, you took a few dozen on a holiday and chose each one with care. Then each photo became essentially free. Nobody takes the same few dozen photos for less money. You take thousands, of receipts and parking spots and whiteboards, because each one is now worth taking.
+Think about photographs. When a photo meant film, developing and a trip to the chemist, you took a few dozen on a holiday and chose each one with care. Then each photo cost next to nothing. Nobody takes the same few dozen photos for less money. You take thousands, of receipts and parking spots and whiteboards, because each one is now worth taking.
 
 Or light. Over the last two centuries, the price of an hour of light fell enormously, from candles to gas to electric bulbs to LEDs. Economic historians who traced it for the UK found that people didn't pocket the savings and keep a candle's worth of light. They lit streets and buildings and kept them lit all night, and use grew far faster than the price fell [@fouquet2006] [[VERIFY]].
 
@@ -49,7 +49,7 @@ The paradox isn't a law. Plenty of things got cheaper without anyone using much 
 
 What decides it is how hungry people are for more, which economists measure as **elasticity**: how much the amount people use changes when the price changes. Total spend is price times quantity, so there are three cases.
 
-![Three ways demand can respond to a falling price (illustrative). If people use only a little more when it's cheaper, total spend falls. If use grows exactly as fast as the price falls, spend stays flat. If use grows faster, spend rises: that's the Jevons paradox.](/figures/ch19/elasticity.pdf){#fig-elasticity}
+![Three ways demand can respond to a falling price (illustrative). If people use only a little more when it's cheaper, total spend falls. If use grows as fast as the price falls, spend stays flat. If use grows faster, spend rises: that's the Jevons paradox.](/figures/ch19/elasticity.pdf){#fig-elasticity}
 
 If demand is **inelastic**, like salt, a price cut mostly saves money. If demand is **elastic**, like photos or light, a price cut opens up so many new uses that the total bill goes *up* (@fig-elasticity). Economists call the general effect a rebound, and they reserve "backfire" for the case where it more than cancels the saving. How often full backfire happens with energy is still argued over [@sorrell2009] [[VERIFY]].
 
@@ -61,13 +61,13 @@ TypeSafe has said the name nods to Jevons: that cheaper intelligence leads to wi
 
 [[AUTHOR STORY: a decision you once wanted a system to make on every item, but couldn't justify the cost or wait, e.g. in AttendX or SIGNAL]]
 
-We don't need to settle that argument for the whole industry. We can look at one company and count.
+We don't need to settle that argument for an entire industry. We can look at one company and count.
 
 ## The decisions nobody makes
 
 Every decision has a **value**: the expected loss it avoids. Chapter 4 gave you the tools to put a number on it. Checking an alert that has a 3% chance of being a \$10,000 breach, when a good decision would stop it, is worth about \$300. A decision is worth making when its value is above its price.
 
-Here's the thing about Kestrel. Its SOC makes a few thousand careful decisions a day. But the company generates millions of *possible* decisions: every inbound email, every login, every line in the logs. Each is almost certainly fine. Each is worth checking for a sliver of a cent.
+Look at Kestrel. Its SOC makes a few thousand careful decisions a day. But the company generates millions of *possible* decisions: every inbound email, every login, every line in the logs. Each is almost certainly fine. Each is worth checking for a sliver of a cent.
 
 I've built a small, deliberately simple model of this, and I want to be clear about what it is. Every number in it is an assumption, chosen to be plausible and written down in `jevkit/econ.py` where you can change it. It isn't a measurement of Kestrel or anyone else.
 
@@ -91,7 +91,7 @@ When someone logs in, they're sitting there waiting. You might have a few hundre
 
 ![A decision gets made only if it's cheap enough (value above price) and fast enough (answer inside the time budget). The shaded regions show which decisions each option can make, using this book's illustrative LLM figures and Jev's vendor-reported price and latency range. Logins fall inside Jev's region only at the fast end of that range.](/figures/ch19/gates.pdf){#fig-gates}
 
-@fig-gates puts both gates on one chart. The LLM's region starts at over a second and at a price that rules out the cheap pools. Jev's region reaches much further left, and further down. Logins are the interesting case: they fall inside Jev's region only if its calls land at the fast end of the vendor's range. That's a thing you'd measure before promising anyone real-time login checks.
+@fig-gates puts both gates on one chart. The LLM's region starts at over a second and at a price that rules out the cheap pools. Jev's region reaches much further left, and further down. Logins are the interesting case: they fall inside Jev's region only if its calls land at the fast end of the vendor's range. You'd measure that before promising anyone real-time login checks.
 
 ## Kestrel's day, counted
 
@@ -99,7 +99,7 @@ Now we can count a whole day. Start from the price: as it falls, how many decisi
 
 ![Decisions worth making per day, and total spend, as the price per decision falls (illustrative; price gate only). Decisions climb steeply. Spend falls, because the newly affordable decisions are each worth so little.](/figures/ch19/curve.pdf){#fig-curve}
 
-With both gates applied, the illustrative LLM makes about {{< num ch19 llm_decisions approx >}} decisions a day and spends about \${{< num ch19 llm_spend int >}}. Jev, at the fast end of its range, makes about {{< num ch19 jev_decisions approx >}} and spends about \${{< num ch19 jev_spend int >}}. That's about {{< num ch19 decisions_ratio int >}} times as many decisions for a quarter of the bill.
+With both gates applied, the illustrative LLM makes about {{< num ch19 llm_decisions approx >}} decisions a day and spends about \${{< num ch19 llm_spend int >}}. Jev, at the fast end of its range, makes about {{< num ch19 jev_decisions approx >}} and spends about \${{< num ch19 jev_spend int >}}. About {{< num ch19 decisions_ratio int >}} times as many decisions for a quarter of the bill.
 
 Notice what didn't happen. The bill went *down*. Inside Kestrel's existing jobs, demand for decisions is elastic enough to multiply the count, but not elastic enough to raise the spend. The newly affordable decisions are worth so little each that they add only about \${{< num ch19 value_gain int >}} a day of avoided loss.
 
@@ -113,7 +113,7 @@ Suppose cheap decisions let Kestrel build something new: checking every file tha
 Cheaper decisions rarely raise the bill for the jobs you already do. They raise it by making new jobs worth doing.
 :::
 
-Add two or three more jobs like that and Kestrel spends more on decisions than it ever did with an LLM, while making dozens of times as many. That's Jevons' coal, in miniature. It's also what TypeSafe's Doom demo from Chapter 9 was really showing: an agent making ten decisions a second is a use that simply didn't exist when each decision took a second and cost a tenth of a cent.
+Add two or three more jobs like that and Kestrel spends more on decisions than it ever did with an LLM, while making dozens of times as many. That's Jevons' coal, in miniature, and it's what TypeSafe's Doom demo from Chapter 9 was really showing: an agent making ten decisions a second is a use that simply didn't exist when each decision took a second and cost a tenth of a cent.
 
 ## The catch: where the load goes
 
@@ -133,10 +133,10 @@ The cost line from Chapter 4 doesn't have this problem. It flags a case when its
 When decisions get cheap, thresholds must be set by cost, not by share. Otherwise the saving on machines turns into a bill for people.
 :::
 
-That's also why calibration matters more, not less, as decisions multiply. A cost line only works if the probabilities are honest. An overconfident model making a million decisions a day doesn't make a few extra mistakes. It fills the queue.
+Calibration matters more, not less, as decisions multiply. A cost line only works if the probabilities can be trusted. An overconfident model making a million decisions a day doesn't make a few extra mistakes. It fills the queue.
 
 ::: {.breaks}
-Everything in this chapter's Kestrel model is an assumption: the pools, their sizes, the value of each decision, the time budgets. Change them and the numbers move a lot, which is exactly why the lab lets you. Jev's price and latency are vendor-reported, and early-access prices can change. The "value of a decision" is itself an estimate that depends on calibrated probabilities, which Chapter 11 showed you can't assume. And historical analogies are suggestive, not proof: whether demand for decisions turns out more like light or more like salt is something only the next few years will show.
+Everything in this chapter's Kestrel model is an assumption: the pools, their sizes, the value of each decision, the time budgets. Change them and the numbers move a lot, which is why the lab lets you. Jev's price and latency are vendor-reported, and early-access prices can change. The "value of a decision" is itself an estimate that depends on calibrated probabilities, which Chapter 11 showed you can't assume. And historical analogies are suggestive, not proof: whether demand for decisions turns out more like light or more like salt is something only the next few years will show.
 :::
 
 ::: {.threshold}

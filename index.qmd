@@ -2,9 +2,9 @@
 
 This is a book about deciding.
 
-Not about artificial intelligence in general, though you'll learn a good deal of that along the way. It's about one narrow and very common job: looking at a situation and choosing what to do about it. Is this email phishing? Which team should get this ticket? Is this login safe? Should this agent call that tool?
+Not about artificial intelligence in general, though you'll learn a good deal of that along the way. The subject is one narrow, very common job: looking at a situation and choosing what to do about it. Is this email phishing? Which team should get this ticket? Is this login safe? Should this agent call that tool?
 
-Software makes millions of those decisions every day, and for the last few years we've been handing more and more of them to large language models. LLMs are extraordinary at reading and writing. But a decision isn't a piece of writing. It's a choice between a few options, made under uncertainty, with a cost for getting it wrong. To make it well you need a probability you can trust and a line drawn from what mistakes cost. And you need to know when to hand the case to a person.
+Software makes millions of those decisions every day, and for the last few years we've been handing more and more of them to large language models. LLMs are extraordinary at reading and writing. But a decision is a different thing from a paragraph: a choice between a few options, made under uncertainty, with a cost for getting it wrong. To make it well you need a probability you can trust and a line drawn from what mistakes cost. And you need to know when to hand the case to a person.
 
 In 2026 a company called TypeSafe AI released Jev, which it describes as the first of a new class of **System One models**: models that don't write at all, only answer typed questions with probabilities, in a single fast pass [@typesafe2026] [[VERIFY]]. Whether Jev lives up to its claims is something you'll learn to test for yourself. But the idea behind it is worth understanding whatever happens to any one product. Some decisions belong in a separate, fast, measurable layer of an AI system, and that layer needs different skills from the rest.
 

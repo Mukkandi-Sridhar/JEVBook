@@ -56,9 +56,9 @@ Look at the first line of that listing again. Everything that makes it a mock is
 
 ![The official SDK does all the work of building requests, retrying and parsing answers. The transport decides where requests go. The book's mock answers locally; the default sends them over the network to TypeSafe.](/figures/ch23/layers.pdf){#fig-layers}
 
-A **transport** is the lowest layer of an HTTP client: the part that takes a finished request and returns a response. The SDK lets you supply your own, and that's the seam the book's mock plugs into (@fig-layers). Your code, the SDK's request building, its retries and its parsing all run exactly as they would against the real service. Only the last step is different.
+A **transport** is the lowest layer of an HTTP client: the part that takes a finished request and returns a response. The SDK lets you supply your own, and that's the seam the book's mock plugs into (@fig-layers). Your code, the SDK's request building, its retries and its parsing all run as they would against the real service. Only the last step is different.
 
-That's also why the mock is worth trusting as a stand-in for the *interface*. It accepts the same request shape as the API, returns the same answer shape, and rejects bad requests with the same error codes, which I checked against the SDK's own data models. What it can't stand in for is the *answers*. They come from a small synthetic engine, every response says so in an `x-jevkit-synthetic` header, and the model name it reports is `jev-mock-synthetic`.
+For the same reason, the mock can be trusted as a stand-in for the *interface*. It accepts the same request shape as the API, returns the same answer shape, and rejects bad requests with the same error codes, which I checked against the SDK's own data models. What it can't stand in for is the *answers*. They come from a small synthetic engine, every response says so in an `x-jevkit-synthetic` header, and the model name it reports is `jev-mock-synthetic`.
 
 To call the real thing, drop the transport and give it a key:
 
@@ -105,7 +105,7 @@ To see what retries buy, I made the mock fail at random, then counted how many c
 
 With one request in five failing, only {{< num ch23 ok_20_0 pct >}} of calls succeed with no retries. With the SDK's default two retries, {{< num ch23 ok_20_2 pct1 >}} do (@fig-retries). The arithmetic is simple: if each attempt fails independently with probability *q*, a call with *r* retries fails only with probability *q*^*r*+1^.
 
-Retries cost time, though. The default policy waits about half a second, then a second, before retrying. That's fine for a batch job. It's not fine for Chapter 12's login check, which had three hundred milliseconds in total.
+Retries cost time, though. The default policy waits about half a second, then a second, before retrying. Fine for a batch job; not for Chapter 12's login check, which had three hundred milliseconds in total.
 
 So here's the decision-layer way to think about it. A call that fails is just another case your policy must handle. For a tight budget, allow no retries and decide what a failure *means*: for a login, maybe "allow, but flag for review"; for closing an alert, "don't close; send to the queue". Chapter 14 called this a fail-safe. It belongs in the policy, where it's visible, not buried in a retry setting.
 
@@ -120,7 +120,7 @@ Retry the world's errors, never your own. And when the clock matters, decide in 
 
 ## Ask together
 
-Chapter 10 showed that one call can carry several questions about the same state. Here's what that saves.
+Chapter 10 showed that one call can carry several questions about the same state. That saves tokens, and the next figure counts them.
 
 ![Input tokens per call, averaged over 800 of Kestrel's alerts, and what they'd cost per million calls at Jev's vendor-reported price. Asking four questions in one call sends the alert once; asking them in four calls sends it four times.](/figures/ch23/tokens.pdf){#fig-tokens}
 

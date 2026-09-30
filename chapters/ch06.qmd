@@ -15,7 +15,7 @@ When ChatGPT answers you, the words appear a few at a time, as if someone were t
 
 You've probably wondered whether that's just a nice animation, with the whole answer sitting there, finished, revealed slowly for effect.
 
-It isn't. That's genuinely how the model works. It doesn't know the end of its sentence when it writes the beginning. It picks one small piece, then the next, each time looking back at everything so far.
+It isn't an animation. The model really works like that: it doesn't know the end of its sentence when it writes the beginning. It picks one small piece, then the next, each time looking back at everything so far.
 
 That one detail explains a surprising amount: why long answers are slow, why the same question can get different answers, why you pay per token, and why "just ask the LLM" is an awkward way to make a decision. It also explains why getting a clean, trustworthy *decision* out of a writing machine is harder than adding "reply in JSON" to a prompt.
 
@@ -68,7 +68,7 @@ answers = [mock.classify(alert)["label"] for _ in range(20)]
 print({a: answers.count(a) for a in sorted(set(answers))})
 ```
 
-That's the book's stand-in LLM, `llm-mock-synthetic`, built to behave the way LLMs typically do; it isn't a model of any real product. Across forty borderline alerts, each asked twenty times, most got *both* answers.
+This is the book's stand-in LLM, `llm-mock-synthetic`, built to behave the way LLMs typically do; it isn't a model of any real product. Across forty borderline alerts, each asked twenty times, most got *both* answers.
 
 ![Forty borderline alerts, each asked the same question twenty times at temperature 0.7. The bar shows how often the answer was "malicious". All but one of them got different answers across the twenty runs.](/figures/ch10/variance.pdf){#fig-variance-06}
 
@@ -92,7 +92,7 @@ But "almost" adds up. Over 4,000 alerts, {{< num ch11 prompt_fail_share pct1 >}}
 
 ![What came back when we asked for JSON, over 4,000 alerts. With only the prompt, some responses were wrapped in friendly chat, some were cut off mid-object, and some were valid JSON with a field nobody asked for. With JSON mode on, the first two problems vanish. The third doesn't.](/figures/ch11/json-failures.pdf){#fig-json-failures}
 
-The three classic failures are in @fig-json-failures: chatty text around the JSON ("Sure! Here is..."), a response cut off mid-object, and valid JSON with an invented field, here an `attacker_country` that isn't in the alert at all. That last one is the worst, because it parses fine and quietly puts made-up data into your system.
+The three classic failures are in @fig-json-failures: chatty text around the JSON ("Sure! Here is..."), a response cut off mid-object, and valid JSON with an invented field, here an `attacker_country` that isn't in the alert at all. That last one is the worst, because it parses fine and slips made-up data into your system.
 
 The generation loop gives us a lever. At each step, we can forbid every token that would break the required format. That's **constrained decoding**, sold as "JSON mode" or "structured outputs" [@willard2023]. It guarantees the *shape* of the answer.
 
@@ -136,9 +136,9 @@ The mock wrote only {{< num ch11 n_distinct_stated int >}} different confidence 
 
 Look closely and the stated confidence has the lowest ECE of the three, {{< num ch11 verbal.ece f3 >}}. That isn't a win. When a model says nearly the same thing about every alert, it can be right *on average* and still tell you almost nothing about which alert is which. It's Chapter 3's lesson again: calibration and ranking are separate, and you need both.
 
-Research on real models is genuinely mixed here; one study found stated confidence *better* calibrated than token probabilities for some tuned models [@tian2023], another found it badly overconfident [@xiong2024]. The only honest rule is to measure yours.
+Research on real models is mixed here; one study found stated confidence *better* calibrated than token probabilities for some tuned models [@tian2023], another found it badly overconfident [@xiong2024]. The only safe rule is to measure yours.
 
-Why isn't a token probability the probability of the answer? Because the model isn't choosing between two answers. It's choosing between tens of thousands of tokens. "malicious", "Malicious" and " malicious" with a space are all different tokens, and some probability goes to the model starting a sentence instead of answering. You can add up the right ones and renormalise, but by then you're building a decision model by hand on top of a writing model.
+Why isn't a token probability the probability of the answer? Because the model is choosing between tens of thousands of tokens, not two answers. "malicious", "Malicious" and " malicious" with a space are all different tokens, and some probability goes to the model starting a sentence instead of answering. You can add up the right ones and renormalise, but by then you're building a decision model by hand on top of a writing model.
 
 ::: {.keyidea}
 The probability of a token isn't the probability of an answer.
@@ -150,7 +150,7 @@ Which brings us to a different way of asking. Instead of asking a writer to prod
 
 ![The same question, two ways. On the left, an LLM writes JSON, including a confidence it wrote as text. On the right, a typed question returns data: a probability for a yes-or-no question, and one for every label of a choice.](/figures/ch11/typed-vs-text.pdf){#fig-typed-vs-text}
 
-That's what Jev's interface looks like (@fig-typed-vs-text): nothing to parse, no format to break, labels that can only be the ones you listed, and a number designed to be a probability, which makes it a claim you can check. Part III takes it apart.
+Jev's interface looks like this (@fig-typed-vs-text): nothing to parse, no format to break, labels that can only be the ones you listed, and a number designed to be a probability, which makes it a claim you can check. Part III takes it apart.
 
 ::: {.breaks}
 Token probabilities describe the next piece of text, not the truth of the answer. JSON mode doesn't stop a model choosing the wrong value or copying an attacker's text into a field, and strict validation doesn't catch a value that's valid but wrong: a threat-intel score misread as 0.18 instead of 0.81 passes every schema. Providers update models, so "temperature 0" behaviour can shift between versions; pin versions for anything you'll audit. And typed decision APIs have their own limits: probabilities without reasons, and calibration that still has to be tested on your data.

@@ -72,7 +72,7 @@ A `choice` gives the model a set of labels, each with an optional description, a
 
 That "add up to 1" is the property to respect, because it cuts both ways. The model *must* distribute all of its belief across the labels you gave it. If the right answer isn't among them, the probability doesn't vanish. It lands on the wrong labels.
 
-Here's what that looks like. I asked the mock to classify {{< num ch17 n_harmless int >}} harmless alerts twice: once with the full list of categories, including "benign", and once with only the threat categories.
+It looks like this. I asked the mock to classify {{< num ch17 n_harmless int >}} harmless alerts twice: once with the full list of categories, including "benign", and once with only the threat categories.
 
 ![How confident the top label was for harmless alerts. With "benign" among the options (green), almost all were labelled benign; only the few that weren't are shown. Without it (red), every harmless alert got a threat label, most of them with high confidence.](/figures/ch17/forced.pdf){#fig-forced}
 
@@ -82,7 +82,7 @@ With "benign" available, {{< num ch17 full_benign_share pct >}} of the harmless 
 A choice's probabilities add up to 1 over the options you gave. Make sure every real case has somewhere to go.
 :::
 
-So include "benign", "none", "other" or "not enough information" whenever those can happen. Make the options mutually exclusive, too: if two labels can both be true at once ("phishing" and "credential theft"), a choice will split its probability between them and neither will look confident. When things genuinely overlap, use several nouls instead of one choice.
+So include "benign", "none", "other" or "not enough information" whenever those can happen. Make the options mutually exclusive, too: if two labels can both be true at once ("phishing" and "credential theft"), a choice will split its probability between them and neither will look confident. When things really can overlap, use several nouls instead of one choice.
 
 ## Score: levels in order, and the tails
 
@@ -119,7 +119,7 @@ The same lesson applies to choices. The label with the highest probability isn't
 
 In @fig-expected-cost, "benign" is the top label at 0.40, but 0.60 of the probability says *some kind of threat*. Closing the alert risks all of those. The cheapest action is to route it to the identity team, the most likely *threat*. That's the Chapter 4 formula generalised: for each action, add up what it costs under each possible truth, weighted by that truth's probability, and take the cheapest.
 
-It's also why you want probabilities for every option, not just the winning label. A text answer that says "benign" throws away exactly the information you need here.
+It's also why you want probabilities for every option, not just the winning label. A text answer that says "benign" throws away the very information you need here.
 
 ## Several questions, one call
 
@@ -149,7 +149,7 @@ Three types can't express everything. Numbers on a continuous range ("how many m
 ::: {.threshold}
 Kestrel pages on-call when P(severity medium or high) is at least some line. A false page costs \$400; a missed serious incident costs about \$10,000 more than handling it in the morning. Using the Chapter 4 formula, where does the line go? Would you use the same line for alerts on critical assets?
 
-(400 ÷ 10,400 ≈ 0.04, so page at about 4%. That's low, and it would page a lot, which is why Chapter 14 will cap pages by what on-call can absorb. For critical assets a miss costs more, so the line should be even lower.)
+(400 ÷ 10,400 ≈ 0.04, so page at about 4%. Low, and it would page a lot, which is why Chapter 14 will cap pages by what on-call can absorb. For critical assets a miss costs more, so the line should be even lower.)
 :::
 
 ::: {.bookquote by="Fred Brooks, The Mythical Man-Month, 1975"}

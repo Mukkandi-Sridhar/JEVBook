@@ -39,7 +39,7 @@ Start from the interface. A request carries a state and some typed questions. Th
 
 ![TinyJev. The alert's numeric fields and an embedding of its rule name go into a shared encoder: two small layers that turn the alert into 32 numbers. Three heads read those numbers, one per question type, all in the same pass.](/figures/ch27/architecture.pdf){#fig-architecture-20}
 
-The **encoder** reads the alert once and produces a summary of 32 numbers (@fig-architecture-20). The rule name, like `impossible_travel`, isn't a number, so it gets an embedding, exactly as words did in Chapter 5. The **heads** each read the same summary and answer one kind of question.
+The **encoder** reads the alert once and produces a summary of 32 numbers (@fig-architecture-20). The rule name, like `impossible_travel`, isn't a number, so it gets an embedding, just as words did in Chapter 5. The **heads** each read the same summary and answer one kind of question.
 
 That sharing is the point. The encoder learns what matters about an alert *in general*, and every head benefits. Learning which category a threat belongs to teaches the encoder things that help decide whether it's a threat at all.
 
@@ -55,9 +55,9 @@ The **choice head** makes one number per category and puts them through the soft
 
 The **score head** is the interesting one. Severity levels have an order: "high" is more than "medium", which is more than "low". A softmax would throw that order away and treat the levels like unrelated labels. So the score head makes *one* number, a sort of severity dial, and cuts it at three points that are forced to stay in order (@fig-heads, right). The probability of each level is the share of the dial between its cut points. Statisticians call this an **ordinal** model.
 
-That design has a limitation worth knowing. One dial can move a single hump up and down the scale and make it wider or narrower, but it can't split an alert between two distant levels while skipping the one in between. Chapter 10's mock Jev gave uncertain alerts exactly that shape, two humps: "informational if it's harmless, serious if it's real". TinyJev's score head can't express it, and would smear such an alert across the middle levels instead. That's one more reason to ask "is it real?" as its own noul rather than reading it off the severity.
+That design has a limitation worth knowing. One dial can move a single hump up and down the scale and make it wider or narrower, but it can't split an alert between two distant levels while skipping the one in between. Chapter 10's mock Jev gave uncertain alerts that very shape, two humps: "informational if it's harmless, serious if it's real". TinyJev's score head can't express it, and would smear such an alert across the middle levels instead. One more reason to ask "is it real?" as its own noul rather than reading it off the severity.
 
-Here's the whole forward pass. It's short enough to read:
+The whole forward pass is short enough to read:
 
 ```{python}
 params = tj.init(seed=0)
@@ -73,7 +73,7 @@ Untrained, those numbers are noise. Training is what gives them meaning.
 
 We train all three heads at once, on two weeks of Kestrel's labelled alerts, by adding their log losses together and running gradient descent, as in Chapter 2.
 
-Log loss matters here for a reason Chapter 2 made precise. It's a **proper scoring rule**: the way to get the best average score is to report your honest probability, not to exaggerate. Training with log loss rewards calibration directly, and it does so for every head. That's the most likely way a model like Jev is trained for honesty, and in Chapter 9 I guessed that TypeSafe's RLCD might build on a rule like it [[VERIFY]].
+Log loss matters here for a reason Chapter 2 made precise. It's a **proper scoring rule**: the way to get the best average score is to report your honest probability, not to exaggerate. Training with log loss rewards calibration directly, and it does so for every head. A rule like this is the most likely way a model like Jev is trained to be calibrated, and in Chapter 9 I guessed that TypeSafe's RLCD might build on a rule like it [[VERIFY]].
 
 ::: {.tryit lab="ch20"}
 ```{python}
@@ -92,7 +92,7 @@ The left panel of @fig-curves is what healthy training looks like: both curves f
 
 ## Honest, but not quite
 
-Log loss rewards honesty *on the data you train on*. On new data, even the healthy model is a little too sure of itself, because some of what it learned was noise in the training weeks. Chapter 5 said big models are overconfident for this reason. Small ones are too.
+Log loss rewards calibration *on the data you train on*. On new data, even the healthy model is a little too sure of itself, because some of what it learned was noise in the training weeks. Chapter 5 said big models are overconfident for this reason. Small ones are too.
 
 The fix is Chapter 3's: hold back a week, and fit one number per head, a **temperature**, that softens its answers until they match what happened. The temperatures came out at about {{< num ch27 T_noul f2 >}} for the noul, {{< num ch27 T_choice f2 >}} for the choice and {{< num ch27 T_score f2 >}} for the score. All three above 1: all three a bit overconfident.
 
@@ -116,7 +116,7 @@ Respectable, not magic. It trained on two weeks rather than three, and a two-lay
 
 ## Plug it in
 
-Here's the satisfying part. Chapter 16 showed that the SDK sends its requests through a *transport*, and that the book's mock is just one transport. So is this:
+Now the satisfying part. Chapter 16 showed that the SDK sends its requests through a *transport*, and that the book's mock is just one transport. So is this:
 
 ```{python}
 from typesafe_sdk import Choice, Noul, Score, TypeSafeClient
@@ -136,7 +136,7 @@ print(round(r.nouls["attack"].noul, 4), r.choices["kind"].choice)
 
 ![Your model behind the official SDK. The book's code doesn't change; the transport answers with your weights, and the response says so.](/figures/ch27/plugin.pdf){#fig-plugin}
 
-The response comes back in exactly the shape the SDK expects, with the model name `tinyjev-your-own` (@fig-plugin). Point any lab in the book at this transport and it runs against the model you just trained: the bake-off, the three zones, the hybrid agent. Now you have two decision models behind the same interface, and you can test one against the other with everything Part IV taught you.
+The response comes back in just the shape the SDK expects, with the model name `tinyjev-your-own` (@fig-plugin). Point any lab in the book at this transport and it runs against the model you just trained: the bake-off, the three zones, the hybrid agent. Now you have two decision models behind the same interface, and you can test one against the other with everything Part IV taught you.
 
 [[AUTHOR STORY: the first model you trained whose probabilities you had to fix before anyone could use them, and how you noticed]]
 
@@ -147,7 +147,7 @@ TinyJev reads structured fields, not free text; a real System One model reads te
 ::: {.threshold}
 Your TinyJev feeds Kestrel's three-zone policy. After two weeks in production, the weekly calibration check shows the noul head's temperature has drifted from 1.2 to 1.6. What does that tell you, and what would you do before touching the policy's lines?
 
-(A higher temperature means the model has become more overconfident on current data: the world has moved away from its training weeks. Before moving any line, refit the temperature on recent labelled alerts and check calibration again. If the temperature keeps climbing week after week, retrain the model on recent data; the lines were set for honest probabilities, and that's what needs restoring.)
+(A higher temperature means the model has become more overconfident on current data: the world has moved away from its training weeks. Before moving any line, refit the temperature on recent labelled alerts and check calibration again. If the temperature keeps climbing week after week, retrain the model on recent data; the lines were set for calibrated probabilities, and that's what needs restoring.)
 :::
 
 ::: {.bookquote by="Richard Feynman, on his blackboard at the time of his death, 1988"}
@@ -158,7 +158,7 @@ Feynman's blackboard [[VERIFY]] is the best argument for this chapter. You don't
 
 ## Where we are
 
-We built a System One model in miniature. A shared encoder read each alert once, and three heads answered three typed questions: a sigmoid for the noul, a softmax for the choice, and an ordinal dial for the score. Log loss trained every head towards honest probabilities. Honest on the training weeks still meant overconfident on new ones, and one temperature per head fixed that. Training too long broke it in a way no temperature could repair. The model ranked alerts respectably, and once plugged into the official SDK, it ran the book's code unchanged.
+We built a System One model in miniature. A shared encoder read each alert once, and three heads answered three typed questions: a sigmoid for the noul, a softmax for the choice, and an ordinal dial for the score. Log loss trained every head towards honest probabilities. Calibrated on the training weeks still meant overconfident on new ones, and one temperature per head fixed that. Training too long broke it in a way no temperature could repair. The model ranked alerts respectably, and once plugged into the official SDK, it ran the book's code unchanged.
 
 ::: {.exercises}
 1. Train TinyJev with only the noul head (set the other two loss weights to zero). Does its AUC go up or down? What does that suggest about sharing an encoder?

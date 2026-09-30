@@ -13,7 +13,7 @@ from jevkit.batch import score_alerts
 
 A week after Jev launched, two claims were circling.
 
-TypeSafe's: Jev returns *calibrated* probabilities. Its training method, RLCD, is named after exactly that goal [@typesafe2026] [[VERIFY]].
+TypeSafe's: Jev returns *calibrated* probabilities. Its training method, RLCD, is named after that goal [@typesafe2026] [[VERIFY]].
 
 And a blunt reply from the data scientist Alex Molas, in a post titled "Jev can't be calibrated": useful, yes, but treat its outputs as scores, not probabilities, because calibration depends on *your* data, which Jev never sees [@molas2026] [[VERIFY]].
 
@@ -33,7 +33,7 @@ Both, and neither, and that's the point of this chapter. You already have everyt
 
 ## Why the critic has a point
 
-Here's the argument in plain terms.
+In plain terms, the argument goes like this.
 
 Chapter 2 said a probability is a claim about *how often, among cases like this one*. Now imagine two companies send Jev the same alert text. Jev, reading the same input, returns the same probability to both. But suppose one company is a frequent target and the other rarely is. Among alerts that look exactly like this one, the true share of attacks can differ between them. A single number can't be right for both.
 
@@ -74,7 +74,7 @@ As always, the mock is synthetic and I built Harbor to make the point cleanly. I
 
 ## Fixing it
 
-Here's the good news, and it's very good news. This kind of miscalibration is often easy to fix.
+The good news is very good. This kind of miscalibration is often easy to fix.
 
 **Adjust for the base rate.** If the model's probabilities were right for one base rate, and you know yours, you can correct them with one line of arithmetic. Multiply the odds by the ratio of the two base rates' odds. That's Bayes' rule from Chapter 2 again: the new evidence is the same, only the starting point moved [@saerens2002].
 
@@ -96,7 +96,7 @@ print(f"Platt, 300:    ECE {cal.ece(platt(p_h[rest]), y[rest]):.3f}")
 
 With the base rate known exactly, the odds adjustment brings Harbor's ECE down to {{< num ch18 ece_prior_known f3 >}}. With the base rate *estimated* from just 300 labelled alerts, it gets {{< num ch18 ece_prior_est f3 >}}. Platt scaling fitted on the same 300 labels does best of all, {{< num ch18 ece_platt300 f3 >}} (@fig-harbor-fixes), because it can correct a stretch as well as a shift.
 
-The adjustment rests on an assumption: that alerts of each kind look the same at both places, and only how common each kind is has changed. When that's not true, when your attackers use different techniques or your detectors fire differently, only fitting on your own labels will do. That's another reason the labels matter.
+The adjustment rests on an assumption: that alerts of each kind look the same at both places, and only how common each kind is has changed. When that's not true, when your attackers use different techniques or your detectors fire differently, only fitting on your own labels will do. One more reason the labels matter.
 
 ## How many labels?
 
@@ -120,19 +120,19 @@ The practical upshot is a trade-off. A few hundred labels are enough to *fix* a 
 
 Everything so far has been about yes-or-no. Chapter 10's other types need checking too.
 
-For a **choice**, start with the simplest version: is the top label's confidence honest? Among all the times the model's top label had confidence around 0.8, was it right about 80% of the time?
+For a **choice**, start with the simplest version: is the top label's confidence calibrated? Among all the times the model's top label had confidence around 0.8, was it right about 80% of the time?
 
 ![Top-label calibration for the category question on 2,500 of Kestrel's alerts: the confidence of the model's top category against how often that category was right.](/figures/ch18/top-label.pdf){#fig-top-label}
 
 For the mock's category answers, the top label's average confidence is {{< num ch18 top_conf_mean pct >}} and it's right {{< num ch18 top_acc pct >}} of the time, with an ECE of {{< num ch18 top_ece f3 >}} (@fig-top-label). Then go further: check each label's probability on its own (*is "phishing" at 0.3 right 30% of the time?*), especially the labels you act on.
 
-For a **score**, check the probability of each tail you put a threshold on, such as P(severity is medium or high), exactly like a noul.
+For a **score**, check the probability of each tail you put a threshold on, such as P(severity is medium or high), just as you would a noul.
 
 ## A routine you can repeat
 
 ![A testing routine for any model that returns probabilities, Jev included.](/figures/ch18/protocol.pdf){#fig-protocol}
 
-Here's the routine I'd follow before trusting any model's probabilities for a decision, and on a schedule afterwards (@fig-protocol).
+@fig-protocol is a routine for checking any model's probabilities before you trust them for a decision, and on a schedule afterwards.
 
 1. **Collect labels.** Recent cases with known outcomes, and a few thousand if you can get them. In a SOC, include random audits of auto-closed alerts, as Chapter 14 will insist, or your labels will only cover the cases people looked at.
 2. **Plot, don't just score.** A reliability diagram with the counts showing, and ECE with a range. Look hardest near your thresholds.
@@ -164,7 +164,7 @@ De Finetti meant that probability isn't a physical property of the world, but a 
 
 ## Where we are
 
-Two claims collided, and we tested instead of taking sides. The same model was honest at one company and inflated at another, because a probability depends on its data as well as its model. A one-line odds adjustment or a few hundred labels fixed the gap. Then we found that a few hundred labels can't *prove* calibration, because small samples make honest models look dishonest. What remains is a routine you can run on Jev or on anything else.
+Two claims collided, and we tested instead of taking sides. The same model was honest at one company and inflated at another, because a probability depends on its data as well as its model. A one-line odds adjustment or a few hundred labels fixed the gap. Then we found that a few hundred labels can't *prove* calibration, because small samples make good models look bad. What remains is a routine you can run on Jev or on anything else.
 
 Next, the bigger picture: what happens when decisions like these become almost free.
 

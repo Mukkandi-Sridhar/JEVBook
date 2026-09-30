@@ -101,3 +101,26 @@ whatever the style. Two things matter more than any score:
    Answer it truthfully: AI-assisted drafting, with the author's direction, facts and review.
 2. **Your voice.** The 20 [[AUTHOR STORY]] passages, your own edits, and your judgement on what to keep are what make
    the book yours. Cutting the tics above improves the prose, but it isn't a substitute for that.
+
+### After the editing pass (30 September 2026)
+
+About 250 sentences were rewritten to break the patterns above, keeping the teaching voice. The "That's X." lines
+that name a concept right after its example ("That's machine learning.", "That's calibration.") stay, because the
+book's style asks for them.
+
+| Tic | Before | After |
+|---|---:|---:|
+| sentences starting "That's …" | 93 | 35 |
+| "honest", "honestly", "honesty" | 89 | 39 |
+| sentences starting "It's …" | 63 | 41 |
+| "exactly" | 54 | 8 |
+| "Here's …" | 37 | 0 |
+| "the whole" | 29 | 10 |
+| "quiet", "quietly" | 16 | 2 |
+| "turns out" | 12 | 8 |
+| "not X, it's Y" | 11 | 4 |
+| stock AI vocabulary | 14 | 4 (3 inside quotations) |
+
+Where "honest" stays, it's mostly the book's own term for calibrated probabilities. Several first-person expertise
+claims went too ("the one I'd reach for first", "the routine I'd follow"). The disclosure advice above still
+stands: rewriting style doesn't change how the text was drafted.

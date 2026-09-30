@@ -14,7 +14,7 @@ It's 2:14 a.m. at Kestrel Logistics.
 
 An alert comes in. The model looks at it and says 0.37.
 
-You've spent a good part of this book earning that number. You know it's a probability, you know how to check whether it's honest, and you know how it compares with what an LLM or a logistic regression would have said.
+You've spent a good part of this book earning that number. You know it's a probability, you know how to check it against reality, and you know how it compares with what an LLM or a logistic regression would have said.
 
 And now someone in the SOC is standing behind you asking the only question that matters at 2:14 a.m.:
 
@@ -56,7 +56,7 @@ About {{< num ch21 naive.act int >}} alerts a day close themselves, which sounds
 
 Why does 0.5 do so badly?
 
-Because 0.5 quietly assumes two things that aren't true here. It assumes a missed threat and a false alarm cost the same, which you already know from Chapter 4 is absurd for a SOC. And it assumes there are only two things you can do with an alert.
+Because 0.5 silently assumes two things that aren't true here. It assumes a missed threat and a false alarm cost the same, which you already know from Chapter 4 is absurd for a SOC. And it assumes there are only two things you can do with an alert.
 
 There are three.
 
@@ -78,7 +78,7 @@ In this book, **act** means the system handles the case by itself, **review** me
 
 ![420 alerts from the live week, placed by how likely the (calibrated) model thinks they are to be real threats. Note the log scale: most alerts are crowded at the far left, where the model is confident they're harmless. The red dots, real threats, gather to the right, but not all of them.](/figures/ch21/zones-strip.pdf){#fig-zones-strip}
 
-Look at @fig-zones-strip for a moment, because it holds the whole problem. The grey dots pile up on the left: the easy harmless alerts. The red dots lean right. But there are red dots scattered through the middle and even a few in the far-left crowd, and grey dots sitting in the escalate zone. No placement of two lines makes every dot land in the right zone. Our job is to place the lines so the *mistakes we can't avoid* are the cheap ones.
+Look at @fig-zones-strip for a moment, because the entire problem is in it. The grey dots pile up on the left: the easy harmless alerts. The red dots lean right. But there are red dots scattered through the middle and even a few in the far-left crowd, and grey dots sitting in the escalate zone. No placement of two lines makes every dot land in the right zone. Our job is to place the lines so the *mistakes we can't avoid* are the cheap ones.
 
 [[AUTHOR STORY: the police FIR agent, and how you decided which complaints an officer had to read before anything else happened]]
 
@@ -96,7 +96,7 @@ Now draw all three as lines against *P* and, at every value of *P*, pick the che
 
 ![Expected cost of each action as the probability of a real threat rises (both axes on a log scale). Acting is cheapest when P is tiny, escalating when P is large, and review wins everywhere in between. The two crossing points are the thresholds.](/figures/ch21/cost-lines.pdf){#fig-cost-lines}
 
-The lines in @fig-cost-lines cross in exactly two places, and those two crossings are your thresholds. You can find them with a pencil. Acting beats reviewing when *P* × 10,000 < 15 + *P* × 500, which works out to *P* below about 0.0016. Escalating beats reviewing when *P* rises above about 0.43.
+The lines in @fig-cost-lines cross in just two places, and those two crossings are your thresholds. You can find them with a pencil. Acting beats reviewing when *P* × 10,000 < 15 + *P* × 500, which works out to *P* below about 0.0016. Escalating beats reviewing when *P* rises above about 0.43.
 
 ```{python}
 costs = pol.Costs(auto_close_miss=10_000, review_minutes=12,
@@ -118,7 +118,7 @@ Suppose Kestrel invests in better endpoint protection, and the expected loss fro
 
 There's a catch hiding in @fig-cost-lines, and it's the catch this whole book has been building towards.
 
-The cost lines are drawn as if *P* means exactly what it says. As if, among all the alerts the model scores at 0.001, one in a thousand really is a threat. If the model is overconfident, and says 0.001 when the truth is 0.003, then your "cheapest action" is quietly not the cheapest at all, and the machine is closing threats you never agreed to close.
+The cost lines are drawn as if *P* means what it says. As if, among all the alerts the model scores at 0.001, one in a thousand really is a threat. If the model is overconfident, and says 0.001 when the truth is 0.003, then your "cheapest action" isn't the cheapest at all, and the machine is closing threats you never agreed to close.
 
 So before we move a single line, we check. We take the history weeks, where we know how every alert turned out, and ask the question from Chapter 3: when the model says *x*, does *x* happen?
 
@@ -133,13 +133,13 @@ for name, col in (("raw", "p"), ("calibrated", "pc")):
           f"really {live.malicious[m].mean():.2%}")
 ```
 
-Here's the uncomfortable result. Among live alerts the raw model called "under 2% likely", it claimed an average of about {{< num ch21 raw_believed pct1 >}}. The real rate was {{< num ch21 raw_actual pct1 >}}. Its "almost certainly harmless" alerts were about {{< num ch21 raw_ratio f1 >}} times riskier than it said.
+The result is uncomfortable. Among live alerts the raw model called "under 2% likely", it claimed an average of about {{< num ch21 raw_believed pct1 >}}. The real rate was {{< num ch21 raw_actual pct1 >}}. Its "almost certainly harmless" alerts were about {{< num ch21 raw_ratio f1 >}} times riskier than it said.
 
-That's not a bug I planted for drama. The mock is built to be slightly overconfident at the extremes (the repository's `docs/mock-design.md` gives the settings), because that's how most real models behave, as Chapter 5 explained. Whether *real* Jev behaves this way on *your* data is exactly the kind of thing you should never assume and always measure. Chapter 11 shows how.
+That's not a bug I planted for drama. The mock is built to be slightly overconfident at the extremes (the repository's `docs/mock-design.md` gives the settings), because that's how most real models behave, as Chapter 5 explained. Whether *real* Jev behaves this way on *your* data is the kind of thing you should never assume and always measure. Chapter 11 shows how.
 
 ![Zoomed in on the low end, where the ACT zone lives. Raw scores (red) sit above the diagonal: the model was more confident than reality justified. After Platt scaling fitted on other days (green), the curve hugs the diagonal much more closely.](/figures/ch21/calibration-zones.pdf){#fig-calibration-zones}
 
-After Platt scaling, fitted only on the three history weeks, the picture improves (@fig-calibration-zones). It isn't perfect. It's much closer. And that's the honest version of the rule:
+After Platt scaling, fitted only on the three history weeks, the picture improves (@fig-calibration-zones). Not perfect, but much closer. So here is the rule, stated properly:
 
 ::: {.keyidea}
 Never put a threshold on a probability you haven't checked against recent outcomes.
@@ -157,7 +157,7 @@ Kestrel has {{< num ch21 analysts int >}}. Each can clear about 40 alerts in a s
 
 A policy that ignores capacity isn't a policy. It's a wish. Anything beyond {{< num ch21 capacity int >}} simply doesn't get looked at, in some order nobody chose.
 
-So we ask a better question: *among all the policies that fit the team we actually have, which is cheapest?* That search is quick, because for any escalation line the best review line is the one that fills the queue exactly and no more.
+So we ask a better question: *among all the policies that fit the team we actually have, which is cheapest?* That search is quick, because for any escalation line the best review line is the one that fills the queue and no more.
 
 ```{python}
 per_day = len(history) / 21
@@ -175,7 +175,7 @@ for k in ("act", "review", "escalate", "missed_by_automation"):
 
 Fitted on history, checked on the live week. The machine now closes about {{< num ch21 chosen.act int >}} alerts a day by itself, the analysts get {{< num ch21 chosen.review int >}}, on-call gets {{< num ch21 chosen.escalate int >}} pages, and the number of real threats closed without a human falls from {{< num ch21 naive.missed_by_automation int >}} a day to about {{< num ch21 chosen.missed_by_automation f1 >}}.
 
-Look closely and the live week slightly overshoots the team: about {{< num ch21 chosen.review int >}} reviews against a capacity of {{< num ch21 capacity int >}}, and {{< num ch21 chosen.escalate int >}} pages against {{< num ch21 pages_cap int >}}. The lines were fitted to fill capacity exactly on the history weeks, and the live week happens to be a little busier. That's normal. Lines fitted on the past are a forecast, not a guarantee, which is why Chapter 21's service watches the queue every day and flags when it runs over.
+Look closely and the live week slightly overshoots the team: about {{< num ch21 chosen.review int >}} reviews against a capacity of {{< num ch21 capacity int >}}, and {{< num ch21 chosen.escalate int >}} pages against {{< num ch21 pages_cap int >}}. The lines were fitted to fill capacity on the history weeks, and the live week happens to be a little busier. Expect that. Lines fitted on the past are a forecast, not a guarantee, which is why Chapter 21's service watches the queue every day and flags when it runs over.
 
 ![Where the live week's real threats (left) and harmless alerts (right) end up each day, under one line at 0.5 and under the capacity-aware three-zone policy. The light segment on the left is the number that matters: threats closed with no human involved.](/figures/ch21/one-vs-three.pdf){#fig-one-vs-three}
 
@@ -187,7 +187,7 @@ But about six a day is still not zero, and here's where I want you to stop think
 
 @fig-capacity is the most useful chart in this chapter. Every point on the green curve is a fully optimised policy; the only thing that changes is how many people are on the queue. Going from six analysts to eight cuts the threats closed without review from {{< num ch21 chosen.missed_by_automation f1 >}} a day to {{< num ch21 eight.missed_by_automation f1 >}}. With Kestrel's cost estimates, two extra salaries buy back roughly {{< num ch21 saved_money_per_day money >}} of expected loss a day. The model doesn't get to make that call, and neither do you on your own. But now it's a decision with a visible price instead of a hunch.
 
-The grey curve is worth a look too. It's the same mock, scoring the same alerts, but reading only the raw alert text instead of clean structured fields. At every team size it does worse. Better input buys you the same thing as more analysts. That's the idea behind the "LLM extracts, Jev decides" pattern in the next chapter.
+The grey curve is worth a look too. It's the same mock, scoring the same alerts, but reading only the raw alert text instead of clean structured fields. At every team size it does worse. Better input buys you the same thing as more analysts. The same idea drives the "LLM extracts, Jev decides" pattern in the next chapter.
 
 ::: {.sidebar title="Why not just maximise accuracy?"}
 Because accuracy counts every mistake as one mistake. With 8% of alerts being real, a policy that closes everything is 92% accurate and catastrophic. Chapter 1 made the same mistake on purpose. Costs and capacity are what turn "a good model" into "a good decision".
@@ -236,7 +236,7 @@ print(r.choices["kind"].choice, round(p, 3),
 
 Two details in `route()` are worth copying. The *act* door has an extra lock: nothing on a critical asset closes itself, however confident the model is. And the final line sends everything that doesn't clearly qualify for the other doors to a human. When in doubt, review.
 
-The same shape works for any typed decision. For a `Choice` such as "which queue?", act on the top label only when its probability clears your line, and send the rest to review. That's the coverage-and-risk trade-off from Chapter 4, one label at a time.
+The same shape works for any typed decision. For a `Choice` such as "which queue?", act on the top label only when its probability clears your line, and send the rest to review. It's Chapter 4's coverage-and-risk trade-off, one label at a time.
 
 ## Running it for real
 
@@ -250,7 +250,7 @@ A policy that works in a notebook is maybe a third of the job. The rest is what 
 
 **Log every decision.** Jev returns probabilities, not reasons, and critics are right that this makes a single answer hard to explain. But you can make the *system* explainable. Record what the model saw, what it said, which policy version turned that into an action, and when. Then any decision can be replayed and questioned later.
 
-**Fail safe towards review, never towards act.** If the model times out, returns an error or is simply unavailable, the alert goes to a human. A decision system should never quietly close alerts because a dependency went down.
+**Fail safe towards review, never towards act.** If the model times out, returns an error or is simply unavailable, the alert goes to a human. A decision system should never close alerts unseen because a dependency went down.
 
 ```{python}
 import hashlib, json
@@ -282,9 +282,9 @@ The mock transport here fails every third call on purpose. Look at the third rec
 
 **Audit the act zone, at random.** This is the habit teams most often skip, and it's the one that matters most.
 
-Every alert that goes to review or escalation comes back with an answer: an analyst decided. Alerts the machine closed come back with *nothing*. If you only learn from the alerts people looked at, you will never see the machine's own mistakes, and your calibration checks will slowly go blind in exactly the zone where they matter.
+Every alert that goes to review or escalation comes back with an answer: an analyst decided. Alerts the machine closed come back with *nothing*. If you only learn from the alerts people looked at, you will never see the machine's own mistakes, and your calibration checks will slowly go blind in the one zone where they matter.
 
-So send a small random slice of auto-closed alerts, say 3%, to an analyst anyway. At Kestrel's volume that's about a dozen a day. It isn't free, and at a true miss rate around 1% you'll need a few weeks of audits before the estimate is tight. It's still the only honest window into the act zone.
+So send a small random slice of auto-closed alerts, say 3%, to an analyst anyway. At Kestrel's volume that's about a dozen a day. It isn't free, and at a true miss rate around 1% you'll need a few weeks of audits before the estimate is tight. It's still the only clear window into the act zone.
 
 ::: {.breaks}
 Thresholds are fitted to the past, and attackers live in the future. If an attacker learns what makes your model relax, for example alerts that look like approved IT tooling, they will shape their activity to land in the act zone. Random audits, never exposing scores outside the SOC, and rules that keep critical assets out of the act zone all make this harder. None make it impossible. The cost figures are guesses too. Revisit them when the business changes, not just when the model does.
@@ -292,7 +292,7 @@ Thresholds are fitted to the past, and attackers live in the future. If an attac
 
 ## The week it broke
 
-Here's what drift looks like when it arrives.
+Drift, when it arrives, looks like this.
 
 In week five, Kestrel is hit by a phishing campaign. Link alerts fire three times as often as usual, and far more of them are real. Nothing about any individual alert looks unusual. The model scores them just as it scored last month's.
 

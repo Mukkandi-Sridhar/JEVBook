@@ -14,9 +14,9 @@ Let me guess what went through your head when you saw the word "probability".
 
 *"Coins and dice. I did this at school, didn't enjoy it much, and I'm fairly sure I don't need it to build AI systems."*
 
-That's a reasonable thought. It's also the most expensive mistake people make in this field.
+A reasonable thought, and the most expensive mistake people make in this field.
 
-In the last chapter, a machine learned exactly what we asked and still ended up useless, because we asked for yes-or-no answers. The fix was to ask for a *chance* instead. This chapter does two things. First, it makes sure you can read a chance without being fooled, including the one trap that catches doctors, judges and security teams alike. Then it builds, in about twenty lines of code, a model that learns chances from examples.
+In the last chapter, a machine learned what we asked and still ended up useless, because we asked for yes-or-no answers. The fix was to ask for a *chance* instead. This chapter does two things. First, it makes sure you can read a chance without being fooled, including the one trap that catches doctors, judges and security teams alike. Then it builds, in about twenty lines of code, a model that learns chances from examples.
 
 There's no heavy maths here. There are a few ideas that, once they click, you'll use for the rest of your career.
 
@@ -44,7 +44,7 @@ That definition is useful because it's *checkable*. When a model tells you an al
 
 ## The two most important words: "among what?"
 
-At Kestrel Logistics, about {{< num ch02 base pct1 >}} of all alerts turn out to be real attacks. That's the probability of an attack **among all alerts**. Among alerts with a threat-intel score of 0.7 or more, the share is much higher. Same question, a different answer depending on *which group* you're asking about.
+At Kestrel Logistics, about {{< num ch02 base pct1 >}} of all alerts turn out to be real attacks: the probability of an attack **among all alerts**. Among alerts with a threat-intel score of 0.7 or more, the share is much higher. Same question, a different answer depending on *which group* you're asking about.
 
 Statisticians write the second kind with a vertical bar, read as "given": P(attack | bad score) is the chance of an attack *given* a bad score. And here's where people get tangled. P(attack | bad score) and P(bad score | attack) look like mirror images. They're not.
 
@@ -63,7 +63,7 @@ About {{< num ch02 ioc_attack_share pct >}} of attacks come with a bad score. Th
 
 ## The trap
 
-Here's a puzzle. Try it honestly before reading on.
+A puzzle first. Give it a real try before reading on.
 
 A new detector catches 99% of real attacks. It also raises a false alarm on 5% of normal activity. Real attacks are rare: one event in every thousand. The detector just fired. What's the chance you're looking at a real attack?
 
@@ -71,11 +71,11 @@ Most people say something like 95%.
 
 The real answer is about 2%.
 
-If that feels wrong, you're in excellent company. In a well-known 1978 study, doctors and students at Harvard Medical School were given the same puzzle about a medical test, and the most common answer was 95% [@casscells1978]. The way out isn't a formula. It's counting.
+If that feels wrong, you're in excellent company. In a well-known 1978 study, doctors and students at Harvard Medical School were given the same puzzle about a medical test, and the most common answer was 95% [@casscells1978]. The way out is counting, not a formula.
 
 ![The same puzzle, counted out. Of 100,000 events, 100 are attacks and the detector catches 99 of them. But 5% of the 99,900 normal events also set it off: 4,995 false alarms. When the alarm sounds, you're holding one of 5,094 alerts, and only 99 of them are real.](/figures/ch02/base-rate-tree.pdf){#fig-base-rate-tree}
 
-@fig-base-rate-tree is the whole trick. The 5% false-alarm rate sounds small, but it's 5% of a *huge* number. The 99% hit rate sounds large, but it's 99% of a *tiny* one. The psychologist Gerd Gigerenzer showed that people who reason with counts like these get such puzzles right far more often [@gigerenzer1995]. If a probability ever surprises you, turn it into counts of events. The surprise usually vanishes.
+@fig-base-rate-tree holds the trick. The 5% false-alarm rate sounds small, but it's 5% of a *huge* number. The 99% hit rate sounds large, but it's 99% of a *tiny* one. The psychologist Gerd Gigerenzer showed that people who reason with counts like these get such puzzles right far more often [@gigerenzer1995]. If a probability ever surprises you, turn it into counts of events. The surprise usually vanishes.
 
 The chance of something before you see any evidence, the 1 in 1,000, is called the **base rate**. Ignoring it is the base-rate fallacy, and it's why a "95% accurate" fraud model can still bury a bank in false alarms.
 
@@ -99,13 +99,13 @@ New odds = old odds × likelihood ratio.
 
 An ordinary alert starts at {{< num ch02 base pct >}}. A bad threat-intel score takes it to {{< num ch02 p1 pct >}}. Add "outside business hours" and it's {{< num ch02 p2 pct >}}; add "sign-in from a new country" and it's {{< num ch02 p3 pct >}} (@fig-odds-update).
 
-One honest caveat. Multiplying like this assumes each clue tells you something *new*. Real clues overlap: attackers who use bad infrastructure also tend to work at night. Among alerts with both clues, the real attack rate is {{< num ch02 real12 pct >}}, not the {{< num ch02 p2 pct >}} our multiplication predicted. That gap is why, in practice, we let a model learn how much each clue is worth. We'll build one in a moment.
+One caveat. Multiplying like this assumes each clue tells you something *new*. Real clues overlap: attackers who use bad infrastructure also tend to work at night. Among alerts with both clues, the real attack rate is {{< num ch02 real12 pct >}}, not the {{< num ch02 p2 pct >}} our multiplication predicted. That gap is why, in practice, we let a model learn how much each clue is worth. We'll build one in a moment.
 
 ## Why accuracy lies
 
 First, how do we score a yes-or-no rule? Take *raise an alert whenever the threat-intel score is 0.5 or more*, and sort every alert into four boxes.
 
-![Every one of the 20,000 alerts, sorted by what the rule said and what really happened. Precision and recall each ignore one of the two columns, and that's what makes them honest about rare events.](/figures/ch02/confusion.pdf){#fig-confusion}
+![Every one of the 20,000 alerts, sorted by what the rule said and what really happened. Precision and recall each ignore one of the two columns, which makes them fair judges of rare events.](/figures/ch02/confusion.pdf){#fig-confusion}
 
 **Precision** answers: *when the rule raises an alert, how often is it real?* Here it's {{< num ch02 precision pct >}}. **Recall** answers: *of all the real attacks, how many did the rule catch?* Here it's {{< num ch02 recall pct >}}. And **accuracy**, the share of all alerts put in the right box (@fig-confusion), comes out at {{< num ch02 accuracy pct >}}. That sounds decent, until you notice that a rule that *never raises any alert at all* scores {{< num ch02 always_benign_acc pct >}}. When one outcome is rare, accuracy mostly measures how common the other one is.
 
@@ -117,7 +117,7 @@ Bayes' rule multiplied odds. Multiplying is awkward and adding is easy, so take 
 
 ![The S-curve (the logistic, or sigmoid, function) turns total evidence into a probability. Every step to the right multiplies the odds by the same amount, which is why the curve flattens out: once you're very sure, more evidence changes the probability only a little.](/figures/ch03/sigmoid.pdf){#fig-sigmoid}
 
-That's the whole model (@fig-sigmoid). It's called **logistic regression**, and it's been used for credit scores and medical risk for decades. Underneath, it's Bayes' rule on the log-odds scale, with one upgrade: the model learns all the weights *together*, so it can discount clues that overlap.
+And that's the model (@fig-sigmoid): **logistic regression**, used for credit scores and medical risk for decades. Underneath, it's Bayes' rule on the log-odds scale, with one upgrade: the model learns all the weights *together*, so it can discount clues that overlap.
 
 The weights are the knobs. To find good ones, we need a way to say what "good" means.
 
@@ -125,13 +125,13 @@ The weights are the knobs. To find good ones, we need a way to say what "good" m
 
 Counting mistakes doesn't work any more, because the model doesn't say yes or no. It says 0.07, or 0.63.
 
-Think about how *you'd* want to be judged as a forecaster. Say 90% and be right, and you should lose almost nothing. Say 1% and be wrong, and you should be embarrassed, badly, because you were confidently wrong. That score exists. It's called **log loss**, and it measures surprise: the penalty is minus the logarithm of the probability you gave to what actually happened.
+Think about how *you'd* want to be judged as a forecaster. Say 90% and be right, and you should lose almost nothing. Say 1% and be wrong, and you should be embarrassed, badly, because you were confidently wrong. That score exists. **Log loss** measures surprise: the penalty is minus the logarithm of the probability you gave to what actually happened.
 
 ![Log loss for a single alert. If it really was an attack (red), the penalty is small when the model gave "attack" a high probability and explodes as that probability heads towards zero. Harmless alerts (blue) work the same way from the other side.](/figures/ch03/logloss.pdf){#fig-logloss}
 
 Saying 90% and being right costs about {{< num ch03 loss_if_right_09 f1 >}}. Saying 1% and being wrong costs about {{< num ch03 loss_if_certain_wrong f1 >}}, nearly fifty times more (@fig-logloss).
 
-Log loss has a deeper property, and it's the reason this book cares so much about it. It's a **proper scoring rule**: the only way to get the best score, on average, is to report the probabilities you actually believe. Say 99% when you believe 80%, and over many cases you lose more than you gain. That's why models trained this way tend to come out reasonably *honest*, a word the next chapter spends its whole length on.
+Log loss has a deeper property, and it's the reason this book cares so much about it. It's a **proper scoring rule**: the only way to get the best score, on average, is to report the probabilities you actually believe. Say 99% when you believe 80%, and over many cases you lose more than you gain. So models trained this way tend to come out reasonably *honest*, a word the next chapter spends all its pages on.
 
 ::: {.keyidea}
 Log loss rewards honest confidence and punishes confident mistakes.
@@ -149,7 +149,7 @@ The **gradient** is the slope in every direction at once. For logistic regressio
 
 ![The loss surface for a tiny model with just two knobs. The contours are like a map's height lines. Gradient descent starts from a deliberately bad guess and follows the slope down to the valley floor.](/figures/ch03/descent-2d.pdf){#fig-descent-2d}
 
-Here it is, on Kestrel's alerts. We keep 20% of them locked away for testing, because the only honest estimate of how a model will do on new alerts comes from alerts it never saw.
+Here it is, on Kestrel's alerts. We keep 20% of them locked away for testing, because the only fair estimate of how a model will do on new alerts comes from alerts it never saw.
 
 ```{python}
 train, calib, test = soc.split(alerts)       # 60/20/20
@@ -181,7 +181,7 @@ Because Kestrel is synthetic, we can compare against the *true* probability of e
 
 A decision tree allowed {{< num ch03 tree_best_depth int >}} levels of questions does best on new alerts. Allowed twenty, it nearly memorises the training set, with a training loss of {{< num ch03 tree_deep_train f3 >}}, and does terribly on alerts it hasn't seen ({{< num ch03 tree_deep_test f2 >}}) (@fig-overfit). The only way to see this is to test on data the model never trained on.
 
-**Leakage** is subtler and nastier. It's when a feature quietly contains the answer.
+**Leakage** is subtler and nastier. A feature carries the answer in disguise.
 
 ::: {.breaks}
 Suppose Kestrel's alert database has a field called `analyst_notes`. Train with it and the results look astonishing, because notes like "confirmed phishing" are only written *after* someone has decided. At 2:14 a.m., when the model has to decide, that field is empty. Ask of every feature: *would I actually have this value at the moment of the decision?* And remember that probabilities are always "among cases like this": if attackers launch a campaign, the base rate jumps, and every probability computed from last month is suddenly too low.

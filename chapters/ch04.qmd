@@ -44,7 +44,7 @@ If you carry it, you pay 1, rain or shine. If you leave it, you pay 4, but only 
 
 The two lines in @fig-umbrella cross where 4 × *P* = 1, which is *P* = 0.2. Above a 20% chance of rain, carry the umbrella. Below it, leave it at home. At 30%, you take it, even though it probably won't rain.
 
-That's the whole chapter, really. The rest is the same idea wearing work clothes.
+The rest of the chapter is detail. The rest is the same idea wearing work clothes.
 
 ## One formula, two costs
 
@@ -61,7 +61,7 @@ P > C~fa~ ÷ (C~fa~ + C~miss~)
 
 Check it with the umbrella: 1 ÷ (1 + 4) = 0.2. Exactly where the lines crossed.
 
-Now look at what happens when the two costs are equal. The formula gives 1 ÷ 2 = 0.5. *That's* where 0.5 comes from. It's the right threshold only when a false alarm and a miss hurt exactly the same amount, which is almost never true for anything worth building a model for.
+Now look at what happens when the two costs are equal. The formula gives 1 ÷ 2 = 0.5. *That's* where 0.5 comes from. It's the right threshold only when a false alarm and a miss hurt the same amount, which is almost never true for anything worth building a model for.
 
 ![The right threshold for any ratio between the cost of a miss and the cost of a false alarm (both axes on a log scale). Equal costs give 0.5. As misses get more expensive, the line drops fast.](/figures/ch05/threshold-ratio.pdf){#fig-threshold-ratio}
 
@@ -75,7 +75,7 @@ Where the formula comes from. For a single case with probability *P*, acting cos
 
 A formula is nice. Evidence is better. Let's test it.
 
-Here's a decision Kestrel makes on every alert: **block it or allow it?** Block the sender, the connection or the sign-in, automatically. Wrongly blocking something harmless costs about \$200 in disrupted work: a stuck shipment, an angry customer, an engineer locked out. Letting a real threat through at this step costs about \$4,000, since other defences still have a chance to catch it later. Those are illustrative numbers, but plausible ones.
+Kestrel makes one decision on every alert: **block it or allow it?** Block the sender, the connection or the sign-in, automatically. Wrongly blocking something harmless costs about \$200 in disrupted work: a stuck shipment, an angry customer, an engineer locked out. Letting a real threat through at this step costs about \$4,000, since other defences still have a chance to catch it later. Those are illustrative numbers, but plausible ones.
 
 The formula says block when *P* > 200 ÷ 4,200, which is about {{< num ch05 t_formula f3 >}}.
 
@@ -113,7 +113,7 @@ The formula lands close to the brute-force best, and the cost difference is smal
 And now the reason Chapter 3 came first. @fig-cost-curve also shows the rebalanced model from Chapter 3, which ranks alerts almost as well but whose probabilities are inflated. Put the formula's line on *its* numbers and the cost is {{< num ch05 bal_penalty pct >}} higher. Its own cheapest line is way out at about {{< num ch05 t_bal_best f2 >}}, and there's no formula that could have told you so. You'd have to find it by trial and error, and redo the search every time the costs change.
 
 ::: {.keyidea}
-With honest probabilities, costs set the line directly. Without them, you're guessing.
+With calibrated probabilities, costs set the line directly. Without them, you're guessing.
 :::
 
 That's the practical payoff of calibration, in one sentence. It turns threshold-setting from an endless tuning exercise into a line of arithmetic you can explain to your finance team.
@@ -126,9 +126,9 @@ In Chapter 2, precision and recall looked like two scores. Now you can see them 
 
 At the cost-based line in @fig-pr-threshold, Kestrel blocks about {{< num ch05 blocked_frac pct >}} of alerts. That catches {{< num ch05 caught pct >}} of real threats, but only {{< num ch05 precision pct >}} of the blocks are real ones. That precision sounds poor. Is it?
 
-Only the costs can say. Each wrong block costs \$200; each missed threat \$4,000. The line sits at 200 ÷ 4,200, about {{< num ch05 t_formula f3 >}}: block an alert when the chance it's real is better than about 1 in 21. That's a rule about the *marginal* alert, the one sitting right on the line, where blocking and letting it through cost the same on average.
+Only the costs can say. Each wrong block costs \$200; each missed threat \$4,000. The line sits at 200 ÷ 4,200, about {{< num ch05 t_formula f3 >}}: block an alert when the chance it's real is better than about 1 in 21. The rule is about the *marginal* alert, the one sitting right on the line, where blocking and letting it through cost the same on average.
 
-Precision is a different thing. It's an average over *every* alert above the line, and most of those are far likelier than 1 in 21 to be real, which is why it comes out nearer one in five. Nobody chose that number. It's a by-product of putting the line where the costs say, and a model with better ranking would push it up without moving the line at all. Arguing about precision or recall on its own, without the costs, is arguing about half a sentence.
+Precision is a different thing: an average over *every* alert above the line, and most of those are far likelier than 1 in 21 to be real, which is why it comes out nearer one in five. Nobody chose that number; it falls out of putting the line where the costs say, and a model with better ranking would push it up without moving the line at all. Arguing about precision or recall on its own, without the costs, is arguing about half a sentence.
 
 ::: {.threshold}
 Kestrel's sales team complains that blocked customer emails are costing deals, and argues a wrong block costs \$800, not \$200. Recompute the blocking line. Roughly what happens to the share of alerts blocked, and to recall?
@@ -142,7 +142,7 @@ So far every decision has been yes or no. But there's almost always a third opti
 
 The idea is old. In 1970 the engineer C. K. Chow showed that a recogniser allowed to reject its least certain cases could cut its error rate dramatically, and worked out the best trade-off [@chow1970]. Today it's called *selective prediction*, or classification with a reject option [@geifman2017].
 
-Here's how it looks at Kestrel. Sort the alerts by how confident the model is, surest first. Let the machine decide only the top slice, and send the rest to people. How low does the error rate go?
+At Kestrel it works like this. Sort the alerts by how confident the model is, surest first. Let the machine decide only the top slice, and send the rest to people. How low does the error rate go?
 
 ![Coverage against risk. Reading from right to left: if the machine decides every alert, you take its full error rate. Let it decide only the alerts it's surest about and send the rest to people, and the error rate among its decisions falls steeply. A better model (green) gives you more coverage at the same risk.](/figures/ch05/coverage-risk.pdf){#fig-coverage-risk}
 
@@ -158,7 +158,7 @@ Put the two ideas together, cost-based lines and "ask a person", and a shape app
 
 **Act** when the model is confident the machine can handle it alone. **Review** when it's unsure, so a person checks in the normal flow of work. **Escalate** when it's confident something important is wrong, so a person is pulled in right now.
 
-The two boundaries between the doors come from the same kind of cost arithmetic you've just done, with one extra line for each extra action. Chapter 14 does exactly that for Kestrel's SOC, and then does the part this chapter skips: what happens when you don't have enough people to staff the middle door.
+The two boundaries between the doors come from the same kind of cost arithmetic you've just done, with one extra line for each extra action. Chapter 14 does that for Kestrel's SOC, and then does the part this chapter skips: what happens when you don't have enough people to staff the middle door.
 
 ::: {.breaks}
 Costs are guesses, and guesses carry the same weight in the formula as facts. Two habits help. First, try your costs at half and double their value and see how much the line moves; if the answer barely changes, stop arguing about the exact number. Second, remember that costs often differ from case to case: a false alarm on the CEO's laptop isn't a false alarm on a test server. Per-case costs mean per-case thresholds, which is fine, as long as you write them down. And some costs aren't money at all: trust, fairness, safety and the law. Put those on the table explicitly, or someone else's defaults will decide them for you.
@@ -174,9 +174,9 @@ The same goes for cost estimates. The numbers will be wrong. Writing them down, 
 
 Step back and look at what you've built over four chapters.
 
-In Chapter 1 a machine learned exactly what we asked and was useless, because we asked for yes or no. So we asked for a chance instead, and had to learn what a chance means. That took us to a model that outputs one, and then to the uncomfortable discovery that its number might not be honest. Once we could check and fix that, the last step was the one this chapter took: letting costs, not habit, decide where the lines go, and leaving a door open for the cases a machine shouldn't decide alone.
+In Chapter 1 a machine learned what we asked and was useless, because we asked for yes or no. So we asked for a chance instead, and had to learn what a chance means. That took us to a model that outputs one, and then to the uncomfortable discovery that its number might not be honest. Once we could check and fix that, the last step was the one this chapter took: letting costs, not habit, decide where the lines go, and leaving a door open for the cases a machine shouldn't decide alone.
 
-That's the foundation. Every system in the rest of the book, from deep networks to LLMs to Jev, gets judged by it.
+Everything else stands on this. Every system in the rest of the book, from deep networks to LLMs to Jev, gets judged by it.
 
 ::: {.exercises}
 1. A hospital test flags a serious but treatable condition. Treating someone who doesn't have it costs \$500 and some discomfort; missing someone who does costs \$50,000. What's the treatment threshold? What would you want to know about the test's calibration before trusting it?

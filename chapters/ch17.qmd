@@ -21,7 +21,7 @@ But first I have to tell you about a bug. It was in Chapter 7's agent all along,
 ::: {.goals}
 - Build an agent where typed decisions drive the loop and an LLM writes only for people.
 - Read an agent's trace step by step, as a timeline and as an audit log.
-- Catch a decision step that's quietly wrong by watching the distribution of its answers.
+- Catch a decision step that's silently wrong by watching the distribution of its answers.
 - Compare a hybrid agent with an all-LLM one on time, cost, review load and threats missed.
 - Know which work to leave as a decision, and which to simply do.
 :::
@@ -30,9 +30,9 @@ But first I have to tell you about a bug. It was in Chapter 7's agent all along,
 
 ![The hybrid agent. A cheap lookup always runs first. Jev decides which other evidence to gather, then answers the three verdict questions together. Chapter 14's policy turns the verdict into an action, and the LLM writes a case note or page message only when a person will read it.](/figures/ch24/architecture.pdf){#fig-architecture-17}
 
-@fig-architecture-17 is the whole design. Everything in green is a typed question to Jev, answered in one pass. Everything in blue is a tool that reads something. The policy is ordinary code. The LLM, in orange, appears once, at the end, and only on the paths where a person is waiting to read something.
+@fig-architecture-17 shows the design. Everything in green is a typed question to Jev, answered in one pass. Everything in blue is a tool that reads something. The policy is ordinary code. The LLM, in orange, appears once, at the end, and only on the paths where a person is waiting to read something.
 
-Here's one alert going through it. Each line is a step: its kind, its name, how long it took, and what it found or decided.
+Follow one alert through it. Each line is a step: its kind, its name, how long it took, and what it found or decided.
 
 ::: {.tryit lab="ch17"}
 ```{python}
@@ -45,11 +45,11 @@ print("action:", t.action)
 ```
 :::
 
-That printout is the agent's **trace**, and it's worth more than it looks. It's the debugging tool, the audit log and the explanation all at once. When someone asks next month why alert 118 was closed, you read the trace: which evidence was gathered, what each decision said, with what probability, and which policy line it crossed.
+That printout is the agent's **trace**, and it's more useful than it looks. It's the debugging tool, the audit log and the explanation all at once. When someone asks next month why alert 118 was closed, you read the trace: which evidence was gathered, what each decision said, with what probability, and which policy line it crossed.
 
 ## The bug that didn't crash
 
-Notice the first line of the setup: `always=("threat_intel",)`. That wasn't in Chapter 7's version. Here's why it's there.
+Notice the first line of the setup: `always=("threat_intel",)`. That wasn't in Chapter 7's version, and there's a reason it's there now.
 
 When I first ran the agent across the live week, the results looked plausible. Actions were spread across the three zones, every answer parsed, and nothing raised an error. Then came a check that's worth running on every decision step of every agent: count its answers.
 
@@ -57,7 +57,7 @@ When I first ran the agent across the live week, the results looked plausible. A
 
 Across {{< num ch24 n int >}} alerts, the "which evidence next?" decision chose host history, the policy lookup and "none" in roughly equal measure. It never chose threat intel. Not once (@fig-never-picked).
 
-So the verdict was always reached without the single most informative fact about an alert, and the model quietly filled the gap with a default. The ranking suffered: AUC {{< num ch24 v1_auc f3 >}}, against the {{< num ch24 v2_auc f3 >}} it reaches with threat intel. And about {{< num ch24 v1_closed_threats_day f1 >}} real threats a day were auto-closed.
+So the verdict was always reached without the single most informative fact about an alert, and the model filled the gap with a default. The ranking suffered: AUC {{< num ch24 v1_auc f3 >}}, against the {{< num ch24 v2_auc f3 >}} it reaches with threat intel. And about {{< num ch24 v1_closed_threats_day f1 >}} real threats a day were auto-closed.
 
 ![The same agent before and after one change: always fetching threat intel. Real threats auto-closed per day fell by more than half, and the verdict's ranking recovered.](/figures/ch24/fix.pdf){#fig-fix}
 
@@ -77,7 +77,7 @@ Now the comparison. The all-LLM agent runs the same loop, with the same tools an
 
 ![One alert's trace as a timeline, for each agent. Blue steps observe, green steps decide, orange steps write, grey steps act. The hybrid's decisions are thin slivers; the all-LLM agent's decisions are most of its time.](/figures/ch24/trace.pdf){#fig-trace}
 
-@fig-trace shows the difference on a single alert, and it's mostly the width of the green bars. Across the whole sample, the hybrid took {{< num ch24 v2_seconds f1 >}} seconds per alert and the all-LLM agent {{< num ch24 llm_seconds f1 >}}, about {{< num ch24 speedup int >}} times as long.
+@fig-trace shows the difference on a single alert, and it's mostly the width of the green bars. Across the sample, the hybrid took {{< num ch24 v2_seconds f1 >}} seconds per alert and the all-LLM agent {{< num ch24 llm_seconds f1 >}}, about {{< num ch24 speedup int >}} times as long.
 
 ![Four measures for the two agents on the same 700 live alerts, scaled to a day. The LLM's stated confidences sent far more alerts to review than the queue can take, so more real threats were never seen by a person.](/figures/ch24/compare.pdf){#fig-compare-17}
 
@@ -91,14 +91,14 @@ The simulated bill points the same way: about \${{< num ch24 hybrid_cost_1000 f2
 
 ![Share of each agent's total time spent on each kind of step. In the hybrid, the largest share is the LLM writing for people. In the all-LLM agent, most of the time goes on deciding.](/figures/ch24/labour.pdf){#fig-labour}
 
-@fig-labour is the chart I find most telling. In the all-LLM agent, most of the time goes on deciding. In the hybrid, the largest share is *writing*: case notes for analysts and messages for on-call. That's the right place for the LLM's time. A person will read those words, and fluent, specific writing is what LLMs do best.
+@fig-labour is the chart I find most telling. In the all-LLM agent, most of the time goes on deciding. In the hybrid, the largest share is *writing*: case notes for analysts and messages for on-call. The LLM's time belongs there. A person will read those words, and fluent, specific writing is what LLMs do best.
 
 The hybrid doesn't use less LLM because LLMs are bad. It uses the LLM for the work only an LLM can do.
 
 [[AUTHOR STORY: an agent you built where most of the LLM calls turned out to be small decisions, and what changed when you moved them out]]
 
 ::: {.breaks}
-Everything here is synthetic: the mock decides, the mock LLM writes, and the timings are simulated. The accuracy gap between the two agents is partly built into the mocks (Chapter 13 explained how), so treat the speed, the queue and the design lessons as the findings, not the verdict quality. The all-LLM agent used the hybrid's policy lines; you could retune them for its clumped confidences, but there are only a few values to put a line between. And the bug in this chapter shows that a hybrid agent has its own failure mode: a decision step that's quietly wrong. Monitoring each step's answers isn't optional.
+Everything here is synthetic: the mock decides, the mock LLM writes, and the timings are simulated. The accuracy gap between the two agents is partly built into the mocks (Chapter 13 explained how), so treat the speed, the queue and the design lessons as the findings, not the verdict quality. The all-LLM agent used the hybrid's policy lines; you could retune them for its clumped confidences, but there are only a few values to put a line between. And the bug in this chapter shows that a hybrid agent has its own failure mode: a decision step that's wrong without any error. Monitoring each step's answers isn't optional.
 :::
 
 ::: {.threshold}

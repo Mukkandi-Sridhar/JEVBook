@@ -43,7 +43,7 @@ Every number in that chart is an assumption, chosen to be plausible for a mid-si
 
 ## The same formula, very different lines
 
-Here's something that surprises people. The line where you should start treating a case as a problem is set by the same formula in every domain, the one from Chapter 4: the cost of a false alarm, divided by the false alarm plus the miss.
+This surprises people. The line where you should start treating a case as a problem is set by the same formula in every domain, the one from Chapter 4: the cost of a false alarm, divided by the false alarm plus the miss.
 
 ![Where the line falls in each domain, from its (illustrative) costs of a miss and a false alarm. Support tickets flag at about 5%; clinical intake at about 0.3%. Same formula, different jobs.](/figures/ch26/lines.pdf){#fig-lines}
 
@@ -56,7 +56,7 @@ for d in gallery.DOMAINS:
 
 For support tickets, a missed urgent ticket costs a bit of goodwill, and a false "urgent" costs a few minutes. The line lands near 5%. For clinical intake, a missed emergency costs vastly more than an unnecessary fast-track, and the line drops to about 0.3% (@fig-lines).
 
-A line that low means a lot of flagging, which is fine: flagging is cheap. What it demands is honest probabilities down in the fractions of a percent, which is exactly where Chapter 5 said big models are least reliable, and exactly where Chapter 11's calibration checks matter most.
+A line that low means a lot of flagging, which is fine: flagging is cheap. What it demands is honest probabilities down in the fractions of a percent, which is where Chapter 5 said big models are least reliable, and where Chapter 11's calibration checks matter most.
 
 ::: {.keyidea}
 The formula never changes. The costs do, and they move the line by more than an order of magnitude.
@@ -72,7 +72,7 @@ It didn't go that well, and I want to show you why.
 
 The mock routed {{< num ch26 topic_acc pct >}} of tickets to the right team. Billing was perfect. Account problems went to the right place only {{< num ch26 per_topic.account pct >}} of the time; login trouble kept landing in "technical" (@fig-tickets). And its answers to "does this need a reply today?" barely ranked the urgent tickets above the rest, with an AUC of {{< num ch26 urgent_auc f2 >}}.
 
-The reason is honest and a little embarrassing: outside the SOC, the book's mock is a simple word-matcher, and "I can't log in" shares words with "the app isn't working". Real Jev would do better or worse; I can't say which [[VERIFY]]. What I can say is that you'd only know by measuring, and the test took twenty lines.
+The reason is a little embarrassing: outside the SOC, the book's mock is a simple word-matcher, and "I can't log in" shares words with "the app isn't working". Real Jev would do better or worse; I can't say which [[VERIFY]]. What I can say is that you'd only know by measuring, and the test took twenty lines.
 
 Two things rescue the situation, and neither needs a better model. First, route only when sure: routing tickets only when the top label's probability was at least 0.6 covered {{< num ch26 cov60 pct >}} of them and got {{< num ch26 acc60 pct >}} right, with the rest going to a person. Second, fix the options. "Technical" and "account" overlap, and Chapter 10 warned that overlapping options split belief. Sharper descriptions, or a separate noul for "is this about signing in?", are the first thing to try.
 
@@ -80,7 +80,7 @@ Two things rescue the situation, and neither needs a better model. First, route 
 
 ![When a person must make the call. The model reads each case and estimates the probabilities that matter; the queue is ordered by them; a person decides. The log records what the model said and what the person decided, so the two can be compared later.](/figures/ch26/human-final.pdf){#fig-human-final}
 
-In the red domains, the design flips. The model doesn't close anything. It reads every case, estimates the probabilities that matter, and orders the queue, so that a person sees the likeliest emergencies first (@fig-human-final). Chapter 18 showed that ordering alone can cut the wait for a real threat from hours to minutes. In a hospital, that's the whole value.
+In the red domains, the design flips. The model doesn't close anything. It reads every case, estimates the probabilities that matter, and orders the queue, so that a person sees the likeliest emergencies first (@fig-human-final). Chapter 18 showed that ordering alone can cut the wait for a real threat from hours to minutes. In a hospital, that's where the value lies.
 
 Keep the log. When the model says 0.4 and the clinician says "routine", and the clinician is right, that's a label. When the model says 0.4 and the clinician says "routine" and is wrong, that's a lesson. Either way it's evidence for the next calibration check.
 
@@ -101,14 +101,14 @@ Every volume and cost in this chapter is an illustrative assumption; your organi
 ::: {.threshold}
 An online shop wants to auto-approve refunds under \$50. A wrongly approved fraudulent refund costs the refund; a wrongly refused honest one costs about \$30 in support time and some goodwill, which the team values at another \$40. For a \$40 refund, at what P(fraud) should the model refuse and send it to a person instead?
 
-(A wrong approval costs \$40; a wrong refusal costs about \$70. Send it to a person when P(fraud) is above 70 ÷ 110, about 64%. That's a high line, and it should be: for small refunds, occasionally paying a fraudster is cheaper than annoying honest customers. For a \$500 refund the same arithmetic gives about 12%.)
+(A wrong approval costs \$40; a wrong refusal costs about \$70. Send it to a person when P(fraud) is above 70 ÷ 110, about 64%. A high line, and rightly so: for small refunds, occasionally paying a fraudster is cheaper than annoying honest customers. For a \$500 refund the same arithmetic gives about 12%.)
 :::
 
 ::: {.bookquote by="Abraham Maslow, The Psychology of Science, 1966"}
 I suppose it is tempting, if the only tool you have is a hammer, to treat everything as if it were a nail.
 :::
 
-Maslow was talking about scientists and their methods [@maslow1966] [[VERIFY]]. It's a fair warning for this chapter too. Once you've learned to see decision layers, it's tempting to see nothing else. The checklist in @fig-fit is there to keep you honest.
+Maslow was talking about scientists and their methods [@maslow1966] [[VERIFY]]. It's a fair warning for this chapter too. Once you've learned to see decision layers, it's tempting to see nothing else. The checklist in @fig-fit is there to stop you reaching for it by habit.
 
 ## Where we are
 

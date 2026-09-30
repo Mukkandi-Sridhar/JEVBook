@@ -16,7 +16,7 @@ You don't have to read it front to back. Here are three routes, depending on whe
 
 Each chapter opens with a short list of what you'll be able to do by the end, and closes with a short recap, exercises and a hook to the next chapter. In between, a few kinds of box recur (@fig-boxes).
 
-The *Try it* boxes contain code you can run; the *Set the threshold* boxes ask you to make a small decision with real costs; the *Where this breaks* boxes are the honest limits of what the chapter just showed. *Going deeper* boxes hold optional maths, and a side box headed with a question, like *Why not just maximise accuracy?*, deals with the objection you're probably already forming. Read the *Where this breaks* boxes above all. They're the difference between knowing a technique and knowing when to trust it.
+The *Try it* boxes contain code you can run; the *Set the threshold* boxes ask you to make a small decision with real costs; the *Where this breaks* boxes mark the limits of what the chapter just showed. *Going deeper* boxes hold optional maths, and a side box headed with a question, like *Why not just maximise accuracy?*, deals with the objection you're probably already forming. Read the *Where this breaks* boxes above all. They're the difference between knowing a technique and knowing when to trust it.
 
 ## Running the code
 
@@ -51,4 +51,4 @@ Four small browser tools let you move the book's numbers yourself: a threshold s
 
 ## A word on the numbers
 
-Kestrel Logistics is fictional, and so are its alerts, which come from a generator with a known truth behind every one. That's what makes it possible to measure things exactly, like how many real threats a policy misses. It also means every number is an illustration of a method, not a fact about the world. When a figure is labelled *synthetic*, believe the shape and test the numbers on your own data.
+Kestrel Logistics is fictional, and so are its alerts, which come from a generator with a known truth behind every one. Knowing the truth is what makes it possible to measure things exactly, like how many real threats a policy misses. It also means every number is an illustration of a method, not a fact about the world. When a figure is labelled *synthetic*, believe the shape and test the numbers on your own data.

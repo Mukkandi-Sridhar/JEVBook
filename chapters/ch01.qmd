@@ -10,11 +10,11 @@ AI. Machine learning. Deep learning. LLMs. RAG. Agents.
 
 And lately, one more: Jev.
 
-After a while, a quiet thought starts to form:
+After a while, a nagging thought starts to form:
 
 *"Do I really need to learn all of this?"*
 
-Here's the honest answer. You need less than you fear, but you need it in the right order. These words aren't a list of separate subjects. They're chapters of one story, and each one exists because the one before it ran into a wall.
+The short answer: you need less than you fear, but you need it in the right order. These words aren't a list of separate subjects. They're chapters of one story, and each one exists because the one before it ran into a wall.
 
 So let's walk the story. Slowly, with real examples, and without pretending you already know things you don't.
 
@@ -33,13 +33,13 @@ Somewhere inside it is a line that says, more or less:
 
 *If the temperature is above 100°F, send an alert.*
 
-That's a computer following a rule. I told it exactly what to do. It didn't figure anything out. It just checks a number and acts.
+A computer following a rule, nothing more. I told it what to do, step by step. It didn't figure anything out. It just checks a number and acts.
 
-A surprising amount of software that gets called "AI" is exactly this. A bank that blocks card payments over a limit. A spam filter that bins any email containing "lottery". An office system that marks you absent if you haven't badged in by 10 a.m.
+A surprising amount of software that gets called "AI" is no more than this. A bank that blocks card payments over a limit. A spam filter that bins any email containing "lottery". An office system that marks you absent if you haven't badged in by 10 a.m.
 
 [[AUTHOR STORY: AttendX, a rule-based system you built or used, and the day it met a case its rules didn't cover]]
 
-And here's something people rarely say out loud: rules are *good*. They're fast, they're cheap, and when one goes wrong you can open it up and read exactly why. When a rule does the job, use the rule. We'll come back to this in Chapter 13, where plain rules win more than one round of a contest against much fancier models.
+And here's something people rarely say out loud: rules are *good*. They're fast, they're cheap, and when one goes wrong you can open it up and read why. When a rule does the job, use the rule. We'll come back to this in Chapter 13, where plain rules win more than one round of a contest against much fancier models.
 
 The trouble starts when the world won't sit still long enough for a rule.
 
@@ -53,9 +53,9 @@ But what if the cat is hiding behind a sofa and you can only see its tail? What 
 
 Every answer is another rule. Then every rule needs exceptions, and the exceptions need exceptions.
 
-This isn't only a cat problem. It's the everyday problem of anyone who defends a company's computers.
+This isn't only a cat problem. Anyone who defends a company's computers faces it every day.
 
-Picture the security team at Kestrel Logistics, a freight company we'll follow through the whole book. They want to catch phishing emails, the ones that trick staff into typing a password into a fake page. So someone writes the obvious rule: *if an email mentions "password", flag it.*
+Picture the security team at Kestrel Logistics, a freight company we'll follow to the last page. They want to catch phishing emails, the ones that trick staff into typing a password into a fake page. So someone writes the obvious rule: *if an email mentions "password", flag it.*
 
 Monday, it flags IT's own password-reset reminders. So they add an exception.
 
@@ -97,11 +97,11 @@ So a **model** is what learning leaves behind: a function whose settings came fr
 
 Before we go further, let's get our hands on something real enough to learn from.
 
-Kestrel Logistics has a small security operations centre, a SOC. Every system the company runs, from laptops and email to cloud storage and sign-ins, produces *alerts*: short, messy notes that say "this looked suspicious". Over four weeks the SOC receives {{< num ch01 n_alerts int >}} of them. That's about {{< num ch01 per_day int >}} a day, for a handful of analysts.
+Kestrel Logistics has a small security operations centre, a SOC. Every system the company runs, from laptops and email to cloud storage and sign-ins, produces *alerts*: short, messy notes that say "this looked suspicious". Over four weeks the SOC receives {{< num ch01 n_alerts int >}} of them. About {{< num ch01 per_day int >}} a day, for a handful of analysts.
 
 Most of them are nothing. Only {{< num ch01 base_rate pct1 >}} turn out to be real attacks.
 
-I'll be straight with you about one thing: Kestrel Logistics doesn't exist. Every alert in this book comes from a generator I wrote, and the reason is a good one. With real security data you never know the true answer for sure, and you're never allowed to publish it anyway. With synthetic data we know exactly what happened in every single case, which means we can check every model's work, honestly, all book long.
+I'll be straight with you about one thing: Kestrel Logistics doesn't exist. Every alert in this book comes from a generator I wrote, and the reason is a good one. With real security data you never know the true answer for sure, and you're never allowed to publish it anyway. With synthetic data we know what happened in every single case, so we can check every model's work, all book long.
 
 ::: {.tryit lab="ch01"}
 Load the alerts and read one the way an analyst would.
@@ -132,7 +132,7 @@ But which *t*? 0.3? 0.5? 0.8?
 
 We don't guess. We try every value from 0 to 1, count how many mistakes each one makes on alerts where we know the answer, and keep the one with the fewest mistakes.
 
-That's it. That's learning. Try settings, count mistakes, keep the best.
+That's learning: try settings, count mistakes, keep the best.
 
 ```{python}
 import numpy as np
@@ -163,11 +163,11 @@ The machine searched every threshold and found the one with the fewest mistakes.
 The machine learned exactly what we asked. We asked the wrong question.
 :::
 
-This is the most useful failure in the whole book, and it hides two separate problems.
+This is the most useful failure in the book, and it hides two separate problems.
 
 The first: we treated every mistake as equal. But letting a real attacker walk in and bothering an analyst for five minutes aren't equal mistakes, not even close. Chapter 4 fixes this properly.
 
-The second is quieter, and it's the one this book is really about. We forced the answer to be *yes* or *no*.
+The second is subtler, and it's the one this book is really about. We forced the answer to be *yes* or *no*.
 
 ::: {.breaks}
 A learned model only knows the world its examples came from. If attackers invent a trick that isn't in the training data, the model has never seen it, and it won't tell you that it hasn't. Its answer will look just as confident as always. Labels can be wrong too: analysts disagree, and some attacks are never discovered, so they sit in the data marked "fine". A model will happily learn those mistakes as if they were truth.
@@ -181,9 +181,9 @@ Let's look at the same data from a different angle. Instead of asking "attack or
 
 @fig-not-yes-no is the picture I want you to keep.
 
-There's no clean line where alerts switch from harmless to dangerous. Among the lowest-scoring alerts, about {{< num ch01 bottom_bin_rate pct >}} were attacks. That sounds tiny, but that bucket holds {{< num ch01 bottom_bin_n int >}} alerts, so it's well over a hundred real attacks hiding among the quietest-looking noise. Among the highest-scoring alerts, {{< num ch01 top_bin_rate pct >}} were attacks. Which means more than a third of the scariest-looking ones were nothing.
+There's no clean line where alerts switch from harmless to dangerous. Among the lowest-scoring alerts, about {{< num ch01 bottom_bin_rate pct >}} were attacks. That sounds tiny, but that bucket holds {{< num ch01 bottom_bin_n int >}} alerts, so it's well over a hundred real attacks hiding among the most harmless-looking noise. Among the highest-scoring alerts, {{< num ch01 top_bin_rate pct >}} were attacks. Which means more than a third of the scariest-looking ones were nothing.
 
-So what do we honestly know about an alert with a score of 0.55?
+So what do we actually know about an alert with a score of 0.55?
 
 Not "it's an attack". Not "it's fine". What we know is: *about one in five alerts like this one is an attack.*
 
@@ -203,11 +203,11 @@ A missed attack costs Kestrel roughly ten times what a false alarm costs. Should
 
 ## Bigger problems, bigger models
 
-Our threat-intel rule had it easy: someone handed it a single useful number. A photo is millions of pixels, and an email is a string of words. Nobody can hand-write the features for "this sounds like a scam". So the next step was models that learn their own features, in many stacked layers. That's **deep learning** (Chapter 5).
+Our threat-intel rule had it easy: someone handed it a single useful number. A photo is millions of pixels, and an email is a string of words. Nobody can hand-write the features for "this sounds like a scam". So the next step was models that learn their own features, in many stacked layers. The name for that is **deep learning** (Chapter 5).
 
-Train a very large deep-learning model on a huge amount of text, with one simple task, guess the next word, and it picks up grammar, facts and even some reasoning along the way. That's a **large language model**, an LLM (Chapter 6).
+Train a very large deep-learning model on a huge amount of text, with one simple task, guess the next word, and it picks up grammar, facts and even some reasoning along the way. The result is a **large language model**, an LLM (Chapter 6).
 
-LLMs know a lot about the world and nothing about *your* world, so we let them look things up before answering. That's **retrieval-augmented generation**, or RAG. And once a model can read, the next wish is for it to *do* things: check a log, block an account, look at what happened, decide what to do next. A model working in that loop is an **agent** (Chapter 7).
+LLMs know a lot about the world and nothing about *your* world, so we let them look things up before answering. The technique is called **retrieval-augmented generation**, or RAG. And once a model can read, the next wish is for it to *do* things: check a log, block an account, look at what happened, decide what to do next. A model working in that loop is an **agent** (Chapter 7).
 
 ## Where Jev fits
 
@@ -219,11 +219,11 @@ For each of those, the usual approach today is to ask an LLM, get a paragraph ba
 
 ![The same question, two ways. An LLM writes its answer out, piece by piece, and your code has to read the sentence. A decision model returns the answer as data, with a probability for every option, in one pass.](/figures/ch01/generate-vs-decide.pdf){#fig-generate-vs-decide}
 
-In September 2026, a start-up called TypeSafe AI released a model built for exactly those checkbox moments [[VERIFY]]. It's called **Jev**. It doesn't write text at all. You give it the situation and a typed question, like "pick one of these labels" or "is this true, yes or no", and it gives back the answer as data, with a probability attached to every option (@fig-generate-vs-decide). TypeSafe calls it a *System One* model, after the fast, intuitive kind of thinking described by the psychologist Daniel Kahneman, as opposed to slow, deliberate *System Two* thinking [@kahneman2011]. Part III takes Jev apart properly.
+In September 2026, a start-up called TypeSafe AI released a model built for those checkbox moments [[VERIFY]]. It's called **Jev**. It doesn't write text at all. You give it the situation and a typed question, like "pick one of these labels" or "is this true, yes or no", and it gives back the answer as data, with a probability attached to every option (@fig-generate-vs-decide). TypeSafe calls it a *System One* model, after the fast, intuitive kind of thinking described by the psychologist Daniel Kahneman, as opposed to slow, deliberate *System Two* thinking [@kahneman2011]. Part III takes Jev apart properly.
 
 One thing you should know now, because it shapes every page that follows. I didn't have access to the Jev API while writing this book. So everywhere you see Jev answer a question, the answer comes from `jev-mock-synthetic`, a stand-in I built that speaks Jev's exact public interface through TypeSafe's official Python library. The code is real. The numbers are synthetic, and every one of them is labelled that way.
 
-Here's your first question to it. Same alert as before, the flood of sign-in requests at night.
+Time for your first question to it. Same alert as before, the flood of sign-in requests at night.
 
 ```{python}
 from typesafe_sdk import Noul, TypeSafeClient
@@ -242,7 +242,7 @@ print("really an attack?", bool(alerts.malicious[99]))
 
 It thinks it's probably an attack. It wasn't. And that's not a bug in the story, it's the story.
 
-A probability of {{< num ch01 mock_p_99 f2 >}} isn't a promise. It's a claim that among alerts like this one, roughly two out of three are attacks. This one happened to be in the other third. Whether a model's "0.68" really does mean two out of three is something we can *test*, and we will, in Chapter 3 for ordinary models and in Chapter 11 for Jev.
+A probability of {{< num ch01 mock_p_99 f2 >}} is a claim, not a promise: among alerts like this one, roughly two out of three are attacks. This one happened to be in the other third. Whether a model's "0.68" really does mean two out of three is something we can *test*, and we will, in Chapter 3 for ordinary models and in Chapter 11 for Jev.
 
 ::: {.bookquote by="George E. P. Box, statistician, 1979"}
 All models are wrong, but some are useful.
@@ -260,7 +260,7 @@ And now, inside those tools and loops, we're finding that most of the work is *d
 
 That's the map (@fig-ai-story-map).
 
-You don't need to understand every box today. Just know where we're going. The next three chapters stay down at the bottom-left corner of this map on purpose, because everything above it, Jev included, is built on one idea we've only just met: a model's answer should be a probability, and the probability should be honest.
+You don't need to understand every box today. Just know where we're going. The next three chapters stay down at the bottom-left corner of this map on purpose, because everything above it, Jev included, is built on one idea we've only just met: a model's answer should be a probability, and the probability should mean what it says.
 
 ::: {.exercises}
 1. Name one system you use every week that follows rules, and one that learned from examples. What gave it away?
@@ -270,5 +270,5 @@ You don't need to understand every box today. Just know where we're going. The n
 :::
 
 ::: {.nexthook}
-Next: that "how likely" idea. It sounds like a small change. It turns out to be the most important idea in the book, and it hides a trap that fools doctors, judges and security teams alike.
+Next: that "how likely" idea. It sounds like a small change. It's the most important idea in the book, and it hides a trap that fools doctors, judges and security teams alike.
 :::

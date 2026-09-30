@@ -33,11 +33,11 @@ For the last few years, the default design for an AI system has been one big mod
 
 The right-hand side of @fig-stack is the shape this book kept arriving at, chapter after chapter. The LLM does what only an LLM can do: read anything, and write for people. The decision layer answers small typed questions in one pass, with probabilities you can test. The policy draws the lines, from costs and capacity. And underneath, tools act and people review.
 
-Each layer is smaller than the whole. Each can be tested on its own, with the tools from Part I. And each can be replaced without rebuilding the others: a better LLM, a different decision model, new lines. That, more than any benchmark, is why I think the split will last.
+Each layer is smaller than the system it serves. Each can be tested on its own, with the tools from Part I. And each can be replaced without rebuilding the others: a better LLM, a different decision model, new lines. That, more than any benchmark, is why I think the split will last.
 
 ## What gets cheap
 
-Here's one task, sketched the way Chapter 7 counted Kestrel's agent: a ticket comes in, an agent picks tools, checks whether it has enough, checks whether an action is safe, does it and writes a reply.
+Take one task, sketched the way Chapter 7 counted Kestrel's agent: a ticket comes in, an agent picks tools, checks whether it has enough, checks whether an action is safe, does it and writes a reply.
 
 ::: {.tryit lab="ch22"}
 ```{python}
@@ -54,7 +54,7 @@ for who in ("llm", "jev"):
 
 With the book's illustrative LLM figures and Jev's vendor-reported ones, the task drops from about {{< num ch29 task_llm_s int >}} seconds to {{< num ch29 task_jev_s int >}}, and the bill falls by about three quarters (@fig-task). What's left is mostly the one step where an LLM writes something a person will read. Chapter 17 measured the same shape on Kestrel's agent, which ran about {{< num ch29 ch24_speedup int >}} times faster as a hybrid.
 
-Then Chapter 12's warning applies. When decisions get this cheap, we won't make the same decisions for less. We'll make many more of them: every login checked, every retrieved passage judged, every agent step gated. That's where most of the change will be. It won't come from doing today's work more cheaply. It'll come from the work that becomes worth doing.
+Then Chapter 12's warning applies. When decisions get this cheap, we won't make the same decisions for less. We'll make many more of them: every login checked, every retrieved passage judged, every agent step gated. Most of the change will happen there. It won't come from doing today's work more cheaply. It'll come from the work that becomes worth doing.
 
 ## What gets valuable
 
@@ -64,15 +64,15 @@ Judgement about the decision itself. Someone still has to decide what a mistake 
 
 ![Skills that matter more when decisions get cheap, and skills that matter less on their own, with the chapters that teach each.](/figures/ch29/skills.pdf){#fig-skills}
 
-That's the case for the book's first part, which may have felt like a long detour. Thinking in probabilities and testing calibration were the foundations, not the preamble (@fig-skills). They're what separates a system that makes a million cheap decisions well from one that makes a million cheap mistakes.
+Which is why the book's first part, which may have felt like a long detour, was worth the time. Thinking in probabilities and testing calibration were the foundations, not the preamble (@fig-skills). They're what separates a system that makes a million cheap decisions well from one that makes a million cheap mistakes.
 
-What matters less *on its own* is prompting for everything, and reaching for the biggest model by default. Both still have their place. They're just no longer the whole job.
+What matters less *on its own* is prompting for everything, and reaching for the biggest model by default. Both still have their place. They're just no longer all of it.
 
 [[AUTHOR STORY: how your own work changed once you started treating decisions and generation as different jobs, in SIGNAL or the FIR agent]]
 
 ## What nobody knows yet
 
-I've tried throughout to keep three piles: what's verified, what's vendor-reported and what's unknown. Here's the unknown pile, as it stands.
+I've tried throughout to keep three piles: what's verified, what's vendor-reported and what's unknown. @fig-unknowns is the unknown pile, as it stands.
 
 ![Open questions, and what you can do about each today.](/figures/ch29/unknowns.pdf){#fig-unknowns}
 
@@ -86,7 +86,7 @@ You don't need to predict how this plays out. You need decisions you can measure
 
 ![A first three months, one decision at a time.](/figures/ch29/monday.pdf){#fig-monday}
 
-If you do one thing after closing this book, make it the audit in the first box of @fig-monday. List every decision your system makes, and count them. Most people are surprised by how many there are, and by how many are small, typed and frequent. The lab for this chapter is a template for exactly that.
+If you do one thing after closing this book, make it the audit in the first box of @fig-monday. List every decision your system makes, and count them. Most people are surprised by how many there are, and by how many are small, typed and frequent. The lab for this chapter is a template for that.
 
 Then pick *one*. Get a few hundred labels. Test it the way Chapter 11 did. Put prices on its mistakes, draw its lines and run it in shadow. Switch it on with a fail-safe and a monitor. Then do the next one.
 
@@ -112,7 +112,7 @@ Turing ended his most famous paper with that sentence [@turing1950]. It fits thi
 
 ![The whole book as one story.](/figures/ch29/journey.pdf){#fig-journey}
 
-Read @fig-journey from the top and you have the whole book in six lines. That's the map, and you know where everything on it is now. What's left is choosing the first decision in your own work that deserves the care.
+Read @fig-journey from the top and you have the book in six lines. That's the map, and you know where everything on it is now. What's left is choosing the first decision in your own work that deserves the care.
 
 ::: {.exercises}
 1. Run the lab with a task from your own work. What share of its steps are decisions? What would change if they moved to a decision model?

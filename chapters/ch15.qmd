@@ -29,7 +29,7 @@ We've already met most of the decision patterns in this book, one at a time, ins
 
 ![The six patterns in this chapter, as small diagrams. In every one, something else writes or acts, and a typed question decides.](/figures/ch22/catalog.pdf){#fig-catalog}
 
-Look at @fig-catalog before reading on and notice the common thread. In every pattern, the decision model never writes anything and never acts on its own. It answers a typed question, and ordinary code turns the answer into an action. That separation is the whole idea of a decision layer.
+Look at @fig-catalog before reading on and notice the common thread. In every pattern, the decision model never writes anything and never acts on its own. It answers a typed question, and ordinary code turns the answer into an action. That separation is what a decision layer is.
 
 ## Pattern 1: extract, then decide
 
@@ -55,7 +55,7 @@ We ran this on Kestrel's live week, alongside three other ways of making the sam
 
 Extracting first lifted the AUC from {{< num ch22 llm_decides_auc f3 >}}, when the LLM decided on its own, to {{< num ch22 extract_then_jev_auc f3 >}} (@fig-extract-results). It also edged out Jev reading the raw text directly, at {{< num ch22 jev_text_auc f3 >}}. The LLM's misreads, about {{< num ch22 misread pct >}} of alerts with a wrong number, were a small cost.
 
-But look at the bottom row. The SIEM's own fields scored {{< num ch22 jev_fields_auc f3 >}}, better than any extraction. That's not because the extractor is bad. The alert text simply never mentions some of what the SIEM knows, like how critical the machine is or the user's role, and no extractor can recover a fact that isn't written down.
+But look at the bottom row. The SIEM's own fields scored {{< num ch22 jev_fields_auc f3 >}}, better than any extraction. The extractor isn't to blame. The alert text simply never mentions some of what the SIEM knows, like how critical the machine is or the user's role, and no extractor can recover a fact that isn't written down.
 
 ::: {.keyidea}
 Extract when the only input you have is text. When structured data exists, use it: extraction can't add facts the text doesn't contain.
@@ -83,7 +83,7 @@ Because each decision comes back with probabilities, the loop can do something a
 
 ![The Observe, Decide, Act loop with the decide step made explicit. Most steps are small typed decisions; writing is occasional.](/figures/ch22/oda.pdf){#fig-oda}
 
-**How it breaks.** Some steps aren't small decisions. Planning a novel investigation is real reasoning, and belongs with the LLM or a person. The skill is sorting the steps honestly, the way Chapter 8 sorted System 1 work from System 2.
+**How it breaks.** Some steps aren't small decisions. Planning a novel investigation is real reasoning, and belongs with the LLM or a person. The skill is sorting the steps truthfully, the way Chapter 8 sorted System 1 work from System 2.
 
 ## Pattern 3: the guardrail gate
 
@@ -141,9 +141,9 @@ The listing stops short of printing the answer on purpose. The book's mock can't
 
 ![Routing Kestrel's alerts by category. Routing everything automatically sends 88% to the right team. Routing only when the top label is at least 0.8 covers about four in five alerts, and gets 94% of those right. The rest go to a general queue.](/figures/ch22/router.pdf){#fig-router-15}
 
-On a sample of the live week, routing every alert by the top label sent {{< num ch22 route_all_acc pct >}} to the right team. Routing only when the top probability was at least {{< num ch22 route_line f1 >}} covered {{< num ch22 route_cov pct >}} of alerts, and {{< num ch22 route_acc pct >}} of those went to the right place (@fig-router-15). That's the coverage trade-off from Chapter 4, and the curve lets you choose where to stand on it.
+On a sample of the live week, routing every alert by the top label sent {{< num ch22 route_all_acc pct >}} to the right team. Routing only when the top probability was at least {{< num ch22 route_line f1 >}} covered {{< num ch22 route_cov pct >}} of alerts, and {{< num ch22 route_acc pct >}} of those went to the right place (@fig-router-15). Chapter 4's coverage trade-off again, and the curve lets you choose where to stand on it.
 
-The same pattern routes between *models*: a cheap one for the confident cases, a slow one for the rest. That's Chapter 8's route by doubt, and it's probably the most valuable single use of honest probabilities.
+The same pattern routes between *models*: a cheap one for the confident cases, a slow one for the rest. That's Chapter 8's route by doubt, and it's probably the most valuable single use of calibrated probabilities.
 
 **How it breaks.** Remember Chapter 10: a choice must give every real case somewhere to go. A router without an "other" or "not sure" option will confidently misroute the cases that fit nowhere.
 
@@ -155,9 +155,9 @@ The same pattern routes between *models*: a cheap one for the confident cases, a
 
 ![A memory controller. Small typed decisions choose what to store and where to look; one slow reasoning call uses the result.](/figures/ch22/memory.pdf){#fig-memory}
 
-That's close to the design of Jev-Mem, from Jiang, Li and Li at the University of Texas at Dallas: a System One controller decides how each memory is typed and linked, and at query time chooses the route, the retrieval budget and when to stop, calling a slower reasoning model only to compose the final answer [@jevmem2026]. On the LoCoMo long-conversation benchmark the authors report an LLM-as-judge score of 0.777, 11% above their strongest baseline, with memory built 6.6 times faster and queries answered in 0.93 seconds on average, 37% faster; those are the authors' numbers, not a replication.
+Jev-Mem works much like this. In the design by Jiang, Li and Li at the University of Texas at Dallas, a System One controller decides how each memory is typed and linked, and at query time chooses the route, the retrieval budget and when to stop, calling a slower reasoning model only to compose the final answer [@jevmem2026]. On the LoCoMo long-conversation benchmark the authors report an LLM-as-judge score of 0.777, 11% above their strongest baseline, with memory built 6.6 times faster and queries answered in 0.93 seconds on average, 37% faster; those are the authors' numbers, not a replication.
 
-The idea underneath is the one this book keeps returning to: memory operations are frequent, small and typed, which makes them exactly the kind of decision a decision model is for.
+The idea underneath is the one this book keeps returning to: memory operations are frequent, small and typed, which makes them the kind of decision a decision model is for.
 
 ```{python}
 keep = Noul(instructions="Will this fact matter for future alerts "
@@ -167,12 +167,12 @@ r = client.system_one(state=fact, questions={"keep": keep})
 print(round(r.nouls["keep"].noul, 2))
 ```
 
-**How it breaks.** Memory decisions fail quietly. A fact wrongly discarded never shows up as an error; it just isn't there when it's needed. Log what the controller discards, and audit a sample, as Chapter 14 did with auto-closed alerts.
+**How it breaks.** Memory decisions fail without a sound. A fact wrongly discarded never shows up as an error; it just isn't there when it's needed. Log what the controller discards, and audit a sample, as Chapter 14 did with auto-closed alerts.
 
 [[AUTHOR STORY: which of these patterns you reached for first in a real system (the police FIR agent, SIGNAL or AttendX), and what went wrong before you did]]
 
 ::: {.breaks}
-Only patterns 1, 3 and 5 have measurements in this chapter, and all of them are synthetic. The others are shapes, drawn from how the pieces work, and each needs testing on real data before you trust it. Combining patterns multiplies failure points: an extractor feeding a gate feeding a router has three places to be wrong, and the errors can compound as Chapter 7 showed. And every pattern here assumes the decision model's probabilities are honest on your data, which Chapter 11 said you must check, not assume.
+Only patterns 1, 3 and 5 have measurements in this chapter, and all of them are synthetic. The others are shapes, drawn from how the pieces work, and each needs testing on real data before you trust it. Combining patterns multiplies failure points: an extractor feeding a gate feeding a router has three places to be wrong, and the errors can compound as Chapter 7 showed. And every pattern here assumes the decision model's probabilities hold on your data, which Chapter 11 said you must check, not assume.
 :::
 
 ::: {.threshold}

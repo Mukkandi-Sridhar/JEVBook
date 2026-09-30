@@ -31,7 +31,7 @@ This chapter is a fast tour, not a course. You need four ideas from it, and each
 
 Look at what a neuron does to an alert: multiply each clue by a weight, add everything up, squash the total into a probability. The places where a weighted sum equals some value form a straight line. So all a single neuron can do is cut the space in two with a straight edge.
 
-That's a real limit. Imagine behaviour that's suspicious when it's *unusual in any direction*: far too much activity, or far too little, far too early, or far too late. Normal sits in the middle, and no straight line separates the middle from the edges.
+A real limit. Imagine behaviour that's suspicious when it's *unusual in any direction*: far too much activity, or far too little, far too early, or far too late. Normal sits in the middle, and no straight line separates the middle from the edges.
 
 ![A toy problem. Blue dots are normal activity; red dots surround them on every side. One neuron (left) can only draw a straight line through it. With a hidden layer of three neurons (middle) the boundary becomes a triangle; with twelve (right), close to a circle.](/figures/ch06/line-limit.pdf){#fig-line-limit}
 
@@ -45,7 +45,7 @@ Training works the same way as before, rolling downhill on log loss. The only ne
 Weighted sums draw lines. Hinges bend them. Layers combine the bends.
 :::
 
-Here's why depth matters in practice. On photos, the first layers of a trained network learn to detect edges, later ones textures and shapes, the last ones whole objects [@lecun2015]. Nobody wrote a rule for "edge". A deep network takes raw input, pixels or characters, and *learns its own clues*.
+Depth matters in practice for a simple reason. On photos, the first layers of a trained network learn to detect edges, later ones textures and shapes, the last ones whole objects [@lecun2015]. Nobody wrote a rule for "edge". A deep network takes raw input, pixels or characters, and *learns its own clues*.
 
 On Kestrel's neat, hand-made features, though, it has nothing to find. A small network ties logistic regression, log loss {{< num ch06 k_small.log_loss f3 >}} against {{< num ch06 k_lr.log_loss f3 >}}. A big one trained too long gets worse: {{< num ch06 k_big.log_loss f3 >}}.
 
@@ -80,7 +80,7 @@ for a, b in [("invoice", "bill"), ("invoice", "trojan"),
 ```
 :::
 
-The same trick works for whole alerts: similar alerts land near each other, which lets an analyst ask "show me past alerts like this one". It's also the engine inside RAG (Chapter 7). But it has a blind spot worth remembering. Finding Kestrel's 50 most similar past alerts by text and counting the attacks gives an honest probability, with a calibration error of {{< num ch07 knn.ece f3 >}}, and a blunt one: AUC {{< num ch07 knn.auc f2 >}}, against {{< num ch07 lr.auc f2 >}} for logistic regression on the fields. Two "large upload" alerts look identical to an embedding whether the threat-intel score is 0.05 or 0.95.
+The same trick works for whole alerts: similar alerts land near each other, which lets an analyst ask "show me past alerts like this one". It's also the engine inside RAG (Chapter 7). But it has a blind spot worth remembering. Finding Kestrel's 50 most similar past alerts by text and counting the attacks gives a well-calibrated probability, with a calibration error of {{< num ch07 knn.ece f3 >}}, and a blunt one: AUC {{< num ch07 knn.auc f2 >}}, against {{< num ch07 lr.auc f2 >}} for logistic regression on the fields. Two "large upload" alerts look identical to an embedding whether the threat-intel score is 0.05 or 0.95.
 
 ::: {.keyidea}
 Embeddings capture what things are about. They're poor at the exact numbers inside them.
@@ -131,13 +131,13 @@ There's a deeper version of this effect, and you can watch it happen on Kestrel'
 
 Accuracy barely changed. Meanwhile the test log loss went from {{< num ch09 first.log_loss f2 >}} to {{< num ch09 last.log_loss f2 >}}, and the calibration error from {{< num ch09 first.ece f3 >}} to {{< num ch09 last.ece f3 >}} (@fig-overtraining). The model's *ranking* of alerts held up. Its *honesty* fell apart.
 
-The mechanism follows from Chapter 2. Once a model gets most training examples right, the only way left to lower log loss is to push correct answers closer to certainty: 0.95, then 0.99, then 0.999. A flexible model trained long enough becomes certain of everything it saw, including the noise, and carries that certainty onto new cases where it hasn't earned it. Deeper, wider modern networks show exactly this [@guo2017].
+The mechanism follows from Chapter 2. Once a model gets most training examples right, the only way left to lower log loss is to push correct answers closer to certainty: 0.95, then 0.99, then 0.999. A flexible model trained long enough becomes certain of everything it saw, including the noise, and carries that certainty onto new cases where it hasn't earned it. Deeper, wider modern networks show the same thing [@guo2017].
 
 ::: {.keyidea}
 Flexible models trained to squeeze out the last drop of training loss learn to be certain.
 :::
 
-The fixes are ones you've already met in Chapters 2 and 3, and they're simple. Stop training when the loss on held-out data stops improving; here that was around epoch {{< num ch09 best_epoch int >}}. And correct the probabilities afterwards on data the model never saw: a single "temperature" cut the calibration error from {{< num ch09 last.ece f3 >}} to {{< num ch09 ece_after_T f3 >}}. A correction can make the numbers honest again. It can't give back what the model threw away by memorising.
+The fixes are ones you've already met in Chapters 2 and 3, and they're simple. Stop training when the loss on held-out data stops improving; here that was around epoch {{< num ch09 best_epoch int >}}. And correct the probabilities afterwards on data the model never saw: a single "temperature" cut the calibration error from {{< num ch09 last.ece f3 >}} to {{< num ch09 ece_after_T f3 >}}. A correction can make the numbers trustworthy again. It can't give back what the model threw away by memorising.
 
 ::: {.breaks}
 Networks need lots of data, and with too little they memorise. They're hard to read: no tidy "×2.9 for a new country". Embeddings inherit the associations in their training text, including stereotypes [@bolukbasi2016], and they're bad at negation, since "malicious" and "not malicious" keep almost the same company. Attention maps are tempting to read as explanations; in large models they often aren't [@jain2019]. And you usually can't retrain someone else's big model, or even see its raw probabilities, which is one reason a decision model that returns probabilities as its main output, and gets tested, matters so much.

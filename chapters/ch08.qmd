@@ -15,7 +15,7 @@ When TypeSafe AI released Jev, it didn't call it a better LLM. It called it the 
 
 *"Is that a real idea, or just a clever name?"*
 
-It's both, and it's worth unpacking properly before we open Jev up in the next chapter. The name comes from one of the best-known ideas in modern psychology, and that idea turns out to describe the software we've been building in this book surprisingly well. Most of the work is fast judgement. A little of it is slow thought. And the art is sending each case to the right one.
+It's both, and the idea deserves unpacking properly before we open Jev up in the next chapter. The name comes from one of the best-known ideas in modern psychology, and that idea describes the software we've been building in this book surprisingly well. Most of the work is fast judgement. A little of it is slow thought. And the art is sending each case to the right one.
 
 ::: {.goals}
 - Describe Kahneman's System 1 and System 2, with everyday examples.
@@ -33,13 +33,13 @@ You didn't work it out. The answer was just there. Now try 17 × 24.
 
 That one felt different. You had to stop, hold numbers in your head, do steps in order. You could feel the effort. Your pupils probably widened.
 
-The psychologist Daniel Kahneman used exactly these examples to introduce two modes of thinking, which he called **System 1** and **System 2** [@kahneman2011]. System 1 is fast, automatic and effortless: recognising a face, reading a word, sensing that a sentence is hostile, knowing that 2 + 2 is 4. System 2 is slow, deliberate and effortful: long multiplication, filling in a tax form, checking an argument.
+The psychologist Daniel Kahneman used these very examples to introduce two modes of thinking, which he called **System 1** and **System 2** [@kahneman2011]. System 1 is fast, automatic and effortless: recognising a face, reading a word, sensing that a sentence is hostile, knowing that 2 + 2 is 4. System 2 is slow, deliberate and effortful: long multiplication, filling in a tax form, checking an argument.
 
 ::: {.bookquote by="Daniel Kahneman, Thinking, Fast and Slow, 2011"}
 System 1 operates automatically and quickly, with little or no effort and no sense of voluntary control.
 :::
 
-Neither is better. System 1 runs almost everything you do, and it's usually right. But it can be confidently wrong. Here's a famous test of that [@frederick2005]:
+Neither is better. System 1 runs almost everything you do, and it's usually right. But it can be confidently wrong. Try a famous test of it [@frederick2005]:
 
 *A bat and a ball cost \$1.10 in total. The bat costs \$1.00 more than the ball. How much does the ball cost?*
 
@@ -69,7 +69,7 @@ That mismatch is the gap TypeSafe named Jev's model class after. A **System One 
 
 ## Route by doubt
 
-Here's the practical design question. If you have a fast system and a slow one, how do you split the work?
+That leaves a practical design question. If you have a fast system and a slow one, how do you split the work?
 
 A good analyst already knows the answer. They triage most alerts in seconds, and they *notice* the ones that don't feel right. Those get the slow treatment. The skill isn't only fast judgement. It's fast judgement *plus an honest sense of when it's not enough*.
 
@@ -107,19 +107,19 @@ for share in (0, 0.1, 0.2, 1.0):
 
 ![Expected cost per day as more alerts go to System 2. Sending the alerts System 1 is least sure about (green) gets most of the benefit early. Sending a random share (grey) gets almost nothing until you send nearly everything.](/figures/ch15/routing-curve.pdf){#fig-routing-curve}
 
-The result in @fig-routing-curve is the whole argument for a dual-process design, in one chart. Sending the 20% of alerts System 1 is least sure about captures {{< num ch15 share_gain_20 pct >}} of everything System 2 could possibly add. Sending a random 20% captures {{< num ch15 share_gain_20_random pct >}}.
+The result in @fig-routing-curve is the argument for a dual-process design, in one chart. Sending the 20% of alerts System 1 is least sure about captures {{< num ch15 share_gain_20 pct >}} of everything System 2 could possibly add. Sending a random 20% captures {{< num ch15 share_gain_20_random pct >}}.
 
 And the cost of System 2 is paid only on that 20%. If a careful pass takes 25 seconds and a fast decision 0.15 (illustrative numbers again), then routing by doubt averages about {{< num ch15 time_20 f1 >}} seconds per alert, against 25 for sending everything to the slow system.
 
 ::: {.keyidea}
-The value of a fast system isn't only its speed. It's knowing which cases it shouldn't decide.
+A fast system earns its keep twice: by its speed, and by knowing which cases it shouldn't decide.
 :::
 
 That's why calibration keeps coming back in this book. Routing by doubt only works if System 1's doubt is *honest*: if its 0.5 really means "this could go either way" and its 0.02 really means "almost certainly fine". An overconfident System 1 sends the wrong cases to System 2, and keeps the dangerous ones for itself.
 
 ## When can fast judgement be trusted?
 
-Psychologists spent years arguing about intuition. Some, like Gary Klein, studied experts such as firefighters and nurses, whose split-second judgements were remarkably good. Others, like Kahneman, catalogued the ways snap judgements go wrong. In 2009 the two of them wrote a joint paper setting out when intuition can be trusted, and found they mostly agreed [@kahneman2009].
+Psychologists spent years arguing about intuition. Some, like Gary Klein, studied experts such as firefighters and nurses, whose split-second judgements were very good. Others, like Kahneman, catalogued the ways snap judgements go wrong. In 2009 the two of them wrote a joint paper setting out when intuition can be trusted, and found they mostly agreed [@kahneman2009].
 
 ![Conditions under which fast, intuitive judgement tends to be reliable, adapted from Kahneman and Klein. SOC triage mostly meets the first three. The fourth is what separates good experts, and good models, from confident ones.](/figures/ch15/conditions.pdf){#fig-conditions}
 
@@ -127,7 +127,7 @@ Their answer, roughly: trust fast judgement in a **regular** environment, where 
 
 I've added a fourth condition that I think matters just as much for machines: an honest sense of doubt. A good expert knows when a case is outside their experience. A good System One model should too, and for a model "knowing" means one thing: calibrated probabilities that drop towards uncertainty when the case is unfamiliar.
 
-SOC triage fits the first three conditions better than most jobs. Alerts come from a fixed set of detectors; there are thousands of examples; analysts find out, eventually, which alerts were real. Novel attack investigations fit badly. So do one-off strategic decisions. That's a useful rule of thumb for where System One models belong, and where they don't.
+SOC triage fits the first three conditions better than most jobs. Alerts come from a fixed set of detectors; there are thousands of examples; analysts find out, eventually, which alerts were real. Novel attack investigations fit badly. So do one-off strategic decisions. It makes a useful rule of thumb for where System One models belong, and where they don't.
 
 ::: {.breaks}
 The two-systems idea is a metaphor, and Kahneman himself was clear that the "systems" are shorthand, not two machines in the brain. Mapping it onto software is looser still: a System One model isn't intuitive in any human sense; it's a trained function. And routing by doubt has a weakness: if System 1 is confidently wrong about a whole class of cases, say a new attack technique it has never seen, it won't route them to System 2, because it doesn't feel unsure. Random audits (Chapter 14) and drift checks are there to catch what doubt misses.
@@ -141,7 +141,7 @@ Kestrel's System 2 is expensive: a senior analyst's time. The team can afford to
 
 ## Where we are
 
-We started with 2 + 2 and 17 × 24, and found two modes of thinking in each of us. Software, we saw, has mostly used its slow, general mode for every job, even though most jobs are quick judgements. So we put a fast system in front of a slow one and sent across only the cases it doubted, and a fifth of the traffic bought most of the benefit. That only worked because the fast system's doubt was honest, which is exactly the condition under which psychologists say intuition can be trusted.
+We started with 2 + 2 and 17 × 24, and found two modes of thinking in each of us. Software, we saw, has mostly used its slow, general mode for every job, even though most jobs are quick judgements. So we put a fast system in front of a slow one and sent across only the cases it doubted, and a fifth of the traffic bought most of the benefit. That only worked because the fast system's doubt was sound, the very condition under which psychologists say intuition can be trusted.
 
 Now we can look inside the model that took the name.
 

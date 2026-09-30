@@ -1,9 +1,9 @@
 # Prerequisites: networks, language models and agents
 
 ::: {.partintro}
-The models in Part I were handed neat clues. The real world hands you pixels, words and messy logs, and today's AI systems are built from models that learn their own clues, write text, and act in loops.
+The models in Part I were handed neat clues. The real world hands you pixels and messy logs. Today's AI systems are built from models that find their own clues, and from models that write text and act in loops.
 
-These three chapters are a fast, honest tour: deep learning in one chapter, how an LLM writes and why asking it for a decision is awkward, and what retrieval and agents do, including where they break.
+These three chapters are a fast tour: deep learning in one chapter, how an LLM writes and why asking it for a decision is awkward, and what retrieval and agents do, including where they break.
 
 You don't need every detail. You need to see where the decisions hide.
 :::

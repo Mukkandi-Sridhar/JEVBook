@@ -55,7 +55,7 @@ Decision record
 : The logged account of one decision: what was seen, what the model said, what the policy did, which version decided and why (Chapter 21).
 
 Drift
-: A change in the world, or in the data, that makes a model's probabilities less honest than when they were checked (Chapter 14).
+: A change in the world, or in the data, that makes a model's probabilities less accurate than when they were checked (Chapter 14).
 
 ECE (expected calibration error)
 : The average gap between what a model said and what happened, across groups of similar predictions (Chapter 3).
@@ -136,7 +136,7 @@ Overfitting
 : Learning the training examples so closely that performance on new examples gets worse (Chapter 2).
 
 Platt scaling
-: A calibration method that fits an S-curve mapping a model's scores to honest probabilities (Chapter 3).
+: A calibration method that fits an S-curve mapping a model's scores to calibrated probabilities (Chapter 3).
 
 Policy
 : The rules that turn a probability into an action, usually as lines between zones (Chapter 14).

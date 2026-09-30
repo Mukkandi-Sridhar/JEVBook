@@ -14,7 +14,7 @@ At five alerts an hour, you'll get through about thirty-five tonight. The queue 
 
 ![One night at Kestrel, midnight to 7 a.m. Each line is an alert; red lines are the real ones. Working first come, first served, you open the ones on the left and the rest wait for the morning.](/figures/front/night.pdf){#fig-night}
 
-Here's what the night looks like from above, where you can't see it from your desk (@fig-night). There were {{< num front night_alerts int >}} alerts between midnight and seven. {{< num front night_threats int >}} of them were real. Working through the queue in order, you opened {{< num front night_opened int >}}.
+@fig-night shows the night from above, a view you never get from your desk. There were {{< num front night_alerts int >}} alerts between midnight and seven. {{< num front night_threats int >}} of them were real. Working through the queue in order, you opened {{< num front night_opened int >}}.
 
 {{< num front night_threats_opened int >}} of those were real.
 
@@ -22,13 +22,13 @@ You didn't do anything wrong. You were careful and quick, and you got every one 
 
 Now imagine a different night.
 
-Every alert that arrives is read in a fraction of a second by a model that doesn't write a report or explain itself. It answers three small questions: how likely is this to be real, what kind of threat would it be, and how bad? Its answers are probabilities, and someone checked last week that they're honest: of the alerts it calls one in ten, about one in ten turn out to be real.
+Every alert that arrives is read in a fraction of a second by a model that doesn't write a report or explain itself. It answers three small questions: how likely is this to be real, what kind of threat would it be, and how bad? Its answers are probabilities, and someone checked last week that they hold up: of the alerts it calls one in ten, about one in ten turn out to be real.
 
 The alerts it's nearly certain are nothing get closed, and a random few of those go into a pile for you to spot-check. The ones it's fairly sure are serious wake up the on-call responder straight away. Everything in between comes to you, likeliest first.
 
 You still make the calls that matter. You just make them on the right alerts.
 
-That second night is what this book builds, piece by piece. It turns out to need surprisingly little new technology and quite a lot of careful thinking. You need to know what a probability is and how to tell whether one is honest. You need to know how much a mistake costs, and where to draw a line so that the cheapest mistakes are the ones you make. And you need to know what to do when the world changes, as it will on some ordinary Tuesday.
+That second night is what this book builds, piece by piece. That takes surprisingly little new technology and quite a lot of careful thinking. You need to know what a probability is and how to tell whether one can be trusted. You need to know how much a mistake costs, and where to draw a line so that the cheapest mistakes are the ones you make. And you need to know what to do when the world changes, as it will on some ordinary Tuesday.
 
 We'll start at the very beginning, with the simplest question of all.
 
