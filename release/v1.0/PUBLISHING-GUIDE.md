@@ -84,9 +84,9 @@ cybersecurity SOC alert triage machine learning
 
 **Categories** (the closest names in KDP's picker):
 
-1. Computers & Technology › Computer Science › AI & Machine Learning › Machine Learning
-2. Computers & Technology › Computer Science › AI & Machine Learning › Expert Systems
-3. Computers & Technology › Security & Encryption
+1. Computers & Technology › Computer Science › AI & Machine Learning
+2. Computers & Technology › Computer Science › Expert Systems
+3. Computers & Technology › Computer Science › Generative AI (KDP's picker lists these three as placements under Computer Science)
 
 ### Page 2: Content
 
