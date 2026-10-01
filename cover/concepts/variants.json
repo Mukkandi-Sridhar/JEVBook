@@ -1,0 +1,34 @@
+{
+  "v0": {
+    "title_share_of_height": 0.362,
+    "five_second_test": "Decide, don't generate, and something with three purple zones. (Passes on the title; the bar is a second idea that needs the book to explain it.)"
+  },
+  "v1": {
+    "title_share_of_height": 0.415,
+    "five_second_test": "Lots of generated text goes in, one clean answer comes out: LLMs generate, this book is about deciding. (Passes.)"
+  },
+  "v2": {
+    "title_share_of_height": 0.415,
+    "five_second_test": "Generated pieces fall onto a line and one answer sits below it. (Passes, but the full-width line also reads as a plain divider.)"
+  },
+  "v3": {
+    "title_share_of_height": 0.415,
+    "five_second_test": "Decide, don't generate, with a small answer chip. (Passes on the title; three pieces don't say 'lots of text'.)"
+  },
+  "contrast_vs_ground": {
+    "title green": 7.27,
+    "title white": 15.96,
+    "Generate orange": 7.12,
+    "subtitle": 11.11,
+    "strap line": 5.53,
+    "author": 15.96
+  },
+  "contrast_chip_text_on_green": 7.27,
+  "v0_zone_labels": 5.53,
+  "fragments_note": "the fading token fragments are decoration (WCAG 1.4.3's exception for pure decoration); every piece of text that carries meaning is listed above",
+  "greyscale_levels": {
+    "green": 165,
+    "orange": 163,
+    "ground": 31
+  }
+}

@@ -20,7 +20,7 @@ from wrap import BG, BODY, HARDCOVER_PAPER, PAPERBACK_PAPER, barcode_local, case
 from coverlib import strapline  # noqa: E402
 
 ALLOW = {"jev", "mukkandi", "sridhar", "jevbook", "dont", "llm", "llms", "soc", "api", "inr", "usd", "praise", "author", "bio",
-         "price", "authorhub", "typesafe", "ne", "ra", "te", "gmail", "github", "com", "ated", "er", "ate", "gen", "ai", "agentic", "tech"}
+         "price", "authorhub", "typesafe", "ne", "ra", "te", "gmail", "github", "com", "ated", "er", "ate", "gen", "the", "is", "attack", "act", "ai", "agentic", "tech"}
 
 
 def boxes(html_file, selector):
@@ -70,7 +70,7 @@ def layout(kind, paper, strap):
         b["y"] -= e
         if b["x"] < s - 0.01 or b["x"] + b["w"] > W - s + 0.01 or b["y"] + b["h"] > H - s + 0.01:
             problems.append(f"front: '{b['text'][:30]}' outside the safe area")
-    title = [b for b in front if b["text"] in ("Decide,", "Don’t")]
+    title = [b for b in front if b["text"] in ("Decide,", "Don’t") or b["cls"] in ("gen", "chip")]
     for f in (b for b in front if b["cls"] == "frag"):
         for t in title:
             if hit(f, t):

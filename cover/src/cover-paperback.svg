@@ -350,32 +350,105 @@
 <g transform="translate(27.52,537.96) rotate(90)">
 <text x="0.00" y="0.00" font-family="'Inter'" font-size="12.96" font-weight="600" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >Sridhar Mukkandi</text>
 </g>
-<rect x="19.62" y="663.12" width="6.39" height="12.51" rx="3.19" fill="#B7A6E0" stroke="none" stroke-width="0.00" />
-<rect x="19.62" y="676.83" width="6.39" height="6.14" rx="3.19" fill="#8468C9" stroke="none" stroke-width="0.00" />
-<rect x="19.62" y="684.17" width="6.39" height="2.23" rx="3.19" fill="#4B2C8F" stroke="none" stroke-width="0.00" /></g>
+<rect x="19.62" y="663.12" width="6.39" height="12.51" rx="3.19" fill="#4FBA85" stroke="none" stroke-width="0.00" />
+<rect x="19.62" y="676.83" width="6.39" height="6.14" rx="3.19" fill="#72A193" stroke="none" stroke-width="0.00" />
+<rect x="19.62" y="684.17" width="6.39" height="2.23" rx="3.19" fill="#8A919C" stroke="none" stroke-width="0.00" /></g>
 <g id="front" transform="translate(558.63,9.00)"><svg width="504.00" height="720.00" overflow="visible"><rect x="0.00" y="0.00" width="504.00" height="720.00" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
-<text x="34.60" y="219.58" font-family="'Inter'" font-size="117.75" font-weight="800" font-style="normal" fill="#4FBA85" text-anchor="start" letter-spacing="-3.53" >Decide,</text>
-<text x="37.19" y="302.94" font-family="'Inter'" font-size="70.65" font-weight="800" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="-1.77" >Don’t</text>
-<rect x="32.95" y="324.14" width="145.52" height="70.65" rx="7.07" fill="none" stroke="#AE6A30" stroke-width="1.55" />
-<text x="37.19" y="380.66" font-family="'Inter'" font-size="70.65" font-weight="800" font-style="normal" fill="#F08C35" text-anchor="start" letter-spacing="-1.77" >Gen</text>
-<rect x="182.71" y="321.66" width="78.86" height="70.65" rx="7.07" fill="none" stroke="#995E2F" stroke-width="1.55" />
-<text x="186.95" y="378.19" font-family="'Inter'" font-size="70.65" font-weight="800" font-style="normal" fill="#DE8334" text-anchor="start" letter-spacing="-1.77" >er</text>
-<rect x="265.81" y="319.19" width="115.31" height="70.65" rx="7.07" fill="none" stroke="#84532D" stroke-width="1.55" />
-<text x="270.05" y="375.71" font-family="'Inter'" font-size="70.65" font-weight="800" font-style="normal" fill="#CD7A32" text-anchor="start" letter-spacing="-1.77" >ate</text>
-<rect x="385.64" y="328.45" width="27.93" height="20.98" rx="3.89" fill="none" stroke="#68452B" stroke-width="0.80" />
-<text x="390.30" y="343.21" font-family="'JetBrains Mono'" font-size="15.54" font-weight="500" font-style="normal" fill="#82522D" text-anchor="start" letter-spacing="0.00" class="frag">ne</text>
-<rect x="401.84" y="352.03" width="24.83" height="18.60" rx="3.44" fill="none" stroke="#563C2A" stroke-width="0.80" />
-<text x="405.97" y="365.11" font-family="'JetBrains Mono'" font-size="13.78" font-weight="500" font-style="normal" fill="#70492C" text-anchor="start" letter-spacing="0.00" class="frag">ra</text>
-<rect x="416.30" y="375.61" width="21.61" height="16.21" rx="3.00" fill="none" stroke="#443229" stroke-width="0.80" />
-<text x="419.90" y="387.02" font-family="'JetBrains Mono'" font-size="12.01" font-weight="500" font-style="normal" fill="#5F402A" text-anchor="start" letter-spacing="0.00" class="frag">te</text>
-<rect x="39.31" y="447.78" width="236.21" height="8.64" rx="4.32" fill="#B7A6E0" stroke="none" stroke-width="0.00" />
-<text x="39.31" y="470.93" font-family="'JetBrains Mono'" font-size="9.07" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >act</text>
-<rect x="277.52" y="447.78" width="125.61" height="8.64" rx="4.32" fill="#8468C9" stroke="none" stroke-width="0.00" />
-<text x="277.52" y="470.93" font-family="'JetBrains Mono'" font-size="9.07" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >review</text>
-<rect x="405.14" y="447.78" width="57.55" height="8.64" rx="4.32" fill="#4B2C8F" stroke="none" stroke-width="0.00" />
-<text x="405.14" y="470.93" font-family="'JetBrains Mono'" font-size="9.07" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >escalate</text>
-<text x="39.31" y="552.18" font-family="'Inter'" font-size="26.21" font-weight="500" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >Jev, System One Models, and the</text>
-<text x="39.31" y="585.72" font-family="'Inter'" font-size="26.21" font-weight="500" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >Decision Layer of Agentic AI</text>
-<text x="39.31" y="656.31" font-family="'JetBrains Mono'" font-size="9.83" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >Runnable labs · 130+ figures · no API key needed</text>
-<text x="39.31" y="684.62" font-family="'Inter'" font-size="18.14" font-weight="600" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="0.30" >Sridhar Mukkandi</text></svg></g>
+<g class="grid">
+<line x1="21.00" y1="0.00" x2="21.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="42.00" y1="0.00" x2="42.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="63.00" y1="0.00" x2="63.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="84.00" y1="0.00" x2="84.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="105.00" y1="0.00" x2="105.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="126.00" y1="0.00" x2="126.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="147.00" y1="0.00" x2="147.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="168.00" y1="0.00" x2="168.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="189.00" y1="0.00" x2="189.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="210.00" y1="0.00" x2="210.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="231.00" y1="0.00" x2="231.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="252.00" y1="0.00" x2="252.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="273.00" y1="0.00" x2="273.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="294.00" y1="0.00" x2="294.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="315.00" y1="0.00" x2="315.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="336.00" y1="0.00" x2="336.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="357.00" y1="0.00" x2="357.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="378.00" y1="0.00" x2="378.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="399.00" y1="0.00" x2="399.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="420.00" y1="0.00" x2="420.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="441.00" y1="0.00" x2="441.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="462.00" y1="0.00" x2="462.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="483.00" y1="0.00" x2="483.00" y2="720.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="699.00" x2="504.00" y2="699.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="678.00" x2="504.00" y2="678.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="657.00" x2="504.00" y2="657.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="636.00" x2="504.00" y2="636.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="615.00" x2="504.00" y2="615.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="594.00" x2="504.00" y2="594.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="573.00" x2="504.00" y2="573.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="552.00" x2="504.00" y2="552.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="531.00" x2="504.00" y2="531.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="510.00" x2="504.00" y2="510.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="489.00" x2="504.00" y2="489.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="468.00" x2="504.00" y2="468.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="447.00" x2="504.00" y2="447.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="426.00" x2="504.00" y2="426.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="405.00" x2="504.00" y2="405.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="384.00" x2="504.00" y2="384.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="363.00" x2="504.00" y2="363.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="342.00" x2="504.00" y2="342.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="321.00" x2="504.00" y2="321.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="300.00" x2="504.00" y2="300.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="279.00" x2="504.00" y2="279.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="258.00" x2="504.00" y2="258.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="237.00" x2="504.00" y2="237.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="216.00" x2="504.00" y2="216.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="195.00" x2="504.00" y2="195.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="174.00" x2="504.00" y2="174.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="153.00" x2="504.00" y2="153.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="132.00" x2="504.00" y2="132.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="111.00" x2="504.00" y2="111.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="90.00" x2="504.00" y2="90.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="69.00" x2="504.00" y2="69.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="48.00" x2="504.00" y2="48.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="27.00" x2="504.00" y2="27.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="6.00" x2="504.00" y2="6.00" stroke="#1F242F" stroke-width="0.35"/>
+<line x1="0.00" y1="720.00" x2="504.00" y2="216.00" stroke="#222732" stroke-width="0.60"/>
+</g>
+<text x="34.60" y="175.60" font-family="'Inter'" font-size="117.75" font-weight="800" font-style="normal" fill="#4FBA85" text-anchor="start" letter-spacing="-3.53" >Decide,</text>
+<text x="36.84" y="277.81" font-family="'Inter'" font-size="82.43" font-weight="800" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="-2.06" >Don’t</text>
+<rect x="31.89" y="306.66" width="169.61" height="82.43" rx="8.24" fill="none" stroke="#AE6A30" stroke-width="1.81" />
+<text x="36.84" y="372.60" font-family="'Inter'" font-size="82.43" font-weight="800" font-style="normal" fill="#F08C35" text-anchor="start" letter-spacing="-2.06" class="gen">Gen</text>
+<rect x="206.44" y="303.78" width="91.92" height="82.43" rx="8.24" fill="none" stroke="#995E2F" stroke-width="1.81" />
+<text x="211.39" y="369.72" font-family="'Inter'" font-size="82.43" font-weight="800" font-style="normal" fill="#DE8334" text-anchor="start" letter-spacing="-2.06" class="gen">er</text>
+<rect x="303.31" y="300.89" width="134.40" height="82.43" rx="8.24" fill="none" stroke="#84532D" stroke-width="1.81" />
+<text x="308.26" y="366.83" font-family="'Inter'" font-size="82.43" font-weight="800" font-style="normal" fill="#CD7A32" text-anchor="start" letter-spacing="-2.06" class="gen">ate</text>
+<rect x="36.14" y="427.86" width="41.52" height="23.37" rx="4.33" fill="none" stroke="#B56D31" stroke-width="1.04" />
+<text x="41.33" y="444.31" font-family="'JetBrains Mono'" font-size="17.31" font-weight="500" font-style="normal" fill="#CF7B33" text-anchor="start" letter-spacing="0.00" class="frag">the</text>
+<rect x="42.41" y="471.59" width="30.61" height="22.97" rx="4.25" fill="none" stroke="#B16B30" stroke-width="1.02" />
+<text x="47.52" y="487.76" font-family="'JetBrains Mono'" font-size="17.01" font-weight="500" font-style="normal" fill="#CB7932" text-anchor="start" letter-spacing="0.00" class="frag">ne</text>
+<rect x="82.19" y="450.87" width="27.20" height="20.43" rx="3.78" fill="none" stroke="#975D2E" stroke-width="0.91" />
+<text x="86.73" y="465.25" font-family="'JetBrains Mono'" font-size="15.13" font-weight="500" font-style="normal" fill="#B16B30" text-anchor="start" letter-spacing="0.00" class="frag">is</text>
+<rect x="113.58" y="432.38" width="24.51" height="18.43" rx="3.41" fill="none" stroke="#82532D" stroke-width="0.82" />
+<text x="117.68" y="445.35" font-family="'JetBrains Mono'" font-size="13.65" font-weight="500" font-style="normal" fill="#9D602F" text-anchor="start" letter-spacing="0.00" class="frag">ra</text>
+<rect x="113.58" y="469.62" width="24.51" height="18.43" rx="3.41" fill="none" stroke="#82532D" stroke-width="0.82" />
+<text x="117.68" y="482.58" font-family="'JetBrains Mono'" font-size="13.65" font-weight="500" font-style="normal" fill="#9D602F" text-anchor="start" letter-spacing="0.00" class="frag">0.</text>
+<rect x="142.89" y="447.74" width="22.12" height="16.56" rx="3.07" fill="none" stroke="#6F492C" stroke-width="0.74" />
+<text x="146.57" y="459.39" font-family="'JetBrains Mono'" font-size="12.26" font-weight="500" font-style="normal" fill="#89562E" text-anchor="start" letter-spacing="0.00" class="frag">te</text>
+<rect x="170.10" y="463.57" width="26.39" height="14.82" rx="2.74" fill="none" stroke="#5D3F2A" stroke-width="0.66" />
+<text x="173.39" y="474.00" font-family="'JetBrains Mono'" font-size="10.98" font-weight="500" font-style="normal" fill="#784D2C" text-anchor="start" letter-spacing="0.00" class="frag">the</text>
+<rect x="188.94" y="444.27" width="12.11" height="13.62" rx="2.52" fill="none" stroke="#513929" stroke-width="0.61" />
+<text x="191.96" y="453.86" font-family="'JetBrains Mono'" font-size="10.09" font-weight="500" font-style="normal" fill="#6B472B" text-anchor="start" letter-spacing="0.00" class="frag">…</text>
+<rect x="207.78" y="457.52" width="16.56" height="12.42" rx="2.30" fill="none" stroke="#453229" stroke-width="0.55" />
+<text x="210.54" y="466.26" font-family="'JetBrains Mono'" font-size="9.20" font-weight="500" font-style="normal" fill="#5F402A" text-anchor="start" letter-spacing="0.00" class="frag">ra</text>
+<rect x="228.71" y="452.65" width="14.77" height="11.08" rx="2.05" fill="none" stroke="#372B28" stroke-width="0.50" />
+<text x="231.17" y="460.45" font-family="'JetBrains Mono'" font-size="8.21" font-weight="500" font-style="normal" fill="#523929" text-anchor="start" letter-spacing="0.00" class="frag">is</text>
+<line x1="270.36" y1="434.34" x2="270.36" y2="484.23" stroke="#4FBA85" stroke-width="1.41"/>
+<circle cx="270.36" cy="434.34" r="2.26" fill="#4FBA85"/>
+<circle cx="270.36" cy="484.23" r="2.26" fill="#4FBA85"/>
+<rect x="288.00" y="445.30" width="176.69" height="27.97" rx="5.75" fill="#4FBA85" stroke="none" stroke-width="0.00" />
+<text x="299.34" y="464.73" font-family="'JetBrains Mono'" font-size="15.12" font-weight="700" font-style="normal" fill="#141925" text-anchor="start" letter-spacing="0.00" class="chip">attack 0.03 → act</text>
+<text x="39.31" y="552.98" font-family="'Inter'" font-size="25.20" font-weight="500" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >Jev, System One Models, and the</text>
+<text x="39.31" y="585.74" font-family="'Inter'" font-size="25.20" font-weight="500" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >Decision Layer of Agentic AI</text>
+<text x="39.31" y="649.46" font-family="'JetBrains Mono'" font-size="9.83" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >Runnable labs · 130+ figures · no API key needed</text>
+<text x="39.31" y="683.83" font-family="'Inter'" font-size="22.18" font-weight="700" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="0.20" >Sridhar Mukkandi</text></svg></g>
 </svg>

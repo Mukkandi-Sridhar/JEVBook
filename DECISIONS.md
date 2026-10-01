@@ -291,3 +291,12 @@ Newest decisions are appended at the bottom of each section.
   draft markers it mentioned are gone), tests, CI and the weekly live-API check. This repository stays the private
   workshop: chapters, covers, release files and notes. Every address the book prints now points to the public
   repository; the widgets and figures say "thresholds", not "lines".
+- **D-92 · Cover refined: one motif, two colours (v1.0.5).** The purple act / review / escalate bar was a second
+  idea on the front and a third colour. It's replaced by token fragments that fade into a green gate and one solid
+  green answer (`attack 0.03 → act`), built from the title's own token boxes. Of three variants, v1 (left to right)
+  reads fastest; v2's full-width line also looks like a divider, and v3 is too quiet at thumbnail size to say "lots
+  of text in". The green and orange have the same grey (about 165 of 255), as they did in v0, so in greyscale
+  "Decide" and "Generate" separate by shape: solid letters and a solid answer against hollow, boxed, fading
+  tokens. The fragments are decoration and deliberately faint; WCAG 1.4.3 exempts pure decoration, and every text
+  that carries meaning is at least 5.5 : 1. The calibration grid (5%, diagonal 6%) was kept because it vanishes at
+  150 px. The old front stays in `cover/variants.py` as v0.

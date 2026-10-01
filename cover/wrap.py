@@ -4,7 +4,8 @@ marketing mockups.
 python cover/wrap.py
 
 Every dimension comes from coverlib.Wrap: the page count is read from the rendered interior PDF and the spine from
-KDP's per-page paper thickness. The chosen front is concept (a); see cover/README.md and DECISIONS.md.
+KDP's per-page paper thickness. The front is variant v1 from variants.py (concept (a), refined: the token stream
+into a green gate); v0 there is the first release's front, kept as the fallback. See cover/README.md and DECISIONS.md.
 """
 from __future__ import annotations
 
@@ -17,7 +18,7 @@ import segno  # noqa: E402
 
 from coverlib import (AUTHOR, C, COVER, PT, ROOT, Wrap, circle, contrast, fit, interior_pages, line,  # noqa: E402
                       measure, mix, rect, render, strapline, svg_doc, text, to_pdf, to_png, wrap_lines, html_page)
-from concepts import SUB_LINES, zone_bar  # noqa: E402
+from variants import FRONTS  # noqa: E402
 
 REPO_URL = "https://github.com/Mukkandi-Sridhar/decide-dont-generate"
 REPO_LABEL = "github.com/Mukkandi-Sridhar/decide-dont-generate"
@@ -30,62 +31,16 @@ PAPERBACK_PAPER = "premium_color"
 HARDCOVER_PAPER = "premium_color"
 PAPERBACK_BW_PAPER = "bw_white"          # the black-and-white edition (release/v1.0/print-bw/)
 BODY = "#D5D9DF"            # body text on the dark ground
-FRAGMENTS = ["ne", "ra", "te"]   # small pieces of "Generate" beside the title; [] for none
+FRONT = "v1"                # which front from variants.py; "v0" brings back the first release's front
 # the back cover's praise box: switch on only when there are real, attributed quotes to put in it
 SHOW_PRAISE = False
 PRAISE = []                 # [("quote", "Name, role"), ...]
 DISCLAIMER = "An independent guide. Not affiliated with TypeSafe AI."
 
 
-# ---------------------------------------------------------------- front (concept a, refined)
+# ---------------------------------------------------------------- front
 def front(W, H, strap):
-    m = W * 0.078
-    tw = W - 2 * m
-    out = [rect(0, 0, W, H, BG)]
-    s1 = fit("Decide,", tw, "Inter", 800, ls_em=-0.03)
-    extra = max(0.0, H - W * 10 / 7)       # a taller canvas (the ebook) spreads its extra height through the layout
-    y1 = m + s1 * 0.95 + H * 0.095 + extra * 0.30
-    out.append(text(m - s1 * 0.04, y1, "Decide,", s1, C["jev_on_dark"], weight=800, ls=-0.03 * s1))
-    s2 = s1 * 0.60
-    y2 = y1 + s2 * 1.18
-    out.append(text(m - s2 * 0.03, y2, "Don’t", s2, C["text_on_dark"], weight=800, ls=-0.025 * s2))
-    # "Generate" split into the tokens an LLM writes it with: small offsets and a light fade, so it still reads as
-    # one word at thumbnail size and in greyscale
-    y3 = y2 + s2 * 1.10
-    toks = [("Gen", 0, 0, 0.0), ("er", s2 * 0.05, -s2 * 0.035, 0.08), ("ate", s2 * 0.10, -s2 * 0.07, 0.16)]
-    x, last = m - s2 * 0.03, None
-    for tok, dx, dy, fade in toks:
-        w = measure(tok, s2, "Inter", 800, ls=-0.025 * s2)
-        bx, by = x + dx, y3 + dy
-        out.append(rect(bx - s2 * 0.06, by - s2 * 0.80, w + s2 * 0.12, s2 * 1.0, "none", rx=s2 * 0.10,
-                        stroke=mix(C["llm_on_dark"], BG, 0.30 + fade * 1.2), sw=max(1.0, s2 * 0.022)))
-        out.append(text(bx, by, tok, s2, mix(C["llm_on_dark"], BG, fade), weight=800, ls=-0.025 * s2))
-        x += w + s2 * 0.13
-        last = (bx + w + s2 * 0.06, by)
-    # a few smaller, fainter pieces of "Generate" trail off to the right of "ate", below the level of "Decide,"
-    if FRAGMENTS:
-        fx, fy = last[0] + s2 * 0.13, last[1] - s2 * 0.46
-        for i, tok in enumerate(FRAGMENTS):
-            size = s2 * (0.22 - i * 0.025)
-            w = measure(tok, size, "JetBrains Mono", 500)
-            if fx + w + size * 0.3 > W - m:
-                break
-            out.append(rect(fx - size * 0.3, fy - size * 0.95, w + size * 0.6, size * 1.35, "none", rx=size * 0.25,
-                            stroke=mix(C["llm_on_dark"], BG, 0.62 + i * 0.08), sw=0.8))
-            out.append(text(fx, fy, tok, size, mix(C["llm_on_dark"], BG, 0.50 + i * 0.08), family="JetBrains Mono",
-                            weight=500, extra='class="frag"'))
-            fx += w * 0.55 + size * 0.35              # each piece steps down and a little to the right
-            fy += s2 * 0.31
-    # the three doors: a decision ends in an action
-    by = y3 + s2 * 0.95 + extra * 0.08
-    out += zone_bar(m, by, tw, H * 0.012, label_fill=C["faint_on_dark"], size=W * 0.018)
-    ss = W * 0.052
-    sy = by + H * 0.145 + extra * 0.22
-    for i, s in enumerate(SUB_LINES):
-        out.append(text(m, sy + i * ss * 1.28, s, ss, C["sub_on_dark"], weight=500))
-    out.append(text(m, H - m * 1.62, strap, W * 0.0195, C["faint_on_dark"], family="JetBrains Mono"))
-    out.append(text(m, H - m * 0.9, AUTHOR, W * 0.036, C["text_on_dark"], weight=600, ls=W * 0.0006))
-    return "\n".join(out)
+    return FRONTS[FRONT](W, H, strap)
 
 
 # ---------------------------------------------------------------- spine
@@ -110,10 +65,11 @@ def spine(sw, H, wr: Wrap):
     g.append(f'<g transform="translate({cy + a * cap / 2:.2f},{bottom - mark - 0.2 * PT - alen:.2f}) rotate(90)">')
     g.append(text(0, 0, AUTHOR, a, C["sub_on_dark"], weight=600))
     g.append("</g>")
-    # a small imprint mark: the act / review / escalate bar, standing on end
+    # a small imprint mark: act / review / escalate as a green-to-grey scale, standing on end
     bw = max(3.0, sw * 0.14)
     yy = bottom - mark
-    for share, col in ((0.56, C["act"]), (0.30, C["review"]), (0.14, C["escalate"])):
+    for share, col in ((0.56, C["jev_on_dark"]), (0.30, mix(C["jev_on_dark"], C["faint_on_dark"], 0.6)),
+                       (0.14, C["faint_on_dark"])):
         g.append(rect(cy - bw / 2, yy, bw, mark * share - 1.2, col, rx=bw / 2))
         yy += mark * share
     return "\n".join(out + g)

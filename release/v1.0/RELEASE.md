@@ -356,6 +356,32 @@ outside the margins; 0 placeholders; 0 wrapped code lines; EPUBCheck clean; all 
 (colour paperback 0.6337 in, standard-colour paperback 0.6080 in, black-and-white paperback 0.6080 in, hardcover
 0.8227 in); the black-and-white interior has no colour.
 
+## v1.0.5: the cover, refined
+
+The front keeps its typographic title (green "Decide,", white "Don't", orange "Generate" in token boxes) and loses
+the purple act / review / escalate bar. In its place is one picture of the book: small orange token fragments
+("the", "ne", "is", "ra", "0.", "te", "…") drift away from "Generate", get smaller and fainter, and stop at one
+thin green line; one solid green answer, `attack 0.03 → act`, comes out the other side. The cover now uses only the
+dark ground, green, orange, and white or grey. The title is larger (41.5% of the cover's height, up from 36%), the
+author's name is larger and bold, the subtitle sits in a fixed 2 : 3 ratio of the space above and below it, and a
+fine grid with one diagonal sits behind everything at 5–6% (it disappears at thumbnail size).
+
+Three variants were tested against the old front (v0, kept in `cover/variants.py` as the fallback; set
+`FRONT = "v0"` in `cover/wrap.py` to bring it back). `cover/concepts/compare.png` shows all four at full size and
+at 150 and 80 px, in colour and greyscale, and `cover/concepts/variants.json` has the numbers and the five-second
+sentences. v1 (left to right, vertical gate, answer on the right) won; see DECISIONS.md, D-92.
+
+The spine's mark is now a green-to-grey scale instead of purple; the back cover was already green and grey only.
+Rebuilt: all four print wraps (colour, standard colour and black-and-white paperbacks, and the hardcover) with
+and without guides, the ebook cover (also inside `book.epub`), the print-shop panels, the complete preview PDF,
+the sample, and the three marketing images.
+
+Checks: cover spell check clean; every front and back item inside the safe area, nothing in the barcode area, no
+fragment touching the title; all text that carries meaning at least 5.5 : 1 against the ground (the strap line is
+the lowest; the answer chip's dark text on green is 7.3 : 1); the case study still matches Chapter 18 (54% → 89%);
+all four cover sizes match their paper at 270 pages (0.6337, 0.6080, 0.6080 and 0.8227 in spines); EPUBCheck
+clean; the rest of the release checks unchanged and passing.
+
 ## Decisions for you
 
 1. **54% or 57%.** The book's Chapter 18 prints 54% → 89% (real threats seen by a person, same six analysts), and
