@@ -78,9 +78,9 @@ def margins(p: Path, margin_in=0.9, tol_pt=3.5) -> dict:
 
 def covers_match(rel: Path, n_pages: int) -> dict:
     """Each cover wrap's size must equal the size KDP's formula gives for this interior's page count and paper."""
-    dims = json.loads((rel / "print" / "cover-dimensions.json").read_text())
+    dims = json.loads((rel / "print-color" / "cover-dimensions.json").read_text())
     out = {}
-    for name, f in (("paperback", rel / "print" / "cover-paperback.pdf"), ("hardcover", rel / "print" / "cover-hardcover.pdf"),
+    for name, f in (("paperback", rel / "print-color" / "cover-paperback-color.pdf"), ("hardcover", rel / "print-color" / "cover-hardcover-color.pdf"),
                     ("paperback-bw", rel / "print-bw" / "cover-paperback-bw.pdf")):
         d = dims[name]
         w = Wrap(d["kind"], pages=n_pages, paper=d["paper"])
@@ -110,7 +110,7 @@ def greyscale_ok(p: Path) -> dict:
 def main(rel="release/v1.0"):
     rel = ROOT / rel
     res: dict = {}
-    interior = rel / "print" / "Decide-Dont-Generate-interior.pdf"
+    interior = rel / "print-color" / "interior-color.pdf"
     itext = pdf_text(interior)
     res["interior"] = dict(pages=pages(interior), size_in=size_in(interior))
     n, bad = fonts_ok(interior)
@@ -124,7 +124,7 @@ def main(rel="release/v1.0"):
     hits = {"interior": scan(itext)}
     for f in sorted((rel / "preview").glob("*.pdf")):
         hits[f.name] = scan(pdf_text(f))
-    for f in sorted((rel / "print").glob("cover-*.pdf")) + sorted((rel / "print-bw").glob("*.pdf")):
+    for f in sorted((rel / "print-color").glob("cover-*.pdf")) + sorted((rel / "print-bw").glob("*.pdf")):
         hits[f.name] = scan(pdf_text(f))
     with zipfile.ZipFile(rel / "ebook" / "book.epub") as z:
         etext = " ".join(html.unescape(re.sub(r"<[^>]+>", "", z.read(n).decode("utf-8", "ignore")))
@@ -136,12 +136,12 @@ def main(rel="release/v1.0"):
                        png=sum(".png" in i for i in imgs))
     # fonts in every other PDF
     res["fonts"] = {}
-    for f in sorted(list((rel / "print").rglob("*.pdf")) + list((rel / "print-bw").rglob("*.pdf"))
+    for f in sorted(list((rel / "print-color").rglob("*.pdf")) + list((rel / "print-bw").rglob("*.pdf"))
                     + list((rel / "preview").glob("*.pdf"))):
         n, bad = fonts_ok(f)
         res["fonts"][str(f.relative_to(rel))] = dict(count=n, not_embedded=len(bad), size_in=size_in(f), pages=pages(f))
     # cover and interior agree
-    ctext = pdf_text(rel / "print" / "cover-paperback.pdf")
+    ctext = pdf_text(rel / "print-color" / "cover-paperback-color.pdf")
     flat = lambda s: re.sub(r"\s+", " ", s.replace("’", "'"))  # noqa: E731
     before, after, _ = case_study()
     figs = figure_count()          # numbered figure captions in the rendered book (_book/*.pdf)

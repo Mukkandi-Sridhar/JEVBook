@@ -83,7 +83,7 @@ copyright page; that is your call and isn't in this build.
 
 | Setting | Choose |
 |---|---|
-| Manuscript | `print/Decide-Dont-Generate-interior.pdf` |
+| Manuscript | `print-color/interior-color.pdf` |
 | ISBN | Get a free KDP ISBN |
 | Publication date | as you choose |
 | Print options: ink and paper | **Premium colour ink, white paper** |
@@ -91,7 +91,7 @@ copyright page; that is your call and isn't in this build.
 | Bleed settings | **No bleed** |
 | Paperback cover finish | **Matte** |
 | Reading direction | Left to right |
-| Book cover | Upload a cover you already have: `print/cover-paperback.pdf` |
+| Book cover | Upload a cover you already have: `print-color/cover-paperback-color.pdf` |
 | Barcode | Leave KDP's option to add the barcode on (the empty area is bottom right of the back cover) |
 | AI-generated content | as section 2 |
 
@@ -102,13 +102,13 @@ the cover's spine was built for 270.
 
 | Setting | Choose |
 |---|---|
-| Manuscript | `print/Decide-Dont-Generate-interior.pdf` (same file) |
+| Manuscript | `print-color/interior-color.pdf` (same file) |
 | ISBN | Get a free KDP ISBN (the hardcover gets its own, different from the paperback's) |
 | Print options: ink and paper | **Premium colour ink, white paper** (the only colour option for hardcovers) |
 | Trim size | **7 × 10 in** |
 | Bleed settings | **No bleed** |
 | Cover finish | **Matte** (case laminate) |
-| Book cover | `print/cover-hardcover.pdf` |
+| Book cover | `print-color/cover-hardcover-color.pdf` |
 
 KDP should report 270 pages and a spine of about 0.823 in.
 
@@ -153,13 +153,13 @@ Open the Kindle previewer after upload and page through a chapter with code (Cha
 
 | KDP screen | Field | File |
 |---|---|---|
-| Paperback content | Manuscript | `print/Decide-Dont-Generate-interior.pdf` |
-| Paperback content | Cover | `print/cover-paperback.pdf` |
-| Hardcover content | Manuscript | `print/Decide-Dont-Generate-interior.pdf` |
-| Hardcover content | Cover | `print/cover-hardcover.pdf` |
+| Paperback content | Manuscript | `print-color/interior-color.pdf` |
+| Paperback content | Cover | `print-color/cover-paperback-color.pdf` |
+| Hardcover content | Manuscript | `print-color/interior-color.pdf` |
+| Hardcover content | Cover | `print-color/cover-hardcover-color.pdf` |
 | Black-and-white paperback content | Manuscript | `print-bw/interior-bw.pdf` |
 | Black-and-white paperback content | Cover | `print-bw/cover-paperback-bw.pdf` |
 | Kindle eBook content | Manuscript | `ebook/book.epub` |
 | Kindle eBook content | Cover | `ebook/ebook-cover.jpg` |
 
-Don't upload anything from `print/guides/`, `print-bw/guides/`, `preview/`, `marketing/` or `checks/`.
+Don't upload anything from `print-color/guides/`, `print-bw/guides/`, `preview/`, `marketing/` or `checks/`.

@@ -2,12 +2,13 @@
 
 Run after the book, EPUB and cover are built (see RELEASE.md). Writes release/<version>/:
 
-  print/     interior PDF for KDP (padded to an even page count), paperback and hardcover cover wraps,
-             and guides/ with the with-guides versions for checking
+  print-color/ the colour edition: interior-color.pdf for KDP (padded to an even page count), the paperback and
+             hardcover cover wraps (cover-paperback-color.pdf, cover-hardcover-color.pdf), and guides/ with the
+             with-guides versions for checking
   ebook/     book.epub (figure alt text added, see tools/epub_post.py) and ebook-cover.jpg
   preview/   Decide-Dont-Generate-COMPLETE.pdf (front cover + interior + back cover, bookmarked)
              and sample-chapters.pdf (cover, contents, Chapters 3 and 13, closing page)
-  print-bw/  the black-and-white edition: interior-bw.pdf (the same interior converted to true greyscale with
+  print-bw/  the black-and-white edition, in the same layout: interior-bw.pdf (the same interior converted to true greyscale with
              `mutool recolor -c gray`) and the paperback cover wrap with its spine sized for KDP's white
              black-and-white paper (guides/ has the with-guides version)
   marketing/ 3D mockup, square post, 1200 x 628 banner
@@ -164,17 +165,17 @@ def greyscale(src: Path, dst: Path):
 
 def main(interior_src: str, epub: str, version: str = "v1.0"):
     out = ROOT / "release" / version
-    for sub in ("print/guides", "print-bw/guides", "ebook", "preview", "marketing"):
+    for sub in ("print-color/guides", "print-bw/guides", "ebook", "preview", "marketing"):
         (out / sub).mkdir(parents=True, exist_ok=True)
     tmp = out / "_tmp"
     tmp.mkdir(exist_ok=True)
     cov = ROOT / "cover"
-    pages = interior(Path(interior_src), out / "print" / "Decide-Dont-Generate-interior.pdf")
+    pages = interior(Path(interior_src), out / "print-color" / "interior-color.pdf")
     for kind in ("paperback", "hardcover"):
-        shutil.copy(cov / "print" / f"cover-{kind}.pdf", out / "print" / f"cover-{kind}.pdf")
-        shutil.copy(cov / "print" / f"cover-{kind}-guides.pdf", out / "print" / "guides" / f"cover-{kind}-guides.pdf")
-    shutil.copy(cov / "print" / "dimensions.json", out / "print" / "cover-dimensions.json")
-    greyscale(out / "print" / "Decide-Dont-Generate-interior.pdf", out / "print-bw" / "interior-bw.pdf")
+        shutil.copy(cov / "print" / f"cover-{kind}.pdf", out / "print-color" / f"cover-{kind}-color.pdf")
+        shutil.copy(cov / "print" / f"cover-{kind}-guides.pdf", out / "print-color" / "guides" / f"cover-{kind}-color-guides.pdf")
+    shutil.copy(cov / "print" / "dimensions.json", out / "print-color" / "cover-dimensions.json")
+    greyscale(out / "print-color" / "interior-color.pdf", out / "print-bw" / "interior-bw.pdf")
     shutil.copy(cov / "print" / "cover-paperback-bw.pdf", out / "print-bw" / "cover-paperback-bw.pdf")
     shutil.copy(cov / "print" / "cover-paperback-bw-guides.pdf", out / "print-bw" / "guides" / "cover-paperback-bw-guides.pdf")
     shutil.copy(cov / "print" / "dimensions.json", out / "print-bw" / "cover-dimensions.json")

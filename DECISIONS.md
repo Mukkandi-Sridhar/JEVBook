@@ -280,3 +280,8 @@ Newest decisions are appended at the bottom of each section.
   (Ghostscript isn't installed here; MuPDF's recolor gives true greyscale without re-rendering text), on KDP's
   white black-and-white paper (0.002252 in per page), with its own paperback cover whose spine fits that paper.
   The cover stays in colour, as KDP prints every cover.
+- **D-90 · Matching edition folders.** At the author's request the colour files follow the black-and-white edition's
+  layout: `release/v1.0/print-color/` (interior-color.pdf, cover-paperback-color.pdf, cover-hardcover-color.pdf,
+  guides/, cover-dimensions.json) beside `print-bw/` (interior-bw.pdf, cover-paperback-bw.pdf, guides/,
+  cover-dimensions.json). The old `print/` folder is gone; tools/release.py and tools/release_check.py write and
+  check the new names.

@@ -9,13 +9,13 @@ the files in this folder; the raw results are in `checks.json`.
 
 | File | What it is | Size |
 |---|---|---:|
-| `print/Decide-Dont-Generate-interior.pdf` | Interior for KDP, colour paperback and hardcover. 7 × 10 in, no bleed, 270 pages. | 4.3 MB |
-| `print/cover-paperback.pdf` | Paperback full wrap, 14.8837 × 10.25 in (0.125 in bleed), guides off. | 92 KB |
-| `print/cover-hardcover.pdf` | Hardcover case-laminate wrap, 16.3975 × 11.4173 in, guides off. | 96 KB |
+| `print-color/interior-color.pdf` | Interior for KDP, colour paperback and hardcover. 7 × 10 in, no bleed, 270 pages. | 4.3 MB |
+| `print-color/cover-paperback-color.pdf` | Paperback full wrap, 14.8837 × 10.25 in (0.125 in bleed), guides off. | 92 KB |
+| `print-color/cover-hardcover-color.pdf` | Hardcover case-laminate wrap, 16.3975 × 11.4173 in, guides off. | 96 KB |
 | `print-bw/interior-bw.pdf` | The black-and-white edition's interior: the same 270 pages in true greyscale (no colour anywhere, images grey). | 4.1 MB |
 | `print-bw/cover-paperback-bw.pdf` | Black-and-white paperback wrap, 14.858 × 10.25 in: spine sized for KDP's white black-and-white paper. The cover itself is in colour. | 92 KB |
-| `print/guides/cover-*-guides.pdf` | The same wraps with trim, spine, safe-area, hinge and barcode guides. For checking only; don't upload. | 252 KB |
-| `print/cover-dimensions.json` | Page count, paper, spine and wrap sizes used for the covers. | 4 KB |
+| `print-color/guides/cover-*-color-guides.pdf` | The same wraps with trim, spine, safe-area, hinge and barcode guides. For checking only; don't upload. | 252 KB |
+| `print-color/cover-dimensions.json` | Page count, paper, spine and wrap sizes used for the covers. | 4 KB |
 | `ebook/book.epub` | Reflowable EPUB 3. Passes EPUBCheck 5.3 with no errors or warnings. | 12 MB |
 | `ebook/ebook-cover.jpg` | Ebook cover, front only, 1600 × 2560 px. | 324 KB |
 | `preview/Decide-Dont-Generate-COMPLETE.pdf` | Front cover + full interior + back cover, 271 pages, bookmarked by part and chapter. For you and beta readers; not for KDP. | 4.3 MB |
@@ -100,7 +100,7 @@ black-and-white paperback uses KDP's **white black-and-white** paper (0.002252 i
 KDP's cover calculator is blocked from this build (the proxy refuses kdp.amazon.com), so the sizes come from KDP's
 published formulas (D-75): paperback width = bleed + back + spine + front + bleed; hardcover per KDP's case-laminate
 specification. **Before uploading, download KDP's templates for 270 pages (premium colour, and black-and-white white paper) and lay them over
-`print/guides/`.** The barcode area (2 × 1.2 in, bottom right of the back) is empty for KDP's free-ISBN barcode.
+`print-color/guides/`.** The barcode area (2 × 1.2 in, bottom right of the back) is empty for KDP's free-ISBN barcode.
 Every back-cover item sits inside the 0.25 in safe area, clear of the barcode area and of each other
 (`cover/check.py`).
 
@@ -138,7 +138,7 @@ python3 cover/wrap.py && python3 cover/mockup.py && python3 cover/check.py
 python3 tools/release.py /tmp/interior.pdf /tmp/book.epub v1.0
 python3 cover/print_shop.py
 python3 tools/release_check.py release/v1.0     # also checks code wrap, both editions' covers, and greyscale
-python3 tools/bw_test.py pages release/v1.0/print/Decide-Dont-Generate-interior.pdf release/v1.0/checks
+python3 tools/bw_test.py pages release/v1.0/print-color/interior-color.pdf release/v1.0/checks
 python3 tools/bw_test.py figures /tmp/bw-figures  # every figure in greyscale and photocopy, for inspection
 ```
 
@@ -318,6 +318,11 @@ Figures changed for black and white (book numbering):
 
 Every figure also changed through the shared style: darker tints, black text, darker rules, and a default series
 cycle in which colour, dash pattern and marker change together.
+
+**Two editions, one layout.** `print-color/` and `print-bw/` hold the same kinds of file with matching names:
+`interior-color.pdf` / `interior-bw.pdf`, `cover-paperback-color.pdf` / `cover-paperback-bw.pdf`, each folder's
+`guides/` and `cover-dimensions.json`. Only the colour folder has a hardcover (`cover-hardcover-color.pdf`): KDP
+prints hardcovers in premium colour only.
 
 **Black-and-white edition.** `print-bw/interior-bw.pdf` is the colour interior converted to true greyscale with
 `mutool recolor -c gray` (MuPDF 1.23): text, vector art and images are all grey. Same 270 pages, fonts embedded,

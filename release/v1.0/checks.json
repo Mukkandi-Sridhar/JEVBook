@@ -62,8 +62,8 @@
   "interior": [],
   "Decide-Dont-Generate-COMPLETE.pdf": [],
   "sample-chapters.pdf": [],
-  "cover-hardcover.pdf": [],
-  "cover-paperback.pdf": [],
+  "cover-hardcover-color.pdf": [],
+  "cover-paperback-color.pdf": [],
   "cover-paperback-bw.pdf": [],
   "interior-bw.pdf": [],
   "book.epub": []
@@ -92,51 +92,6 @@
    ],
    "pages": 26
   },
-  "print/Decide-Dont-Generate-interior.pdf": {
-   "count": 463,
-   "not_embedded": 0,
-   "size_in": [
-    7.0,
-    10.0
-   ],
-   "pages": 270
-  },
-  "print/cover-hardcover.pdf": {
-   "count": 20,
-   "not_embedded": 0,
-   "size_in": [
-    16.3975,
-    11.4173
-   ],
-   "pages": 1
-  },
-  "print/cover-paperback.pdf": {
-   "count": 20,
-   "not_embedded": 0,
-   "size_in": [
-    14.8838,
-    10.25
-   ],
-   "pages": 1
-  },
-  "print/guides/cover-hardcover-guides.pdf": {
-   "count": 23,
-   "not_embedded": 0,
-   "size_in": [
-    16.3975,
-    11.4173
-   ],
-   "pages": 1
-  },
-  "print/guides/cover-paperback-guides.pdf": {
-   "count": 22,
-   "not_embedded": 0,
-   "size_in": [
-    14.8838,
-    10.25
-   ],
-   "pages": 1
-  },
   "print-bw/cover-paperback-bw.pdf": {
    "count": 20,
    "not_embedded": 0,
@@ -156,6 +111,51 @@
    "pages": 1
   },
   "print-bw/interior-bw.pdf": {
+   "count": 463,
+   "not_embedded": 0,
+   "size_in": [
+    7.0,
+    10.0
+   ],
+   "pages": 270
+  },
+  "print-color/cover-hardcover-color.pdf": {
+   "count": 20,
+   "not_embedded": 0,
+   "size_in": [
+    16.3975,
+    11.4173
+   ],
+   "pages": 1
+  },
+  "print-color/cover-paperback-color.pdf": {
+   "count": 20,
+   "not_embedded": 0,
+   "size_in": [
+    14.8838,
+    10.25
+   ],
+   "pages": 1
+  },
+  "print-color/guides/cover-hardcover-color-guides.pdf": {
+   "count": 23,
+   "not_embedded": 0,
+   "size_in": [
+    16.3975,
+    11.4173
+   ],
+   "pages": 1
+  },
+  "print-color/guides/cover-paperback-color-guides.pdf": {
+   "count": 22,
+   "not_embedded": 0,
+   "size_in": [
+    14.8838,
+    10.25
+   ],
+   "pages": 1
+  },
+  "print-color/interior-color.pdf": {
    "count": 463,
    "not_embedded": 0,
    "size_in": [
