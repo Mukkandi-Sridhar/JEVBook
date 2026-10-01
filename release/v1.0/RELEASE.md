@@ -382,6 +382,15 @@ the lowest; the answer chip's dark text on green is 7.3 : 1); the case study sti
 all four cover sizes match their paper at 270 pages (0.6337, 0.6080, 0.6080 and 0.8227 in spines); EPUBCheck
 clean; the rest of the release checks unchanged and passing.
 
+## v1.0.6: an EPUB Kindle can convert
+
+KDP rejected the EPUB with "We couldn't convert your HTML file", although EPUBCheck passed it. The only unusual
+markup in it was MathML: 22 formulas, all in the cheat-sheet appendix. `tools/epub_post.py` now replaces them:
+the 16 simple inline ones become plain HTML (italic letters, subscripts, superscripts), and the six fractions and
+sums become eight sharp PNG images (side-by-side pairs are split onto two lines so they fit a phone), each with alt
+text written the way you'd read the formula aloud. The EPUB has no MathML left; EPUBCheck: 0 errors and warnings;
+146 images, none without alt text. The print PDFs are unchanged.
+
 ## Decisions for you
 
 1. **54% or 57%.** The book's Chapter 18 prints 54% → 89% (real threats seen by a person, same six analysts), and

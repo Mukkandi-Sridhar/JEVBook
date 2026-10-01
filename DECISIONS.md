@@ -300,3 +300,6 @@ Newest decisions are appended at the bottom of each section.
   tokens. The fragments are decoration and deliberately faint; WCAG 1.4.3 exempts pure decoration, and every text
   that carries meaning is at least 5.5 : 1. The calibration grid (5%, diagonal 6%) was kept because it vanishes at
   150 px. The old front stays in `cover/variants.py` as v0.
+- **D-93 · No MathML in the EPUB (v1.0.6).** KDP's converter failed on the EPUB, and MathML was the one feature in
+  it that Kindle handles unreliably. Formulas are now plain HTML where they're simple and images with spoken-style
+  alt text where they aren't. The paperback keeps its typeset formulas.
