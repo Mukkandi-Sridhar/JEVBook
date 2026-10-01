@@ -52,6 +52,7 @@ book:
       chapters:
         - chapters/ch22.qmd
   appendices:
+    - back/key-ideas.qmd
     - back/python.qmd
     - back/glossary.qmd
     - back/cheatsheets.qmd

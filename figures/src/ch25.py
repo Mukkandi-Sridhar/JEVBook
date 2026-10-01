@@ -84,29 +84,32 @@ def routes():
     y = r["y"].astype(bool)
     f, (a1, a2) = subplots(1, 2, width="text", height=2.0)
     ro, rn = r["old"][0], r["new"][0]
-    specs = [("old", [("closed unseen", ro == "closed", C["fail"]), ("queue (first come, first served)", ro == "queue", C["slate"])]),
-             ("new", [("auto-closed", rn == "act", ZONE["act"]), ("review queue", rn == "review", ZONE["review"]),
-                      ("page on-call", rn == "escalate", ZONE["escalate"])])]
+    # every part has its own pattern as well as its colour, named in the legend
+    specs = [("old", [("closed unseen (back-striped)", ro == "closed", C["fail"], "\\\\\\\\"),
+                      ("queue, first come, first served (dotted)", ro == "queue", C["slate"], "....")]),
+             ("new", [("auto-closed (plain)", rn == "act", ZONE["act"], ""), ("review queue (striped)", rn == "review", ZONE["review"], "////"),
+                      ("page on-call (cross-hatched)", rn == "escalate", ZONE["escalate"], "xxxx")])]
     for ax, mask, title in ((a1, np.ones_like(y), "where each day’s alerts go"), (a2, y, "where the real threats go")):
         clean(ax, "x")
         for row, (name, parts) in enumerate(specs):
             left = 0.0
             tot = mask.sum()
-            for lab, m, col in parts:
+            for lab, m, col, hat in parts:
                 v = (m & mask).sum() / tot
-                ax.barh(1 - row, v, left=left, color=col, height=0.55, edgecolor="white", lw=1)
+                ax.barh(1 - row, v, left=left, color=col, height=0.55, edgecolor="white", lw=1, hatch=hat or None)
                 if v > 0.1:
                     ax.text(left + v / 2, 1 - row, f"{v:.0%}", ha="center", va="center", fontsize=6.0,
-                            color="white" if col not in (ZONE["act"],) else C["ink"])
+                            color="white" if col not in (ZONE["act"],) else C["ink"],
+                            bbox=dict(boxstyle="square,pad=0.12", fc=col, ec="none"))
                 left += v
         ax.set_yticks([1, 0])
         ax.set_yticklabels(["before:\nrules", "after:\nJev + policy"] if ax is a1 else ["", ""], fontsize=6.2)
         ax.set_xlim(0, 1)
         ax.xaxis.set_major_formatter(PCT)
         ax.set_title(title, fontsize=6.8, loc="left")
-    handles = [(lab, col) for _, parts in specs for lab, _, col in parts]
-    for lab, col in handles:
-        a1.barh(0, 0, color=col, label=lab)
+    handles = [(lab, col, hat) for _, parts in specs for lab, _, col, hat in parts]
+    for lab, col, hat in handles:
+        a1.barh(0, 0, color=col, ec="white", hatch=hat or None, label=lab)
     a1.legend(loc="upper left", bbox_to_anchor=(0, -0.3), ncol=3, fontsize=5.6, frameon=False)
     f.subplots_adjust(wspace=0.35, bottom=0.32)
     synthetic_tag(f)
@@ -151,10 +154,14 @@ def shadow():
         for i, (lab, m) in enumerate(rows):
             n = int(((rn == z) & m).sum())
             v = n / 7
+            miss = i == 1 and z == "act"      # real threats the system would close: red, outlined and striped
             ax.add_patch(__import__("matplotlib.patches", fromlist=["Rectangle"]).Rectangle(
-                (j, 1 - i), 0.96, 0.92, fc=ZONE[z] if not (i == 1 and z == "act") else C["fail"], alpha=0.9))
-            ax.text(j + 0.48, 1 - i + 0.46, f"{v:,.1f}\na day", ha="center", va="center", fontsize=6.4,
-                    color="white" if (z != "act" or i == 1) else C["ink"], fontweight="semibold")
+                (j, 1 - i), 0.96, 0.92, fc=ZONE[z] if not miss else C["fail"], alpha=0.9,
+                ec=C["ink"] if miss else "none", lw=2.2 if miss else 0, hatch="////" if miss else None,
+                hatchcolor="white"))
+            ax.text(j + 0.48, 1 - i + 0.46, f"{v:,.1f}\na day" + ("\nmissed" if miss else ""), ha="center", va="center",
+                    fontsize=6.4, color="white" if (z != "act" or i == 1) else C["ink"], fontweight="semibold",
+                    bbox=dict(boxstyle="square,pad=0.15", fc=C["fail"], ec="none") if miss else None)
     ax.set_xlim(-0.05, 3)
     ax.set_ylim(-0.05, 2)
     ax.set_xticks([0.48, 1.48, 2.48])

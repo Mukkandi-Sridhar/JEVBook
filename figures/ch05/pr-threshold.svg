@@ -71,7 +71,7 @@ z
      <g id="line2d_6">
       <path d="M 25.433281 157.039781 
 L 287.693281 157.039781 
-" clip-path="url(#pcf297d3aac)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p105c69b6fe)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_7"/>
      <g id="text_7">
@@ -82,7 +82,7 @@ L 287.693281 157.039781
      <g id="line2d_8">
       <path d="M 25.433281 132.037428 
 L 287.693281 132.037428 
-" clip-path="url(#pcf297d3aac)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p105c69b6fe)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_9"/>
      <g id="text_8">
@@ -93,7 +93,7 @@ L 287.693281 132.037428
      <g id="line2d_10">
       <path d="M 25.433281 107.035075 
 L 287.693281 107.035075 
-" clip-path="url(#pcf297d3aac)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p105c69b6fe)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_11"/>
      <g id="text_9">
@@ -104,7 +104,7 @@ L 287.693281 107.035075
      <g id="line2d_12">
       <path d="M 25.433281 82.032722 
 L 287.693281 82.032722 
-" clip-path="url(#pcf297d3aac)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p105c69b6fe)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_13"/>
      <g id="text_10">
@@ -115,7 +115,7 @@ L 287.693281 82.032722
      <g id="line2d_14">
       <path d="M 25.433281 57.030369 
 L 287.693281 57.030369 
-" clip-path="url(#pcf297d3aac)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p105c69b6fe)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_15"/>
      <g id="text_11">
@@ -126,7 +126,7 @@ L 287.693281 57.030369
      <g id="line2d_16">
       <path d="M 25.433281 32.028017 
 L 287.693281 32.028017 
-" clip-path="url(#pcf297d3aac)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p105c69b6fe)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_17"/>
      <g id="text_12">
@@ -282,7 +282,7 @@ L 273.37621 154.556104
 L 274.574291 154.556104 
 L 275.772372 154.97005 
 L 275.772372 154.97005 
-" clip-path="url(#pcf297d3aac)" style="fill: none; stroke: #3b9c6e; stroke-width: 1.8; stroke-linecap: round"/>
+" clip-path="url(#p105c69b6fe)" style="fill: none; stroke: #3b9c6e; stroke-width: 1.8; stroke-linecap: round"/>
    </g>
    <g id="line2d_19">
     <path d="M 37.35419 144.843512 
@@ -435,7 +435,7 @@ L 257.801152 39.38165
 L 258.999234 32.028017 
 L 275.772372 32.028017 
 L 275.772372 32.028017 
-" clip-path="url(#pcf297d3aac)" style="fill: none; stroke: #2f6db5; stroke-width: 1.8; stroke-linecap: round"/>
+" clip-path="url(#p105c69b6fe)" style="fill: none; stroke-dasharray: 9,3.6; stroke-dashoffset: 0; stroke: #2f6db5; stroke-width: 1.8"/>
    </g>
    <g id="line2d_20">
     <path d="M 37.35419 60.936987 
@@ -492,45 +492,45 @@ L 254.206908 156.320964
 L 256.603071 156.477228 
 L 275.772372 156.883517 
 L 275.772372 156.883517 
-" clip-path="url(#pcf297d3aac)" style="fill: none; stroke: #8a919c; stroke-width: 1.2; stroke-linecap: round"/>
+" clip-path="url(#p105c69b6fe)" style="fill: none; stroke-dasharray: 1.2,1.98; stroke-dashoffset: 0; stroke: #6b7280; stroke-width: 1.2"/>
    </g>
    <g id="line2d_21">
     <path d="M 48.106736 157.039781 
 L 48.106736 29.527781 
-" clip-path="url(#pcf297d3aac)" style="fill: none; stroke: #1f2430; stroke-width: 0.8; stroke-linecap: round"/>
+" clip-path="url(#p105c69b6fe)" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linecap: round"/>
    </g>
    <g id="patch_3">
     <path d="M 25.433281 157.039781 
 L 287.693281 157.039781 
-" style="fill: none; stroke: #c9ced6; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+" style="fill: none; stroke: #9aa1ab; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="legend_1">
     <g id="line2d_22">
-     <path d="M 149.157266 82.597775 
-L 153.567266 82.597775 
-L 157.977266 82.597775 
+     <path d="M 120.885031 82.597775 
+L 125.295031 82.597775 
+L 129.705031 82.597775 
 " style="fill: none; stroke: #3b9c6e; stroke-width: 1.8; stroke-linecap: round"/>
     </g>
     <g id="text_13">
-     <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="163.017266" y="84.802775" transform="rotate(-0 163.017266 84.802775)">recall: share of real threats blocked</text>
+     <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start" x="134.745031" y="84.802775" transform="rotate(-0 134.745031 84.802775)">recall: share of real threats blocked (solid)</text>
     </g>
     <g id="line2d_23">
-     <path d="M 149.157266 93.370529 
-L 153.567266 93.370529 
-L 157.977266 93.370529 
-" style="fill: none; stroke: #2f6db5; stroke-width: 1.8; stroke-linecap: round"/>
+     <path d="M 120.885031 93.370529 
+L 125.295031 93.370529 
+L 129.705031 93.370529 
+" style="fill: none; stroke-dasharray: 9,3.6; stroke-dashoffset: 0; stroke: #2f6db5; stroke-width: 1.8"/>
     </g>
     <g id="text_14">
-     <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="163.017266" y="95.575529" transform="rotate(-0 163.017266 95.575529)">precision: share of blocks that were real</text>
+     <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start" x="134.745031" y="95.575529" transform="rotate(-0 134.745031 95.575529)">precision: share of blocks that were real (dashed)</text>
     </g>
     <g id="line2d_24">
-     <path d="M 149.157266 104.143283 
-L 153.567266 104.143283 
-L 157.977266 104.143283 
-" style="fill: none; stroke: #8a919c; stroke-width: 1.2; stroke-linecap: round"/>
+     <path d="M 120.885031 104.143283 
+L 125.295031 104.143283 
+L 129.705031 104.143283 
+" style="fill: none; stroke-dasharray: 1.2,1.98; stroke-dashoffset: 0; stroke: #6b7280; stroke-width: 1.2"/>
     </g>
     <g id="text_15">
-     <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="163.017266" y="106.348283" transform="rotate(-0 163.017266 106.348283)">share of all alerts blocked</text>
+     <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start" x="134.745031" y="106.348283" transform="rotate(-0 134.745031 106.348283)">share of all alerts blocked (dotted)</text>
     </g>
    </g>
   </g>
@@ -548,11 +548,11 @@ Q 221.450156 11.055781 222.290156 11.055781
 z
 " style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.5; stroke-linejoin: miter"/>
    </g>
-   <text style="font-weight: 500; font-size: 5.6px; font-family: 'Inter'; text-anchor: end; fill: #8a919c" x="319.841281" y="8.305" transform="rotate(-0 319.841281 8.305)">SYNTHETIC DATA · Kestrel Logistics</text>
+   <text style="font-weight: 500; font-size: 5.6px; font-family: 'Inter'; text-anchor: end; fill: #6b7280" x="319.841281" y="8.305" transform="rotate(-0 319.841281 8.305)">SYNTHETIC DATA · Kestrel Logistics</text>
   </g>
  </g>
  <defs>
-  <clipPath id="pcf297d3aac">
+  <clipPath id="p105c69b6fe">
    <rect x="25.433281" y="29.527781" width="262.26" height="127.512"/>
   </clipPath>
  </defs>

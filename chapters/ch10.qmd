@@ -74,12 +74,12 @@ That "add up to 1" is important, and it has a downside. The model *must* spread 
 
 Here's what that looks like. I asked the mock to label {{< num ch17 n_harmless int >}} harmless alerts twice. The first time it had the full list of categories, including "benign". The second time it had only the threat categories.
 
-![How confident the top label was for harmless alerts. With "benign" among the options (green), almost all were labelled benign; only the few that weren't are shown. Without it (red), every harmless alert got a threat label, most of them with high confidence.](/figures/ch17/forced.pdf){#fig-forced}
+![How confident the top label was for harmless alerts. With "benign" among the options (green, striped), almost all were labelled benign; only the few that weren't are shown. Without it (red, solid), every harmless alert got a threat label, most of them with high confidence.](/figures/ch17/forced.pdf){#fig-forced}
 
 With "benign" available, {{< num ch17 full_benign_share pct >}} of the harmless alerts were labelled benign. Without it, every one of them got a threat label, with a median confidence of {{< num ch17 forced_conf_median f2 >}} (@fig-forced). The model wasn't exactly wrong. You asked it which *threat* each alert was, and it answered. But anyone reading "malware, 0.95" would reach the wrong conclusion.
 
 ::: {.keyidea}
-A choice's probabilities add up to 1 over the options you gave. Make sure every real case has somewhere to go.
+A choice's probabilities add up to 1 over your options, so give every real case somewhere to go.
 :::
 
 So include "benign", "none", "other" or "not enough information" whenever those can happen. Also make sure only one option can be true at a time. Suppose two labels can both be true at once, like "phishing" and "credential theft". Then a choice will split its probability between them, and neither will look confident. When things really can overlap, use several nouls instead of one choice.

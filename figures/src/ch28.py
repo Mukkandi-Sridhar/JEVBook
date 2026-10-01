@@ -9,7 +9,7 @@ from typesafe_sdk import RetryPolicy, TypeSafeClient
 
 from jevkit import soc, service as S, MockJevTransport
 from jevkit.batch import score_alerts
-from jevkit.figs import figure, draw, C, ZONE, ROOT, subplots, clean, results, summary_page, synthetic_tag
+from jevkit.figs import hatch_kw, figure, draw, C, ZONE, ROOT, subplots, clean, results, summary_page, synthetic_tag
 
 CH = "ch28"
 PCT = FuncFormatter(lambda v, _: f"{v:.0%}")
@@ -81,6 +81,16 @@ def moved_threats():
     return int(sum(1 for i, (u, v) in enumerate(zip(a, b)) if u.zone == "review" and v.zone == "act" and y[i]))
 
 
+def _example(rec) -> dict:
+    """The example decision record. Its latency is measured live and varies from run to run, so the printed record
+    keeps the value already in results/ch28.json; everything else is recomputed."""
+    d = json.loads(rec.model_dump_json())
+    path = ROOT / "results" / f"{CH}.json"
+    if path.exists():
+        d["latency_ms"] = json.loads(path.read_text()).get("example", {}).get("latency_ms", d["latency_ms"])
+    return d
+
+
 def record():
     H, L, v1, v2 = base()
     r1 = per_day_reports("v1", "live")
@@ -100,7 +110,7 @@ def record():
             campaign_flags_day1=rc[0]["flags"], shadow_agree=sh["agree"], shadow_matrix=sh["matrix"].tolist(),
             shadow_review_to_act_day=float(sh["matrix"][1, 0] / 7), shadow_moved_threats_day=moved_threats() / 7, fallback_rate=fs["review"]["fallback_rate"],
             fallback_threats=fs["review"]["threats_in_fallback"], fallback_act_closed=fs["act"]["threats_closed_by_fallback"],
-            example=json.loads(rec.model_dump_json()), v2_fingerprint=v2.fingerprint())
+            example=_example(rec), v2_fingerprint=v2.fingerprint())
 
 
 @figure(CH, "architecture")
@@ -130,7 +140,7 @@ def architecture():
 @figure(CH, "record")
 def record_fig():
     _, b = run("v2")
-    rec = json.loads(b[0].model_dump_json())
+    rec = _example(b[0])
     f, ax = draw.canvas("text", 2.6)
     draw.box(ax, 0.0, 0.0, 2.9, 2.55, "", kind="plain")
     for i, (k, v) in enumerate(rec.items()):
@@ -153,8 +163,10 @@ def dry_run():
     f, ax = subplots(width="text", height=2.0)
     clean(ax, "y")
     x = np.arange(1, 8)
-    ax.bar(x - 0.2, [r["reviews"] for r in r1], width=0.38, color=C["fail"], label=f"lines fitted without the rule (low {v1.low:.3f})")
-    ax.bar(x + 0.2, [r["reviews"] for r in r2], width=0.38, color=C["jev"], label=f"lines fitted with the rule (low {v2.low:.3f})")
+    ax.bar(x - 0.2, [r["reviews"] for r in r1], width=0.38, label=f"thresholds fitted without the rule (low {v1.low:.3f}; solid)",
+           **hatch_kw(0, C["fail"]))
+    ax.bar(x + 0.2, [r["reviews"] for r in r2], width=0.38, label=f"thresholds fitted with the rule (low {v2.low:.3f}; striped)",
+           **hatch_kw(1, C["jev"]))
     ax.axhline(CAP, color=C["ink"], lw=0.8, ls=(0, (3, 2)))
     ax.text(0.45, CAP + 4, "capacity", fontsize=5.6, ha="left", va="bottom")
     ax.set_xticks(x)
@@ -196,17 +208,20 @@ def monitor():
     x = np.arange(1, 15)
     clean(a1, "y")
     clean(a2, "y")
-    a1.bar(x, [r["reviews"] for r in reps], color=[C["jev"] if not r["flags"] else C["fail"] for r in reps], width=0.6)
+    for xi, r in zip(x, reps):          # flagged days are red and striped, so they show without colour
+        a1.bar(xi, r["reviews"], width=0.6, **hatch_kw(1 if r["flags"] else 0, C["fail"] if r["flags"] else C["jev"]))
     a1.axhline(CAP, color=C["ink"], lw=0.8, ls=(0, (3, 2)))
     a1.set_ylabel("reviews", fontsize=6)
-    a1.set_title("review queue per day (red: a flag was raised)", fontsize=6.6, loc="left")
-    a2.plot(x, [r["predicted"] for r in reps], color=C["jev"], lw=1.6, marker="o", ms=3, label="predicted share real")
-    a2.plot(x, [r["observed"] for r in reps], color=C["ink"], lw=1.6, marker="o", ms=3, label="confirmed by people")
+    a1.set_title("review queue per day (red, striped: a flag was raised)", fontsize=6.6, loc="left")
+    a2.plot(x, [r["predicted"] for r in reps], color=C["jev"], lw=1.6, ls="-", marker="o", ms=3, label="predicted share real (solid, circles)")
+    a2.plot(x, [r["observed"] for r in reps], color=C["ink"], lw=1.6, ls=(0, (5, 2)), marker="s", ms=3,
+            label="confirmed by people (dashed, squares)")
     a2.set_title("alerts people saw: predicted against confirmed", fontsize=6.6, loc="left")
     a2.yaxis.set_major_formatter(PCT)
     a2.legend(fontsize=5.8, frameon=False, loc="upper left")
     for ax in (a1, a2):
         ax.axvspan(7.5, 14.5, color=C["fail_t"], zorder=0, lw=0)
+        ax.axvline(7.5, color=C["fail"], lw=0.8, ls=":", zorder=1)       # the campaign's start shows without its tint
     a1.set_ylim(0, 380)
     a1.text(11, 350, "phishing campaign week", fontsize=5.8, ha="center", color=C["fail"])
     a2.set_xticks(x)
@@ -246,7 +261,7 @@ def shadow():
 @figure(CH, "checklist")
 def checklist():
     items = [("Pinned", "a dated model name, not an alias; the SDK version in the lockfile"),
-             ("Versioned", "calibration, lines and rules in one config, with a fingerprint on every record"),
+             ("Versioned", "calibration, thresholds and rules in one config, with a fingerprint on every record"),
              ("Fail-safe", "every error has a decided meaning; test it by making calls fail"),
              ("Logged", "state, answers, probabilities, zone and reason for every decision"),
              ("Audited", "a random share of auto-closed cases goes to a person"),
@@ -268,7 +283,7 @@ def summary():
     rr = json.load(open(ROOT / "results" / f"{CH}.json"))
     panels = [
         dict(num=1, title="One config, one fingerprint", kind="neutral", h=1.5,
-             body="Model, calibration, lines and rules live in one versioned config. Every record says which one decided."),
+             body="Model, calibration, thresholds and rules live in one versioned config. Every record says which one decided."),
         dict(num=2, title="The dry run found a bug", kind="fail", h=1.5,
              body=(f"A rule added after the lines were fitted pushed reviews to about {rr['v1_mean_reviews']:.0f} a day. "
                    f"Fitting with the rule brought them to {rr['v2_mean_reviews']:.0f}.")),

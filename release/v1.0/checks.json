@@ -1,17 +1,17 @@
 {
  "interior": {
-  "pages": 256,
+  "pages": 270,
   "size_in": [
    7.0,
    10.0
   ],
   "fonts": {
-   "count": 458,
+   "count": 463,
    "not_embedded": []
   },
   "raster_images": [
    {
-    "page": 66,
+    "page": 68,
     "px": "267x266",
     "ppi": [
      300,
@@ -19,7 +19,7 @@
     ]
    },
    {
-    "page": 66,
+    "page": 68,
     "px": "266x266",
     "ppi": [
      300,
@@ -27,7 +27,7 @@
     ]
    },
    {
-    "page": 66,
+    "page": 68,
     "px": "266x266",
     "ppi": [
      300,
@@ -35,7 +35,7 @@
     ]
    },
    {
-    "page": 206,
+    "page": 214,
     "px": "399x399",
     "ppi": [
      300,
@@ -47,17 +47,15 @@
   "outside": [],
   "blank_pages": [
    2,
-   14,
    16,
-   60,
-   88,
-   90,
-   136,
-   138,
-   174,
-   176,
-   230,
-   256
+   62,
+   92,
+   140,
+   180,
+   182,
+   238,
+   240,
+   270
   ]
  },
  "placeholders": {
@@ -66,6 +64,8 @@
   "sample-chapters.pdf": [],
   "cover-hardcover.pdf": [],
   "cover-paperback.pdf": [],
+  "cover-paperback-bw.pdf": [],
+  "interior-bw.pdf": [],
   "book.epub": []
  },
  "epub": {
@@ -75,37 +75,37 @@
  },
  "fonts": {
   "preview/Decide-Dont-Generate-COMPLETE.pdf": {
-   "count": 482,
+   "count": 487,
    "not_embedded": 0,
    "size_in": [
     7.0,
     10.0
    ],
-   "pages": 257
+   "pages": 271
   },
   "preview/sample-chapters.pdf": {
-   "count": 73,
+   "count": 75,
    "not_embedded": 0,
    "size_in": [
     7.0,
     10.0
    ],
-   "pages": 25
+   "pages": 26
   },
   "print/Decide-Dont-Generate-interior.pdf": {
-   "count": 458,
+   "count": 463,
    "not_embedded": 0,
    "size_in": [
     7.0,
     10.0
    ],
-   "pages": 256
+   "pages": 270
   },
   "print/cover-hardcover.pdf": {
    "count": 20,
    "not_embedded": 0,
    "size_in": [
-    16.3646,
+    16.3975,
     11.4173
    ],
    "pages": 1
@@ -114,7 +114,7 @@
    "count": 20,
    "not_embedded": 0,
    "size_in": [
-    14.8508,
+    14.8838,
     10.25
    ],
    "pages": 1
@@ -123,7 +123,7 @@
    "count": 23,
    "not_embedded": 0,
    "size_in": [
-    16.3646,
+    16.3975,
     11.4173
    ],
    "pages": 1
@@ -132,10 +132,37 @@
    "count": 22,
    "not_embedded": 0,
    "size_in": [
-    14.8508,
+    14.8838,
     10.25
    ],
    "pages": 1
+  },
+  "print-bw/cover-paperback-bw.pdf": {
+   "count": 20,
+   "not_embedded": 0,
+   "size_in": [
+    14.8581,
+    10.25
+   ],
+   "pages": 1
+  },
+  "print-bw/guides/cover-paperback-bw-guides.pdf": {
+   "count": 22,
+   "not_embedded": 0,
+   "size_in": [
+    14.8581,
+    10.25
+   ],
+   "pages": 1
+  },
+  "print-bw/interior-bw.pdf": {
+   "count": 463,
+   "not_embedded": 0,
+   "size_in": [
+    7.0,
+    10.0
+   ],
+   "pages": 270
   }
  },
  "agreement": {
@@ -154,5 +181,70 @@
   "cover strap": "130+ figures",
   "case study matches": true,
   "strap true": true
+ },
+ "covers": {
+  "paperback": {
+   "paper": "premium_color",
+   "pages_used": 270,
+   "interior_pages": 270,
+   "spine_in": 0.6337,
+   "expected_in": [
+    14.8837,
+    10.25
+   ],
+   "pdf_in": [
+    14.8838,
+    10.25
+   ],
+   "ok": true
+  },
+  "hardcover": {
+   "paper": "premium_color",
+   "pages_used": 270,
+   "interior_pages": 270,
+   "spine_in": 0.8227,
+   "expected_in": [
+    16.3975,
+    11.4173
+   ],
+   "pdf_in": [
+    16.3975,
+    11.4173
+   ],
+   "ok": true
+  },
+  "paperback-bw": {
+   "paper": "bw_white",
+   "pages_used": 270,
+   "interior_pages": 270,
+   "spine_in": 0.608,
+   "expected_in": [
+    14.858,
+    10.25
+   ],
+   "pdf_in": [
+    14.8581,
+    10.25
+   ],
+   "ok": true
+  }
+ },
+ "bw_interior": {
+  "pages": 270,
+  "size_in": [
+   7.0,
+   10.0
+  ],
+  "fonts_not_embedded": [],
+  "raster_below_300ppi": [],
+  "coloured_pages": [],
+  "image_colour_spaces": [
+   "gray"
+  ]
+ },
+ "colour_interior_has_colour": true,
+ "code_wrap": {
+  "ok": true,
+  "summary": "wrapped code lines: 0; wrapped output lines (allowed): 4"
  }
 }

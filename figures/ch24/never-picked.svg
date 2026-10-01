@@ -36,7 +36,7 @@ z
      <g id="line2d_1">
       <path d="M 52.96 118.591781 
 L 52.96 24.343781 
-" clip-path="url(#p0a972236cb)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p387ddc07d3)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_2"/>
      <g id="text_1">
@@ -47,7 +47,7 @@ L 52.96 24.343781
      <g id="line2d_3">
       <path d="M 96.67 118.591781 
 L 96.67 24.343781 
-" clip-path="url(#p0a972236cb)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p387ddc07d3)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_4"/>
      <g id="text_2">
@@ -58,7 +58,7 @@ L 96.67 24.343781
      <g id="line2d_5">
       <path d="M 140.38 118.591781 
 L 140.38 24.343781 
-" clip-path="url(#p0a972236cb)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p387ddc07d3)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_6"/>
      <g id="text_3">
@@ -69,7 +69,7 @@ L 140.38 24.343781
      <g id="line2d_7">
       <path d="M 184.09 118.591781 
 L 184.09 24.343781 
-" clip-path="url(#p0a972236cb)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p387ddc07d3)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_8"/>
      <g id="text_4">
@@ -80,7 +80,7 @@ L 184.09 24.343781
      <g id="line2d_9">
       <path d="M 227.8 118.591781 
 L 227.8 24.343781 
-" clip-path="url(#p0a972236cb)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p387ddc07d3)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_10"/>
      <g id="text_5">
@@ -91,7 +91,7 @@ L 227.8 24.343781
      <g id="line2d_11">
       <path d="M 271.51 118.591781 
 L 271.51 24.343781 
-" clip-path="url(#p0a972236cb)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p387ddc07d3)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_12"/>
      <g id="text_6">
@@ -102,7 +102,7 @@ L 271.51 24.343781
      <g id="line2d_13">
       <path d="M 315.22 118.591781 
 L 315.22 24.343781 
-" clip-path="url(#p0a972236cb)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p387ddc07d3)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_14"/>
      <g id="text_7">
@@ -145,7 +145,7 @@ L 52.96 41.902147
 L 52.96 28.627781 
 L 52.96 28.627781 
 z
-" clip-path="url(#p0a972236cb)" style="fill: #b8323a"/>
+" clip-path="url(#p387ddc07d3)" style="fill: #b8323a"/>
    </g>
    <g id="patch_4">
     <path d="M 52.96 66.037359 
@@ -153,7 +153,7 @@ L 190.288202 66.037359
 L 190.288202 52.762993 
 L 52.96 52.762993 
 z
-" clip-path="url(#p0a972236cb)" style="fill: #3b9c6e"/>
+" clip-path="url(#p387ddc07d3)" style="fill: #3b9c6e"/>
    </g>
    <g id="patch_5">
     <path d="M 52.96 90.17257 
@@ -161,7 +161,7 @@ L 191.440285 90.17257
 L 191.440285 76.898204 
 L 52.96 76.898204 
 z
-" clip-path="url(#p0a972236cb)" style="fill: #3b9c6e"/>
+" clip-path="url(#p387ddc07d3)" style="fill: #3b9c6e"/>
    </g>
    <g id="patch_6">
     <path d="M 52.96 114.307781 
@@ -169,29 +169,29 @@ L 214.251513 114.307781
 L 214.251513 101.033415 
 L 52.96 101.033415 
 z
-" clip-path="url(#p0a972236cb)" style="fill: #3b9c6e"/>
+" clip-path="url(#p387ddc07d3)" style="fill: #3b9c6e"/>
    </g>
    <g id="patch_7">
     <path d="M 52.96 118.591781 
 L 52.96 24.343781 
-" style="fill: none; stroke: #c9ced6; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+" style="fill: none; stroke: #9aa1ab; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="patch_8">
     <path d="M 52.96 118.591781 
 L 315.22 118.591781 
-" style="fill: none; stroke: #c9ced6; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+" style="fill: none; stroke: #9aa1ab; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="text_13">
     <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start; fill: #b8323a" x="57.331" y="37.520335" transform="rotate(-0 57.331 37.520335)">0%   never chosen</text>
    </g>
    <g id="text_14">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="194.659202" y="61.655547" transform="rotate(-0 194.659202 61.655547)">31%</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start" x="194.659202" y="61.655547" transform="rotate(-0 194.659202 61.655547)">31%</text>
    </g>
    <g id="text_15">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="195.811285" y="85.790758" transform="rotate(-0 195.811285 85.790758)">32%</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start" x="195.811285" y="85.790758" transform="rotate(-0 195.811285 85.790758)">32%</text>
    </g>
    <g id="text_16">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="218.622513" y="109.925969" transform="rotate(-0 218.622513 109.925969)">37%</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start" x="218.622513" y="109.925969" transform="rotate(-0 218.622513 109.925969)">37%</text>
    </g>
   </g>
   <g id="text_17">
@@ -208,11 +208,11 @@ Q 241.353 11.055781 242.193 11.055781
 z
 " style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.5; stroke-linejoin: miter"/>
    </g>
-   <text style="font-weight: 500; font-size: 5.6px; font-family: 'Inter'; text-anchor: end; fill: #8a919c" x="347.368" y="8.305" transform="rotate(-0 347.368 8.305)">SYNTHETIC · not measured on real Jev</text>
+   <text style="font-weight: 500; font-size: 5.6px; font-family: 'Inter'; text-anchor: end; fill: #6b7280" x="347.368" y="8.305" transform="rotate(-0 347.368 8.305)">SYNTHETIC · not measured on real Jev</text>
   </g>
  </g>
  <defs>
-  <clipPath id="p0a972236cb">
+  <clipPath id="p387ddc07d3">
    <rect x="52.96" y="24.343781" width="262.26" height="94.248"/>
   </clipPath>
  </defs>

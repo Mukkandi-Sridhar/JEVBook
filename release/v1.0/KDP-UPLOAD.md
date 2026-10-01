@@ -1,10 +1,11 @@
 # KDP upload sheet: *Decide, Don't Generate*
 
-What to enter on each KDP screen, for the paperback, the hardcover and the Kindle ebook. Screen and field names
+What to enter on each KDP screen, for the colour paperback, the hardcover, the black-and-white paperback and the
+Kindle ebook. Screen and field names
 follow KDP's setup flow as documented in its help pages; the KDP site couldn't be opened from this build, so if a
 label differs, choose the closest match. Prices, dates and your account details are yours to fill.
 
-## 1. Details (the same for all three editions)
+## 1. Details (the same for every edition)
 
 | Field | Enter |
 |---|---|
@@ -94,8 +95,8 @@ copyright page; that is your call and isn't in this build.
 | Barcode | Leave KDP's option to add the barcode on (the empty area is bottom right of the back cover) |
 | AI-generated content | as section 2 |
 
-KDP's previewer should report 256 pages and a spine of about 0.601 in. If it reports a different page count, stop:
-the cover's spine was built for 256.
+KDP's previewer should report 270 pages and a spine of about 0.634 in. If it reports a different page count, stop:
+the cover's spine was built for 270.
 
 ## 4. Hardcover content
 
@@ -109,7 +110,31 @@ the cover's spine was built for 256.
 | Cover finish | **Matte** (case laminate) |
 | Book cover | `print/cover-hardcover.pdf` |
 
-KDP should report 256 pages and a spine of about 0.790 in.
+KDP should report 270 pages and a spine of about 0.823 in.
+
+## 4b. Black-and-white paperback (optional, cheaper to print)
+
+The same book printed in black and white: the interior is already converted to true greyscale, and every figure,
+box and zone was checked to read without colour (see `RELEASE.md`, "v1.0.3"). Only the cover prints in colour, as
+it does for every KDP paperback. It is a separate paperback with its own ISBN.
+
+| Setting | Choose |
+|---|---|
+| Manuscript | `print-bw/interior-bw.pdf` |
+| ISBN | Get a free KDP ISBN (its own, different from the colour paperback's and the hardcover's) |
+| Print options: ink and paper | **Black & white ink, white paper** |
+| Trim size | **7 × 10 in** |
+| Bleed settings | **No bleed** |
+| Paperback cover finish | **Matte** |
+| Book cover | `print-bw/cover-paperback-bw.pdf` (its spine is narrower: black-and-white paper is thinner) |
+| Barcode | Leave KDP's option to add the barcode on |
+
+KDP should report 270 pages and a spine of about 0.608 in (270 × 0.002252 in). Use this cover only with black-and-white
+paper: on premium colour paper the spine would be 0.634 in and the cover wouldn't fit.
+
+Two paperbacks of the same title sit side by side in the store, so make the difference visible to buyers, for
+example by adding "Black and White Edition" in the edition or subtitle field. KDP's help pages couldn't be opened
+from this build; check its current rule on listing two paperbacks of one book before you publish both.
 
 ## 5. Kindle ebook
 
@@ -132,7 +157,9 @@ Open the Kindle previewer after upload and page through a chapter with code (Cha
 | Paperback content | Cover | `print/cover-paperback.pdf` |
 | Hardcover content | Manuscript | `print/Decide-Dont-Generate-interior.pdf` |
 | Hardcover content | Cover | `print/cover-hardcover.pdf` |
+| Black-and-white paperback content | Manuscript | `print-bw/interior-bw.pdf` |
+| Black-and-white paperback content | Cover | `print-bw/cover-paperback-bw.pdf` |
 | Kindle eBook content | Manuscript | `ebook/book.epub` |
 | Kindle eBook content | Cover | `ebook/ebook-cover.jpg` |
 
-Don't upload anything from `print/guides/`, `preview/` or `marketing/`.
+Don't upload anything from `print/guides/`, `print-bw/guides/`, `preview/`, `marketing/` or `checks/`.

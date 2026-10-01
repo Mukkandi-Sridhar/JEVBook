@@ -6,7 +6,7 @@ import numpy as np
 from matplotlib.ticker import FuncFormatter
 
 from jevkit import econ
-from jevkit.figs import figure, draw, C, subplots, clean, results, summary_page, synthetic_tag
+from jevkit.figs import hatch_kw, figure, draw, C, subplots, clean, results, summary_page, synthetic_tag
 
 CH = "ch19"
 CAPACITY = 240          # reviews a day Kestrel's team can clear (Chapter 14)
@@ -115,7 +115,10 @@ def pools():
         y = len(econ.POOLS) - 1 - i
         v = vals[p.name]
         lo, med, hi = np.percentile(v, [5, 50, 95])
-        ax.plot([lo, hi], [y, y], color=C["data"], lw=5, solid_capstyle="round", alpha=0.35)
+        # the range is a mid-grey bar with dark end ticks, so it survives a photocopy
+        ax.plot([lo, hi], [y, y], color=C["data"], lw=5, ls="-", solid_capstyle="butt", alpha=0.5)
+        ax.plot([lo, lo], [y - 0.18, y + 0.18], color=C["data"], lw=1.0, ls="-")
+        ax.plot([hi, hi], [y - 0.18, y + 0.18], color=C["data"], lw=1.0, ls="-")
         ax.scatter([med], [y], color=C["data"], s=22, zorder=3)
         ax.text(3e3, y, f"{count(p.per_day)} a day", va="center", fontsize=6.2, color=C["ink2"])
     for price, lab, col in ((econ.LLM_PRICE, "LLM price", C["llm"]), (econ.JEV_PRICE, "Jev price", C["jev"])):
@@ -219,10 +222,10 @@ def flags():
         for j, (key, name, col) in enumerate((("top_share", "flag the top 0.1%", C["fail"]),
                                               ("cost_line", "flag when expected loss > review cost", C["jev"]))):
             x = i + (j - 0.5) * (w + 0.03)
-            ax.bar(x, d[key], width=w, color=col, zorder=2)
+            ax.bar(x, d[key], width=w, zorder=2, **hatch_kw(j, col))
             ax.text(x, d[key] + 12, f"{d[key]:,}", ha="center", fontsize=6.2, va="bottom")
             if i == 0:
-                ax.bar(0, 0, color=col, label=name)
+                ax.bar(0, 0, label=name + (" (striped)" if j else " (solid)"), **hatch_kw(j, col))
     ax.axhline(CAPACITY, color=C["ink"], lw=1, ls=(0, (4, 2)), zorder=3)
     ax.text(1.98, CAPACITY + 20, f"team capacity:\n{CAPACITY} a day", fontsize=6.0, va="bottom", ha="right")
     ax.set_xticks([0, 1])

@@ -26,62 +26,62 @@ z
    <g id="patch_2">
     <path d="M 78.322852 64.08 
 Q 82.802282 64.08 86.322847 64.08 
-" clip-path="url(#p40637f74f7)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#pb3874ab7cc)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
     <path d="M 83.172847 62.155 
 L 86.322847 64.08 
 L 83.172847 66.005 
 z
-" clip-path="url(#p40637f74f7)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#pb3874ab7cc)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
    </g>
    <g id="patch_3">
     <path d="M 164.722852 64.08 
 Q 169.202282 64.08 172.722847 64.08 
-" clip-path="url(#p40637f74f7)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#pb3874ab7cc)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
     <path d="M 169.572847 62.155 
 L 172.722847 64.08 
 L 169.572847 66.005 
 z
-" clip-path="url(#p40637f74f7)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#pb3874ab7cc)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
    </g>
    <g id="patch_4">
     <path d="M 251.122852 64.08 
 Q 255.602282 64.08 259.122847 64.08 
-" clip-path="url(#p40637f74f7)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#pb3874ab7cc)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
     <path d="M 255.972847 62.155 
 L 259.122847 64.08 
 L 255.972847 66.005 
 z
-" clip-path="url(#p40637f74f7)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#pb3874ab7cc)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
    </g>
    <g id="patch_5">
     <path d="M 78.322852 150.48 
 Q 82.802282 150.48 86.322847 150.48 
-" clip-path="url(#p40637f74f7)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#pb3874ab7cc)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
     <path d="M 83.172847 148.555 
 L 86.322847 150.48 
 L 83.172847 152.405 
 z
-" clip-path="url(#p40637f74f7)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#pb3874ab7cc)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
    </g>
    <g id="patch_6">
     <path d="M 164.722852 150.48 
 Q 169.202282 150.48 172.722847 150.48 
-" clip-path="url(#p40637f74f7)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#pb3874ab7cc)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
     <path d="M 169.572847 148.555 
 L 172.722847 150.48 
 L 169.572847 152.405 
 z
-" clip-path="url(#p40637f74f7)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#pb3874ab7cc)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
    </g>
    <g id="patch_7">
     <path d="M 251.122852 150.48 
 Q 255.602282 150.48 259.122847 150.48 
-" clip-path="url(#p40637f74f7)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#pb3874ab7cc)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
     <path d="M 255.972847 148.555 
 L 259.122847 150.48 
 L 255.972847 152.405 
 z
-" clip-path="url(#p40637f74f7)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#pb3874ab7cc)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
    </g>
    <g id="patch_8">
     <path d="M 7.2 89.28 
@@ -94,7 +94,7 @@ Q 2.88 38.88 2.88 43.2
 L 2.88 84.96 
 Q 2.88 89.28 7.2 89.28 
 z
-" clip-path="url(#p40637f74f7)" style="fill: #f1f2f4; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pb3874ab7cc)" style="fill: #d5d8dd; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_9">
     <path d="M 93.6 89.28 
@@ -107,7 +107,7 @@ Q 89.28 38.88 89.28 43.2
 L 89.28 84.96 
 Q 89.28 89.28 93.6 89.28 
 z
-" clip-path="url(#p40637f74f7)" style="fill: #f1f2f4; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pb3874ab7cc)" style="fill: #d5d8dd; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_10">
     <path d="M 180 89.28 
@@ -120,7 +120,7 @@ Q 175.68 38.88 175.68 43.2
 L 175.68 84.96 
 Q 175.68 89.28 180 89.28 
 z
-" clip-path="url(#p40637f74f7)" style="fill: #f1f2f4; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pb3874ab7cc)" style="fill: #d5d8dd; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_11">
     <path d="M 266.4 89.28 
@@ -133,7 +133,7 @@ Q 262.08 38.88 262.08 43.2
 L 262.08 84.96 
 Q 262.08 89.28 266.4 89.28 
 z
-" clip-path="url(#p40637f74f7)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pb3874ab7cc)" style="fill: #f3d2b6; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_12">
     <path d="M 7.2 175.68 
@@ -146,7 +146,7 @@ Q 2.88 125.28 2.88 129.6
 L 2.88 171.36 
 Q 2.88 175.68 7.2 175.68 
 z
-" clip-path="url(#p40637f74f7)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pb3874ab7cc)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_13">
     <path d="M 93.6 175.68 
@@ -159,7 +159,7 @@ Q 89.28 125.28 89.28 129.6
 L 89.28 171.36 
 Q 89.28 175.68 93.6 175.68 
 z
-" clip-path="url(#p40637f74f7)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pb3874ab7cc)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_14">
     <path d="M 180 175.68 
@@ -172,7 +172,7 @@ Q 175.68 125.28 175.68 129.6
 L 175.68 171.36 
 Q 175.68 175.68 180 175.68 
 z
-" clip-path="url(#p40637f74f7)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pb3874ab7cc)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_15">
     <path d="M 266.4 175.68 
@@ -185,57 +185,57 @@ Q 262.08 125.28 262.08 129.6
 L 262.08 171.36 
 Q 262.08 175.68 266.4 175.68 
 z
-" clip-path="url(#p40637f74f7)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pb3874ab7cc)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="2.88" y="29.76075" transform="rotate(-0 2.88 29.76075)">1865 · COAL</text>
    </g>
    <g id="text_2">
-    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(12.319516 56.380193)">Watt’s engine gets</text>
-    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(16.04775 66.406453)">more work from</text>
-    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(15.810406 75.780744)">each ton of coal</text>
+    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'" transform="translate(12.319516 56.380193)">Watt’s engine gets</text>
+    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'" transform="translate(16.04775 66.406453)">more work from</text>
+    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'" transform="translate(15.810406 75.780744)">each ton of coal</text>
    </g>
    <g id="text_3">
-    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(105.861141 61.001948)">work done by</text>
-    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(99.472719 70.354927)">coal gets cheaper</text>
+    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'" transform="translate(105.861141 61.001948)">work done by</text>
+    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'" transform="translate(99.472719 70.354927)">coal gets cheaper</text>
    </g>
    <g id="text_4">
-    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(185.853344 56.380193)">engines spread to</text>
-    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(194.068828 65.864437)">mills, mines,</text>
-    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(190.524172 75.158807)">railways, ships</text>
+    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'" transform="translate(185.853344 56.380193)">engines spread to</text>
+    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'" transform="translate(194.068828 65.864437)">mills, mines,</text>
+    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'" transform="translate(190.524172 75.158807)">railways, ships</text>
    </g>
    <g id="text_5">
-    <text style="font-weight: 600; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(279.621656 57.030709)">Britain burns</text>
-    <text style="font-weight: 600; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(283.040375 65.755453)">more coal,</text>
-    <text style="font-weight: 600; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(287.08975 75.677572)">not less</text>
+    <text style="font-weight: 600; font-size: 6.2px; font-family: 'Inter'" transform="translate(279.621656 57.030709)">Britain burns</text>
+    <text style="font-weight: 600; font-size: 6.2px; font-family: 'Inter'" transform="translate(283.040375 65.755453)">more coal,</text>
+    <text style="font-weight: 600; font-size: 6.2px; font-family: 'Inter'" transform="translate(287.08975 75.677572)">not less</text>
    </g>
    <g id="text_6">
     <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #3b9c6e" x="2.88" y="116.157656" transform="rotate(-0 2.88 116.157656)">NOW · DECISIONS</text>
    </g>
    <g id="text_7">
-    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(14.540375 143.320271)">a model answers</text>
-    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(21.756594 152.193719)">in one pass,</text>
-    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(12.195516 161.467744)">not token by token</text>
+    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'" transform="translate(14.540375 143.320271)">a model answers</text>
+    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'" transform="translate(21.756594 152.193719)">in one pass,</text>
+    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'" transform="translate(12.195516 161.467744)">not token by token</text>
    </g>
    <g id="text_8">
-    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(105.412125 143.411334)">each decision</text>
-    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(109.122438 152.181609)">costs a tiny</text>
-    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(100.697703 162.180744)">fraction of a cent</text>
+    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'" transform="translate(105.412125 143.411334)">each decision</text>
+    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'" transform="translate(109.122438 152.181609)">costs a tiny</text>
+    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'" transform="translate(100.697703 162.180744)">fraction of a cent</text>
    </g>
    <g id="text_9">
-    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(186.161406 142.804412)">decisions nobody</text>
-    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(194.515906 152.803547)">could afford</text>
-    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(198.526531 161.443525)">get made</text>
+    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'" transform="translate(186.161406 142.804412)">decisions nobody</text>
+    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'" transform="translate(194.515906 152.803547)">could afford</text>
+    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'" transform="translate(198.526531 161.443525)">get made</text>
    </g>
    <g id="text_10">
-    <text style="font-weight: 600; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(271.016734 143.430709)">far more decisions</text>
-    <text style="font-weight: 600; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(281.340219 152.262984)">in total, and</text>
-    <text style="font-weight: 600; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(271.161563 162.18365)">new uses for them</text>
+    <text style="font-weight: 600; font-size: 6.2px; font-family: 'Inter'" transform="translate(271.016734 143.430709)">far more decisions</text>
+    <text style="font-weight: 600; font-size: 6.2px; font-family: 'Inter'" transform="translate(281.340219 152.262984)">in total, and</text>
+    <text style="font-weight: 600; font-size: 6.2px; font-family: 'Inter'" transform="translate(271.161563 162.18365)">new uses for them</text>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="p40637f74f7">
+  <clipPath id="pb3874ab7cc">
    <rect x="2.88" y="2.88" width="338.4" height="183.6"/>
   </clipPath>
  </defs>

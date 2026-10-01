@@ -14,6 +14,7 @@ Resume from here. Each chapter row is updated after its lab runs, it renders, an
 | 6 | Release v1.0: print, ebook, previews, marketing, KDP guide (`release/v1.0/`) | done: 248 pages |
 | 7 | v1.0.1 polish: spacing, index ranges, Python appendix, glossary terms, plain-language pass (`SIMPLIFY.md`) | done: 256 pages, grade 6.3 → 5.7 |
 | 8 | v1.0.2: no wrapped code lines, copyable indentation, two text additions | done: 256 pages |
+| 9 | v1.0.3: 62 key ideas, Keep these boxes, Key ideas appendix; black-and-white safe figures, boxes and text; black-and-white edition (`release/v1.0/print-bw/`) | done: 270 pages |
 
 ## Chapters
 
@@ -53,7 +54,7 @@ Resume from here. Each chapter row is updated after its lab runs, it renders, an
 
 ## NEEDS AUTHOR
 
-Everything below needs you, or access this build didn't have. Release v1.0.2 is in `release/v1.0/`; its RELEASE.md
+Everything below needs you, or access this build didn't have. Release v1.0.3 is in `release/v1.0/`; its RELEASE.md
 ends with the decisions still open. The draft markers were removed for the release; `docs/verify-ledger.md` lists
 what they marked.
 

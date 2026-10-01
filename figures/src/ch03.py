@@ -84,8 +84,8 @@ def logloss_fig():
     f, ax = subplots(width="text", height=2.25)
     clean(ax, "y")
     p = np.linspace(0.005, 0.995, 300)
-    ax.plot(p, -np.log(p), color=C["fail"], lw=1.8)
-    ax.plot(p, -np.log(1 - p), color=C["data"], lw=1.8)
+    ax.plot(p, -np.log(p), color=C["fail"], lw=1.8, ls="-")              # it was an attack: solid
+    ax.plot(p, -np.log(1 - p), color=C["data"], lw=1.8, ls=(0, (5, 2)))  # it was harmless: dashed
     ax.text(0.08, 3.6, "it WAS an attack:\npenalty = −log(P)", fontsize=6.5, color=C["fail"], fontweight="semibold")
     ax.text(0.62, 3.6, "it was harmless:\npenalty = −log(1−P)", fontsize=6.5, color=C["data"], fontweight="semibold")
     ax.scatter([0.01], [-np.log(0.01)], color=C["fail"], s=18, zorder=4)

@@ -28,8 +28,8 @@ def stack():
     draw.box(ax, 0.0, 1.55, 2.1, 0.8, "an LLM reads, decides,\nwrites and acts,\nall as text", kind="llm", size=6.4)
     draw.box(ax, 0.0, 0.95, 2.1, 0.45, "tools", kind="data", size=6.2)
     layers = [("LLM: reads messy input, plans, writes for people", "llm", 1.95),
-              ("decision layer: typed questions, honest probabilities", "jev", 1.45),
-              ("policy: lines, rules, capacity, fail-safes", "review", 0.95),
+              ("decision layer: typed questions, calibrated probabilities", "jev", 1.45),
+              ("policy: thresholds, rules, capacity, fail-safes", "review", 0.95),
               ("tools, logs, monitors, people", "data", 0.45)]
     for t, k, y in layers:
         draw.box(ax, 2.5, y, 2.2, 0.4, t, kind=k, size=5.8, textcolor="white" if k == "review" else None,
@@ -99,7 +99,7 @@ def monday():
     f, ax = draw.canvas("text", 2.3)
     phases = [("WEEK 1", "Audit", "List every decision your system makes. Count them. Mark which are small, typed and frequent."),
               ("WEEKS 2–4", "Measure", "Pick one. Get a few hundred labels. Test ranking and calibration: Chapters 3, 11 and 13."),
-              ("MONTH 2", "Shadow", "Put costs on mistakes, draw lines, run in shadow: Chapters 4, 14 and 21."),
+              ("MONTH 2", "Shadow", "Put costs on mistakes, set thresholds, run in shadow: Chapters 4, 14 and 21."),
               ("MONTH 3", "Switch, and watch", "Switch on with a fail-safe, an audit and a daily monitor. Then the next decision.")]
     w = 1.12
     for i, (when, what, detail) in enumerate(phases):
@@ -114,10 +114,10 @@ def monday():
 @figure(CH, "journey")
 def journey():
     f, ax = draw.canvas("text", 2.9)
-    story = [("I", "We learned to speak in probabilities, make them honest and turn them into actions."),
+    story = [("I", "We learned to speak in probabilities, make them calibrated and turn them into actions."),
              ("II", "Networks learned patterns, LLMs learned to write, and agents to act."),
              ("III", "A new kind of model decided in one pass, with probabilities we could test."),
-             ("IV", "We compared methods, drew lines from costs and named the patterns."),
+             ("IV", "We compared methods, set thresholds from costs and named the patterns."),
              ("V", "We built it: calls, an agent, a case study, our own model, a service."),
              ("VI", "Now decisions are cheap. The question is which ones deserve them.")]
     for i, (r, t) in enumerate(story):

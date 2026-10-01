@@ -28,6 +28,7 @@ BG = C["night"]
 # KDP paper: premium colour for both editions (hardcovers are only offered in premium colour)
 PAPERBACK_PAPER = "premium_color"
 HARDCOVER_PAPER = "premium_color"
+PAPERBACK_BW_PAPER = "bw_white"          # the black-and-white edition (release/v1.0/print-bw/)
 BODY = "#D5D9DF"            # body text on the dark ground
 FRAGMENTS = ["ne", "ra", "te"]   # small pieces of "Generate" beside the title; [] for none
 # the back cover's praise box: switch on only when there are real, attributed quotes to put in it
@@ -327,8 +328,11 @@ def wrap_svg(wr: Wrap, strap, with_guides=False):
 # ---------------------------------------------------------------- outputs
 def build_wraps(strap):
     pages = interior_pages()
+    # the black-and-white edition prints the same interior in greyscale on KDP's white black-and-white paper,
+    # which is thinner, so its paperback needs its own spine; the cover itself still prints in colour
     wraps = {"paperback": Wrap("paperback", pages=pages, paper=PAPERBACK_PAPER),
-             "hardcover": Wrap("hardcover", pages=pages, paper=HARDCOVER_PAPER)}
+             "hardcover": Wrap("hardcover", pages=pages, paper=HARDCOVER_PAPER),
+             "paperback-bw": Wrap("paperback", pages=pages, paper=PAPERBACK_BW_PAPER)}
     report = {}
     for name, wr in wraps.items():
         for g in (False, True):

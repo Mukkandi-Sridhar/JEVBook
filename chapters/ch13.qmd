@@ -78,8 +78,10 @@ Where would 3,000 labels come from? Not from analysts' reviews alone: at 240 a d
 The text classifier never catches up, even with every label we have. Counting words doesn't capture the numbers in the text.
 
 ::: {.keyidea}
-Labels are the hidden cost of trained models. A method that needs none can start today. A method that needs thousands has to wait for them, and needs them again when things change.
+Labels are the hidden cost of trained models: a method that needs none can start today.
 :::
+
+A method that needs thousands has to wait for them, and needs them again when things change.
 
 ## Round four: speed and price
 
@@ -87,7 +89,11 @@ Labels are the hidden cost of trained models. A method that needs none can start
 
 Nothing beats a rule on speed or price, and the classic models are close behind (@fig-cost-latency). They run in millionths of a second, on computers you already own. Jev's vendor-reported figures put it in between: about \${{< num ch20 jev_cost_m int >}} per million decisions, in tens to hundreds of milliseconds. The illustrative LLM costs about \${{< num ch20 llm_json_cost_m int >}} per million and takes about {{< num ch20 llm_json_latency f1 >}} seconds. That's a little more than Chapter 9's figures. The bake-off's JSON answer has four fields (verdict, confidence, rule and threat-intel score), so it's about 60 output tokens rather than 40.
 
-If a rule or a logistic regression can make a decision well, use one of them. It's the cheapest and fastest option by a factor of a thousand or more. Jev's price advantage is against *LLMs*, not against everything.
+::: {.keyidea}
+If a rule or a logistic regression can make a decision well, use one of them.
+:::
+
+It's the cheapest and fastest option by a factor of a thousand or more. Jev's price advantage is against *LLMs*, not against everything.
 
 ## Round five: the same answer twice
 
@@ -140,7 +146,11 @@ A new team at Kestrel is taking over cloud-storage alerts, a decision nobody has
 For any algorithm, any elevated performance over one class of problems is offset by performance over another class.
 :::
 
-Wolpert and Macready proved this about search and optimisation [@wolpert1997], but the idea fits any bake-off. There is no best method, only a best method for a particular decision.
+Wolpert and Macready proved this about search and optimisation [@wolpert1997], but the idea fits any bake-off.
+
+::: {.keyidea}
+There is no best method, only a best method for a particular decision.
+:::
 
 ## Where we are
 

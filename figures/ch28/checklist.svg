@@ -34,7 +34,7 @@ Q 2.88 4.32 2.88 8.64
 L 2.88 18.72 
 Q 2.88 23.04 7.2 23.04 
 z
-" clip-path="url(#pe3b30a04d8)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pd129c2f3a4)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 7.2 46.8 
@@ -47,7 +47,7 @@ Q 2.88 28.08 2.88 32.4
 L 2.88 42.48 
 Q 2.88 46.8 7.2 46.8 
 z
-" clip-path="url(#pe3b30a04d8)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pd129c2f3a4)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 7.2 70.56 
@@ -60,7 +60,7 @@ Q 2.88 51.84 2.88 56.16
 L 2.88 66.24 
 Q 2.88 70.56 7.2 70.56 
 z
-" clip-path="url(#pe3b30a04d8)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pd129c2f3a4)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 7.2 94.32 
@@ -73,7 +73,7 @@ Q 2.88 75.6 2.88 79.92
 L 2.88 90 
 Q 2.88 94.32 7.2 94.32 
 z
-" clip-path="url(#pe3b30a04d8)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pd129c2f3a4)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_6">
     <path d="M 7.2 118.08 
@@ -86,7 +86,7 @@ Q 2.88 99.36 2.88 103.68
 L 2.88 113.76 
 Q 2.88 118.08 7.2 118.08 
 z
-" clip-path="url(#pe3b30a04d8)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pd129c2f3a4)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_7">
     <path d="M 7.2 141.84 
@@ -99,7 +99,7 @@ Q 2.88 123.12 2.88 127.44
 L 2.88 137.52 
 Q 2.88 141.84 7.2 141.84 
 z
-" clip-path="url(#pe3b30a04d8)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pd129c2f3a4)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_8">
     <path d="M 7.2 165.6 
@@ -112,7 +112,7 @@ Q 2.88 146.88 2.88 151.2
 L 2.88 161.28 
 Q 2.88 165.6 7.2 165.6 
 z
-" clip-path="url(#pe3b30a04d8)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pd129c2f3a4)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_9">
     <path d="M 7.2 189.36 
@@ -125,76 +125,76 @@ Q 2.88 170.64 2.88 174.96
 L 2.88 185.04 
 Q 2.88 189.36 7.2 189.36 
 z
-" clip-path="url(#pe3b30a04d8)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pd129c2f3a4)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
-    <text style="font-weight: 500; font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="12.24" y="16.005859" transform="rotate(-0 12.24 16.005859)">✓</text>
+    <text style="font-weight: 500; font-size: 7px; font-family: 'Inter'; text-anchor: middle" x="12.24" y="16.005859" transform="rotate(-0 12.24 16.005859)">✓</text>
    </g>
    <g id="text_2">
-    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="30.24" y="16.177687" transform="rotate(-0 30.24 16.177687)">Pinned</text>
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start" x="30.24" y="16.177687" transform="rotate(-0 30.24 16.177687)">Pinned</text>
    </g>
    <g id="text_3">
     <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="92.88" y="15.439219" transform="rotate(-0 92.88 15.439219)">a dated model name, not an alias; the SDK version in the lockfile</text>
    </g>
    <g id="text_4">
-    <text style="font-weight: 500; font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="12.24" y="39.765859" transform="rotate(-0 12.24 39.765859)">✓</text>
+    <text style="font-weight: 500; font-size: 7px; font-family: 'Inter'; text-anchor: middle" x="12.24" y="39.765859" transform="rotate(-0 12.24 39.765859)">✓</text>
    </g>
    <g id="text_5">
-    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="30.24" y="39.937688" transform="rotate(-0 30.24 39.937688)">Versioned</text>
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start" x="30.24" y="39.937688" transform="rotate(-0 30.24 39.937688)">Versioned</text>
    </g>
    <g id="text_6">
-    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="92.88" y="39.077812" transform="rotate(-0 92.88 39.077812)">calibration, lines and rules in one config, with a fingerprint on every record</text>
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="92.88" y="39.077812" transform="rotate(-0 92.88 39.077812)">calibration, thresholds and rules in one config, with a fingerprint on every record</text>
    </g>
    <g id="text_7">
-    <text style="font-weight: 500; font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="12.24" y="63.525859" transform="rotate(-0 12.24 63.525859)">✓</text>
+    <text style="font-weight: 500; font-size: 7px; font-family: 'Inter'; text-anchor: middle" x="12.24" y="63.525859" transform="rotate(-0 12.24 63.525859)">✓</text>
    </g>
    <g id="text_8">
-    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="30.24" y="63.697688" transform="rotate(-0 30.24 63.697688)">Fail-safe</text>
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start" x="30.24" y="63.697688" transform="rotate(-0 30.24 63.697688)">Fail-safe</text>
    </g>
    <g id="text_9">
     <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="92.88" y="62.837812" transform="rotate(-0 92.88 62.837812)">every error has a decided meaning; test it by making calls fail</text>
    </g>
    <g id="text_10">
-    <text style="font-weight: 500; font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="12.24" y="87.285859" transform="rotate(-0 12.24 87.285859)">✓</text>
+    <text style="font-weight: 500; font-size: 7px; font-family: 'Inter'; text-anchor: middle" x="12.24" y="87.285859" transform="rotate(-0 12.24 87.285859)">✓</text>
    </g>
    <g id="text_11">
-    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="30.24" y="86.648672" transform="rotate(-0 30.24 86.648672)">Logged</text>
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start" x="30.24" y="86.648672" transform="rotate(-0 30.24 86.648672)">Logged</text>
    </g>
    <g id="text_12">
     <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="92.88" y="86.62125" transform="rotate(-0 92.88 86.62125)">state, answers, probabilities, zone and reason for every decision</text>
    </g>
    <g id="text_13">
-    <text style="font-weight: 500; font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="12.24" y="111.045859" transform="rotate(-0 12.24 111.045859)">✓</text>
+    <text style="font-weight: 500; font-size: 7px; font-family: 'Inter'; text-anchor: middle" x="12.24" y="111.045859" transform="rotate(-0 12.24 111.045859)">✓</text>
    </g>
    <g id="text_14">
-    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="30.24" y="111.217687" transform="rotate(-0 30.24 111.217687)">Audited</text>
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start" x="30.24" y="111.217687" transform="rotate(-0 30.24 111.217687)">Audited</text>
    </g>
    <g id="text_15">
     <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="92.88" y="110.357812" transform="rotate(-0 92.88 110.357812)">a random share of auto-closed cases goes to a person</text>
    </g>
    <g id="text_16">
-    <text style="font-weight: 500; font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="12.24" y="134.805859" transform="rotate(-0 12.24 134.805859)">✓</text>
+    <text style="font-weight: 500; font-size: 7px; font-family: 'Inter'; text-anchor: middle" x="12.24" y="134.805859" transform="rotate(-0 12.24 134.805859)">✓</text>
    </g>
    <g id="text_17">
-    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="30.24" y="134.977688" transform="rotate(-0 30.24 134.977688)">Monitored</text>
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start" x="30.24" y="134.977688" transform="rotate(-0 30.24 134.977688)">Monitored</text>
    </g>
    <g id="text_18">
     <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="92.88" y="134.117813" transform="rotate(-0 92.88 134.117813)">zone rates, queue, fallback rate, predicted against confirmed, every day</text>
    </g>
    <g id="text_19">
-    <text style="font-weight: 500; font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="12.24" y="158.565859" transform="rotate(-0 12.24 158.565859)">✓</text>
+    <text style="font-weight: 500; font-size: 7px; font-family: 'Inter'; text-anchor: middle" x="12.24" y="158.565859" transform="rotate(-0 12.24 158.565859)">✓</text>
    </g>
    <g id="text_20">
-    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="30.24" y="158.637656" transform="rotate(-0 30.24 158.637656)">Shadowed</text>
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start" x="30.24" y="158.637656" transform="rotate(-0 30.24 158.637656)">Shadowed</text>
    </g>
    <g id="text_21">
     <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="92.88" y="157.90125" transform="rotate(-0 92.88 157.90125)">each new version runs silently beside the current one first</text>
    </g>
    <g id="text_22">
-    <text style="font-weight: 500; font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="12.24" y="182.325859" transform="rotate(-0 12.24 182.325859)">✓</text>
+    <text style="font-weight: 500; font-size: 7px; font-family: 'Inter'; text-anchor: middle" x="12.24" y="182.325859" transform="rotate(-0 12.24 182.325859)">✓</text>
    </g>
    <g id="text_23">
-    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="30.24" y="182.397656" transform="rotate(-0 30.24 182.397656)">Owned</text>
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start" x="30.24" y="182.397656" transform="rotate(-0 30.24 182.397656)">Owned</text>
    </g>
    <g id="text_24">
     <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="92.88" y="181.637812" transform="rotate(-0 92.88 181.637812)">a named person reads the flags and can switch the service to review-everything</text>
@@ -202,7 +202,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="pe3b30a04d8">
+  <clipPath id="pd129c2f3a4">
    <rect x="2.88" y="2.88" width="338.4" height="198"/>
   </clipPath>
  </defs>

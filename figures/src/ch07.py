@@ -14,6 +14,7 @@ CH = "ch07"
 GROUP = {"lure": "threat", "malware": "threat", "exfil": "threat", "secret": "threat",
          "money": "business", "office": "business", "action": "other", "role": "other", "device": "other"}
 GCOL = {"threat": C["fail"], "business": C["data"], "other": C["slate"]}
+GSTYLE = {"threat": (1.8, "-"), "business": (0.7, "-"), "other": (0.9, (0, (3, 2)))}
 
 
 @lru_cache(None)
@@ -104,16 +105,21 @@ def word_map():
     from matplotlib.patches import FancyBboxPatch
     for (x, y), c in zip(P, classes):
         col = GCOL[GROUP[c]]
+        lw, ls = GSTYLE[GROUP[c]]
         ws = text.WORD_CLASSES[c]
         ax.add_patch(FancyBboxPatch((x - 0.085, y - 0.105), 0.17, 0.21, boxstyle="round,pad=0,rounding_size=0.02",
-                                    fc="white", ec=col, lw=0.8))
+                                    fc="white", ec=col, lw=lw, ls=ls))
         for k, w in enumerate(ws):
             ax.text(x, y + 0.075 - k * 0.037, w, fontsize=5.6, color=C["ink"], ha="center", va="center")
     ax.set_xlim(-0.12, 1.12)
     ax.set_ylim(-0.14, 1.14)
-    ax.text(0.0, 1.02, "\u25cf threat words", transform=ax.transAxes, fontsize=6.3, color=C["fail"])
-    ax.text(0.22, 1.02, "\u25cf everyday business", transform=ax.transAxes, fontsize=6.3, color=C["data"])
-    ax.text(0.5, 1.02, "\u25cf actions, roles, devices", transform=ax.transAxes, fontsize=6.3, color=C["slate"])
+    # the groups differ by border as well as colour: thick, thin, dashed
+    from matplotlib.patches import Patch
+    keys = [("threat", "threat words (thick border)"), ("business", "everyday business (thin border)"),
+            ("other", "actions, roles, devices (dashed border)")]
+    ax.legend(handles=[Patch(fc="white", ec=GCOL[g], lw=GSTYLE[g][0], ls=GSTYLE[g][1], label=s) for g, s in keys],
+              loc="lower left", bbox_to_anchor=(0, 1.0), ncol=3, fontsize=6.0, handlelength=1.6, columnspacing=1.2,
+              borderaxespad=0.2)
     return f
 
 

@@ -29,7 +29,7 @@ L 106.272 63.36
 L 106.272 57.6 
 L 53.28 57.6 
 z
-" clip-path="url(#p9a4ed5fce6)" style="fill: #e07a1f"/>
+" clip-path="url(#p51db1801b4)" style="fill: #e07a1f"/>
    </g>
    <g id="patch_3">
     <path d="M 53.28 75.6 
@@ -37,7 +37,7 @@ L 88.992 75.6
 L 88.992 69.84 
 L 53.28 69.84 
 z
-" clip-path="url(#p9a4ed5fce6)" style="fill: #e07a1f"/>
+" clip-path="url(#p51db1801b4)" style="fill: #e07a1f"/>
    </g>
    <g id="patch_4">
     <path d="M 53.28 87.84 
@@ -45,7 +45,7 @@ L 63.648 87.84
 L 63.648 82.08 
 L 53.28 82.08 
 z
-" clip-path="url(#p9a4ed5fce6)" style="fill: #f1f2f4"/>
+" clip-path="url(#p51db1801b4)" style="fill: #d5d8dd"/>
    </g>
    <g id="patch_5">
     <path d="M 53.28 100.08 
@@ -53,7 +53,7 @@ L 61.344 100.08
 L 61.344 94.32 
 L 53.28 94.32 
 z
-" clip-path="url(#p9a4ed5fce6)" style="fill: #f1f2f4"/>
+" clip-path="url(#p51db1801b4)" style="fill: #d5d8dd"/>
    </g>
    <g id="patch_6">
     <path d="M 53.28 112.32 
@@ -61,7 +61,7 @@ L 57.888 112.32
 L 57.888 106.56 
 L 53.28 106.56 
 z
-" clip-path="url(#p9a4ed5fce6)" style="fill: #f1f2f4"/>
+" clip-path="url(#p51db1801b4)" style="fill: #d5d8dd"/>
    </g>
    <g id="patch_7">
     <path d="M 53.28 124.56 
@@ -69,7 +69,7 @@ L 56.736 124.56
 L 56.736 118.8 
 L 53.28 118.8 
 z
-" clip-path="url(#p9a4ed5fce6)" style="fill: #f1f2f4"/>
+" clip-path="url(#p51db1801b4)" style="fill: #d5d8dd"/>
    </g>
    <g id="patch_8">
     <path d="M 75.6 22.32 
@@ -82,49 +82,49 @@ Q 71.28 2.16 71.28 6.48
 L 71.28 18 
 Q 71.28 22.32 75.6 22.32 
 z
-" clip-path="url(#p9a4ed5fce6)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p51db1801b4)" style="fill: #cbdaef; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
-    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="2.88" y="13.360266" transform="rotate(-0 2.88 13.360266)">Output so far:</text>
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start" x="2.88" y="13.360266" transform="rotate(-0 2.88 13.360266)">Output so far:</text>
    </g>
    <g id="text_2">
-    <text style="font-weight: 500; font-size: 6.6px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="77.04" y="14.616" transform="rotate(-0 77.04 14.616)">{"verdict": "</text>
+    <text style="font-weight: 500; font-size: 6.6px; font-family: 'JetBrains Mono'; text-anchor: start" x="77.04" y="14.616" transform="rotate(-0 77.04 14.616)">{"verdict": "</text>
    </g>
    <g id="text_3">
-    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="2.88" y="44.244469" transform="rotate(-0 2.88 44.244469)">The model’s next-token scores, and what the schema allows:</text>
+    <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: start" x="2.88" y="44.244469" transform="rotate(-0 2.88 44.244469)">The model’s next-token scores, and what the schema allows:</text>
    </g>
    <g id="text_4">
-    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="10.08" y="62.784" transform="rotate(-0 10.08 62.784)">mal</text>
+    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start" x="10.08" y="62.784" transform="rotate(-0 10.08 62.784)">mal</text>
    </g>
    <g id="text_5">
     <text style="font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #3b9c6e" x="109.872" y="62.553047" transform="rotate(-0 109.872 62.553047)">allowed</text>
    </g>
    <g id="text_6">
-    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="10.08" y="75.024" transform="rotate(-0 10.08 75.024)">ben</text>
+    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start" x="10.08" y="75.024" transform="rotate(-0 10.08 75.024)">ben</text>
    </g>
    <g id="text_7">
     <text style="font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #3b9c6e" x="92.592" y="74.793047" transform="rotate(-0 92.592 74.793047)">allowed</text>
    </g>
    <g id="text_8">
-    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #8a919c" x="10.08" y="87.299" transform="rotate(-0 10.08 87.299)">Sure</text>
+    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #6b7280" x="10.08" y="87.299" transform="rotate(-0 10.08 87.299)">Sure</text>
    </g>
    <g id="text_9">
     <text style="font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #b8323a" x="67.248" y="87.033047" transform="rotate(-0 67.248 87.033047)">masked out</text>
    </g>
    <g id="text_10">
-    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #8a919c" x="10.08" y="99.536" transform="rotate(-0 10.08 99.536)">I</text>
+    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #6b7280" x="10.08" y="99.536" transform="rotate(-0 10.08 99.536)">I</text>
    </g>
    <g id="text_11">
     <text style="font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #b8323a" x="64.944" y="99.273047" transform="rotate(-0 64.944 99.273047)">masked out</text>
    </g>
    <g id="text_12">
-    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #8a919c" x="10.08" y="111.744" transform="rotate(-0 10.08 111.744)">unk</text>
+    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #6b7280" x="10.08" y="111.744" transform="rotate(-0 10.08 111.744)">unk</text>
    </g>
    <g id="text_13">
     <text style="font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #b8323a" x="61.488" y="111.513047" transform="rotate(-0 61.488 111.513047)">masked out</text>
    </g>
    <g id="text_14">
-    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #8a919c" x="10.08" y="127.312" transform="rotate(-0 10.08 127.312)">```</text>
+    <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #6b7280" x="10.08" y="127.312" transform="rotate(-0 10.08 127.312)">```</text>
    </g>
    <g id="text_15">
     <text style="font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #b8323a" x="60.336" y="123.753047" transform="rotate(-0 60.336 123.753047)">masked out</text>
@@ -134,14 +134,14 @@ z
     <text style="font-size: 6.4px; font-family: 'JetBrains Mono'; fill: #4b5563" transform="translate(197.28 82.4641)">"malicious" or "benign"</text>
    </g>
    <g id="text_17">
-    <text style="font-size: 6.4px; font-family: 'Inter'; fill: #1f2430" transform="translate(197.28 106.827437)">Disallowed tokens get zero chance.</text>
-    <text style="font-size: 6.4px; font-family: 'Inter'; fill: #1f2430" transform="translate(197.28 116.964812)">The output can’t break the format.</text>
-    <text style="font-size: 6.4px; font-family: 'Inter'; fill: #1f2430" transform="translate(197.28 126.961187)">It can still be wrong.</text>
+    <text style="font-size: 6.4px; font-family: 'Inter'" transform="translate(197.28 106.827437)">Disallowed tokens get zero chance.</text>
+    <text style="font-size: 6.4px; font-family: 'Inter'" transform="translate(197.28 116.964812)">The output can’t break the format.</text>
+    <text style="font-size: 6.4px; font-family: 'Inter'" transform="translate(197.28 126.961187)">It can still be wrong.</text>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="p9a4ed5fce6">
+  <clipPath id="p51db1801b4">
    <rect x="2.88" y="2.88" width="338.4" height="136.8"/>
   </clipPath>
  </defs>

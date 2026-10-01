@@ -114,10 +114,12 @@ def abstain():
     f, ax = subplots(width="text", height=2.1)
     clean(ax, "y")
     bins = np.linspace(0, 0.8, 25)
-    ax.hist(a, bins=bins, color=C["jev"], alpha=0.85, label="the knowledge base has the answer")
-    ax.hist(u, bins=bins, color=C["fail"], alpha=0.75, label="it doesn’t")
+    # solid bars against a striped outline: the two groups differ without colour
+    ax.hist(a, bins=bins, color=C["jev"], alpha=0.85, label="the knowledge base has the answer (solid)")
+    ax.hist(u, bins=bins, histtype="stepfilled", fc="none", ec=C["fail"], lw=1.3, hatch="////", hatchcolor=C["fail"],
+            label="it doesn’t (striped)")
     ax.axvline(t, color=C["ink"], lw=0.9)
-    ax.annotate("below the line:\nsay “I don’t know”", xy=(t, ax.get_ylim()[1] * 0.7), xytext=(0.6, ax.get_ylim()[1] * 0.55), fontsize=6.3, arrowprops=dict(arrowstyle="-", color=C["ink2"], lw=0.6))
+    ax.annotate("below this threshold:\nsay “I don’t know”", xy=(t, ax.get_ylim()[1] * 0.7), xytext=(0.6, ax.get_ylim()[1] * 0.55), fontsize=6.3, arrowprops=dict(arrowstyle="-", color=C["ink2"], lw=0.6))
     ax.set_xlabel("similarity of the best-matching chunk")
     ax.set_ylabel("questions")
     ax.legend(loc="upper right", fontsize=6.3)

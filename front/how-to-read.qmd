@@ -14,7 +14,9 @@ You don't have to read it front to back. Here are three routes, depending on whe
 
 ![The boxes you'll meet in every chapter.](/figures/front/boxes.pdf){#fig-boxes}
 
-Each chapter opens with a short list of what you'll be able to do by the end. It closes with a short summary, exercises and a link to the next chapter. In between, a few kinds of box appear again and again (@fig-boxes).
+Each chapter opens with a short list of what you'll be able to do by the end. It closes with a short summary, a *Keep these* box that lists the chapter's key ideas, exercises and a link to the next chapter. In between, a few kinds of box appear again and again (@fig-boxes).
+
+A *Key idea* box, with a thick bar down its left side, holds one sentence worth remembering a year from now. The *Key ideas* appendix lists all of them, with their pages, for revision.
 
 The *Try it* boxes contain code you can run. The *Set the threshold* boxes ask you to make a small decision with real costs. The *Where this breaks* boxes show the limits of what the chapter just taught. *Going deeper* boxes hold optional maths. A side box with a question as its title, like *Why not just maximise accuracy?*, answers the objection you're probably already thinking of. Read the *Where this breaks* boxes most of all. They're the difference between knowing a method and knowing when to trust it.
 

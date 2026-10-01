@@ -123,17 +123,18 @@ def harbor_fixes():
     f, ax = subplots(width="text", height=2.35)
     clean(ax, "both")
     ax.plot([0, 0.5], [0, 0.5], color=C["muted"], lw=0.8, ls=(0, (3, 2)))
-    for p, col, lab in ((ph[rest], C["fail"], "as returned"),
-                        (adj[rest], C["data"], "odds adjusted for Harbor’s base rate"),
-                        (plat[rest], C["jev"], "Platt scaling on 300 labels")):
+    # each line has its own dash pattern and marker, named in the legend, so none depends on colour
+    for p, col, lab, ls, mk in ((ph[rest], C["fail"], "as returned (solid, squares)", "-", "s"),
+                                (adj[rest], C["data"], "odds adjusted for Harbor’s base rate (dashed, circles)", (0, (5, 2)), "o"),
+                                (plat[rest], C["jev"], "Platt scaling on 300 labels (dotted, triangles)", ":", "^")):
         b = cal.reliability(p, y[rest], n_bins=8, strategy="quantile")
-        ax.plot(b.mean_pred, b.frac_pos, color=col, lw=1.6, marker="o", ms=3.5, mec="white", mew=0.6,
-                label=f"{lab} (ECE {cal.ece(p, y[rest]):.3f})")
+        ax.plot(b.mean_pred, b.frac_pos, color=col, lw=1.6, ls=ls, marker=mk, ms=3.8, mec="white", mew=0.5,
+                label=f"{lab}: ECE {cal.ece(p, y[rest]):.3f}")
+    ax.legend(loc="upper left", fontsize=6.0, handlelength=2.6)
     ax.set_xlim(0, 0.5)
     ax.set_ylim(0, 0.5)
     ax.set_xlabel("P(attack)")
     ax.set_ylabel("share that were attacks")
-    ax.legend(loc="upper left", fontsize=6.2)
     synthetic_tag(f)
     return f
 
@@ -143,7 +144,10 @@ def ece_noise():
     ns, band, full = ece_by_n()
     f, ax = subplots(width="text", height=2.2)
     clean(ax, "y")
+    # the band keeps visible dotted edges, so it shows even where a photocopy loses the light fill
     ax.fill_between(ns, band[:, 0], band[:, 2], color=C["data"], alpha=0.15, lw=0)
+    for k in (0, 2):
+        ax.plot(ns, band[:, k], color=C["data"], lw=0.8, ls=":")
     ax.plot(ns, band[:, 1], color=C["data"], lw=1.6, marker="o", ms=3.5)
     ax.axhline(full, color=C["ink"], lw=0.9)
     ax.text(ns[-1], full - 0.004, f"ECE on all 20,000 alerts: {full:.3f}", ha="right", va="top", fontsize=6.3)

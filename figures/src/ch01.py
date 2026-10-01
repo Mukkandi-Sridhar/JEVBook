@@ -118,10 +118,11 @@ def threshold_search_fig():
     i = int(tot.argmin())
     f, ax = subplots(width="text", height=2.55)
     clean(ax, "y")
-    ax.plot(ts, fp, color=C["data"], lw=1.5)
-    ax.plot(ts, fn, color=C["fail"], lw=1.5)
-    ax.plot(ts, tot, color=C["ink"], lw=2.0)
-    ax.axhline(fn[-1], color=C["muted"], lw=0.7, ls=(0, (2, 2)))
+    # line styles are fixed, not left to colour: false alarms dashed, missed attacks dash-dot, total solid
+    ax.plot(ts, fp, color=C["data"], lw=1.5, ls=(0, (5, 2)))
+    ax.plot(ts, fn, color=C["fail"], lw=1.5, ls=(0, (5, 1.5, 1, 1.5)))
+    ax.plot(ts, tot, color=C["ink"], lw=2.0, ls="-")
+    ax.axhline(fn[-1], color=C["muted"], lw=0.7, ls=(0, (1, 1.5)))
     ax.text(0.02, fn[-1] + 150, f"flag nothing at all: {fn[-1]:,} mistakes", fontsize=6.4, color=C["ink2"])
     ax.scatter([ts[i]], [tot[i]], s=28, color=C["ink"], zorder=5, edgecolor="white", linewidth=1.2)
     ax.annotate(f"fewest mistakes: {tot[i]:,}\nat a threshold of {ts[i]:.2f}", (ts[i], tot[i]), xytext=(0.55, 5200),

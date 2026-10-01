@@ -8,6 +8,10 @@ with the dataviz palette checker; see DECISIONS.md):
     jev      green   Jev / System One decisions
     fail     red     failure modes, errors, missed attacks
     zones    purple  act / review / escalate (a single-hue ordinal ramp)
+
+Black-and-white safe (DECISIONS.md D-88): hue is never the only cue. Series differ by line style and marker as well
+as colour (SERIES), bars and areas that touch carry hatching (HATCH), lines get direct labels, and every fill is at
+least 15% darker than white, and 15% apart from its neighbours, once printed in greyscale.
 """
 
 from __future__ import annotations
@@ -24,15 +28,17 @@ FONT_DIR = ROOT / "assets" / "fonts"
 
 C = dict(
     data="#2F6DB5", llm="#E07A1F", jev="#3B9C6E", fail="#B8323A",
-    ink="#1F2430", ink2="#4B5563", muted="#8A919C", grid="#E4E7EB", rule="#C9CED6",
+    ink="#000000", ink2="#4B5563", muted="#6B7280", grid="#E4E7EB", rule="#9AA1AB",
     surface="#FFFFFF", paper="#FBFAF7",
     # tints for filled boxes (text sits on these in ink)
-    data_t="#E4EDF8", llm_t="#FCEBDC", jev_t="#E2F2E9", fail_t="#F7E0E1", neutral_t="#F1F2F4",
+    data_t="#CBDAEF", llm_t="#F3D2B6", jev_t="#C4E1D0", fail_t="#F0CACA", neutral_t="#D5D8DD",
     # extra categorical slots for the rare chart that needs them (fixed order)
     slate="#5B6B82", gold="#C9971C",
 )
 ZONE = dict(act="#B7A6E0", review="#8468C9", escalate="#4B2C8F")
-ZONE_T = dict(act="#EFEAF9", review="#E4DCF4", escalate="#DAD2EC")
+ZONE_T = dict(act="#DCD3F0", review="#C3B5E3", escalate="#A896D4")
+# Zones also differ by pattern, so they read without colour: act plain, review hatched, escalate cross-hatched
+ZONE_HATCH = dict(act="", review="////", escalate="xxxx")
 ZONE_TEXT = dict(act=C["ink"], review="#FFFFFF", escalate="#FFFFFF")
 KIND = dict(data=(C["data"], C["data_t"]), llm=(C["llm"], C["llm_t"]), jev=(C["jev"], C["jev_t"]),
             fail=(C["fail"], C["fail_t"]), neutral=(C["ink2"], C["neutral_t"]),
@@ -40,6 +46,13 @@ KIND = dict(data=(C["data"], C["data_t"]), llm=(C["llm"], C["llm_t"]), jev=(C["j
             escalate=(ZONE["escalate"], ZONE_T["escalate"]), plain=(C["rule"], "#FFFFFF"))
 
 # Page geometry (inches) - must match assets/latex/geometry in _quarto.yml
+# Series styles in fixed order: colour, line style and marker all change together, so series stay apart in greyscale
+LINESTYLES = ["-", (0, (5, 2)), (0, (1, 1.6)), (0, (5, 1.5, 1, 1.5)), (0, (8, 2)), (0, (2, 2))]
+MARKERS = ["o", "s", "^", "X", "D", "v"]
+HATCH = ["", "////", "....", "xxxx", "\\\\", "++"]
+SERIES = [dict(color=c, ls=ls, marker=m) for c, ls, m in zip(
+    ["#2F6DB5", "#E07A1F", "#3B9C6E", "#B8323A", "#5B6B82", "#C9971C"], LINESTYLES, MARKERS)]
+
 TEXT_W = 4.7
 WIDE_W = 5.95
 MARGIN_W = 1.08
@@ -98,7 +111,9 @@ def setup():
         "svg.fonttype": "none",
         "figure.dpi": 150,
         "savefig.dpi": 300,           # raster parts (heatmaps) print at 300 dpi or more
-        "axes.prop_cycle": mpl.cycler(color=[C["data"], C["llm"], C["jev"], C["fail"], C["slate"], C["gold"]]),
+        "axes.prop_cycle": mpl.cycler(color=[C["data"], C["llm"], C["jev"], C["fail"], C["slate"], C["gold"]])
+                           + mpl.cycler(linestyle=LINESTYLES),
+        "hatch.linewidth": 0.6,
     })
     _ready = True
 
@@ -142,6 +157,24 @@ def synthetic_tag(f_or_ax, text="SYNTHETIC · not measured on real Jev", loc="tr
         pass
     f.text(x, y, text, ha=ha, va=va, fontsize=5.6, color=C["muted"], fontweight="medium",
            bbox=dict(boxstyle="round,pad=0.25,rounding_size=0.15", fc="white", ec=C["grid"], lw=0.5))
+
+
+def luma(color) -> float:
+    """Lightness of a colour as a black-and-white printer sees it (0 black, 1 white)."""
+    r, g, b = mpl.colors.to_rgb(color)
+    return 0.299 * r + 0.587 * g + 0.114 * b
+
+
+def ink_on(color) -> str:
+    """Text colour that stays readable on a fill: white on dark fills, black on light ones."""
+    return "white" if luma(color) < 0.5 else C["ink"]
+
+
+def hatch_kw(i: int, color) -> dict:
+    """Fill style for the i-th of several bars or areas that touch: its colour plus a pattern (none for the first),
+    drawn in white on dark fills and in dark grey on light ones, so neighbours differ without colour."""
+    return dict(color=color, hatch=HATCH[i % len(HATCH)] or None,
+                hatchcolor="white" if luma(color) < 0.55 else C["ink2"], edgecolor="white", linewidth=0.6)
 
 
 def clean(ax, grid="y"):

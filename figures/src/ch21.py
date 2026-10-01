@@ -8,7 +8,7 @@ from matplotlib.patches import Rectangle
 
 from jevkit import soc, calibration as cal, policy as pol
 from jevkit.batch import score_alerts
-from jevkit.figs import figure, draw, C, ZONE, ZONE_T, subplots, clean, results, summary_page, synthetic_tag
+from jevkit.figs import figure, draw, C, ZONE, ZONE_T, ZONE_HATCH, subplots, clean, results, summary_page, synthetic_tag
 from jevkit.figs.style import ZONE_TEXT
 
 CH = "ch21"
@@ -110,15 +110,18 @@ def zones_strip():
     x = np.clip(sample.pc.values, 6e-4, 1)
     jit = rng.uniform(-0.85, 0.85, len(x))
     fine = sample.malicious.values == 0
-    ax.scatter(x[fine], jit[fine], s=9, color=C["muted"], alpha=0.55, lw=0, zorder=2)
-    ax.scatter(x[~fine], jit[~fine], s=14, color=C["fail"], lw=0.6, edgecolor="white", zorder=3)
+    # harmless alerts are small open circles, real threats are bold crosses: they differ without colour
+    ax.scatter(x[fine], jit[fine], s=9, facecolor="none", edgecolor=C["muted"], alpha=0.8, lw=0.5, zorder=2)
+    ax.scatter(x[~fine], jit[~fine], s=16, color=C["fail"], marker="x", lw=1.1, zorder=3)
     for t in (P.low, P.high):
         ax.axvline(t, color=ZONE["escalate"], lw=0.8)
         ax.text(t, -1.12, f"{t:.3g}", ha="center", va="center", fontsize=6.2, color=ZONE["escalate"], fontweight="bold",
                 bbox=dict(boxstyle="round,pad=0.2", fc="white", ec="none"))
     ax.set_xlabel("P(real threat) after calibration  (log scale)")
-    ax.text(6.5e-4, -0.95, "● harmless", fontsize=6.2, color=C["ink2"])
-    ax.text(6.5e-4, -0.62, "● real threat", fontsize=6.2, color=C["fail"])
+    ax.scatter([7.2e-4], [-0.9], s=9, facecolor="none", edgecolor=C["muted"], lw=0.5, zorder=4)
+    ax.text(8.6e-4, -0.9, "harmless (open circle)", fontsize=6.2, color=C["ink"], va="center")
+    ax.scatter([7.2e-4], [-0.6], s=16, color=C["fail"], marker="x", lw=1.1, zorder=4)
+    ax.text(8.6e-4, -0.6, "real threat (cross)", fontsize=6.2, color=C["ink"], va="center")
     synthetic_tag(f)
     return f
 
@@ -127,7 +130,7 @@ def zones_strip():
 def one_vs_three():
     d = data()
     rr = __import__("json").load(open(__import__("jevkit").figs.ROOT / "results" / "ch21.json"))
-    rows = [("One line at 0.5", rr["naive"]), (f"Three zones, {ANALYSTS} analysts", rr["chosen"])]
+    rows = [("One threshold at 0.5", rr["naive"]), (f"Three zones, {ANALYSTS} analysts", rr["chosen"])]
     f, axes = subplots(1, 2, width="text", height=1.75, gridspec_kw=dict(wspace=0.1))
     live = d["live"]
     y = live.malicious.values
@@ -143,17 +146,19 @@ def one_vs_three():
             vals = [np.sum((z == k) & m) / DAYS_LIVE for k in ("act", "review", "escalate")]
             left = 0
             for k, v in zip(("act", "review", "escalate"), vals):
-                ax.barh(i, v, left=left, height=0.5, color=ZONE[k], edgecolor="white", linewidth=1.2)
+                ax.barh(i, v, left=left, height=0.5, color=ZONE[k], edgecolor="white", linewidth=1.2,
+                        hatch=ZONE_HATCH[k] or None)
                 if v > (4 if who == 1 else 60):
                     ax.text(left + v / 2, i, f"{v:.0f}", ha="center", va="center", fontsize=6.4, color=ZONE_TEXT[k],
-                            fontweight="bold")
+                            fontweight="bold", bbox=dict(boxstyle="square,pad=0.15", fc=ZONE[k], ec="none"))
                 left += v
         ax.set_ylim(1.6, -0.6)
         ax.set_yticks([0, 1])
         ax.set_yticklabels([r[0] for r in rows] if col == 0 else [], fontsize=6.6)
         ax.tick_params(axis="y", length=0)
-    handles = [Rectangle((0, 0), 1, 1, color=ZONE[k]) for k in ("act", "review", "escalate")]
-    f.legend(handles, ["act (auto-close)", "review (analyst)", "escalate (page on-call)"], loc="lower center",
+    handles = [Rectangle((0, 0), 1, 1, fc=ZONE[k], ec="white", hatch=ZONE_HATCH[k] or None) for k in ("act", "review", "escalate")]
+    f.legend(handles, ["act (auto-close; plain)", "review (analyst; striped)", "escalate (page on-call; cross-hatched)"],
+             loc="lower center",
              ncol=3, bbox_to_anchor=(0.55, -0.2), fontsize=6.4)
     synthetic_tag(f)
     return f
@@ -173,14 +178,15 @@ def cost_lines():
     ax.set_yscale("log")
     ax.set_ylim(3, 20000)
     env = np.minimum(np.minimum(act, rev), esc)
-    ax.plot(p, act, color="#9D89D6", lw=1.6)
-    ax.plot(p, rev, color=ZONE["review"], lw=1.6)
-    ax.plot(p, esc, color=ZONE["escalate"], lw=1.6)
-    ax.plot(p, env, color=C["ink"], lw=3.2, alpha=0.18, solid_capstyle="round")
+    # act solid, review dashed, escalate dotted; the cheapest action is a wide grey band under them
+    ax.plot(p, env, color=C["ink"], lw=5.5, ls="-", alpha=0.3, solid_capstyle="round")
+    ax.plot(p, act, color="#9D89D6", lw=1.6, ls="-")
+    ax.plot(p, rev, color=ZONE["review"], lw=1.6, ls=(0, (5, 2)))
+    ax.plot(p, esc, color=ZONE["escalate"], lw=1.6, ls=":")
     ax.yaxis.set_major_formatter(FuncFormatter(lambda v, _: f"${v:,.0f}"))
-    ax.text(0.09, 1500, "act", fontsize=7, color="#6E5BA8", ha="right", fontweight="bold")
-    ax.text(0.02, 34, "review", fontsize=7, color=ZONE["review"], fontweight="bold")
-    ax.text(0.004, 520, "escalate", fontsize=7, color=ZONE["escalate"], fontweight="bold")
+    ax.text(0.09, 1500, "act (solid)", fontsize=7, color="#6E5BA8", ha="right", fontweight="bold")
+    ax.text(0.02, 34, "review (dashed)", fontsize=7, color=ZONE["review"], fontweight="bold")
+    ax.text(0.004, 520, "escalate (dotted)", fontsize=7, color=ZONE["escalate"], fontweight="bold")
     for t, lab in ((lo, f"{lo:.4f}"), (hi, f"{hi:.2f}")):
         ax.axvline(t, color=C["ink2"], lw=0.6)
         ax.text(t, 13000, lab, fontsize=6.2, ha="center", color=C["ink"], fontweight="bold",
@@ -209,13 +215,13 @@ def capacity():
                                 "text": out["text"].round(2).tolist()})
     f, ax = subplots(width="text", height=2.35)
     clean(ax, "y")
-    ax.plot(ks, out["text"], color=C["slate"], lw=1.5, marker="o", ms=3.5, mec="white", mew=0.8)
-    ax.plot(ks, out["structured"], color=C["jev"], lw=2, marker="o", ms=4, mec="white", mew=0.8)
+    ax.plot(ks, out["text"], color=C["slate"], lw=1.5, ls="-", marker="s", ms=3.5, mec="white", mew=0.8)
+    ax.plot(ks, out["structured"], color=C["jev"], lw=2, ls=(0, (5, 2)), marker="o", ms=4, mec="white", mew=0.8)
     ax.axvline(ANALYSTS, color=C["muted"], lw=0.7)
     ax.text(ANALYSTS + 0.12, ax.get_ylim()[1] * 0.93 if False else max(out["text"]) * 0.98, "Kestrel today:\n6 analysts",
             fontsize=6.3, color=C["ink2"], va="top")
-    ax.text(8.3, out["text"][5] + 1.0, "mock reads the raw alert text", fontsize=6.4, color=C["slate"], ha="left", va="bottom")
-    ax.text(4.3, 5.2, "mock reads structured fields", fontsize=6.4, color=C["jev"], ha="left",
+    ax.text(8.3, out["text"][5] + 1.0, "mock reads the raw alert text (solid, squares)", fontsize=6.4, color=C["slate"], ha="left", va="bottom")
+    ax.text(4.3, 5.2, "mock reads structured fields (dashed, circles)", fontsize=6.4, color=C["jev"], ha="left",
             va="top", fontweight="semibold")
     ax.set_ylim(0, max(out["text"]) * 1.08)
     ax.set_xlabel("Analysts on the review queue (40 reviews each per day)")
@@ -239,16 +245,18 @@ def calibration_zones():
         fixed[~m] = cal.Platt().fit(raw[m], y[m])(raw[~m])
     f, ax = subplots(width="text", height=2.45)
     clean(ax, "both")
-    for pp, col, lab in ((raw, C["fail"], "raw mock scores"), (fixed, C["jev"], "after Platt scaling")):
+    for pp, col, lab, ls, mk in ((raw, C["fail"], "raw mock scores (solid, squares)", "-", "s"),
+                                 (fixed, C["jev"], "after Platt scaling (dashed, circles)", (0, (5, 2)), "o")):
         m = pp < 0.1
         qs = np.quantile(pp[m], np.linspace(0, 1, 9))
         idx = np.clip(np.searchsorted(qs, pp[m], side="right") - 1, 0, 7)
         mp = np.array([pp[m][idx == k].mean() for k in range(8)])
         fr = np.array([y[m][idx == k].mean() for k in range(8)])
-        ax.plot(mp, fr, color=col, lw=1.5, marker="o", ms=4, mec="white", mew=0.8, label=lab)
+        ax.plot(mp, fr, color=col, lw=1.5, ls=ls, marker=mk, ms=4, mec="white", mew=0.8, label=lab)
     ax.plot([0, 0.1], [0, 0.1], color=C["muted"], lw=0.8, ls=(0, (3, 2)))
-    ax.text(0.062, 0.058, "perfectly honest", fontsize=6.2, color=C["muted"], rotation=30)
+    ax.text(0.062, 0.058, "perfectly calibrated", fontsize=6.2, color=C["muted"], rotation=30)
     ax.axvspan(0, P.low, color=ZONE_T["act"], zorder=0)
+    ax.axvline(P.low, color=ZONE["review"], lw=0.9, zorder=1)          # the zone's edge shows without its tint
     ax.text(P.low / 2, 0.075, "ACT", ha="center", fontsize=6.4, fontweight="bold", color="#6E5BA8")
     ax.set_xlim(0, 0.08)
     ax.set_ylim(0, 0.08)
@@ -295,7 +303,7 @@ def production_loop():
              sub="calibration drift? zone rates?", subsize=5.6)
     draw.arrow(ax, (2.25, 0.44), (1.9, 0.44), color=C["ink2"], lw=0.8)
     draw.arrow(ax, (1.75, 0.68), (2.4, 2.2), color=C["fail"], lw=0.9)
-    draw.text(ax, 1.62, 0.95, "refit calibration,\nmove the lines", size=5.9, color=C["fail"], ha="right")
+    draw.text(ax, 1.62, 0.95, "refit calibration,\nmove the thresholds", size=5.9, color=C["fail"], ha="right")
     return f
 
 
@@ -319,10 +327,12 @@ def drift_watch():
     for a in (a1, a2):
         clean(a, "y")
         a.axvspan(28.5, 35.5, color=C["fail_t"], zorder=0, lw=0)
-    a1.plot(g.index, g.actual, color=C["ink"], lw=1.5)
-    a1.plot(g.index, g.pred, color=C["jev"], lw=1.5)
-    a1.text(1, 0.135, "what really happened", fontsize=6.3, color=C["ink"])
-    a1.text(1, 0.035, "what the calibrated model expected", fontsize=6.3, color=C["jev"], fontweight="semibold")
+        for xx in (28.5, 35.5):                                       # the campaign's edges show without its tint
+            a.axvline(xx, color=C["fail"], lw=0.8, ls=":", zorder=1)
+    a1.plot(g.index, g.actual, color=C["ink"], lw=1.5, ls="-")
+    a1.plot(g.index, g.pred, color=C["jev"], lw=1.5, ls=(0, (5, 2)))
+    a1.text(1, 0.135, "what really happened (solid line)", fontsize=6.3, color=C["ink"])
+    a1.text(1, 0.035, "what the calibrated model expected (dashed line)", fontsize=6.3, color=C["jev"], fontweight="semibold")
     a1.text(32, 0.153, "phishing\ncampaign", fontsize=6.3, color=C["fail"], ha="center", va="top", fontweight="semibold")
     a1.yaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:.0%}"))
     a1.set_ylim(0, 0.16)

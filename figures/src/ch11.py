@@ -8,7 +8,7 @@ from matplotlib.ticker import FuncFormatter
 
 from jevkit import soc, llm, calibration as cal
 from jevkit.batch import score_alerts
-from jevkit.figs import figure, draw, C, subplots, clean, results, summary_page, synthetic_tag
+from jevkit.figs import hatch_kw, figure, draw, C, subplots, clean, results, summary_page, synthetic_tag
 
 CH = "ch11"
 
@@ -62,7 +62,7 @@ def json_failures():
     x = np.arange(len(cats))
     for k, (mode, col) in enumerate((("prompt only", C["llm"]), ("JSON mode", C["slate"]))):
         vals = [d["outcomes"][mode][c] for c in cats]
-        ax.bar(x + (k - 0.5) * 0.3, vals, width=0.28, color=col, label=mode)
+        ax.bar(x + (k - 0.5) * 0.3, vals, width=0.28, label=mode + (" (striped)" if k else " (solid)"), **hatch_kw(k, col))
         for xi, v in zip(x, vals):
             ax.text(xi + (k - 0.5) * 0.3, v + 1.5, f"{v}", ha="center", fontsize=6.2)
     ax.set_xticks(x)
@@ -70,7 +70,7 @@ def json_failures():
     n = sum(d["outcomes"]["prompt only"].values())
     ax.set_ylabel(f"responses (of {n:,})")
     ax.set_ylim(0, 90)
-    ax.legend(loc="upper right", fontsize=6.4)
+    ax.legend(loc="upper center", fontsize=6.4, ncol=2)
     synthetic_tag(f, "SYNTHETIC \u00b7 llm-mock-synthetic, not a real model")
     return f
 
@@ -105,14 +105,15 @@ def three_confidences():
     f, ax = subplots(width="text", height=2.55)
     clean(ax, "both")
     ax.plot([0, 1], [0, 1], color=C["muted"], lw=0.8, ls=(0, (3, 2)))
-    specs = [("verb", C["gold"], "confidence the LLM wrote in its JSON"),
-             ("tok", C["llm"], "LLM token probability of “malicious”"),
-             ("jev", C["jev"], "jev-mock-synthetic noul, same raw text")]
-    for k, col, lab in specs:
+    # each line has its own dash pattern and marker, named in the legend, so none depends on colour
+    specs = [("verb", C["gold"], "confidence the LLM wrote in its JSON", ":", "^", "dotted, triangles"),
+             ("tok", C["llm"], "LLM token probability of “malicious”", (0, (5, 2)), "s", "dashed, squares"),
+             ("jev", C["jev"], "jev-mock-synthetic noul, same raw text", "-", "o", "solid, circles")]
+    for k, col, lab, ls, mk, how in specs:
         b = cal.reliability(d[k], y, n_bins=10, strategy="quantile")
         s = cal.summary(d[k], y)
-        ax.plot(b.mean_pred, b.frac_pos, color=col, lw=1.6, marker="o", ms=3.5, mec="white", mew=0.6,
-                label=f"{lab}  (AUC {s['auc']:.2f}, ECE {s['ece']:.3f})")
+        ax.plot(b.mean_pred, b.frac_pos, color=col, lw=1.6, ls=ls, marker=mk, ms=3.8, mec="white", mew=0.5,
+                label=f"{lab} ({how})  AUC {s['auc']:.2f}, ECE {s['ece']:.3f}")
     ax.set_xlabel("Probability of “malicious”")
     ax.set_ylabel("Share that were attacks")
     ax.legend(loc="upper left", fontsize=5.9)

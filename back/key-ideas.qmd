@@ -1,0 +1,138 @@
+# Key ideas {.unnumbered #sec-key-ideas}
+
+<!-- Made by tools/make_key_ideas.py from the key idea boxes in the chapters. Don't edit by hand. -->
+
+These are the book's key ideas, chapter by chapter, with the page where each one is explained. Use them to revise.
+If a line no longer makes sense to you, go back to its page and read that part again.
+
+::: {.keyideaslist}
+
+`\keychapter{`{=latex}**Chapter 1. What "learning" means**`}`{=latex}
+
+- Machine learning is getting a computer to work out the rules itself, from examples where the answer is already known. [ ]{.kref ref="key-ch01-1"}
+- A model learns exactly what you ask for: ask the wrong question, and it learns the wrong thing. [ ]{.kref ref="key-ch01-2"}
+- A good model doesn't just answer: it says how sure it is, and it's right about how sure it is. [ ]{.kref ref="key-ch01-3"}
+
+`\keychapter{`{=latex}**Chapter 2. Probability, and how a machine learns it**`}`{=latex}
+
+- A probability is a claim about how often something happens among cases like this one. [ ]{.kref ref="key-ch02-1"}
+- Rare things stay rare even after the alarm goes off. [ ]{.kref ref="key-ch02-2"}
+- New odds = old odds × likelihood ratio. [ ]{.kref ref="key-ch02-3"}
+- Log loss rewards calibrated probabilities and punishes confident mistakes. [ ]{.kref ref="key-ch02-4"}
+
+`\keychapter{`{=latex}**Chapter 3. Calibration: when 0.8 really means 80%**`}`{=latex}
+
+- A model is calibrated when its 80% happens about 80% of the time. [ ]{.kref ref="key-ch03-1"}
+- Temperature fixes overconfidence. It can't fix a wrong base rate. [ ]{.kref ref="key-ch03-2"}
+- Check calibration inside every group you'll treat differently, not just on average. [ ]{.kref ref="key-ch03-3"}
+
+`\keychapter{`{=latex}**Chapter 4. From probabilities to actions**`}`{=latex}
+
+- Act when P > C~fa~ ÷ (C~fa~ + C~miss~): the false-alarm cost over the sum of both costs. [ ]{.kref ref="key-ch04-1"}
+- With calibrated probabilities, costs set the threshold directly. Without them, you're guessing. [ ]{.kref ref="key-ch04-2"}
+- Let a model decide only the cases it's surest about, and its error rate falls steeply. [ ]{.kref ref="key-ch04-3"}
+
+`\keychapter{`{=latex}**Chapter 5. Deep learning in one chapter**`}`{=latex}
+
+- Deep networks are worth their cost on raw, messy input. On neat features, start with something simple. [ ]{.kref ref="key-ch05-1"}
+- Embeddings capture what things are about. They're poor at the exact numbers inside them. [ ]{.kref ref="key-ch05-2"}
+- Flexible models trained to make their training loss as small as possible learn to be too certain. [ ]{.kref ref="key-ch05-3"}
+
+`\keychapter{`{=latex}**Chapter 6. How an LLM writes, and structured outputs**`}`{=latex}
+
+- Sampling turns a model's uncertainty into randomness in its answers. Temperature zero hides it; it doesn't remove it. [ ]{.kref ref="key-ch06-1"}
+- Constrained decoding makes the answer parse. It doesn't make it right. [ ]{.kref ref="key-ch06-2"}
+- The probability of a token isn't the probability of an answer. [ ]{.kref ref="key-ch06-3"}
+
+`\keychapter{`{=latex}**Chapter 7. RAG, agents, and where they break**`}`{=latex}
+
+- A RAG system can only be as good as its retrieval. Measure retrieval first. [ ]{.kref ref="key-ch07-1"}
+- Watch an agent work, and most of what it does is decide. [ ]{.kref ref="key-ch07-2"}
+- Take the facts that lower suspicion from systems attackers can't write to. [ ]{.kref ref="key-ch07-3"}
+
+`\keychapter{`{=latex}**Chapter 8. System 1 and System 2**`}`{=latex}
+
+- Most of the work is System 1 work, but most of the machinery we use is System 2. [ ]{.kref ref="key-ch08-1"}
+- A fast system is valuable in two ways: its speed, and knowing which cases it shouldn't decide. [ ]{.kref ref="key-ch08-2"}
+
+`\keychapter{`{=latex}**Chapter 9. Inside Jev: what we know and what we don't**`}`{=latex}
+
+- Sort every claim about a new model into three piles: verified, vendor-reported and unknown. [ ]{.kref ref="key-ch09-1"}
+- When a vendor gives you several numbers, check whether they agree with *each other*. [ ]{.kref ref="key-ch09-2"}
+- Unknowns about a new model aren't reasons to avoid it; they're reasons to *test* it on your own data. [ ]{.kref ref="key-ch09-3"}
+
+`\keychapter{`{=latex}**Chapter 10. The type system: choice, score, noul**`}`{=latex}
+
+- A choice's probabilities add up to 1 over your options, so give every real case somewhere to go. [ ]{.kref ref="key-ch10-1"}
+- Averages hide the extremes. Put thresholds on the probability of the levels you care about. [ ]{.kref ref="key-ch10-2"}
+
+`\keychapter{`{=latex}**Chapter 11. Testing Jev's calibration yourself**`}`{=latex}
+
+- Calibration is a property of a model *and the data it's used on*. [ ]{.kref ref="key-ch11-1"}
+- With few labels, ECE is biased upwards. Report a range, and don't call a model miscalibrated on a hundred cases. [ ]{.kref ref="key-ch11-2"}
+- Treat a new model's outputs as scores until you've tested them on your own data. [ ]{.kref ref="key-ch11-3"}
+
+`\keychapter{`{=latex}**Chapter 12. The Jevons paradox of decisions**`}`{=latex}
+
+- Cheaper decisions rarely raise the bill for jobs you already do; they raise it by making new jobs worth doing. [ ]{.kref ref="key-ch12-1"}
+- When decisions get cheap, set thresholds by cost, not by share. [ ]{.kref ref="key-ch12-2"}
+
+`\keychapter{`{=latex}**Chapter 13. The bake-off: six ways to make a decision**`}`{=latex}
+
+- Labels are the hidden cost of trained models: a method that needs none can start today. [ ]{.kref ref="key-ch13-1"}
+- If a rule or a logistic regression can make a decision well, use one of them. [ ]{.kref ref="key-ch13-2"}
+- There is no best method, only a best method for a particular decision. [ ]{.kref ref="key-ch13-3"}
+
+`\keychapter{`{=latex}**Chapter 14. Act, review, or escalate**`}`{=latex}
+
+- Act, review, escalate: machines handle the clear cases at each end, and people handle the middle. [ ]{.kref ref="key-ch14-1"}
+- Never put a threshold on a probability you haven't checked against recent outcomes. [ ]{.kref ref="key-ch14-2"}
+- A policy that ignores capacity isn't a policy. It's a wish. [ ]{.kref ref="key-ch14-3"}
+- Stakes override confidence. [ ]{.kref ref="key-ch14-4"}
+
+`\keychapter{`{=latex}**Chapter 15. A catalogue of decision patterns**`}`{=latex}
+
+- A decision model never writes and never acts on its own: it answers a typed question, and code acts. [ ]{.kref ref="key-ch15-1"}
+- Extract when the only input you have is text: extraction can't add facts the text doesn't contain. [ ]{.kref ref="key-ch15-2"}
+
+`\keychapter{`{=latex}**Chapter 16. First calls, and the mock that makes them free**`}`{=latex}
+
+- Fix the model version, so a change in behaviour is your decision, not a surprise. [ ]{.kref ref="key-ch16-1"}
+- Retry errors from outside your code, never your own. [ ]{.kref ref="key-ch16-2"}
+- When time matters, decide in advance what a failed call means. [ ]{.kref ref="key-ch16-3"}
+
+`\keychapter{`{=latex}**Chapter 17. A hybrid agent: Jev decides, the LLM reasons**`}`{=latex}
+
+- Count every decision step's answers: an option never or always chosen is a warning, even without a crash. [ ]{.kref ref="key-ch17-1"}
+- When looking is cheaper than deciding whether to look, don't decide. Just look. [ ]{.kref ref="key-ch17-2"}
+- Use the LLM for the work only an LLM can do. [ ]{.kref ref="key-ch17-3"}
+
+`\keychapter{`{=latex}**Chapter 18. Case study: SOC alert triage**`}`{=latex}
+
+- Run a new decision system in shadow mode before you let it act. [ ]{.kref ref="key-ch18-1"}
+- A probability decides *what* a person looks at first, not only *whether* they look. [ ]{.kref ref="key-ch18-2"}
+- Calibration tells you truthfully how much work there is. It can't make the work smaller. [ ]{.kref ref="key-ch18-3"}
+
+`\keychapter{`{=latex}**Chapter 19. An applications gallery**`}`{=latex}
+
+- Where decisions are many and cheap, the model decides; where they're few and costly, a person does. [ ]{.kref ref="key-ch19-1"}
+- The threshold formula never changes; the costs do, and they can move the threshold tenfold or more. [ ]{.kref ref="key-ch19-2"}
+- Measure a model on each new domain before you trust it, even if it works well elsewhere. [ ]{.kref ref="key-ch19-3"}
+
+`\keychapter{`{=latex}**Chapter 20. Build your own System One model**`}`{=latex}
+
+- Temperature scaling never changes the ranking: dividing every score by one number keeps their order. [ ]{.kref ref="key-ch20-1"}
+- Train with a proper scoring rule, stop before the model memorises, then calibrate on data it has never seen. [ ]{.kref ref="key-ch20-2"}
+
+`\keychapter{`{=latex}**Chapter 21. Capstone: a production decision service**`}`{=latex}
+
+- Everything that can change a decision lives in one place, with a version number. [ ]{.kref ref="key-ch21-1"}
+- Thresholds and business rules are one decision, and they have to be fitted together. [ ]{.kref ref="key-ch21-2"}
+- Every failure needs a decided meaning, and the safe one puts a person in front of the case. [ ]{.kref ref="key-ch21-3"}
+
+`\keychapter{`{=latex}**Chapter 22. What changes now**`}`{=latex}
+
+- When deciding gets cheap, judgement about the decision itself becomes scarce. [ ]{.kref ref="key-ch22-1"}
+- You need decisions you can measure, thresholds you can move and a model you can replace. [ ]{.kref ref="key-ch22-2"}
+
+:::

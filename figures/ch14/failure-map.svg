@@ -34,7 +34,7 @@ Q 2.88 10.8 2.88 15.12
 L 2.88 30.96 
 Q 2.88 35.28 7.2 35.28 
 z
-" clip-path="url(#p71a612ce54)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pcb1aaa271e)" style="fill: #cbdaef; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 7.2 67.68 
@@ -47,7 +47,7 @@ Q 2.88 43.2 2.88 47.52
 L 2.88 63.36 
 Q 2.88 67.68 7.2 67.68 
 z
-" clip-path="url(#p71a612ce54)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pcb1aaa271e)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 7.2 97.92 
@@ -60,7 +60,7 @@ Q 2.88 73.44 2.88 77.76
 L 2.88 93.6 
 Q 2.88 97.92 7.2 97.92 
 z
-" clip-path="url(#p71a612ce54)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pcb1aaa271e)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 7.2 128.16 
@@ -73,7 +73,7 @@ Q 2.88 103.68 2.88 108
 L 2.88 123.84 
 Q 2.88 128.16 7.2 128.16 
 z
-" clip-path="url(#p71a612ce54)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pcb1aaa271e)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_6">
     <path d="M 122.4 35.28 
@@ -86,7 +86,7 @@ Q 118.08 10.8 118.08 15.12
 L 118.08 30.96 
 Q 118.08 35.28 122.4 35.28 
 z
-" clip-path="url(#p71a612ce54)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pcb1aaa271e)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_7">
     <path d="M 122.4 67.68 
@@ -99,7 +99,7 @@ Q 118.08 43.2 118.08 47.52
 L 118.08 63.36 
 Q 118.08 67.68 122.4 67.68 
 z
-" clip-path="url(#p71a612ce54)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pcb1aaa271e)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_8">
     <path d="M 122.4 97.92 
@@ -112,7 +112,7 @@ Q 118.08 73.44 118.08 77.76
 L 118.08 93.6 
 Q 118.08 97.92 122.4 97.92 
 z
-" clip-path="url(#p71a612ce54)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pcb1aaa271e)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_9">
     <path d="M 122.4 128.16 
@@ -125,7 +125,7 @@ Q 118.08 103.68 118.08 108
 L 118.08 123.84 
 Q 118.08 128.16 122.4 128.16 
 z
-" clip-path="url(#p71a612ce54)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pcb1aaa271e)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_10">
     <path d="M 122.4 158.4 
@@ -138,7 +138,7 @@ Q 118.08 133.92 118.08 138.24
 L 118.08 154.08 
 Q 118.08 158.4 122.4 158.4 
 z
-" clip-path="url(#p71a612ce54)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pcb1aaa271e)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_11">
     <path d="M 237.6 35.28 
@@ -151,7 +151,7 @@ Q 233.28 10.8 233.28 15.12
 L 233.28 30.96 
 Q 233.28 35.28 237.6 35.28 
 z
-" clip-path="url(#p71a612ce54)" style="fill: #f1f2f4; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pcb1aaa271e)" style="fill: #d5d8dd; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_12">
     <path d="M 237.6 67.68 
@@ -164,7 +164,7 @@ Q 233.28 43.2 233.28 47.52
 L 233.28 63.36 
 Q 233.28 67.68 237.6 67.68 
 z
-" clip-path="url(#p71a612ce54)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pcb1aaa271e)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_13">
     <path d="M 237.6 97.92 
@@ -177,7 +177,7 @@ Q 233.28 73.44 233.28 77.76
 L 233.28 93.6 
 Q 233.28 97.92 237.6 97.92 
 z
-" clip-path="url(#p71a612ce54)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pcb1aaa271e)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_14">
     <path d="M 237.6 128.16 
@@ -190,54 +190,54 @@ Q 233.28 103.68 233.28 108
 L 233.28 123.84 
 Q 233.28 128.16 237.6 128.16 
 z
-" clip-path="url(#p71a612ce54)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pcb1aaa271e)" style="fill: #ffffff; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
-    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="55.08" y="25.655625" transform="rotate(-0 55.08 25.655625)">OBSERVE</text>
+    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: middle" x="55.08" y="25.655625" transform="rotate(-0 55.08 25.655625)">OBSERVE</text>
    </g>
    <g id="text_2">
-    <text style="font-weight: 500; font-size: 6.1px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="55.08" y="57.090336" transform="rotate(-0 55.08 57.090336)">wrong or irrelevant retrieval</text>
+    <text style="font-weight: 500; font-size: 6.1px; font-family: 'Inter'; text-anchor: middle" x="55.08" y="57.090336" transform="rotate(-0 55.08 57.090336)">wrong or irrelevant retrieval</text>
    </g>
    <g id="text_3">
-    <text style="font-weight: 500; font-size: 6.1px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="55.08" y="87.366078" transform="rotate(-0 55.08 87.366078)">prompt injection in inputs</text>
+    <text style="font-weight: 500; font-size: 6.1px; font-family: 'Inter'; text-anchor: middle" x="55.08" y="87.366078" transform="rotate(-0 55.08 87.366078)">prompt injection in inputs</text>
    </g>
    <g id="text_4">
-    <text style="font-weight: 500; font-size: 6.1px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="55.08" y="117.620852" transform="rotate(-0 55.08 117.620852)">stale or spoofable facts</text>
+    <text style="font-weight: 500; font-size: 6.1px; font-family: 'Inter'; text-anchor: middle" x="55.08" y="117.620852" transform="rotate(-0 55.08 117.620852)">stale or spoofable facts</text>
    </g>
    <g id="text_5">
-    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="170.28" y="25.659" transform="rotate(-0 170.28 25.659)">DECIDE</text>
+    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: middle" x="170.28" y="25.659" transform="rotate(-0 170.28 25.659)">DECIDE</text>
    </g>
    <g id="text_6">
-    <text style="font-weight: 500; font-size: 6.1px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="170.28" y="57.72893" transform="rotate(-0 170.28 57.72893)">overconfident verdicts</text>
+    <text style="font-weight: 500; font-size: 6.1px; font-family: 'Inter'; text-anchor: middle" x="170.28" y="57.72893" transform="rotate(-0 170.28 57.72893)">overconfident verdicts</text>
    </g>
    <g id="text_7">
-    <text style="font-weight: 500; font-size: 6.1px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="170.28" y="87.951297" transform="rotate(-0 170.28 87.951297)">run-to-run variance</text>
+    <text style="font-weight: 500; font-size: 6.1px; font-family: 'Inter'; text-anchor: middle" x="170.28" y="87.951297" transform="rotate(-0 170.28 87.951297)">run-to-run variance</text>
    </g>
    <g id="text_8">
-    <text style="font-weight: 500; font-size: 6.1px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="170.28" y="117.516484" transform="rotate(-0 170.28 117.516484)">errors that compound</text>
+    <text style="font-weight: 500; font-size: 6.1px; font-family: 'Inter'; text-anchor: middle" x="170.28" y="117.516484" transform="rotate(-0 170.28 117.516484)">errors that compound</text>
    </g>
    <g id="text_9">
-    <text style="font-weight: 500; font-size: 6.1px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="170.28" y="147.810336" transform="rotate(-0 170.28 147.810336)">never deciding to stop</text>
+    <text style="font-weight: 500; font-size: 6.1px; font-family: 'Inter'; text-anchor: middle" x="170.28" y="147.810336" transform="rotate(-0 170.28 147.810336)">never deciding to stop</text>
    </g>
    <g id="text_10">
-    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="285.48" y="25.659" transform="rotate(-0 285.48 25.659)">ACT</text>
+    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: middle" x="285.48" y="25.659" transform="rotate(-0 285.48 25.659)">ACT</text>
    </g>
    <g id="text_11">
-    <text style="font-weight: 500; font-size: 6.1px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="285.48" y="57.711297" transform="rotate(-0 285.48 57.711297)">irreversible actions</text>
+    <text style="font-weight: 500; font-size: 6.1px; font-family: 'Inter'; text-anchor: middle" x="285.48" y="57.711297" transform="rotate(-0 285.48 57.711297)">irreversible actions</text>
    </g>
    <g id="text_12">
-    <text style="font-weight: 500; font-size: 6.1px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="285.48" y="87.26457" transform="rotate(-0 285.48 87.26457)">runaway loops and cost</text>
+    <text style="font-weight: 500; font-size: 6.1px; font-family: 'Inter'; text-anchor: middle" x="285.48" y="87.26457" transform="rotate(-0 285.48 87.26457)">runaway loops and cost</text>
    </g>
    <g id="text_13">
-    <text style="font-weight: 500; font-size: 6.1px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="285.48" y="117.570336" transform="rotate(-0 285.48 117.570336)">acting on a guess</text>
+    <text style="font-weight: 500; font-size: 6.1px; font-family: 'Inter'; text-anchor: middle" x="285.48" y="117.570336" transform="rotate(-0 285.48 117.570336)">acting on a guess</text>
    </g>
    <g id="text_14">
-    <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="2.88" y="207.583086" transform="rotate(-0 2.88 207.583086)">Every box here has a catch: a check, a threshold, a budget or a human door.</text>
+    <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: start" x="2.88" y="207.583086" transform="rotate(-0 2.88 207.583086)">Every box here has a catch: a check, a threshold, a budget or a human door.</text>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="p71a612ce54">
+  <clipPath id="pcb1aaa271e">
    <rect x="2.88" y="2.88" width="338.4" height="216"/>
   </clipPath>
  </defs>

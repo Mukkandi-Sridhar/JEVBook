@@ -71,14 +71,14 @@ The second door leads to the queue. An analyst picks up the alert, reads the log
 The third door is the loud one. Someone's phone rings. The analyst on call stops what they're doing, at 2:14 a.m. if necessary, because this one can't wait.
 
 ::: {.keyidea}
-Act, review, escalate. Machines handle the clear cases at each end; people handle the middle.
+Act, review, escalate: machines handle the clear cases at each end, and people handle the middle.
 :::
 
 In this book, **act** means the system handles the case by itself. **Review** means a person checks it as part of normal work. **Escalate** means a person is called in right now. The names are general on purpose. In customer support, act might be an automatic reply, review a human agent, and escalate a supervisor. In checking social media posts, it might be automatic approval, human review, and the legal team.
 
-![420 alerts from the live week, placed by how likely the (calibrated) model thinks they are to be real threats. Note the log scale: most alerts are crowded at the far left, where the model is confident they're harmless. The red dots, real threats, are mostly to the right, but not all of them.](/figures/ch21/zones-strip.pdf){#fig-zones-strip}
+![420 alerts from the live week, placed by how likely the (calibrated) model thinks they are to be real threats. Note the log scale: most alerts are crowded at the far left, where the model is confident they're harmless. The red crosses, real threats, are mostly to the right, but not all of them.](/figures/ch21/zones-strip.pdf){#fig-zones-strip}
 
-Look at @fig-zones-strip for a moment, because the whole problem is in it. The grey dots are crowded on the left: the easy, harmless alerts. The red dots are mostly to the right. But some red dots are spread through the middle, and a few are even in the crowd on the far left. And some grey dots sit in the escalate zone. No two thresholds can put every dot in the right zone. Our job is to place the thresholds so that the *mistakes we can't avoid* are the cheap ones.
+Look at @fig-zones-strip for a moment, because the whole problem is in it. The grey circles are crowded on the left: the easy, harmless alerts. The red crosses are the real threats, and they're mostly to the right. But some red crosses are spread through the middle, and a few are even in the crowd on the far left. And some grey circles sit in the escalate zone. No two thresholds can put every dot in the right zone. Our job is to place the thresholds so that the *mistakes we can't avoid* are the cheap ones.
 
 ## Let the costs set the thresholds
 
@@ -135,7 +135,7 @@ The result is uncomfortable. Take the live alerts the raw model called "under 2%
 
 That's not a bug I added for effect. The mock is built to be slightly overconfident at the extremes (the repository's `docs/mock-design.md` gives the settings). That's how most real models behave, as Chapter 5 explained. You should never assume whether *real* Jev behaves this way on *your* data. Always measure it. Chapter 11 shows how.
 
-![A close-up of the low end, where the act zone is. Raw scores (red) sit above the diagonal: the model was more confident than it should have been. After Platt scaling fitted on other days (green), the curve stays much closer to the diagonal.](/figures/ch21/calibration-zones.pdf){#fig-calibration-zones}
+![A close-up of the low end, where the act zone is. Raw scores (red, solid line) sit above the diagonal: the model was more confident than it should have been. After Platt scaling fitted on other days (green, dashed line), the curve stays much closer to the diagonal.](/figures/ch21/calibration-zones.pdf){#fig-calibration-zones}
 
 After Platt scaling, fitted only on the three history weeks, the picture improves (@fig-calibration-zones). It's not perfect, but it's much closer. So here is the rule, stated properly:
 
@@ -153,7 +153,11 @@ Under the policy based only on costs, the live week sends about {{< num ch21 ide
 
 Kestrel has {{< num ch21 analysts int >}}. Each can clear about 40 alerts in a shift, so the queue can take {{< num ch21 capacity int >}} a day. The analysts on call can handle about {{< num ch21 pages_cap int >}} urgent calls a day before the calls themselves become the problem.
 
-A policy that ignores capacity isn't a policy. It's a wish. Anything beyond {{< num ch21 capacity int >}} simply doesn't get looked at, and nobody chooses which ones are skipped.
+::: {.keyidea}
+A policy that ignores capacity isn't a policy. It's a wish.
+:::
+
+Anything beyond {{< num ch21 capacity int >}} simply doesn't get looked at, and nobody chooses which ones are skipped.
 
 So we ask a better question: *among all the policies that fit the team we actually have, which is cheapest?* That search is quick. For any escalate threshold, the best act threshold is the one that fills the queue and no more.
 
@@ -175,17 +179,17 @@ We fitted the policy on history and checked it on the live week. The machine now
 
 Look closely, and the live week is slightly more than the team can handle: about {{< num ch21 chosen.review int >}} reviews against a capacity of {{< num ch21 capacity int >}}, and {{< num ch21 chosen.escalate int >}} urgent calls against {{< num ch21 pages_cap int >}}. The thresholds were fitted to fill capacity on the history weeks, and the live week happens to be a little busier. Expect that. Thresholds fitted on the past are a forecast, not a promise. That's why Chapter 21's service watches the queue every day and raises a flag when it runs over.
 
-![Where the live week's real threats (left) and harmless alerts (right) end up each day, under one threshold at 0.5 and under the three-zone policy that respects capacity. The light segment on the left is the number that matters: threats closed with no person involved.](/figures/ch21/one-vs-three.pdf){#fig-one-vs-three}
+![Where the live week's real threats (left) and harmless alerts (right) end up each day, under one threshold at 0.5 and under the three-zone policy that respects capacity. The light, plain segment on the left (act) is the number that matters: threats closed with no person involved.](/figures/ch21/one-vs-three.pdf){#fig-one-vs-three}
 
-@fig-one-vs-three puts the two policies side by side. Notice what didn't change much: the number of harmless alerts the machine closes. Notice what did: the "act" segment on the threat side (the lightest purple) went from the biggest to the smallest.
+@fig-one-vs-three puts the two policies side by side. Notice what didn't change much: the number of harmless alerts the machine closes. Notice what did: the "act" segment on the threat side (the lightest purple, with no pattern) went from the biggest to the smallest.
 
 But about six a day is still not zero. Here I want you to stop thinking like someone who builds models, and start thinking like the person who approves the budget.
 
 ![Threats auto-closed per day, for every team size from 3 to 14 analysts, with thresholds fitted again for each. The gap between the two curves is what better input is worth: the same model reading structured alert fields instead of raw alert text.](/figures/ch21/capacity.pdf){#fig-capacity}
 
-@fig-capacity is the most useful chart in this chapter. Every point on the green curve is the best policy for that team; the only thing that changes is how many people work on the queue. Going from six analysts to eight cuts the threats closed without review from {{< num ch21 chosen.missed_by_automation f1 >}} a day to {{< num ch21 eight.missed_by_automation f1 >}}. With Kestrel's cost estimates, two extra salaries avoid about {{< num ch21 saved_money_per_day money >}} of expected loss a day. The model doesn't get to make that decision, and neither do you on your own. But now it's a decision with a clear price, not a guess.
+@fig-capacity is the most useful chart in this chapter. Every point on the green dashed curve is the best policy for that team; the only thing that changes is how many people work on the queue. Going from six analysts to eight cuts the threats closed without review from {{< num ch21 chosen.missed_by_automation f1 >}} a day to {{< num ch21 eight.missed_by_automation f1 >}}. With Kestrel's cost estimates, two extra salaries avoid about {{< num ch21 saved_money_per_day money >}} of expected loss a day. The model doesn't get to make that decision, and neither do you on your own. But now it's a decision with a clear price, not a guess.
 
-The grey curve is worth a look too. It's the same mock, scoring the same alerts, but reading only the raw alert text instead of clean structured fields. At every team size it does worse. Better input gives you the same benefit as more analysts. The same idea is behind the "LLM extracts, Jev decides" pattern in the next chapter.
+The grey solid curve is worth a look too. It's the same mock, scoring the same alerts, but reading only the raw alert text instead of clean structured fields. At every team size it does worse. Better input gives you the same benefit as more analysts. The same idea is behind the "LLM extracts, Jev decides" pattern in the next chapter.
 
 ::: {.sidebar title="Why not just maximise accuracy?"}
 Because accuracy counts every mistake as one mistake. When 8% of alerts are real, a policy that closes everything is 92% accurate, and a disaster. Chapter 1 made the same mistake on purpose. Costs and capacity are what turn "a good model" into "a good decision".
@@ -294,7 +298,7 @@ Drift, when it arrives, looks like this.
 
 In week five, Kestrel is hit by a phishing campaign. Alerts about links fire three times as often as usual, and far more of them are real. Nothing about any single alert looks unusual. The model scores them just as it scored last month's.
 
-![Top: the share of alerts that were real threats each day (black) against what the calibrated model expected (green). Bottom: alerts sent to review each day against the team's capacity. In week five (shaded), reality moves away from the model, and the queue overflows.](/figures/ch21/drift-watch.pdf){#fig-drift-watch}
+![Top: the share of alerts that were real threats each day (black, solid line) against what the calibrated model expected (green, dashed line). Bottom: alerts sent to review each day against the team's capacity. In week five (shaded, between dotted lines), reality moves away from the model, and the queue overflows.](/figures/ch21/drift-watch.pdf){#fig-drift-watch}
 
 @fig-drift-watch shows two things going wrong at once. The model expected about {{< num ch21 campaign_pred pct >}} of alerts to be threats; the real figure was {{< num ch21 campaign_actual pct >}}. And the review queue rose to an average of about {{< num ch21 campaign_reviews_per_day int >}} a day over the campaign week, against a capacity of {{< num ch21 capacity int >}}. So work that nobody chose to skip started getting skipped.
 

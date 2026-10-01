@@ -7,11 +7,15 @@ Run after the book, EPUB and cover are built (see RELEASE.md). Writes release/<v
   ebook/     book.epub (figure alt text added, see tools/epub_post.py) and ebook-cover.jpg
   preview/   Decide-Dont-Generate-COMPLETE.pdf (front cover + interior + back cover, bookmarked)
              and sample-chapters.pdf (cover, contents, Chapters 3 and 13, closing page)
+  print-bw/  the black-and-white edition: interior-bw.pdf (the same interior converted to true greyscale with
+             `mutool recolor -c gray`) and the paperback cover wrap with its spine sized for KDP's white
+             black-and-white paper (guides/ has the with-guides version)
   marketing/ 3D mockup, square post, 1200 x 628 banner
 """
 from __future__ import annotations
 
 import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -153,9 +157,14 @@ def sample(interior_pdf: Path, fpdf: Path, closing: Path, dst: Path):
                 pages=len(w.pages))
 
 
+def greyscale(src: Path, dst: Path):
+    """True greyscale copy of a PDF: every colour in text, vector art and images becomes a grey level."""
+    subprocess.run(["mutool", "recolor", "-c", "gray", "-o", str(dst), str(src)], check=True, capture_output=True)
+
+
 def main(interior_src: str, epub: str, version: str = "v1.0"):
     out = ROOT / "release" / version
-    for sub in ("print/guides", "ebook", "preview", "marketing"):
+    for sub in ("print/guides", "print-bw/guides", "ebook", "preview", "marketing"):
         (out / sub).mkdir(parents=True, exist_ok=True)
     tmp = out / "_tmp"
     tmp.mkdir(exist_ok=True)
@@ -165,6 +174,10 @@ def main(interior_src: str, epub: str, version: str = "v1.0"):
         shutil.copy(cov / "print" / f"cover-{kind}.pdf", out / "print" / f"cover-{kind}.pdf")
         shutil.copy(cov / "print" / f"cover-{kind}-guides.pdf", out / "print" / "guides" / f"cover-{kind}-guides.pdf")
     shutil.copy(cov / "print" / "dimensions.json", out / "print" / "cover-dimensions.json")
+    greyscale(out / "print" / "Decide-Dont-Generate-interior.pdf", out / "print-bw" / "interior-bw.pdf")
+    shutil.copy(cov / "print" / "cover-paperback-bw.pdf", out / "print-bw" / "cover-paperback-bw.pdf")
+    shutil.copy(cov / "print" / "cover-paperback-bw-guides.pdf", out / "print-bw" / "guides" / "cover-paperback-bw-guides.pdf")
+    shutil.copy(cov / "print" / "dimensions.json", out / "print-bw" / "cover-dimensions.json")
     shutil.copy(epub, out / "ebook" / "book.epub")
     shutil.copy(cov / "ebook" / "cover.jpg", out / "ebook" / "ebook-cover.jpg")
     fpdf, bpdf = cover_pages(tmp)

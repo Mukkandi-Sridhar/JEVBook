@@ -12,7 +12,7 @@ You open the next alert. Twelve minutes later, you've read the logs, checked the
 
 At five alerts an hour, you'll get through about thirty-five tonight. The queue will get about two hundred.
 
-![One night at Kestrel, midnight to 7 a.m. Each line is an alert; red lines are the real ones. Working in the order they arrive, you open the ones on the left and the rest wait for the morning.](/figures/front/night.pdf){#fig-night}
+![One night at Kestrel, midnight to 7 a.m. Each line is an alert; the real ones are red, taller and marked on top. Working in the order they arrive, you open the ones on the left and the rest wait for the morning.](/figures/front/night.pdf){#fig-night}
 
 @fig-night shows the whole night at once, a view you never get from your desk. There were {{< num front night_alerts int >}} alerts between midnight and seven. {{< num front night_threats int >}} of them were real. Working through the queue in order, you opened {{< num front night_opened int >}}.
 

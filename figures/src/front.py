@@ -1,6 +1,7 @@
 """Figures for the front matter: the prologue's night shift, reading paths, and the book's boxes."""
 
 import numpy as np
+from matplotlib.patches import Rectangle
 
 from jevkit import soc
 from jevkit.figs import figure, draw, C, ZONE, subplots, clean, results, synthetic_tag
@@ -43,10 +44,12 @@ def night_fig():
     clean(ax, "none")
     y = n.malicious.to_numpy().astype(bool)
     op = n.opened.to_numpy()
-    ax.vlines(n.hour[~y], 0.1, 0.9, color=C["rule"], lw=0.6)
+    # real threats are taller, thicker and carry a mark on top, so they stand out without colour
+    ax.vlines(n.hour[~y], 0.2, 0.8, color=C["rule"], lw=0.6)
     ax.vlines(n.hour[y], 0.0, 1.0, color=C["fail"], lw=1.4)
+    ax.scatter(n.hour[y], np.full(y.sum(), 1.07), s=7, color=C["fail"], marker="v", lw=0)
     ax.scatter(n.hour[op], np.full(op.sum(), -0.25), s=6, color=C["ink"], marker="|")
-    ax.text(7.05, 0.5, f"{len(n)} alerts,\n{y.sum()} real (red)", fontsize=6.0, va="center")
+    ax.text(7.05, 0.5, f"{len(n)} alerts,\n{y.sum()} real (tall red\nticks, marked on top)", fontsize=6.0, va="center")
     ax.text(7.05, -0.25, f"you open {op.sum()},\n{(y & op).sum()} of them real", fontsize=6.0, va="center")
     ax.set_xlim(0, 7)
     ax.set_ylim(-0.5, 1.1)
@@ -85,17 +88,26 @@ def paths():
 
 @figure(CH, "boxes")
 def boxes():
-    f, ax = draw.canvas("text", 2.57)
-    items = [("TRY IT", "jev", "Code you can run. The chapter’s lab notebook has the full version."),
+    f, ax = draw.canvas("text", 3.29)
+    items = [("KEY IDEA", "key", "One sentence worth remembering a year from now. The thick bar marks it."),
+             ("KEEP THESE", "keep", "At the end of each chapter: that chapter’s key ideas, in one list."),
+             ("TRY IT", "jev", "Code you can run. The chapter’s lab notebook has the full version."),
              ("SET THE THRESHOLD", "review", "A small decision to make yourself, with costs. The answer follows in brackets."),
              ("WHERE THIS BREAKS", "fail", "The honest limits of what the chapter just showed."),
-             ("KEY IDEA", "neutral", "The one sentence to keep if you forget the rest."),
              ("GOING DEEPER", "neutral", "Optional maths. Skip it and nothing later depends on it."),
              ("WHY NOT …?", "neutral", "A side box that answers the obvious objection in a few lines."),
              ("SYNTHETIC", "plain", "Every Jev number comes from a mock model, and says so.")]
+    key_bar, key_tint = "#1E5E42", "#C9E0D2"      # as in print: assets/latex/preamble.tex (keybar, keytint)
     for i, (t, k, d) in enumerate(items):
-        y = 2.37 - i * 0.36
-        draw.box(ax, 0.0, y - 0.14, 1.25, 0.28, t, kind=k, size=5.6, weight="bold",
-                 textcolor="white" if k == "review" else None, fill=draw.KIND["review"][0] if k == "review" else None)
+        y = 3.09 - i * 0.36
+        if k in ("key", "keep"):
+            # the book's key idea style: a light tint with a thick dark bar on the left (a frame too for "keep these")
+            ax.add_patch(Rectangle((0.0, y - 0.14), 1.25, 0.28, fc=key_tint, ec=key_bar if k == "keep" else "none",
+                                   lw=0.8, zorder=2))
+            ax.add_patch(Rectangle((0.0, y - 0.14), 0.07, 0.28, fc=key_bar, ec="none", zorder=3))
+            draw.text(ax, 0.66, y, t, size=5.6, weight="bold", color=key_bar, ha="center")
+        else:
+            draw.box(ax, 0.0, y - 0.14, 1.25, 0.28, t, kind=k, size=5.6, weight="bold",
+                     textcolor="white" if k == "review" else None, fill=draw.KIND["review"][0] if k == "review" else None)
         draw.text(ax, 1.4, y, d, size=6.1)
     return f

@@ -6,7 +6,7 @@ import numpy as np
 from matplotlib.ticker import FuncFormatter
 
 from jevkit import llm, text, soc
-from jevkit.figs import figure, draw, C, subplots, clean, results, summary_page, synthetic_tag
+from jevkit.figs import hatch_kw, figure, draw, C, subplots, clean, results, summary_page, synthetic_tag
 
 CH = "ch10"
 
@@ -138,15 +138,16 @@ def latency():
     ys = np.arange(len(cases))[::-1]
     for y, (lab, n) in zip(ys, cases):
         t = llm.MockLLM.simulated_latency_s(n)
-        ax.barh(y, llm.LLM_TIME_TO_FIRST_TOKEN_S, color=C["llm_t"], height=0.5)
+        ax.barh(y, llm.LLM_TIME_TO_FIRST_TOKEN_S, color=C["llm_t"], height=0.5, hatch="////", hatchcolor=C["llm"],
+                edgecolor=C["llm"], lw=0.6)
         ax.barh(y, t - llm.LLM_TIME_TO_FIRST_TOKEN_S, left=llm.LLM_TIME_TO_FIRST_TOKEN_S, color=C["llm"], height=0.5)
         ax.text(t + 0.3, y, f"{t:.1f} s  ({n:,} token{'s' if n != 1 else ''})", va="center", fontsize=6.4, color=C["ink"])
     ax.set_yticks(ys)
     ax.set_yticklabels([c[0] for c in cases], fontsize=6.6)
     ax.set_xlabel("seconds per answer")
     ax.set_xlim(0, 34)
-    ax.text(0.99, -0.34, f"illustrative: {llm.LLM_TIME_TO_FIRST_TOKEN_S:.2f} s before the first token (light), then "
-            f"{llm.LLM_TOKENS_PER_SECOND:.0f} tokens per second (dark)", transform=ax.transAxes, fontsize=5.6,
+    ax.text(0.99, -0.34, f"illustrative: {llm.LLM_TIME_TO_FIRST_TOKEN_S:.2f} s before the first token (light, striped), then "
+            f"{llm.LLM_TOKENS_PER_SECOND:.0f} tokens per second (dark, solid)", transform=ax.transAxes, fontsize=5.6,
             color=C["muted"], ha="right")
     return f
 
@@ -159,14 +160,20 @@ def variance_fig():
     clean(ax, "y")
     x = np.arange(len(rows))
     share = [r[0] for r in rows]
-    cols = [C["fail"] if r[1] else C["slate"] for r in rows]
-    ax.bar(x, share, color=cols, width=0.7)
+    # real threats solid, harmless alerts striped: the two kinds differ without colour
+    from matplotlib.patches import Patch
+    thr = np.array([bool(r[1]) for r in rows])
+    ax.bar(x[thr], np.array(share)[thr], color=C["fail"], width=0.7)
+    ax.bar(x[~thr], np.array(share)[~thr], width=0.7, **hatch_kw(1, C["neutral_t"]))
+    ax.bar(x[~thr], np.array(share)[~thr], width=0.7, fill=False, edgecolor=C["slate"], lw=0.6)
     ax.set_xticks([])
     ax.set_xlabel("40 borderline alerts, each asked 20 times at temperature 0.7 (sorted)")
     ax.set_ylim(0, 1.05)
     ax.set_ylabel("share of answers:\n“malicious”", fontsize=6.6)
     ax.yaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:.0%}"))
-    ax.text(0.5, 0.9, "■ really a threat   ■ really harmless", fontsize=6.2, color=C["ink2"])
+    ax.legend(handles=[Patch(color=C["fail"], label="really a threat (solid)"),
+                       Patch(fc=C["neutral_t"], ec=C["slate"], hatch="////", lw=0.6, label="really harmless (striped)")],
+              loc="upper left", fontsize=6.2, handlelength=1.4)
     synthetic_tag(f, "SYNTHETIC · llm-mock-synthetic, not a real model")
     return f
 

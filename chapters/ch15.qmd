@@ -29,7 +29,13 @@ We've already met most of the decision patterns in this book, one at a time, ins
 
 ![The six patterns in this chapter, as small diagrams. In every one, something else writes or acts, and a typed question decides.](/figures/ch22/catalog.pdf){#fig-catalog}
 
-Look at @fig-catalog before reading on, and notice what the patterns share. In every pattern, the decision model never writes anything and never acts on its own. It answers a typed question, and ordinary code turns the answer into an action. That separation is what a decision layer is.
+Look at @fig-catalog before reading on, and notice what the patterns share.
+
+::: {.keyidea}
+A decision model never writes and never acts on its own: it answers a typed question, and code acts.
+:::
+
+That's true in every pattern, and that separation is what a decision layer is.
 
 ## Pattern 1: extract, then decide
 
@@ -58,8 +64,10 @@ Extracting first raised the AUC from {{< num ch22 llm_decides_auc f3 >}}, when t
 But look at the bottom row. The SIEM's own fields scored {{< num ch22 jev_fields_auc f3 >}}, better than any extraction. The extractor isn't to blame. The alert text simply never mentions some of what the SIEM knows, like how critical the machine is or the user's job. No extractor can find a fact that isn't written down.
 
 ::: {.keyidea}
-Extract when the only input you have is text. When structured data exists, use it: extraction can't add facts the text doesn't contain.
+Extract when the only input you have is text: extraction can't add facts the text doesn't contain.
 :::
+
+When structured data exists, use it.
 
 **How it breaks.** The extracted fields are LLM output, so everything Chapter 7 said applies: a planted sentence in the text can become a planted value in a field. Check fields against types and allowed ranges, and use trusted sources for anything that matters. One more thing: one extraction can feed many typed questions. So you pay for the LLM once per case, not once per decision.
 

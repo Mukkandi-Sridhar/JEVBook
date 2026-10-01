@@ -34,7 +34,7 @@ Q 2.88 10.8 2.88 15.12
 L 2.88 29.52 
 Q 2.88 33.84 7.2 33.84 
 z
-" clip-path="url(#p3dd02b86fa)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pec7e95db98)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 5.76 108.72 
@@ -47,7 +47,7 @@ Q 2.88 56.88 2.88 59.76
 L 2.88 105.84 
 Q 2.88 108.72 5.76 108.72 
 z
-" clip-path="url(#p3dd02b86fa)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pec7e95db98)" style="fill: #cbdaef; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 5.76 154.08 
@@ -60,7 +60,7 @@ Q 2.88 116.64 2.88 119.52
 L 2.88 151.2 
 Q 2.88 154.08 5.76 154.08 
 z
-" clip-path="url(#p3dd02b86fa)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pec7e95db98)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 122.4 33.84 
@@ -73,7 +73,7 @@ Q 118.08 10.8 118.08 15.12
 L 118.08 29.52 
 Q 118.08 33.84 122.4 33.84 
 z
-" clip-path="url(#p3dd02b86fa)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pec7e95db98)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_6">
     <path d="M 120.96 108.72 
@@ -86,7 +86,7 @@ Q 118.08 56.88 118.08 59.76
 L 118.08 105.84 
 Q 118.08 108.72 120.96 108.72 
 z
-" clip-path="url(#p3dd02b86fa)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pec7e95db98)" style="fill: #cbdaef; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_7">
     <path d="M 120.96 154.08 
@@ -99,7 +99,7 @@ Q 118.08 116.64 118.08 119.52
 L 118.08 151.2 
 Q 118.08 154.08 120.96 154.08 
 z
-" clip-path="url(#p3dd02b86fa)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pec7e95db98)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_8">
     <path d="M 237.6 33.84 
@@ -112,7 +112,7 @@ Q 233.28 10.8 233.28 15.12
 L 233.28 29.52 
 Q 233.28 33.84 237.6 33.84 
 z
-" clip-path="url(#p3dd02b86fa)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pec7e95db98)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_9">
     <path d="M 236.16 108.72 
@@ -125,7 +125,7 @@ Q 233.28 56.88 233.28 59.76
 L 233.28 105.84 
 Q 233.28 108.72 236.16 108.72 
 z
-" clip-path="url(#p3dd02b86fa)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pec7e95db98)" style="fill: #cbdaef; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_10">
     <path d="M 236.16 154.08 
@@ -138,59 +138,59 @@ Q 233.28 116.64 233.28 119.52
 L 233.28 151.2 
 Q 233.28 154.08 236.16 154.08 
 z
-" clip-path="url(#p3dd02b86fa)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pec7e95db98)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
-    <text style="font-weight: 700; font-size: 7.4px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="55.08" y="24.984" transform="rotate(-0 55.08 24.984)">noul</text>
+    <text style="font-weight: 700; font-size: 7.4px; font-family: 'JetBrains Mono'; text-anchor: middle" x="55.08" y="24.984" transform="rotate(-0 55.08 24.984)">noul</text>
    </g>
    <g id="text_2">
     <text style="font-style: italic; font-size: 6px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="54.72" y="46.700098" transform="rotate(-0 54.72 46.700098)">a yes/no question</text>
    </g>
    <g id="text_3">
-    <text style="font-size: 5.3px; font-family: 'JetBrains Mono'; fill: #1f2430" transform="translate(7.2 69.0954)">Noul(instructions=</text>
-    <text style="font-size: 5.3px; font-family: 'JetBrains Mono'; fill: #1f2430" transform="translate(7.2 78.1902)">  "Is this a real attack?")</text>
+    <text style="font-size: 5.3px; font-family: 'JetBrains Mono'" transform="translate(7.2 69.0954)">Noul(instructions=</text>
+    <text style="font-size: 5.3px; font-family: 'JetBrains Mono'" transform="translate(7.2 78.1902)">  "Is this a real attack?")</text>
    </g>
    <g id="text_4">
-    <text style="font-size: 5.4px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="7.2" y="128.286731" transform="rotate(-0 7.2 128.286731)">noul = 0.68</text>
+    <text style="font-size: 5.4px; font-family: 'JetBrains Mono'; text-anchor: start" x="7.2" y="128.286731" transform="rotate(-0 7.2 128.286731)">noul = 0.68</text>
    </g>
    <g id="text_5">
     <text style="font-size: 5.7px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="54.72" y="165.901093" transform="rotate(-0 54.72 165.901093)">one probability: of “yes”</text>
    </g>
    <g id="text_6">
-    <text style="font-weight: 700; font-size: 7.4px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="170.28" y="25.190969" transform="rotate(-0 170.28 25.190969)">choice</text>
+    <text style="font-weight: 700; font-size: 7.4px; font-family: 'JetBrains Mono'; text-anchor: middle" x="170.28" y="25.190969" transform="rotate(-0 170.28 25.190969)">choice</text>
    </g>
    <g id="text_7">
     <text style="font-style: italic; font-size: 6px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="169.92" y="46.680879" transform="rotate(-0 169.92 46.680879)">pick one label</text>
    </g>
    <g id="text_8">
-    <text style="font-size: 5.3px; font-family: 'JetBrains Mono'; fill: #1f2430" transform="translate(122.4 69.0954)">Choice(criteria={</text>
-    <text style="font-size: 5.3px; font-family: 'JetBrains Mono'; fill: #1f2430" transform="translate(122.4 77.864333)">  "phishing": …,</text>
-    <text style="font-size: 5.3px; font-family: 'JetBrains Mono'; fill: #1f2430" transform="translate(122.4 86.8875)">  "malware": …,</text>
-    <text style="font-size: 5.3px; font-family: 'JetBrains Mono'; fill: #1f2430" transform="translate(122.4 96.2208)">  "benign": …})</text>
+    <text style="font-size: 5.3px; font-family: 'JetBrains Mono'" transform="translate(122.4 69.0954)">Choice(criteria={</text>
+    <text style="font-size: 5.3px; font-family: 'JetBrains Mono'" transform="translate(122.4 77.864333)">  "phishing": …,</text>
+    <text style="font-size: 5.3px; font-family: 'JetBrains Mono'" transform="translate(122.4 86.8875)">  "malware": …,</text>
+    <text style="font-size: 5.3px; font-family: 'JetBrains Mono'" transform="translate(122.4 96.2208)">  "benign": …})</text>
    </g>
    <g id="text_9">
-    <text style="font-size: 5.4px; font-family: 'JetBrains Mono'; fill: #1f2430" transform="translate(122.4 127.925184)">choice = "benign"</text>
-    <text style="font-size: 5.4px; font-family: 'JetBrains Mono'; fill: #1f2430" transform="translate(122.4 137.3346)">probabilities = {…}</text>
+    <text style="font-size: 5.4px; font-family: 'JetBrains Mono'" transform="translate(122.4 127.925184)">choice = "benign"</text>
+    <text style="font-size: 5.4px; font-family: 'JetBrains Mono'" transform="translate(122.4 137.3346)">probabilities = {…}</text>
    </g>
    <g id="text_10">
     <text style="font-size: 5.7px; font-family: 'Inter'; fill: #4b5563" transform="translate(139.928648 165.871702)">a probability per label;</text>
     <text style="font-size: 5.7px; font-family: 'Inter'; fill: #4b5563" transform="translate(148.59443 174.76938)">they add up to 1</text>
    </g>
    <g id="text_11">
-    <text style="font-weight: 700; font-size: 7.4px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="285.48" y="24.355" transform="rotate(-0 285.48 24.355)">score</text>
+    <text style="font-weight: 700; font-size: 7.4px; font-family: 'JetBrains Mono'; text-anchor: middle" x="285.48" y="24.355" transform="rotate(-0 285.48 24.355)">score</text>
    </g>
    <g id="text_12">
     <text style="font-style: italic; font-size: 6px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="285.12" y="47.186191" transform="rotate(-0 285.12 47.186191)">a level on a scale</text>
    </g>
    <g id="text_13">
-    <text style="font-size: 5.3px; font-family: 'JetBrains Mono'; fill: #1f2430" transform="translate(237.6 69.0954)">Score(criteria=[</text>
-    <text style="font-size: 5.3px; font-family: 'JetBrains Mono'; fill: #1f2430" transform="translate(237.6 77.917333)">  "Informational",</text>
-    <text style="font-size: 5.3px; font-family: 'JetBrains Mono'; fill: #1f2430" transform="translate(237.6 87.012133)">  "Low", "Medium",</text>
-    <text style="font-size: 5.3px; font-family: 'JetBrains Mono'; fill: #1f2430" transform="translate(237.6 96.2208)">  "High"])</text>
+    <text style="font-size: 5.3px; font-family: 'JetBrains Mono'" transform="translate(237.6 69.0954)">Score(criteria=[</text>
+    <text style="font-size: 5.3px; font-family: 'JetBrains Mono'" transform="translate(237.6 77.917333)">  "Informational",</text>
+    <text style="font-size: 5.3px; font-family: 'JetBrains Mono'" transform="translate(237.6 87.012133)">  "Low", "Medium",</text>
+    <text style="font-size: 5.3px; font-family: 'JetBrains Mono'" transform="translate(237.6 96.2208)">  "High"])</text>
    </g>
    <g id="text_14">
-    <text style="font-size: 5.4px; font-family: 'JetBrains Mono'; fill: #1f2430" transform="translate(237.6 128.2842)">score = 1.05</text>
-    <text style="font-size: 5.4px; font-family: 'JetBrains Mono'; fill: #1f2430" transform="translate(237.6 137.3346)">probabilities = {0: …}</text>
+    <text style="font-size: 5.4px; font-family: 'JetBrains Mono'" transform="translate(237.6 128.2842)">score = 1.05</text>
+    <text style="font-size: 5.4px; font-family: 'JetBrains Mono'" transform="translate(237.6 137.3346)">probabilities = {0: …}</text>
    </g>
    <g id="text_15">
     <text style="font-size: 5.7px; font-family: 'Inter'; fill: #4b5563" transform="translate(255.361102 165.871702)">a probability per level,</text>
@@ -199,7 +199,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p3dd02b86fa">
+  <clipPath id="pec7e95db98">
    <rect x="2.88" y="2.88" width="338.4" height="176.4"/>
   </clipPath>
  </defs>

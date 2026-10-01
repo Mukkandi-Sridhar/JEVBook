@@ -1,14 +1,26 @@
-:root { --ink:#1F2430; --ink2:#4B5563; --muted:#8A919C; --data:#2F6DB5; --llm:#E07A1F; --jev:#3B9C6E; --fail:#B8323A;
-  --jev-t:#EEF7F2; --fail-t:#FBEFEF; --zone-t:#F3F0FA; --zone:#8468C9; --neutral-t:#F4F5F7; }
+:root { --ink:#000000; --ink2:#4B5563; --muted:#6B7280; --data:#2F6DB5; --llm:#E07A1F; --jev:#3B9C6E; --fail:#B8323A;
+  --jev-t:#C4E1D0; --fail-t:#F0CACA; --zone-t:#D8CEEE; --zone:#8468C9; --neutral-t:#D5D8DD; --bar:#6B7280;
+  --key:#1E5E42; --key-t:#C9E0D2; }
+/* Black-and-white safe (as in print): tints are at least 15% darker than white in greyscale, and every box has a bar
+   or a border, so a greyscale e-reader still shows each box. */
 body { background:#fff; color:var(--ink); }
 .bookbox { margin:1.4rem 0; padding:0.9rem 1.1rem; border-radius:4px; font-size:0.94em; }
 .bookbox .box-label { font-size:0.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0.4rem; }
 .tryit { background:var(--jev-t); border-left:3px solid var(--jev); } .tryit .box-label { color:var(--jev); }
 .breaks { background:var(--fail-t); border-left:3px solid var(--fail); } .breaks .box-label { color:var(--fail); }
 .threshold { background:var(--zone-t); border-left:3px solid var(--zone); } .threshold .box-label { color:var(--zone); }
-.deeper, .sidebar.bookbox { background:var(--neutral-t); border-left:3px solid #C9CED6; } .deeper .box-label { color:var(--ink2); }
-.goals { border:1px solid #E4E7EB; } .exercises { border-top:1px solid #C9CED6; border-radius:0; padding-left:0; }
-.keyidea { background:none; padding:0.2rem 0 0.2rem 1rem; border-left:4px solid var(--jev); font-family:Inter, sans-serif; font-weight:700; font-size:1.15em; }
+.deeper, .sidebar.bookbox { background:var(--neutral-t); border-left:3px solid var(--bar); } .deeper .box-label { color:var(--ink2); }
+.goals { border:1px solid #8A919C; } .exercises { border-top:1px solid #9AA1AB; border-radius:0; padding-left:0; }
+/* key ideas: a thick dark bar and a KEY IDEA label, never split across screens */
+.keyidea, .keepthese { background:var(--key-t); border-left:6px solid var(--key); border-radius:0; page-break-inside:avoid; break-inside:avoid; }
+.keyidea { font-family:Inter, sans-serif; font-weight:700; font-size:1.12em; line-height:1.4; }
+.keyidea .box-label, .keepthese .box-label { color:var(--key); font-size:0.62rem; }
+.keepthese { border-top:1px solid var(--key); border-right:1px solid var(--key); border-bottom:1px solid var(--key); font-family:Inter, sans-serif; font-size:0.9em; }
+.keepthese ul { margin:0.2rem 0 0 1.1rem; padding:0; } .keepthese li { margin:0.25rem 0; }
+.keyideaslist ul { margin:0.2rem 0 0.8rem 1.1rem; padding:0; } .keyideaslist li { margin:0.2rem 0; }
+a.kref { text-decoration:none; }
+div.sourceCode, pre.sourceCode { background:#D6D9DE; border-left:2px solid var(--bar); }
+.tryit div.sourceCode, .tryit pre.sourceCode, .deeper div.sourceCode, .deeper pre.sourceCode { background:#FFFFFF; }
 .bookquote { font-style:italic; font-size:1.12em; padding-left:1.2rem; border-left:none; position:relative; }
 .bookquote::before { content:"\201C"; color:var(--jev); font-size:2.6em; position:absolute; left:-0.2rem; top:-0.7rem; font-style:normal; }
 .bookquote .quote-by { font-style:normal; font-family:Inter, sans-serif; font-size:0.72em; color:var(--ink2); margin-top:0.4rem; }

@@ -36,7 +36,7 @@ z
      <g id="line2d_1">
       <path d="M 51.294281 119.521531 
 L 51.294281 25.273531 
-" clip-path="url(#p5a49b0942a)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#pb550ecef98)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_2"/>
      <g id="text_1">
@@ -47,7 +47,7 @@ L 51.294281 25.273531
      <g id="line2d_3">
       <path d="M 81.784594 119.521531 
 L 81.784594 25.273531 
-" clip-path="url(#p5a49b0942a)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#pb550ecef98)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_4"/>
      <g id="text_2">
@@ -58,7 +58,7 @@ L 81.784594 25.273531
      <g id="line2d_5">
       <path d="M 112.274906 119.521531 
 L 112.274906 25.273531 
-" clip-path="url(#p5a49b0942a)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#pb550ecef98)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_6"/>
      <g id="text_3">
@@ -69,7 +69,7 @@ L 112.274906 25.273531
      <g id="line2d_7">
       <path d="M 142.765219 119.521531 
 L 142.765219 25.273531 
-" clip-path="url(#p5a49b0942a)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#pb550ecef98)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_8"/>
      <g id="text_4">
@@ -98,7 +98,7 @@ L 132.906684 58.117531
 L 132.906684 29.557531 
 L 51.294281 29.557531 
 z
-" clip-path="url(#p5a49b0942a)" style="fill: #e07a1f"/>
+" clip-path="url(#pb550ecef98)" style="fill: #e07a1f"/>
    </g>
    <g id="patch_4">
     <path d="M 51.294281 115.237531 
@@ -106,26 +106,26 @@ L 102.822909 115.237531
 L 102.822909 86.677531 
 L 51.294281 86.677531 
 z
-" clip-path="url(#p5a49b0942a)" style="fill: #3b9c6e"/>
+" clip-path="url(#pb550ecef98)" style="fill: #3b9c6e"/>
    </g>
    <g id="patch_5">
     <path d="M 51.294281 119.521531 
 L 51.294281 25.273531 
-" style="fill: none; stroke: #c9ced6; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+" style="fill: none; stroke: #9aa1ab; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="patch_6">
     <path d="M 51.294281 119.521531 
 L 161.471025 119.521531 
-" style="fill: none; stroke: #c9ced6; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+" style="fill: none; stroke: #9aa1ab; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="text_7">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="134.538932" y="46.092902" transform="rotate(-0 134.538932 46.092902)">13.4 s</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start" x="134.538932" y="46.092902" transform="rotate(-0 134.538932 46.092902)">13.4 s</text>
    </g>
    <g id="text_8">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="103.853482" y="103.212902" transform="rotate(-0 103.853482 103.212902)">8.4 s</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start" x="103.853482" y="103.212902" transform="rotate(-0 103.853482 103.212902)">8.4 s</text>
    </g>
    <g id="text_9">
-    <text style="font-weight: 600; font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="51.294281" y="17.273531" transform="rotate(-0 51.294281 17.273531)">seconds per task</text>
+    <text style="font-weight: 600; font-size: 6.6px; font-family: 'Inter'; text-anchor: start" x="51.294281" y="17.273531" transform="rotate(-0 51.294281 17.273531)">seconds per task</text>
    </g>
   </g>
   <g id="axes_2">
@@ -142,7 +142,7 @@ z
      <g id="line2d_11">
       <path d="M 177.997537 119.521531 
 L 177.997537 25.273531 
-" clip-path="url(#p885a4b1df4)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p769efd4466)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_12"/>
      <g id="text_10">
@@ -153,7 +153,7 @@ L 177.997537 25.273531
      <g id="line2d_13">
       <path d="M 202.432388 119.521531 
 L 202.432388 25.273531 
-" clip-path="url(#p885a4b1df4)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p769efd4466)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_14"/>
      <g id="text_11">
@@ -164,7 +164,7 @@ L 202.432388 25.273531
      <g id="line2d_15">
       <path d="M 226.86724 119.521531 
 L 226.86724 25.273531 
-" clip-path="url(#p885a4b1df4)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p769efd4466)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_16"/>
      <g id="text_12">
@@ -175,7 +175,7 @@ L 226.86724 25.273531
      <g id="line2d_17">
       <path d="M 251.302091 119.521531 
 L 251.302091 25.273531 
-" clip-path="url(#p885a4b1df4)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p769efd4466)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_18"/>
      <g id="text_13">
@@ -186,7 +186,7 @@ L 251.302091 25.273531
      <g id="line2d_19">
       <path d="M 275.736942 119.521531 
 L 275.736942 25.273531 
-" clip-path="url(#p885a4b1df4)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p769efd4466)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_20"/>
      <g id="text_14">
@@ -208,7 +208,7 @@ L 259.60994 58.117531
 L 259.60994 29.557531 
 L 177.997537 29.557531 
 z
-" clip-path="url(#p885a4b1df4)" style="fill: #e07a1f"/>
+" clip-path="url(#p769efd4466)" style="fill: #e07a1f"/>
    </g>
    <g id="patch_9">
     <path d="M 177.997537 115.237531 
@@ -216,26 +216,26 @@ L 197.15446 115.237531
 L 197.15446 86.677531 
 L 177.997537 86.677531 
 z
-" clip-path="url(#p885a4b1df4)" style="fill: #3b9c6e"/>
+" clip-path="url(#p769efd4466)" style="fill: #3b9c6e"/>
    </g>
    <g id="patch_10">
     <path d="M 177.997537 119.521531 
 L 177.997537 25.273531 
-" style="fill: none; stroke: #c9ced6; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+" style="fill: none; stroke: #9aa1ab; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="patch_11">
     <path d="M 177.997537 119.521531 
 L 288.174281 119.521531 
-" style="fill: none; stroke: #c9ced6; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+" style="fill: none; stroke: #9aa1ab; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="text_15">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="261.242188" y="46.092902" transform="rotate(-0 261.242188 46.092902)">$6.68</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start" x="261.242188" y="46.092902" transform="rotate(-0 261.242188 46.092902)">$6.68</text>
    </g>
    <g id="text_16">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="197.537599" y="103.212902" transform="rotate(-0 197.537599 103.212902)">$1.57</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start" x="197.537599" y="103.212902" transform="rotate(-0 197.537599 103.212902)">$1.57</text>
    </g>
    <g id="text_17">
-    <text style="font-weight: 600; font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="177.997537" y="17.273531" transform="rotate(-0 177.997537 17.273531)">cost per 1,000 tasks</text>
+    <text style="font-weight: 600; font-size: 6.6px; font-family: 'Inter'; text-anchor: start" x="177.997537" y="17.273531" transform="rotate(-0 177.997537 17.273531)">cost per 1,000 tasks</text>
    </g>
   </g>
   <g id="text_18">
@@ -252,14 +252,14 @@ Q 110.313531 11.055781 111.153531 11.055781
 z
 " style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.5; stroke-linejoin: miter"/>
    </g>
-   <text style="font-weight: 500; font-size: 5.6px; font-family: 'Inter'; text-anchor: end; fill: #8a919c" x="320.322281" y="8.305" transform="rotate(-0 320.322281 8.305)">ILLUSTRATIVE · LLM figures assumed · Jev price and latency vendor-reported</text>
+   <text style="font-weight: 500; font-size: 5.6px; font-family: 'Inter'; text-anchor: end; fill: #6b7280" x="320.322281" y="8.305" transform="rotate(-0 320.322281 8.305)">ILLUSTRATIVE · LLM figures assumed · Jev price and latency vendor-reported</text>
   </g>
  </g>
  <defs>
-  <clipPath id="p5a49b0942a">
+  <clipPath id="pb550ecef98">
    <rect x="51.294281" y="25.273531" width="110.176744" height="94.248"/>
   </clipPath>
-  <clipPath id="p885a4b1df4">
+  <clipPath id="p769efd4466">
    <rect x="177.997537" y="25.273531" width="110.176744" height="94.248"/>
   </clipPath>
  </defs>

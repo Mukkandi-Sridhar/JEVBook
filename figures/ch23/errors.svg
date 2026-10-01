@@ -29,7 +29,7 @@ L 341.28 41.76
 L 341.28 21.6 
 L 2.88 21.6 
 z
-" clip-path="url(#pdd139ba1b0)" style="fill: #f1f2f4"/>
+" clip-path="url(#pa7187c637a)" style="fill: #d5d8dd"/>
    </g>
    <g id="patch_3">
     <path d="M 2.88 83.52 
@@ -37,7 +37,7 @@ L 341.28 83.52
 L 341.28 63.36 
 L 2.88 63.36 
 z
-" clip-path="url(#pdd139ba1b0)" style="fill: #f1f2f4"/>
+" clip-path="url(#pa7187c637a)" style="fill: #d5d8dd"/>
    </g>
    <g id="patch_4">
     <path d="M 2.88 125.28 
@@ -45,7 +45,7 @@ L 341.28 125.28
 L 341.28 105.12 
 L 2.88 105.12 
 z
-" clip-path="url(#pdd139ba1b0)" style="fill: #f1f2f4"/>
+" clip-path="url(#pa7187c637a)" style="fill: #d5d8dd"/>
    </g>
    <g id="patch_5">
     <path d="M 2.88 167.04 
@@ -53,7 +53,7 @@ L 341.28 167.04
 L 341.28 146.88 
 L 2.88 146.88 
 z
-" clip-path="url(#pdd139ba1b0)" style="fill: #f1f2f4"/>
+" clip-path="url(#pa7187c637a)" style="fill: #d5d8dd"/>
    </g>
    <g id="patch_6">
     <path d="M 2.88 208.8 
@@ -61,7 +61,7 @@ L 341.28 208.8
 L 341.28 188.64 
 L 2.88 188.64 
 z
-" clip-path="url(#pdd139ba1b0)" style="fill: #f1f2f4"/>
+" clip-path="url(#pa7187c637a)" style="fill: #d5d8dd"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 600; font-size: 6.2px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="2.88" y="13.826328" transform="rotate(-0 2.88 13.826328)">what went wrong</text>
@@ -73,82 +73,82 @@ z
     <text style="font-weight: 600; font-size: 6.2px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="190.08" y="13.964375" transform="rotate(-0 190.08 13.964375)">what the SDK does (measured against the mock)</text>
    </g>
    <g id="text_4">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="33.290547" transform="rotate(-0 6.48 33.290547)">no API key at all</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start" x="6.48" y="33.290547" transform="rotate(-0 6.48 33.290547)">no API key at all</text>
    </g>
    <g id="text_5">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="150.48" y="33.726" transform="rotate(-0 150.48 33.726)">–</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="150.48" y="33.726" transform="rotate(-0 150.48 33.726)">–</text>
    </g>
    <g id="text_6">
     <text style="font-size: 5.9px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #b8323a" x="190.08" y="33.441242" transform="rotate(-0 190.08 33.441242)">raises TypeSafeError</text>
    </g>
    <g id="text_7">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="54.850125" transform="rotate(-0 6.48 54.850125)">model name that doesn’t exist</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start" x="6.48" y="54.850125" transform="rotate(-0 6.48 54.850125)">model name that doesn’t exist</text>
    </g>
    <g id="text_8">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="150.48" y="54.823" transform="rotate(-0 150.48 54.823)">404</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="150.48" y="54.823" transform="rotate(-0 150.48 54.823)">404</text>
    </g>
    <g id="text_9">
     <text style="font-size: 5.9px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #b8323a" x="190.08" y="54.321242" transform="rotate(-0 190.08 54.321242)">raises TypeSafeNotFoundError</text>
    </g>
    <g id="text_10">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="75.136766" transform="rotate(-0 6.48 75.136766)">a choice with no options</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start" x="6.48" y="75.136766" transform="rotate(-0 6.48 75.136766)">a choice with no options</text>
    </g>
    <g id="text_11">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="150.48" y="75.734" transform="rotate(-0 150.48 75.734)">422</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="150.48" y="75.734" transform="rotate(-0 150.48 75.734)">422</text>
    </g>
    <g id="text_12">
     <text style="font-size: 5.9px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #b8323a" x="190.08" y="75.201242" transform="rotate(-0 190.08 75.201242)">raises TypeSafeUnprocessableEntityError</text>
    </g>
    <g id="text_13">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="96.610125" transform="rotate(-0 6.48 96.610125)">a score with no levels</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start" x="6.48" y="96.610125" transform="rotate(-0 6.48 96.610125)">a score with no levels</text>
    </g>
    <g id="text_14">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="150.48" y="96.366" transform="rotate(-0 150.48 96.366)">–</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="150.48" y="96.366" transform="rotate(-0 150.48 96.366)">–</text>
    </g>
    <g id="text_15">
     <text style="font-size: 5.9px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #b8323a" x="190.08" y="96.081242" transform="rotate(-0 190.08 96.081242)">raises TypeSafeError</text>
    </g>
    <g id="text_16">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="116.985891" transform="rotate(-0 6.48 116.985891)">rate limited, no retries</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start" x="6.48" y="116.985891" transform="rotate(-0 6.48 116.985891)">rate limited, no retries</text>
    </g>
    <g id="text_17">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="150.48" y="117.494" transform="rotate(-0 150.48 117.494)">429</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="150.48" y="117.494" transform="rotate(-0 150.48 117.494)">429</text>
    </g>
    <g id="text_18">
     <text style="font-size: 5.9px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #b8323a" x="190.08" y="116.961242" transform="rotate(-0 190.08 116.961242)">raises TypeSafeRateLimitError</text>
    </g>
    <g id="text_19">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="137.897859" transform="rotate(-0 6.48 137.897859)">rate limited once, default retries</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start" x="6.48" y="137.897859" transform="rotate(-0 6.48 137.897859)">rate limited once, default retries</text>
    </g>
    <g id="text_20">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="150.48" y="138.374" transform="rotate(-0 150.48 138.374)">429</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="150.48" y="138.374" transform="rotate(-0 150.48 138.374)">429</text>
    </g>
    <g id="text_21">
-    <text style="font-size: 5.9px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #3b9c6e" x="190.08" y="137.900242" transform="rotate(-0 190.08 137.900242)">retries, then succeeds</text>
+    <text style="font-style: italic; font-weight: 600; font-size: 5.9px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1e5e42" x="190.08" y="137.926516" transform="rotate(-0 190.08 137.926516)">retries, then succeeds</text>
    </g>
    <g id="text_22">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="158.745891" transform="rotate(-0 6.48 158.745891)">server error, no retries</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start" x="6.48" y="158.745891" transform="rotate(-0 6.48 158.745891)">server error, no retries</text>
    </g>
    <g id="text_23">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="150.48" y="159.223" transform="rotate(-0 150.48 159.223)">503</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="150.48" y="159.223" transform="rotate(-0 150.48 159.223)">503</text>
    </g>
    <g id="text_24">
     <text style="font-size: 5.9px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #b8323a" x="190.08" y="158.721242" transform="rotate(-0 190.08 158.721242)">raises TypeSafeInternalServerError</text>
    </g>
    <g id="text_25">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="179.657859" transform="rotate(-0 6.48 179.657859)">server error once, default retries</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start" x="6.48" y="179.657859" transform="rotate(-0 6.48 179.657859)">server error once, default retries</text>
    </g>
    <g id="text_26">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="150.48" y="180.103" transform="rotate(-0 150.48 180.103)">503</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="150.48" y="180.103" transform="rotate(-0 150.48 180.103)">503</text>
    </g>
    <g id="text_27">
-    <text style="font-size: 5.9px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #3b9c6e" x="190.08" y="179.660242" transform="rotate(-0 190.08 179.660242)">retries, then succeeds</text>
+    <text style="font-style: italic; font-weight: 600; font-size: 5.9px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1e5e42" x="190.08" y="179.686516" transform="rotate(-0 190.08 179.686516)">retries, then succeeds</text>
    </g>
    <g id="text_28">
-    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="200.938922" transform="rotate(-0 6.48 200.938922)">network down</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: start" x="6.48" y="200.938922" transform="rotate(-0 6.48 200.938922)">network down</text>
    </g>
    <g id="text_29">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="150.48" y="200.766" transform="rotate(-0 150.48 200.766)">–</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="150.48" y="200.766" transform="rotate(-0 150.48 200.766)">–</text>
    </g>
    <g id="text_30">
     <text style="font-size: 5.9px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #b8323a" x="190.08" y="200.481242" transform="rotate(-0 190.08 200.481242)">raises TypeSafeAPIConnectionError</text>
@@ -156,7 +156,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="pdd139ba1b0">
+  <clipPath id="pa7187c637a">
    <rect x="2.88" y="2.88" width="338.4" height="219.6"/>
   </clipPath>
  </defs>

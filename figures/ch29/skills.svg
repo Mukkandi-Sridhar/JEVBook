@@ -34,7 +34,7 @@ Q 2.88 21.6 2.88 25.92
 L 2.88 37.44 
 Q 2.88 41.76 7.2 41.76 
 z
-" clip-path="url(#pc15d710e60)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p751e27856e)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 7.2 63.36 
@@ -47,7 +47,7 @@ Q 2.88 43.2 2.88 47.52
 L 2.88 59.04 
 Q 2.88 63.36 7.2 63.36 
 z
-" clip-path="url(#pc15d710e60)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p751e27856e)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 7.2 84.96 
@@ -60,7 +60,7 @@ Q 2.88 64.8 2.88 69.12
 L 2.88 80.64 
 Q 2.88 84.96 7.2 84.96 
 z
-" clip-path="url(#pc15d710e60)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p751e27856e)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 7.2 106.56 
@@ -73,7 +73,7 @@ Q 2.88 86.4 2.88 90.72
 L 2.88 102.24 
 Q 2.88 106.56 7.2 106.56 
 z
-" clip-path="url(#pc15d710e60)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p751e27856e)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_6">
     <path d="M 7.2 128.16 
@@ -86,7 +86,7 @@ Q 2.88 108 2.88 112.32
 L 2.88 123.84 
 Q 2.88 128.16 7.2 128.16 
 z
-" clip-path="url(#pc15d710e60)" style="fill: #e4dcf4; stroke: #8468c9; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p751e27856e)" style="fill: #c3b5e3; stroke: #8468c9; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_7">
     <path d="M 7.2 149.76 
@@ -99,7 +99,7 @@ Q 2.88 129.6 2.88 133.92
 L 2.88 145.44 
 Q 2.88 149.76 7.2 149.76 
 z
-" clip-path="url(#pc15d710e60)" style="fill: #e4dcf4; stroke: #8468c9; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p751e27856e)" style="fill: #c3b5e3; stroke: #8468c9; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_8">
     <path d="M 7.2 191.52 
@@ -112,7 +112,7 @@ Q 2.88 171.36 2.88 175.68
 L 2.88 187.2 
 Q 2.88 191.52 7.2 191.52 
 z
-" clip-path="url(#pc15d710e60)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p751e27856e)" style="fill: #f3d2b6; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_9">
     <path d="M 7.2 213.12 
@@ -125,7 +125,7 @@ Q 2.88 192.96 2.88 197.28
 L 2.88 208.8 
 Q 2.88 213.12 7.2 213.12 
 z
-" clip-path="url(#pc15d710e60)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p751e27856e)" style="fill: #f3d2b6; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #3b9c6e" x="2.88" y="13.845" transform="rotate(-0 2.88 13.845)">MATTERS MORE</text>
@@ -134,49 +134,49 @@ z
     <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #e07a1f" x="2.88" y="163.605" transform="rotate(-0 2.88 163.605)">MATTERS LESS ON ITS OWN</text>
    </g>
    <g id="text_3">
-    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="18.72" y="33.394" transform="rotate(-0 18.72 33.394)">Thinking in probabilities</text>
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: start" x="18.72" y="33.394" transform="rotate(-0 18.72 33.394)">Thinking in probabilities</text>
    </g>
    <g id="text_4">
     <text style="font-size: 5.8px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="341.28" y="33.226516" transform="rotate(-0 341.28 33.226516)">Chapters 2, 3</text>
    </g>
    <g id="text_5">
-    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="18.72" y="54.994" transform="rotate(-0 18.72 54.994)">Putting a price on mistakes</text>
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: start" x="18.72" y="54.994" transform="rotate(-0 18.72 54.994)">Putting a price on mistakes</text>
    </g>
    <g id="text_6">
     <text style="font-size: 5.8px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="341.28" y="54.826516" transform="rotate(-0 341.28 54.826516)">Chapters 4, 14</text>
    </g>
    <g id="text_7">
-    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="18.72" y="76.594" transform="rotate(-0 18.72 76.594)">Testing calibration on your own data</text>
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: start" x="18.72" y="76.594" transform="rotate(-0 18.72 76.594)">Testing calibration on your own data</text>
    </g>
    <g id="text_8">
     <text style="font-size: 5.8px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="341.28" y="76.426516" transform="rotate(-0 341.28 76.426516)">Chapters 3, 11</text>
    </g>
    <g id="text_9">
-    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="18.72" y="98.194" transform="rotate(-0 18.72 98.194)">Designing typed questions</text>
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: start" x="18.72" y="98.194" transform="rotate(-0 18.72 98.194)">Designing typed questions</text>
    </g>
    <g id="text_10">
     <text style="font-size: 5.8px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="341.28" y="98.026516" transform="rotate(-0 341.28 98.026516)">Chapters 10, 15</text>
    </g>
    <g id="text_11">
-    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="18.72" y="119.794" transform="rotate(-0 18.72 119.794)">Sizing queues and people</text>
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: start" x="18.72" y="119.794" transform="rotate(-0 18.72 119.794)">Sizing queues and people</text>
    </g>
    <g id="text_12">
     <text style="font-size: 5.8px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="341.28" y="119.626516" transform="rotate(-0 341.28 119.626516)">Chapters 14, 18</text>
    </g>
    <g id="text_13">
-    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="18.72" y="141.394" transform="rotate(-0 18.72 141.394)">Monitoring a decision system</text>
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: start" x="18.72" y="141.394" transform="rotate(-0 18.72 141.394)">Monitoring a decision system</text>
    </g>
    <g id="text_14">
     <text style="font-size: 5.8px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="341.28" y="141.226516" transform="rotate(-0 341.28 141.226516)">Chapters 17, 21</text>
    </g>
    <g id="text_15">
-    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="18.72" y="183.187" transform="rotate(-0 18.72 183.187)">Writing prompts for everything</text>
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: start" x="18.72" y="183.187" transform="rotate(-0 18.72 183.187)">Writing prompts for everything</text>
    </g>
    <g id="text_16">
     <text style="font-size: 5.8px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="341.28" y="182.986516" transform="rotate(-0 341.28 182.986516)">Chapters 6, 7</text>
    </g>
    <g id="text_17">
-    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="18.72" y="204.754" transform="rotate(-0 18.72 204.754)">Picking the biggest model</text>
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: start" x="18.72" y="204.754" transform="rotate(-0 18.72 204.754)">Picking the biggest model</text>
    </g>
    <g id="text_18">
     <text style="font-size: 5.8px; font-family: 'Inter'; text-anchor: end; fill: #4b5563" x="341.28" y="204.586516" transform="rotate(-0 341.28 204.586516)">Chapters 5, 13</text>
@@ -184,7 +184,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="pc15d710e60">
+  <clipPath id="p751e27856e">
    <rect x="2.88" y="2.88" width="338.4" height="208.8"/>
   </clipPath>
  </defs>

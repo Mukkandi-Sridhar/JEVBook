@@ -147,7 +147,7 @@ def retries():
     rs = [0, 1, 2, 3]
     for q, col in ((0.01, C["data"]), (0.05, C["jev"]), (0.2, C["llm"])):
         ys = [rt[(q, r)][0] for r in rs]
-        ax.plot(rs, ys, color=col, lw=2, marker="o", ms=4)
+        ax.plot(rs, ys, color=col, lw=2, ls="-", marker="o", ms=4)       # measured: solid; the formula: dotted
         ax.plot(rs, [1 - q ** (r + 1) for r in rs], color=col, lw=0.8, ls=(0, (2, 2)))
         ax.text(0.1, ys[0] - 0.006, f"{q:.0%} of requests fail", va="top", fontsize=6.1)
     ax.set_xticks(rs)
@@ -175,8 +175,10 @@ def errors():
                 (0, y - 0.14), 4.7, 0.28, fc=C["neutral_t"], ec="none", zorder=0))
         draw.text(ax, 0.05, y, what, size=6.2)
         draw.text(ax, 2.05, y, code, size=6.2, family="JetBrains Mono")
+        # success and failure differ in words and style (italic for success), not only in colour
         draw.text(ax, 2.6, y, "retries, then succeeds" if res == "succeeds" else f"raises {res}", size=5.9,
-                  family="JetBrains Mono", color=C["jev"] if res == "succeeds" else C["fail"])
+                  family="JetBrains Mono", color="#1E5E42" if res == "succeeds" else C["fail"],
+                  style="italic" if res == "succeeds" else "normal", weight="semibold" if res == "succeeds" else "normal")
     return f
 
 

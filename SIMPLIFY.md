@@ -2934,3 +2934,518 @@ But it has a weakness worth remembering. Here's a test:
 :::
 
 Real text would give something like 0.7 to 0.9. Our synthetic notes use these words almost interchangeably, so they come out identical.
+
+## Key ideas (v1.0.3)
+
+43 changes.
+
+- `chapters/ch01.qmd`
+  - Before: And we ask the computer to find the pattern that separates them.
+
+::: {.keyidea}
+That's machine learning.
+:::
+
+In one sentence: **machine learning is getting a computer to work out the rules itself, from examples where the answer is already known.**
+  - After: And we ask the computer to find the pattern that separates them. That's machine learning. In one sentence:
+
+::: {.keyidea}
+**Machine learning** is getting a computer to work out the rules itself, from examples where the answer is already known.
+:::
+- `chapters/ch01.qmd`
+  - Before: ::: {.keyidea}
+The machine learned exactly what we asked. We asked the wrong question.
+:::
+  - After: ::: {.keyidea}
+A model learns exactly what you ask for: ask the wrong question, and it learns the wrong thing.
+:::
+- `chapters/ch01.qmd`
+  - Before: ::: {.keyidea}
+A good model doesn't just answer. It says how sure it is, and it's right about how sure it is.
+:::
+  - After: ::: {.keyidea}
+A good model doesn't just answer: it says how sure it is, and it's right about how sure it is.
+:::
+- `chapters/ch02.qmd`
+  - Before: So here's the idea to remember: **a probability is a claim about how often something happens among cases like this one.**
+  - After: So here's the idea to remember:
+
+::: {.keyidea}
+A **probability** is a claim about how often something happens among cases like this one.
+:::
+- `chapters/ch02.qmd`
+  - Before: ::: {.keyidea}
+Log loss rewards honest probabilities and punishes confident mistakes.
+:::
+  - After: ::: {.keyidea}
+Log loss rewards calibrated probabilities and punishes confident mistakes.
+:::
+- `chapters/ch02.qmd`
+  - Before: until the ground is flat.
+
+::: {.keyidea}
+That's gradient descent.
+:::
+  - After: until the ground is flat. That's gradient descent.
+- `chapters/ch03.qmd`
+  - Before: The rule is simple: **check calibration inside every group you'll treat differently**, and inside every group where a mistake would be especially costly. That means sources,
+  - After: The rule is simple:
+
+::: {.keyidea}
+Check calibration inside every group you'll treat differently, not just on average.
+:::
+
+Do the same inside every group where a mistake would be especially costly. That means sources,
+- `chapters/ch04.qmd`
+  - Before: the cheapest thing to do, on average, is to act whenever
+
+::: {.keyidea}
+P > C~fa~ ÷ (C~fa~ + C~miss~)
+:::
+  - After: the cheapest thing to do, on average, is this:
+
+::: {.keyidea}
+Act when P > C~fa~ ÷ (C~fa~ + C~miss~): the false-alarm cost over the sum of both costs.
+:::
+- `chapters/ch04.qmd`
+  - Before: That curve, in @fig-coverage-risk, is one of the most useful pictures
+  - After: ::: {.keyidea}
+Let a model decide only the cases it's surest about, and its error rate falls steeply.
+:::
+
+That curve, in @fig-coverage-risk, is one of the most useful pictures
+- `chapters/ch05.qmd`
+  - Before: ::: {.keyidea}
+Weighted sums draw lines. Hinges bend them. Layers combine the bends.
+:::
+  - After: Weighted sums draw lines. Hinges bend them. Layers combine the bends.
+- `chapters/ch07.qmd`
+  - Before: ::: {.keyidea}
+Take the facts that lower suspicion from systems attackers can't write to, never from the text they can.
+:::
+  - After: ::: {.keyidea}
+Take the facts that lower suspicion from systems attackers can't write to.
+:::
+- `chapters/ch08.qmd`
+  - Before: ::: {.keyidea}
+Most of the work is System 1 work. Most of the machinery we've been using is System 2.
+:::
+  - After: ::: {.keyidea}
+Most of the work is System 1 work, but most of the machinery we use is System 2.
+:::
+- `chapters/ch09.qmd`
+  - Before: what nobody outside the company knows. That habit is worth more than any single fact in this chapter.
+  - After: what nobody outside the company knows.
+
+::: {.keyidea}
+Sort every claim about a new model into three piles: verified, vendor-reported and unknown.
+:::
+
+That habit is worth more than any single fact in this chapter.
+- `chapters/ch09.qmd`
+  - Before: If you remember one habit from this chapter, make it this one. When a vendor gives you several numbers, check whether they agree with *each other*.
+  - After: If you remember one habit from this chapter, make it this one.
+
+::: {.keyidea}
+When a vendor gives you several numbers, check whether they agree with *each other*.
+:::
+- `chapters/ch09.qmd`
+  - Before: None of those unknowns are reasons to avoid a new model. They're reasons to *test* it, on your own data, with the tools you already have. The next two chapters do just that.
+  - After: ::: {.keyidea}
+Unknowns about a new model aren't reasons to avoid it; they're reasons to *test* it on your own data.
+:::
+
+You can test it with the tools you already have, and the next two chapters do just that.
+- `chapters/ch10.qmd`
+  - Before: ::: {.keyidea}
+A choice's probabilities add up to 1 over the options you gave. Make sure every real case has somewhere to go.
+:::
+  - After: ::: {.keyidea}
+A choice's probabilities add up to 1 over your options, so give every real case somewhere to go.
+:::
+- `chapters/ch11.qmd`
+  - Before: ::: {.keyidea}
+Treat a new model's outputs as scores until you've tested them on your data. After that, treat them as probabilities.
+:::
+  - After: ::: {.keyidea}
+Treat a new model's outputs as scores until you've tested them on your own data.
+:::
+
+After that, you can treat them as probabilities.
+- `chapters/ch12.qmd`
+  - Before: ::: {.keyidea}
+When decisions get cheap, thresholds must be set by cost, not by share. Otherwise the money saved on machines is spent on people's time.
+:::
+  - After: ::: {.keyidea}
+When decisions get cheap, set thresholds by cost, not by share.
+:::
+
+Otherwise the money saved on machines is spent on people's time.
+- `chapters/ch13.qmd`
+  - Before: ::: {.keyidea}
+Labels are the hidden cost of trained models. A method that needs none can start today. A method that needs thousands has to wait for them, and needs them again when things change.
+:::
+  - After: ::: {.keyidea}
+Labels are the hidden cost of trained models: a method that needs none can start today.
+:::
+
+A method that needs thousands has to wait for them, and needs them again when things change.
+- `chapters/ch13.qmd`
+  - Before: If a rule or a logistic regression can make a decision well, use one of them. It's the cheapest
+  - After: ::: {.keyidea}
+If a rule or a logistic regression can make a decision well, use one of them.
+:::
+
+It's the cheapest
+- `chapters/ch13.qmd`
+  - Before: but the idea fits any bake-off. There is no best method, only a best method for a particular decision.
+  - After: but the idea fits any bake-off.
+
+::: {.keyidea}
+There is no best method, only a best method for a particular decision.
+:::
+- `chapters/ch14.qmd`
+  - Before: ::: {.keyidea}
+Act, review, escalate. Machines handle the clear cases at each end; people handle the middle.
+:::
+  - After: ::: {.keyidea}
+Act, review, escalate: machines handle the clear cases at each end, and people handle the middle.
+:::
+- `chapters/ch14.qmd`
+  - Before: A policy that ignores capacity isn't a policy. It's a wish. Anything beyond
+  - After: ::: {.keyidea}
+A policy that ignores capacity isn't a policy. It's a wish.
+:::
+
+Anything beyond
+- `chapters/ch15.qmd`
+  - Before: notice what the patterns share. In every pattern, the decision model never writes anything and never acts on its own. It answers a typed question, and ordinary code turns the answer into an action. That separation
+  - After: notice what the patterns share.
+
+::: {.keyidea}
+A decision model never writes and never acts on its own: it answers a typed question, and code acts.
+:::
+
+That's true in every pattern, and that separation
+- `chapters/ch15.qmd`
+  - Before: ::: {.keyidea}
+Extract when the only input you have is text. When structured data exists, use it: extraction can't add facts the text doesn't contain.
+:::
+  - After: ::: {.keyidea}
+Extract when the only input you have is text: extraction can't add facts the text doesn't contain.
+:::
+
+When structured data exists, use it.
+- `chapters/ch16.qmd`
+  - Before: Chapter 9 said one unknown in a new model is how its behaviour changes between versions. Fixing the version turns that into your decision, not a surprise.
+  - After: Chapter 9 said one unknown in a new model is how its behaviour changes between versions.
+
+::: {.keyidea}
+Fix the model version, so a change in behaviour is your decision, not a surprise.
+:::
+- `chapters/ch16.qmd`
+  - Before: ::: {.keyidea}
+Retry errors from outside your code, never your own. And when time matters, decide in advance what a failed call means.
+:::
+  - After: ::: {.keyidea}
+When time matters, decide in advance what a failed call means.
+:::
+- `chapters/ch17.qmd`
+  - Before: ::: {.keyidea}
+Count the answers of every decision step. An option that's never chosen, or always chosen, is a warning, even when nothing has crashed.
+:::
+  - After: ::: {.keyidea}
+Count every decision step's answers: an option never or always chosen is a warning, even without a crash.
+:::
+- `chapters/ch17.qmd`
+  - Before: costs about as much as just looking. When looking is cheaper than deciding whether to look, don't decide. Just look.
+  - After: costs about as much as just looking.
+
+::: {.keyidea}
+When looking is cheaper than deciding whether to look, don't decide. Just look.
+:::
+- `chapters/ch17.qmd`
+  - Before: The hybrid doesn't use less LLM because LLMs are bad. It uses the LLM for the work only an LLM can do.
+  - After: The hybrid doesn't use less LLM because LLMs are bad.
+
+::: {.keyidea}
+Use the LLM for the work only an LLM can do.
+:::
+- `chapters/ch18.qmd`
+  - Before: ::: {.keyidea}
+A probability doesn't only decide *whether* a person looks. It decides *what they look at first*. Ordering the queue is often the cheapest improvement available.
+:::
+  - After: ::: {.keyidea}
+A probability decides *what* a person looks at first, not only *whether* they look.
+:::
+
+Ordering the queue is often the cheapest improvement available.
+- `chapters/ch18.qmd`
+  - Before: Here is the uncomfortable truth of the campaign week. Calibration tells you truthfully how much work there is. It can't make the work smaller. When the world
+  - After: Here is the uncomfortable truth of the campaign week.
+
+::: {.keyidea}
+Calibration tells you truthfully how much work there is. It can't make the work smaller.
+:::
+
+When the world
+- `chapters/ch18.qmd`
+  - Before: while the analysts work as before. Nothing it decides has any effect.
+  - After: while the analysts work as before. Nothing it decides has any effect.
+
+::: {.keyidea}
+Run a new decision system in shadow mode before you let it act.
+:::
+- `chapters/ch19.qmd`
+  - Before: ::: {.keyidea}
+The formula never changes. The costs do, and they can move the threshold by a factor of ten or more.
+:::
+  - After: ::: {.keyidea}
+The threshold formula never changes; the costs do, and they can move the threshold tenfold or more.
+:::
+- `chapters/ch19.qmd`
+  - Before: The further up and to the left a decision sits, the more a person belongs in the loop.
+  - After: The further up and to the left a decision sits, the more a person belongs in the loop.
+
+::: {.keyidea}
+Where decisions are many and cheap, the model decides; where they're few and costly, a person does.
+:::
+- `chapters/ch19.qmd`
+  - Before: What I can say is that you'd only know by measuring, and the test took twenty lines of code.
+  - After: What I can say is that you'd only know by measuring, and the test took twenty lines of code.
+
+::: {.keyidea}
+Measure a model on each new domain before you trust it, even if it works well elsewhere.
+:::
+- `chapters/ch20.qmd`
+  - Before: ::: {.keyidea}
+Train with a proper scoring rule, stop before the model memorises, then calibrate on data it has never seen. You need all three.
+:::
+  - After: ::: {.keyidea}
+Train with a proper scoring rule, stop before the model memorises, then calibrate on data it has never seen.
+:::
+
+You need all three.
+- `chapters/ch20.qmd`
+  - Before: The ranking didn't change at all, because dividing every score by the same number doesn't change their order.
+  - After: The ranking didn't change at all.
+
+::: {.keyidea}
+Temperature scaling never changes the ranking: dividing every score by one number keeps their order.
+:::
+- `chapters/ch21.qmd`
+  - Before: ::: {.keyidea}
+Every failure needs a decided meaning, and the safe meaning is the one that puts a person in front of the case.
+:::
+  - After: ::: {.keyidea}
+Every failure needs a decided meaning, and the safe one puts a person in front of the case.
+:::
+- `chapters/ch21.qmd`
+  - Before: The first rule is this: *everything that can change a decision lives in one place, with a version number.*
+  - After: The first rule is this:
+
+::: {.keyidea}
+Everything that can change a decision lives in one place, with a version number.
+:::
+- `chapters/ch21.qmd`
+  - Before: That's why the config holds the rules *and* the thresholds. They're one decision, and they have to be fitted together.
+  - After: That's why the config holds the rules *and* the thresholds.
+
+::: {.keyidea}
+Thresholds and business rules are one decision, and they have to be fitted together.
+:::
+- `chapters/ch22.qmd`
+  - Before: ::: {.keyidea}
+You don't need to predict how this turns out. You need decisions you can measure, thresholds you can move and a model you can replace.
+:::
+  - After: You don't need to predict how this turns out.
+
+::: {.keyidea}
+You need decisions you can measure, thresholds you can move and a model you can replace.
+:::
+- `chapters/ch22.qmd`
+  - Before: and whether the probabilities are still calibrated this week. The model can't do any of that for you.
+  - After: and whether the probabilities are still calibrated this week. The model can't do any of that for you.
+
+::: {.keyidea}
+When deciding gets cheap, judgement about the decision itself becomes scarce.
+:::
+
+## Key ideas (v1.0.3), Chapter 16
+
+1 changes.
+
+- `chapters/ch16.qmd`
+  - Before: The SDK retries these by default, twice, waiting a little longer each time.
+  - After: The SDK retries these by default, twice, waiting a little longer each time.
+
+::: {.keyidea}
+Retry errors from outside your code, never your own.
+:::
+
+## Key ideas (v1.0.3), Chapter 12
+
+1 changes.
+
+- `chapters/ch12.qmd`
+  - Before: Cheaper decisions rarely raise the bill for the jobs you already do. They raise it by making new jobs worth doing.
+  - After: Cheaper decisions rarely raise the bill for jobs you already do; they raise it by making new jobs worth doing.
+
+## Key ideas (v1.0.3), How to read
+
+2 changes.
+
+- `front/how-to-read.qmd`
+  - Before: It closes with a short summary, exercises and a link to the next chapter.
+  - After: It closes with a short summary, a *Keep these* box that lists the chapter's key ideas, exercises and a link to the next chapter.
+- `front/how-to-read.qmd`
+  - Before: The *Try it* boxes contain code you can run.
+  - After: A *Key idea* box, with a thick bar down its left side, holds one sentence worth remembering a year from now. The *Key ideas* appendix lists all of them, with their pages, for revision. The *Try it* boxes contain code you can run.
+
+## Black and white: second cues for colour words (v1.0.3)
+
+39 changes.
+
+- `front/prologue.qmd`
+  - Before: Each line is an alert; red lines are the real ones.
+  - After: Each line is an alert; the real ones are red, taller and marked on top.
+- `chapters/ch01.qmd`
+  - Before: just below the dashed line for "flag nothing at all".
+  - After: just below the thin dotted line for "flag nothing at all".
+- `chapters/ch02.qmd`
+  - Before: If it really was an attack (red), the penalty
+  - After: If it really was an attack (red, solid curve), the penalty
+- `chapters/ch02.qmd`
+  - Before: Harmless alerts (blue) work the same way
+  - After: Harmless alerts (blue, dashed curve) work the same way
+- `chapters/ch03.qmd`
+  - Before: A model trained on 50/50 rebalanced data (red) thinks
+  - After: A model trained on 50/50 rebalanced data (red, solid line with squares) thinks
+- `chapters/ch03.qmd`
+  - Before: fitted on a separate calibration set (green), the same model
+  - After: fitted on a separate calibration set (green, dashed line with circles), the same model
+- `chapters/ch04.qmd`
+  - Before: For the calibrated model (green), the formula's threshold
+  - After: For the calibrated model (green, solid line), the formula's threshold
+- `chapters/ch04.qmd`
+  - Before: trained on rebalanced data (red), the same threshold lands
+  - After: trained on rebalanced data (red, dashed line), the same threshold lands
+- `chapters/ch04.qmd`
+  - Before: The grey curve shows how much traffic you're blocking.
+  - After: The grey dotted curve shows how much traffic you're blocking.
+- `chapters/ch04.qmd`
+  - Before: A better model (green) gives you more coverage at the same risk.
+  - After: A better model (green, solid line) gives you more coverage at the same risk.
+- `chapters/ch05.qmd`
+  - Before: Blue dots are normal activity; red dots surround them on every side.
+  - After: Blue dots are normal activity; red crosses surround them on every side.
+- `chapters/ch07.qmd`
+  - Before: for questions the knowledge base can answer (green) and questions it can't (red).
+  - After: for questions the knowledge base can answer (green, solid bars) and questions it can't (red, striped outline).
+- `chapters/ch07.qmd`
+  - Before: reading the alert text as written (black) and with one planted sentence (red).
+  - After: reading the alert text as written (black, solid line) and with one planted sentence (red, dashed line).
+- `chapters/ch07.qmd`
+  - Before: When the same fact comes from a trusted system instead (green), the planted sentence does nothing.
+  - After: When the same fact comes from a trusted system instead (green, dotted fill), the planted sentence does nothing.
+- `chapters/ch08.qmd`
+  - Before: Sending the alerts System 1 is least sure about (green) gets
+  - After: Sending the alerts System 1 is least sure about (green, solid line) gets
+- `chapters/ch08.qmd`
+  - Before: Sending a random share (grey) gets almost nothing
+  - After: Sending a random share (grey, dashed line) gets almost nothing
+- `chapters/ch08.qmd`
+  - Before: Better calibration makes the green curve drop *faster*.
+  - After: Better calibration makes the solid green curve drop *faster*.
+- `chapters/ch10.qmd`
+  - Before: With "benign" among the options (green), almost all
+  - After: With "benign" among the options (green, striped), almost all
+- `chapters/ch10.qmd`
+  - Before: Without it (red), every harmless alert
+  - After: Without it (red, solid), every harmless alert
+- `chapters/ch11.qmd`
+  - Before: as returned (red), after adjusting the odds for Harbor's base rate (blue), and after Platt scaling on 300 labelled alerts (green).
+  - After: as returned (red, solid line), after adjusting the odds for Harbor's base rate (blue, dashed line), and after Platt scaling on 300 labelled alerts (green, dotted line).
+- `chapters/ch12.qmd`
+  - Before: The shaded regions show which decisions each option can make,
+  - After: The shaded regions, each labelled and outlined, show which decisions each option can make,
+- `chapters/ch14.qmd`
+  - Before: The red dots, real threats, are mostly to the right, but not all of them.
+  - After: The red crosses, real threats, are mostly to the right, but not all of them.
+- `chapters/ch14.qmd`
+  - Before: The grey dots are crowded on the left: the easy, harmless alerts. The red dots are mostly to the right. But some red dots are spread through the middle, and a few are even in the crowd on the far left. And some grey dots sit in the escalate zone.
+  - After: The grey circles are crowded on the left: the easy, harmless alerts. The red crosses are the real threats, and they're mostly to the right. But some red crosses are spread through the middle, and a few are even in the crowd on the far left. And some grey circles sit in the escalate zone.
+- `chapters/ch14.qmd`
+  - Before: Raw scores (red) sit above the diagonal:
+  - After: Raw scores (red, solid line) sit above the diagonal:
+- `chapters/ch14.qmd`
+  - Before: After Platt scaling fitted on other days (green), the curve
+  - After: After Platt scaling fitted on other days (green, dashed line), the curve
+- `chapters/ch14.qmd`
+  - Before: The light segment on the left is the number that matters:
+  - After: The light, plain segment on the left (act) is the number that matters:
+- `chapters/ch14.qmd`
+  - Before: the "act" segment on the threat side (the lightest purple) went
+  - After: the "act" segment on the threat side (the lightest purple, with no pattern) went
+- `chapters/ch14.qmd`
+  - Before: Every point on the green curve is the best policy for that team;
+  - After: Every point on the green dashed curve is the best policy for that team;
+- `chapters/ch14.qmd`
+  - Before: The grey curve is worth a look too.
+  - After: The grey solid curve is worth a look too.
+- `chapters/ch14.qmd`
+  - Before: real threats each day (black) against what the calibrated model expected (green).
+  - After: real threats each day (black, solid line) against what the calibrated model expected (green, dashed line).
+- `chapters/ch14.qmd`
+  - Before: In week five (shaded), reality moves away
+  - After: In week five (shaded, between dotted lines), reality moves away
+- `chapters/ch17.qmd`
+  - Before: Everything in green is a typed question to Jev, answered in one pass. Everything in blue is a tool that reads something. The policy is ordinary code. The LLM, in orange, appears once, at the end.
+  - After: Everything in green, with "Jev" in its label, is a typed question to Jev, answered in one pass. Everything in blue, labelled "tools", is a tool that reads something. The policy is ordinary code. The LLM, in orange and labelled "LLM", appears once, at the end.
+- `chapters/ch17.qmd`
+  - Before: Blue steps observe, green steps decide, orange steps write, grey steps act.
+  - After: Plain blue steps observe, striped green steps decide, dotted orange steps write, cross-hatched grey steps act.
+- `chapters/ch17.qmd`
+  - Before: it's mostly the width of the green bars.
+  - After: it's mostly the width of the green, striped decide bars.
+- `chapters/ch18.qmd`
+  - Before: The red cell is the one to argue about:
+  - After: The red cell, outlined in black and striped, is the one to argue about:
+- `chapters/ch18.qmd`
+  - Before: mostly about one cell, the red one in @fig-shadow-18.
+  - After: mostly about one cell, the red one outlined in black in @fig-shadow-18.
+- `chapters/ch19.qmd`
+  - Before: Green cards let the model decide and people audit; red cards keep a person as the decider.
+  - After: Green cards, which end "the model decides; people audit", let the model decide. Red cards, which end "a person decides", keep a person as the decider.
+- `chapters/ch19.qmd`
+  - Before: In the red domains, the design is the other way round.
+  - After: In the red domains, shown as squares in @fig-domains, the design is the other way round.
+- `chapters/ch21.qmd`
+  - Before: Top: the review queue, red on days a flag was raised.
+  - After: Top: the review queue, red and striped on days a flag was raised.
+
+## Black and white: Chapter 17 fix (v1.0.3)
+
+1 changes.
+
+- `chapters/ch17.qmd`
+  - Before: Everything in blue, labelled "tools", is a tool that reads something.
+  - After: Everything in blue is a tool that reads something: the threat-intel lookup and the box labelled "tools".
+
+## Black and white: Chapter 11 caption (v1.0.3)
+
+1 changes.
+
+- `chapters/ch11.qmd`
+  - Before: is shown by the black line
+  - After: is shown by the labelled black horizontal line
+
+## Key ideas (v1.0.3), How to read paragraph split
+
+1 changes.
+
+- `front/how-to-read.qmd`
+  - Before: The *Key ideas* appendix lists all of them, with their pages, for revision. The *Try it* boxes
+  - After: The *Key ideas* appendix lists all of them, with their pages, for revision.
+
+The *Try it* boxes

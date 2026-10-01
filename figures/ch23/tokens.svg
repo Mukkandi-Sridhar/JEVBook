@@ -36,7 +36,7 @@ z
      <g id="line2d_1">
       <path d="M 99.356125 137.815781 
 L 99.356125 26.935781 
-" clip-path="url(#p2ecd6c4a37)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p4f55740c9a)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_2"/>
      <g id="text_1">
@@ -47,7 +47,7 @@ L 99.356125 26.935781
      <g id="line2d_3">
       <path d="M 139.558571 137.815781 
 L 139.558571 26.935781 
-" clip-path="url(#p2ecd6c4a37)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p4f55740c9a)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_4"/>
      <g id="text_2">
@@ -58,7 +58,7 @@ L 139.558571 26.935781
      <g id="line2d_5">
       <path d="M 179.761016 137.815781 
 L 179.761016 26.935781 
-" clip-path="url(#p2ecd6c4a37)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p4f55740c9a)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_6"/>
      <g id="text_3">
@@ -69,7 +69,7 @@ L 179.761016 26.935781
      <g id="line2d_7">
       <path d="M 219.963462 137.815781 
 L 219.963462 26.935781 
-" clip-path="url(#p2ecd6c4a37)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p4f55740c9a)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_8"/>
      <g id="text_4">
@@ -80,7 +80,7 @@ L 219.963462 26.935781
      <g id="line2d_9">
       <path d="M 260.165907 137.815781 
 L 260.165907 26.935781 
-" clip-path="url(#p2ecd6c4a37)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p4f55740c9a)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_10"/>
      <g id="text_5">
@@ -91,7 +91,7 @@ L 260.165907 26.935781
      <g id="line2d_11">
       <path d="M 300.368353 137.815781 
 L 300.368353 26.935781 
-" clip-path="url(#p2ecd6c4a37)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p4f55740c9a)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_12"/>
      <g id="text_6">
@@ -102,7 +102,7 @@ L 300.368353 26.935781
      <g id="line2d_13">
       <path d="M 340.570798 137.815781 
 L 340.570798 26.935781 
-" clip-path="url(#p2ecd6c4a37)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p4f55740c9a)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_14"/>
      <g id="text_7">
@@ -145,7 +145,7 @@ L 128.961708 47.592683
 L 128.961708 31.975781 
 L 99.356125 31.975781 
 z
-" clip-path="url(#p2ecd6c4a37)" style="fill: #2f6db5"/>
+" clip-path="url(#p4f55740c9a)" style="fill: #2f6db5"/>
    </g>
    <g id="patch_4">
     <path d="M 99.356125 75.987049 
@@ -153,7 +153,7 @@ L 129.816513 75.987049
 L 129.816513 60.370147 
 L 99.356125 60.370147 
 z
-" clip-path="url(#p2ecd6c4a37)" style="fill: #2f6db5"/>
+" clip-path="url(#p4f55740c9a)" style="fill: #2f6db5"/>
    </g>
    <g id="patch_5">
     <path d="M 99.356125 104.381415 
@@ -161,7 +161,7 @@ L 171.480317 104.381415
 L 171.480317 88.764514 
 L 99.356125 88.764514 
 z
-" clip-path="url(#p2ecd6c4a37)" style="fill: #3b9c6e"/>
+" clip-path="url(#p4f55740c9a)" style="fill: #3b9c6e"/>
    </g>
    <g id="patch_6">
     <path d="M 99.356125 132.775781 
@@ -169,29 +169,29 @@ L 237.387704 132.775781
 L 237.387704 117.15888 
 L 99.356125 117.15888 
 z
-" clip-path="url(#p2ecd6c4a37)" style="fill: #e07a1f"/>
+" clip-path="url(#p4f55740c9a)" style="fill: #e07a1f"/>
    </g>
    <g id="patch_7">
     <path d="M 99.356125 137.815781 
 L 99.356125 26.935781 
-" style="fill: none; stroke: #c9ced6; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+" style="fill: none; stroke: #9aa1ab; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="patch_8">
     <path d="M 99.356125 137.815781 
 L 361.616125 137.815781 
-" style="fill: none; stroke: #c9ced6; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+" style="fill: none; stroke: #9aa1ab; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="text_13">
-    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="132.177904" y="41.966849" transform="rotate(-0 132.177904 41.966849)">74 tokens · $3 per million calls</text>
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start" x="132.177904" y="41.966849" transform="rotate(-0 132.177904 41.966849)">74 tokens · $3 per million calls</text>
    </g>
    <g id="text_14">
-    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="133.032709" y="70.361215" transform="rotate(-0 133.032709 70.361215)">76 tokens · $3 per million calls</text>
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start" x="133.032709" y="70.361215" transform="rotate(-0 133.032709 70.361215)">76 tokens · $3 per million calls</text>
    </g>
    <g id="text_15">
-    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="174.696513" y="98.755582" transform="rotate(-0 174.696513 98.755582)">179 tokens · $8 per million calls</text>
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start" x="174.696513" y="98.755582" transform="rotate(-0 174.696513 98.755582)">179 tokens · $8 per million calls</text>
    </g>
    <g id="text_16">
-    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="240.6039" y="127.149948" transform="rotate(-0 240.6039 127.149948)">343 tokens · $14 per million calls</text>
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start" x="240.6039" y="127.149948" transform="rotate(-0 240.6039 127.149948)">343 tokens · $14 per million calls</text>
    </g>
   </g>
   <g id="text_17">
@@ -208,11 +208,11 @@ Q 264.7445 11.055781 265.5845 11.055781
 z
 " style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.5; stroke-linejoin: miter"/>
    </g>
-   <text style="font-weight: 500; font-size: 5.6px; font-family: 'Inter'; text-anchor: end; fill: #8a919c" x="393.764125" y="8.305" transform="rotate(-0 393.764125 8.305)">MOCK TOKEN COUNTS · price vendor-reported</text>
+   <text style="font-weight: 500; font-size: 5.6px; font-family: 'Inter'; text-anchor: end; fill: #6b7280" x="393.764125" y="8.305" transform="rotate(-0 393.764125 8.305)">MOCK TOKEN COUNTS · price vendor-reported</text>
   </g>
  </g>
  <defs>
-  <clipPath id="p2ecd6c4a37">
+  <clipPath id="p4f55740c9a">
    <rect x="99.356125" y="26.935781" width="262.26" height="110.88"/>
   </clipPath>
  </defs>

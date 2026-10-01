@@ -62,6 +62,10 @@ If deciding gets cheap, what becomes scarce?
 
 Judgement about the decision itself. Someone still has to decide what a mistake costs, where the thresholds go, how much the review queue can take, and whether the probabilities are still calibrated this week. The model can't do any of that for you.
 
+::: {.keyidea}
+When deciding gets cheap, judgement about the decision itself becomes scarce.
+:::
+
 ![Skills that matter more when decisions get cheap, and skills that matter less on their own, with the chapters that teach each.](/figures/ch29/skills.pdf){#fig-skills}
 
 That's why the book's first part was worth the time, even if it felt like a long way round. Thinking in probabilities and testing calibration were the foundations, not just an introduction (@fig-skills). They're the difference between a system that makes a million cheap decisions well and one that makes a million cheap mistakes.
@@ -76,8 +80,10 @@ Throughout the book, I've tried to keep three piles: what's verified, what's ven
 
 Every item in @fig-unknowns is still open. None of them is a reason to wait. Calibration on your data is a test you can run this week. Changes between versions are handled by a fixed version number and a monitor. Prices are a spreadsheet where you try different values. And it matters less than it seems who else builds decision models, because the pattern will last longer than any one vendor. A typed question in, a probability out, and a policy in your own code: you can move that to a different model in an afternoon.
 
+You don't need to predict how this turns out.
+
 ::: {.keyidea}
-You don't need to predict how this turns out. You need decisions you can measure, thresholds you can move and a model you can replace.
+You need decisions you can measure, thresholds you can move and a model you can replace.
 :::
 
 ## What to do on Monday

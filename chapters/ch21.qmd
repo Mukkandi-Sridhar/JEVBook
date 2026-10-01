@@ -38,7 +38,11 @@ Read @fig-architecture-21 from left to right, and you'll recognise every box. Th
 
 ## One config, one fingerprint
 
-The first rule is this: *everything that can change a decision lives in one place, with a version number.*
+The first rule is this:
+
+::: {.keyidea}
+Everything that can change a decision lives in one place, with a version number.
+:::
 
 That means the model name, the calibration numbers, the two thresholds and every business rule, such as "never auto-close a critical asset". They all live in one small config object. Every decision the service makes is stamped with that config's version and a fingerprint of its contents: a short code that changes if anything in it changes.
 
@@ -78,7 +82,11 @@ It shouldn't have been. As in Chapter 14, the thresholds had been chosen to fit 
 
 The fix was to fit the thresholds *with* the rule in place, so the model's share of the queue gets smaller and leaves room for the rule. The act threshold moved from {{< num ch28 v1_low f3 >}} to {{< num ch28 v2_low f3 >}}, and the average queue went from about {{< num ch28 v1_mean_reviews int >}} to {{< num ch28 v2_mean_reviews int >}} a day (@fig-dry-run).
 
-It's a small bug, and it's the most common kind: two reasonable changes, each tested alone, that don't work together. That's why the config holds the rules *and* the thresholds. They're one decision, and they have to be fitted together.
+It's a small bug, and it's the most common kind: two reasonable changes, each tested alone, that don't work together. That's why the config holds the rules *and* the thresholds.
+
+::: {.keyidea}
+Thresholds and business rules are one decision, and they have to be fitted together.
+:::
 
 ## When the call fails
 
@@ -89,14 +97,14 @@ The API will fail sometimes. Chapter 16 said to decide in advance what a failure
 To test it, I made 10% of calls fail. With the fallback set to review, the {{< num ch28 fallback_threats int >}} real threats among the failed calls went to a person. With it set to "act", the same {{< num ch28 fallback_act_closed int >}} would have been closed without anyone seeing them. And every other number on the dashboard would have looked normal (@fig-failsafe). That's why the monitor watches the fallback rate: a failure you don't count is a failure you don't see.
 
 ::: {.keyidea}
-Every failure needs a decided meaning, and the safe meaning is the one that puts a person in front of the case.
+Every failure needs a decided meaning, and the safe one puts a person in front of the case.
 :::
 
 ## The monitor
 
 The service writes every record to a log. Once a day, a small report reads the log and checks a few numbers against expected ranges. It checks the share of alerts in each zone, the review queue against capacity, and the fallback rate. And for alerts a person has seen, it compares the share predicted to be real with the share confirmed to be real.
 
-![Two weeks of the daily monitor: the live week, then the phishing campaign. Top: the review queue, red on days a flag was raised. Bottom: for alerts people saw, the share the model predicted to be real against the share they confirmed. The campaign opens a gap on its first day.](/figures/ch28/monitor.pdf){#fig-monitor}
+![Two weeks of the daily monitor: the live week, then the phishing campaign. Top: the review queue, red and striped on days a flag was raised. Bottom: for alerts people saw, the share the model predicted to be real against the share they confirmed. The campaign opens a gap on its first day.](/figures/ch28/monitor.pdf){#fig-monitor}
 
 The live week raised no flags at all. That matters as much as what comes next. People soon stop reading a monitor that raises false alarms. That's why the queue check allows 10% over capacity before it raises a flag.
 

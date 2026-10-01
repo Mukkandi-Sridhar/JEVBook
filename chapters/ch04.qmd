@@ -53,10 +53,10 @@ Replace the umbrella with any yes-or-no action. There are two ways to get it wro
 - a **false alarm**: you act, and you didn't need to (you carried the umbrella; you blocked a harmless login);
 - a **miss**: you don't act, and you should have (you got wet; you let an attacker in).
 
-If a false alarm costs *C*~fa~ and a miss costs *C*~miss~, the cheapest thing to do, on average, is to act whenever
+If a false alarm costs *C*~fa~ and a miss costs *C*~miss~, the cheapest thing to do, on average, is this:
 
 ::: {.keyidea}
-P > C~fa~ ÷ (C~fa~ + C~miss~)
+Act when P > C~fa~ ÷ (C~fa~ + C~miss~): the false-alarm cost over the sum of both costs.
 :::
 
 Check it with the umbrella: 1 ÷ (1 + 4) = 0.2. That's exactly where the two lines crossed.
@@ -108,7 +108,7 @@ print(f"0.5              : ${total_cost(p, 0.5):,}")
 
 The formula lands close to the best threshold the search found, and the cost difference is small. A threshold of 0.5 costs {{< num ch05 half_penalty f1 >}} times as much.
 
-![Total cost on the test alerts at every threshold. For the calibrated model (green), the formula's threshold is near the lowest point of the curve. For the same model trained on rebalanced data (red), the same threshold lands far from its lowest point.](/figures/ch05/cost-curve.pdf){#fig-cost-curve}
+![Total cost on the test alerts at every threshold. For the calibrated model (green, solid line), the formula's threshold is near the lowest point of the curve. For the same model trained on rebalanced data (red, dashed line), the same threshold lands far from its lowest point.](/figures/ch05/cost-curve.pdf){#fig-cost-curve}
 
 And now you can see why Chapter 3 came first. @fig-cost-curve also shows the rebalanced model from Chapter 3. It ranks alerts almost as well, but its probabilities are too high. Use the formula's threshold on *its* numbers and the cost is {{< num ch05 bal_penalty pct >}} higher. Its own cheapest threshold is far away, at about {{< num ch05 t_bal_best f2 >}}, and no formula could have told you so. You'd have to find it by trial and error, and search again every time the costs change.
 
@@ -122,7 +122,7 @@ That's the practical value of calibration, in one sentence. It turns setting a t
 
 In Chapter 2, precision and recall looked like two separate scores. Now you can see what they really are: two sides of one trade-off. When one goes up, the other goes down.
 
-![As the threshold moves up, precision (how many blocks were real) rises and recall (how many threats got blocked) falls. The grey curve shows how much traffic you're blocking. The vertical line is the cost-based threshold.](/figures/ch05/pr-threshold.pdf){#fig-pr-threshold}
+![As the threshold moves up, precision (how many blocks were real) rises and recall (how many threats got blocked) falls. The grey dotted curve shows how much traffic you're blocking. The vertical line is the cost-based threshold.](/figures/ch05/pr-threshold.pdf){#fig-pr-threshold}
 
 At the cost-based threshold in @fig-pr-threshold, Kestrel blocks about {{< num ch05 blocked_frac pct >}} of alerts. That catches {{< num ch05 caught pct >}} of real threats, but only {{< num ch05 precision pct >}} of the blocks are real ones. That precision sounds poor. Is it?
 
@@ -144,9 +144,13 @@ The idea is old. In 1970, the engineer C. K. Chow showed something about systems
 
 At Kestrel it works like this. Sort the alerts by how confident the model is, surest first. Let the machine decide only the top part of the list, and send the rest to people. How low does the error rate go?
 
-![Coverage against risk. Reading from right to left: if the machine decides every alert, you take its full error rate. Let it decide only the alerts it's surest about and send the rest to people, and the error rate among its decisions falls steeply. A better model (green) gives you more coverage at the same risk.](/figures/ch05/coverage-risk.pdf){#fig-coverage-risk}
+![Coverage against risk. Reading from right to left: if the machine decides every alert, you take its full error rate. Let it decide only the alerts it's surest about and send the rest to people, and the error rate among its decisions falls steeply. A better model (green, solid line) gives you more coverage at the same risk.](/figures/ch05/coverage-risk.pdf){#fig-coverage-risk}
 
 Deciding every alert, the model gets {{< num ch05 risk_100 pct1 >}} wrong. Deciding only the surest 80%, just {{< num ch05 risk_80 pct1 >}} of its decisions are wrong. Deciding the surest half, only {{< num ch05 risk_50 pct1 >}} are wrong.
+
+::: {.keyidea}
+Let a model decide only the cases it's surest about, and its error rate falls steeply.
+:::
 
 That curve, in @fig-coverage-risk, is one of the most useful pictures you can show a manager. It changes the question from "how good is the model?" to "how much of this work can we safely hand over, at what error rate?". That's the question managers actually have.
 

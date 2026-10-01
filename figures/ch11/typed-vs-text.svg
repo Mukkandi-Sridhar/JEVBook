@@ -34,7 +34,7 @@ Q 2.88 20.88 2.88 24.48
 L 2.88 128.88 
 Q 2.88 132.48 6.48 132.48 
 z
-" clip-path="url(#pbcf2174b64)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p0c90b86953)" style="fill: #f3d2b6; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 182.88 132.48 
@@ -47,25 +47,25 @@ Q 179.28 20.88 179.28 24.48
 L 179.28 128.88 
 Q 179.28 132.48 182.88 132.48 
 z
-" clip-path="url(#pbcf2174b64)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p0c90b86953)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 700; font-size: 6.8px; font-family: 'Inter'; text-anchor: start; fill: #e07a1f" x="2.88" y="12.633188" transform="rotate(-0 2.88 12.633188)">Ask an LLM for JSON</text>
    </g>
    <g id="text_2">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="10.08" y="36.072" transform="rotate(-0 10.08 36.072)">{</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="10.08" y="36.072" transform="rotate(-0 10.08 36.072)">{</text>
    </g>
    <g id="text_3">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="10.08" y="50.152797" transform="rotate(-0 10.08 50.152797)">  "verdict": "malicious",</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="10.08" y="50.152797" transform="rotate(-0 10.08 50.152797)">  "verdict": "malicious",</text>
    </g>
    <g id="text_4">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="10.08" y="64.552797" transform="rotate(-0 10.08 64.552797)">  "confidence": 0.95,</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="10.08" y="64.552797" transform="rotate(-0 10.08 64.552797)">  "confidence": 0.95,</text>
    </g>
    <g id="text_5">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="10.08" y="78.890797" transform="rotate(-0 10.08 78.890797)">  "rule": "mfa_fatigue"</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="10.08" y="78.890797" transform="rotate(-0 10.08 78.890797)">  "rule": "mfa_fatigue"</text>
    </g>
    <g id="text_6">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="10.08" y="93.672" transform="rotate(-0 10.08 93.672)">}</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="10.08" y="93.672" transform="rotate(-0 10.08 93.672)">}</text>
    </g>
    <g id="text_7">
     <text style="font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="10.08" y="123.255969" transform="rotate(-0 10.08 123.255969)">text you parse, a number it wrote</text>
@@ -74,33 +74,33 @@ z
     <text style="font-weight: 700; font-size: 6.8px; font-family: 'Inter'; text-anchor: start; fill: #3b9c6e" x="179.28" y="11.982938" transform="rotate(-0 179.28 11.982938)">Ask a typed decision question</text>
    </g>
    <g id="text_9">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="186.48" y="36.072" transform="rotate(-0 186.48 36.072)">answers["attack"]:</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="186.48" y="36.072" transform="rotate(-0 186.48 36.072)">answers["attack"]:</text>
    </g>
    <g id="text_10">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="186.48" y="49.945" transform="rotate(-0 186.48 49.945)">  type="noul"</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="186.48" y="49.945" transform="rotate(-0 186.48 49.945)">  type="noul"</text>
    </g>
    <g id="text_11">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="186.48" y="64.905906" transform="rotate(-0 186.48 64.905906)">  noul=0.68</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="186.48" y="64.905906" transform="rotate(-0 186.48 64.905906)">  noul=0.68</text>
    </g>
    <g id="text_12">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="186.48" y="79.272" transform="rotate(-0 186.48 79.272)">answers["kind"]:</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="186.48" y="79.272" transform="rotate(-0 186.48 79.272)">answers["kind"]:</text>
    </g>
    <g id="text_13">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="186.48" y="93.538797" transform="rotate(-0 186.48 93.538797)">  choice="credential_abuse"</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="186.48" y="93.538797" transform="rotate(-0 186.48 93.538797)">  choice="credential_abuse"</text>
    </g>
    <g id="text_14">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="186.48" y="107.855" transform="rotate(-0 186.48 107.855)">  probabilities={...}</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="186.48" y="107.855" transform="rotate(-0 186.48 107.855)">  probabilities={...}</text>
    </g>
    <g id="text_15">
     <text style="font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="186.48" y="123.255969" transform="rotate(-0 186.48 123.255969)">typed data, a probability per option</text>
    </g>
    <g id="text_16">
-    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: end; fill: #8a919c" x="341.28" y="148.874625" transform="rotate(-0 341.28 148.874625)">illustrative values</text>
+    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: end; fill: #6b7280" x="341.28" y="148.874625" transform="rotate(-0 341.28 148.874625)">illustrative values</text>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="pbcf2174b64">
+  <clipPath id="p0c90b86953">
    <rect x="2.88" y="2.88" width="338.4" height="147.6"/>
   </clipPath>
  </defs>

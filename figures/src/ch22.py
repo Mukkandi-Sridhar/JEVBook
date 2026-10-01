@@ -133,7 +133,7 @@ def extract_diagram():
     draw.arrow(ax, (3.23, 0.97), (3.4, 0.97))
     draw.box(ax, 3.4, 0.72, 0.58, 0.5, "Jev\nnoul", kind="jev", size=6.2, weight="semibold")
     draw.arrow(ax, (3.98, 0.97), (4.12, 0.97))
-    draw.box(ax, 4.12, 0.72, 0.58, 0.5, "policy\nlines", kind="review", size=6.0)
+    draw.box(ax, 4.12, 0.72, 0.58, 0.5, "policy\nthresholds", kind="review", size=6.0)
     draw.text(ax, 1.15, 0.55, "writes, never decides", size=5.6, ha="center", color=C["llm"], style="italic")
     draw.text(ax, 3.69, 0.55, "decides, never writes", size=5.6, ha="center", color=C["jev"], style="italic")
     return f

@@ -17,7 +17,13 @@ When I wrote this book, Jev had been public for a couple of weeks, in early acce
 
 *"So how much can anyone actually say about what's inside it?"*
 
-More than you'd think, and less than most articles suggest. The trick is to sort every claim into one of three piles: what you can check yourself, what the vendor says, and what nobody outside the company knows. That habit is worth more than any single fact in this chapter. Jev won't be the last new model you have to judge from the outside.
+More than you'd think, and less than most articles suggest. The trick is to sort every claim into one of three piles: what you can check yourself, what the vendor says, and what nobody outside the company knows.
+
+::: {.keyidea}
+Sort every claim about a new model into three piles: verified, vendor-reported and unknown.
+:::
+
+That habit is worth more than any single fact in this chapter. Jev won't be the last new model you have to judge from the outside.
 
 ::: {.goals}
 - Sort claims about a new model into verified, vendor-reported and unknown.
@@ -106,7 +112,11 @@ Now use this book's illustrative LLM prices: \${{< num ch16 llm_price_in f2 >}} 
 
 ## Check the claims against each other
 
-If you remember one habit from this chapter, make it this one. When a vendor gives you several numbers, check whether they agree with *each other*.
+If you remember one habit from this chapter, make it this one.
+
+::: {.keyidea}
+When a vendor gives you several numbers, check whether they agree with *each other*.
+:::
 
 In TypeSafe's launch demo, Jev played the video game Doom. It made decisions from a text description of the game, about ten times a second, at a reported cost of about \$7 an hour. Do those numbers fit with the listed price?
 
@@ -120,7 +130,11 @@ Now the uncomfortable part: the unknowns are exactly what a decision layer depen
 
 We don't know the model's size, its design or its training data. We don't know how well its probabilities are calibrated on data like yours. We don't know how it behaves on input written by an attacker, like the planted sentence from Chapter 7. We don't know how much its behaviour changes between versions: `jev-latest` is a nickname that can point to a new version at any time. And by design, it gives no reasons, only probabilities. Some early critics said that's a problem for regulated uses [@datacamp2026]. Chapter 14 answers it with decision logs that audit the policy rather than the model.
 
-None of those unknowns are reasons to avoid a new model. They're reasons to *test* it, on your own data, with the tools you already have. The next two chapters do just that. First we look at each question type properly. Then we test calibration the way Chapter 3 taught.
+::: {.keyidea}
+Unknowns about a new model aren't reasons to avoid it; they're reasons to *test* it on your own data.
+:::
+
+You can test it with the tools you already have, and the next two chapters do just that. First we look at each question type properly. Then we test calibration the way Chapter 3 taught.
 
 ::: {.breaks}
 Vendor numbers are measured on the vendor's tasks, in the vendor's setup, against comparisons the vendor chose. Early-access models change quickly, so behaviour you test this month may change next month. Use a fixed model version where you can, rather than `jev-latest`, and run your checks again when it changes. And be careful with "benchmarks" from other people that appeared within days of the launch. Some are careful and some aren't, and most can't tell you how the model behaves on your data.

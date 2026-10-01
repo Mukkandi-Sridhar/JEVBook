@@ -62,7 +62,7 @@ For the last few years, the industry has tended to use that System 2 machinery f
 @fig-task-map is illustrative, but anyone who has worked in operations knows the pattern. A few tasks need real thought: working out how an attack happened, writing the incident report, explaining a break-in to the company's leaders. Almost all the rest is quick judgement. Is this alert real? Which queue? Which tool next? Is this chunk relevant? Is this the same incident as that one?
 
 ::: {.keyidea}
-Most of the work is System 1 work. Most of the machinery we've been using is System 2.
+Most of the work is System 1 work, but most of the machinery we use is System 2.
 :::
 
 TypeSafe named Jev's type of model after that mismatch. A **System One model**, as they use the term, is built for the busy corner of @fig-task-map. It answers typed questions fast, returns probabilities, and doesn't reason in text at all. Whether Jev does this well is the subject of the rest of Part III, measured with the tools of Part I.
@@ -105,7 +105,7 @@ for share in (0, 0.1, 0.2, 1.0):
 ```
 :::
 
-![Expected cost per day as more alerts go to System 2. Sending the alerts System 1 is least sure about (green) gets most of the benefit early. Sending a random share (grey) gets almost nothing until you send nearly everything.](/figures/ch15/routing-curve.pdf){#fig-routing-curve}
+![Expected cost per day as more alerts go to System 2. Sending the alerts System 1 is least sure about (green, solid line) gets most of the benefit early. Sending a random share (grey, dashed line) gets almost nothing until you send nearly everything.](/figures/ch15/routing-curve.pdf){#fig-routing-curve}
 
 @fig-routing-curve makes the case for a design with two systems, in one chart. Sending the 20% of alerts System 1 is least sure about gets {{< num ch15 share_gain_20 pct >}} of everything System 2 could possibly add. Sending a random 20% gets {{< num ch15 share_gain_20_random pct >}}.
 
@@ -136,7 +136,7 @@ The two-systems idea is a comparison, not a fact about the brain. Kahneman himse
 ::: {.threshold}
 Kestrel's System 2 is expensive: it's a senior analyst's time. The team can afford to send 10% of alerts, not 20%. Using @fig-routing-curve, about how much of the benefit do they keep? And if they could make System 1 better calibrated, would the curve move up, move down, or change shape?
 
-(They'd keep a little over half. Better calibration makes the green curve drop *faster*. The cases System 1 marks as uncertain would really be the uncertain ones, so each case sent to System 2 gains more.)
+(They'd keep a little over half. Better calibration makes the solid green curve drop *faster*. The cases System 1 marks as uncertain would really be the uncertain ones, so each case sent to System 2 gains more.)
 :::
 
 ## Where we are

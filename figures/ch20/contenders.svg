@@ -34,7 +34,7 @@ Q 2.88 15.12 2.88 19.44
 L 2.88 102.96 
 Q 2.88 107.28 7.2 107.28 
 z
-" clip-path="url(#p770ffea049)" style="fill: #f1f2f4; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pb2c1a9681c)" style="fill: #d5d8dd; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 123.12 107.28 
@@ -47,7 +47,7 @@ Q 118.8 15.12 118.8 19.44
 L 118.8 102.96 
 Q 118.8 107.28 123.12 107.28 
 z
-" clip-path="url(#p770ffea049)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pb2c1a9681c)" style="fill: #cbdaef; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 239.04 107.28 
@@ -60,7 +60,7 @@ Q 234.72 15.12 234.72 19.44
 L 234.72 102.96 
 Q 234.72 107.28 239.04 107.28 
 z
-" clip-path="url(#p770ffea049)" style="fill: #f1f2f4; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pb2c1a9681c)" style="fill: #d5d8dd; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 7.2 213.84 
@@ -73,7 +73,7 @@ Q 2.88 121.68 2.88 126
 L 2.88 209.52 
 Q 2.88 213.84 7.2 213.84 
 z
-" clip-path="url(#p770ffea049)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pb2c1a9681c)" style="fill: #f3d2b6; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_6">
     <path d="M 123.12 213.84 
@@ -86,7 +86,7 @@ Q 118.8 121.68 118.8 126
 L 118.8 209.52 
 Q 118.8 213.84 123.12 213.84 
 z
-" clip-path="url(#p770ffea049)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pb2c1a9681c)" style="fill: #f3d2b6; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_7">
     <path d="M 239.04 213.84 
@@ -99,134 +99,134 @@ Q 234.72 121.68 234.72 126
 L 234.72 209.52 
 Q 234.72 213.84 239.04 213.84 
 z
-" clip-path="url(#p770ffea049)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pb2c1a9681c)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
-    <text style="font-weight: 700; font-size: 6.8px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="24.48" y="29.213375" transform="rotate(-0 24.48 29.213375)">Hand-written rules</text>
+    <text style="font-weight: 700; font-size: 6.8px; font-family: 'Inter'; text-anchor: start" x="24.48" y="29.213375" transform="rotate(-0 24.48 29.213375)">Hand-written rules</text>
    </g>
    <g id="text_2">
     <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="10.08" y="49.597125" transform="rotate(-0 10.08 49.597125)">reads</text>
    </g>
    <g id="text_3">
-    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="42.48" y="49.77" transform="rotate(-0 42.48 49.77)">fields</text>
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start" x="42.48" y="49.77" transform="rotate(-0 42.48 49.77)">fields</text>
    </g>
    <g id="text_4">
     <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="10.08" y="71.047141" transform="rotate(-0 10.08 71.047141)">returns</text>
    </g>
    <g id="text_5">
-    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="42.48" y="70.157344" transform="rotate(-0 42.48 70.157344)">yes or no</text>
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start" x="42.48" y="70.157344" transform="rotate(-0 42.48 70.157344)">yes or no</text>
    </g>
    <g id="text_6">
     <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="10.08" y="92.797125" transform="rotate(-0 10.08 92.797125)">needs</text>
    </g>
    <g id="text_7">
-    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="42.48" y="92.392969" transform="rotate(-0 42.48 92.392969)">an expert’s afternoon</text>
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start" x="42.48" y="92.392969" transform="rotate(-0 42.48 92.392969)">an expert’s afternoon</text>
    </g>
    <g id="text_8">
-    <text style="font-weight: 700; font-size: 6.8px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="140.4" y="28.516375" transform="rotate(-0 140.4 28.516375)">Logistic regression</text>
+    <text style="font-weight: 700; font-size: 6.8px; font-family: 'Inter'; text-anchor: start" x="140.4" y="28.516375" transform="rotate(-0 140.4 28.516375)">Logistic regression</text>
    </g>
    <g id="text_9">
     <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="126" y="49.597125" transform="rotate(-0 126 49.597125)">reads</text>
    </g>
    <g id="text_10">
-    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="158.4" y="49.77" transform="rotate(-0 158.4 49.77)">fields</text>
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start" x="158.4" y="49.77" transform="rotate(-0 158.4 49.77)">fields</text>
    </g>
    <g id="text_11">
     <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="126" y="71.047141" transform="rotate(-0 126 71.047141)">returns</text>
    </g>
    <g id="text_12">
-    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="158.4" y="70.750313" transform="rotate(-0 158.4 70.750313)">a probability</text>
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start" x="158.4" y="70.750313" transform="rotate(-0 158.4 70.750313)">a probability</text>
    </g>
    <g id="text_13">
     <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="126" y="92.797125" transform="rotate(-0 126 92.797125)">needs</text>
    </g>
    <g id="text_14">
-    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="158.4" y="92.967187" transform="rotate(-0 158.4 92.967187)">thousands of labels</text>
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start" x="158.4" y="92.967187" transform="rotate(-0 158.4 92.967187)">thousands of labels</text>
    </g>
    <g id="text_15">
-    <text style="font-weight: 700; font-size: 6.8px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="256.32" y="29.213375" transform="rotate(-0 256.32 29.213375)">Trained text classifier</text>
+    <text style="font-weight: 700; font-size: 6.8px; font-family: 'Inter'; text-anchor: start" x="256.32" y="29.213375" transform="rotate(-0 256.32 29.213375)">Trained text classifier</text>
    </g>
    <g id="text_16">
     <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="241.92" y="49.597125" transform="rotate(-0 241.92 49.597125)">reads</text>
    </g>
    <g id="text_17">
-    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="274.32" y="49.509375" transform="rotate(-0 274.32 49.509375)">raw text</text>
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start" x="274.32" y="49.509375" transform="rotate(-0 274.32 49.509375)">raw text</text>
    </g>
    <g id="text_18">
     <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="241.92" y="71.047141" transform="rotate(-0 241.92 71.047141)">returns</text>
    </g>
    <g id="text_19">
-    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="274.32" y="70.750313" transform="rotate(-0 274.32 70.750313)">a probability</text>
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start" x="274.32" y="70.750313" transform="rotate(-0 274.32 70.750313)">a probability</text>
    </g>
    <g id="text_20">
     <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="241.92" y="92.797125" transform="rotate(-0 241.92 92.797125)">needs</text>
    </g>
    <g id="text_21">
-    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="274.32" y="92.967187" transform="rotate(-0 274.32 92.967187)">thousands of labels</text>
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start" x="274.32" y="92.967187" transform="rotate(-0 274.32 92.967187)">thousands of labels</text>
    </g>
    <g id="text_22">
-    <text style="font-weight: 700; font-size: 6.8px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="24.48" y="134.979687" transform="rotate(-0 24.48 134.979687)">LLM, structured output</text>
+    <text style="font-weight: 700; font-size: 6.8px; font-family: 'Inter'; text-anchor: start" x="24.48" y="134.979687" transform="rotate(-0 24.48 134.979687)">LLM, structured output</text>
    </g>
    <g id="text_23">
     <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="10.08" y="156.157125" transform="rotate(-0 10.08 156.157125)">reads</text>
    </g>
    <g id="text_24">
-    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="42.48" y="156.069375" transform="rotate(-0 42.48 156.069375)">raw text</text>
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start" x="42.48" y="156.069375" transform="rotate(-0 42.48 156.069375)">raw text</text>
    </g>
    <g id="text_25">
     <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="10.08" y="177.607141" transform="rotate(-0 10.08 177.607141)">returns</text>
    </g>
    <g id="text_26">
-    <text style="font-size: 6px; font-family: 'Inter'; fill: #1f2430" transform="translate(42.48 173.177402)">JSON: verdict +</text>
-    <text style="font-size: 6px; font-family: 'Inter'; fill: #1f2430" transform="translate(42.48 182.646035)">stated confidence</text>
+    <text style="font-size: 6px; font-family: 'Inter'" transform="translate(42.48 173.177402)">JSON: verdict +</text>
+    <text style="font-size: 6px; font-family: 'Inter'" transform="translate(42.48 182.646035)">stated confidence</text>
    </g>
    <g id="text_27">
     <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="10.08" y="199.357125" transform="rotate(-0 10.08 199.357125)">needs</text>
    </g>
    <g id="text_28">
-    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="42.48" y="198.695156" transform="rotate(-0 42.48 198.695156)">a prompt</text>
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start" x="42.48" y="198.695156" transform="rotate(-0 42.48 198.695156)">a prompt</text>
    </g>
    <g id="text_29">
-    <text style="font-weight: 700; font-size: 6.8px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="140.4" y="135.076375" transform="rotate(-0 140.4 135.076375)">LLM-as-judge</text>
+    <text style="font-weight: 700; font-size: 6.8px; font-family: 'Inter'; text-anchor: start" x="140.4" y="135.076375" transform="rotate(-0 140.4 135.076375)">LLM-as-judge</text>
    </g>
    <g id="text_30">
     <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="126" y="156.157125" transform="rotate(-0 126 156.157125)">reads</text>
    </g>
    <g id="text_31">
-    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="158.4" y="156.069375" transform="rotate(-0 158.4 156.069375)">raw text</text>
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start" x="158.4" y="156.069375" transform="rotate(-0 158.4 156.069375)">raw text</text>
    </g>
    <g id="text_32">
     <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="126" y="177.607141" transform="rotate(-0 126 177.607141)">returns</text>
    </g>
    <g id="text_33">
-    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="158.4" y="177.286875" transform="rotate(-0 158.4 177.286875)">a 1–10 rating</text>
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start" x="158.4" y="177.286875" transform="rotate(-0 158.4 177.286875)">a 1–10 rating</text>
    </g>
    <g id="text_34">
     <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="126" y="199.357125" transform="rotate(-0 126 199.357125)">needs</text>
    </g>
    <g id="text_35">
-    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="158.4" y="198.922031" transform="rotate(-0 158.4 198.922031)">a prompt and a rubric</text>
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start" x="158.4" y="198.922031" transform="rotate(-0 158.4 198.922031)">a prompt and a rubric</text>
    </g>
    <g id="text_36">
-    <text style="font-weight: 700; font-size: 6.8px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="256.32" y="135.361656" transform="rotate(-0 256.32 135.361656)">Jev (mock)</text>
+    <text style="font-weight: 700; font-size: 6.8px; font-family: 'Inter'; text-anchor: start" x="256.32" y="135.361656" transform="rotate(-0 256.32 135.361656)">Jev (mock)</text>
    </g>
    <g id="text_37">
     <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="241.92" y="156.157125" transform="rotate(-0 241.92 156.157125)">reads</text>
    </g>
    <g id="text_38">
-    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="274.32" y="156.327187" transform="rotate(-0 274.32 156.327187)">fields as JSON</text>
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start" x="274.32" y="156.327187" transform="rotate(-0 274.32 156.327187)">fields as JSON</text>
    </g>
    <g id="text_39">
     <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="241.92" y="177.607141" transform="rotate(-0 241.92 177.607141)">returns</text>
    </g>
    <g id="text_40">
-    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="274.32" y="177.310312" transform="rotate(-0 274.32 177.310312)">a probability</text>
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start" x="274.32" y="177.310312" transform="rotate(-0 274.32 177.310312)">a probability</text>
    </g>
    <g id="text_41">
     <text style="font-weight: 600; font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="241.92" y="199.357125" transform="rotate(-0 241.92 199.357125)">needs</text>
    </g>
    <g id="text_42">
-    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="274.32" y="198.910312" transform="rotate(-0 274.32 198.910312)">typed questions</text>
+    <text style="font-size: 6px; font-family: 'Inter'; text-anchor: start" x="274.32" y="198.910312" transform="rotate(-0 274.32 198.910312)">typed questions</text>
    </g>
    <g id="patch_8">
     <path d="M 13.68 32.76 
@@ -239,7 +239,7 @@ C 8.204842 23.460171 7.56 25.016957 7.56 26.64
 C 7.56 28.263043 8.204842 29.819829 9.352506 30.967494 
 C 10.500171 32.115158 12.056957 32.76 13.68 32.76 
 z
-" clip-path="url(#p770ffea049)" style="fill: #4b5563; stroke: #ffffff; stroke-linejoin: miter"/>
+" clip-path="url(#pb2c1a9681c)" style="fill: #4b5563; stroke: #ffffff; stroke-linejoin: miter"/>
    </g>
    <g id="patch_9">
     <path d="M 129.6 32.76 
@@ -252,7 +252,7 @@ C 124.124842 23.460171 123.48 25.016957 123.48 26.64
 C 123.48 28.263043 124.124842 29.819829 125.272506 30.967494 
 C 126.420171 32.115158 127.976957 32.76 129.6 32.76 
 z
-" clip-path="url(#p770ffea049)" style="fill: #2f6db5; stroke: #ffffff; stroke-linejoin: miter"/>
+" clip-path="url(#pb2c1a9681c)" style="fill: #2f6db5; stroke: #ffffff; stroke-linejoin: miter"/>
    </g>
    <g id="patch_10">
     <path d="M 245.52 32.76 
@@ -265,7 +265,7 @@ C 240.044842 23.460171 239.4 25.016957 239.4 26.64
 C 239.4 28.263043 240.044842 29.819829 241.192506 30.967494 
 C 242.340171 32.115158 243.896957 32.76 245.52 32.76 
 z
-" clip-path="url(#p770ffea049)" style="fill: #4b5563; stroke: #ffffff; stroke-linejoin: miter"/>
+" clip-path="url(#pb2c1a9681c)" style="fill: #4b5563; stroke: #ffffff; stroke-linejoin: miter"/>
    </g>
    <g id="patch_11">
     <path d="M 13.68 139.32 
@@ -278,7 +278,7 @@ C 8.204842 130.020171 7.56 131.576957 7.56 133.2
 C 7.56 134.823043 8.204842 136.379829 9.352506 137.527494 
 C 10.500171 138.675158 12.056957 139.32 13.68 139.32 
 z
-" clip-path="url(#p770ffea049)" style="fill: #e07a1f; stroke: #ffffff; stroke-linejoin: miter"/>
+" clip-path="url(#pb2c1a9681c)" style="fill: #e07a1f; stroke: #ffffff; stroke-linejoin: miter"/>
    </g>
    <g id="patch_12">
     <path d="M 129.6 139.32 
@@ -291,7 +291,7 @@ C 124.124842 130.020171 123.48 131.576957 123.48 133.2
 C 123.48 134.823043 124.124842 136.379829 125.272506 137.527494 
 C 126.420171 138.675158 127.976957 139.32 129.6 139.32 
 z
-" clip-path="url(#p770ffea049)" style="fill: #e07a1f; stroke: #ffffff; stroke-linejoin: miter"/>
+" clip-path="url(#pb2c1a9681c)" style="fill: #e07a1f; stroke: #ffffff; stroke-linejoin: miter"/>
    </g>
    <g id="patch_13">
     <path d="M 245.52 139.32 
@@ -304,7 +304,7 @@ C 240.044842 130.020171 239.4 131.576957 239.4 133.2
 C 239.4 134.823043 240.044842 136.379829 241.192506 137.527494 
 C 242.340171 138.675158 243.896957 139.32 245.52 139.32 
 z
-" clip-path="url(#p770ffea049)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
+" clip-path="url(#pb2c1a9681c)" style="fill: #3b9c6e; stroke: #ffffff; stroke-linejoin: miter"/>
    </g>
    <g id="text_43">
     <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="13.68" y="29.328879" transform="rotate(-0 13.68 29.328879)">1</text>
@@ -327,7 +327,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p770ffea049">
+  <clipPath id="pb2c1a9681c">
    <rect x="2.88" y="2.88" width="338.4" height="216"/>
   </clipPath>
  </defs>

@@ -111,8 +111,8 @@ def cost_curve():
     t = CFP / (CFP + CFN)
     f, ax = subplots(width="text", height=2.45)
     clean(ax, "y")
-    ax.plot(ts, c1, color=C["jev"], lw=1.8)
-    ax.plot(ts, c2, color=C["fail"], lw=1.6)
+    ax.plot(ts, c1, color=C["jev"], lw=1.8, ls="-")              # calibrated: solid
+    ax.plot(ts, c2, color=C["fail"], lw=1.6, ls=(0, (5, 2)))     # rebalanced: dashed
     ax.axvline(t, color=C["ink"], lw=0.8)
     ax.text(t + 0.01, 1.2e6, f"formula: {t:.3f}", fontsize=6.4, color=C["ink"], fontweight="bold")
     ax.scatter([t], [cost(d["p"], d["y"], t)], color=C["jev"], s=26, zorder=5, edgecolor="white", lw=0.8)
@@ -140,9 +140,9 @@ def pr_threshold():
     vol = [(p >= t).mean() for t in ts]
     f, ax = subplots(width="text", height=2.3)
     clean(ax, "y")
-    ax.plot(ts, rec, color=C["jev"], lw=1.8, label="recall: share of real threats blocked")
-    ax.plot(ts, prec, color=C["data"], lw=1.8, label="precision: share of blocks that were real")
-    ax.plot(ts, vol, color=C["muted"], lw=1.2, label="share of all alerts blocked")
+    ax.plot(ts, rec, color=C["jev"], lw=1.8, ls="-", label="recall: share of real threats blocked (solid)")
+    ax.plot(ts, prec, color=C["data"], lw=1.8, ls=(0, (5, 2)), label="precision: share of blocks that were real (dashed)")
+    ax.plot(ts, vol, color=C["muted"], lw=1.2, ls=":", label="share of all alerts blocked (dotted)")
     ax.legend(loc="center right", fontsize=6.3)
     ax.axvline(CFP / (CFP + CFN), color=C["ink"], lw=0.8)
     ax.set_xlabel("Threshold")
@@ -158,12 +158,13 @@ def coverage_risk():
     p, y = d["p"], d["y"]
     f, ax = subplots(width="text", height=2.3)
     clean(ax, "both")
-    for pp, col, lab in ((p, C["jev"], "logistic regression"),
-                         (np.clip(p + np.random.default_rng(0).normal(0, 0.12, len(p)), 0, 1), C["slate"], "a noisier model")):
+    for pp, col, lab, ls in ((p, C["jev"], "logistic regression (solid)", "-"),
+                             (np.clip(p + np.random.default_rng(0).normal(0, 0.12, len(p)), 0, 1), C["slate"],
+                              "a noisier model (dashed)", (0, (5, 2)))):
         conf = np.maximum(pp, 1 - pp)
         correct = ((pp >= 0.5) == (y == 1)).astype(float)
         cov, risk, _ = pol.coverage_risk(conf, correct)
-        ax.plot(cov[200:], risk[200:], color=col, lw=1.8, label=lab)
+        ax.plot(cov[200:], risk[200:], color=col, lw=1.8, ls=ls, label=lab)
     ax.xaxis.set_major_formatter(PCT)
     ax.yaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:.0%}"))
     ax.set_xlabel("Coverage: share of alerts the machine decides alone (most confident first)")

@@ -34,7 +34,7 @@ Q 2.88 9.36 2.88 13.68
 L 2.88 30.96 
 Q 2.88 35.28 7.2 35.28 
 z
-" clip-path="url(#p22c44294fd)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p3f09f31387)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 122.4 35.28 
@@ -47,7 +47,7 @@ Q 118.08 9.36 118.08 13.68
 L 118.08 30.96 
 Q 118.08 35.28 122.4 35.28 
 z
-" clip-path="url(#p22c44294fd)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p3f09f31387)" style="fill: #f3d2b6; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 237.6 35.28 
@@ -60,88 +60,88 @@ Q 233.28 9.36 233.28 13.68
 L 233.28 30.96 
 Q 233.28 35.28 237.6 35.28 
 z
-" clip-path="url(#p22c44294fd)" style="fill: #f7e0e1; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p3f09f31387)" style="fill: #f0caca; stroke: #b8323a; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
-    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="55.08" y="24.86625" transform="rotate(-0 55.08 24.86625)">VERIFIED</text>
+    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: middle" x="55.08" y="24.86625" transform="rotate(-0 55.08 24.86625)">VERIFIED</text>
    </g>
    <g id="text_2">
     <text style="font-style: italic; font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="54.72" y="47.69682" transform="rotate(-0 54.72 47.69682)">read in the public SDK</text>
    </g>
    <g id="text_3">
-    <text style="font-size: 6.1px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="77.766433" transform="rotate(-0 6.48 77.766433)">• POST /v1/systemone</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'; text-anchor: start" x="6.48" y="77.766433" transform="rotate(-0 6.48 77.766433)">• POST /v1/systemone</text>
    </g>
    <g id="text_4">
-    <text style="font-size: 6.1px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="113.746894" transform="rotate(-0 6.48 113.746894)">• state + model + questions</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'; text-anchor: start" x="6.48" y="113.746894" transform="rotate(-0 6.48 113.746894)">• state + model + questions</text>
    </g>
    <g id="text_5">
-    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #1f2430" transform="translate(6.48 149.734979)">• three types: choice,</text>
-    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #1f2430" transform="translate(6.48 159.356657)">score, noul</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'" transform="translate(6.48 149.734979)">• three types: choice,</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'" transform="translate(6.48 159.356657)">score, noul</text>
    </g>
    <g id="text_6">
-    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #1f2430" transform="translate(6.48 185.766433)">• a probability for every</text>
-    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #1f2430" transform="translate(6.48 195.373337)">option; default model</text>
-    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #1f2430" transform="translate(6.48 204.936874)">“jev-latest”</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'" transform="translate(6.48 185.766433)">• a probability for every</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'" transform="translate(6.48 195.373337)">option; default model</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'" transform="translate(6.48 204.936874)">“jev-latest”</text>
    </g>
    <g id="text_7">
-    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #1f2430" transform="translate(6.48 221.662065)">• output tokens currently</text>
-    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #1f2430" transform="translate(6.48 231.751728)">free (SDK docs)</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'" transform="translate(6.48 221.662065)">• output tokens currently</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'" transform="translate(6.48 231.751728)">free (SDK docs)</text>
    </g>
    <g id="text_8">
-    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="170.28" y="24.86625" transform="rotate(-0 170.28 24.86625)">VENDOR-REPORTED</text>
+    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: middle" x="170.28" y="24.86625" transform="rotate(-0 170.28 24.86625)">VENDOR-REPORTED</text>
    </g>
    <g id="text_9">
     <text style="font-style: italic; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(133.978063 47.685883)">claimed; not independently</text>
     <text style="font-style: italic; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(151.972438 56.976961)">checked here</text>
    </g>
    <g id="text_10">
-    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #1f2430" transform="translate(121.68 77.673979)">• “parallel sampler”: all</text>
-    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #1f2430" transform="translate(121.68 87.341884)">outputs in one pass</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'" transform="translate(121.68 77.673979)">• “parallel sampler”: all</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'" transform="translate(121.68 87.341884)">outputs in one pass</text>
    </g>
    <g id="text_11">
-    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #1f2430" transform="translate(121.68 114.330683)">• trained with RLCD:</text>
-    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #1f2430" transform="translate(121.68 123.337595)">reinforcement learning</text>
-    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #1f2430" transform="translate(121.68 133.552116)">for calibrated decisions</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'" transform="translate(121.68 114.330683)">• trained with RLCD:</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'" transform="translate(121.68 123.337595)">reinforcement learning</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'" transform="translate(121.68 133.552116)">for calibrated decisions</text>
    </g>
    <g id="text_12">
-    <text style="font-size: 6.1px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="121.68" y="149.692089" transform="rotate(-0 121.68 149.692089)">• 70–500 ms latency</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'; text-anchor: start" x="121.68" y="149.692089" transform="rotate(-0 121.68 149.692089)">• 70–500 ms latency</text>
    </g>
    <g id="text_13">
-    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #1f2430" transform="translate(121.68 185.998995)">• $0.042 per million</text>
-    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #1f2430" transform="translate(121.68 195.341884)">input tokens</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'" transform="translate(121.68 185.998995)">• $0.042 per million</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'" transform="translate(121.68 195.341884)">input tokens</text>
    </g>
    <g id="text_14">
-    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #1f2430" transform="translate(121.68 221.742604)">• two orders of magnitude</text>
-    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #1f2430" transform="translate(121.68 231.957126)">faster than LLMs</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'" transform="translate(121.68 221.742604)">• two orders of magnitude</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'" transform="translate(121.68 231.957126)">faster than LLMs</text>
    </g>
    <g id="text_15">
-    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="285.48" y="24.864609" transform="rotate(-0 285.48 24.864609)">UNKNOWN</text>
+    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: middle" x="285.48" y="24.864609" transform="rotate(-0 285.48 24.864609)">UNKNOWN</text>
    </g>
    <g id="text_16">
     <text style="font-style: italic; font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="285.12" y="47.69682" transform="rotate(-0 285.12 47.69682)">not published</text>
    </g>
    <g id="text_17">
-    <text style="font-size: 6.1px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="236.88" y="77.734979" transform="rotate(-0 236.88 77.734979)">• model size and layers</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'; text-anchor: start" x="236.88" y="77.734979" transform="rotate(-0 236.88 77.734979)">• model size and layers</text>
    </g>
    <g id="text_18">
-    <text style="font-size: 6.1px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="236.88" y="113.711151" transform="rotate(-0 236.88 113.711151)">• training data</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'; text-anchor: start" x="236.88" y="113.711151" transform="rotate(-0 236.88 113.711151)">• training data</text>
    </g>
    <g id="text_19">
-    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #1f2430" transform="translate(236.88 150.287792)">• how RLCD’s reward</text>
-    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #1f2430" transform="translate(236.88 159.959985)">is defined</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'" transform="translate(236.88 150.287792)">• how RLCD’s reward</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'" transform="translate(236.88 159.959985)">is defined</text>
    </g>
    <g id="text_20">
-    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #1f2430" transform="translate(236.88 186.330683)">• calibration on</text>
-    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #1f2430" transform="translate(236.88 195.257056)">your data</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'" transform="translate(236.88 186.330683)">• calibration on</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'" transform="translate(236.88 195.257056)">your data</text>
    </g>
    <g id="text_21">
-    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #1f2430" transform="translate(236.88 222.362136)">• failure modes on</text>
-    <text style="font-size: 6.1px; font-family: 'Inter'; fill: #1f2430" transform="translate(236.88 231.341884)">adversarial input</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'" transform="translate(236.88 222.362136)">• failure modes on</text>
+    <text style="font-size: 6.1px; font-family: 'Inter'" transform="translate(236.88 231.341884)">adversarial input</text>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="p22c44294fd">
+  <clipPath id="p3f09f31387">
    <rect x="2.88" y="2.88" width="338.4" height="248.4"/>
   </clipPath>
  </defs>

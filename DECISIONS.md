@@ -260,3 +260,23 @@ Newest decisions are appended at the bottom of each section.
   printed output stays the same. Cell outputs that are single long records (an alert description, JSON decision
   records) may wrap: shortening them would change what the code prints. Code spaces are now real space glyphs
   (`showspaces` with `\FancyVerbSpace` set to a plain space), so indentation survives copying from the PDF.
+- **D-87b · Key ideas (v1.0.3).** 62 key ideas, 2–4 per chapter, one sentence of at most 20 words each, chosen from
+  the existing key idea boxes and bold statements; no new claims. A few were shortened or made to stand alone
+  (for example "A model learns exactly what you ask for: ask the wrong question, and it learns the wrong thing").
+  Weaker key lines went back to plain text ("That's machine learning.", "That's gradient descent.", "Weighted sums
+  draw lines…"); Chapter 4's formula box became a key idea sentence. Chapters 8, 10, 12, 15, 20 and 22 have two;
+  Chapters 2 and 14 have four. The key idea box is unbreakable, with a thick dark bar and a KEY IDEA label so it
+  survives without colour; "Keep these" boxes and the Key ideas appendix are generated from the boxes
+  (filters/book.lua, tools/make_key_ideas.py), so they can't drift from the chapters.
+- **D-88 · Black-and-white safe (v1.0.3).** Hue is never the only cue anywhere in the book. Body and code text pure
+  black; box tints at least 15% darker than white in greyscale and every box with a bar or border; figure series
+  differ by dash pattern and marker, touching fills by hatching, zones by pattern as well as grey level; colour
+  words in the text name a second cue the figure really has. The default series cycle changes colour, dash pattern
+  and marker together; figures that the text describes set their styles explicitly. The photocopy test
+  (tools/bw_test.py) is greyscale, contrast ×1.6 around mid-grey and a 0.7 px blur: harsh enough that the 15% tints
+  vanish, so anything that still reads in it doesn't depend on tint. The example decision record in Chapter 21
+  keeps its recorded latency (0.99 ms), which is measured live and otherwise changed on every figure build.
+- **D-89 · Black-and-white edition (v1.0.3).** The colour interior converted with `mutool recolor -c gray`
+  (Ghostscript isn't installed here; MuPDF's recolor gives true greyscale without re-rendering text), on KDP's
+  white black-and-white paper (0.002252 in per page), with its own paperback cover whose spine fits that paper.
+  The cover stays in colour, as KDP prints every cover.

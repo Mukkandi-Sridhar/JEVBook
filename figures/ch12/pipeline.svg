@@ -26,52 +26,52 @@ z
    <g id="patch_2">
     <path d="M 84.08127 33.12 
 Q 92.882994 33.12 100.725854 33.12 
-" clip-path="url(#p29055e6532)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#p9dc026bb67)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
     <path d="M 96.225854 30.37 
 L 100.725854 33.12 
 L 96.225854 35.87 
 z
-" clip-path="url(#p29055e6532)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#p9dc026bb67)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
    </g>
    <g id="patch_3">
     <path d="M 141.12 80.082686 
 Q 141.12 65.881529 141.12 52.639237 
-" clip-path="url(#p29055e6532)" style="fill: none; stroke: #8a919c; stroke-linecap: round"/>
+" clip-path="url(#p9dc026bb67)" style="fill: none; stroke: #6b7280; stroke-linecap: round"/>
     <path d="M 138.37 57.139237 
 L 141.12 52.639237 
 L 143.87 57.139237 
 z
-" clip-path="url(#p29055e6532)" style="fill: #8a919c; stroke: #8a919c; stroke-linecap: round"/>
+" clip-path="url(#p9dc026bb67)" style="fill: #6b7280; stroke: #6b7280; stroke-linecap: round"/>
    </g>
    <g id="patch_4">
     <path d="M 181.28127 33.12 
 Q 190.082994 33.12 197.925854 33.12 
-" clip-path="url(#p29055e6532)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#p9dc026bb67)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
     <path d="M 193.425854 30.37 
 L 197.925854 33.12 
 L 193.425854 35.87 
 z
-" clip-path="url(#p29055e6532)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#p9dc026bb67)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
    </g>
    <g id="patch_5">
     <path d="M 282.079512 33.12 
 Q 289.081679 33.12 295.124981 33.12 
-" clip-path="url(#p29055e6532)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#p9dc026bb67)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
     <path d="M 290.624981 30.37 
 L 295.124981 33.12 
 L 290.624981 35.87 
 z
-" clip-path="url(#p29055e6532)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#p9dc026bb67)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
    </g>
    <g id="patch_6">
     <path d="M 319.68 51.680391 
 Q 319.68 64.080771 319.68 75.522287 
-" clip-path="url(#p29055e6532)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#p9dc026bb67)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
     <path d="M 322.43 71.022287 
 L 319.68 75.522287 
 L 316.93 71.022287 
 z
-" clip-path="url(#p29055e6532)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#p9dc026bb67)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
    </g>
    <g id="patch_7">
     <path d="M 7.2 49.68 
@@ -84,7 +84,7 @@ Q 2.88 16.56 2.88 20.88
 L 2.88 45.36 
 Q 2.88 49.68 7.2 49.68 
 z
-" clip-path="url(#p29055e6532)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p9dc026bb67)" style="fill: #cbdaef; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_8">
     <path d="M 108 49.68 
@@ -97,7 +97,7 @@ Q 103.68 16.56 103.68 20.88
 L 103.68 45.36 
 Q 103.68 49.68 108 49.68 
 z
-" clip-path="url(#p29055e6532)" style="fill: #f1f2f4; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p9dc026bb67)" style="fill: #d5d8dd; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_9">
     <path d="M 114.48 133.2 
@@ -105,7 +105,7 @@ L 168.48 133.2
 L 168.48 84.96 
 L 114.48 84.96 
 z
-" clip-path="url(#p29055e6532)" style="fill: #e4edf8"/>
+" clip-path="url(#p9dc026bb67)" style="fill: #cbdaef"/>
    </g>
    <g id="patch_10">
     <path d="M 141.48 136.08 
@@ -118,7 +118,7 @@ C 117.32489 131.70361 114.48 132.436215 114.48 133.2
 C 114.48 133.963785 117.32489 134.69639 122.388117 135.236468 
 C 127.451343 135.776545 134.319516 136.08 141.48 136.08 
 z
-" clip-path="url(#p29055e6532)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p9dc026bb67)" style="fill: #cbdaef; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_11">
     <path d="M 205.2 64.08 
@@ -131,7 +131,7 @@ Q 200.88 2.16 200.88 6.48
 L 200.88 59.76 
 Q 200.88 64.08 205.2 64.08 
 z
-" clip-path="url(#p29055e6532)" style="fill: #ffffff; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p9dc026bb67)" style="fill: #ffffff; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_12">
     <path d="M 302.4 49.68 
@@ -144,7 +144,7 @@ Q 298.08 16.56 298.08 20.88
 L 298.08 45.36 
 Q 298.08 49.68 302.4 49.68 
 z
-" clip-path="url(#p29055e6532)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p9dc026bb67)" style="fill: #f3d2b6; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_13">
     <path d="M 259.2 125.28 
@@ -157,16 +157,16 @@ Q 254.88 80.64 254.88 84.96
 L 254.88 120.96 
 Q 254.88 125.28 259.2 125.28 
 z
-" clip-path="url(#p29055e6532)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p9dc026bb67)" style="fill: #f3d2b6; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
-    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="42.48" y="30.052578" transform="rotate(-0 42.48 30.052578)">question</text>
+    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: middle" x="42.48" y="30.052578" transform="rotate(-0 42.48 30.052578)">question</text>
    </g>
    <g id="text_2">
     <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="42.48" y="41.797828" transform="rotate(-0 42.48 41.797828)">“is svc-backup allowed…?”</text>
    </g>
    <g id="text_3">
-    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="141.48" y="30.729063" transform="rotate(-0 141.48 30.729063)">retrieve</text>
+    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: middle" x="141.48" y="30.729063" transform="rotate(-0 141.48 30.729063)">retrieve</text>
    </g>
    <g id="text_4">
     <text style="font-size: 5.6px; font-family: 'Inter'; text-anchor: middle; fill: #4b5563" x="141.48" y="41.813188" transform="rotate(-0 141.48 41.813188)">top 3 chunks</text>
@@ -182,30 +182,30 @@ C 117.32489 83.46361 114.48 84.196215 114.48 84.96
 C 114.48 85.723785 117.32489 86.45639 122.388117 86.996468 
 C 127.451343 87.536545 134.319516 87.84 141.48 87.84 
 z
-" clip-path="url(#p29055e6532)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p9dc026bb67)" style="fill: #cbdaef; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="line2d_1">
     <path d="M 114.48 133.2 
 L 114.48 84.96 
-" clip-path="url(#p29055e6532)" style="fill: none; stroke: #2f6db5; stroke-width: 0.9; stroke-linecap: round"/>
+" clip-path="url(#p9dc026bb67)" style="fill: none; stroke: #2f6db5; stroke-width: 0.9; stroke-linecap: round"/>
    </g>
    <g id="line2d_2">
     <path d="M 168.48 133.2 
 L 168.48 84.96 
-" clip-path="url(#p29055e6532)" style="fill: none; stroke: #2f6db5; stroke-width: 0.9; stroke-linecap: round"/>
+" clip-path="url(#p9dc026bb67)" style="fill: none; stroke-dasharray: 4.5,1.8; stroke-dashoffset: 0; stroke: #2f6db5; stroke-width: 0.9"/>
    </g>
    <g id="text_5">
-    <text style="font-weight: 500; font-size: 6.4px; font-family: 'Inter'; fill: #1f2430" transform="translate(226.4945 24.949813)">prompt =</text>
-    <text style="font-weight: 500; font-size: 6.4px; font-family: 'Inter'; fill: #1f2430" transform="translate(224.2315 34.889)">question +</text>
-    <text style="font-weight: 500; font-size: 6.4px; font-family: 'Inter'; fill: #1f2430" transform="translate(220.1615 45.185688)">retrieved text</text>
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'Inter'" transform="translate(226.4945 24.949813)">prompt =</text>
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'Inter'" transform="translate(224.2315 34.889)">question +</text>
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'Inter'" transform="translate(220.1615 45.185688)">retrieved text</text>
    </g>
    <g id="text_6">
-    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="319.68" y="35.66625" transform="rotate(-0 319.68 35.66625)">LLM</text>
+    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: middle" x="319.68" y="35.66625" transform="rotate(-0 319.68 35.66625)">LLM</text>
    </g>
    <g id="text_7">
-    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(277.513438 95.260193)">answer, citing</text>
-    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(280.730656 105.271438)">the chunk it</text>
-    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(290.808563 114.557572)">used</text>
+    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'" transform="translate(277.513438 95.260193)">answer, citing</text>
+    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'" transform="translate(280.730656 105.271438)">the chunk it</text>
+    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'" transform="translate(290.808563 114.557572)">used</text>
    </g>
    <g id="text_8">
     <text style="font-size: 6.3px; font-family: 'Inter'; fill: #4b5563" transform="translate(2.88 98.66802)">Retrieve first,</text>
@@ -215,13 +215,13 @@ L 168.48 84.96
     <text style="font-size: 6.3px; font-family: 'Inter'; fill: #4b5563" transform="translate(2.88 138.178863)">before answering.</text>
    </g>
    <g id="text_9">
-    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(129.127469 109.024492)">policies,</text>
-    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'; fill: #1f2430" transform="translate(127.487375 116.52625)">runbooks</text>
+    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'" transform="translate(129.127469 109.024492)">policies,</text>
+    <text style="font-weight: 500; font-size: 6.2px; font-family: 'Inter'" transform="translate(127.487375 116.52625)">runbooks</text>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="p29055e6532">
+  <clipPath id="p9dc026bb67">
    <rect x="2.88" y="2.88" width="338.4" height="158.4"/>
   </clipPath>
  </defs>

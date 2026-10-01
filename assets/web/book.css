@@ -8,7 +8,10 @@ body { background:#fff; color:var(--ink); }
 .threshold { background:var(--zone-t); border-left:3px solid var(--zone); } .threshold .box-label { color:var(--zone); }
 .deeper, .sidebar.bookbox { background:var(--neutral-t); border-left:3px solid #C9CED6; } .deeper .box-label { color:var(--ink2); }
 .goals { border:1px solid #E4E7EB; } .exercises { border-top:1px solid #C9CED6; border-radius:0; padding-left:0; }
-.keyidea { background:none; padding:0.2rem 0 0.2rem 1rem; border-left:4px solid var(--jev); font-family:Inter, sans-serif; font-weight:700; font-size:1.15em; }
+.keyidea, .keepthese { background:#C9E0D2; border-left:6px solid #1E5E42; border-radius:0; break-inside:avoid; }
+.keyidea { font-family:Inter, sans-serif; font-weight:700; font-size:1.12em; line-height:1.4; }
+.keyidea .box-label, .keepthese .box-label { color:#1E5E42; }
+.keepthese { border-top:1px solid #1E5E42; border-right:1px solid #1E5E42; border-bottom:1px solid #1E5E42; font-family:Inter, sans-serif; font-size:0.92em; }
 .bookquote { font-style:italic; font-size:1.12em; padding-left:1.2rem; border-left:none; position:relative; }
 .bookquote::before { content:"\201C"; color:var(--jev); font-size:2.6em; position:absolute; left:-0.2rem; top:-0.7rem; font-style:normal; }
 .bookquote .quote-by { font-style:normal; font-family:Inter, sans-serif; font-size:0.72em; color:var(--ink2); margin-top:0.4rem; }

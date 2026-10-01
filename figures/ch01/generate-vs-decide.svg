@@ -26,22 +26,22 @@ z
    <g id="patch_2">
     <path d="M 102.080391 117.36 
 Q 114.480771 117.36 125.922287 117.36 
-" clip-path="url(#pc4a2923fd9)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#p0c7133181f)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
     <path d="M 121.422287 114.61 
 L 125.922287 117.36 
 L 121.422287 120.11 
 z
-" clip-path="url(#pc4a2923fd9)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#p0c7133181f)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
    </g>
    <g id="patch_3">
     <path d="M 169.758369 117.36 
 Q 179.639031 117.36 188.560829 117.36 
-" clip-path="url(#pc4a2923fd9)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#p0c7133181f)" style="fill: none; stroke: #4b5563; stroke-linecap: round"/>
     <path d="M 184.060829 114.61 
 L 188.560829 117.36 
 L 184.060829 120.11 
 z
-" clip-path="url(#pc4a2923fd9)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
+" clip-path="url(#p0c7133181f)" style="fill: #4b5563; stroke: #4b5563; stroke-linecap: round"/>
    </g>
    <g id="patch_4">
     <path d="M 5.76 49.68 
@@ -54,7 +54,7 @@ Q 2.88 28.08 2.88 30.96
 L 2.88 46.8 
 Q 2.88 49.68 5.76 49.68 
 z
-" clip-path="url(#pc4a2923fd9)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p0c7133181f)" style="fill: #f3d2b6; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 39.24 49.68 
@@ -67,7 +67,7 @@ Q 36.36 28.08 36.36 30.96
 L 36.36 46.8 
 Q 36.36 49.68 39.24 49.68 
 z
-" clip-path="url(#pc4a2923fd9)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p0c7133181f)" style="fill: #f3d2b6; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_6">
     <path d="M 88.92 49.68 
@@ -80,7 +80,7 @@ Q 86.04 28.08 86.04 30.96
 L 86.04 46.8 
 Q 86.04 49.68 88.92 49.68 
 z
-" clip-path="url(#pc4a2923fd9)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p0c7133181f)" style="fill: #f3d2b6; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_7">
     <path d="M 117 49.68 
@@ -93,7 +93,7 @@ Q 114.12 28.08 114.12 30.96
 L 114.12 46.8 
 Q 114.12 49.68 117 49.68 
 z
-" clip-path="url(#pc4a2923fd9)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p0c7133181f)" style="fill: #f3d2b6; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_8">
     <path d="M 161.28 49.68 
@@ -106,7 +106,7 @@ Q 158.4 28.08 158.4 30.96
 L 158.4 46.8 
 Q 158.4 49.68 161.28 49.68 
 z
-" clip-path="url(#pc4a2923fd9)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p0c7133181f)" style="fill: #f3d2b6; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_9">
     <path d="M 216.36 49.68 
@@ -119,12 +119,12 @@ Q 213.48 28.08 213.48 30.96
 L 213.48 46.8 
 Q 213.48 49.68 216.36 49.68 
 z
-" clip-path="url(#pc4a2923fd9)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p0c7133181f)" style="fill: #f3d2b6; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="line2d_1">
     <path d="M 2.88 72.72 
 L 341.28 72.72 
-" clip-path="url(#pc4a2923fd9)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.8; stroke-linecap: round"/>
+" clip-path="url(#p0c7133181f)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.8; stroke-linecap: round"/>
    </g>
    <g id="patch_10">
     <path d="M 7.2 137.52 
@@ -137,7 +137,7 @@ Q 2.88 97.2 2.88 101.52
 L 2.88 133.2 
 Q 2.88 137.52 7.2 137.52 
 z
-" clip-path="url(#pc4a2923fd9)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p0c7133181f)" style="fill: #cbdaef; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_11">
     <path d="M 134.64 137.52 
@@ -150,7 +150,7 @@ Q 130.32 97.2 130.32 101.52
 L 130.32 133.2 
 Q 130.32 137.52 134.64 137.52 
 z
-" clip-path="url(#pc4a2923fd9)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p0c7133181f)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_12">
     <path d="M 255.6 107.28 
@@ -163,7 +163,7 @@ Q 253.44 101.16 253.44 103.32
 L 253.44 105.12 
 Q 253.44 107.28 255.6 107.28 
 z
-" clip-path="url(#pc4a2923fd9)" style="fill: #e2f2e9"/>
+" clip-path="url(#p0c7133181f)" style="fill: #c4e1d0"/>
    </g>
    <g id="patch_13">
     <path d="M 255.6 120.24 
@@ -176,7 +176,7 @@ Q 253.44 114.12 253.44 116.28
 L 253.44 118.08 
 Q 253.44 120.24 255.6 120.24 
 z
-" clip-path="url(#pc4a2923fd9)" style="fill: #e2f2e9"/>
+" clip-path="url(#p0c7133181f)" style="fill: #c4e1d0"/>
    </g>
    <g id="patch_14">
     <path d="M 255.6 133.2 
@@ -189,63 +189,63 @@ Q 253.44 127.08 253.44 129.24
 L 253.44 131.04 
 Q 253.44 133.2 255.6 133.2 
 z
-" clip-path="url(#pc4a2923fd9)" style="fill: #e2f2e9"/>
+" clip-path="url(#p0c7133181f)" style="fill: #c4e1d0"/>
    </g>
    <g id="text_1">
-    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="2.88" y="14.268937" transform="rotate(-0 2.88 14.268937)">An LLM writes its answer, one piece at a time</text>
+    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: start" x="2.88" y="14.268937" transform="rotate(-0 2.88 14.268937)">An LLM writes its answer, one piece at a time</text>
    </g>
    <g id="text_2">
-    <text style="font-weight: 500; font-size: 6.8px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="16.74" y="41.331187" transform="rotate(-0 16.74 41.331187)">The</text>
+    <text style="font-weight: 500; font-size: 6.8px; font-family: 'JetBrains Mono'; text-anchor: middle" x="16.74" y="41.331187" transform="rotate(-0 16.74 41.331187)">The</text>
    </g>
    <g id="text_3">
-    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #8a919c" x="16.74" y="58.293281" transform="rotate(-0 16.74 58.293281)">step 1</text>
+    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #6b7280" x="16.74" y="58.293281" transform="rotate(-0 16.74 58.293281)">step 1</text>
    </g>
    <g id="text_4">
-    <text style="font-weight: 500; font-size: 6.8px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="58.32" y="41.504906" transform="rotate(-0 58.32 41.504906)">ticket</text>
+    <text style="font-weight: 500; font-size: 6.8px; font-family: 'JetBrains Mono'; text-anchor: middle" x="58.32" y="41.504906" transform="rotate(-0 58.32 41.504906)">ticket</text>
    </g>
    <g id="text_5">
-    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #8a919c" x="58.32" y="58.319859" transform="rotate(-0 58.32 58.319859)">step 2</text>
+    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #6b7280" x="58.32" y="58.319859" transform="rotate(-0 58.32 58.319859)">step 2</text>
    </g>
    <g id="text_6">
-    <text style="font-weight: 500; font-size: 6.8px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="97.2" y="41.508094" transform="rotate(-0 97.2 41.508094)">is</text>
+    <text style="font-weight: 500; font-size: 6.8px; font-family: 'JetBrains Mono'; text-anchor: middle" x="97.2" y="41.508094" transform="rotate(-0 97.2 41.508094)">is</text>
    </g>
    <g id="text_7">
-    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #8a919c" x="97.2" y="58.319859" transform="rotate(-0 97.2 58.319859)">step 3</text>
+    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #6b7280" x="97.2" y="58.319859" transform="rotate(-0 97.2 58.319859)">step 3</text>
    </g>
    <g id="text_8">
-    <text style="font-weight: 500; font-size: 6.8px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="133.38" y="41.328" transform="rotate(-0 133.38 41.328)">about</text>
+    <text style="font-weight: 500; font-size: 6.8px; font-family: 'JetBrains Mono'; text-anchor: middle" x="133.38" y="41.328" transform="rotate(-0 133.38 41.328)">about</text>
    </g>
    <g id="text_9">
-    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #8a919c" x="133.38" y="58.293281" transform="rotate(-0 133.38 58.293281)">step 4</text>
+    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #6b7280" x="133.38" y="58.293281" transform="rotate(-0 133.38 58.293281)">step 4</text>
    </g>
    <g id="text_10">
-    <text style="font-weight: 500; font-size: 6.8px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="183.06" y="40.926906" transform="rotate(-0 183.06 40.926906)">billing</text>
+    <text style="font-weight: 500; font-size: 6.8px; font-family: 'JetBrains Mono'; text-anchor: middle" x="183.06" y="40.926906" transform="rotate(-0 183.06 40.926906)">billing</text>
    </g>
    <g id="text_11">
-    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #8a919c" x="183.06" y="58.293281" transform="rotate(-0 183.06 58.293281)">step 5</text>
+    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #6b7280" x="183.06" y="58.293281" transform="rotate(-0 183.06 58.293281)">step 5</text>
    </g>
    <g id="text_12">
-    <text style="font-weight: 500; font-size: 6.8px; font-family: 'JetBrains Mono'; text-anchor: middle; fill: #1f2430" x="221.94" y="39.413906" transform="rotate(-0 221.94 39.413906)">.</text>
+    <text style="font-weight: 500; font-size: 6.8px; font-family: 'JetBrains Mono'; text-anchor: middle" x="221.94" y="39.413906" transform="rotate(-0 221.94 39.413906)">.</text>
    </g>
    <g id="text_13">
-    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #8a919c" x="221.94" y="58.319859" transform="rotate(-0 221.94 58.319859)">step 6</text>
+    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: middle; fill: #6b7280" x="221.94" y="58.319859" transform="rotate(-0 221.94 58.319859)">step 6</text>
    </g>
    <g id="text_14">
     <text style="font-size: 6.2px; font-family: 'Inter'; fill: #4b5563" transform="translate(239.76 35.614404)">…then your code has to</text>
     <text style="font-size: 6.2px; font-family: 'Inter'; fill: #4b5563" transform="translate(239.76 45.972158)">read the sentence</text>
    </g>
    <g id="text_15">
-    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="2.88" y="84.814875" transform="rotate(-0 2.88 84.814875)">Jev returns a typed answer with probabilities, in one pass</text>
+    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: start" x="2.88" y="84.814875" transform="rotate(-0 2.88 84.814875)">Jev returns a typed answer with probabilities, in one pass</text>
    </g>
    <g id="text_16">
-    <text style="font-weight: 500; font-size: 6.4px; font-family: 'Inter'; fill: #1f2430" transform="translate(33.4125 114.906156)">ticket text +</text>
-    <text style="font-weight: 500; font-size: 6.4px; font-family: 'Inter'; fill: #1f2430" transform="translate(32.471 123.968844)">the question</text>
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'Inter'" transform="translate(33.4125 114.906156)">ticket text +</text>
+    <text style="font-weight: 500; font-size: 6.4px; font-family: 'Inter'" transform="translate(32.471 123.968844)">the question</text>
    </g>
    <g id="text_17">
-    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="149.04" y="119.940187" transform="rotate(-0 149.04 119.940187)">Jev</text>
+    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: middle" x="149.04" y="119.940187" transform="rotate(-0 149.04 119.940187)">Jev</text>
    </g>
    <g id="text_18">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="195.84" y="105.890797" transform="rotate(-0 195.84 105.890797)">billing</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="195.84" y="105.890797" transform="rotate(-0 195.84 105.890797)">billing</text>
    </g>
    <g id="patch_15">
     <path d="M 255.6 107.28 
@@ -258,13 +258,13 @@ Q 253.44 101.16 253.44 103.32
 L 253.44 105.12 
 Q 253.44 107.28 255.6 107.28 
 z
-" clip-path="url(#pc4a2923fd9)" style="fill: #3b9c6e"/>
+" clip-path="url(#p0c7133181f)" style="fill: #3b9c6e"/>
    </g>
    <g id="text_19">
     <text style="font-size: 6px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #4b5563" x="314.64" y="106.38" transform="rotate(-0 314.64 106.38)">0.97</text>
    </g>
    <g id="text_20">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="195.84" y="119.377797" transform="rotate(-0 195.84 119.377797)">technical</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="195.84" y="119.377797" transform="rotate(-0 195.84 119.377797)">technical</text>
    </g>
    <g id="patch_16">
     <path d="M 255.6 120.24 
@@ -277,13 +277,13 @@ Q 253.44 114.12 253.44 116.28
 L 253.44 118.08 
 Q 253.44 120.24 255.6 120.24 
 z
-" clip-path="url(#pc4a2923fd9)" style="fill: #3b9c6e"/>
+" clip-path="url(#p0c7133181f)" style="fill: #3b9c6e"/>
    </g>
    <g id="text_21">
     <text style="font-size: 6px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #4b5563" x="314.64" y="119.34" transform="rotate(-0 314.64 119.34)">0.02</text>
    </g>
    <g id="text_22">
-    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #1f2430" x="195.84" y="132.192" transform="rotate(-0 195.84 132.192)">other</text>
+    <text style="font-size: 6.2px; font-family: 'JetBrains Mono'; text-anchor: start" x="195.84" y="132.192" transform="rotate(-0 195.84 132.192)">other</text>
    </g>
    <g id="patch_17">
     <path d="M 255.6 133.2 
@@ -296,18 +296,18 @@ Q 253.44 127.08 253.44 129.24
 L 253.44 131.04 
 Q 253.44 133.2 255.6 133.2 
 z
-" clip-path="url(#pc4a2923fd9)" style="fill: #3b9c6e"/>
+" clip-path="url(#p0c7133181f)" style="fill: #3b9c6e"/>
    </g>
    <g id="text_23">
     <text style="font-size: 6px; font-family: 'JetBrains Mono'; text-anchor: start; fill: #4b5563" x="314.64" y="132.3" transform="rotate(-0 314.64 132.3)">0.01</text>
    </g>
    <g id="text_24">
-    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: end; fill: #8a919c" x="341.28" y="141.027662" transform="rotate(-0 341.28 141.027662)">illustrative numbers</text>
+    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: end; fill: #6b7280" x="341.28" y="141.027662" transform="rotate(-0 341.28 141.027662)">illustrative numbers</text>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="pc4a2923fd9">
+  <clipPath id="p0c7133181f">
    <rect x="2.88" y="2.88" width="338.4" height="140.4"/>
   </clipPath>
  </defs>

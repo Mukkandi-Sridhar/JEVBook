@@ -33,7 +33,7 @@ Look at what a neuron does to an alert. It multiplies each clue by a weight, add
 
 That's a real limit. Imagine behaviour that's suspicious when it's *unusual in any direction*: far too much activity or far too little, far too early or far too late. Normal behaviour sits in the middle. No straight line can separate the middle from the edges.
 
-![A toy problem. Blue dots are normal activity; red dots surround them on every side. One neuron (left) can only draw a straight line through it. With a hidden layer of three neurons (middle) the boundary becomes a triangle; with twelve (right), close to a circle.](/figures/ch06/line-limit.pdf){#fig-line-limit}
+![A toy problem. Blue dots are normal activity; red crosses surround them on every side. One neuron (left) can only draw a straight line through it. With a hidden layer of three neurons (middle) the boundary becomes a triangle; with twelve (right), close to a circle.](/figures/ch06/line-limit.pdf){#fig-line-limit}
 
 The fix is to send the clues to a few neurons first. Each one draws its own line, and an output neuron combines *their* answers. Three straight edges make a triangle. Twelve make something close to a circle (@fig-line-limit), and the log loss drops from {{< num ch06 toy_lr f2 >}} to {{< num ch06 toy_net12 f2 >}}. The layers in between are **hidden**, and a network with several of them is **deep**. That's all "deep" means.
 
@@ -41,9 +41,7 @@ One detail makes it work. A weighted sum of weighted sums is still just a weight
 
 Training works the same way as before: roll downhill on log loss. The only new problem is finding the slope for a weight that sits several layers deep. The answer is called **backpropagation**, and it's easiest to picture as sharing out blame [@rumelhart1986]. The error at the output is passed back through the network. Each layer passes blame to the layer before it, in proportion to how much each weight added to the error.
 
-::: {.keyidea}
 Weighted sums draw lines. Hinges bend them. Layers combine the bends.
-:::
 
 Depth matters in practice for a simple reason. On photos, the first layers of a trained network learn to find edges. Later layers find textures and shapes, and the last ones find whole objects [@lecun2015]. Nobody wrote a rule for "edge". A deep network takes raw input, such as pixels or characters, and *learns its own clues*.
 

@@ -77,7 +77,7 @@ L 142.969285 60.608175
 L 142.969285 28.834693 
 L 60.421876 28.834693 
 z
-" clip-path="url(#p37d0abcb21)" style="fill: #b7a6e0"/>
+" clip-path="url(#p57ac1ec695)" style="fill: #b7a6e0"/>
    </g>
    <g id="patch_4">
     <path d="M 146.408761 60.608175 
@@ -85,7 +85,7 @@ L 228.956171 60.608175
 L 228.956171 28.834693 
 L 146.408761 28.834693 
 z
-" clip-path="url(#p37d0abcb21)" style="fill: #f1f2f4"/>
+" clip-path="url(#p57ac1ec695)" style="fill: #d5d8dd"/>
    </g>
    <g id="patch_5">
     <path d="M 232.395646 60.608175 
@@ -93,7 +93,7 @@ L 314.943056 60.608175
 L 314.943056 28.834693 
 L 232.395646 28.834693 
 z
-" clip-path="url(#p37d0abcb21)" style="fill: #f1f2f4"/>
+" clip-path="url(#p57ac1ec695)" style="fill: #d5d8dd"/>
    </g>
    <g id="patch_6">
     <path d="M 60.421876 95.144568 
@@ -101,7 +101,7 @@ L 142.969285 95.144568
 L 142.969285 63.371086 
 L 60.421876 63.371086 
 z
-" clip-path="url(#p37d0abcb21)" style="fill: #c9971c"/>
+" clip-path="url(#p57ac1ec695)" style="fill: #c9971c"/>
    </g>
    <g id="patch_7">
     <path d="M 146.408761 95.144568 
@@ -109,7 +109,7 @@ L 228.956171 95.144568
 L 228.956171 63.371086 
 L 146.408761 63.371086 
 z
-" clip-path="url(#p37d0abcb21)" style="fill: #8468c9"/>
+" clip-path="url(#p57ac1ec695)" style="fill: #8468c9"/>
    </g>
    <g id="patch_8">
     <path d="M 232.395646 95.144568 
@@ -117,7 +117,7 @@ L 314.943056 95.144568
 L 314.943056 63.371086 
 L 232.395646 63.371086 
 z
-" clip-path="url(#p37d0abcb21)" style="fill: #f1f2f4"/>
+" clip-path="url(#p57ac1ec695)" style="fill: #d5d8dd"/>
    </g>
    <g id="patch_9">
     <path d="M 60.421876 129.680962 
@@ -125,7 +125,7 @@ L 142.969285 129.680962
 L 142.969285 97.90748 
 L 60.421876 97.90748 
 z
-" clip-path="url(#p37d0abcb21)" style="fill: #f1f2f4"/>
+" clip-path="url(#p57ac1ec695)" style="fill: #d5d8dd"/>
    </g>
    <g id="patch_10">
     <path d="M 146.408761 129.680962 
@@ -133,7 +133,7 @@ L 228.956171 129.680962
 L 228.956171 97.90748 
 L 146.408761 97.90748 
 z
-" clip-path="url(#p37d0abcb21)" style="fill: #f1f2f4"/>
+" clip-path="url(#p57ac1ec695)" style="fill: #d5d8dd"/>
    </g>
    <g id="patch_11">
     <path d="M 232.395646 129.680962 
@@ -141,47 +141,47 @@ L 314.943056 129.680962
 L 314.943056 97.90748 
 L 232.395646 97.90748 
 z
-" clip-path="url(#p37d0abcb21)" style="fill: #4b2c8f"/>
+" clip-path="url(#p57ac1ec695)" style="fill: #4b2c8f"/>
    </g>
    <g id="patch_12">
     <path d="M 56.122531 131.407781 
 L 56.122531 26.071781 
-" style="fill: none; stroke: #c9ced6; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+" style="fill: none; stroke: #9aa1ab; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="patch_13">
     <path d="M 56.122531 131.407781 
 L 318.382531 131.407781 
-" style="fill: none; stroke: #c9ced6; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+" style="fill: none; stroke: #9aa1ab; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="text_7">
-    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="101.69558" y="47.049559" transform="rotate(-0 101.69558 47.049559)">399.6</text>
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: middle" x="101.69558" y="47.049559" transform="rotate(-0 101.69558 47.049559)">399.6</text>
    </g>
    <g id="text_8">
-    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="187.682466" y="47.049559" transform="rotate(-0 187.682466 47.049559)">0.0</text>
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: middle" x="187.682466" y="47.049559" transform="rotate(-0 187.682466 47.049559)">0.0</text>
    </g>
    <g id="text_9">
-    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="273.669351" y="47.049559" transform="rotate(-0 273.669351 47.049559)">0.0</text>
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: middle" x="273.669351" y="47.049559" transform="rotate(-0 273.669351 47.049559)">0.0</text>
    </g>
    <g id="text_10">
-    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="101.69558" y="81.585952" transform="rotate(-0 101.69558 81.585952)">29.4</text>
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: middle" x="101.69558" y="81.585952" transform="rotate(-0 101.69558 81.585952)">29.4</text>
    </g>
    <g id="text_11">
     <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="187.682466" y="81.585952" transform="rotate(-0 187.682466 81.585952)">245.4</text>
    </g>
    <g id="text_12">
-    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="273.669351" y="81.585952" transform="rotate(-0 273.669351 81.585952)">0.0</text>
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: middle" x="273.669351" y="81.585952" transform="rotate(-0 273.669351 81.585952)">0.0</text>
    </g>
    <g id="text_13">
-    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="101.69558" y="116.122346" transform="rotate(-0 101.69558 116.122346)">0.0</text>
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: middle" x="101.69558" y="116.122346" transform="rotate(-0 101.69558 116.122346)">0.0</text>
    </g>
    <g id="text_14">
-    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="187.682466" y="116.122346" transform="rotate(-0 187.682466 116.122346)">0.0</text>
+    <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: middle" x="187.682466" y="116.122346" transform="rotate(-0 187.682466 116.122346)">0.0</text>
    </g>
    <g id="text_15">
     <text style="font-size: 6.4px; font-family: 'Inter'; text-anchor: middle; fill: #ffffff" x="273.669351" y="116.122346" transform="rotate(-0 273.669351 116.122346)">43.7</text>
    </g>
    <g id="text_16">
-    <text style="font-weight: 600; font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="56.122531" y="18.071781" transform="rotate(-0 56.122531 18.071781)">alerts per day, current version against the candidate in shadow</text>
+    <text style="font-weight: 600; font-size: 6.6px; font-family: 'Inter'; text-anchor: start" x="56.122531" y="18.071781" transform="rotate(-0 56.122531 18.071781)">alerts per day, current version against the candidate in shadow</text>
    </g>
   </g>
   <g id="text_17">
@@ -198,11 +198,11 @@ Q 244.515531 11.055781 245.355531 11.055781
 z
 " style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.5; stroke-linejoin: miter"/>
    </g>
-   <text style="font-weight: 500; font-size: 5.6px; font-family: 'Inter'; text-anchor: end; fill: #8a919c" x="350.530531" y="8.305" transform="rotate(-0 350.530531 8.305)">SYNTHETIC · not measured on real Jev</text>
+   <text style="font-weight: 500; font-size: 5.6px; font-family: 'Inter'; text-anchor: end; fill: #6b7280" x="350.530531" y="8.305" transform="rotate(-0 350.530531 8.305)">SYNTHETIC · not measured on real Jev</text>
   </g>
  </g>
  <defs>
-  <clipPath id="p37d0abcb21">
+  <clipPath id="p57ac1ec695">
    <rect x="56.122531" y="26.071781" width="262.26" height="105.336"/>
   </clipPath>
  </defs>

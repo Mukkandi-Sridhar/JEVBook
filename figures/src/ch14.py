@@ -80,12 +80,14 @@ def injection_fig():
     f, ax = subplots(width="text", height=2.3)
     clean(ax, "y")
     bins = np.logspace(-4, 0, 30)
-    ax.hist(a, bins=bins, histtype="step", color=C["ink"], lw=1.5, label="real threats, alert text as written")
-    ax.hist(b, bins=bins, histtype="step", color=C["fail"], lw=1.8, label="same threats + one planted sentence")
-    ax.hist(c, bins=bins, histtype="stepfilled", color=C["jev"], alpha=0.25, lw=0,
-            label="planted sentence, but the IT-tool fact taken\nfrom a trusted system instead of the text")
+    # solid outline, dashed outline, dotted fill: the three differ without colour
+    ax.hist(c, bins=bins, histtype="stepfilled", fc=C["jev_t"], ec=C["jev"], lw=0.8, hatch="....", hatchcolor=C["jev"],
+            label="planted sentence, but the IT-tool fact taken\nfrom a trusted system instead of the text (dotted fill)")
+    ax.hist(a, bins=bins, histtype="step", color=C["ink"], lw=1.5, ls="-", label="real threats, alert text as written (solid line)")
+    ax.hist(b, bins=bins, histtype="step", color=C["fail"], lw=1.8, ls=(0, (4, 1.5)),
+            label="same threats + one planted sentence (dashed line)")
     ax.axvline(ACT_LINE, color=C["ink2"], lw=0.8)
-    ax.text(ACT_LINE * 1.1, ax.get_ylim()[1] * 0.45, "\u2190 act line: below it,\n   the alert closes itself", fontsize=6.2, ha="left", va="top")
+    ax.text(ACT_LINE * 1.1, ax.get_ylim()[1] * 0.45, "\u2190 act threshold: below it,\n   the alert closes itself", fontsize=6.2, ha="left", va="top")
     ax.set_xscale("log")
     ax.set_xticks([0.001, 0.01, 0.1, 1])
     ax.set_xticklabels(["0.001", "0.01", "0.1", "1"])
@@ -124,7 +126,7 @@ def weak_retrieval():
     clean(ax, "y")
     ax.hist(rs, bins=30, color=C["data"])
     ax.axvline(0.26, color=C["ink"], lw=0.9)
-    ax.text(0.265, ax.get_ylim()[1] * 0.9, "← left of the line: the “best” policy\n    chunk probably isn’t relevant",
+    ax.text(0.265, ax.get_ylim()[1] * 0.9, "← left of the threshold: the “best” policy\n    chunk probably isn’t relevant",
             fontsize=6.2, ha="left", va="top")
     ax.set_xlabel("similarity of the policy chunk the agent retrieved")
     ax.set_ylabel("alerts")

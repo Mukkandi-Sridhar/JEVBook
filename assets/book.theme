@@ -1,18 +1,18 @@
 {
- "text-color": "#1F2430",
- "background-color": "#F6F7F9",
+ "text-color": "#000000",
+ "background-color": "#D6D9DE",
  "line-number-color": "#8A919C",
  "line-number-background-color": null,
  "text-styles": {
   "Normal": {
-   "text-color": "#1F2430",
+   "text-color": "#000000",
    "background-color": null,
    "bold": false,
    "italic": false,
    "underline": false
   },
   "Other": {
-   "text-color": "#1F2430",
+   "text-color": "#000000",
    "background-color": null,
    "bold": false,
    "italic": false,
@@ -33,7 +33,7 @@
    "underline": false
   },
   "Annotation": {
-   "text-color": "#8A919C",
+   "text-color": "#4B5563",
    "background-color": null,
    "bold": false,
    "italic": true,
@@ -56,12 +56,12 @@
   "ControlFlow": {
    "text-color": "#8A3B8A",
    "background-color": null,
-   "bold": false,
+   "bold": true,
    "italic": false,
    "underline": false
   },
   "Operator": {
-   "text-color": "#1F2430",
+   "text-color": "#000000",
    "background-color": null,
    "bold": false,
    "italic": false,
@@ -89,7 +89,7 @@
    "underline": false
   },
   "Variable": {
-   "text-color": "#1F2430",
+   "text-color": "#000000",
    "background-color": null,
    "bold": false,
    "italic": false,
@@ -110,14 +110,14 @@
    "underline": false
   },
   "Preprocessor": {
-   "text-color": "#1F2430",
+   "text-color": "#000000",
    "background-color": null,
    "bold": false,
    "italic": false,
    "underline": false
   },
   "Information": {
-   "text-color": "#1F2430",
+   "text-color": "#000000",
    "background-color": null,
    "bold": false,
    "italic": false,
@@ -131,14 +131,14 @@
    "underline": false
   },
   "Warning": {
-   "text-color": "#1F2430",
+   "text-color": "#000000",
    "background-color": null,
    "bold": false,
    "italic": false,
    "underline": false
   },
   "Documentation": {
-   "text-color": "#8A919C",
+   "text-color": "#4B5563",
    "background-color": null,
    "bold": false,
    "italic": true,
@@ -147,7 +147,7 @@
   "Import": {
    "text-color": "#8A3B8A",
    "background-color": null,
-   "bold": false,
+   "bold": true,
    "italic": false,
    "underline": false
   },
@@ -161,7 +161,7 @@
   "DataType": {
    "text-color": "#6B4FB3",
    "background-color": null,
-   "bold": false,
+   "bold": true,
    "italic": false,
    "underline": false
   },
@@ -173,14 +173,14 @@
    "underline": false
   },
   "Comment": {
-   "text-color": "#8A919C",
+   "text-color": "#4B5563",
    "background-color": null,
    "bold": false,
    "italic": true,
    "underline": false
   },
   "CommentVar": {
-   "text-color": "#8A919C",
+   "text-color": "#4B5563",
    "background-color": null,
    "bold": false,
    "italic": true,
@@ -210,12 +210,12 @@
   "Keyword": {
    "text-color": "#8A3B8A",
    "background-color": null,
-   "bold": false,
+   "bold": true,
    "italic": false,
    "underline": false
   },
   "RegionMarker": {
-   "text-color": "#1F2430",
+   "text-color": "#000000",
    "background-color": null,
    "bold": false,
    "italic": false,

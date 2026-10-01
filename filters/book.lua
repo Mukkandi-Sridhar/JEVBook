@@ -5,7 +5,9 @@
 --   ::: {.breaks}                ... :::   Where this breaks
 --   ::: {.threshold}             ... :::   Set the threshold
 --   ::: {.deeper}                ... :::   Going deeper (optional maths)
---   ::: {.keyidea}               ... :::   One-line reveal
+--   ::: {.keyidea}               ... :::   Key idea: one sentence to remember (listed again in "Keep these" and the appendix)
+--   ::: {.keyideaslist}          ... :::   The Key ideas appendix (back/key-ideas.qmd, made by tools/make_key_ideas.py)
+--   [ ]{.kref ref="key-ch05-2"}             Page number (print) or link (ebook) for a key idea, used in that appendix
 --   ::: {.goals}                 ... :::   By the end of this chapter
 --   ::: {.exercises}             ... :::   Exercises
 --   ::: {.nexthook}              ... :::   Closing hook to the next chapter
@@ -28,11 +30,13 @@ local ENVS = {
   tryit = "tryit", breaks = "breaks", threshold = "threshold", deeper = "deeper",
   keyidea = "keyidea", goals = "goals", exercises = "exercises", nexthook = "nexthook",
   wide = "widefig", summary = "summarypage", partintro = "partintro", indexlist = "indexlist",
+  keepthese = "keepthese", keyideaslist = "keyideaslist",
 }
 
 local LABELS = {
   tryit = "Try it", breaks = "Where this breaks", threshold = "Set the threshold",
   deeper = "Going deeper", goals = "By the end of this chapter", exercises = "Exercises",
+  keyidea = "Key idea", keepthese = "Keep these",
 }
 
 local function latex(s) return pandoc.RawBlock("latex", s) end
@@ -140,7 +144,8 @@ function Div(div)
       return blocks
     end
     local keep = cls == "deeper" and "\\needspace{7\\baselineskip}" or ""
-    blocks:insert(latex(keep .. "\\begin{" .. ENVS[cls] .. "}"))
+    local label = (div.identifier ~= "" and cls == "keyidea") and ("\\phantomsection\\label{" .. div.identifier .. "}") or ""
+    blocks:insert(latex(keep .. "\\begin{" .. ENVS[cls] .. "}" .. label))
     blocks:extend(div.content)
     blocks:insert(latex("\\end{" .. ENVS[cls] .. "}"))
     return blocks
@@ -157,6 +162,18 @@ function Div(div)
   end
   div.classes:insert("bookbox")
   return div
+end
+
+-- Key idea references in the appendix: a page number in print, a link in the ebook, nothing on the web (where
+-- each chapter is its own page).
+function Span(el)
+  local kref = false
+  for _, c in ipairs(el.classes) do if c == "kref" then kref = true end end
+  if not kref then return nil end
+  local ref = el.attributes["ref"] or ""
+  if is_latex then return latexi("\\keypage{" .. ref .. "}") end
+  if is_epub then return pandoc.Link({pandoc.Str("\u{2192}")}, "#" .. ref, "", pandoc.Attr("", {"kref"})) end
+  return {}
 end
 
 -- Chapters open with their title only: no progress map (removed for a cleaner print page).
@@ -215,7 +232,11 @@ end
 local function index_blocks(blocks, st)
   for i = 1, #blocks do
     local b = blocks[i]
-    if b.t == "Header" and b.level == 1 then
+    -- the "Keep these" list repeats the chapter's key ideas; it mustn't stretch a term's page range
+    if b.t == "RawBlock" and b.text:find("\\begin{keepthese}", 1, true) then st.skip = true
+    elseif b.t == "RawBlock" and b.text:find("\\end{keepthese}", 1, true) then st.skip = false
+    elseif st.skip then -- inside "Keep these"
+    elseif b.t == "Header" and b.level == 1 then
       local id = b.identifier or ""
       local n = id:match("^sec%-ch(%d+)")
       if n then st.chapter, st.seen, st.para = tonumber(n), {}, 0 else st.chapter = nil end
@@ -277,3 +298,53 @@ function Pandoc(doc)
   doc.blocks = index_blocks(doc.blocks, {terms = terms, chapter = nil, seen = {}, span = span, pass = 2, para = 0})
   return doc
 end
+
+-- ---------------------------------------------------------------- key ideas
+-- Runs before everything else. Each ::: {.keyidea} in a chapter gets the id key-chNN-K (K counts within the chapter,
+-- in order; tools/make_key_ideas.py numbers them the same way). Just before the chapter's exercises, a "Keep these"
+-- box repeats the chapter's key ideas as a list.
+local function has_class(el, c)
+  for _, x in ipairs(el.classes) do if x == c then return true end end
+  return false
+end
+
+local function key_blocks(blocks, st)
+  local out = pandoc.List({})
+  for _, b in ipairs(blocks) do
+    if b.t == "Header" and b.level == 1 then
+      local n = (b.identifier or ""):match("^sec%-ch(%d+)")
+      st.chapter, st.keys = n and tonumber(n) or nil, {}
+      out:insert(b)
+    elseif b.t == "Div" and has_class(b, "keyidea") and st.chapter then
+      st.keys[#st.keys + 1] = b.content
+      b.identifier = string.format("key-ch%02d-%d", st.chapter, #st.keys)
+      out:insert(b)
+    elseif b.t == "Div" and has_class(b, "exercises") and st.chapter and #st.keys > 0 then
+      local items = {}
+      for _, k in ipairs(st.keys) do
+        local inl = pandoc.List({})
+        for _, kb in ipairs(k) do if kb.content then inl:extend(kb.content) end end
+        items[#items + 1] = {pandoc.Plain(inl)}
+      end
+      out:insert(pandoc.Div({pandoc.BulletList(items)}, pandoc.Attr("", {"keepthese"})))
+      st.keys = {}
+      out:insert(b)
+    elseif b.t == "Div" then
+      b.content = key_blocks(b.content, st)
+      out:insert(b)
+    else
+      out:insert(b)
+    end
+  end
+  return out
+end
+
+local function key_ideas(doc)
+  doc.blocks = key_blocks(doc.blocks, {chapter = nil, keys = {}})
+  return doc
+end
+
+return {
+  {Pandoc = key_ideas},
+  {Image = Image, Para = Para, Inlines = Inlines, Div = Div, Span = Span, Code = Code, Pandoc = Pandoc},
+}

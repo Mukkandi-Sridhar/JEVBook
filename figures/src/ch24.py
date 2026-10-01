@@ -14,6 +14,9 @@ CH = "ch24"
 PCT = FuncFormatter(lambda v, _: f"{v:.0%}")
 N = 700
 KIND_COL = dict(observe=C["data"], decide=C["jev"], generate=C["llm"], act=C["ink2"])
+# each kind of step also has its own pattern, so the bars read in black and white
+KIND_HATCH = dict(observe="", decide="////", generate="....", act="xxxx")
+KIND_NAME = dict(observe="observe (plain)", decide="decide (striped)", generate="generate (dotted)", act="act (crossed)")
 AGENTS = {"v1": dict(), "v2": dict(always=("threat_intel",)),
           "llm": dict(always=("threat_intel",), decider="llm")}
 
@@ -108,7 +111,8 @@ def trace():
         clean(ax, "x")
         t0 = 0.0
         for s in out[name][i].steps:
-            ax.barh(0, s.latency_s, left=t0, color=KIND_COL[s.kind], height=0.55, edgecolor="white", lw=1)
+            ax.barh(0, s.latency_s, left=t0, color=KIND_COL[s.kind], height=0.55, edgecolor="white", lw=1,
+                    hatch=KIND_HATCH[s.kind] or None)
             t0 += s.latency_s
         ax.text(t0 + 0.15, 0, f"{t0:.1f} s", va="center", fontsize=6.3)
         ax.set_yticks([0])
@@ -116,7 +120,7 @@ def trace():
         ax.set_ylim(-0.5, 0.5)
     axes[1].set_xlabel("seconds, one alert, step by step")
     for k, col in KIND_COL.items():
-        axes[0].barh(0, 0, color=col, label=k)
+        axes[0].barh(0, 0, color=col, ec="white", hatch=KIND_HATCH[k] or None, label=KIND_NAME[k])
     axes[0].legend(loc="upper left", ncol=4, fontsize=5.8, frameon=False, bbox_to_anchor=(0, 1.5))
     synthetic_tag(f, "SIMULATED TIMINGS · LLM illustrative · Jev mock within vendor range")
     return f
@@ -206,9 +210,10 @@ def labour():
         left = 0.0
         for k in ("observe", "decide", "generate", "act"):
             v = sum(s.latency_s for s in steps if s.kind == k) / tot
-            ax.barh(row, v, left=left, color=KIND_COL[k], height=0.55, edgecolor="white", lw=1)
+            ax.barh(row, v, left=left, color=KIND_COL[k], height=0.55, edgecolor="white", lw=1, hatch=KIND_HATCH[k] or None)
             if v > 0.07:
-                ax.text(left + v / 2, row, f"{k}\n{v:.0%}", ha="center", va="center", fontsize=5.6, color="white")
+                ax.text(left + v / 2, row, f"{k}\n{v:.0%}", ha="center", va="center", fontsize=5.6, color="white",
+                        bbox=dict(boxstyle="square,pad=0.15", fc=KIND_COL[k], ec="none"))
             left += v
     ax.set_yticks([0, 1])
     ax.set_yticklabels(["all-LLM", "hybrid"], fontsize=6.4)

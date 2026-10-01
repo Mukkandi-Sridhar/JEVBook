@@ -36,7 +36,7 @@ z
      <g id="line2d_1">
       <path d="M 76.41425 124.999781 
 L 76.41425 25.207781 
-" clip-path="url(#p946953f43d)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p9399582631)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_2"/>
      <g id="text_1">
@@ -47,7 +47,7 @@ L 76.41425 25.207781
      <g id="line2d_3">
       <path d="M 123.540935 124.999781 
 L 123.540935 25.207781 
-" clip-path="url(#p946953f43d)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p9399582631)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_4"/>
      <g id="text_2">
@@ -58,7 +58,7 @@ L 123.540935 25.207781
      <g id="line2d_5">
       <path d="M 170.667619 124.999781 
 L 170.667619 25.207781 
-" clip-path="url(#p946953f43d)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p9399582631)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_6"/>
      <g id="text_3">
@@ -69,7 +69,7 @@ L 170.667619 25.207781
      <g id="line2d_7">
       <path d="M 217.794304 124.999781 
 L 217.794304 25.207781 
-" clip-path="url(#p946953f43d)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p9399582631)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_8"/>
      <g id="text_4">
@@ -80,7 +80,7 @@ L 217.794304 25.207781
      <g id="line2d_9">
       <path d="M 264.920989 124.999781 
 L 264.920989 25.207781 
-" clip-path="url(#p946953f43d)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p9399582631)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_10"/>
      <g id="text_5">
@@ -91,7 +91,7 @@ L 264.920989 25.207781
      <g id="line2d_11">
       <path d="M 312.047673 124.999781 
 L 312.047673 25.207781 
-" clip-path="url(#p946953f43d)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p9399582631)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_12"/>
      <g id="text_6">
@@ -134,7 +134,7 @@ L 326.185679 43.798993
 L 326.185679 29.743781 
 L 76.41425 29.743781 
 z
-" clip-path="url(#p946953f43d)" style="fill: #3b9c6e"/>
+" clip-path="url(#p9399582631)" style="fill: #3b9c6e"/>
    </g>
    <g id="patch_4">
     <path d="M 76.41425 69.353922 
@@ -142,7 +142,7 @@ L 201.299964 69.353922
 L 201.299964 55.298711 
 L 76.41425 55.298711 
 z
-" clip-path="url(#p946953f43d)" style="fill: #2f6db5"/>
+" clip-path="url(#p9399582631)" style="fill: #2f6db5"/>
    </g>
    <g id="patch_5">
     <path d="M 76.41425 94.908852 
@@ -150,7 +150,7 @@ L 123.540935 94.908852
 L 123.540935 80.85364 
 L 76.41425 80.85364 
 z
-" clip-path="url(#p946953f43d)" style="fill: #5b6b82"/>
+" clip-path="url(#p9399582631)" style="fill: #5b6b82"/>
    </g>
    <g id="patch_6">
     <path d="M 76.41425 120.463781 
@@ -158,29 +158,29 @@ L 92.280234 120.463781
 L 92.280234 106.40857 
 L 76.41425 106.40857 
 z
-" clip-path="url(#p946953f43d)" style="fill: #e07a1f"/>
+" clip-path="url(#p9399582631)" style="fill: #e07a1f"/>
    </g>
    <g id="patch_7">
     <path d="M 76.41425 124.999781 
 L 76.41425 25.207781 
-" style="fill: none; stroke: #c9ced6; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+" style="fill: none; stroke: #9aa1ab; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="patch_8">
     <path d="M 76.41425 124.999781 
 L 338.67425 124.999781 
-" style="fill: none; stroke: #c9ced6; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+" style="fill: none; stroke: #9aa1ab; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="text_12">
-    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="328.542013" y="39.172266" transform="rotate(-0 328.542013 39.172266)">5.3</text>
+    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start" x="328.542013" y="39.172266" transform="rotate(-0 328.542013 39.172266)">5.3</text>
    </g>
    <g id="text_13">
-    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="203.656299" y="64.727195" transform="rotate(-0 203.656299 64.727195)">2.6</text>
+    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start" x="203.656299" y="64.727195" transform="rotate(-0 203.656299 64.727195)">2.6</text>
    </g>
    <g id="text_14">
-    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="125.897269" y="90.282125" transform="rotate(-0 125.897269 90.282125)">1.0</text>
+    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start" x="125.897269" y="90.282125" transform="rotate(-0 125.897269 90.282125)">1.0</text>
    </g>
    <g id="text_15">
-    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="94.636568" y="115.837055" transform="rotate(-0 94.636568 115.837055)">0.3</text>
+    <text style="font-size: 6.6px; font-family: 'Inter'; text-anchor: start" x="94.636568" y="115.837055" transform="rotate(-0 94.636568 115.837055)">0.3</text>
    </g>
   </g>
   <g id="text_16">
@@ -197,11 +197,11 @@ Q 263.495625 11.055781 264.335625 11.055781
 z
 " style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.5; stroke-linejoin: miter"/>
    </g>
-   <text style="font-weight: 500; font-size: 5.6px; font-family: 'Inter'; text-anchor: end; fill: #8a919c" x="370.82225" y="8.305" transform="rotate(-0 370.82225 8.305)">SYNTHETIC · the book’s teaching agent</text>
+   <text style="font-weight: 500; font-size: 5.6px; font-family: 'Inter'; text-anchor: end; fill: #6b7280" x="370.82225" y="8.305" transform="rotate(-0 370.82225 8.305)">SYNTHETIC · the book’s teaching agent</text>
   </g>
  </g>
  <defs>
-  <clipPath id="p946953f43d">
+  <clipPath id="p9399582631">
    <rect x="76.41425" y="25.207781" width="262.26" height="99.792"/>
   </clipPath>
  </defs>

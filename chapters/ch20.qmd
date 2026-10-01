@@ -98,13 +98,19 @@ The fix is Chapter 3's. Keep back a week, and fit one number per head, a **tempe
 
 ![Reliability of P(attack) on the live week. Left: TinyJev as trained, slightly overconfident. Middle: after dividing by the fitted temperature. Right: the overtrained network before any temperature; its problems are ones no single temperature can fix.](/figures/ch27/calibration.pdf){#fig-calibration}
 
-The temperature brought the noul head's calibration error on the live week from {{< num ch27 raw_ece f3 >}} to {{< num ch27 temp_ece f3 >}} (@fig-calibration). The ranking didn't change at all, because dividing every score by the same number doesn't change their order.
+The temperature brought the noul head's calibration error on the live week from {{< num ch27 raw_ece f3 >}} to {{< num ch27 temp_ece f3 >}} (@fig-calibration). The ranking didn't change at all.
+
+::: {.keyidea}
+Temperature scaling never changes the ranking: dividing every score by one number keeps their order.
+:::
 
 The overtrained network is the warning. As trained, its calibration error on the live week was {{< num ch27 over_ece f3 >}} (the right-hand panel). Its fitted temperature was {{< num ch27 T_over f1 >}}, a huge correction. Afterwards, the error was {{< num ch27 over_ece_temp f3 >}}: no better at all. A temperature can soften an answer. It can't put back what the model lost about the world while it was memorising.
 
 ::: {.keyidea}
-Train with a proper scoring rule, stop before the model memorises, then calibrate on data it has never seen. You need all three.
+Train with a proper scoring rule, stop before the model memorises, then calibrate on data it has never seen.
 :::
+
+You need all three.
 
 ## How good is it?
 

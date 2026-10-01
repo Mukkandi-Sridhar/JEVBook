@@ -48,6 +48,10 @@ There's nothing in @fig-system you haven't built. The alert's fields go to Jev a
 
 You don't just switch a system like this on and hope. You run it in **shadow mode**. It sees every alert and records what it *would* have done, while the analysts work as before. Nothing it decides has any effect.
 
+::: {.keyidea}
+Run a new decision system in shadow mode before you let it act.
+:::
+
 ::: {.tryit lab="ch18"}
 ```{python}
 r = ops.before_after()
@@ -59,9 +63,9 @@ for z in ("act", "review", "escalate"):
 
 At the end of the shadow week, you put what it would have done next to what turned out to be true.
 
-![Shadow mode's verdict, per day of the live week. Each cell counts alerts by what the system would have done and what they turned out to be. The red cell is the one to argue about: real threats it would have closed on its own.](/figures/ch25/shadow.pdf){#fig-shadow-18}
+![Shadow mode's verdict, per day of the live week. Each cell counts alerts by what the system would have done and what they turned out to be. The red cell, outlined in black and striped, is the one to argue about: real threats it would have closed on its own.](/figures/ch25/shadow.pdf){#fig-shadow-18}
 
-The meeting after a shadow week is mostly about one cell, the red one in @fig-shadow-18. It shows about {{< num ch25 new_threats_closed_per_day f1 >}} real threats a day that the system would have auto-closed. That sounds bad, until you compare it with the old queue, which let {{< num ch25 old.threats_unseen_per_day f1 >}} a day age out.
+The meeting after a shadow week is mostly about one cell, the red one outlined in black in @fig-shadow-18. It shows about {{< num ch25 new_threats_closed_per_day f1 >}} real threats a day that the system would have auto-closed. That sounds bad, until you compare it with the old queue, which let {{< num ch25 old.threats_unseen_per_day f1 >}} a day age out.
 
 It's also more than the forecast. Before the week began, the same policy on the three history weeks auto-closed about {{< num ch25 forecast_closed_hist f1 >}} real threats a day. And the calibrated probabilities themselves added up to about {{< num ch25 forecast_closed_expected f1 >}}. The live week was higher, which fits with it being busier than the weeks the thresholds were fitted on. Say this clearly in the meeting: the forecast was in the right range but too hopeful. The daily monitor will tell you whether the gap is chance or a trend.
 
@@ -82,8 +86,10 @@ Same analysts. Same alerts. Same queue. The only change is the order.
 @fig-time-to-human shows all the waiting times. The old way wasn't slow for everything. Rule-flagged threats went to the front of the queue and were seen within minutes. Its problem was the long flat part of the curve. Threats the rules didn't flag waited behind everything else, and many were never reached. After the change, {{< num ch25 new.threats_within_hour_share pct >}} of real threats reach a person within an hour, against {{< num ch25 old.threats_within_hour_share pct >}} before.
 
 ::: {.keyidea}
-A probability doesn't only decide *whether* a person looks. It decides *what they look at first*. Ordering the queue is often the cheapest improvement available.
+A probability decides *what* a person looks at first, not only *whether* they look.
 :::
+
+Ordering the queue is often the cheapest improvement available.
 
 ## The campaign
 
@@ -99,7 +105,13 @@ On day 3, the team responded in two ways. They estimated the base rate for link 
 
 It helped. Over the week, the number of real threats never seen by a person fell from about {{< num ch25 camp_missed_base int >}} to about {{< num ch25 camp_missed_resp int >}} (@fig-campaign). But look at the left panel: with recalibrated probabilities, the queue grew *past* the overtime capacity. Once the link alerts' probabilities were corrected, far more of them deserved a look than even the bigger team could manage.
 
-Here is the uncomfortable truth of the campaign week. Calibration tells you truthfully how much work there is. It can't make the work smaller. When the world gets more dangerous, the decision layer's job is to show that early, and to spend the team's limited time on the likeliest threats. The rest is a question of how many people you have.
+Here is the uncomfortable truth of the campaign week.
+
+::: {.keyidea}
+Calibration tells you truthfully how much work there is. It can't make the work smaller.
+:::
+
+When the world gets more dangerous, the decision layer's job is to show that early, and to spend the team's limited time on the likeliest threats. The rest is a question of how many people you have.
 
 ## After five weeks
 

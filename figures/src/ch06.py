@@ -84,8 +84,9 @@ def regions(ax, predict, X, y, title):
     P = predict(np.c_[GX.ravel(), GY.ravel()]).reshape(GX.shape)
     ax.contourf(GX, GY, P, levels=np.linspace(0, 1, 11), cmap=CMAP)
     ax.contour(GX, GY, P, levels=[0.5], colors=C["ink"], linewidths=1.0)
+    # the two classes differ by shape as well as colour: dots and crosses
     ax.scatter(X[y == 0, 0], X[y == 0, 1], s=4, color=C["data"], lw=0, alpha=0.8)
-    ax.scatter(X[y == 1, 0], X[y == 1, 1], s=5, color=C["fail"], lw=0)
+    ax.scatter(X[y == 1, 0], X[y == 1, 1], s=7, color=C["fail"], marker="x", lw=0.7)
     ax.set_title(title, fontsize=7.2)
     ax.set_xticks([])
     ax.set_yticks([])

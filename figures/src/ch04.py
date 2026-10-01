@@ -53,10 +53,12 @@ def record():
     return d
 
 
-def reliability_ax(ax, p, y, color, label=None, bins=10, strategy="quantile", ms=4):
+def reliability_ax(ax, p, y, color, label=None, bins=10, strategy="quantile", ms=4, ls="-", marker="o"):
     b = cal.reliability(p, y, n_bins=bins, strategy=strategy)
     m = b.count > 0
-    ax.plot(b.mean_pred[m], b.frac_pos[m], color=color, lw=1.5, marker="o", ms=ms, mec="white", mew=0.7, label=label)
+    ax.plot(b.mean_pred[m], b.frac_pos[m], color=color, lw=1.5, ls=ls, marker=marker, ms=ms, mec="white", mew=0.7,
+            label=label)
+    return b.mean_pred[m], b.frac_pos[m]
 
 
 def diag(ax, lim=1):
@@ -147,15 +149,20 @@ def rebalanced():
     f, ax = subplots(width="text", height=2.45)
     clean(ax, "both")
     diag(ax)
-    reliability_ax(ax, d["pb"], y, C["fail"], "trained on 50/50 rebalanced data")
-    reliability_ax(ax, d["fixes"]["Platt"](d["pb"]), y, C["jev"], "same model, after Platt scaling")
+    # solid line with squares, dashed line with circles, and a label on each line (no colour legend)
+    x1, y1 = reliability_ax(ax, d["pb"], y, C["fail"], ls="-", marker="s")
+    x2, y2 = reliability_ax(ax, d["fixes"]["Platt"](d["pb"]), y, C["jev"], ls=(0, (5, 2)), marker="o")
+    k2 = int(np.argmin(abs(x2 - 0.3)))
+    ax.annotate("trained on 50/50 rebalanced data\n(solid line, squares)", (x1[-1], y1[-1]), xytext=(0.6, 0.48),
+                fontsize=6.4, color=C["ink"], va="bottom", arrowprops=dict(arrowstyle="-", color=C["ink2"], lw=0.6))
+    ax.annotate("same model, after Platt scaling\n(dashed line, circles)", (x2[k2], y2[k2]), xytext=(0.05, 0.62),
+                fontsize=6.4, color=C["ink"], va="bottom", arrowprops=dict(arrowstyle="-", color=C["ink2"], lw=0.6))
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
     ax.xaxis.set_major_formatter(PCT)
     ax.yaxis.set_major_formatter(PCT)
     ax.set_xlabel("Predicted P(attack)")
     ax.set_ylabel("Share that were attacks")
-    ax.legend(loc="upper left", fontsize=6.4)
     synthetic_tag(f, "SYNTHETIC DATA · Kestrel Logistics")
     return f
 

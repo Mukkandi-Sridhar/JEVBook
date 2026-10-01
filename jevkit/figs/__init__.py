@@ -5,7 +5,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from .style import C, ZONE, ZONE_T, KIND, setup, fig, subplots, save, synthetic_tag, clean, pct, ROOT, TEXT_W, WIDE_W
+from .style import (C, ZONE, ZONE_T, ZONE_HATCH, KIND, SERIES, HATCH, setup, fig, subplots, save, synthetic_tag, clean, pct,
+                    luma, ink_on, hatch_kw, ROOT, TEXT_W, WIDE_W)
 from . import draw
 from .common import you_are_here, summary_page
 

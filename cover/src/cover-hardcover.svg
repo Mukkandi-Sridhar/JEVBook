@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16.3646in" height="11.4173in" viewBox="0 0 1178.251 822.046">
-<rect x="0.00" y="0.00" width="1178.25" height="822.05" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<svg xmlns="http://www.w3.org/2000/svg" width="16.3975in" height="11.4173in" viewBox="0 0 1180.620 822.046">
+<rect x="0.00" y="0.00" width="1180.62" height="822.05" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
 <g id="back" transform="translate(42.52,42.52)"><svg width="489.83" height="737.01" overflow="visible"><rect x="0.00" y="0.00" width="489.83" height="737.01" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
 <text x="40.32" y="81.92" font-family="'Inter'" font-size="25.00" font-weight="800" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="-0.25" >Most of what an AI agent does</text>
 <text x="40.32" y="112.42" font-family="'Inter'" font-size="25.00" font-weight="800" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="-0.25" >isn’t writing. </text>
@@ -342,18 +342,18 @@
 <text x="106.21" y="634.43" font-family="'Inter'" font-size="7.60" font-weight="600" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="0.00" >Labs, figures and code</text>
 <text x="106.21" y="645.43" font-family="'Inter'" font-size="7.20" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >Scan for the companion repository</text>
 <text x="106.21" y="669.07" font-family="'Inter'" font-size="7.60" font-weight="600" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >Artificial Intelligence / Machine Learning</text></svg></g>
-<g transform="translate(560.69,42.52)"><rect x="0.00" y="0.00" width="56.87" height="737.01" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
-<g transform="translate(34.98,32.40) rotate(90)">
+<g transform="translate(560.69,42.52)"><rect x="0.00" y="0.00" width="59.23" height="737.01" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<g transform="translate(36.16,32.40) rotate(90)">
 <text x="0.00" y="0.00" font-family="'Inter'" font-size="18.00" font-weight="800" font-style="normal" fill="#4FBA85" text-anchor="start" letter-spacing="0.00" >Decide,</text>
 <text x="71.43" y="0.00" font-family="'Inter'" font-size="18.00" font-weight="800" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="0.00" >Don’t Generate</text>
 </g>
-<g transform="translate(33.14,554.97) rotate(90)">
+<g transform="translate(34.33,554.97) rotate(90)">
 <text x="0.00" y="0.00" font-family="'Inter'" font-size="12.96" font-weight="600" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >Sridhar Mukkandi</text>
 </g>
-<rect x="24.45" y="680.13" width="7.96" height="12.51" rx="3.98" fill="#B7A6E0" stroke="none" stroke-width="0.00" />
-<rect x="24.45" y="693.84" width="7.96" height="6.14" rx="3.98" fill="#8468C9" stroke="none" stroke-width="0.00" />
-<rect x="24.45" y="701.18" width="7.96" height="2.23" rx="3.98" fill="#4B2C8F" stroke="none" stroke-width="0.00" /></g>
-<g id="front" transform="translate(645.91,42.52)"><svg width="489.83" height="737.01" overflow="visible"><rect x="0.00" y="0.00" width="489.83" height="737.01" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="25.47" y="680.13" width="8.29" height="12.51" rx="4.15" fill="#B7A6E0" stroke="none" stroke-width="0.00" />
+<rect x="25.47" y="693.84" width="8.29" height="6.14" rx="4.15" fill="#8468C9" stroke="none" stroke-width="0.00" />
+<rect x="25.47" y="701.18" width="8.29" height="2.23" rx="4.15" fill="#4B2C8F" stroke="none" stroke-width="0.00" /></g>
+<g id="front" transform="translate(648.27,42.52)"><svg width="489.83" height="737.01" overflow="visible"><rect x="0.00" y="0.00" width="489.83" height="737.01" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
 <text x="33.63" y="228.12" font-family="'Inter'" font-size="114.44" font-weight="800" font-style="normal" fill="#4FBA85" text-anchor="start" letter-spacing="-3.43" >Decide,</text>
 <text x="36.15" y="309.14" font-family="'Inter'" font-size="68.66" font-weight="800" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="-1.72" >Don’t</text>
 <rect x="32.03" y="329.74" width="141.40" height="68.66" rx="6.87" fill="none" stroke="#AE6A30" stroke-width="1.51" />

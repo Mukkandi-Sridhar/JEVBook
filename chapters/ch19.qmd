@@ -25,7 +25,7 @@ This chapter is a short tour. At each stop we ask the same four questions. What 
 
 ## Six decision layers
 
-![Six decision layers, each described the same way: what the model reads, the typed questions it answers, the option every choice must include, and who makes the final call. Green cards let the model decide and people audit; red cards keep a person as the decider.](/figures/ch26/cards.pdf){#fig-cards}
+![Six decision layers, each described the same way: what the model reads, the typed questions it answers, the option every choice must include, and who makes the final call. Green cards, which end "the model decides; people audit", let the model decide. Red cards, which end "a person decides", keep a person as the decider.](/figures/ch26/cards.pdf){#fig-cards}
 
 Look across @fig-cards and notice how little changes from card to card. Each has a state: a ticket, a post, a transaction, a claim, a nurse's note, or a code change. Each asks two or three typed questions. And each choice has an escape option: "other", "none", "needs more info" or "not enough information". Chapter 10 showed what happens without one. The model spreads all its belief across the options you gave it. Cases that fit none of them get a wrong label with high confidence.
 
@@ -40,6 +40,10 @@ What *does* change is at the bottom of each card: who decides.
 At the top left is clinical intake, where a hospital decides who needs care first. It involves a few hundred decisions a day, and a missed emergency is a disaster. There, the model should never close a case. Its job is to put the right patient at the top of the list.
 
 Every number in that chart is an assumption, chosen to be realistic for a mid-sized organisation. The shape is what matters. The further up and to the left a decision sits, the more a person belongs in the loop.
+
+::: {.keyidea}
+Where decisions are many and cheap, the model decides; where they're few and costly, a person does.
+:::
 
 ## The same formula, very different thresholds
 
@@ -59,7 +63,7 @@ For support tickets, a missed urgent ticket costs a little customer goodwill, an
 A threshold that low means a lot of flagging, which is fine: flagging is cheap. But it needs probabilities that are calibrated even below one percent. That's where Chapter 5 said big models are least reliable, and where Chapter 11's calibration checks matter most.
 
 ::: {.keyidea}
-The formula never changes. The costs do, and they can move the threshold by a factor of ten or more.
+The threshold formula never changes; the costs do, and they can move the threshold tenfold or more.
 :::
 
 ## A tour stop, measured
@@ -74,13 +78,17 @@ The mock sent {{< num ch26 topic_acc pct >}} of tickets to the right team. Billi
 
 The reason is simple. Outside the SOC, the book's mock only matches words, and "I can't log in" shares words with "the app isn't working". Real Jev would do better or worse; I can't say which. What I can say is that you'd only know by measuring, and the test took twenty lines of code.
 
+::: {.keyidea}
+Measure a model on each new domain before you trust it, even if it works well elsewhere.
+:::
+
 Two things fix most of the problem, and neither needs a better model. First, route a ticket only when the model is sure. We routed tickets only when the top label's probability was at least 0.6. That covered {{< num ch26 cov60 pct >}} of them and got {{< num ch26 acc60 pct >}} right; the rest went to a person. Second, fix the options. "Technical" and "account" overlap, and Chapter 10 warned that overlapping options split belief. Try clearer descriptions first, or a separate noul for "is this about signing in?".
 
 ## When a person must decide
 
 ![When a person must make the call. The model reads each case and estimates the probabilities that matter; the queue is ordered by them; a person decides. The log records what the model said and what the person decided, so the two can be compared later.](/figures/ch26/human-final.pdf){#fig-human-final}
 
-In the red domains, the design is the other way round. The model doesn't close anything. It reads every case, estimates the probabilities that matter, and orders the queue. That way a person sees the likeliest emergencies first (@fig-human-final). Chapter 18 showed that ordering alone can cut the wait for a real threat from hours to minutes. In a hospital, that's where the value is.
+In the red domains, shown as squares in @fig-domains, the design is the other way round. The model doesn't close anything. It reads every case, estimates the probabilities that matter, and orders the queue. That way a person sees the likeliest emergencies first (@fig-human-final). Chapter 18 showed that ordering alone can cut the wait for a real threat from hours to minutes. In a hospital, that's where the value is.
 
 Keep the log. Say the model says 0.4, the clinician says "routine", and the clinician is right: that's a label. If the clinician is wrong, that's a lesson. Either way, it's evidence for the next calibration check.
 

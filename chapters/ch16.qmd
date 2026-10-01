@@ -69,7 +69,11 @@ client = TypeSafeClient(api_key=os.environ["TYPESAFE_API_KEY"],
 
 Or use `jevkit.client()`, which returns the mock unless you set `JEVKIT_LIVE=1` and a key. Every lab in the book uses it, so you can point each one at real Jev by setting two environment variables.
 
-Use a fixed model version if you can. `jev-latest` is a nickname that can point to a new version at any time. Chapter 9 said one unknown in a new model is how its behaviour changes between versions. Fixing the version turns that into your decision, not a surprise.
+Use a fixed model version if you can. `jev-latest` is a nickname that can point to a new version at any time. Chapter 9 said one unknown in a new model is how its behaviour changes between versions.
+
+::: {.keyidea}
+Fix the model version, so a change in behaviour is your decision, not a surprise.
+:::
 
 ## What happens during a call
 
@@ -88,6 +92,10 @@ The errors in @fig-errors fall into two families, and they need opposite treatme
 **Your mistakes** fail at once: no key, a model name that doesn't exist, a question with no options. Some are caught before anything is sent; the rest come back as a 4xx error. Retrying them is pointless, because the same request will fail the same way. Fix the code.
 
 **Problems outside your code** are worth retrying: rate limits (429), server errors (5xx) and a lost network connection. The SDK retries these by default, twice, waiting a little longer each time.
+
+::: {.keyidea}
+Retry errors from outside your code, never your own.
+:::
 
 ```{python}
 try:
@@ -115,7 +123,7 @@ fast = TypeSafeClient(api_key="mock", transport=MockJevTransport(),
 ```
 
 ::: {.keyidea}
-Retry errors from outside your code, never your own. And when time matters, decide in advance what a failed call means.
+When time matters, decide in advance what a failed call means.
 :::
 
 ## Ask together

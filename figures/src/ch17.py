@@ -7,7 +7,7 @@ from matplotlib.ticker import FuncFormatter
 from typesafe_sdk import Choice, Noul, Score
 
 from jevkit import soc, client as make_client
-from jevkit.figs import figure, draw, C, subplots, clean, results, summary_page, synthetic_tag
+from jevkit.figs import hatch_kw, figure, draw, C, subplots, clean, results, summary_page, synthetic_tag
 
 CH = "ch17"
 THREATS = [k for k in soc.CATEGORIES if k not in ("benign", "policy_violation")]
@@ -92,8 +92,13 @@ def choice_dists():
         labs = list(pr)
         vals = [pr[l] for l in labs]
         top = int(np.argmax(vals))
-        ax.barh(range(len(labs))[::-1], vals, color=[C["jev"] if j == top else C["rule"] for j in range(len(labs))],
-                height=0.6)
+        # the top label is solid; the rest are light and striped, so the top one stands out without colour
+        ys = list(range(len(labs))[::-1])
+        for j in range(len(labs)):
+            if j == top:
+                ax.barh(ys[j], vals[j], color=C["jev"], height=0.6)
+            else:
+                ax.barh(ys[j], vals[j], height=0.6, **hatch_kw(1, C["neutral_t"]))
         ax.set_yticks(range(len(labs))[::-1])
         ax.set_yticklabels([l.replace("_", " ") for l in labs], fontsize=6.0)
         ax.set_xlim(0, 1)
@@ -114,9 +119,10 @@ def forced_fig():
     clean(ax, "y")
     bins = np.linspace(0.2, 1, 17)
     ax.hist([cf for _, cf in fo], bins=bins, color=C["fail"], alpha=0.85,
-            label="options: threat categories only (no “benign”)")
-    ax.hist([cf for ch, cf in full if ch != "benign"], bins=bins, color=C["jev"], alpha=0.9,
-            label="options include “benign” (only the few labelled as threats shown)")
+            label="options: threat categories only, no “benign” (solid)")
+    ax.hist([cf for ch, cf in full if ch != "benign"], bins=bins, histtype="stepfilled", fc=C["jev_t"], ec=C["jev"],
+            lw=1.0, hatch="////", hatchcolor=C["jev"],
+            label="options include “benign”, only the few labelled as threats shown (striped)")
     ax.set_xlabel("confidence of the top label, harmless alerts only")
     ax.set_ylabel("alerts")
     ax.legend(loc="upper left", fontsize=6.0)

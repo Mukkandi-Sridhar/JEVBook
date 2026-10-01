@@ -92,7 +92,7 @@ print(f"odds adjusted: ECE {cal.ece(adjusted[rest], y[rest]):.3f}")
 print(f"Platt, 300:    ECE {cal.ece(platt(p_h[rest]), y[rest]):.3f}")
 ```
 
-![Harbor's alerts, on the cases not used for fitting: as returned (red), after adjusting the odds for Harbor's base rate (blue), and after Platt scaling on 300 labelled alerts (green). Both fixes bring the curve most of the way back to the diagonal.](/figures/ch18/harbor-fixes.pdf){#fig-harbor-fixes}
+![Harbor's alerts, on the cases not used for fitting: as returned (red, solid line), after adjusting the odds for Harbor's base rate (blue, dashed line), and after Platt scaling on 300 labelled alerts (green, dotted line). Both fixes bring the curve most of the way back to the diagonal.](/figures/ch18/harbor-fixes.pdf){#fig-harbor-fixes}
 
 With the base rate known exactly, the odds adjustment brings Harbor's ECE down to {{< num ch18 ece_prior_known f3 >}}. With the base rate *estimated* from just 300 labelled alerts, it gets {{< num ch18 ece_prior_est f3 >}}. Platt scaling fitted on the same 300 labels does best of all, {{< num ch18 ece_platt300 f3 >}} (@fig-harbor-fixes). That's because it can correct probabilities that are too spread out or too bunched together, not only ones that are all too high.
 
@@ -104,7 +104,7 @@ The adjustment depends on one assumption: alerts of each kind look the same at b
 
 Take the mock at Kestrel. Its ECE on all 20,000 alerts is {{< num ch18 ece_full f3 >}}. Now pretend you only had 100 labelled alerts, chosen at random, and measure ECE on those. Do it 200 times, with different random samples.
 
-![The ECE you'd measure from a random sample of labelled alerts, for different sample sizes, on a model whose ECE over all 20,000 alerts is shown by the black line. With a hundred labels the measurement is both noisy and too high on average: a calibrated model looks miscalibrated. The error shrinks as samples grow.](/figures/ch18/ece-noise.pdf){#fig-ece-noise}
+![The ECE you'd measure from a random sample of labelled alerts, for different sample sizes, on a model whose ECE over all 20,000 alerts is shown by the labelled black horizontal line. With a hundred labels the measurement is both noisy and too high on average: a calibrated model looks miscalibrated. The error shrinks as samples grow.](/figures/ch18/ece-noise.pdf){#fig-ece-noise}
 
 With 100 labels, the typical measured ECE is {{< num ch18 ece_n100 f3 >}}, over three times the real value. One sample in twenty gives a value as high as {{< num ch18 ece_n100_hi f3 >}} (@fig-ece-noise). The model isn't worse; the measurement is. With few cases per bin, each bin's observed rate moves up and down by chance. ECE adds up the *size* of those random errors, whatever their direction, so noise always pushes it up. By 3,200 labels, the measurement is close to the truth.
 
@@ -141,8 +141,10 @@ For a **score**, check the probability you put a threshold on, such as P(severit
 So, back to the two claims. The vendor may well be right that Jev is calibrated on the data they tested it on. The critic is right that this doesn't make it calibrated on yours. The routine turns the argument into something you can measure.
 
 ::: {.keyidea}
-Treat a new model's outputs as scores until you've tested them on your data. After that, treat them as probabilities.
+Treat a new model's outputs as scores until you've tested them on your own data.
 :::
+
+After that, you can treat them as probabilities.
 
 ::: {.breaks}
 Labels aren't perfect either. Analysts disagree, some attacks are never found, and labels arrive late. An alert closed today may turn out to be part of a break-in found next month. So calibration measured on today's labels will look better than it is. Keep a set of "mature labels": cases old enough that their outcomes are settled. Measure on that set. And be careful with labels that exist only because of the model's own decisions. If the model auto-closed a case, nobody labelled it. Your sample then leans towards the cases it sent to people.

@@ -29,7 +29,7 @@ L 341.28 75.643781
 L 341.28 55.483781 
 L 2.88 55.483781 
 z
-" clip-path="url(#pb59a6f1617)" style="fill: #f1f2f4"/>
+" clip-path="url(#p912ec797e2)" style="fill: #d5d8dd"/>
    </g>
    <g id="patch_3">
     <path d="M 2.88 118.843781 
@@ -37,7 +37,7 @@ L 341.28 118.843781
 L 341.28 98.683781 
 L 2.88 98.683781 
 z
-" clip-path="url(#pb59a6f1617)" style="fill: #f1f2f4"/>
+" clip-path="url(#p912ec797e2)" style="fill: #d5d8dd"/>
    </g>
    <g id="patch_4">
     <path d="M 2.88 162.043781 
@@ -45,7 +45,7 @@ L 341.28 162.043781
 L 341.28 141.883781 
 L 2.88 141.883781 
 z
-" clip-path="url(#pb59a6f1617)" style="fill: #f1f2f4"/>
+" clip-path="url(#p912ec797e2)" style="fill: #d5d8dd"/>
    </g>
    <g id="patch_5">
     <path d="M 2.88 205.243781 
@@ -53,7 +53,7 @@ L 341.28 205.243781
 L 341.28 185.083781 
 L 2.88 185.083781 
 z
-" clip-path="url(#pb59a6f1617)" style="fill: #f1f2f4"/>
+" clip-path="url(#p912ec797e2)" style="fill: #d5d8dd"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #5b6b82" x="186.48" y="46.441875" transform="rotate(-0 186.48 46.441875)">before</text>
@@ -62,67 +62,67 @@ z
     <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #3b9c6e" x="280.08" y="46.441875" transform="rotate(-0 280.08 46.441875)">after</text>
    </g>
    <g id="text_3">
-    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="67.212609" transform="rotate(-0 6.48 67.212609)">real threats a person sees</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start" x="6.48" y="67.212609" transform="rotate(-0 6.48 67.212609)">real threats a person sees</text>
    </g>
    <g id="text_4">
-    <text style="font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="186.48" y="67.920031" transform="rotate(-0 186.48 67.920031)">54%</text>
+    <text style="font-size: 6.5px; font-family: 'Inter'; text-anchor: middle" x="186.48" y="67.920031" transform="rotate(-0 186.48 67.920031)">54%</text>
    </g>
    <g id="text_5">
-    <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="280.08" y="67.923586" transform="rotate(-0 280.08 67.923586)">89%</text>
+    <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: middle" x="280.08" y="67.923586" transform="rotate(-0 280.08 67.923586)">89%</text>
    </g>
    <g id="text_6">
-    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="88.800305" transform="rotate(-0 6.48 88.800305)">real threats never seen, per day</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start" x="6.48" y="88.800305" transform="rotate(-0 6.48 88.800305)">real threats never seen, per day</text>
    </g>
    <g id="text_7">
-    <text style="font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="186.48" y="89.539328" transform="rotate(-0 186.48 89.539328)">27.1</text>
+    <text style="font-size: 6.5px; font-family: 'Inter'; text-anchor: middle" x="186.48" y="89.539328" transform="rotate(-0 186.48 89.539328)">27.1</text>
    </g>
    <g id="text_8">
-    <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="280.08" y="89.528156" transform="rotate(-0 280.08 89.528156)">6.4</text>
+    <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: middle" x="280.08" y="89.528156" transform="rotate(-0 280.08 89.528156)">6.4</text>
    </g>
    <g id="text_9">
-    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="111.090844" transform="rotate(-0 6.48 111.090844)">real threats seen within an hour</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start" x="6.48" y="111.090844" transform="rotate(-0 6.48 111.090844)">real threats seen within an hour</text>
    </g>
    <g id="text_10">
-    <text style="font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="186.48" y="111.120031" transform="rotate(-0 186.48 111.120031)">37%</text>
+    <text style="font-size: 6.5px; font-family: 'Inter'; text-anchor: middle" x="186.48" y="111.120031" transform="rotate(-0 186.48 111.120031)">37%</text>
    </g>
    <g id="text_11">
-    <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="280.08" y="111.123586" transform="rotate(-0 280.08 111.123586)">83%</text>
+    <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: middle" x="280.08" y="111.123586" transform="rotate(-0 280.08 111.123586)">83%</text>
    </g>
    <g id="text_12">
-    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="132.723328" transform="rotate(-0 6.48 132.723328)">median wait for a seen threat</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start" x="6.48" y="132.723328" transform="rotate(-0 6.48 132.723328)">median wait for a seen threat</text>
    </g>
    <g id="text_13">
-    <text style="font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="186.48" y="132.773859" transform="rotate(-0 186.48 132.773859)">5 min</text>
+    <text style="font-size: 6.5px; font-family: 'Inter'; text-anchor: middle" x="186.48" y="132.773859" transform="rotate(-0 186.48 132.773859)">5 min</text>
    </g>
    <g id="text_14">
-    <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="280.08" y="132.808898" transform="rotate(-0 280.08 132.808898)">15 min</text>
+    <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: middle" x="280.08" y="132.808898" transform="rotate(-0 280.08 132.808898)">15 min</text>
    </g>
    <g id="text_15">
-    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="153.687914" transform="rotate(-0 6.48 153.687914)">90th-percentile wait</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start" x="6.48" y="153.687914" transform="rotate(-0 6.48 153.687914)">90th-percentile wait</text>
    </g>
    <g id="text_16">
-    <text style="font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="186.48" y="154.328156" transform="rotate(-0 186.48 154.328156)">24.0 h</text>
+    <text style="font-size: 6.5px; font-family: 'Inter'; text-anchor: middle" x="186.48" y="154.328156" transform="rotate(-0 186.48 154.328156)">24.0 h</text>
    </g>
    <g id="text_17">
-    <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="280.08" y="154.408898" transform="rotate(-0 280.08 154.408898)">15 min</text>
+    <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: middle" x="280.08" y="154.408898" transform="rotate(-0 280.08 154.408898)">15 min</text>
    </g>
    <g id="text_18">
-    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="175.340578" transform="rotate(-0 6.48 175.340578)">alerts seen per day (analysts + on-call)</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start" x="6.48" y="175.340578" transform="rotate(-0 6.48 175.340578)">alerts seen per day (analysts + on-call)</text>
    </g>
    <g id="text_19">
-    <text style="font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="186.48" y="175.928156" transform="rotate(-0 186.48 175.928156)">240</text>
+    <text style="font-size: 6.5px; font-family: 'Inter'; text-anchor: middle" x="186.48" y="175.928156" transform="rotate(-0 186.48 175.928156)">240</text>
    </g>
    <g id="text_20">
-    <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="280.08" y="175.931203" transform="rotate(-0 280.08 175.931203)">279</text>
+    <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: middle" x="280.08" y="175.931203" transform="rotate(-0 280.08 175.931203)">279</text>
    </g>
    <g id="text_21">
-    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="6.48" y="196.800305" transform="rotate(-0 6.48 196.800305)">analysts</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start" x="6.48" y="196.800305" transform="rotate(-0 6.48 196.800305)">analysts</text>
    </g>
    <g id="text_22">
-    <text style="font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="186.48" y="197.528156" transform="rotate(-0 186.48 197.528156)">6</text>
+    <text style="font-size: 6.5px; font-family: 'Inter'; text-anchor: middle" x="186.48" y="197.528156" transform="rotate(-0 186.48 197.528156)">6</text>
    </g>
    <g id="text_23">
-    <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="280.08" y="197.528156" transform="rotate(-0 280.08 197.528156)">6</text>
+    <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: middle" x="280.08" y="197.528156" transform="rotate(-0 280.08 197.528156)">6</text>
    </g>
   </g>
   <g id="text_24">
@@ -139,11 +139,11 @@ Q 233.573 11.055781 234.413 11.055781
 z
 " style="fill: #ffffff; stroke: #e4e7eb; stroke-width: 0.5; stroke-linejoin: miter"/>
    </g>
-   <text style="font-weight: 500; font-size: 5.6px; font-family: 'Inter'; text-anchor: end; fill: #8a919c" x="339.588" y="8.305" transform="rotate(-0 339.588 8.305)">SYNTHETIC · not measured on real Jev</text>
+   <text style="font-weight: 500; font-size: 5.6px; font-family: 'Inter'; text-anchor: end; fill: #6b7280" x="339.588" y="8.305" transform="rotate(-0 339.588 8.305)">SYNTHETIC · not measured on real Jev</text>
   </g>
  </g>
  <defs>
-  <clipPath id="pb59a6f1617">
+  <clipPath id="p912ec797e2">
    <rect x="2.88" y="11.563781" width="338.4" height="190.8"/>
   </clipPath>
  </defs>

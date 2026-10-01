@@ -56,7 +56,7 @@ A RAG system can only be as good as its retrieval. Measure retrieval first.
 
 Some questions have no answer in the documents at all: "How much must we pay ourselves before our cyber insurance pays?" A good system says it doesn't know. There's a simple signal: how well the *best* chunk matches.
 
-![The similarity of the best-matching chunk, for questions the knowledge base can answer (green) and questions it can't (red). They overlap, but not much. Below a threshold, the system should decline to answer.](/figures/ch12/abstain.pdf){#fig-abstain}
+![The similarity of the best-matching chunk, for questions the knowledge base can answer (green, solid bars) and questions it can't (red, striped outline). They overlap, but not much. Below a threshold, the system should decline to answer.](/figures/ch12/abstain.pdf){#fig-abstain}
 
 With the threshold where I've put it, the system answers {{< num ch12 answered_share pct >}} of answerable questions and only {{< num ch12 unans_answered pct >}} of unanswerable ones (@fig-abstain). Where the threshold should go depends on what a wrong answer costs, compared with an unnecessary "I don't know". That's Chapter 4's arithmetic.
 
@@ -115,12 +115,12 @@ after = np.array([p(t + planted) for t in threats.description])
 print(f"auto-closed: {np.mean(before < 0.031):.0%} -> {np.mean(after < 0.031):.0%}")
 ```
 
-![How likely the decision model thinks each real threat is, reading the alert text as written (black) and with one planted sentence (red). The sentence pulls many real threats below the auto-close threshold. When the same fact comes from a trusted system instead (green), the planted sentence does nothing.](/figures/ch14/injection.pdf){#fig-injection}
+![How likely the decision model thinks each real threat is, reading the alert text as written (black, solid line) and with one planted sentence (red, dashed line). The sentence pulls many real threats below the auto-close threshold. When the same fact comes from a trusted system instead (green, dotted fill), the planted sentence does nothing.](/figures/ch14/injection.pdf){#fig-injection}
 
 One sentence. The share of real threats that would close without a person seeing them rose from {{< num ch14 inj_act_before pct >}} to {{< num ch14 inj_act_after pct >}} (@fig-injection). The exact numbers are the mock's, but the lesson is general. The fix is in the design. Ask the system that records approved changes whether a ticket exists. Pass the answer as a separate field that the attacker can't write. With that, only {{< num ch14 inj_act_trusted pct >}} of threats would auto-close.
 
 ::: {.keyidea}
-Take the facts that lower suspicion from systems attackers can't write to, never from the text they can.
+Take the facts that lower suspicion from systems attackers can't write to.
 :::
 
 Other failures are harder to notice. Retrieval returns a weak match and nobody checks: {{< num ch14 weak_retrieval pct >}} of the agent's policy lookups fell below the "I don't know" threshold. Loops keep running with no limit. And the worst failures come at the end, where the agent acts: cutting the CEO's laptop off the network during a meeting, or closing a real incident. When anything goes wrong, from a timeout to a parse failure, the agent should send the case to a person, never act on it.

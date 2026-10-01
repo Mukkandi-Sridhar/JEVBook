@@ -38,7 +38,11 @@ Was the forecast wrong?
 
 Not necessarily. One day can't tell you. What *can* tell you is the forecaster's record. Collect every day they said "70%". If it rained on about 70 of every 100 of those days, the forecaster is doing their job. A dry day is just one of the 30.
 
-So here's the idea to remember: **a probability is a claim about how often something happens among cases like this one.**
+So here's the idea to remember:
+
+::: {.keyidea}
+A **probability** is a claim about how often something happens among cases like this one.
+:::
 
 That definition is useful because you can *check* it. When a model tells you an alert is 70% likely to be an attack, it's making the same kind of promise as the weather app. We can check it in the same way.
 
@@ -127,23 +131,19 @@ Counting mistakes doesn't work any more, because the model doesn't say yes or no
 
 Think about how *you'd* want to be judged as a forecaster. Say 90% and be right, and you should lose almost nothing. Say 1% and be wrong, and you should lose a lot, because you were confidently wrong. That score exists. **Log loss** measures surprise. The penalty is minus the logarithm of the probability you gave to what actually happened.
 
-![Log loss for a single alert. If it really was an attack (red), the penalty is small when the model gave "attack" a high probability. It grows very fast as that probability gets close to zero. Harmless alerts (blue) work the same way from the other side.](/figures/ch03/logloss.pdf){#fig-logloss}
+![Log loss for a single alert. If it really was an attack (red, solid curve), the penalty is small when the model gave "attack" a high probability. It grows very fast as that probability gets close to zero. Harmless alerts (blue, dashed curve) work the same way from the other side.](/figures/ch03/logloss.pdf){#fig-logloss}
 
 Saying 90% and being right costs about {{< num ch03 loss_if_right_09 f1 >}}. Saying 1% and being wrong costs about {{< num ch03 loss_if_certain_wrong f1 >}}, nearly fifty times more (@fig-logloss).
 
 Log loss has a deeper property, and it's why this book cares so much about it. It's a **proper scoring rule**: the only way to get the best score, on average, is to report the probabilities you actually believe. Say 99% when you believe 80%, and over many cases you lose more than you gain. So models trained this way tend to come out fairly well *calibrated*: their probabilities are close to honest. The next chapter is all about calibration.
 
 ::: {.keyidea}
-Log loss rewards honest probabilities and punishes confident mistakes.
+Log loss rewards calibrated probabilities and punishes confident mistakes.
 :::
 
 ## Rolling downhill
 
-Picture the log loss as hilly ground. Every combination of weights is a place, and the height is the loss. Learning means finding the lowest point. We can't search every place, but we don't have to. Stand on a hill in thick fog. Feel which way the ground slopes under your feet, take a step downhill, and repeat until the ground is flat.
-
-::: {.keyidea}
-That's gradient descent.
-:::
+Picture the log loss as hilly ground. Every combination of weights is a place, and the height is the loss. Learning means finding the lowest point. We can't search every place, but we don't have to. Stand on a hill in thick fog. Feel which way the ground slopes under your feet, take a step downhill, and repeat until the ground is flat. That's gradient descent.
 
 The **gradient** is the slope in every direction at once. For logistic regression it's simple to compute. For each alert, take what the model said minus what happened, *p* − *y*. Multiply by the alert's clues, and average. Then step the other way. The size of each step is the **learning rate**. Too small and you barely move; too big and you step right over the lowest point.
 

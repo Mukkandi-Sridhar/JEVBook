@@ -83,7 +83,7 @@ z
      <g id="line2d_8">
       <path d="M 38.870977 125.847096 
 L 301.130977 125.847096 
-" clip-path="url(#p63bcfaea35)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p332f55d699)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_9"/>
      <g id="text_9">
@@ -94,7 +94,7 @@ L 301.130977 125.847096
      <g id="line2d_10">
       <path d="M 38.870977 101.931801 
 L 301.130977 101.931801 
-" clip-path="url(#p63bcfaea35)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p332f55d699)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_11"/>
      <g id="text_10">
@@ -105,7 +105,7 @@ L 301.130977 101.931801
      <g id="line2d_12">
       <path d="M 38.870977 78.016507 
 L 301.130977 78.016507 
-" clip-path="url(#p63bcfaea35)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p332f55d699)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_13"/>
      <g id="text_11">
@@ -116,7 +116,7 @@ L 301.130977 78.016507
      <g id="line2d_14">
       <path d="M 38.870977 54.101213 
 L 301.130977 54.101213 
-" clip-path="url(#p63bcfaea35)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p332f55d699)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_15"/>
      <g id="text_12">
@@ -127,7 +127,7 @@ L 301.130977 54.101213
      <g id="line2d_16">
       <path d="M 38.870977 30.185919 
 L 301.130977 30.185919 
-" clip-path="url(#p63bcfaea35)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p332f55d699)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_17"/>
      <g id="text_13">
@@ -138,7 +138,7 @@ L 301.130977 30.185919
      <g id="line2d_18">
       <path d="M 38.870977 6.270625 
 L 301.130977 6.270625 
-" clip-path="url(#p63bcfaea35)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p332f55d699)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.5; stroke-linecap: round"/>
      </g>
      <g id="line2d_19"/>
      <g id="text_14">
@@ -180,7 +180,7 @@ L 233.692691 34.688844
 L 241.185834 35.600427 
 L 248.678977 36.502894 
 L 256.172119 37.396336 
-" clip-path="url(#p63bcfaea35)" style="fill: none; stroke: #3b9c6e; stroke-width: 1.7; stroke-linecap: round"/>
+" clip-path="url(#p332f55d699)" style="fill: none; stroke: #3b9c6e; stroke-width: 1.7; stroke-linecap: round"/>
    </g>
    <g id="line2d_21">
     <path d="M 38.870977 9.857919 
@@ -213,7 +213,7 @@ L 233.692691 73.308004
 L 241.185834 74.884177 
 L 248.678977 76.413065 
 L 256.172119 77.896086 
-" clip-path="url(#p63bcfaea35)" style="fill: none; stroke: #2f6db5; stroke-width: 1.7; stroke-linecap: round"/>
+" clip-path="url(#p332f55d699)" style="fill: none; stroke-dasharray: 8.5,3.4; stroke-dashoffset: 0; stroke: #2f6db5; stroke-width: 1.7"/>
    </g>
    <g id="line2d_22">
     <path d="M 38.870977 12.249449 
@@ -246,7 +246,7 @@ L 233.692691 95.911833
 L 241.185834 97.408596 
 L 248.678977 98.830521 
 L 256.172119 100.18135 
-" clip-path="url(#p63bcfaea35)" style="fill: none; stroke: #e07a1f; stroke-width: 1.7; stroke-linecap: round"/>
+" clip-path="url(#p332f55d699)" style="fill: none; stroke-dasharray: 1.7,2.72; stroke-dashoffset: 0; stroke: #e07a1f; stroke-width: 1.7"/>
    </g>
    <g id="line2d_23">
     <path d="M 38.870977 18.228272 
@@ -279,29 +279,29 @@ L 233.692691 118.893755
 L 241.185834 119.589089 
 L 248.678977 120.21489 
 L 256.172119 120.77811 
-" clip-path="url(#p63bcfaea35)" style="fill: none; stroke: #b8323a; stroke-width: 1.7; stroke-linecap: round"/>
+" clip-path="url(#p332f55d699)" style="fill: none; stroke-dasharray: 8.5,2.55,1.7,2.55; stroke-dashoffset: 0; stroke: #b8323a; stroke-width: 1.7"/>
    </g>
    <g id="patch_3">
     <path d="M 38.870977 125.847096 
 L 301.130977 125.847096 
-" style="fill: none; stroke: #c9ced6; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+" style="fill: none; stroke: #9aa1ab; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="text_16">
-    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="259.169377" y="39.688084" transform="rotate(-0 259.169377 39.688084)">99% per step</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start" x="259.169377" y="39.688084" transform="rotate(-0 259.169377 39.688084)">99% per step</text>
    </g>
    <g id="text_17">
-    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="259.169377" y="80.187834" transform="rotate(-0 259.169377 80.187834)">97% per step</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start" x="259.169377" y="80.187834" transform="rotate(-0 259.169377 80.187834)">97% per step</text>
    </g>
    <g id="text_18">
-    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="259.169377" y="102.473098" transform="rotate(-0 259.169377 102.473098)">95% per step</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start" x="259.169377" y="102.473098" transform="rotate(-0 259.169377 102.473098)">95% per step</text>
    </g>
    <g id="text_19">
-    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="259.169377" y="123.069859" transform="rotate(-0 259.169377 123.069859)">90% per step</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: start" x="259.169377" y="123.069859" transform="rotate(-0 259.169377 123.069859)">90% per step</text>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="p63bcfaea35">
+  <clipPath id="p332f55d699">
    <rect x="38.870977" y="3.879096" width="262.26" height="121.968"/>
   </clipPath>
  </defs>

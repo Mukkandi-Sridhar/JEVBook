@@ -87,7 +87,7 @@ Price isn't the only thing that stops a decision from being made. Time does too.
 
 When someone logs in, they're sitting there waiting. You might have a few hundred milliseconds to decide whether the login looks risky before the delay itself becomes the problem. An email can wait a few seconds before it's delivered. An alert can wait a minute.
 
-![A decision gets made only if it's cheap enough (value above price) and fast enough (answer inside the time budget). The shaded regions show which decisions each option can make, using this book's illustrative LLM figures and Jev's vendor-reported price and latency range. Logins fall inside Jev's region only at the fast end of that range.](/figures/ch19/gates.pdf){#fig-gates}
+![A decision gets made only if it's cheap enough (value above price) and fast enough (answer inside the time budget). The shaded regions, each labelled and outlined, show which decisions each option can make, using this book's illustrative LLM figures and Jev's vendor-reported price and latency range. Logins fall inside Jev's region only at the fast end of that range.](/figures/ch19/gates.pdf){#fig-gates}
 
 @fig-gates puts both gates on one chart. The LLM's region starts at over a second, and at a price too high for the cheap pools. Jev's region reaches much further left, and further down. Logins are the interesting case. They fall inside Jev's region only if its calls are at the fast end of the vendor's range. You'd measure that before promising anyone instant login checks.
 
@@ -108,7 +108,7 @@ It's in the jobs that don't exist yet.
 Suppose cheap decisions let Kestrel build something new: checking every file shared outside the company. That's {{< num ch19 new_job approx >}} files a day, each check worth about three thousandths of a cent. At LLM prices, almost nobody would build that. At Jev's price, the model makes about {{< num ch19 jev_new_taken approx >}} of those checks a day. Kestrel's decision bill jumps from \${{< num ch19 jev_spend int >}} to about \${{< num ch19 jev_new_spend int >}}.
 
 ::: {.keyidea}
-Cheaper decisions rarely raise the bill for the jobs you already do. They raise it by making new jobs worth doing.
+Cheaper decisions rarely raise the bill for jobs you already do; they raise it by making new jobs worth doing.
 :::
 
 Add two or three more jobs like that, and Kestrel spends more on decisions than it ever did with an LLM, while making dozens of times as many. That's Jevons' coal again, on a small scale. It's also what TypeSafe's Doom demo from Chapter 9 was really showing. An agent making ten decisions a second is a use that didn't exist when each decision took a second and cost a tenth of a cent.
@@ -128,8 +128,10 @@ Now suppose you kept a rule that seemed sensible at LLM volumes: send the top 0.
 The cost-based threshold from Chapter 4 doesn't have this problem. It flags a case only when its expected loss is bigger than the \$15 a review costs. A log line worth two thousandths of a cent will never reach that. It sends {{< num ch19 flags_cost_jev int >}} a day either way.
 
 ::: {.keyidea}
-When decisions get cheap, thresholds must be set by cost, not by share. Otherwise the money saved on machines is spent on people's time.
+When decisions get cheap, set thresholds by cost, not by share.
 :::
+
+Otherwise the money saved on machines is spent on people's time.
 
 Calibration matters more, not less, as decisions multiply. A cost-based threshold only works if the probabilities are calibrated. An overconfident model making a million decisions a day doesn't make a few extra mistakes. It fills the queue.
 

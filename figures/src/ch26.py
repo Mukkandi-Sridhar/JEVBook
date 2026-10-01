@@ -3,12 +3,13 @@
 import json
 from functools import lru_cache
 
+import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.ticker import FuncFormatter
 from typesafe_sdk import Choice, Noul
 
 from jevkit import gallery, calibration as cal, client as make_client
-from jevkit.figs import figure, draw, C, ROOT, subplots, clean, results, summary_page, synthetic_tag
+from jevkit.figs import ink_on, figure, draw, C, ROOT, subplots, clean, results, summary_page, synthetic_tag
 
 CH = "ch26"
 PCT = FuncFormatter(lambda v, _: f"{v:.0%}")
@@ -51,8 +52,10 @@ def domain_map():
     f, ax = subplots(width="text", height=2.6)
     clean(ax, "both")
     for d in gallery.DOMAINS:
+        # shape as well as colour: squares where a person decides, circles where the model decides
         col = C["fail"] if d.human_final else C["jev"]
-        ax.scatter([d.per_day], [d.cost_miss], s=46, color=col, zorder=3, edgecolor="white", lw=0.8)
+        ax.scatter([d.per_day], [d.cost_miss], s=46, color=col, zorder=3, edgecolor="white", lw=0.8,
+                   marker="s" if d.human_final else "o")
         dx, dy, ha, va = {"Support tickets": (1, 0.62, "center", "top"), "Content moderation": (1, 0.62, "center", "top"),
                           "Payment fraud": (1, 1.6, "center", "bottom")}.get(d.name, (1.25, 1, "left", "center"))
         ax.text(d.per_day * dx, d.cost_miss * dy, d.name, fontsize=6.1, va=va, ha=ha)
@@ -65,8 +68,8 @@ def domain_map():
     ax.yaxis.set_major_formatter(FuncFormatter(lambda v, _: f"${v:,.0f}"))
     ax.set_xlabel("decisions a day (log scale)")
     ax.set_ylabel("cost of one missed problem (log scale)")
-    ax.text(3e5, 1.1e4, "decision model decides;\npeople check samples", fontsize=5.8, color=C["jev"], ha="center")
-    ax.text(250, 1.2e5, "decision model orders and flags;\na person makes the call", fontsize=5.8, color=C["fail"])
+    ax.text(3e5, 1.1e4, "circles: decision model decides;\npeople check samples", fontsize=5.8, color=C["jev"], ha="center")
+    ax.text(250, 1.2e5, "squares: decision model orders and flags;\na person makes the call", fontsize=5.8, color=C["fail"])
     synthetic_tag(f, ILLUS)
     return f
 
@@ -108,7 +111,7 @@ def lines_fig():
     ax.set_yticklabels([d.name for d in ds], fontsize=6.3)
     ax.set_xlim(0, 0.09)
     ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:.0%}"))
-    ax.set_xlabel("flag a case once P(problem) passes this line (Chapter 4)")
+    ax.set_xlabel("flag a case once P(problem) passes this threshold (Chapter 4)")
     synthetic_tag(f, ILLUS)
     return f
 
@@ -121,10 +124,11 @@ def tickets_fig():
     M = np.array([[((truth == k) & (top == j)).sum() for j in ks] for k in ks], float)
     M = M / M.sum(1, keepdims=True)
     a1.imshow(M, cmap="Greens", vmin=0, vmax=1)
+    a1.grid(False)
     for i in range(4):
         for j in range(4):
             a1.text(j, i, f"{M[i, j]:.0%}", ha="center", va="center", fontsize=5.8,
-                    color="white" if M[i, j] > 0.55 else C["ink"])
+                    color=ink_on(plt.get_cmap("Greens")(M[i, j])), fontweight="semibold")
     a1.set_xticks(range(4))
     a1.set_xticklabels(ks, fontsize=5.6, rotation=30, ha="right")
     a1.set_yticks(range(4))

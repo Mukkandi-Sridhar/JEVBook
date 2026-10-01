@@ -34,7 +34,7 @@ Q 92.88 6.48 92.88 10.8
 L 92.88 23.76 
 Q 92.88 28.08 97.2 28.08 
 z
-" clip-path="url(#pe7709f8a1b)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p622291ba15)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 226.8 28.08 
@@ -47,94 +47,94 @@ Q 222.48 6.48 222.48 10.8
 L 222.48 23.76 
 Q 222.48 28.08 226.8 28.08 
 z
-" clip-path="url(#pe7709f8a1b)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p622291ba15)" style="fill: #f3d2b6; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="line2d_1">
     <path d="M 2.88 57.6 
 L 341.28 57.6 
-" clip-path="url(#pe7709f8a1b)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.6; stroke-linecap: round"/>
+" clip-path="url(#p622291ba15)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.6; stroke-linecap: round"/>
    </g>
    <g id="line2d_2">
     <path d="M 2.88 84.24 
 L 341.28 84.24 
-" clip-path="url(#pe7709f8a1b)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.6; stroke-linecap: round"/>
+" clip-path="url(#p622291ba15)" style="fill: none; stroke-dasharray: 3,1.2; stroke-dashoffset: 0; stroke: #e4e7eb; stroke-width: 0.6"/>
    </g>
    <g id="line2d_3">
     <path d="M 2.88 110.88 
 L 341.28 110.88 
-" clip-path="url(#pe7709f8a1b)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.6; stroke-linecap: round"/>
+" clip-path="url(#p622291ba15)" style="fill: none; stroke-dasharray: 0.6,0.96; stroke-dashoffset: 0; stroke: #e4e7eb; stroke-width: 0.6"/>
    </g>
    <g id="line2d_4">
     <path d="M 2.88 137.52 
 L 341.28 137.52 
-" clip-path="url(#pe7709f8a1b)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.6; stroke-linecap: round"/>
+" clip-path="url(#p622291ba15)" style="fill: none; stroke-dasharray: 3,0.9,0.6,0.9; stroke-dashoffset: 0; stroke: #e4e7eb; stroke-width: 0.6"/>
    </g>
    <g id="line2d_5">
     <path d="M 2.88 164.16 
 L 341.28 164.16 
-" clip-path="url(#pe7709f8a1b)" style="fill: none; stroke: #e4e7eb; stroke-width: 0.6; stroke-linecap: round"/>
+" clip-path="url(#p622291ba15)" style="fill: none; stroke-dasharray: 4.8,1.2; stroke-dashoffset: 0; stroke: #e4e7eb; stroke-width: 0.6"/>
    </g>
    <g id="text_1">
-    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="150.48" y="19.18575" transform="rotate(-0 150.48 19.18575)">System 1</text>
+    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: middle" x="150.48" y="19.18575" transform="rotate(-0 150.48 19.18575)">System 1</text>
    </g>
    <g id="text_2">
-    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="280.08" y="19.18575" transform="rotate(-0 280.08 19.18575)">System 2</text>
+    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: middle" x="280.08" y="19.18575" transform="rotate(-0 280.08 19.18575)">System 2</text>
    </g>
    <g id="text_3">
     <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="2.88" y="45.621172" transform="rotate(-0 2.88 45.621172)">speed</text>
    </g>
    <g id="text_4">
-    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="150.48" y="45.76718" transform="rotate(-0 150.48 45.76718)">fast, automatic</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: middle" x="150.48" y="45.76718" transform="rotate(-0 150.48 45.76718)">fast, automatic</text>
    </g>
    <g id="text_5">
-    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="280.08" y="45.76718" transform="rotate(-0 280.08 45.76718)">slow, effortful</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: middle" x="280.08" y="45.76718" transform="rotate(-0 280.08 45.76718)">slow, effortful</text>
    </g>
    <g id="text_6">
     <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="2.88" y="73.000547" transform="rotate(-0 2.88 73.000547)">feels like</text>
    </g>
    <g id="text_7">
-    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="150.48" y="72.247219" transform="rotate(-0 150.48 72.247219)">just knowing</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: middle" x="150.48" y="72.247219" transform="rotate(-0 150.48 72.247219)">just knowing</text>
    </g>
    <g id="text_8">
-    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="280.08" y="72.247219" transform="rotate(-0 280.08 72.247219)">working it out</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'; text-anchor: middle" x="280.08" y="72.247219" transform="rotate(-0 280.08 72.247219)">working it out</text>
    </g>
    <g id="text_9">
     <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="2.88" y="98.863086" transform="rotate(-0 2.88 98.863086)">good at</text>
    </g>
    <g id="text_10">
-    <text style="font-size: 6.3px; font-family: 'Inter'; fill: #1f2430" transform="translate(125.443898 94.001827)">familiar patterns,</text>
-    <text style="font-size: 6.3px; font-family: 'Inter'; fill: #1f2430" transform="translate(135.975727 104.406548)">at volume</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'" transform="translate(125.443898 94.001827)">familiar patterns,</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'" transform="translate(135.975727 104.406548)">at volume</text>
    </g>
    <g id="text_11">
-    <text style="font-size: 6.3px; font-family: 'Inter'; fill: #1f2430" transform="translate(258.166828 93.894038)">new problems,</text>
-    <text style="font-size: 6.3px; font-family: 'Inter'; fill: #1f2430" transform="translate(251.059148 103.874493)">long chains of logic</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'" transform="translate(258.166828 93.894038)">new problems,</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'" transform="translate(251.059148 103.874493)">long chains of logic</text>
    </g>
    <g id="text_12">
     <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="2.88" y="125.641211" transform="rotate(-0 2.88 125.641211)">fails by</text>
    </g>
    <g id="text_13">
-    <text style="font-size: 6.3px; font-family: 'Inter'; fill: #1f2430" transform="translate(128.237555 120.641827)">confident snap</text>
-    <text style="font-size: 6.3px; font-family: 'Inter'; fill: #1f2430" transform="translate(133.038352 130.482009)">judgements</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'" transform="translate(128.237555 120.641827)">confident snap</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'" transform="translate(133.038352 130.482009)">judgements</text>
    </g>
    <g id="text_14">
-    <text style="font-size: 6.3px; font-family: 'Inter'; fill: #1f2430" transform="translate(257.440359 120.572429)">tiring, and slow</text>
-    <text style="font-size: 6.3px; font-family: 'Inter'; fill: #1f2430" transform="translate(252.53768 131.121853)">when time matters</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'" transform="translate(257.440359 120.572429)">tiring, and slow</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'" transform="translate(252.53768 131.121853)">when time matters</text>
    </g>
    <g id="text_15">
     <text style="font-weight: 600; font-size: 6.5px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="2.88" y="152.920547" transform="rotate(-0 2.88 152.920547)">in software</text>
    </g>
    <g id="text_16">
-    <text style="font-size: 6.3px; font-family: 'Inter'; fill: #1f2430" transform="translate(125.436023 147.37239)">classifiers, rules,</text>
-    <text style="font-size: 6.3px; font-family: 'Inter'; fill: #1f2430" transform="translate(120.713484 157.102321)">System One models</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'" transform="translate(125.436023 147.37239)">classifiers, rules,</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'" transform="translate(120.713484 157.102321)">System One models</text>
    </g>
    <g id="text_17">
-    <text style="font-size: 6.3px; font-family: 'Inter'; fill: #1f2430" transform="translate(255.478008 147.212429)">reasoning LLMs,</text>
-    <text style="font-size: 6.3px; font-family: 'Inter'; fill: #1f2430" transform="translate(267.807305 157.071313)">analysts</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'" transform="translate(255.478008 147.212429)">reasoning LLMs,</text>
+    <text style="font-size: 6.3px; font-family: 'Inter'" transform="translate(267.807305 157.071313)">analysts</text>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="pe7709f8a1b">
+  <clipPath id="p622291ba15">
    <rect x="2.88" y="2.88" width="338.4" height="165.6"/>
   </clipPath>
  </defs>

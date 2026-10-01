@@ -30,7 +30,7 @@ But first I have to tell you about a bug. It was in Chapter 7's agent from the s
 
 ![The hybrid agent. A cheap lookup always runs first. Jev decides which other evidence to collect, then answers the three verdict questions together. Chapter 14's policy turns the verdict into an action, and the LLM writes a case note or urgent message only when a person will read it.](/figures/ch24/architecture.pdf){#fig-architecture-17}
 
-@fig-architecture-17 shows the design. Everything in green is a typed question to Jev, answered in one pass. Everything in blue is a tool that reads something. The policy is ordinary code. The LLM, in orange, appears once, at the end. And it appears only on the paths where a person is waiting to read something.
+@fig-architecture-17 shows the design. Everything in green, with "Jev" in its label, is a typed question to Jev, answered in one pass. Everything in blue is a tool that reads something: the threat-intel lookup and the box labelled "tools". The policy is ordinary code. The LLM, in orange and labelled "LLM", appears once, at the end. And it appears only on the paths where a person is waiting to read something.
 
 Follow one alert through it. Each line is a step: its kind, its name, how long it took, and what it found or decided.
 
@@ -65,18 +65,22 @@ So the verdict was always reached without the most useful fact about an alert, a
 I want to be careful about what this shows. The mock's evidence choices come from a simple word-matching engine, so I can't tell you real Jev would make the same mistake. What I can tell you is that *any* decision step can fail this way, whichever model answers it. And nothing later in the chain will report a problem. Typed answers always have the right format. The right format and the right answer aren't the same thing.
 
 ::: {.keyidea}
-Count the answers of every decision step. An option that's never chosen, or always chosen, is a warning, even when nothing has crashed.
+Count every decision step's answers: an option never or always chosen is a warning, even without a crash.
 :::
 
-The fix wasn't a better prompt or a better model. It was a design change. A threat-intel lookup takes a fraction of a second and costs nothing. Deciding *whether* to look it up costs about as much as just looking. When looking is cheaper than deciding whether to look, don't decide. Just look.
+The fix wasn't a better prompt or a better model. It was a design change. A threat-intel lookup takes a fraction of a second and costs nothing. Deciding *whether* to look it up costs about as much as just looking.
+
+::: {.keyidea}
+When looking is cheaper than deciding whether to look, don't decide. Just look.
+:::
 
 ## Comparing with the all-LLM agent
 
 Now the comparison. The all-LLM agent runs the same loop, with the same tools and the same policy thresholds. The only difference is who decides. Every decision is an LLM call returning JSON, and the verdict is the LLM's own answer with its stated confidence. A broken answer goes to review, the fail-safe from Chapter 14.
 
-![One alert's trace as a timeline, for each agent. Blue steps observe, green steps decide, orange steps write, grey steps act. The hybrid's decisions are very thin bars; the all-LLM agent's decisions take most of its time.](/figures/ch24/trace.pdf){#fig-trace}
+![One alert's trace as a timeline, for each agent. Plain blue steps observe, striped green steps decide, dotted orange steps write, cross-hatched grey steps act. The hybrid's decisions are very thin bars; the all-LLM agent's decisions take most of its time.](/figures/ch24/trace.pdf){#fig-trace}
 
-@fig-trace shows the difference on a single alert, and it's mostly the width of the green bars. Across the sample, the hybrid took {{< num ch24 v2_seconds f1 >}} seconds per alert. The all-LLM agent took {{< num ch24 llm_seconds f1 >}}, about {{< num ch24 speedup int >}} times as long.
+@fig-trace shows the difference on a single alert, and it's mostly the width of the green, striped decide bars. Across the sample, the hybrid took {{< num ch24 v2_seconds f1 >}} seconds per alert. The all-LLM agent took {{< num ch24 llm_seconds f1 >}}, about {{< num ch24 speedup int >}} times as long.
 
 ![Four measures for the two agents on the same 700 live alerts, scaled to a day. The LLM's stated confidences sent far more alerts to review than the queue can take, so more real threats were never seen by a person.](/figures/ch24/compare.pdf){#fig-compare-17}
 
@@ -92,7 +96,11 @@ The simulated cost shows the same thing. It's about \${{< num ch24 hybrid_cost_1
 
 @fig-labour is the chart I find most revealing. In the all-LLM agent, most of the time goes on deciding. In the hybrid, the largest share is *writing*: case notes for analysts and messages for the analyst on call. That's where the LLM's time should go. A person will read those words, and fluent, specific writing is what LLMs do best.
 
-The hybrid doesn't use less LLM because LLMs are bad. It uses the LLM for the work only an LLM can do.
+The hybrid doesn't use less LLM because LLMs are bad.
+
+::: {.keyidea}
+Use the LLM for the work only an LLM can do.
+:::
 
 ::: {.breaks}
 Everything here is synthetic: the mock decides, the mock LLM writes, and the timings are simulated. The accuracy gap between the two agents is partly built into the mocks (Chapter 13 explained how). So treat the speed, the queue and the design lessons as the findings, not the quality of the verdicts. The all-LLM agent used the hybrid's policy thresholds. You could adjust them for its grouped confidences, but there are only a few values to put a threshold between. And the bug in this chapter shows that a hybrid agent has its own way to fail: a decision step that's wrong without any error. Watching each step's answers isn't optional.

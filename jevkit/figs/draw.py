@@ -11,7 +11,7 @@ import textwrap
 import numpy as np
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Circle, Rectangle, Polygon
 
-from .style import C, KIND, ZONE, ZONE_TEXT, setup, fig as _fig, TEXT_W, WIDE_W
+from .style import C, KIND, ZONE, ZONE_TEXT, ZONE_HATCH, setup, fig as _fig, TEXT_W, WIDE_W
 
 
 def canvas(width="text", height=2.0):
@@ -104,15 +104,25 @@ def zone_bar(ax, x, y, w, h, low, high, labels=True, size=6.8, ticks=True, names
         x0, x1 = xs[i], xs[i + 1]
         if x1 - x0 <= 0:
             continue
-        r = Rectangle((x0, y), x1 - x0, h, fc=ZONE[z], ec="white", lw=1.5, zorder=2)
+        # grey level and pattern both change from zone to zone, so the bar reads in black and white
+        r = Rectangle((x0, y), x1 - x0, h, fc=ZONE[z], ec="white", lw=1.5, hatch=ZONE_HATCH[z], zorder=2)
         ax.add_patch(r)
-        if labels and x1 - x0 > 0.35:
-            lab = names[i].upper()
+        if not labels:
+            continue
+        lab = names[i].upper()
+        if x1 - x0 > 0.35:
             ax.text((x0 + x1) / 2, y + h / 2 + (0.05 if sublabels else 0), lab, ha="center", va="center", fontsize=size,
-                    fontweight="bold", color=ZONE_TEXT[z], zorder=3)
+                    fontweight="bold", color=ZONE_TEXT[z], zorder=3,
+                    bbox=dict(boxstyle="square,pad=0.12", fc=ZONE[z], ec="none") if ZONE_HATCH[z] else None)
             if sublabels:
                 ax.text((x0 + x1) / 2, y + h / 2 - 0.09, sublabels[i], ha="center", va="center", fontsize=size - 1.2,
-                        color=ZONE_TEXT[z], zorder=3)
+                        color=ZONE_TEXT[z], zorder=3,
+                        bbox=dict(boxstyle="square,pad=0.08", fc=ZONE[z], ec="none") if ZONE_HATCH[z] else None)
+        else:
+            # too narrow for its name: label it just above the bar, with a short leader
+            ax.plot([(x0 + x1) / 2] * 2, [y + h, y + h + 0.06], color=C["ink2"], lw=0.5, zorder=3)
+            ax.text((x0 + x1) / 2, y + h + 0.07, lab, ha="left" if i == 0 else "center", va="bottom",
+                    fontsize=size - 0.8, fontweight="bold", color=C["ink"], zorder=3)
     if ticks:
         for v, xx in ((0, xs[0]), (low, xs[1]), (high, xs[2]), (1, xs[3])):
             ax.plot([xx, xx], [y - 0.05, y], color=C["ink2"], lw=0.6)

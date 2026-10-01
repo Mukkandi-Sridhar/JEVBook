@@ -71,13 +71,11 @@ So we turn the job around.
 
 Instead of telling the computer every rule, we give it a large set of emails where we already know the answer. This one was phishing. This one was fine. This one was phishing. Thousands of them.
 
-And we ask the computer to find the pattern that separates them.
+And we ask the computer to find the pattern that separates them. That's machine learning. In one sentence:
 
 ::: {.keyidea}
-That's machine learning.
+**Machine learning** is getting a computer to work out the rules itself, from examples where the answer is already known.
 :::
-
-In one sentence: **machine learning is getting a computer to work out the rules itself, from examples where the answer is already known.**
 
 Machine learning has been making decisions about you for years. Your bank may text you: *"Did you just spend \$640 at an electronics shop in another city?"* No one at the bank wrote a rule about you, that shop and that amount. A system learned what your normal spending looks like from millions of past payments, and this one didn't fit. When Netflix puts a documentary at the top of your screen, it's the same idea. Nobody wrote "people who watched these three shows want this one". The pattern came from examples.
 
@@ -153,12 +151,12 @@ Read those two lines again, because something has gone badly wrong.
 
 The machine searched every threshold and found the one with the fewest mistakes. It picked {{< num ch01 best_t f2 >}}, so it flags only the alerts with the very worst scores. Almost nothing gets flagged. And a "strategy" of never flagging anything at all makes only a few more mistakes.
 
-![Every possible threshold, and the mistakes it makes. Low thresholds give the team far too many false alarms; high ones miss attacks. The total is lowest at the far right, just below the dashed line for "flag nothing at all".](/figures/ch01/threshold-search.pdf){#fig-threshold-search}
+![Every possible threshold, and the mistakes it makes. Low thresholds give the team far too many false alarms; high ones miss attacks. The total is lowest at the far right, just below the thin dotted line for "flag nothing at all".](/figures/ch01/threshold-search.pdf){#fig-threshold-search}
 
 @fig-threshold-search shows why. There are so many harmless alerts that each false alarm hurts the rule's score more than catching an attack helps it. So the search moves the threshold higher and higher, until the rule has almost stopped raising alarms. Of {{< num ch01 attacks int >}} real attacks, the "best" rule catches {{< num ch01 best_caught int >}}.
 
 ::: {.keyidea}
-The machine learned exactly what we asked. We asked the wrong question.
+A model learns exactly what you ask for: ask the wrong question, and it learns the wrong thing.
 :::
 
 This is the most useful failure in the book, and it hides two separate problems.
@@ -188,7 +186,7 @@ Not "it's an attack". Not "it's fine". What we know is: *about one in five alert
 That number, a chance, tells you far more than a yes or a no. It tells the analyst how worried to be. It lets you sort the queue so the likeliest attacks come first. And, as you'll see in Chapter 4, it lets you put your threshold in the right place, once you've decided what each kind of mistake costs.
 
 ::: {.keyidea}
-A good model doesn't just answer. It says how sure it is, and it's right about how sure it is.
+A good model doesn't just answer: it says how sure it is, and it's right about how sure it is.
 :::
 
 That last part, being *right about how sure it is*, has a name: **calibration**. A model that gets it right is *calibrated*: its probabilities are honest. Chapter 3 is about it. For now, just notice that it's a very different goal from "make the fewest mistakes".

@@ -34,7 +34,7 @@ Q 2.88 28.08 2.88 32.4
 L 2.88 156.96 
 Q 2.88 161.28 7.2 161.28 
 z
-" clip-path="url(#p5b382bd1b7)" style="fill: #f1f2f4; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p51ebe9c308)" style="fill: #d5d8dd; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 92.88 161.28 
@@ -47,7 +47,7 @@ Q 88.56 28.08 88.56 32.4
 L 88.56 156.96 
 Q 88.56 161.28 92.88 161.28 
 z
-" clip-path="url(#p5b382bd1b7)" style="fill: #f1f2f4; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p51ebe9c308)" style="fill: #d5d8dd; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 178.56 161.28 
@@ -60,7 +60,7 @@ Q 174.24 28.08 174.24 32.4
 L 174.24 156.96 
 Q 174.24 161.28 178.56 161.28 
 z
-" clip-path="url(#p5b382bd1b7)" style="fill: #f1f2f4; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p51ebe9c308)" style="fill: #d5d8dd; stroke: #4b5563; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 264.24 161.28 
@@ -73,61 +73,61 @@ Q 259.92 28.08 259.92 32.4
 L 259.92 156.96 
 Q 259.92 161.28 264.24 161.28 
 z
-" clip-path="url(#p5b382bd1b7)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#p51ebe9c308)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 700; font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="8.64" y="42.42975" transform="rotate(-0 8.64 42.42975)">WEEK 1</text>
    </g>
    <g id="text_2">
-    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="8.64" y="59.610375" transform="rotate(-0 8.64 59.610375)">Audit</text>
+    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: start" x="8.64" y="59.610375" transform="rotate(-0 8.64 59.610375)">Audit</text>
    </g>
    <g id="text_3">
-    <text style="font-size: 5.7px; font-family: 'Inter'; fill: #1f2430" transform="translate(8.64 77.311702)">List every decision your</text>
-    <text style="font-size: 5.7px; font-family: 'Inter'; fill: #1f2430" transform="translate(8.64 86.237435)">system makes. Count</text>
-    <text style="font-size: 5.7px; font-family: 'Inter'; fill: #1f2430" transform="translate(8.64 95.799964)">them. Mark which are</text>
-    <text style="font-size: 5.7px; font-family: 'Inter'; fill: #1f2430" transform="translate(8.64 104.141001)">small, typed and</text>
-    <text style="font-size: 5.7px; font-family: 'Inter'; fill: #1f2430" transform="translate(8.64 113.215468)">frequent.</text>
+    <text style="font-size: 5.7px; font-family: 'Inter'" transform="translate(8.64 77.311702)">List every decision your</text>
+    <text style="font-size: 5.7px; font-family: 'Inter'" transform="translate(8.64 86.237435)">system makes. Count</text>
+    <text style="font-size: 5.7px; font-family: 'Inter'" transform="translate(8.64 95.799964)">them. Mark which are</text>
+    <text style="font-size: 5.7px; font-family: 'Inter'" transform="translate(8.64 104.141001)">small, typed and</text>
+    <text style="font-size: 5.7px; font-family: 'Inter'" transform="translate(8.64 113.215468)">frequent.</text>
    </g>
    <g id="text_4">
     <text style="font-weight: 700; font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="94.32" y="42.427031" transform="rotate(-0 94.32 42.427031)">WEEKS 2–4</text>
    </g>
    <g id="text_5">
-    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="94.32" y="59.460187" transform="rotate(-0 94.32 59.460187)">Measure</text>
+    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: start" x="94.32" y="59.460187" transform="rotate(-0 94.32 59.460187)">Measure</text>
    </g>
    <g id="text_6">
-    <text style="font-size: 5.7px; font-family: 'Inter'; fill: #1f2430" transform="translate(94.32 77.897733)">Pick one. Get a few</text>
-    <text style="font-size: 5.7px; font-family: 'Inter'; fill: #1f2430" transform="translate(94.32 86.766021)">hundred labels. Test</text>
-    <text style="font-size: 5.7px; font-family: 'Inter'; fill: #1f2430" transform="translate(94.32 95.221058)">ranking and calibration:</text>
-    <text style="font-size: 5.7px; font-family: 'Inter'; fill: #1f2430" transform="translate(94.32 104.180188)">Chapters 3, 11 and 13.</text>
+    <text style="font-size: 5.7px; font-family: 'Inter'" transform="translate(94.32 77.897733)">Pick one. Get a few</text>
+    <text style="font-size: 5.7px; font-family: 'Inter'" transform="translate(94.32 86.766021)">hundred labels. Test</text>
+    <text style="font-size: 5.7px; font-family: 'Inter'" transform="translate(94.32 95.221058)">ranking and calibration:</text>
+    <text style="font-size: 5.7px; font-family: 'Inter'" transform="translate(94.32 104.180188)">Chapters 3, 11 and 13.</text>
    </g>
    <g id="text_7">
     <text style="font-weight: 700; font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="180" y="42.42975" transform="rotate(-0 180 42.42975)">MONTH 2</text>
    </g>
    <g id="text_8">
-    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="180" y="59.495625" transform="rotate(-0 180 59.495625)">Shadow</text>
+    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: start" x="180" y="59.495625" transform="rotate(-0 180 59.495625)">Shadow</text>
    </g>
    <g id="text_9">
-    <text style="font-size: 5.7px; font-family: 'Inter'; fill: #1f2430" transform="translate(180 77.404772)">Put costs on mistakes,</text>
-    <text style="font-size: 5.7px; font-family: 'Inter'; fill: #1f2430" transform="translate(180 86.370583)">draw lines, run in</text>
-    <text style="font-size: 5.7px; font-family: 'Inter'; fill: #1f2430" transform="translate(180 95.214378)">shadow: Chapters 4, 14</text>
-    <text style="font-size: 5.7px; font-family: 'Inter'; fill: #1f2430" transform="translate(180 104.725696)">and 21.</text>
+    <text style="font-size: 5.7px; font-family: 'Inter'" transform="translate(180 77.404772)">Put costs on mistakes,</text>
+    <text style="font-size: 5.7px; font-family: 'Inter'" transform="translate(180 86.370583)">set thresholds, run in</text>
+    <text style="font-size: 5.7px; font-family: 'Inter'" transform="translate(180 95.214378)">shadow: Chapters 4, 14</text>
+    <text style="font-size: 5.7px; font-family: 'Inter'" transform="translate(180 104.725696)">and 21.</text>
    </g>
    <g id="text_10">
     <text style="font-weight: 700; font-size: 5.8px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="265.68" y="42.42975" transform="rotate(-0 265.68 42.42975)">MONTH 3</text>
    </g>
    <g id="text_11">
-    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="265.68" y="58.949437" transform="rotate(-0 265.68 58.949437)">Switch, and watch</text>
+    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter'; text-anchor: start" x="265.68" y="58.949437" transform="rotate(-0 265.68 58.949437)">Switch, and watch</text>
    </g>
    <g id="text_12">
-    <text style="font-size: 5.7px; font-family: 'Inter'; fill: #1f2430" transform="translate(265.68 77.897733)">Switch on with a fail-</text>
-    <text style="font-size: 5.7px; font-family: 'Inter'; fill: #1f2430" transform="translate(265.68 86.399974)">safe, an audit and a</text>
-    <text style="font-size: 5.7px; font-family: 'Inter'; fill: #1f2430" transform="translate(265.68 95.243323)">daily monitor. Then the</text>
-    <text style="font-size: 5.7px; font-family: 'Inter'; fill: #1f2430" transform="translate(265.68 104.768446)">next decision.</text>
+    <text style="font-size: 5.7px; font-family: 'Inter'" transform="translate(265.68 77.897733)">Switch on with a fail-</text>
+    <text style="font-size: 5.7px; font-family: 'Inter'" transform="translate(265.68 86.399974)">safe, an audit and a</text>
+    <text style="font-size: 5.7px; font-family: 'Inter'" transform="translate(265.68 95.243323)">daily monitor. Then the</text>
+    <text style="font-size: 5.7px; font-family: 'Inter'" transform="translate(265.68 104.768446)">next decision.</text>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="p5b382bd1b7">
+  <clipPath id="p51ebe9c308">
    <rect x="2.88" y="2.88" width="338.4" height="165.6"/>
   </clipPath>
  </defs>

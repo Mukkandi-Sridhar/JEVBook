@@ -34,7 +34,7 @@ Q 2.88 28.08 2.88 32.4
 L 2.88 66.96 
 Q 2.88 71.28 7.2 71.28 
 z
-" clip-path="url(#pe4341253e7)" style="fill: #fcebdc; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pffd3f5dbd8)" style="fill: #f3d2b6; stroke: #e07a1f; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 122.4 71.28 
@@ -47,7 +47,7 @@ Q 118.08 28.08 118.08 32.4
 L 118.08 66.96 
 Q 118.08 71.28 122.4 71.28 
 z
-" clip-path="url(#pe4341253e7)" style="fill: #e4edf8; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pffd3f5dbd8)" style="fill: #cbdaef; stroke: #2f6db5; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 237.6 71.28 
@@ -60,39 +60,39 @@ Q 233.28 28.08 233.28 32.4
 L 233.28 66.96 
 Q 233.28 71.28 237.6 71.28 
 z
-" clip-path="url(#pe4341253e7)" style="fill: #e2f2e9; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
+" clip-path="url(#pffd3f5dbd8)" style="fill: #c4e1d0; stroke: #3b9c6e; stroke-width: 0.9; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
-    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="55.08" y="51.611562" transform="rotate(-0 55.08 51.611562)">Working memory</text>
+    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: middle" x="55.08" y="51.611562" transform="rotate(-0 55.08 51.611562)">Working memory</text>
    </g>
    <g id="text_2">
     <text style="font-size: 5.9px; font-family: 'Inter'; fill: #4b5563" transform="translate(4.260711 87.459513)">the context window: what the model</text>
     <text style="font-size: 5.9px; font-family: 'Inter'; fill: #4b5563" transform="translate(29.875469 96.140694)">can see right now</text>
    </g>
    <g id="text_3">
-    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="170.28" y="51.618125" transform="rotate(-0 170.28 51.618125)">Reference memory</text>
+    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: middle" x="170.28" y="51.618125" transform="rotate(-0 170.28 51.618125)">Reference memory</text>
    </g>
    <g id="text_4">
     <text style="font-size: 5.9px; font-family: 'Inter'; fill: #4b5563" transform="translate(125.590258 87.489935)">documents fetched on demand:</text>
     <text style="font-size: 5.9px; font-family: 'Inter'; fill: #4b5563" transform="translate(124.614914 96.371624)">policies, runbooks, tickets (RAG)</text>
    </g>
    <g id="text_5">
-    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: middle; fill: #1f2430" x="285.48" y="51.532812" transform="rotate(-0 285.48 51.532812)">Case memory</text>
+    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: middle" x="285.48" y="51.532812" transform="rotate(-0 285.48 51.532812)">Case memory</text>
    </g>
    <g id="text_6">
     <text style="font-size: 5.9px; font-family: 'Inter'; fill: #4b5563" transform="translate(233.856836 86.894864)">what happened last time: past alerts,</text>
     <text style="font-size: 5.9px; font-family: 'Inter'; fill: #4b5563" transform="translate(248.653391 96.163741)">verdicts and analyst notes</text>
    </g>
    <g id="text_7">
-    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="2.88" y="13.451563" transform="rotate(-0 2.88 13.451563)">Three kinds of memory an agent can use</text>
+    <text style="font-weight: 700; font-size: 7px; font-family: 'Inter'; text-anchor: start" x="2.88" y="13.451563" transform="rotate(-0 2.88 13.451563)">Three kinds of memory an agent can use</text>
    </g>
    <g id="text_8">
-    <text style="font-weight: 600; font-size: 6.2px; font-family: 'Inter'; text-anchor: start; fill: #1f2430" x="2.88" y="141.373859" transform="rotate(-0 2.88 141.373859)">Every write and every read is a small decision: keep this? fetch that? is it relevant enough to trust?</text>
+    <text style="font-weight: 600; font-size: 6.2px; font-family: 'Inter'; text-anchor: start" x="2.88" y="141.373859" transform="rotate(-0 2.88 141.373859)">Every write and every read is a small decision: keep this? fetch that? is it relevant enough to trust?</text>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="pe4341253e7">
+  <clipPath id="pffd3f5dbd8">
    <rect x="2.88" y="2.88" width="338.4" height="144"/>
   </clipPath>
  </defs>

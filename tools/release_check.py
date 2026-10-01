@@ -1,7 +1,9 @@
 """Verify a release folder: python3 tools/release_check.py [release/v1.0]  -> release/<v>/checks.json
 
 Placeholders left anywhere, fonts embedded in every PDF, raster resolution in the interior, text inside the
-margins, blank pages, page sizes, the EPUB's figures and alt text, and cover/interior agreement.
+margins, blank pages, page sizes, the EPUB's figures and alt text, cover/interior agreement, every cover's size
+against the interior's page count and its paper (both editions), the black-and-white interior being true greyscale,
+and code lines that wrap (tools/check_code_wrap.py).
 """
 from __future__ import annotations
 
@@ -15,7 +17,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "cover"))
-from coverlib import AUTHOR, SUBTITLE, TITLE, figure_count  # noqa: E402
+from coverlib import AUTHOR, SUBTITLE, TITLE, Wrap, figure_count  # noqa: E402
 from wrap import case_study  # noqa: E402
 
 PATTERNS = [r"\[\[", r"TODO", r"VERIFY", r"[Pp]laceholder"]
@@ -74,6 +76,37 @@ def margins(p: Path, margin_in=0.9, tol_pt=3.5) -> dict:
     return dict(outside=out, blank_pages=blank)
 
 
+def covers_match(rel: Path, n_pages: int) -> dict:
+    """Each cover wrap's size must equal the size KDP's formula gives for this interior's page count and paper."""
+    dims = json.loads((rel / "print" / "cover-dimensions.json").read_text())
+    out = {}
+    for name, f in (("paperback", rel / "print" / "cover-paperback.pdf"), ("hardcover", rel / "print" / "cover-hardcover.pdf"),
+                    ("paperback-bw", rel / "print-bw" / "cover-paperback-bw.pdf")):
+        d = dims[name]
+        w = Wrap(d["kind"], pages=n_pages, paper=d["paper"])
+        got = size_in(f)
+        out[name] = dict(paper=d["paper"], pages_used=d["pages"], interior_pages=n_pages, spine_in=round(w.spine, 4),
+                         expected_in=[round(w.width, 4), round(w.height, 4)], pdf_in=got,
+                         ok=d["pages"] == n_pages and abs(got[0] - w.width) < 0.002 and abs(got[1] - w.height) < 0.002)
+    return out
+
+
+def greyscale_ok(p: Path) -> dict:
+    """True greyscale: every rendered page has no coloured pixel, and every embedded image is grey."""
+    import tempfile
+    import numpy as np
+    from PIL import Image
+    with tempfile.TemporaryDirectory() as d:
+        run("pdftoppm", "-r", "30", "-png", str(p), f"{d}/p")
+        coloured = []
+        for i, f in enumerate(sorted(Path(d).glob("p*.png")), 1):
+            a = np.asarray(Image.open(f).convert("RGB"), dtype=int)
+            if (a.max(axis=2) - a.min(axis=2)).max() > 3:
+                coloured.append(i)
+    imgs = [l.split() for l in run("pdfimages", "-list", str(p)).splitlines()[2:]]
+    return dict(coloured_pages=coloured, image_colour_spaces=sorted({r[5] for r in imgs}))
+
+
 def main(rel="release/v1.0"):
     rel = ROOT / rel
     res: dict = {}
@@ -91,7 +124,7 @@ def main(rel="release/v1.0"):
     hits = {"interior": scan(itext)}
     for f in sorted((rel / "preview").glob("*.pdf")):
         hits[f.name] = scan(pdf_text(f))
-    for f in sorted((rel / "print").glob("cover-*.pdf")):
+    for f in sorted((rel / "print").glob("cover-*.pdf")) + sorted((rel / "print-bw").glob("*.pdf")):
         hits[f.name] = scan(pdf_text(f))
     with zipfile.ZipFile(rel / "ebook" / "book.epub") as z:
         etext = " ".join(html.unescape(re.sub(r"<[^>]+>", "", z.read(n).decode("utf-8", "ignore")))
@@ -103,7 +136,8 @@ def main(rel="release/v1.0"):
                        png=sum(".png" in i for i in imgs))
     # fonts in every other PDF
     res["fonts"] = {}
-    for f in sorted(list((rel / "print").rglob("*.pdf")) + list((rel / "preview").glob("*.pdf"))):
+    for f in sorted(list((rel / "print").rglob("*.pdf")) + list((rel / "print-bw").rglob("*.pdf"))
+                    + list((rel / "preview").glob("*.pdf"))):
         n, bad = fonts_ok(f)
         res["fonts"][str(f.relative_to(rel))] = dict(count=n, not_embedded=len(bad), size_in=size_in(f), pages=pages(f))
     # cover and interior agree
@@ -121,9 +155,21 @@ def main(rel="release/v1.0"):
     res["agreement"]["case study matches"] = (res["agreement"]["case study on cover"]
                                              == res["agreement"]["case study in Chapter 18"])
     res["agreement"]["strap true"] = figs >= 130
+    # covers against the page count, for both editions; the black-and-white interior
+    res["covers"] = covers_match(rel, res["interior"]["pages"])
+    bw = rel / "print-bw" / "interior-bw.pdf"
+    bimgs = [l.split() for l in run("pdfimages", "-list", str(bw)).splitlines()[2:]]
+    res["bw_interior"] = dict(pages=pages(bw), size_in=size_in(bw), fonts_not_embedded=fonts_ok(bw)[1],
+                              raster_below_300ppi=[r[0] for r in bimgs if min(int(r[12]), int(r[13])) < 300],
+                              **greyscale_ok(bw))
+    res["colour_interior_has_colour"] = bool(greyscale_ok(interior)["coloured_pages"])
+    cw = subprocess.run([sys.executable, str(ROOT / "tools" / "check_code_wrap.py"), str(interior)],
+                        capture_output=True, text=True)
+    res["code_wrap"] = dict(ok=cw.returncode == 0, summary=cw.stdout.strip().splitlines()[-1])
     (rel / "checks.json").write_text(json.dumps(res, indent=1, ensure_ascii=False) + "\n")
     short = dict(interior={k: v for k, v in res["interior"].items() if k != "raster_images"},
                  placeholders={k: len(v) for k, v in hits.items()}, epub=res["epub"], agreement=res["agreement"],
+                 covers=res["covers"], bw_interior=res["bw_interior"], code_wrap=res["code_wrap"],
                  fonts={k: (v["not_embedded"], v["size_in"], v["pages"]) for k, v in res["fonts"].items()})
     print(json.dumps(short, indent=1, ensure_ascii=False))
 

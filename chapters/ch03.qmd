@@ -126,7 +126,7 @@ If log loss rewards calibrated probabilities, as Chapter 2 said, why would a mod
 
 **Rebalancing the data.** This is one of the most common causes, and people usually do it with good intentions. Attacks are rare, only {{< num ch04 base pct >}} of alerts. So someone decides the model needs to "see more attacks" and trains it on a 50/50 mix: every attack, plus the same number of harmless alerts chosen at random. The ranking is still fine. But the model has learned from a world where attacks are *common*, and it correctly reports probabilities for that world, not ours.
 
-![A model trained on 50/50 rebalanced data (red) thinks attacks are about ten times more common than they are, and its probabilities sit far below the diagonal. After Platt scaling fitted on a separate calibration set (green), the same model is well calibrated again.](/figures/ch04/rebalanced.pdf){#fig-rebalanced}
+![A model trained on 50/50 rebalanced data (red, solid line with squares) thinks attacks are about ten times more common than they are, and its probabilities sit far below the diagonal. After Platt scaling fitted on a separate calibration set (green, dashed line with circles), the same model is well calibrated again.](/figures/ch04/rebalanced.pdf){#fig-rebalanced}
 
 The rebalanced model's average prediction is {{< num ch04 bal_mean_pred pct >}}. The real attack rate is {{< num ch04 base pct >}}. Put a threshold on those numbers and you'll send your analysts far more alerts than they can handle.
 
@@ -187,7 +187,13 @@ A model can be well calibrated *overall* and badly calibrated for one group. Tak
 
 Its overall ECE is excellent: {{< num ch04 generic.ece f3 >}}. Endpoint alerts come from EDR (endpoint detection and response) tools. For them, it says {{< num ch04 by_source.EDR.pred pct1 >}} when the truth is {{< num ch04 by_source.EDR.actual pct1 >}}. DLP (data loss prevention) alerts warn that company data may be leaving the building. For them, it says {{< num ch04 by_source.DLP.pred pct1 >}} when the truth is {{< num ch04 by_source.DLP.actual pct1 >}}. The estimates that are too high and too low cancel out in the average.
 
-If your policy treats every source the same way, you'll send too many harmless DLP alerts to the queue and close too many real EDR ones. The rule is simple: **check calibration inside every group you'll treat differently**, and inside every group where a mistake would be especially costly. That means sources, customer tiers, languages and regions. It also means groups of people, such as age or gender, when a model affects people's lives.
+If your policy treats every source the same way, you'll send too many harmless DLP alerts to the queue and close too many real EDR ones. The rule is simple:
+
+::: {.keyidea}
+Check calibration inside every group you'll treat differently, not just on average.
+:::
+
+Do the same inside every group where a mistake would be especially costly. That means sources, customer tiers, languages and regions. It also means groups of people, such as age or gender, when a model affects people's lives.
 
 ::: {.threshold}
 Kestrel auto-closes any alert under 3%. The model above says EDR alerts average {{< num ch04 by_source.EDR.pred pct1 >}} risk, but they're really {{< num ch04 by_source.EDR.actual pct1 >}}. About how much more often than planned will a real EDR threat be auto-closed? Name two ways to fix this: one that changes the model, and one that changes only the policy.
