@@ -5,6 +5,15 @@ Kindle ebook. Screen and field names
 follow KDP's setup flow as documented in its help pages; the KDP site couldn't be opened from this build, so if a
 label differs, choose the closest match. Prices, dates and your account details are yours to fill.
 
+## 0. Assigned so far
+
+| Edition | ISBN | Imprint |
+|---|---|---|
+| Colour paperback (standard colour, 7 × 10 in) | 979-8-17825-770-8 (9798178257708), free KDP ISBN | Independently published |
+| Kindle ebook | none needed (Amazon gives it an ASIN) | |
+
+Each format needs its own ISBN: never reuse the paperback's for the ebook or a hardcover.
+
 ## 1. Details (the same for every edition)
 
 | Field | Enter |
