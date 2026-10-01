@@ -11,7 +11,7 @@
 <div class="kicker">Act, review or escalate</div>
 <h1>Threshold simulator</h1>
 <span class="tag">Synthetic: Kestrel's live week, jev-mock-synthetic probabilities after Platt scaling</span>
-<p>Set what mistakes cost at Kestrel. The lines come from the Chapter 14 formulas; the counts come from running those lines over the 5,027 alerts of the live week.</p>
+<p>Set what mistakes cost at Kestrel. The thresholds come from the Chapter 14 formulas; the counts come from running those thresholds over the 5,027 alerts of the live week.</p>
 
 <div class="card controls ui">
   <label>Missed real threat: <b id="missV"></b><input id="miss" type="range" min="1000" max="50000" step="500" value="10000"></label>
@@ -19,7 +19,7 @@
   <label>Share of threats a reviewer misses: <b id="mrV"></b><input id="mr" type="range" min="0" max="0.2" step="0.01" value="0.05"></label>
   <label>False page to on-call: <b id="pageV"></b><input id="page" type="range" min="50" max="2000" step="50" value="400"></label>
   <label>Reviews the team can clear per day: <b id="capV"></b><input id="cap" type="range" min="60" max="800" step="20" value="240"></label>
-  <label><input id="fit" type="checkbox" checked> Raise the low line until the queue fits</label>
+  <label><input id="fit" type="checkbox" checked> Raise the low threshold until the queue fits</label>
 </div>
 
 <div class="card">
@@ -43,7 +43,7 @@ function counts(low, high) {
   return {act, rev, esc, missed, revThreat, escThreat};
 }
 function draw(low, high) {
-  const x = p => 20 + 760 * Math.sqrt(p);                       // square-root scale so small lines are visible
+  const x = p => 20 + 760 * Math.sqrt(p);                       // square-root scale so thresholds near 0 are visible
   const z = [[0, low, "var(--act)", "ACT"], [low, high, "var(--review)", "REVIEW"], [high, 1, "var(--escalate)", "ESCALATE"]];
   let s = "";
   for (const [a, b, c, t] of z) {
@@ -60,12 +60,12 @@ function update() {
   $("missV").textContent = money(miss); $("revV").textContent = money(rev); $("mrV").textContent = Math.round(mr * 100) + "%";
   $("pageV").textContent = money(page); $("capV").textContent = cap;
   let low = rev / (miss * (1 - mr)), high = Math.max(low, (page - rev) / (page + mr * miss));
-  let c = counts(low, high), note = "Lines from costs alone.";
+  let c = counts(low, high), note = "Thresholds from costs alone.";
   if ($("fit").checked && c.rev / days > cap + 0.5) {
     const nHigh = sorted.findIndex(r => r[0] >= high), budget = Math.floor(cap * days);
     const k = (nHigh < 0 ? sorted.length : nHigh) - budget;
     if (k > 0) { low = sorted[k][0]; c = counts(low, high); }
-    note = "The low line was raised so the review queue fits the team. Every alert moved from review to auto-close is a cost you chose.";
+    note = "The low threshold was raised so the review queue fits the team. Every alert moved from review to auto-close is a cost you chose.";
   }
   draw(low, high);
   const cost = (c.missed * miss + c.rev * rev + c.revThreat * mr * miss + (c.esc - c.escThreat) * page) / days;

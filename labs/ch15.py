@@ -7,7 +7,7 @@
 # ---
 
 # %% [markdown]
-# # Lab 15 · A catalog of decision patterns
+# # Lab 15 · A catalogue of decision patterns
 #
 # *Decide, Don't Generate*, Chapter 15. Six patterns, each small enough to read in one screen.
 # Jev answers come from `jev-mock-synthetic` and the LLM is the book's `MockLLM`: synthetic throughout.
@@ -18,7 +18,7 @@
 import importlib.util, subprocess, sys
 if importlib.util.find_spec("jevkit") is None:
     subprocess.run([sys.executable, "-m", "pip", "install", "-q", "typesafe-sdk==0.7.2", "autograd",
-                    "git+https://github.com/Mukkandi-Sridhar/JEVBook"], check=True)
+                    "git+https://github.com/Mukkandi-Sridhar/decide-dont-generate"], check=True)
 
 # %%
 import numpy as np

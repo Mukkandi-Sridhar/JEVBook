@@ -19,8 +19,8 @@ from coverlib import (AUTHOR, C, COVER, PT, ROOT, Wrap, circle, contrast, fit, i
                       measure, mix, rect, render, strapline, svg_doc, text, to_pdf, to_png, wrap_lines, html_page)
 from concepts import SUB_LINES, zone_bar  # noqa: E402
 
-REPO_URL = "https://github.com/Mukkandi-Sridhar/JEVBook"
-REPO_LABEL = "github.com/Mukkandi-Sridhar/JEVBook"
+REPO_URL = "https://github.com/Mukkandi-Sridhar/decide-dont-generate"
+REPO_LABEL = "github.com/Mukkandi-Sridhar/decide-dont-generate"
 EMAIL = "sridhar.authorhub@gmail.com"
 AUTHOR_BIO = (f"{AUTHOR} is an applied AI engineer who builds agents and the decision systems behind them. "
               "He writes for engineers who want AI systems they can trust.")

@@ -10,8 +10,8 @@ book:
   author: "Sridhar Mukkandi"
   date: "2026"
   date-format: "YYYY"
-  site-url: https://mukkandi-sridhar.github.io/JEVBook
-  repo-url: https://github.com/Mukkandi-Sridhar/JEVBook
+  site-url: https://mukkandi-sridhar.github.io/decide-dont-generate
+  repo-url: https://github.com/Mukkandi-Sridhar/decide-dont-generate
   downloads: [pdf, epub]
   chapters:
     - index.qmd

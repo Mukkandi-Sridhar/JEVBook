@@ -32,7 +32,8 @@ Install the library and the book's toolkit (the labs do this for you):
 
 ```bash
 pip install typesafe-sdk==0.7.2
-pip install git+https://github.com/Mukkandi-Sridhar/JEVBook   # jevkit
+# jevkit, the book's toolkit
+pip install git+https://github.com/Mukkandi-Sridhar/decide-dont-generate
 ```
 
 Then make a call. Here it is against the mock.

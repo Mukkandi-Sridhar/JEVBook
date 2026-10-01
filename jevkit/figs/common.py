@@ -10,7 +10,7 @@ from .bookmap import PARTS, CHAPTERS
 from .style import C, ROOT, setup, TEXT_W, WIDE_W, save
 from . import draw
 
-SITE_BASE = "https://mukkandi-sridhar.github.io/JEVBook"
+SITE_BASE = "https://mukkandi-sridhar.github.io/decide-dont-generate"
 
 PART_KIND = {"I": "data", "II": "data", "III": "llm", "IV": "jev", "V": "jev", "VI": "jev"}
 

@@ -285,3 +285,9 @@ Newest decisions are appended at the bottom of each section.
   guides/, cover-dimensions.json) beside `print-bw/` (interior-bw.pdf, cover-paperback-bw.pdf, guides/,
   cover-dimensions.json). The old `print/` folder is gone; tools/release.py and tools/release_check.py write and
   check the new names.
+- **D-91 · Public companion repository (v1.0.4).** Readers get `Mukkandi-Sridhar/decide-dont-generate` (public, MIT):
+  jevkit, the 22 labs, the browser tools (published to GitHub Pages by a workflow), the figure code with its fonts
+  (OFL), `results/`, `docs/mock-design.md` and `docs/jev-facts.md` (its intro rewritten for readers, since the
+  draft markers it mentioned are gone), tests, CI and the weekly live-API check. This repository stays the private
+  workshop: chapters, covers, release files and notes. Every address the book prints now points to the public
+  repository; the widgets and figures say "thresholds", not "lines".

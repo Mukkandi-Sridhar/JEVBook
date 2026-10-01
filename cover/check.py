@@ -19,7 +19,7 @@ from coverlib import PT, Wrap, html_page, interior_pages  # noqa: E402
 from wrap import BG, BODY, HARDCOVER_PAPER, PAPERBACK_PAPER, barcode_local, case_study, wrap_svg  # noqa: E402
 from coverlib import strapline  # noqa: E402
 
-ALLOW = {"jev", "mukkandi", "sridhar", "jevbook", "llm", "llms", "soc", "api", "inr", "usd", "praise", "author", "bio",
+ALLOW = {"jev", "mukkandi", "sridhar", "jevbook", "dont", "llm", "llms", "soc", "api", "inr", "usd", "praise", "author", "bio",
          "price", "authorhub", "typesafe", "ne", "ra", "te", "gmail", "github", "com", "ated", "er", "ate", "gen", "ai", "agentic", "tech"}
 
 

@@ -18,7 +18,7 @@
 import importlib.util, subprocess, sys
 if importlib.util.find_spec("jevkit") is None:
     subprocess.run([sys.executable, "-m", "pip", "install", "-q", "typesafe-sdk==0.7.2", "autograd",
-                    "git+https://github.com/Mukkandi-Sridhar/JEVBook"], check=True)
+                    "git+https://github.com/Mukkandi-Sridhar/decide-dont-generate"], check=True)
 
 # %%
 from jevkit import econ, llm

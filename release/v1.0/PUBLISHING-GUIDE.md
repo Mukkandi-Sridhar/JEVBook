@@ -9,9 +9,7 @@ together. Add the black-and-white paperback and the hardcover later if people as
 
 ## Step 0. Before you start (one-time)
 
-- [ ] Fix the two things in the book that readers would notice: the companion website it prints
-      (mukkandi-sridhar.github.io/JEVBook) doesn't exist yet, and the repository has no LICENSE file although the
-      copyright page says the code is MIT-licensed. (Ask Claude to fix both; it takes a few minutes.)
+- [x] The companion repository and website are set up, and the book points to them (v1.0.4).
 - [ ] Download the files you'll upload. On GitHub, switch to the branch `claude/compassionate-planck-ao0jvq`, open
       `release/v1.0/`, click each file, then the download button:
   - `print-color/interior-color.pdf` (the inside of the book)

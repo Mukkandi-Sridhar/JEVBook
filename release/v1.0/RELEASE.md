@@ -1,6 +1,6 @@
-# Release v1.0.3: *Decide, Don't Generate*
+# Release v1.0.4: *Decide, Don't Generate*
 
-Built 1 October 2026 from branch `claude/compassionate-planck-ao0jvq`, tag `v1.0.3` (the folder keeps its v1.0
+Built 1 October 2026 from branch `claude/compassionate-planck-ao0jvq`, tag `v1.0.4` (the folder keeps its v1.0
 name so links to it don't break). What changed since v1.0 is under "v1.0.1: polish pass", "v1.0.2: code listings"
 and "v1.0.3: key ideas, and a book that works in black and white" below. Every check below was run on
 the files in this folder; the raw results are in `checks.json`.
@@ -340,6 +340,22 @@ EPUB. EPUBCheck: 0 fatals, 0 errors, 0 warnings; 138 images with alt text; 62 ke
 paperback 0.6337 in spine, hardcover 0.8227 in, black-and-white paperback 0.6080 in, each wrap the size KDP's
 formula gives. Cover and interior agree (54% → 89%; 138 figures, "130+").
 
+## v1.0.4: the companion repository
+
+The book now points readers to the public companion repository, **github.com/Mukkandi-Sridhar/decide-dont-generate**,
+and its website, **mukkandi-sridhar.github.io/decide-dont-generate**, instead of the private working repository.
+Changed in five places: the copyright page, the install command in "How to read this book" and Chapter 16 (where
+the comment moved to its own line so the longer address doesn't wrap), the widgets link, the back cover's address
+and QR code (all three paperback covers and the hardcover), and the sample's closing page. The companion repository
+holds the toolkit, all 22 labs, the four browser tools, the code behind every figure, `results/`, the two `docs/`
+pages the book cites, tests and CI, under the MIT licence; the chapters, covers and release files stay here. Both
+earlier open items are fixed by it: the website exists once its workflow has run, and the code has a LICENSE file.
+
+Checks: the same as v1.0.3, all passing, on the rebuilt files: 270 pages; fonts embedded; rasters 300 ppi; nothing
+outside the margins; 0 placeholders; 0 wrapped code lines; EPUBCheck clean; all four cover sizes match their paper
+(colour paperback 0.6337 in, standard-colour paperback 0.6080 in, black-and-white paperback 0.6080 in, hardcover
+0.8227 in); the black-and-white interior has no colour.
+
 ## Decisions for you
 
 1. **54% or 57%.** The book's Chapter 18 prints 54% → 89% (real threats seen by a person, same six analysts), and
@@ -348,10 +364,10 @@ formula gives. Cover and interior agree (54% → 89%; 138 figures, "130+").
    means changing the simulation, not the cover.
 2. **37 claims are still unverified.** The markers are gone but the checks aren't done: vendor numbers (latency,
    price, speed-ups), the Doom demo, attributed quotations and epigraphs. `docs/verify-ledger.md` lists each one.
-3. **The companion website printed in the book doesn't exist yet.** "How to read this book" names
+3. **~~The companion website printed in the book doesn't exist yet.~~** Fixed in v1.0.4 (see above). "How to read this book" names
    mukkandi-sridhar.github.io/JEVBook. Turn on GitHub Pages for the rendered site, or change that line to the
    repository URL before printing.
-4. **No LICENSE file.** The copyright page says the code is released under the MIT licence at the repository, but
+4. **~~No LICENSE file.~~** Fixed in v1.0.4: the companion repository is MIT-licensed. The copyright page says the code is released under the MIT licence at the repository, but
    the repository has no `LICENSE` file. Add one before release.
 5. **Acknowledgements.** Left out of this edition (no approved text). Add it if you want one.
 6. **KDP templates.** Check both covers against KDP's own templates for 270 pages, premium colour (see Step 3).

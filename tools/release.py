@@ -30,7 +30,7 @@ from coverlib import AUTHOR, C, PT, TITLE, SUBTITLE, Wrap, interior_pages, rect,
 from wrap import BG, EMAIL, PAPERBACK_PAPER, REPO_LABEL, back, front  # noqa: E402
 from coverlib import strapline  # noqa: E402
 
-REPO = "https://github.com/Mukkandi-Sridhar/JEVBook"
+REPO = "https://github.com/Mukkandi-Sridhar/decide-dont-generate"
 
 
 def clean_titles(w: PdfWriter):

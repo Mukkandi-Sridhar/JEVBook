@@ -178,7 +178,7 @@ def errors():
         # success and failure differ in words and style (italic for success), not only in colour
         draw.text(ax, 2.6, y, "retries, then succeeds" if res == "succeeds" else f"raises {res}", size=5.9,
                   family="JetBrains Mono", color="#1E5E42" if res == "succeeds" else C["fail"],
-                  style="italic" if res == "succeeds" else "normal", weight="semibold" if res == "succeeds" else "normal")
+                  style="italic" if res == "succeeds" else "normal", weight="bold" if res == "succeeds" else "normal")
     return f
 
 
