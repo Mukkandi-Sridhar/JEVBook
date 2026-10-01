@@ -37,5 +37,18 @@
     "edge_in": 0.125,
     "panel_in": "7.0000 x 10.0000",
     "spine_text": true
+  },
+  "paperback-standard-color": {
+    "kind": "paperback",
+    "pages": 270,
+    "paper": "standard_color",
+    "paper_in_per_page": 0.002252,
+    "trim": "7.0 x 10.0 in",
+    "spine_in": 0.608,
+    "width_in": 14.858,
+    "height_in": 10.25,
+    "edge_in": 0.125,
+    "panel_in": "7.0000 x 10.0000",
+    "spine_text": true
   }
 }

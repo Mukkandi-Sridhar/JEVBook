@@ -81,7 +81,8 @@ def covers_match(rel: Path, n_pages: int) -> dict:
     dims = json.loads((rel / "print-color" / "cover-dimensions.json").read_text())
     out = {}
     for name, f in (("paperback", rel / "print-color" / "cover-paperback-color.pdf"), ("hardcover", rel / "print-color" / "cover-hardcover-color.pdf"),
-                    ("paperback-bw", rel / "print-bw" / "cover-paperback-bw.pdf")):
+                    ("paperback-bw", rel / "print-bw" / "cover-paperback-bw.pdf"),
+                    ("paperback-standard-color", rel / "print-color" / "cover-paperback-standard-color.pdf")):
         d = dims[name]
         w = Wrap(d["kind"], pages=n_pages, paper=d["paper"])
         got = size_in(f)

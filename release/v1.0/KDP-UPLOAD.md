@@ -24,26 +24,21 @@ label differs, choose the closest match. Prices, dates and your account details 
 breaks); the store shows them as formatting. Every claim in it is true of the book.
 
 ```html
-<b>Most of what an AI agent does isn't writing. It's deciding.</b><br><br>
-Is this alert real? Which team gets this ticket? Is this action safe? Most agents hand every one of those small decisions to a large language model, then dig the answer out of a paragraph. It's slow, it's expensive, and the model sounds just as sure when it's wrong.<br><br>
-<b>This book teaches the missing piece: the decision layer.</b> You'll learn to get probabilities you can trust, turn them into actions with thresholds set by real costs, and build agents where a fast decision model decides and the LLM only writes.<br><br>
-<b>What you'll learn</b>
+<b>Your AI agent makes hundreds of small decisions a day. How many of them would you trust?</b><br><br>
+Is this alert real? Which team should get this ticket? Is it safe to run this command? Most agents send every one of these questions to a large language model and hope the paragraph that comes back has a usable answer in it. It works, sort of. It's slow, it costs more than it should, and the model sounds just as confident when it's wrong as when it's right.<br><br>
+This book is about doing it properly. It starts from the ground up: what a probability really means, how to tell whether a model's 80% actually happens 80% of the time, and how to turn that number into a decision you can defend. Act on it, send it to a person, or wake someone up.<br><br>
+You'll follow one fictional security team as their alerts pile up and their analysts run out of time. Every chapter has a lab you can run on your own laptop. You'll compare six ways to make the same decision, build an agent where a fast decision model decides and the LLM only writes, and finish with a small decision service you could really put into production.<br><br>
+<b>You'll learn how to:</b>
 <ul>
-<li>Check whether a model's probabilities are calibrated, and fix them when they aren't</li>
-<li>Set act, review and escalate thresholds from what each mistake costs, and from how many people you have</li>
-<li>Compare six ways to make the same decision, from hand-written rules to LLMs to a System One model</li>
-<li>Build a hybrid agent, a production decision service, and your own small System One model</li>
-<li>Run new systems in shadow mode, monitor drift, and give every failure a safe meaning</li>
+<li>check whether a model's probabilities can be trusted, and fix them when they can't</li>
+<li>set thresholds from what each mistake costs, and from how many people you have to review cases</li>
+<li>choose between rules, classic machine learning, LLMs and decision models for a given job</li>
+<li>build agents that know when they're unsure, and hand those cases to a person</li>
+<li>test, monitor and safely change a decision system once it's live</li>
 </ul>
-<b>What's inside</b>
-<ul>
-<li>22 chapters, from probability basics to production, written for students and engineers alike</li>
-<li>22 runnable labs in Python, around one realistic (synthetic) security team</li>
-<li>A free mock of the API: no API key, no cost, every example runs</li>
-<li>138 figures, 62 key ideas, and a revision list of all of them at the back</li>
-</ul>
-<b>Who it's for:</b> students learning machine learning, engineers building AI agents, and tech leads deciding what to build. Basic Python is enough.<br><br>
-<i>An independent guide. Not affiliated with TypeSafe AI.</i>
+<b>Inside:</b> 22 chapters and 22 Python labs, a free mock of the API so nothing costs money and you don't need a key, 138 figures, and a list of the 62 key ideas for quick revision.<br><br>
+<b>Who it's for:</b> computer science students, engineers building AI agents, and tech leads deciding what to build. If you can read basic Python, you can follow every chapter.<br><br>
+<i>An independent guide, not affiliated with TypeSafe AI. The security team and all its data are synthetic.</i>
 ```
 
 The plain-text version used before (no formatting) is in the repository history if KDP rejects the HTML.
@@ -81,13 +76,14 @@ that cost.
 |---|---:|---:|
 | Kindle ebook (KDP Select on) | $9.99 | about $5.70 (70%, minus about $1.80 delivery for the 12 MB file) |
 | Black-and-white paperback | $24.99 | $10.75 |
+| Colour paperback, standard colour (recommended) | $29.99 | $10.11 |
 | Colour paperback, premium colour | $39.99 | $5.44 |
-| Colour paperback, standard colour (option) | $34.99 | $13.11 |
 
 Premium colour is expensive to print: below $30.92 KDP won't accept the price at all. Standard colour prints the
 same figures on thinner paper with slightly less vivid ink, costs far less, and has the same paper thickness as the
 black-and-white edition, so `print-bw/cover-paperback-bw.pdf` (spine 0.608 in) fits it. Choose premium colour only
-if you want the best print quality. Set prices for amazon.in in rupees separately; KDP suggests them from the US
+if you want the best print quality; the step-by-step plan in `PUBLISHING-GUIDE.md` uses standard colour with
+`print-color/cover-paperback-standard-color.pdf`. Set prices for amazon.in in rupees separately; KDP suggests them from the US
 price.
 
 ## 2. AI-generated content (asked on the Details screen)

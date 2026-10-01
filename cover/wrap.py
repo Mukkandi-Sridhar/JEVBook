@@ -332,7 +332,9 @@ def build_wraps(strap):
     # which is thinner, so its paperback needs its own spine; the cover itself still prints in colour
     wraps = {"paperback": Wrap("paperback", pages=pages, paper=PAPERBACK_PAPER),
              "hardcover": Wrap("hardcover", pages=pages, paper=HARDCOVER_PAPER),
-             "paperback-bw": Wrap("paperback", pages=pages, paper=PAPERBACK_BW_PAPER)}
+             "paperback-bw": Wrap("paperback", pages=pages, paper=PAPERBACK_BW_PAPER),
+             # the colour paperback on KDP's cheaper standard colour ink: its paper is as thin as the B&W paper
+             "paperback-standard-color": Wrap("paperback", pages=pages, paper="standard_color")}
     report = {}
     for name, wr in wraps.items():
         for g in (False, True):

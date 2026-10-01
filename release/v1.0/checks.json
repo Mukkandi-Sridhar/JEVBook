@@ -64,6 +64,7 @@
   "sample-chapters.pdf": [],
   "cover-hardcover-color.pdf": [],
   "cover-paperback-color.pdf": [],
+  "cover-paperback-standard-color.pdf": [],
   "cover-paperback-bw.pdf": [],
   "interior-bw.pdf": [],
   "book.epub": []
@@ -137,6 +138,15 @@
    ],
    "pages": 1
   },
+  "print-color/cover-paperback-standard-color.pdf": {
+   "count": 20,
+   "not_embedded": 0,
+   "size_in": [
+    14.8581,
+    10.25
+   ],
+   "pages": 1
+  },
   "print-color/guides/cover-hardcover-color-guides.pdf": {
    "count": 23,
    "not_embedded": 0,
@@ -151,6 +161,15 @@
    "not_embedded": 0,
    "size_in": [
     14.8838,
+    10.25
+   ],
+   "pages": 1
+  },
+  "print-color/guides/cover-paperback-standard-color-guides.pdf": {
+   "count": 22,
+   "not_embedded": 0,
+   "size_in": [
+    14.8581,
     10.25
    ],
    "pages": 1
@@ -215,6 +234,21 @@
   },
   "paperback-bw": {
    "paper": "bw_white",
+   "pages_used": 270,
+   "interior_pages": 270,
+   "spine_in": 0.608,
+   "expected_in": [
+    14.858,
+    10.25
+   ],
+   "pdf_in": [
+    14.8581,
+    10.25
+   ],
+   "ok": true
+  },
+  "paperback-standard-color": {
+   "paper": "standard_color",
    "pages_used": 270,
    "interior_pages": 270,
    "spine_in": 0.608,

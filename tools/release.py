@@ -175,6 +175,9 @@ def main(interior_src: str, epub: str, version: str = "v1.0"):
         shutil.copy(cov / "print" / f"cover-{kind}.pdf", out / "print-color" / f"cover-{kind}-color.pdf")
         shutil.copy(cov / "print" / f"cover-{kind}-guides.pdf", out / "print-color" / "guides" / f"cover-{kind}-color-guides.pdf")
     shutil.copy(cov / "print" / "dimensions.json", out / "print-color" / "cover-dimensions.json")
+    shutil.copy(cov / "print" / "cover-paperback-standard-color.pdf", out / "print-color" / "cover-paperback-standard-color.pdf")
+    shutil.copy(cov / "print" / "cover-paperback-standard-color-guides.pdf",
+                out / "print-color" / "guides" / "cover-paperback-standard-color-guides.pdf")
     greyscale(out / "print-color" / "interior-color.pdf", out / "print-bw" / "interior-bw.pdf")
     shutil.copy(cov / "print" / "cover-paperback-bw.pdf", out / "print-bw" / "cover-paperback-bw.pdf")
     shutil.copy(cov / "print" / "cover-paperback-bw-guides.pdf", out / "print-bw" / "guides" / "cover-paperback-bw-guides.pdf")

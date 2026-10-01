@@ -1,0 +1,392 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="14.858in" height="10.25in" viewBox="0 0 1069.776 738.000">
+<rect x="0.00" y="0.00" width="1069.78" height="738.00" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<g id="back" transform="translate(9.00,9.00)"><svg width="504.00" height="720.00" overflow="visible"><rect x="0.00" y="0.00" width="504.00" height="720.00" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<text x="40.32" y="81.92" font-family="'Inter'" font-size="25.00" font-weight="800" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="-0.25" >Most of what an AI agent does</text>
+<text x="40.32" y="112.42" font-family="'Inter'" font-size="25.00" font-weight="800" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="-0.25" >isn’t writing. </text>
+<text x="197.72" y="112.42" font-family="'Inter'" font-size="25.00" font-weight="800" font-style="normal" fill="#4FBA85" text-anchor="start" letter-spacing="-0.25" >It’s deciding.</text>
+<text x="40.32" y="151.17" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >Is this alert real? Which team gets this ticket? Is this action safe? Most agents give</text>
+<text x="40.32" y="166.17" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >every one of those small decisions to a large language model. Then code has to</text>
+<text x="40.32" y="181.17" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >find the answer inside a paragraph. It works, but it’s slow and expensive, and the</text>
+<text x="40.32" y="196.17" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >model sounds just as sure when it’s wrong.</text>
+<text x="40.32" y="217.92" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >This book shows you a better way to build the decision layer. You’ll get calibrated</text>
+<text x="40.32" y="232.92" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >probabilities that mean what they say, thresholds set by what each mistake costs,</text>
+<text x="40.32" y="247.92" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >and a clear rule for when to give a case to a person. Every step is built with</text>
+<text x="40.32" y="262.92" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >runnable code, around a realistic (synthetic) security team. You’ll work with Jev, a</text>
+<text x="40.32" y="277.92" font-family="'Source Serif 4'" font-size="10.60" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >new System One model, through a free mock that needs no API key.</text>
+<text x="40.32" y="310.67" font-family="'Inter'" font-size="10.50" font-weight="700" font-style="normal" fill="#4FBA85" text-anchor="start" letter-spacing="0.00" >Inside, you’ll learn to:</text>
+<circle cx="43.32" cy="328.61" r="1.90" fill="#4FBA85" stroke="none" stroke-width="0.00"/>
+<text x="52.32" y="331.68" font-family="'Inter'" font-size="9.30" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >Check whether a model’s probabilities mean what they</text>
+<text x="52.32" y="344.28" font-family="'Inter'" font-size="9.30" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >say, and fix them when they don’t</text>
+<circle cx="43.32" cy="358.22" r="1.90" fill="#4FBA85" stroke="none" stroke-width="0.00"/>
+<text x="52.32" y="361.29" font-family="'Inter'" font-size="9.30" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >Turn a probability into act, review or escalate, with</text>
+<text x="52.32" y="373.89" font-family="'Inter'" font-size="9.30" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >thresholds set by real costs and real capacity</text>
+<circle cx="43.32" cy="387.83" r="1.90" fill="#4FBA85" stroke="none" stroke-width="0.00"/>
+<text x="52.32" y="390.90" font-family="'Inter'" font-size="9.30" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >Compare six ways to make the same decision, from</text>
+<text x="52.32" y="403.50" font-family="'Inter'" font-size="9.30" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >hand-written rules to LLMs to Jev</text>
+<circle cx="43.32" cy="417.44" r="1.90" fill="#4FBA85" stroke="none" stroke-width="0.00"/>
+<text x="52.32" y="420.51" font-family="'Inter'" font-size="9.30" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >Build a hybrid agent in which Jev decides and the LLM</text>
+<text x="52.32" y="433.11" font-family="'Inter'" font-size="9.30" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >reads and writes</text>
+<circle cx="43.32" cy="447.05" r="1.90" fill="#4FBA85" stroke="none" stroke-width="0.00"/>
+<text x="52.32" y="450.12" font-family="'Inter'" font-size="9.30" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >Build your own small System One model, with typed</text>
+<text x="52.32" y="462.72" font-family="'Inter'" font-size="9.30" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >heads and calibration built in</text>
+<rect x="308.74" y="298.67" width="154.94" height="118.00" rx="5.00" fill="#1C2230" stroke="none" stroke-width="0.00" />
+<text x="319.74" y="316.67" font-family="'Inter'" font-size="8.40" font-weight="600" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="0.00" >Real threats seen by a person</text>
+<text x="319.74" y="327.67" font-family="'Inter'" font-size="7.60" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >same six analysts</text>
+<text x="319.74" y="346.67" font-family="'JetBrains Mono'" font-size="7.60" font-weight="400" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >before</text>
+<rect x="319.74" y="350.67" width="132.94" height="7.00" rx="3.50" fill="#343A48" stroke="none" stroke-width="0.00" />
+<rect x="319.74" y="350.67" width="71.63" height="7.00" rx="3.50" fill="#8A919C" stroke="none" stroke-width="0.00" />
+<text x="452.68" y="346.67" font-family="'Inter'" font-size="9.50" font-weight="700" font-style="normal" fill="#8A919C" text-anchor="end" letter-spacing="0.00" >54%</text>
+<text x="319.74" y="373.67" font-family="'JetBrains Mono'" font-size="7.60" font-weight="400" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >after</text>
+<rect x="319.74" y="377.67" width="132.94" height="7.00" rx="3.50" fill="#274343" stroke="none" stroke-width="0.00" />
+<rect x="319.74" y="377.67" width="118.42" height="7.00" rx="3.50" fill="#4FBA85" stroke="none" stroke-width="0.00" />
+<text x="452.68" y="373.67" font-family="'Inter'" font-size="9.50" font-weight="700" font-style="normal" fill="#4FBA85" text-anchor="end" letter-spacing="0.00" >89%</text>
+<text x="319.74" y="408.67" font-family="'Inter'" font-size="6.80" font-weight="400" font-style="italic" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >From the book’s synthetic</text>
+<text x="319.74" y="417.17" font-family="'Inter'" font-size="6.80" font-weight="400" font-style="italic" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >case study (Chapter 18)</text>
+<text x="40.32" y="482.72" font-family="'Inter'" font-size="9.30" font-weight="500" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >For students, engineers building agents, and tech leads deciding what to build.</text>
+<line x1="40.32" y1="498.72" x2="463.68" y2="498.72" stroke="#494F5B" stroke-width="0.60"/>
+<text x="40.32" y="521.72" font-family="'Inter'" font-size="9.00" font-weight="700" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="0.00" >About the author</text>
+<text x="40.32" y="535.72" font-family="'Inter'" font-size="8.80" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >Sridhar Mukkandi is an applied AI engineer who builds agents and the decision systems behind them.</text>
+<text x="40.32" y="547.72" font-family="'Inter'" font-size="8.80" font-weight="400" font-style="normal" fill="#D5D9DF" text-anchor="start" letter-spacing="0.00" >He writes for engineers who want AI systems they can trust.</text>
+<text x="40.32" y="561.72" font-family="'JetBrains Mono'" font-size="8.00" font-weight="400" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >sridhar.authorhub@gmail.com</text>
+<text x="40.32" y="578.72" font-family="'Inter'" font-size="7.20" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >An independent guide. Not affiliated with TypeSafe AI.</text>
+<rect x="40.32" y="608.72" width="50.05" height="50.05" rx="1.35" fill="#F3F4F6" stroke="none" stroke-width="0.00" class="qrplate"/>
+<rect x="43.03" y="611.43" width="9.52" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="53.85" y="611.43" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="60.61" y="611.43" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="64.67" y="611.43" width="6.81" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="74.14" y="611.43" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="78.20" y="611.43" width="9.52" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="612.78" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="51.14" y="612.78" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="55.20" y="612.78" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="64.67" y="612.78" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="70.08" y="612.78" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="78.20" y="612.78" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="86.31" y="612.78" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="614.13" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="45.73" y="614.13" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="51.14" y="614.13" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="55.20" y="614.13" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="57.91" y="614.13" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="66.02" y="614.13" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="70.08" y="614.13" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="78.20" y="614.13" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="80.90" y="614.13" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="86.31" y="614.13" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="615.48" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="45.73" y="615.48" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="51.14" y="615.48" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="57.91" y="615.48" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="61.96" y="615.48" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="71.43" y="615.48" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="75.49" y="615.48" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="78.20" y="615.48" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="80.90" y="615.48" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="86.31" y="615.48" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="616.84" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="45.73" y="616.84" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="51.14" y="616.84" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="53.85" y="616.84" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="56.55" y="616.84" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="61.96" y="616.84" width="6.81" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="71.43" y="616.84" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="78.20" y="616.84" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="80.90" y="616.84" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="86.31" y="616.84" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="618.19" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="51.14" y="618.19" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="53.85" y="618.19" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="59.26" y="618.19" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="66.02" y="618.19" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="78.20" y="618.19" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="86.31" y="618.19" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="619.54" width="9.52" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="53.85" y="619.54" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="56.55" y="619.54" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="59.26" y="619.54" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="61.96" y="619.54" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="64.67" y="619.54" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="67.37" y="619.54" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="70.08" y="619.54" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="72.79" y="619.54" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="75.49" y="619.54" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="78.20" y="619.54" width="9.52" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="55.20" y="620.89" width="5.46" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="61.96" y="620.89" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="71.43" y="620.89" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="74.14" y="620.89" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="44.38" y="622.25" width="9.52" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="56.55" y="622.25" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="61.96" y="622.25" width="5.46" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="70.08" y="622.25" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="74.14" y="622.25" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="79.55" y="622.25" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="86.31" y="622.25" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="623.60" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="48.44" y="623.60" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="57.91" y="623.60" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="61.96" y="623.60" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="64.67" y="623.60" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="67.37" y="623.60" width="5.46" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="74.14" y="623.60" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="78.20" y="623.60" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="82.25" y="623.60" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="86.31" y="623.60" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="44.38" y="624.95" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="47.08" y="624.95" width="8.17" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="56.55" y="624.95" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="61.96" y="624.95" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="67.37" y="624.95" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="70.08" y="624.95" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="75.49" y="624.95" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="78.20" y="624.95" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="80.90" y="624.95" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="83.61" y="624.95" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="44.38" y="626.31" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="52.49" y="626.31" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="55.20" y="626.31" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="59.26" y="626.31" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="64.67" y="626.31" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="70.08" y="626.31" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="75.49" y="626.31" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="80.90" y="626.31" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="86.31" y="626.31" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="627.66" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="45.73" y="627.66" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="48.44" y="627.66" width="5.46" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="55.20" y="627.66" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="61.96" y="627.66" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="67.37" y="627.66" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="71.43" y="627.66" width="6.81" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="79.55" y="627.66" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="84.96" y="627.66" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="629.01" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="53.85" y="629.01" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="60.61" y="629.01" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="63.32" y="629.01" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="72.79" y="629.01" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="78.20" y="629.01" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="82.25" y="629.01" width="5.46" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="44.38" y="630.36" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="47.08" y="630.36" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="49.79" y="630.36" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="56.55" y="630.36" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="60.61" y="630.36" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="66.02" y="630.36" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="70.08" y="630.36" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="72.79" y="630.36" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="75.49" y="630.36" width="6.81" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="83.61" y="630.36" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="44.38" y="631.72" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="48.44" y="631.72" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="52.49" y="631.72" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="57.91" y="631.72" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="63.32" y="631.72" width="6.81" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="71.43" y="631.72" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="74.14" y="631.72" width="6.81" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="82.25" y="631.72" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="633.07" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="49.79" y="633.07" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="53.85" y="633.07" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="57.91" y="633.07" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="60.61" y="633.07" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="66.02" y="633.07" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="72.79" y="633.07" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="75.49" y="633.07" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="79.55" y="633.07" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="86.31" y="633.07" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="634.42" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="45.73" y="634.42" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="55.20" y="634.42" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="60.61" y="634.42" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="64.67" y="634.42" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="67.37" y="634.42" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="70.08" y="634.42" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="74.14" y="634.42" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="78.20" y="634.42" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="82.25" y="634.42" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="86.31" y="634.42" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="635.77" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="47.08" y="635.77" width="8.17" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="57.91" y="635.77" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="64.67" y="635.77" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="70.08" y="635.77" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="72.79" y="635.77" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="75.49" y="635.77" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="79.55" y="635.77" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="83.61" y="635.77" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="45.73" y="637.13" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="52.49" y="637.13" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="57.91" y="637.13" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="60.61" y="637.13" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="68.73" y="637.13" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="79.55" y="637.13" width="6.81" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="638.48" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="45.73" y="638.48" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="49.79" y="638.48" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="53.85" y="638.48" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="56.55" y="638.48" width="5.46" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="64.67" y="638.48" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="68.73" y="638.48" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="71.43" y="638.48" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="76.84" y="638.48" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="80.90" y="638.48" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="639.83" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="45.73" y="639.83" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="48.44" y="639.83" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="52.49" y="639.83" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="55.20" y="639.83" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="61.96" y="639.83" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="64.67" y="639.83" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="67.37" y="639.83" width="5.46" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="74.14" y="639.83" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="78.20" y="639.83" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="86.31" y="639.83" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="641.19" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="45.73" y="641.19" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="51.14" y="641.19" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="56.55" y="641.19" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="60.61" y="641.19" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="64.67" y="641.19" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="67.37" y="641.19" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="70.08" y="641.19" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="76.84" y="641.19" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="80.90" y="641.19" width="5.46" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="642.54" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="47.08" y="642.54" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="52.49" y="642.54" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="56.55" y="642.54" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="66.02" y="642.54" width="8.17" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="75.49" y="642.54" width="5.46" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="83.61" y="642.54" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="643.89" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="47.08" y="643.89" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="49.79" y="643.89" width="6.81" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="59.26" y="643.89" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="64.67" y="643.89" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="68.73" y="643.89" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="72.79" y="643.89" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="75.49" y="643.89" width="6.81" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="86.31" y="643.89" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="53.85" y="645.24" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="59.26" y="645.24" width="6.81" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="67.37" y="645.24" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="71.43" y="645.24" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="74.14" y="645.24" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="80.90" y="645.24" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="83.61" y="645.24" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="86.31" y="645.24" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="646.60" width="9.52" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="53.85" y="646.60" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="59.26" y="646.60" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="63.32" y="646.60" width="5.46" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="70.08" y="646.60" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="74.14" y="646.60" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="78.20" y="646.60" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="80.90" y="646.60" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="83.61" y="646.60" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="647.95" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="51.14" y="647.95" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="53.85" y="647.95" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="59.26" y="647.95" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="70.08" y="647.95" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="74.14" y="647.95" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="80.90" y="647.95" width="6.81" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="649.30" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="45.73" y="649.30" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="51.14" y="649.30" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="53.85" y="649.30" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="59.26" y="649.30" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="61.96" y="649.30" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="66.02" y="649.30" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="68.73" y="649.30" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="72.79" y="649.30" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="75.49" y="649.30" width="8.17" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="86.31" y="649.30" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="650.65" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="45.73" y="650.65" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="51.14" y="650.65" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="53.85" y="650.65" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="57.91" y="650.65" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="60.61" y="650.65" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="66.02" y="650.65" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="68.73" y="650.65" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="74.14" y="650.65" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="80.90" y="650.65" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="86.31" y="650.65" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="652.01" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="45.73" y="652.01" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="51.14" y="652.01" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="53.85" y="652.01" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="59.26" y="652.01" width="5.46" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="70.08" y="652.01" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="72.79" y="652.01" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="78.20" y="652.01" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="82.25" y="652.01" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="653.36" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="51.14" y="653.36" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="53.85" y="653.36" width="5.46" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="60.61" y="653.36" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="67.37" y="653.36" width="6.81" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="78.20" y="653.36" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="80.90" y="653.36" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="43.03" y="654.71" width="9.52" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="55.20" y="654.71" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="59.26" y="654.71" width="2.76" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="66.02" y="654.71" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="72.79" y="654.71" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="79.55" y="654.71" width="1.40" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<rect x="82.25" y="654.71" width="4.11" height="1.40" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<text x="40.32" y="667.77" font-family="'JetBrains Mono'" font-size="6.30" font-weight="400" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >github.com/Mukkandi-Sridhar/JEVBook</text>
+<text x="106.21" y="619.43" font-family="'Inter'" font-size="7.60" font-weight="600" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="0.00" >Labs, figures and code</text>
+<text x="106.21" y="630.43" font-family="'Inter'" font-size="7.20" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >Scan for the companion repository</text>
+<text x="106.21" y="654.07" font-family="'Inter'" font-size="7.60" font-weight="600" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >Artificial Intelligence / Machine Learning</text></svg></g>
+<g transform="translate(513.00,9.00)"><rect x="0.00" y="0.00" width="43.78" height="720.00" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<g transform="translate(28.43,32.40) rotate(90)">
+<text x="0.00" y="0.00" font-family="'Inter'" font-size="18.00" font-weight="800" font-style="normal" fill="#4FBA85" text-anchor="start" letter-spacing="0.00" >Decide,</text>
+<text x="71.43" y="0.00" font-family="'Inter'" font-size="18.00" font-weight="800" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="0.00" >Don’t Generate</text>
+</g>
+<g transform="translate(26.60,537.96) rotate(90)">
+<text x="0.00" y="0.00" font-family="'Inter'" font-size="12.96" font-weight="600" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >Sridhar Mukkandi</text>
+</g>
+<rect x="18.82" y="663.12" width="6.13" height="12.51" rx="3.06" fill="#B7A6E0" stroke="none" stroke-width="0.00" />
+<rect x="18.82" y="676.83" width="6.13" height="6.14" rx="3.06" fill="#8468C9" stroke="none" stroke-width="0.00" />
+<rect x="18.82" y="684.17" width="6.13" height="2.23" rx="3.06" fill="#4B2C8F" stroke="none" stroke-width="0.00" /></g>
+<g id="front" transform="translate(556.78,9.00)"><svg width="504.00" height="720.00" overflow="visible"><rect x="0.00" y="0.00" width="504.00" height="720.00" rx="0.00" fill="#141925" stroke="none" stroke-width="0.00" />
+<text x="34.60" y="219.58" font-family="'Inter'" font-size="117.75" font-weight="800" font-style="normal" fill="#4FBA85" text-anchor="start" letter-spacing="-3.53" >Decide,</text>
+<text x="37.19" y="302.94" font-family="'Inter'" font-size="70.65" font-weight="800" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="-1.77" >Don’t</text>
+<rect x="32.95" y="324.14" width="145.52" height="70.65" rx="7.07" fill="none" stroke="#AE6A30" stroke-width="1.55" />
+<text x="37.19" y="380.66" font-family="'Inter'" font-size="70.65" font-weight="800" font-style="normal" fill="#F08C35" text-anchor="start" letter-spacing="-1.77" >Gen</text>
+<rect x="182.71" y="321.66" width="78.86" height="70.65" rx="7.07" fill="none" stroke="#995E2F" stroke-width="1.55" />
+<text x="186.95" y="378.19" font-family="'Inter'" font-size="70.65" font-weight="800" font-style="normal" fill="#DE8334" text-anchor="start" letter-spacing="-1.77" >er</text>
+<rect x="265.81" y="319.19" width="115.31" height="70.65" rx="7.07" fill="none" stroke="#84532D" stroke-width="1.55" />
+<text x="270.05" y="375.71" font-family="'Inter'" font-size="70.65" font-weight="800" font-style="normal" fill="#CD7A32" text-anchor="start" letter-spacing="-1.77" >ate</text>
+<rect x="385.64" y="328.45" width="27.93" height="20.98" rx="3.89" fill="none" stroke="#68452B" stroke-width="0.80" />
+<text x="390.30" y="343.21" font-family="'JetBrains Mono'" font-size="15.54" font-weight="500" font-style="normal" fill="#82522D" text-anchor="start" letter-spacing="0.00" class="frag">ne</text>
+<rect x="401.84" y="352.03" width="24.83" height="18.60" rx="3.44" fill="none" stroke="#563C2A" stroke-width="0.80" />
+<text x="405.97" y="365.11" font-family="'JetBrains Mono'" font-size="13.78" font-weight="500" font-style="normal" fill="#70492C" text-anchor="start" letter-spacing="0.00" class="frag">ra</text>
+<rect x="416.30" y="375.61" width="21.61" height="16.21" rx="3.00" fill="none" stroke="#443229" stroke-width="0.80" />
+<text x="419.90" y="387.02" font-family="'JetBrains Mono'" font-size="12.01" font-weight="500" font-style="normal" fill="#5F402A" text-anchor="start" letter-spacing="0.00" class="frag">te</text>
+<rect x="39.31" y="447.78" width="236.21" height="8.64" rx="4.32" fill="#B7A6E0" stroke="none" stroke-width="0.00" />
+<text x="39.31" y="470.93" font-family="'JetBrains Mono'" font-size="9.07" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >act</text>
+<rect x="277.52" y="447.78" width="125.61" height="8.64" rx="4.32" fill="#8468C9" stroke="none" stroke-width="0.00" />
+<text x="277.52" y="470.93" font-family="'JetBrains Mono'" font-size="9.07" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >review</text>
+<rect x="405.14" y="447.78" width="57.55" height="8.64" rx="4.32" fill="#4B2C8F" stroke="none" stroke-width="0.00" />
+<text x="405.14" y="470.93" font-family="'JetBrains Mono'" font-size="9.07" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >escalate</text>
+<text x="39.31" y="552.18" font-family="'Inter'" font-size="26.21" font-weight="500" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >Jev, System One Models, and the</text>
+<text x="39.31" y="585.72" font-family="'Inter'" font-size="26.21" font-weight="500" font-style="normal" fill="#C9CED6" text-anchor="start" letter-spacing="0.00" >Decision Layer of Agentic AI</text>
+<text x="39.31" y="656.31" font-family="'JetBrains Mono'" font-size="9.83" font-weight="400" font-style="normal" fill="#8A919C" text-anchor="start" letter-spacing="0.00" >Runnable labs · 130+ figures · no API key needed</text>
+<text x="39.31" y="684.62" font-family="'Inter'" font-size="18.14" font-weight="600" font-style="normal" fill="#F3F4F6" text-anchor="start" letter-spacing="0.30" >Sridhar Mukkandi</text></svg></g>
+<g id="guides" font-family="JetBrains Mono">
+<rect x="9.00" y="9.00" width="1051.78" height="720.00" rx="0.00" fill="none" stroke="#00A6D6" stroke-width="0.60" />
+<line x1="513.00" y1="0.00" x2="513.00" y2="738.00" stroke="#00A6D6" stroke-width="0.60"/>
+<line x1="556.78" y1="0.00" x2="556.78" y2="738.00" stroke="#00A6D6" stroke-width="0.60"/>
+<rect x="517.50" y="9.00" width="34.78" height="720.00" rx="0.00" fill="none" stroke="#E0198A" stroke-width="0.50" stroke-dasharray="2 2"/>
+<rect x="27.00" y="27.00" width="468.00" height="684.00" rx="0.00" fill="none" stroke="#E0198A" stroke-width="0.50" stroke-dasharray="4 3"/>
+<rect x="574.78" y="27.00" width="468.00" height="684.00" rx="0.00" fill="none" stroke="#E0198A" stroke-width="0.50" stroke-dasharray="4 3"/>
+<rect x="351.00" y="624.60" width="144.00" height="86.40" rx="0.00" fill="#FFF6CC" stroke="#E0B000" stroke-width="0.80" />
+<text x="423.00" y="663.80" font-family="'Inter'" font-size="8.00" font-weight="400" font-style="normal" fill="#6B5800" text-anchor="middle" letter-spacing="0.00" >BARCODE AREA</text>
+<text x="423.00" y="675.80" font-family="'Inter'" font-size="6.50" font-weight="400" font-style="normal" fill="#6B5800" text-anchor="middle" letter-spacing="0.00" >2 x 1.2 in, keep clear</text>
+<text x="13.00" y="735.00" font-family="'Inter'" font-size="6.50" font-weight="400" font-style="normal" fill="#00A6D6" text-anchor="start" letter-spacing="0.00" >paperback  14.8580 x 10.2500 in  spine 0.6080 in  270 pages  standard_color</text>
+</g>
+</svg>
