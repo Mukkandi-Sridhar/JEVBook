@@ -60,9 +60,9 @@ that reason.
 **Categories** (KDP lets you choose three). One broad category for visibility and two smaller ones, where a new book
 can reach the top of the list sooner. Pick the closest names KDP's picker shows:
 
-1. Computers & Technology › Computer Science › AI & Machine Learning
-2. Computers & Technology › Computer Science › Expert Systems
-3. Computers & Technology › Computer Science › Generative AI (KDP's picker lists these three as placements under Computer Science)
+1. Books › Computers & Technology › Computer Science › AI & Machine Learning › General
+2. Books › Computers & Technology › Computer Science › AI & Machine Learning › Expert Systems
+3. Books › Computers & Technology › Computer Science › AI & Machine Learning › Generative AI
 
 The back-cover category line is "Artificial Intelligence / Machine Learning".
 
