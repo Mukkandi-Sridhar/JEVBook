@@ -302,4 +302,5 @@ Newest decisions are appended at the bottom of each section.
   150 px. The old front stays in `cover/variants.py` as v0.
 - **D-93 · No MathML in the EPUB (v1.0.6).** KDP's converter failed on the EPUB, and MathML was the one feature in
   it that Kindle handles unreliably. Formulas are now plain HTML where they're simple and images with spoken-style
-  alt text where they aren't. The paperback keeps its typeset formulas.
+  alt text where they aren't. The paperback keeps its typeset formulas. Confirmed on KDP: the MathML-free EPUB still failed; the one with Quarto's base64 data-URI callout icons
+  removed from the inline styles converted ("Manuscript check complete"), so the data URIs were the blocker.
