@@ -74,7 +74,7 @@ that cost.
 
 | Edition | Price | Your royalty per copy |
 |---|---:|---:|
-| Kindle ebook (KDP Select on) | $9.99 | about $5.70 (70%, minus about $1.80 delivery for the 12 MB file) |
+| Kindle ebook (KDP Select on) | $9.99 | about $5.20 (70% of $9.99 is $6.99, minus about $1.80 delivery for the 12 MB file; KDP shows the exact figure) |
 | Black-and-white paperback | $24.99 | $10.75 |
 | Colour paperback, standard colour (recommended) | $29.99 | $10.11 |
 | Colour paperback, premium colour | $39.99 | $5.44 |

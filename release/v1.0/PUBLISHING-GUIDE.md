@@ -131,7 +131,7 @@ printing and arrives in about a week. Check the colours, the figures and the cod
 | AI-generated content | same answers as the paperback |
 | KDP Select | **Yes** (Kindle Unlimited readers; it runs in 90-day terms you can choose not to renew) |
 | Royalty | **70%** |
-| Price | **$9.99** (the top of the 70% band; about $5.70 a copy after delivery) |
+| Price | **$9.99** (the top of the 70% band; about $5.20 a copy after the delivery fee; KDP shows the exact figure) |
 
 Check it in the Kindle Previewer on the phone view, especially a chapter with code (Chapter 16).
 
