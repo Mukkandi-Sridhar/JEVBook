@@ -2,7 +2,7 @@
 
 The plan in order, with every piece of text ready to paste. `KDP-UPLOAD.md` has the full field-by-field sheet.
 
-**The plan in one line:** a Kindle ebook at $9.99 and a colour paperback on standard colour ink at $29.99, launched
+**The plan in one line:** a Kindle ebook at $9.99 and a colour paperback on standard colour ink at $34.99, launched
 together. Add the black-and-white paperback and the hardcover later if people ask for them.
 
 ---
@@ -110,7 +110,7 @@ Then click **Launch Previewer** and check: 270 pages, nothing cut off, the cover
 |---|---|
 | Territories | All territories |
 | Primary marketplace | Amazon.com |
-| Price (USD) | **$29.99** (you earn about $10.11 a copy) |
+| Price (USD) | **$34.99** (printing costs $11.85, so you earn about $9.14 a copy) |
 | Amazon.in | let KDP fill it in, then round to the nearest ₹ price ending in 99 |
 | Other marketplaces | let KDP convert from the US price |
 | Expanded Distribution | **Off** for now (it pays less and needs a higher price) |

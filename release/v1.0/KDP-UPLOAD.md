@@ -68,18 +68,24 @@ The back-cover category line is "Artificial Intelligence / Machine Learning".
 
 ## 1b. Prices (US store)
 
-KDP's printing cost for 270 pages (Amazon.com): **premium colour $18.55**, **standard colour $7.88**, **black and
-white $4.24** (fixed $1.00 plus $0.065, $0.0255 or $0.012 a page). Paperback royalty is 60% of the price minus
-that cost.
+KDP's printing cost for 270 pages at 7 × 10 in, as KDP's own summary showed it (Amazon.com): **standard colour
+$11.85**. 7 × 10 in is a "large" trim for KDP, which charges more per page than for 6 × 9 in; the first version of
+this sheet used the smaller-trim rates ($7.88), which were wrong for this book. The premium colour and
+black-and-white figures below were worked out the same wrong way and will also be higher; KDP's summary shows the
+real number when you pick that ink. Paperback royalty is 60% of the price minus the printing cost.
 
 | Edition | Price | Your royalty per copy |
 |---|---:|---:|
 | Kindle ebook (KDP Select on) | $9.99 | about $5.20 (70% of $9.99 is $6.99, minus about $1.80 delivery for the 12 MB file; KDP shows the exact figure) |
-| Black-and-white paperback | $24.99 | $10.75 |
-| Colour paperback, standard colour (recommended) | $29.99 | $10.11 |
-| Colour paperback, premium colour | $39.99 | $5.44 |
+| Colour paperback, standard colour (recommended) | $34.99 | $9.14 (60% of $34.99 is $20.99, minus $11.85) |
+| Colour paperback, standard colour, lower price | $29.99 | $6.14 |
+| Black-and-white paperback | check KDP | |
+| Colour paperback, premium colour | check KDP | |
 
-Premium colour is expensive to print: below $30.92 KDP won't accept the price at all. Standard colour prints the
+Standard colour isn't offered on amazon.in (KDP's cost list for it has no amazon.in row), so Indian readers buy the
+Kindle edition, or the paperback from another Amazon store.
+
+Premium colour is expensive to print. Standard colour prints the
 same figures on thinner paper with slightly less vivid ink, costs far less, and has the same paper thickness as the
 black-and-white edition, so `print-bw/cover-paperback-bw.pdf` (spine 0.608 in) fits it. Choose premium colour only
 if you want the best print quality; the step-by-step plan in `PUBLISHING-GUIDE.md` uses standard colour with
