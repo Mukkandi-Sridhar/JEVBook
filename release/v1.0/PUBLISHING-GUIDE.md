@@ -111,7 +111,7 @@ Then click **Launch Previewer** and check: 270 pages, nothing cut off, the cover
 | Territories | All territories |
 | Primary marketplace | Amazon.com |
 | Price (USD) | **$34.99** (printing costs $11.85, so you earn about $9.14 a copy) |
-| Amazon.in | let KDP fill it in, then round to the nearest ₹ price ending in 99 |
+| Amazon.in | not offered for standard colour paperbacks; Indian readers get the Kindle edition |
 | Other marketplaces | let KDP convert from the US price |
 | Expanded Distribution | **Off** for now (it pays less and needs a higher price) |
 
