@@ -94,6 +94,9 @@ def math_png(tex: str, size: float = 15.0, dpi: int = 300) -> tuple[bytes, float
     return buf.getvalue(), w / em, h / em
 
 
+NO_HYPHENS = ("\n/* code is never hyphenated (tools/epub_post.py) */\n"
+              "pre, pre *, code, code * { hyphens: none; -webkit-hyphens: none; -epub-hyphens: none; "
+              "adobe-hyphenate: none; text-align: left; }\n")
 DATA_URI = re.compile(r"background-image:\s*url\(['\"]?data:[^)]*\);?")
 
 
@@ -133,6 +136,8 @@ def main(src, dst):
             if name == "mimetype":
                 continue
             data = zin.read(name)
+            if name.endswith(".css"):
+                data += NO_HYPHENS.encode("utf-8")
             if name.endswith(".opf"):
                 opf = (name, data.decode("utf-8"))
                 continue
