@@ -85,8 +85,8 @@ real number when you pick that ink. Paperback royalty is 60% of the price minus 
 
 | Edition | Price | Your royalty per copy |
 |---|---:|---:|
-| Kindle ebook (KDP Select on), launch price | $9.99 | about $5.33 (70% of $9.99 is $6.99, minus $1.66 delivery: KDP charges $0.15 per MB and the converted file is 11.07 MB). The 70% band now runs $2.99 to $12.99, so $12.99 (about $7.43) is the later price once there are reviews. |
-| Kindle ebook, amazon.in, launch price | ₹299 | KDP shows the exact figure after GST and the delivery fee; ₹499 later |
+| Kindle ebook (KDP Select on), launch price | $9.99 | $5.83, as KDP shows it: 70% of ($9.99 minus the $1.66 delivery fee; $0.15 per MB of the 11.07 MB converted file). The 70% band now runs $2.99 to $12.99, so $12.99 ($7.93) is the later price once there are reviews. |
+| Kindle ebook, amazon.in, launch price | ₹299 | about ₹123: 70% of (₹299 without GST, minus the ₹78 delivery fee). KDP's own conversion of $9.99 was ₹599 (₹301). |
 | Colour paperback, standard colour (recommended) | $34.99 | $9.14 (60% of $34.99 is $20.99, minus $11.85) |
 | Colour paperback, standard colour, lower price | $29.99 | $6.14 |
 | Black-and-white paperback | check KDP | |

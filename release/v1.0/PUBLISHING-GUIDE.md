@@ -131,7 +131,7 @@ printing and arrives in about a week. Check the colours, the figures and the cod
 | AI-generated content | same answers as the paperback |
 | KDP Select | **Yes** (Kindle Unlimited readers; it runs in 90-day terms you can choose not to renew) |
 | Royalty | **70%** |
-| Price | **$9.99**, a low launch price for a first book (about $5.33 a copy after the $1.66 delivery fee for the 11.07 MB converted file). Amazon.in: **₹299**. Raise to $12.99 / ₹499 once it has reviews. |
+| Price | **$9.99**, a low launch price for a first book ($5.83 a copy, as KDP shows it: 70% of the price after the $1.66 delivery fee for the 11.07 MB converted file). Amazon.in: **₹299**. Raise to $12.99 / ₹499 once it has reviews. |
 
 Check it in the Kindle Previewer on the phone view, especially a chapter with code (Chapter 16).
 
