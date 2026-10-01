@@ -14,6 +14,13 @@ label differs, choose the closest match. Prices, dates and your account details 
 
 Each format needs its own ISBN: never reuse the paperback's for the ebook or a hardcover.
 
+Submitted to KDP on 1 October 2026, both in review:
+
+| Edition | Price | Notes |
+|---|---|---|
+| Kindle ebook | $9.99, ₹299 on amazon.in | KDP Select, 70%, DRM on, categories Expert Systems / Generative AI / AI & Semantics |
+| Paperback, standard colour, 7 × 10 in, matte | $34.99 | 60%, Expanded Distribution off, categories AI & Machine Learning › General / Expert Systems / Generative AI |
+
 ## 1. Details (the same for every edition)
 
 | Field | Enter |
