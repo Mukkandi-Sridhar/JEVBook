@@ -94,6 +94,9 @@ def math_png(tex: str, size: float = 15.0, dpi: int = 300) -> tuple[bytes, float
     return buf.getvalue(), w / em, h / em
 
 
+DATA_URI = re.compile(r"background-image:\s*url\(['\"]?data:[^)]*\);?")
+
+
 def unmath(xhtml: str, images: list) -> str:
     def one(m):
         display, tex = m.group(1), html.unescape(m.group(2)).strip()
@@ -136,7 +139,7 @@ def main(src, dst):
             if name.endswith(".xhtml"):
                 s, n = fix(data.decode("utf-8"))
                 total += n
-                s2 = unmath(s, images)
+                s2 = DATA_URI.sub("", unmath(s, images))
                 if s2 != s and "<math" not in s2:
                     s2 = s2.replace(' properties="mathml"', "")
                 data = s2.encode("utf-8")

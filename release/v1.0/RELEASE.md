@@ -389,7 +389,8 @@ markup in it was MathML: 22 formulas, all in the cheat-sheet appendix. `tools/ep
 the 16 simple inline ones become plain HTML (italic letters, subscripts, superscripts), and the six fractions and
 sums become eight sharp PNG images (side-by-side pairs are split onto two lines so they fit a phone), each with alt
 text written the way you'd read the formula aloud. The EPUB has no MathML left; EPUBCheck: 0 errors and warnings;
-146 images, none without alt text. The print PDFs are unchanged.
+146 images, none without alt text. Quarto's inline callout styles also carried five icons per chapter as base64 data
+URIs, another thing Kindle's converter handles badly; those declarations are removed. The print PDFs are unchanged.
 
 ## Decisions for you
 
