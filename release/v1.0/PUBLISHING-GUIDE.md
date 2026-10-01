@@ -2,7 +2,7 @@
 
 The plan in order, with every piece of text ready to paste. `KDP-UPLOAD.md` has the full field-by-field sheet.
 
-**The plan in one line:** a Kindle ebook at $9.99 and a colour paperback on standard colour ink at $34.99, launched
+**The plan in one line:** a Kindle ebook at $12.99 (₹499 on amazon.in) and a colour paperback on standard colour ink at $34.99, launched
 together. Add the black-and-white paperback and the hardcover later if people ask for them.
 
 ---
@@ -131,7 +131,7 @@ printing and arrives in about a week. Check the colours, the figures and the cod
 | AI-generated content | same answers as the paperback |
 | KDP Select | **Yes** (Kindle Unlimited readers; it runs in 90-day terms you can choose not to renew) |
 | Royalty | **70%** |
-| Price | **$9.99** (the top of the 70% band; about $5.20 a copy after the delivery fee; KDP shows the exact figure) |
+| Price | **$12.99** (the top of the 70% band, which KDP raised from $9.99; about $7.43 a copy after the $1.66 delivery fee for the 11.07 MB converted file). Amazon.in: **₹499** |
 
 Check it in the Kindle Previewer on the phone view, especially a chapter with code (Chapter 16).
 
