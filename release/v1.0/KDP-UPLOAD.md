@@ -20,45 +20,75 @@ label differs, choose the closest match. Prices, dates and your account details 
 | Primary audience | Not sexually explicit; reading age: leave blank or 18+ |
 | Low-content book / Large print | No / No |
 
-**Description** (about 170 words, in the back-cover voice):
+**Description.** Paste this into KDP's description box. KDP accepts these simple HTML tags (bold, lists, line
+breaks); the store shows them as formatting. Every claim in it is true of the book.
 
-> Most of what an AI agent does isn't writing. It's deciding.
->
-> Is this alert real? Is this action safe? Most agents give every one of those small decisions to a large
-> language model. Then code has to find the answer inside a paragraph. It works, but it's slow and expensive, and
-> the model sounds just as sure when it's wrong.
->
-> This book shows you a better way to build the decision layer. You'll learn to check whether a model's
-> probabilities are calibrated, which means they say what really happens. You'll set thresholds from what each
-> mistake costs, so each case is handled automatically, reviewed or escalated. You'll compare six ways to make the
-> same decision, and build a hybrid agent in which a decision model decides and the LLM writes. Every step is
-> runnable code, built around a realistic (synthetic) security team. You'll work with Jev, a new System One model,
-> through a free mock that needs no API key.
->
-> For students, engineers building agents, and tech leads deciding what to build.
+```html
+<b>Most of what an AI agent does isn't writing. It's deciding.</b><br><br>
+Is this alert real? Which team gets this ticket? Is this action safe? Most agents hand every one of those small decisions to a large language model, then dig the answer out of a paragraph. It's slow, it's expensive, and the model sounds just as sure when it's wrong.<br><br>
+<b>This book teaches the missing piece: the decision layer.</b> You'll learn to get probabilities you can trust, turn them into actions with thresholds set by real costs, and build agents where a fast decision model decides and the LLM only writes.<br><br>
+<b>What you'll learn</b>
+<ul>
+<li>Check whether a model's probabilities are calibrated, and fix them when they aren't</li>
+<li>Set act, review and escalate thresholds from what each mistake costs, and from how many people you have</li>
+<li>Compare six ways to make the same decision, from hand-written rules to LLMs to a System One model</li>
+<li>Build a hybrid agent, a production decision service, and your own small System One model</li>
+<li>Run new systems in shadow mode, monitor drift, and give every failure a safe meaning</li>
+</ul>
+<b>What's inside</b>
+<ul>
+<li>22 chapters, from probability basics to production, written for students and engineers alike</li>
+<li>22 runnable labs in Python, around one realistic (synthetic) security team</li>
+<li>A free mock of the API: no API key, no cost, every example runs</li>
+<li>138 figures, 62 key ideas, and a revision list of all of them at the back</li>
+</ul>
+<b>Who it's for:</b> students learning machine learning, engineers building AI agents, and tech leads deciding what to build. Basic Python is enough.<br><br>
+<i>An independent guide. Not affiliated with TypeSafe AI.</i>
+```
 
-(172 words. It repeats the back cover's hook and blurb; the book's numbers stay off the listing.)
+The plain-text version used before (no formatting) is in the repository history if KDP rejects the HTML.
 
-**Keywords** (seven boxes, each under 50 characters):
+**Keywords** (seven boxes, up to 50 characters each). These are phrases buyers type into Amazon's search; they
+don't repeat words already in the title or subtitle, which Amazon searches anyway.
 
-1. AI agents decision making
-2. calibrated probabilities machine learning
-3. human in the loop AI review
-4. LLM agents in production
-5. System One model Jev
-6. cost sensitive classification thresholds
-7. Python machine learning practical guide
+1. agentic AI agents for engineers
+2. LLM agent architecture design patterns
+3. probability calibration machine learning
+4. AI decision making systems in production
+5. human in the loop review thresholds
+6. hands on AI engineering Python projects
+7. cybersecurity SOC alert triage machine learning
 
 Don't use other companies' product names as keywords unless the book is about them; "TypeSafe" is left out for
 that reason.
 
-**Categories** (KDP lets you choose up to three; pick these or the closest in its picker):
+**Categories** (KDP lets you choose three). One broad category for visibility and two smaller ones, where a new book
+can reach the top of the list sooner. Pick the closest names KDP's picker shows:
 
 1. Computers & Technology › Computer Science › AI & Machine Learning › Machine Learning
-2. Computers & Technology › Computer Science › AI & Machine Learning › Intelligence & Semantics
-3. Computers & Technology › Software › Design, Testing & Engineering (or Programming › Python)
+2. Computers & Technology › Computer Science › AI & Machine Learning › Expert Systems
+3. Computers & Technology › Security & Encryption (the case study is a security team)
 
 The back-cover category line is "Artificial Intelligence / Machine Learning".
+
+## 1b. Prices (US store)
+
+KDP's printing cost for 270 pages (Amazon.com): **premium colour $18.55**, **standard colour $7.88**, **black and
+white $4.24** (fixed $1.00 plus $0.065, $0.0255 or $0.012 a page). Paperback royalty is 60% of the price minus
+that cost.
+
+| Edition | Price | Your royalty per copy |
+|---|---:|---:|
+| Kindle ebook (KDP Select on) | $9.99 | about $5.70 (70%, minus about $1.80 delivery for the 12 MB file) |
+| Black-and-white paperback | $24.99 | $10.75 |
+| Colour paperback, premium colour | $39.99 | $5.44 |
+| Colour paperback, standard colour (option) | $34.99 | $13.11 |
+
+Premium colour is expensive to print: below $30.92 KDP won't accept the price at all. Standard colour prints the
+same figures on thinner paper with slightly less vivid ink, costs far less, and has the same paper thickness as the
+black-and-white edition, so `print-bw/cover-paperback-bw.pdf` (spine 0.608 in) fits it. Choose premium colour only
+if you want the best print quality. Set prices for amazon.in in rupees separately; KDP suggests them from the US
+price.
 
 ## 2. AI-generated content (asked on the Details screen)
 
