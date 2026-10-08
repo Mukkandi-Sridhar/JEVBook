@@ -11,6 +11,7 @@ label differs, choose the closest match. Prices, dates and your account details 
 |---|---|---|
 | Colour paperback (standard colour, 7 × 10 in) | 979-8-17825-770-8 (9798178257708), free KDP ISBN | Independently published |
 | Kindle ebook | none needed (Amazon gives it an ASIN) | |
+| India paperback, printed locally (`print-india/`) | 978-93-345-4878-5 (9789334548785), RRRNA, allotted 8 Oct 2026 | Mukkandi Sridhar |
 
 Each format needs its own ISBN: never reuse the paperback's for the ebook or a hardcover.
 
