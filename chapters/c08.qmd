@@ -1,0 +1,73 @@
+# Asking the right question: choice, score, noul {#sec-ch08}
+
+::: {.epigraph by="Antoine de Saint-Exupéry, 1939"}
+Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away.
+:::
+
+A System One model asks you to put every question in one of three shapes: yes or no, pick one, or rate on a scale. "Only three? Real decisions are messier." They are, but look at your own working day: most messy decisions break into a few questions of exactly these shapes. *Is this real? Which team? How urgent?* The mess is usually in how the question is asked, not in the shape of the answer.
+
+![The three question types, what you send, and what comes back. A noul returns one probability. A choice returns a probability for every label. A score returns a probability for every level, plus the average level.](/figures/ch17/three-types.pdf){#fig-three-types}
+
+::: {.goals}
+- Choose between yes/no, pick-one and scale questions.
+- Avoid the forced-choice trap and the misleading average.
+- Decide using every probability, not just the top answer.
+:::
+
+## Yes or no: one fact at a time
+
+TypeSafe calls a yes-or-no question a **noul**. It returns one number: the probability of *yes*. It's the most useful type, and the easiest to ask badly. Three habits help.
+
+**One fact per question.** "Is this a real attack on a critical server?" joins two facts, and a *no* can't tell you which was false. Ask two questions and combine them in your own code, where the logic is visible.
+
+**Say exactly what yes and no mean.** Is an employee breaking a company rule "malicious"? Is a test attack the company paid for? Spell it out: *yes* means "a real attacker or real malware is involved"; *no* means "normal activity, a paid test, or a false positive".
+
+**No double negatives.** "Is this not unlikely to be benign?" confuses people and models alike.
+
+## Pick one: give every case somewhere to go
+
+A **choice** returns a probability for every label, adding up to 1. That "adds up to 1" has a sting: the model *must* spread all its belief across the labels you gave it. If the right answer isn't there, the probability doesn't vanish; it lands on wrong labels.
+
+I asked the stand-in to label {{< num ch17 n_harmless int >}} harmless alerts twice. With "benign" among the options, {{< num ch17 full_benign_share pct >}} were labelled benign. Without it, every single one got a threat label, most with high confidence. The model wasn't exactly wrong: you asked *which threat*, and it answered. But anyone reading "malware, 0.95" would act on a falsehood.
+
+![How confident the top label was for harmless alerts. With "benign" among the options (green, striped), almost all were labelled benign; only the few that weren't are shown. Without it (red, solid), every harmless alert got a threat label, most of them with high confidence.](/figures/ch17/forced.pdf){#fig-forced}
+
+::: {.keyidea}
+A choice's probabilities add up to 1 over your options, so give every real case somewhere to go.
+:::
+
+So always include "none", "other" or "not enough information" when those can happen. And make sure only one option can be true at a time; when labels can overlap, ask several yes/no questions instead.
+
+## Rate on a scale: don't trust the average
+
+A **score** returns a probability for each level of an ordered scale, plus the *average* level. That average can badly mislead you.
+
+![Severity probabilities for three alerts, with the average level marked. The first alert's average sits at "low". But its probability is split between "informational" and "medium or high". Almost nothing is actually at "low".](/figures/ch17/severity.pdf){#fig-severity}
+
+The first alert in @fig-severity has an average severity of {{< num ch17 sev_example.expected f2 >}}, which reads as "low". But there's almost no probability *at* low. The model is really saying *this is either nothing, or serious*, with a {{< num ch17 sev_example.p_high pct >}} chance of medium or high. That two-peaked shape appears whenever the model is unsure *whether* something is real. The average of two very different possibilities describes neither.
+
+::: {.keyidea}
+Averages hide the extremes. Put thresholds on the probability of the levels you care about.
+:::
+
+"Call someone if P(medium or high) is above 0.3" is a rule you can reason about and set with costs. "Call someone if the average is above 1.5" isn't.
+
+## Decide with all the probabilities
+
+The most likely label isn't always the one to act on. Suppose a choice says: benign 0.40, credential theft 0.35, phishing 0.15, malware 0.10. "Benign" is top, but 60% of the probability says *some kind of threat*, and closing the alert risks all of it. Weigh each action by what it would cost under each possible truth, and take the cheapest; here, that's sending the case to the identity team. That's Chapter 4's formula, generalised. And it's why you want a probability for every option: a text answer that just says "benign" throws away exactly the information you need.
+
+![An illustrative choice between four labels, and the expected cost of four actions. "Benign" is the single most likely label, but closing the alert is the most expensive action, because the other 60% of the probability is spread across threats that are costly to miss.](/figures/ch17/expected-cost.pdf){#fig-expected-cost}
+
+Real decisions need several answers about the same situation. Ask them together, in one call; then combine them in ordinary code, where every rule is visible and testable.
+
+::: {.breaks}
+Three shapes can't express everything: a quantity ("how many megabytes?"), free text ("which username?") or several fields from a document still need something else, often an LLM (Chapter 12's "extract, then decide"). Separate answers about the same case may not agree with each other; your combining code should expect that. And wording changes the probabilities, so test a reworded question like any other change.
+:::
+
+::: {.exercises}
+1. Design the typed questions for a decision you know (loan applications, support tickets, insurance claims). Which are yes/no, which pick-one, which scales? What's the "none of these" option each choice needs?
+:::
+
+::: {.nexthook}
+Next: TypeSafe says Jev's probabilities are calibrated; a critic says they can't be. Here's how to find out yourself.
+:::

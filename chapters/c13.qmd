@@ -1,0 +1,89 @@
+# One team, start to finish, and beyond {#sec-ch13}
+
+::: {.epigraph by="Mike Tyson, attributed"}
+Everybody has a plan until they get punched in the mouth.
+:::
+
+Each chapter so far took one piece of the problem. This one runs the whole thing the way a real team would: the team as it was, the new system run quietly before it may act, then switched on, then hit by an attack campaign. Then we leave security behind and see the same design at work elsewhere.
+
+::: {.goals}
+- Run a new decision system in shadow mode.
+- See why the order of a queue matters.
+- Recognise decision layers far from security.
+:::
+
+## Before: the queue
+
+The security team gets about {{< num ch21 live_per_day int >}} alerts a day and can review {{< num ch25 capacity int >}}. Before this project, alerts flagged by the senior expert's rules went to the front of one queue; everything else waited in arrival order; anything not reached within a day "aged out", closed unseen. A very ordinary setup, and it hides its failures: nobody sees what ages out, so nobody knows how much was real. In our synthetic week we do know. About {{< num ch25 old.threats_unseen_per_day f1 >}} real threats a day were never seen by anyone.
+
+![Where each day's alerts go, and where the real threats go, before and after. Before, most alerts aged out of the queue unseen, and so did a large share of real threats. After, most alerts are closed by the policy on purpose, and most real threats are queued or paged.](/figures/ch25/routes.pdf){#fig-routes}
+
+## The system, and a week in shadow mode
+
+The new system uses nothing you haven't met: typed questions (Chapter 8), calibration fitted on history (Chapters 3 and 9), the three doors sized to the team (Chapter 11), and an LLM that writes only for people (Chapter 12).
+
+You don't switch a system like this on and hope. You run it in **shadow mode**: it sees every alert and records what it *would* have done, while people work as before.
+
+::: {.keyidea}
+Run a new decision system in shadow mode before you let it act.
+:::
+
+The meeting afterwards is mostly about one number: real threats the system *would* have auto-closed, about {{< num ch25 new_threats_closed_per_day f1 >}} a day. Bad, until you compare it with the {{< num ch25 old.threats_unseen_per_day f1 >}} the old queue let age out. It was also more than forecast from history, and the right thing to say in that meeting is exactly that: the forecast was in range but too hopeful, and the daily monitor will tell chance from trend. The team switched it on with a random audit of auto-closed alerts and a fail-safe to review.
+
+## Order matters as much as size
+
+The new queue is sorted by probability, likeliest first. In arrival order, with the same alerts in the same queue, the typical real threat would wait about {{< num ch25 fifo_wait int >}} minutes. Sorted, about {{< num ch25 prio_wait int >}}. Same people, same alerts. Only the order changed. Overall, the share of real threats reaching a person within an hour went from {{< num ch25 old.threats_within_hour_share pct >}} to {{< num ch25 new.threats_within_hour_share pct >}}.
+
+![How long it takes for a real threat to reach a person. Before, rule-flagged threats were seen quickly and the rest waited up to a day or were never seen. After, urgent calls reach someone in about fifteen minutes and the queue takes the likeliest threats first.](/figures/ch25/time-to-human.pdf){#fig-time-to-human}
+
+::: {.keyidea}
+A probability decides *what* a person looks at first, not only *whether* they look.
+:::
+
+## The campaign
+
+Then a phishing campaign hit: link alerts fired three times as often, and far more were real. By day one the queue was over capacity, and the probabilities for link alerts were now too *low*, calibrated on weeks when those alerts were mostly harmless. The daily monitor caught both on day two. On day three the team re-estimated the base rate for link alerts, corrected those probabilities (Chapter 9), and approved overtime.
+
+![The campaign week, day by day, with and without a response on day 3. Left: alerts sent to review, against the team's capacity. Right: real threats never seen by a person, added up over the week. Recalibrating link alerts and adding overtime helped, but it didn't make the problem go away.](/figures/ch25/campaign.pdf){#fig-campaign}
+
+It helped: real threats never seen fell from about {{< num ch25 camp_missed_base int >}} to {{< num ch25 camp_missed_resp int >}} over the week (@fig-campaign). But with honest probabilities, the queue grew *past* even the overtime capacity: far more alerts deserved a look than the bigger team could manage.
+
+::: {.keyidea}
+Calibration tells you truthfully how much work there is. It can't make the work smaller.
+:::
+
+The team was never the problem. The old queue decided what they saw by accident; the new one decides on purpose.
+
+## Beyond security
+
+Security was only the teaching example. Once you can see a decision layer, you see them everywhere.
+
+![Six decision layers, each described the same way: what the model reads, the typed questions it answers, the option every choice must include, and who makes the final call. Green cards, which end "the model decides; people audit", let the model decide. Red cards, which end "a person decides", keep a person as the decider.](/figures/ch26/cards.pdf){#fig-cards}
+
+@fig-cards describes six of them the same way: what the model reads, the typed questions, the escape option every choice needs, and who decides. What changes from card to card is *who makes the final call*. Where decisions are many and cheap (content moderation, payment fraud), no team could look at them all: the model decides and people audit a sample. Where they're few and costly (a hospital's clinical intake), the model should never close a case; its job is to put the right patient at the top of the list, and a person decides.
+
+![The six domains placed by how many decisions a day they involve and how much one missed problem costs (illustrative). Where volume is high and each mistake is cheap, the model decides and people check samples. Where each mistake is expensive, the model orders the queue and a person makes the call.](/figures/ch26/domains.pdf){#fig-domains}
+
+::: {.keyidea}
+Where decisions are many and cheap, the model decides; where they're few and costly, a person does.
+:::
+
+The threshold formula never changes; the costs do. A missed urgent support ticket costs a little goodwill, so the threshold lands near 5%. A missed emergency at a hospital's front desk costs far more than seeing someone early, so it drops to about 0.3%, which demands probabilities calibrated even below one percent.
+
+And always measure before you trust. On {{< num ch26 n_tickets int >}} synthetic support tickets, the stand-in that did well on security alerts sent only {{< num ch26 topic_acc pct >}} to the right team, and account problems only {{< num ch26 per_topic.account pct >}} of the time, because "I can't log in" shares words with "the app isn't working". Routing only when the top label reached 0.6 covered {{< num ch26 cov60 pct >}} of tickets and got {{< num ch26 acc60 pct >}} right. The test took twenty lines of code.
+
+Not everything is a decision layer. It fits when there are many similar cases, a fixed set of answers, outcomes you can learn from, and a cost you can put on a mistake. It doesn't fit one-off judgements, answers that must be written, or problems that need a plan rather than a verdict.
+
+![Signs that a decision suits a System One model, and signs that it doesn't, or that a person must decide.](/figures/ch26/fit.pdf){#fig-fit}
+
+::: {.breaks}
+Every number here is synthetic or an assumption; real teams differ in ways a simulation leaves out. Shadow mode is only as good as the labels you compare against. And "a person decides" only protects anyone if that person has time to think: a clinician approving four hundred suggestions an hour isn't deciding, just clicking. Watch the workload of the people in the loop as carefully as the model.
+:::
+
+::: {.exercises}
+1. Pick a decision from your own work and write its card: what the model reads, the typed questions, the escape option, and who decides.
+:::
+
+::: {.nexthook}
+Next: what it takes to run a decision model as a real service, and how to build a small one yourself.
+:::

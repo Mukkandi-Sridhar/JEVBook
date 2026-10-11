@@ -17,40 +17,21 @@ book:
     - index.qmd
     - front/how-to-read.qmd
     - front/prologue.qmd
-    - part: parts/p1.qmd
-      chapters:
-        - chapters/ch01.qmd
-        - chapters/ch02.qmd
-        - chapters/ch03.qmd
-        - chapters/ch04.qmd
-    - part: parts/p2.qmd
-      chapters:
-        - chapters/ch05.qmd
-        - chapters/ch06.qmd
-        - chapters/ch07.qmd
-    - part: parts/p3.qmd
-      chapters:
-        - chapters/ch08.qmd
-        - chapters/ch09.qmd
-        - chapters/ch10.qmd
-        - chapters/ch11.qmd
-        - chapters/ch12.qmd
-    - part: parts/p4.qmd
-      chapters:
-        - chapters/ch13.qmd
-        - chapters/ch14.qmd
-        - chapters/ch15.qmd
-    - part: parts/p5.qmd
-      chapters:
-        - chapters/ch16.qmd
-        - chapters/ch17.qmd
-        - chapters/ch18.qmd
-        - chapters/ch19.qmd
-        - chapters/ch20.qmd
-        - chapters/ch21.qmd
-    - part: parts/p6.qmd
-      chapters:
-        - chapters/ch22.qmd
+    - chapters/c01.qmd
+    - chapters/c02.qmd
+    - chapters/c03.qmd
+    - chapters/c04.qmd
+    - chapters/c05.qmd
+    - chapters/c06.qmd
+    - chapters/c07.qmd
+    - chapters/c08.qmd
+    - chapters/c09.qmd
+    - chapters/c10.qmd
+    - chapters/c11.qmd
+    - chapters/c12.qmd
+    - chapters/c13.qmd
+    - chapters/c14.qmd
+    - chapters/c15.qmd
   appendices:
     - back/glossary.qmd
     - back/cheatsheets.qmd

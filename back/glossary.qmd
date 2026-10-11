@@ -7,16 +7,16 @@
 One plain sentence for each term, and the chapter where it's explained fully.
 
 Act, review, escalate
-: The three zones of a decision policy: handle it automatically, send it to a person, or raise it urgently (Chapter 14).
+: The three zones of a decision policy: handle it automatically, send it to a person, or raise it urgently (Chapter 11).
 
 Agent
-: A program that uses a model to observe, decide and act in a loop, calling tools along the way (Chapter 7).
+: A program that uses a model to observe, decide and act in a loop, calling tools along the way (Chapter 6).
 
 Attention
 : A way for each word in a sequence to look at the others and decide which ones matter for its meaning (Chapter 5).
 
 Audit (random)
-: Sending a random share of automatically handled cases to a person, so that mistakes the system is sure about still get seen (Chapter 14).
+: Sending a random share of automatically handled cases to a person, so that mistakes the system is sure about still get seen (Chapter 11).
 
 AUC
 : The chance that a model gives a randomly chosen real case a higher score than a randomly chosen harmless one. It measures ranking, not calibration (Chapter 3).
@@ -31,22 +31,22 @@ Calibration
 : A model is calibrated when the things it calls 70% likely happen about 70% of the time: its probabilities are honest (Chapter 3).
 
 Capacity
-: How many cases the people in the loop can handle in a day. A policy that ignores it isn't a policy (Chapter 14).
+: How many cases the people in the loop can handle in a day. A policy that ignores it isn't a policy (Chapter 11).
 
 Cassette
-: A file of recorded requests and responses that a test can replay without calling the real API (Chapter 16).
+: A file of recorded requests and responses that a test can replay without calling the real API (Chapter 14).
 
 CISO
-: Chief information security officer: the person in charge of an organisation's security (Chapter 18).
+: Chief information security officer: the person in charge of an organisation's security (Chapter 13).
 
 Choice
-: A typed question with a set of named options. The answer is a probability for each option, adding up to 1 (Chapter 10).
+: A typed question with a set of named options. The answer is a probability for each option, adding up to 1 (Chapter 8).
 
 Confidence
-: In a Jev `choice` or `score` answer, a number from 0 to 1 computed from the shape of the probabilities. It's high when most of the probability is on one option, and low when it's spread out. It isn't simply the top probability (TypeSafe's quick-start shows 0.78 beside 0.85). The book's mock uses the top probability as a stand-in (Chapter 9).
+: In a Jev `choice` or `score` answer, a number from 0 to 1 computed from the shape of the probabilities. It's high when most of the probability is on one option, and low when it's spread out. It isn't simply the top probability (TypeSafe's quick-start shows 0.78 beside 0.85). The book's mock uses the top probability as a stand-in (Chapter 7).
 
 Context window
-: The amount of text an LLM can read at once (Chapter 7).
+: The amount of text an LLM can read at once (Chapter 6).
 
 Cost-based threshold
 : The probability above which acting is cheaper than not acting, set by what each kind of mistake costs (Chapter 4).
@@ -55,10 +55,10 @@ Decision layer
 : The part of a system that turns probabilities into actions: typed questions, calibration, thresholds, rules and fail-safes (Part IV).
 
 Decision record
-: The logged account of one decision: what was seen, what the model said, what the policy did, which version decided and why (Chapter 21).
+: The logged account of one decision: what was seen, what the model said, what the policy did, which version decided and why (Chapter 14).
 
 Drift
-: A change in the world, or in the data, that makes a model's probabilities less accurate than when they were checked (Chapter 14).
+: A change in the world, or in the data, that makes a model's probabilities less accurate than when they were checked (Chapter 11).
 
 DLP (data loss prevention)
 : Security tools that warn when company data may be leaving the organisation, such as a large file sent to a personal email address (Chapter 3).
@@ -67,7 +67,7 @@ ECE (expected calibration error)
 : The average gap between what a model said and what happened, across groups of similar predictions (Chapter 3).
 
 Elasticity
-: How much more of something people use when its price falls (Chapter 12).
+: How much more of something people use when its price falls (Chapter 15).
 
 Embedding
 : A list of numbers that places a word, sentence or item in a space where similar things sit close together (Chapter 5).
@@ -76,16 +76,16 @@ Epoch
 : One full pass of training over all the training examples (Chapter 5).
 
 Escape option
-: The "other", "none" or "not enough information" option that gives cases fitting nowhere somewhere to go (Chapter 10).
+: The "other", "none" or "not enough information" option that gives cases fitting nowhere somewhere to go (Chapter 8).
 
 Extract, then decide
-: A pattern in which an LLM turns messy input into fields and a decision model decides on those fields (Chapter 15).
+: A pattern in which an LLM turns messy input into fields and a decision model decides on those fields (Chapter 12).
 
 F1
 : One score that balances how many flagged cases are real and how many real cases get flagged. It measures ranking and labelling, not calibration (Chapter 3).
 
 Fail-safe
-: The decided meaning of a failure, such as "if the call fails, send the case to review" (Chapters 14 and 21).
+: The decided meaning of a failure, such as "if the call fails, send the case to review" (Chapters 11 and 14).
 
 Fine-tuning
 : Further training of an existing model on examples from one task (Chapter 5).
@@ -94,31 +94,31 @@ Gradient descent
 : Improving a model step by step by nudging its numbers in the direction that reduces the loss (Chapter 2).
 
 Guardrail gate
-: A typed check on trusted facts that runs before an agent's action is allowed to happen (Chapter 15).
+: A typed check on trusted facts that runs before an agent's action is allowed to happen (Chapter 12).
 
 Hallucination
-: An LLM stating something fluent and false (Chapter 6).
+: An LLM stating something fluent and false (Chapter 5).
 
 Hybrid agent
-: An agent in which a decision model answers the small decisions and an LLM only writes (Chapter 17).
+: An agent in which a decision model answers the small decisions and an LLM only writes (Chapter 12).
 
 Isotonic regression
 : A calibration method that learns any increasing mapping from scores to probabilities. It's flexible, but needs more data than Platt scaling (Chapter 3).
 
 Jevons paradox
-: When making something more efficient to use makes people use more of it in total, not less (Chapter 12).
+: When making something more efficient to use makes people use more of it in total, not less (Chapter 15).
 
 JSON mode
-: An LLM setting that makes its output valid JSON, though not necessarily correct JSON (Chapter 6).
+: An LLM setting that makes its output valid JSON, though not necessarily correct JSON (Chapter 5).
 
 Label
 : The known right answer for an example, used to train or test a model (Chapter 1).
 
 LLM (large language model)
-: A model trained to predict the next piece of text, which lets it read and write almost anything (Chapter 6).
+: A model trained to predict the next piece of text, which lets it read and write almost anything (Chapter 5).
 
 LLM-as-judge
-: Using an LLM to rate or check an output, often on a numbered scale (Chapter 13).
+: Using an LLM to rate or check an output, often on a numbered scale (Chapter 10).
 
 Log loss
 : A score that punishes confident wrong answers heavily. It's a proper scoring rule (Chapter 2).
@@ -130,16 +130,16 @@ Loss
 : A number that measures how wrong a model is on some examples. Training tries to make it smaller (Chapter 2).
 
 Mock
-: A stand-in for a real service that answers in the same shape. This book's is `jev-mock-synthetic` (Chapter 16).
+: A stand-in for a real service that answers in the same shape. This book's is `jev-mock-synthetic` (Chapter 14).
 
 Noul
-: TypeSafe's name for a yes-or-no question. The answer is the probability of yes (Chapter 10).
+: TypeSafe's name for a yes-or-no question. The answer is the probability of yes (Chapter 8).
 
 Observe, Decide, Act
-: The loop an agent runs: read something, choose what to do, do it, repeat (Chapter 7).
+: The loop an agent runs: read something, choose what to do, do it, repeat (Chapter 6).
 
 Ordinal
-: Having a meaningful order, like severity levels. An ordinal model keeps that order in its probabilities (Chapter 20).
+: Having a meaningful order, like severity levels. An ordinal model keeps that order in its probabilities (Chapter 14).
 
 Overconfidence
 : Probabilities that are more extreme than the evidence justifies. It's common in large models and in overtrained small ones (Chapter 5).
@@ -151,88 +151,88 @@ Platt scaling
 : A calibration method that fits an S-curve mapping a model's scores to calibrated probabilities (Chapter 3).
 
 Policy
-: The rules that turn a probability into an action, usually as thresholds between zones (Chapter 14).
+: The rules that turn a probability into an action, usually as thresholds between zones (Chapter 11).
 
 Prior shift
-: A change in the base rate between where a model was calibrated and where it's used. You can correct it if you know the new base rate (Chapter 11).
+: A change in the base rate between where a model was calibrated and where it's used. You can correct it if you know the new base rate (Chapter 9).
 
 Prompt injection
-: Text planted in an input that tries to make a model follow the attacker's instructions (Chapter 7).
+: Text planted in an input that tries to make a model follow the attacker's instructions (Chapter 6).
 
 Proper scoring rule
 : A way of scoring predictions under which reporting your honest probability gives the best average score (Chapter 2).
 
 RAG (retrieval-augmented generation)
-: Giving an LLM relevant documents, found by search, before it answers (Chapter 7).
+: Giving an LLM relevant documents, found by search, before it answers (Chapter 6).
 
 Reliability diagram
 : A chart of what a model said against what happened. A calibrated model sits on the diagonal (Chapter 3).
 
 RLCD
-: TypeSafe's name for reinforcement learning for calibrated decisions, which it says trains Jev. The details aren't published (Chapter 9).
+: TypeSafe's name for reinforcement learning for calibrated decisions, which it says trains Jev. The details aren't published (Chapter 7).
 
 RLHF
 : Reinforcement learning from human feedback, which trains an LLM towards answers people prefer (Chapter 5).
 
 Router
-: A pattern that sends each case to a destination with a choice question, falling back to a person when unsure (Chapter 15).
+: A pattern that sends each case to a destination with a choice question, falling back to a person when unsure (Chapter 12).
 
 Score
-: A typed question with ordered levels. The answer is a probability for each level and an expected level (Chapter 10).
+: A typed question with ordered levels. The answer is a probability for each level and an expected level (Chapter 8).
 
 Shadow mode
-: Running a new system or version beside the current one, recording what it would do without letting it act (Chapters 18 and 21).
+: Running a new system or version beside the current one, recording what it would do without letting it act (Chapters 13 and 14).
 
 SIEM (security information and event management)
-: The tool that collects a company's logs and raises security alerts. Kestrel's alerts come from one (Chapter 13).
+: The tool that collects a company's logs and raises security alerts. Kestrel's alerts come from one (Chapter 10).
 
 Softmax
-: The function that turns a list of scores into probabilities that add up to 1 (Chapters 5 and 10).
+: The function that turns a list of scores into probabilities that add up to 1 (Chapters 5 and 8).
 
 State
-: What a decision model reads: the situation, as text or structured fields (Chapter 9).
+: What a decision model reads: the situation, as text or structured fields (Chapter 7).
 
 Structured output
-: An LLM answer constrained to a schema, such as JSON with named fields (Chapter 6).
+: An LLM answer constrained to a schema, such as JSON with named fields (Chapter 5).
 
 System 1, System 2
-: Kahneman's names for fast, automatic thinking and slow, deliberate thinking (Chapter 8).
+: Kahneman's names for fast, automatic thinking and slow, deliberate thinking (Chapter 7).
 
 System One model
-: TypeSafe's term for a model that answers typed questions with probabilities in one fast pass, without writing text (Chapter 8).
+: TypeSafe's term for a model that answers typed questions with probabilities in one fast pass, without writing text (Chapter 7).
 
 Temperature (calibration)
 : One number that softens or sharpens every probability a model gives, fitted on held-out data (Chapter 3).
 
 Temperature (sampling)
-: A setting that makes an LLM's choice of next token more or less random (Chapter 6).
+: A setting that makes an LLM's choice of next token more or less random (Chapter 5).
 
 Three-zone policy
-: A policy with two thresholds, splitting cases into act, review and escalate (Chapter 14).
+: A policy with two thresholds, splitting cases into act, review and escalate (Chapter 11).
 
 Threshold
 : A number that splits cases into two groups, like a line on the probability scale: above it you do one thing, below it another (Chapters 1 and 4).
 
 Token
-: A piece of text, often part of a word, that an LLM reads and writes one at a time (Chapter 6).
+: A piece of text, often part of a word, that an LLM reads and writes one at a time (Chapter 5).
 
 Trace
-: The step-by-step record of what an agent observed, decided and did (Chapter 17).
+: The step-by-step record of what an agent observed, decided and did (Chapter 12).
 
 Transformer
 : The network design built from attention layers that underlies modern LLMs (Chapter 5).
 
 Transport
-: The lowest layer of an HTTP client, which sends a finished request and returns a response. The book's stand-in is one (Chapter 16).
+: The lowest layer of an HTTP client, which sends a finished request and returns a response. The book's stand-in is one (Chapter 14).
 
 Triage
-: Sorting cases by how likely they are to be real and how urgent they are, so the most important ones are handled first (Preface, Chapter 18).
+: Sorting cases by how likely they are to be real and how urgent they are, so the most important ones are handled first (Preface, Chapter 13).
 
 Typed question
-: A question whose answer has a fixed shape: a noul, a choice or a score (Chapter 10).
+: A question whose answer has a fixed shape: a noul, a choice or a score (Chapter 8).
 
 Vendor-reported
-: A claim made by the company selling the product, not independently checked (Chapter 9).
+: A claim made by the company selling the product, not independently checked (Chapter 7).
 
 ```{=latex}
 \par\endgroup

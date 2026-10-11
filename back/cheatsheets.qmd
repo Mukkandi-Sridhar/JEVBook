@@ -16,7 +16,7 @@ $$
 
 A false alarm costing \$400 and a miss costing \$10,000 give $p^{*} = 400 / 10{,}400 \approx 0.04$.
 
-## Three zones (Chapter 14)
+## Three zones (Chapter 11)
 
 Say a review costs $C_r$ and misses a share $m$ of real problems. A miss costs $C_{\text{miss}}$ and a false urgent call costs $C_{\text{page}}$. Then the cheapest thresholds for calibrated probabilities are
 
@@ -42,7 +42,7 @@ $$
 
 where each bin $b$ holds $n_b$ predictions with average $\bar p_b$ and observed rate $\bar y_b$. AUC measures ranking only: a model can have a perfect AUC and useless probabilities.
 
-## Fixing probabilities (Chapters 3 and 11)
+## Fixing probabilities (Chapters 3 and 9)
 
 | Method | What it fits | Use when |
 |---|---|---|
@@ -53,7 +53,7 @@ where each bin $b$ holds $n_b$ predictions with average $\bar p_b$ and observed 
 
 Here $z = \log\frac{p}{1-p}$ and $\sigma$ is the S-curve.
 
-## Testing a model's calibration on your data (Chapter 11)
+## Testing a model's calibration on your data (Chapter 9)
 
 1. Collect labels for a random sample of real cases, not just the interesting ones.
 2. Measure ranking (AUC) and calibration (ECE, with a bootstrap range) separately.
@@ -61,7 +61,7 @@ Here $z = \log\frac{p}{1-p}$ and $\sigma$ is the S-curve.
 4. Fix the base rate first; then use Platt scaling on a few hundred labels if needed.
 5. Test again on labels you didn't fit on. Repeat on a schedule and whenever the model version changes.
 
-## Designing typed questions (Chapter 10)
+## Designing typed questions (Chapter 8)
 
 - **Noul**: one fact per question; say what counts as yes and as no; no double negatives.
 - **Choice**: options that don't overlap; always an escape option ("other", "none", "not enough information").
@@ -69,7 +69,7 @@ Here $z = \log\frac{p}{1-p}$ and $\sigma$ is the S-curve.
 - Ask related questions in one call: the state is sent once.
 - Decide with all the probabilities and the costs of each action, not just the top label.
 
-## Calling a decision model (Chapters 9, 10 and 16)
+## Calling a decision model (Chapters 7, 8 and 14)
 
 - Ask several typed questions about the same situation in **one call**: yes/no (noul), pick one (choice), rate on a scale (score).
 - Every choice needs an escape option: "none", "other", "not enough information".
@@ -78,7 +78,7 @@ Here $z = \log\frac{p}{1-p}$ and $\sigma$ is the S-curve.
 - Decide in advance what a **failed call means**; the safe default is "send to a person".
 - Log the probabilities, the policy version and the request ID with every decision.
 
-## Choosing a method (Chapter 13)
+## Choosing a method (Chapter 10)
 
 | If you have… | Start with |
 |---|---|
@@ -88,7 +88,7 @@ Here $z = \log\frac{p}{1-p}$ and $\sigma$ is the S-curve.
 | messy input and a clear decision | an LLM to extract, a decision model to decide |
 | output a person must read | an LLM, checked by typed questions |
 
-## Before a decision service runs (Chapter 21)
+## Before a decision service runs (Chapter 14)
 
 A fixed model version · a config with a version number and a fingerprint · a meaning for every failure · a record for every decision · random audits of automatic actions · a daily monitor · shadow runs for new versions · an owner who can switch everything to review.
 

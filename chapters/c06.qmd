@@ -1,0 +1,81 @@
+# RAG, agents, and where they break {#sec-ch06}
+
+::: {.epigraph by="Edsger W. Dijkstra, 1975"}
+Simplicity is prerequisite for reliability.
+:::
+
+Ask an LLM what your company's backup account is allowed to do, and you'll get a confident, well-written, invented answer. It has never seen your documents. So we hand it the right pages, then give it tools and a loop so it can act. That's where most of today's AI excitement is, and most of the failures nobody notices. Watch for one pattern: nearly every weak point is a small decision.
+
+::: {.goals}
+- Explain RAG, and why retrieval is the weak link.
+- See that most of an agent's work is deciding.
+- Stop a planted sentence from steering a decision.
+:::
+
+## Give it the right page
+
+**Retrieval-augmented generation (RAG)**: before the model answers, search your documents for the most relevant passages, paste them into the prompt, and ask it to answer from them [@lewis2020]. On a test collection of company policies mixed with look-alike noise, the search put the right passage first {{< num ch12 recall.char.0 pct >}} of the time.
+
+![Retrieval-augmented generation. The question goes to a search step first, which pulls the most relevant chunks from your documents. The LLM sees the question plus those chunks, and answers from them, ideally citing which one it used.](/figures/ch12/pipeline.pdf){#fig-pipeline}
+
+The part that decides whether RAG works isn't the LLM. If the right passage isn't found, the LLM builds the likeliest-sounding answer from what it *can* see: fluent, with a source, and wrong.
+
+::: {.keyidea}
+A RAG system can only be as good as its retrieval. Measure retrieval first.
+:::
+
+Some questions have no answer in the documents. A good system says "I don't know", and the signal is simple: how well the *best* passage matches. With a threshold on that score, the system answers {{< num ch12 answered_share pct >}} of answerable questions and only {{< num ch12 unans_answered pct >}} of unanswerable ones. A system built for *writing* turns on a small yes-or-no decision with a threshold.
+
+![The similarity of the best-matching chunk, for questions the knowledge base can answer (green, solid bars) and questions it can't (red, striped outline). They overlap, but not much. Below a threshold, the system should decline to answer.](/figures/ch12/abstain.pdf){#fig-abstain}
+
+## A model in a loop
+
+An **agent** is a model in a loop, with tools: look, decide, act, look again. A "tool call" sounds like the model pressing buttons, but it only *writes down* which tool it wants and with what arguments [@yao2023]; your code checks it and runs it. That request is a choice from a fixed list: a typed decision wearing text.
+
+![What the agent spent its steps on, averaged over 300 alerts. Small typed decisions dominate. Free text, the thing LLMs are famous for, is a small minority of the work.](/figures/ch13/census.pdf){#fig-census}
+
+The book's security agent decides which evidence to gather, whether it has enough, and the verdict, then acts. Counting its steps, decisions were {{< num ch13 share_decide pct >}} of all steps; writing, {{< num ch13 share_generate pct >}} (@fig-census). Count any agent you build or buy and you'll likely see the same: deciding is the everyday work.
+
+::: {.keyidea}
+Watch an agent work, and most of what it does is decide.
+:::
+
+## Errors multiply
+
+If each step is right 95% of the time, a ten-step task succeeds 0.95 multiplied by itself ten times: {{< num ch13 compound_95_10 pct >}}. Twenty steps: {{< num ch13 compound_95_20 pct >}}. That's why agents dazzle in demos (a few steps on an easy case) and stumble in real use (twenty steps on an odd one). Decisions are most of the steps, so most of the risk. A decision that comes with a calibrated probability can be caught and sent for review; one that comes back as a confident sentence can't.
+
+![The chance that every step of a task goes right, for different per-step reliabilities. Small per-step error rates become large task failure rates as the number of steps grows.](/figures/ch13/compound.pdf){#fig-compound}
+
+## Inputs can lie
+
+Agents read text other people wrote. An attacker who gets text in front of the model can plant instructions or false claims: **prompt injection** [@greshake2023]. It isn't only an LLM problem; any model that reads attacker-written text can be steered.
+
+![How likely the decision model thinks each real threat is, reading the alert text as written (black, solid line) and with one planted sentence (red, dashed line). The sentence pulls many real threats below the auto-close threshold. When the same fact comes from a trusted system instead (green, dotted fill), the planted sentence does nothing.](/figures/ch14/injection.pdf){#fig-injection}
+
+Some alerts say "Matches approved IT tooling (change ticket on file)", a strong sign of harmlessness. Plant that sentence in a file name, and the share of real threats that would close unseen jumps from {{< num ch14 inj_act_before pct >}} to {{< num ch14 inj_act_after pct >}} (@fig-injection). The fix is design, not a smarter model: ask the change-ticket system itself, and pass its answer as a separate field the attacker can't write. Then only {{< num ch14 inj_act_trusted pct >}} close.
+
+::: {.keyidea}
+Take the facts that lower suspicion from systems attackers can't write to.
+:::
+
+## The decision layer
+
+Nearly every protection in this chapter is the same thing: a check, turned into a decision, with a threshold chosen from what mistakes cost. Put them together and you have a **decision layer** between what an agent proposes and what actually happens. It checks proposals against what's allowed, asks typed questions, applies cost-based thresholds, takes risky facts from trusted systems, and sends each case through one of three doors: act, review or escalate. Whenever anything fails, from a timeout to a parse error, the case goes to a person.
+
+![A decision layer between what an agent proposes and what actually happens: schema and allow-list checks, a typed decision with a calibrated probability, a threshold from costs, a budget and trusted facts, then one of three doors.](/figures/ch14/defences.pdf){#fig-defences}
+
+None of that needs a smarter model. It needs decisions fast enough to use everywhere, cheap enough to ask often, and calibrated enough to put a threshold on.
+
+::: {.threshold}
+An agent can close an alert, add a note, block a sender's domain, or cut a laptop off the network. Which should it do automatically when confident, and which always need a person?
+
+(Closing and noting are cheap and reversible: fine with a calibrated threshold. Blocking a domain is reversible but can cost business: stricter threshold, plus a list of partners never to block. Cutting off a laptop stops someone's work and may destroy evidence: a person decides.)
+:::
+
+::: {.exercises}
+1. A vendor says their agent gets 90% of steps right, and a typical task is fifteen steps. What task success rate would you expect?
+:::
+
+::: {.nexthook}
+Next: the idea behind System One models, and what we actually know about Jev.
+:::

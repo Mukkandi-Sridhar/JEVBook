@@ -1,23 +1,11 @@
 # How to read this book {.unnumbered}
 
-![Three routes through the book's six parts.](/figures/front/paths.pdf){#fig-paths}
+**New to machine learning?** Read it in order. Chapters 1 to 4 are the foundation: what a probability means, how to check one, and how to turn it into an action. Chapters 5 and 6 are a short tour of neural networks, LLMs and agents.
 
-**New to machine learning?** Read it in order. Part I is the foundation: what a probability means and how to turn one into an action. Part II is a short tour of neural networks, LLMs and agents for people who haven't met them.
+**Already build with LLMs?** Read Chapters 3 and 4 anyway; everything after depends on them. Then go to Chapter 7.
 
-**Already build with LLMs?** Read Part I anyway, especially Chapter 3 (calibration) and Chapter 4 (costs). Everything after depends on them. Then go to Part III.
+**Lead a team or a product?** Read Chapters 1 to 4, then 7, 10, 11, 13 and 15. You'll be able to ask the four questions that matter: What does a mistake cost? Where's the threshold? Can we trust the probabilities? Who checks the warnings?
 
-**Lead a team or a product?** Read Part I, then Chapters 8 to 14, then 18 and 22. You'll be able to ask your team the four questions that matter: What does a mistake cost? Where's the threshold? Can we trust the probabilities? Who checks the warnings?
+**The boxes.** A **Key idea** box holds one sentence worth remembering a year from now; each chapter ends with **Keep these**, its key ideas in one list. **Where this breaks** shows the limits of what the chapter just taught: read these most of all. **Set the threshold** asks you to make a small decision with real costs, with the answer in brackets.
 
-## The boxes
-
-A **Key idea** box, with a thick bar on its left, holds one sentence worth remembering a year from now. Each chapter ends with **Keep these**, the chapter's key ideas in one list.
-
-**Where this breaks** shows the limits of what the chapter just taught. Read these most of all: they're the difference between knowing a method and knowing when to trust it. **Set the threshold** asks you to make a small decision with real costs; the answer follows in brackets. **Going deeper** holds optional maths that nothing later depends on.
-
-## The numbers
-
-The book's running example is a made-up shipping company, Kestrel Logistics, and its security team. Its alerts come from a program that knows the true answer for every one, so we can measure exactly how many attacks a policy misses. That also means every number is an *example of a method*, not a fact about the world. Charts marked **synthetic** are made this way: trust the pattern, and test the numbers on your own data.
-
-Every number about the Jev model comes from a stand-in that copies Jev's public interface. Those are marked *synthetic* too. What TypeSafe AI says about Jev is marked *vendor-reported*.
-
-The code behind every figure is in the book's repository, [github.com/Mukkandi-Sridhar/decide-dont-generate](https://github.com/Mukkandi-Sridhar/decide-dont-generate), for readers who want it. You don't need it to follow the book.
+**The numbers.** The running example is a made-up shipping company, Kestrel Logistics, and its security team. Its alerts come from a program that knows the true answer for every one, so we can measure exactly how many attacks a policy misses. Every such number is an *example of a method*, not a fact about the world, and is marked **synthetic**. Every Jev answer comes from a stand-in that copies Jev's public interface. What TypeSafe AI says about Jev is marked *vendor-reported*. The code behind every figure is in the companion repository, [github.com/Mukkandi-Sridhar/decide-dont-generate](https://github.com/Mukkandi-Sridhar/decide-dont-generate); you don't need it to follow the book.

@@ -1,0 +1,93 @@
+# What changes now {#sec-ch15}
+
+::: {.epigraph by="William Gibson, attributed"}
+The future is already here. It's just not very evenly distributed.
+:::
+
+Most predictions about AI soon look foolish, so this last chapter keeps to three things: what the book showed, what it suggests, and what nobody knows yet.
+
+::: {.goals}
+- See the decision layer as its own layer.
+- Understand when cheaper decisions mean more work for people.
+- Leave with a plan for your first decision.
+:::
+
+## A layer of its own
+
+For the last few years, the default AI system has been one big model doing everything (reading, deciding, writing, calling tools), all as text.
+
+![Two ways to build an AI system. Left: one model does everything as text. Right: each layer does one job. An LLM reads and writes, a decision layer answers typed questions with probabilities, a policy turns those into actions, and tools, logs and people sit underneath.](/figures/ch29/stack.pdf){#fig-stack}
+
+The right side of @fig-stack is the design this book kept arriving at. The LLM does what only an LLM can: read anything, write for people. The decision layer answers small typed questions in one pass, with probabilities you can test. The policy sets thresholds from costs and capacity. Underneath, tools act and people review. Each layer is smaller than the system, testable on its own with Chapters 2 to 4's tools, and replaceable without rebuilding the rest. That, more than any benchmark, is why I think this split will last.
+
+::: {.keyidea}
+Split the system: the LLM reads and writes, the decision layer decides, the policy acts, people own the costs.
+:::
+
+## The Jevons paradox of decisions
+
+In 1865 the economist William Stanley Jevons noticed something odd about coal [@jevons1865]. James Watt's steam engine got far more work from each ton, yet Britain burned *more* coal, not less: cheaper coal-powered work got used for more things. Photos and light followed the same pattern. When each cost almost nothing, we didn't keep the savings; we took thousands of photos and lit streets all night [@fouquet2006]. Jev's name is short for Jevons. The coal this time is decisions.
+
+Every decision has a *value*, the loss it avoids, and is worth making only when that beats its price and arrives before its deadline. A company makes a few thousand careful decisions a day, but *could* make millions: every email, every login, every log line, each worth only a fraction of a cent to check. At this book's illustrative LLM price of \${{< num ch19 llm_price f5 >}} a decision, almost none are worth it. At Jev's vendor-reported \${{< num ch19 jev_price f6 >}}, many are.
+
+The surprise is where the change shows up. Inside jobs a company already does, cheaper decisions multiply the number made (in our illustrative model, {{< num ch19 decisions_ratio int >}} times as many) while the bill *falls*. The bill rises only when cheap decisions make *new* jobs worth doing, like checking every file shared outside the company.
+
+::: {.keyidea}
+Cheaper decisions rarely raise the bill for jobs you already do; they raise it by making new jobs worth doing.
+:::
+
+![Alerts sent to a person per day, under two rules (illustrative). A rule that flags a fixed share of what the model looks at grows with the number of decisions, and at Jev volumes it sends far more than the team can handle. A cost-based threshold, which flags only when the expected loss is larger than the cost of a review, barely moves.](/figures/ch19/flags.pdf){#fig-flags}
+
+There's a hidden cost: more decisions means more cases that end with a person. A rule that seemed sensible at low volume, "send the top 0.1% to a person", sends {{< num ch19 flags_top_llm int >}} a day under the team's capacity of {{< num ch19 capacity int >}}, then {{< num ch19 flags_top_jev int >}} at the new volume, though nobody changed the policy (@fig-flags). A cost-based rule, which flags a case only when its expected loss beats the cost of a review, sends {{< num ch19 flags_cost_jev int >}} either way.
+
+::: {.keyidea}
+When decisions get cheap, set thresholds by cost, not by share.
+:::
+
+## What gets valuable, and what nobody knows
+
+If deciding gets cheap, what becomes scarce? Judgement about the decision itself. Someone still has to decide what a mistake costs, where the thresholds go, how much the review queue can take, and whether the probabilities are still calibrated this week. No model does that for you. That's why Chapters 2 to 4 were worth the long way round: they're the difference between a system that makes a million cheap decisions well and one that makes a million cheap mistakes.
+
+![Skills that matter more when decisions get cheap, and skills that matter less on their own, with the chapters that teach each.](/figures/ch29/skills.pdf){#fig-skills}
+
+::: {.keyidea}
+When deciding gets cheap, judgement about the decision itself becomes scarce.
+:::
+
+Much is still unknown: how well any System One model is calibrated on your data, how its behaviour changes between versions, how it handles attackers, what prices will settle at. None is a reason to wait. Calibration is a test you can run this week; version changes are handled by a pinned version and a monitor; prices are a spreadsheet. And the pattern will outlast any one vendor. A typed question in, a probability out, and a policy in your own code can move to a different model in an afternoon.
+
+![Open questions, and what you can do about each today.](/figures/ch29/unknowns.pdf){#fig-unknowns}
+
+::: {.keyidea}
+You need decisions you can measure, thresholds you can move and a model you can replace.
+:::
+
+## What to do on Monday
+
+If you do one thing after closing this book, list every decision your system makes, and count them. Most people are surprised how many there are, and how many are small, typed and frequent.
+
+![A first three months, one decision at a time.](/figures/ch29/monday.pdf){#fig-monday}
+
+Then pick *one*. Get a few hundred labels and test its calibration. Put prices on its mistakes and set its thresholds. Run it in shadow mode. Switch it on with a fail-safe, a random audit and a daily monitor. Then do the next one. It isn't exciting. It's how every system in this book got better.
+
+::: {.breaks}
+This chapter is the least certain in the book. The cost and speed figures are illustrative, and Jev's are vendor-reported from early access. The claim that a decision layer will become standard is my reading of the evidence, not a finding; it could be wrong if general models become fast and well calibrated enough that splitting stops paying. If that happens, everything about costs, thresholds and calibration still applies; only the box it sits in changes.
+:::
+
+::: {.threshold}
+Your own system: take its most frequent decision. What does a wrong "yes" cost? A wrong "no"? Where does the threshold go? And how would you know, a month from now, whether the probabilities behind it are still calibrated?
+
+(There's no answer at the back of the book for this one. If you can fill in all four, you've learned what this book set out to teach.)
+:::
+
+Alan Turing ended his most famous paper with a sentence that fits this moment: "We can only see a short distance ahead, but we can see plenty there that needs to be done" [@turing1950].
+
+![The whole book as one story.](/figures/ch29/journey.pdf){#fig-journey}
+
+::: {.exercises}
+1. Write the decision audit for one system you know: every decision, how often it happens, what a mistake costs, and who owns it.
+:::
+
+::: {.nexthook}
+Thank you for reading. The code behind every figure is in the companion repository, ready for your own data.
+:::

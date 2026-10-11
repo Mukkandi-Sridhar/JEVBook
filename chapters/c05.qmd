@@ -1,0 +1,91 @@
+# How modern AI models work {#sec-ch05}
+
+::: {.epigraph by="Arthur C. Clarke, 1973"}
+Any sufficiently advanced technology is indistinguishable from magic.
+:::
+
+"Deep learning" and "LLM" sound like magic. They're four plain ideas stacked together, and each one matters for deciding. This chapter covers them, then shows why "just ask the LLM" is an awkward way to make a decision.
+
+::: {.goals}
+- Explain layers, embeddings and attention in plain words.
+- See why big models become overconfident.
+- Explain why asking an LLM for a decision is awkward.
+:::
+
+## Idea one: layers bend the line
+
+A single artificial neuron is the logistic regression from Chapter 2: weigh the clues, add them up, squash into a probability. It can only cut the world in two with a straight edge. But some behaviour is suspicious when it's unusual in *any* direction (far too much activity or far too little), and no straight line separates the middle from the edges.
+
+So send the clues through a layer of neurons first. Each draws its own line, and the next combines them; three lines make a triangle, twelve something like a circle. Each hidden neuron *bends* its answer first (negative becomes zero), and enough bends can draw almost any shape. A network with several hidden layers is **deep**. Training is the same downhill walk; the error is passed back through the layers like shared-out blame (**backpropagation**) [@rumelhart1986].
+
+![A toy problem. Blue dots are normal activity; red crosses surround them on every side. One neuron (left) can only draw a straight line through it. With a hidden layer of three neurons (middle) the boundary becomes a triangle; with twelve (right), close to a circle.](/figures/ch06/line-limit.pdf){#fig-line-limit}
+
+Depth matters because a deep network takes raw input, like pixels or characters, and *learns its own clues* [@lecun2015]. On neat hand-made features there's nothing left to find: a small network matches logistic regression ({{< num ch06 k_small.log_loss f3 >}} against {{< num ch06 k_lr.log_loss f3 >}}), and a big one does worse.
+
+::: {.keyidea}
+Deep networks are worth their cost on raw, messy input. On neat features, start with something simple.
+:::
+
+## Idea two: meaning as geometry
+
+A network does arithmetic, so words must become numbers. The trick came from linguistics: *you know a word by the company it keeps.* Count which words appear near each word, squash the counts into a short list of numbers, and words used alike get similar lists. That list is an **embedding**. Similar documents land near each other too, which is the engine inside search and RAG.
+
+But embeddings capture what things are *about*, not the exact numbers inside them. Predicting from each alert's 50 most similar past alerts gives honest probabilities (ECE {{< num ch07 knn.ece f3 >}}) but poor ranking (AUC {{< num ch07 knn.auc f2 >}}, against {{< num ch07 lr.auc f2 >}}): to an embedding, a threat score of 0.05 and 0.95 look alike.
+
+## Idea three: words that look at each other
+
+"invoice, not phishing" clears an alert; "phishing, not invoice" raises one. Same words. **Attention** fixes this: *every word asks which other words should change its meaning, and listens to them in proportion.* Trained on tiny notes where "not" flips the meaning, attention learns on its own to look at "not", reaching {{< num ch08 acc_att pct >}} accuracy where word-counting tops out at {{< num ch08 acc_bow pct >}}.
+
+![What each word attends to after training. In "invoice not phishing", the word "phishing" puts nearly all its attention on "not". Nobody told the model about negation; it found that looking at the word before was the cheapest way to get the answers right.](/figures/ch08/heatmaps.pdf){#fig-heatmaps}
+
+A **transformer** is attention stacked dozens of times [@vaswani2017]. One distinction matters for this book. A **reader** lets every word see the whole input, which suits understanding and deciding. A **writer** lets each word see only earlier words, which writing requires. LLMs are writers.
+
+## Idea four: scale, and a side effect
+
+Train a huge writer to guess the next word of everything ever written, and it picks up grammar, facts and some reasoning [@kaplan2020]. Then tune it on good answers and on which answers people prefer [@ouyang2022]. People prefer answers that sound sure. OpenAI's own report found GPT-4's confidence well calibrated before that tuning, and clearly less so after [@openai2023].
+
+![The same training run, on test alerts. Accuracy (left) barely moves. Log loss (middle) and calibration error (right) are flat for a while, then climb steeply. Watch only accuracy and you'd never notice.](/figures/ch09/overtraining.pdf){#fig-overtraining}
+
+There's a deeper version you can watch happen. Train a network far bigger than the job, for too long: accuracy barely moves, but calibration error climbs from {{< num ch09 first.ece f3 >}} to {{< num ch09 last.ece f3 >}} (@fig-overtraining). Once most training cases are right, the only way to lower log loss is to push answers towards certainty. The model becomes certain of everything it saw, noise included. One temperature (Chapter 3) brings the error back to {{< num ch09 ece_after_T f3 >}}.
+
+::: {.keyidea}
+Flexible models trained to make their training loss as small as possible learn to be too certain.
+:::
+
+## How an LLM writes, and why that's awkward for deciding
+
+An LLM writes one **token** (a word or piece of a word) at a time: read everything so far, give every possible next token a probability, pick one, append it, repeat. Three consequences matter for decisions.
+
+![The generation loop. The model reads everything so far, produces a probability for every possible next token, one gets picked, it's appended, and the loop runs again.](/figures/ch10/loop.pdf){#fig-loop-06}
+
+**Length is time and money.** Each token waits for the one before. A one-word answer takes about {{< num ch10 lat_1 f1 >}} seconds in our illustrative figures; 1,500 tokens of step-by-step reasoning, about {{< num ch10 lat_1500 int >}}.
+
+**The same question gets different answers.** Picking usually involves a weighted dice roll. Asked about forty borderline alerts twenty times each, a typical LLM flipped its verdict on {{< num ch10 n_split int >}} of them. Setting temperature to zero hides the uncertainty; it doesn't remove it.
+
+**The answer is buried in text.** Ask for JSON and {{< num ch11 prompt_fail_share pct1 >}} of answers come back broken, chatty or with invented fields. "JSON mode" guarantees the *shape*, not the *truth*: a perfectly formatted "benign" for a real attack.
+
+![What came back when we asked for JSON, over 4,000 alerts. With only the prompt, some responses were wrapped in friendly chat, some were cut off mid-object, and some were valid JSON with a field nobody asked for. With JSON mode on, the first two problems vanish. The third doesn't.](/figures/ch11/json-failures.pdf){#fig-json-failures}
+
+::: {.keyidea}
+Constrained decoding makes the answer parse. It doesn't make it right.
+:::
+
+## Three kinds of "confidence"
+
+Say the JSON is perfect: `"verdict": "malicious", "confidence": 0.95`. Can you put a threshold on that 0.95?
+
+![Reliability of three "confidences" on the same test alerts, all reading the same raw text. The stated confidence barely separates attacks from harmless alerts. The token probability ranks well but is overconfident. The decision model ranks best and also sits close to the diagonal. Synthetic: the stand-ins reflect design choices, not measurements of real models.](/figures/ch11/three-confidences.pdf){#fig-three-confidences}
+
+The **written confidence** is just text: the stand-in LLM used only {{< num ch11 n_distinct_stated int >}} different values, mostly 0.9 and above, and it barely ranks alerts (AUC {{< num ch11 verbal.auc f2 >}}). The **token probability** ranks better ({{< num ch11 token.auc f2 >}}) but is overconfident, and it's the probability of a *word*, not of an answer: "malicious", "Malicious" and " malicious" are different tokens. A **decision model's probability** is designed to be the answer itself (@fig-three-confidences). That's the gap System One models aim at.
+
+::: {.keyidea}
+The probability of a token isn't the probability of an answer.
+:::
+
+::: {.exercises}
+1. A vendor's classifier is "97% accurate" and returns a confidence with every answer. You plan to act automatically above 0.9. What would you ask for first?
+:::
+
+::: {.nexthook}
+Next: retrieval and agents, and why nearly every weak point in them is a small decision.
+:::

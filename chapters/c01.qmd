@@ -1,0 +1,87 @@
+# What "learning" means {#sec-ch01}
+
+::: {.epigraph by="Edsger W. Dijkstra, 1984"}
+The question of whether a computer can think is no more interesting than the question of whether a submarine can swim.
+:::
+
+AI, machine learning, deep learning, LLMs, RAG, agents: it can feel like seven subjects to learn. It's one story. Each step exists because the one before it hit a problem it couldn't solve. This chapter tells that story, and shows where this book fits in it.
+
+::: {.goals}
+- Tell a computer following rules from a computer learning.
+- Say what a *model* is in one sentence.
+- Place AI, machine learning, LLMs, RAG, agents and Jev on one map.
+:::
+
+## Rules, and where they run out
+
+Inside a thermostat is a line that says, more or less: *if the temperature is above 30°C, turn on the fan.* That's a computer following a rule. It works nothing out.
+
+Rules are underrated. They're fast, cheap, and when one goes wrong you can read why. When a rule does the job, use it.
+
+The trouble starts when the world changes faster than you can write rules. A security team wants to catch *phishing*, emails that trick staff into typing a password into a fake page. Someone writes: *flag any email that mentions "password".* On Monday it flags the IT team's own reset emails. On Wednesday an attacker writes "passw0rd". On Friday the attacker drops the word entirely and sends a link to a fake shared document. The rule list grows, and it's always one trick behind.
+
+![Two ways to catch phishing. On the left, every new trick forces a new exception, and the list never catches up. On the right, we stop writing rules and show the computer labelled examples instead.](/figures/ch01/rules-vs-examples.pdf){#fig-rules-vs-examples}
+
+So turn the job around. Give the computer thousands of emails where the answer is already known, *this one was phishing, this one was fine*, and let it find the pattern itself.
+
+::: {.keyidea}
+**Machine learning** is getting a computer to work out the rules itself, from examples where the answer is already known.
+:::
+
+What learning leaves behind is a **model**: something that takes an input and gives an answer. Picture a machine with many knobs. Learning turns the knobs until the machine gets the examples right as often as possible; then you use it on new cases.
+
+::: {.keyidea}
+A **model** is a function whose settings came from examples rather than from a programmer.
+:::
+
+## A machine learns the wrong thing
+
+The book's running example is a made-up shipping company, Kestrel Logistics. Its security team receives {{< num ch01 n_alerts int >}} warnings, or **alerts**, in four weeks, about {{< num ch01 per_day int >}} a day. Only {{< num ch01 base_rate pct1 >}} are real attacks. (A program invents the alerts, so we know the true answer for every one and can check every model exactly.)
+
+Each alert has a *threat score* from 0 to 1. An obvious rule: *flag it if the score is at least t.* A number like *t* that splits cases in two is a **threshold**. Which *t*? Let the machine try every value, count the mistakes each makes, and keep the best. That's learning in its smallest form.
+
+![Every possible threshold and the mistakes it makes. Low thresholds bury the team in false alarms; high ones miss attacks. The total is lowest at the far right, just below the dotted line for "flag nothing at all".](/figures/ch01/threshold-search.pdf){#fig-threshold-search}
+
+It picks {{< num ch01 best_t f2 >}}, flagging only the very worst scores, and makes {{< num ch01 best_mistakes int >}} mistakes. A "rule" that never flags anything makes {{< num ch01 never_flag_mistakes int >}}, barely more. Of {{< num ch01 attacks int >}} real attacks, the winner catches {{< num ch01 best_caught int >}}. Harmless alerts outnumber attacks twelve to one, so every false alarm hurts the count more than a caught attack helps it (@fig-threshold-search).
+
+::: {.keyidea}
+A model learns exactly what you ask for: ask the wrong question, and it learns the wrong thing.
+:::
+
+Two things went wrong. We counted every mistake as equal, though missing an attack costs far more than a false alarm (Chapter 4 fixes that). And we forced the answer to be *yes* or *no*.
+
+## The answer isn't yes or no
+
+Ask instead: *among alerts with a given score, how many were attacks?*
+
+![Group the alerts by threat score and count how many were real attacks. The share climbs steadily from 2% to 62%. Even at the top, plenty are harmless; even at the bottom, a few are attacks.](/figures/ch01/not-yes-no.pdf){#fig-not-yes-no}
+
+There's no point where alerts switch from harmless to dangerous (@fig-not-yes-no). Even among the lowest scores, {{< num ch01 bottom_bin_rate pct >}} were attacks: over a hundred, hidden among {{< num ch01 bottom_bin_n int >}} harmless-looking alerts. Among the highest, only {{< num ch01 top_bin_rate pct >}} were. What we know about an alert scoring 0.55 is not "attack" or "fine", but *about one in five like it is an attack.* That number says how worried to be, which alert to check first, and, once we know the costs, where to draw the line.
+
+::: {.keyidea}
+A good model doesn't just answer: it says how sure it is, and it's right about how sure it is.
+:::
+
+Being right about how sure you are is called **calibration**, and it's the thread running through this whole book.
+
+## The rest of the story, and where this book fits
+
+A threat score is one neat number. Photos and emails aren't. So came models that learn their own clues in many layers (**deep learning**), then huge ones trained to guess the next word that learned language itself (**large language models**, LLMs). LLMs know the world but not your company, so we let them look things up (**RAG**), and then act in a loop with tools (**agents**). Chapters 5 and 6 cover all of this.
+
+Watch an agent work and you notice that most of its steps aren't writing. They're small decisions with a few possible answers: *is this real? which team? is this action safe?* Today each goes to an LLM, which writes a paragraph that code then has to dig the answer out of. It's like hiring a novelist to tick a checkbox.
+
+![The same question, two ways. An LLM writes its answer piece by piece, and your code has to read the sentence. A decision model returns the answer as data, with a probability for every option, in one pass.](/figures/ch01/generate-vs-decide.pdf){#fig-generate-vs-decide}
+
+In 2026 the start-up TypeSafe AI released **Jev**, a model built only for those checkbox moments. It never writes. You give it a situation and a typed question, and it returns the answer as data, with a probability for every option. TypeSafe calls it a *System One* model, after the psychologist Daniel Kahneman's name for fast, intuitive thinking [@kahneman2011]. I had no access to Jev's API while writing, so every Jev answer in this book comes from a stand-in that copies its public interface, and is marked *synthetic*.
+
+![The story so far. Each step exists because the one before it hit a problem it couldn't solve. System One models like Jev grow out of deep learning and fit into the "decide" step of an agent.](/figures/ch01/ai-story-map.pdf){#fig-ai-story-map}
+
+That's the map (@fig-ai-story-map). The next three chapters stay at its foundation on purpose, because everything above rests on one idea: an answer should be a probability, and the probability should mean what it says.
+
+::: {.exercises}
+1. Name one system you use that follows rules, and one that learned from examples. What gave each away?
+:::
+
+::: {.nexthook}
+Next: "how likely" sounds like a small idea. It hides a trap that fools doctors, judges and security teams.
+:::

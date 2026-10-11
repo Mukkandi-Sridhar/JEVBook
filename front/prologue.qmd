@@ -14,18 +14,14 @@ Now picture a second night.
 
 A model reads every alert the moment it arrives. It writes nothing. It answers one question with a number: *how likely is this to be real?* And that number can be trusted: of the alerts it calls "one in ten", about one in ten really are attacks.
 
-Alerts it is almost sure are harmless get closed, and a random few of those are kept aside to be checked later. Alerts it is fairly sure are dangerous wake someone up at once. Everything in between goes to the person on duty, most likely first.
+Alerts it's almost sure are harmless get closed, with a random few kept aside to check later. Alerts it's fairly sure are dangerous wake someone up at once. Everything in between goes to the person on duty, most likely first. The person still makes the decisions that matter, on the right alerts.
 
-The person still makes the decisions that matter. They just make them on the right alerts.
-
-That second night is what this book builds. It needs surprisingly little new technology and quite a lot of clear thinking:
-
-- what a probability really is, and how to tell if one can be trusted;
-- what each kind of mistake costs, and where that puts the line between "act" and "ignore";
-- when a machine should decide, and when it should hand the case to a person.
-
-None of this is only about security. The same thinking runs a bank's fraud check, a hospital's waiting list and every AI agent that has to choose its next step. The security team is just the example we'll keep coming back to, because its mistakes are easy to count.
+That second night is what this book builds. It needs little new technology and a lot of clear thinking: what a probability really is and how to tell if one can be trusted; what each mistake costs, and where that puts the line between "act" and "ignore"; and when a machine should decide and when it should hand the case to a person. The same thinking runs a bank's fraud check, a hospital's waiting list and every AI agent choosing its next step. The security team is just the example, because its mistakes are easy to count.
 
 ::: {.nexthook}
 Next: before a machine can decide anything, it has to learn. What does that actually mean?
 :::
+
+```{=latex}
+\bookmainmatter
+```

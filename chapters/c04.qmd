@@ -1,0 +1,91 @@
+# From probabilities to actions {#sec-ch04}
+
+::: {.epigraph by="William Bruce Cameron, 1963"}
+Not everything that can be counted counts, and not everything that counts can be counted.
+:::
+
+You have probabilities you can trust. Now the question everyone reaches: *where do I put the threshold?* Most people pick 0.5. It's the default in almost every library, and it feels neutral. It isn't. It's a very specific opinion about your business, usually the wrong one.
+
+::: {.goals}
+- Turn two costs into one threshold, and see why 0.5 is a special case.
+- Treat "ask a person" as a real action.
+- Meet the three doors: act, review, escalate.
+:::
+
+## The umbrella question
+
+The forecast says 30% chance of rain. Do you take an umbrella? Carrying one you didn't need is mildly annoying, call it 1. Getting soaked on the way to a meeting is worse, call it 4. Carrying always costs 1; leaving it costs 4 times the chance of rain. The two are equal at 20%. Above that, carry it. So at 30% you take the umbrella, even though it probably won't rain.
+
+![The umbrella decision. Carrying always costs 1. Leaving it costs 4 times the chance of rain. The lines cross at 20%: above that, carry it.](/figures/ch05/umbrella.pdf){#fig-umbrella}
+
+## One formula, two costs
+
+Any yes-or-no action can go wrong two ways: a **false alarm** (you acted and didn't need to) and a **miss** (you didn't act and should have).
+
+::: {.keyidea}
+Act when P > C~fa~ ÷ (C~fa~ + C~miss~): the false-alarm cost over the sum of both costs.
+:::
+
+The umbrella: 1 ÷ (1 + 4) = 0.2. When the two costs are *equal*, the formula gives 0.5. That's where 0.5 comes from: it's right only when every mistake costs the same, which is almost never true of anything worth building a model for.
+
+::: {.keyidea}
+0.5 is not neutral: it's the threshold for a world where every mistake costs the same.
+:::
+
+![The right threshold for any ratio between the cost of a miss and the cost of a false alarm (both axes on a log scale). Equal costs give 0.5. As misses get more expensive, the threshold drops fast.](/figures/ch05/threshold-ratio.pdf){#fig-threshold-ratio}
+
+Different costs, different thresholds (@fig-threshold-ratio). Letting a security alert close itself with nobody looking sits far in the corner: a miss costs about 630 times a quick human check, so the threshold drops to about {{< num ch05 soc_review_t f4 >}}.
+
+::: {.deeper}
+Where the formula comes from. Acting costs (1 − *P*) × *C*~fa~ on average, since you pay only if the case was harmless. Not acting costs *P* × *C*~miss~. Act when the first is smaller, and rearrange: *P* > *C*~fa~ / (*C*~fa~ + *C*~miss~) [@elkan2001].
+:::
+
+## Does it work?
+
+For every alert, the team decides: block or allow? Wrongly blocking something harmless costs about \$200 in lost work; letting a threat through costs about \$4,000. The formula says block above {{< num ch05 t_formula f3 >}}. A brute-force search over 300 thresholds lands almost exactly there. Using 0.5 instead costs {{< num ch05 half_penalty f1 >}} times as much.
+
+Now see why calibration came first. Apply the same formula to the rebalanced model from Chapter 3, whose numbers are too high, and the cost is {{< num ch05 bal_penalty pct >}} higher. Its own best threshold is far away, findable only by trial and error, again every time the costs change.
+
+::: {.keyidea}
+With calibrated probabilities, costs set the threshold directly. Without them, you're guessing.
+:::
+
+![Total cost on the test alerts at every threshold. For the calibrated model (green, solid line), the formula's threshold is near the lowest point of the curve. For the same model trained on rebalanced data (red, dashed line), the same threshold lands far from its lowest point.](/figures/ch05/cost-curve.pdf){#fig-cost-curve}
+
+At the cost-based threshold, only about one block in five is a real threat. Is that poor? Only the costs can say. Each block is worth it if the alert is better than about 1 in 21 to be real, because a miss costs 20 times a false alarm. Precision or recall alone, without costs, is half a story.
+
+## "I don't know" is an action too
+
+There's almost always a third option, and it's the most useful: *don't decide; ask a person*. In 1970 the engineer C. K. Chow showed that a machine allowed to refuse its least certain cases makes far fewer errors [@chow1970].
+
+![Coverage against risk. Reading from right to left: if the machine decides every alert, you take its full error rate. Let it decide only the alerts it's surest about and send the rest to people, and the error rate among its decisions falls steeply. A better model (green, solid line) gives you more coverage at the same risk.](/figures/ch05/coverage-risk.pdf){#fig-coverage-risk}
+
+Deciding every alert, the model gets {{< num ch05 risk_100 pct1 >}} wrong. Deciding only its surest 80%, {{< num ch05 risk_80 pct1 >}}. Its surest half, {{< num ch05 risk_50 pct1 >}} (@fig-coverage-risk). This is one of the most useful pictures you can show a manager. It replaces "how good is the model?" with the question they actually have: *how much of this work can we safely hand over, at what error rate?*
+
+::: {.keyidea}
+Let a model decide only the cases it's surest about, and its error rate falls steeply.
+:::
+
+## Three doors
+
+Put cost-based thresholds and "ask a person" together and you get the design used for the rest of the book. **Act**: the machine handles it alone. **Review**: a person checks it in normal work. **Escalate**: a person is called in now. The boundaries come from the same cost arithmetic; Chapter 11 sets them, and adds the part skipped here, what to do when there aren't enough people for the middle door.
+
+![The three doors. At one end the model is confident nothing's needed, so the machine handles it. At the other end it's confident something's badly wrong, so a person is called in immediately. In between, where it's unsure, a person looks when they can.](/figures/ch05/three-doors.pdf){#fig-three-doors}
+
+::: {.breaks}
+Costs are guesses, and the formula treats guesses like facts. Try each cost at half and double; if the threshold barely moves, stop arguing about the exact number. Costs also differ by case: a false alarm on the CEO's laptop costs more than on a test server. And some costs aren't money at all: trust, fairness, safety, law. Discuss them openly, or someone's default settings decide them for you.
+:::
+
+::: {.threshold}
+The sales team says a wrongly blocked customer email costs \$800, not \$200. Where does the blocking threshold go now?
+
+(800 ÷ 4,800 ≈ 0.17. Fewer alerts get blocked and more threats get through. The model didn't change; the business's priorities did, and the threshold should follow them.)
+:::
+
+::: {.exercises}
+1. A hospital test flags a serious but treatable condition. Treating someone who doesn't have it costs \$500; missing someone who does costs \$50,000. What's the treatment threshold?
+:::
+
+::: {.nexthook}
+Next: how modern AI models work inside, from a single neuron to an LLM, and why that matters for deciding.
+:::

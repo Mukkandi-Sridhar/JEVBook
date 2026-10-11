@@ -1,0 +1,93 @@
+# Act, review, or escalate {#sec-ch11}
+
+::: {.epigraph by="Sign on President Harry S. Truman's desk"}
+The buck stops here.
+:::
+
+An alert comes in at 2 a.m. The model says 0.37. You know it's a probability and how to check it. Now someone asks the only question that matters: *"So what do we do with it?"* This step, from a number to an action, is the least exciting part of any AI system, and where most of the money is saved or lost.
+
+::: {.goals}
+- Set act and escalate thresholds from costs.
+- Fit a policy to the number of people you have.
+- Run the policy safely: audits, logs and drift checks.
+:::
+
+## Why 0.5 fails
+
+Every tutorial says: above 0.5, it's a threat; below, it's fine. Try it on a realistic week, with three weeks of history and a fourth treated as live. About {{< num ch21 naive.act int >}} alerts a day close themselves, and every day about {{< num ch21 naive.missed_by_automation int >}} of them were real threats (real phishing, real malware, a real stranger with someone's password) closed with nobody looking.
+
+0.5 quietly assumes two false things: that a missed threat and a false alarm cost the same, and that there are only two things you can do. There are three.
+
+## Three doors
+
+Every case leaves through one of three doors. **Act**: the system handles it alone, and nobody reads it. Most cases should go this way. **Review**: a person checks it as part of normal work, about twelve minutes of skilled time. **Escalate**: a phone rings, at 2 a.m. if need be, because this one can't wait. In customer support the doors are auto-reply, agent and supervisor; in content moderation, auto-approve, reviewer and legal team.
+
+![420 alerts from the live week, placed by how likely the (calibrated) model thinks they are to be real threats. Note the log scale: most alerts are crowded at the far left, where the model is confident they're harmless. The red crosses, real threats, are mostly to the right, but not all of them.](/figures/ch21/zones-strip.pdf){#fig-zones-strip}
+
+::: {.keyidea}
+Act, review, escalate: machines handle the clear cases at each end, and people handle the middle.
+:::
+
+## Let the costs set the thresholds
+
+For each door, write down what it costs *on average*, given the chance *P* the alert is real. These are my estimates for a mid-sized company; the method matters more than the values.
+
+- **Act.** If it was real, a threat got through: about \$10,000 expected loss. Cost: *P* × \$10,000.
+- **Review.** Twelve minutes at \$75 an hour is \$15, and reviewers miss about one threat in twenty. Cost: \$15 + *P* × 5% × \$10,000.
+- **Escalate.** Waking someone for nothing costs about \$400. Cost: (1 − *P*) × \$400.
+
+![Expected cost of each action as the probability of a real threat rises (both axes on a log scale). Acting is cheapest when P is tiny, escalating when P is large, and review wins everywhere in between. The two crossing points are the thresholds.](/figures/ch21/cost-lines.pdf){#fig-cost-lines}
+
+At each *P*, pick the cheapest line. The two crossings in @fig-cost-lines are your thresholds, and a pencil finds them: act below about 0.0016, escalate above about 0.43. Look at that first number. The machine may close an alert alone only if it's *99.8% sure* it's harmless. That isn't paranoia; it's arithmetic. An unseen real threat costs about 630 times a review.
+
+**Check the probabilities first.** Those lines assume *P* means what it says. Among live alerts the raw model called "under 2% likely", it said {{< num ch21 raw_believed pct1 >}} on average; the real rate was {{< num ch21 raw_actual pct1 >}}, {{< num ch21 raw_ratio f1 >}} times riskier than claimed. Most models are overconfident at the extremes. Platt scaling fitted on history brings them back close to the truth.
+
+::: {.keyidea}
+Never put a threshold on a probability you haven't checked against recent outcomes.
+:::
+
+## Then the real limit appears: people
+
+Switch on the cost-based policy and it sends about {{< num ch21 ideal.review int >}} alerts a day to review: a full day's work for about {{< num ch21 ideal_reviews_analysts int >}} people. The team has {{< num ch21 analysts int >}}, so the queue can take {{< num ch21 capacity int >}} a day. Anything beyond that simply isn't looked at, and nobody chooses which.
+
+::: {.keyidea}
+A policy that ignores capacity isn't a policy. It's a wish.
+:::
+
+So ask a better question: *among policies that fit the team we actually have, which is cheapest?* Fitted on history and tested on the live week, the machine now closes {{< num ch21 chosen.act int >}} alerts a day, people review {{< num ch21 chosen.review int >}}, and {{< num ch21 chosen.escalate int >}} are escalated. Real threats closed unseen fall from {{< num ch21 naive.missed_by_automation int >}} a day to about {{< num ch21 chosen.missed_by_automation f1 >}}.
+
+![Where the live week's real threats (left) and harmless alerts (right) end up each day, under one threshold at 0.5 and under the three-zone policy that respects capacity. The light, plain segment on the left (act) is the number that matters: threats closed with no person involved.](/figures/ch21/one-vs-three.pdf){#fig-one-vs-three}
+
+![Threats auto-closed per day, for every team size from 3 to 14 analysts, with thresholds fitted again for each. The gap between the two curves is what better input is worth: the same model reading structured alert fields instead of raw alert text.](/figures/ch21/capacity.pdf){#fig-capacity}
+
+About six a day still isn't zero. Now think like the person who approves the budget. @fig-capacity shows the best policy for every team size. Going from six people to eight cuts unseen threats from {{< num ch21 chosen.missed_by_automation f1 >}} to {{< num ch21 eight.missed_by_automation f1 >}} a day, avoiding about {{< num ch21 saved_money_per_day money >}} of expected loss daily. The model doesn't make that call. But it's now a decision with a clear price, not a guess. The grey curve, the same model reading raw text instead of clean fields, is worse at every team size: *better input buys the same as more people.*
+
+## Two more rules
+
+**Stakes override confidence.** A model can be 99% sure an alert on the payroll server is harmless, but the other 1% is still on the payroll server. Nothing on a critical system closes itself, however confident the model. And anything that doesn't clearly belong behind another door goes to a person: *when in doubt, review.*
+
+**Audit the act zone at random.** Cases sent to people come back with an answer. Cases the machine closed come back with *nothing*, so you never see the machine's own mistakes, in exactly the zone where they hurt. Send a small random share, say 3%, of auto-closed cases to a person anyway.
+
+::: {.keyidea}
+Cases the machine closes never come back with an answer, unless you audit a random sample.
+:::
+
+## Running it for real
+
+Write the policy down with a version number ("v3: act below 0.031, escalate at 0.34, fitted on 1–21 September, six people"), so it can be reviewed and rolled back. Log every decision: what the model saw, what it said, which policy turned that into an action. When the model fails or times out, the case goes to review, never to act.
+
+Then watch three numbers every day: the share of cases in each zone, the queue against capacity, and predicted threats against confirmed ones. When a phishing campaign hits in week five, nothing about any single alert looks odd. But the model expected {{< num ch21 campaign_pred pct >}} of alerts to be threats and the real figure is {{< num ch21 campaign_actual pct >}}, and the queue overflows. Both are obvious on a daily chart. Then a person chooses: recalibrate on the latest week, lower the act threshold for the affected kind of alert for a while, or add review capacity.
+
+![Top: the share of alerts that were real threats each day (black, solid line) against what the calibrated model expected (green, dashed line). Bottom: alerts sent to review each day against the team's capacity. In week five (shaded, between dotted lines), reality moves away from the model, and the queue overflows.](/figures/ch21/drift-watch.pdf){#fig-drift-watch}
+
+::: {.breaks}
+Thresholds are fitted to the past, and attackers act in the future. An attacker who learns what makes your model relax will shape their activity to land in the act zone. Random audits, keeping scores private, and rules that keep critical systems out of the act zone make that harder, not impossible. And the cost figures are guesses too: revisit them when the business changes, not just when the model does.
+:::
+
+::: {.exercises}
+1. Design an act/review/escalate policy for something outside security: refunds, insurance claims or content moderation. What does each door mean, which mistake is expensive, and what limits the review door?
+:::
+
+::: {.nexthook}
+Next: the common designs decision layers use inside real systems, and a hybrid agent built from them.
+:::

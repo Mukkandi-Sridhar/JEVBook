@@ -259,8 +259,7 @@ local function index_blocks(blocks, st)
             else
               local sp = st.span[key]
               if sp.first == sp.last then adds[#adds + 1] = index_entry(t)
-              elseif st.para == sp.first then adds[#adds + 1] = index_entry(t, "|(")
-              elseif st.para == sp.last then adds[#adds + 1] = index_entry(t, "|)") end
+              elseif st.para == sp.first or st.para == sp.last then adds[#adds + 1] = index_entry(t) end
             end
           end
         elseif st.pass == 2 then
