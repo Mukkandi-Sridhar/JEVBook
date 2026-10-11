@@ -19,7 +19,7 @@ Most people are not like this. If you ask someone for a range they are "90% sure
 Good forecasters are not always right; nobody can be. They are good because their numbers mean what they say (@fig-forecasters). This is called **calibration**.
 
 ::: {.keyidea}
-A model is **calibrated** when its 80% comes true about 80% of the time.
+**Calibrated means the numbers can be trusted.** If a model says 80% for a hundred cases, about eighty of them should really happen. If not, every decision built on its numbers is misled.
 :::
 
 ## Ranking and calibration are two different things
@@ -35,7 +35,7 @@ A model's numbers can be good at two separate jobs.
 In @fig-same-auc, both models have the same AUC of {{< num ch04 lr.auc f3 >}}. But model B says 40% for alerts that are attacks only a few times in a hundred. If you only sort alerts, B is as good as A. But the moment you use its numbers to make a decision, B will mislead you. Most leaderboards report only ranking. For decisions, calibration usually matters more.
 
 ::: {.keyidea}
-Ranking well and being calibrated are different skills. Good decisions need both.
+**Sorting well is not the same as being correct.** A model can put the attacks at the top of the list and still give wrong percentages. For decisions, you need both.
 :::
 
 ## How to check calibration
@@ -66,9 +66,7 @@ The good news is that a model which ranks well but is badly calibrated is usuall
 
 For the rebalanced model, Platt scaling brings the ECE down from {{< num ch04 balanced.ece f3 >}} to {{< num ch04 fixes.Platt.ece f3 >}}. Temperature scaling does not help at all; the ECE stays at {{< num ch04 fixes.Temperature.ece f3 >}}. The reason is useful to know. Rebalancing did not make the model overconfident. It *shifted* all its predictions upwards. Temperature can only stretch or squeeze around the middle; it cannot shift everything down.
 
-::: {.keyidea}
 Temperature scaling fixes overconfidence. It cannot fix a wrong base rate.
-:::
 
 ## Correct on average, wrong for one group
 
@@ -77,7 +75,7 @@ Temperature scaling fixes overconfidence. It cannot fix a wrong base rate.
 A model can be well calibrated overall but wrong for one group. Suppose a model cannot tell which system raised each alert. Its overall ECE is an excellent {{< num ch04 generic.ece f3 >}}. But for alerts from laptops and servers (EDR in @fig-by-source), it says {{< num ch04 by_source.EDR.pred pct1 >}} when the truth is {{< num ch04 by_source.EDR.actual pct1 >}}. For data-leak alerts (DLP), it says {{< num ch04 by_source.DLP.pred pct1 >}} when the truth is {{< num ch04 by_source.DLP.actual pct1 >}}. The errors cancel out in the average, and real attacks on laptops get closed without anyone looking.
 
 ::: {.keyidea}
-Check calibration separately for every group you treat differently, not only on average.
+**An average can hide a group that is badly wrong.** A model can be correct overall but wrong for laptops, or for one language or region. Check every group you treat differently.
 :::
 
 These groups can be sources, customer types, languages and regions. When a model affects people's lives, they must also include groups of people, such as age or gender.

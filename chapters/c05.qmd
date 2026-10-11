@@ -21,7 +21,7 @@ The solution is to pass the clues through a layer of neurons first. Each neuron 
 The big advantage of deep networks is that they can learn their own clues from raw data like images or text [@lecun2015]. But when we already have clean, useful numbers, a deep network adds little. In our example, a small network does about as well as simple logistic regression ({{< num ch06 k_small.log_loss f3 >}} against {{< num ch06 k_lr.log_loss f3 >}}).
 
 ::: {.keyidea}
-Deep networks are worth it for raw, messy data. For clean numbers, start with a simple model.
+**Use deep learning for messy data, and simple models for clean data.** Deep networks shine on images and text. On clean numbers, a simple model is often just as good and easier to trust.
 :::
 
 ## Idea two: words as numbers
@@ -49,7 +49,7 @@ If we train a huge writer to guess the next word on a huge amount of text, it le
 There is a deeper reason too. If we train a network that is much bigger than needed for too long, its accuracy hardly changes, but its calibration error grows from {{< num ch09 first.ece f3 >}} to {{< num ch09 last.ece f3 >}} (@fig-overtraining). Once the model gets most training cases right, the only way to improve its score further is to become more and more certain. It becomes certain about everything, even noise. Temperature scaling from Chapter 3 brings the error back to {{< num ch09 ece_after_T f3 >}}.
 
 ::: {.keyidea}
-Large models trained for too long become too confident. Their probabilities must be corrected.
+**Big models are often overconfident.** After long training, they say 99% too easily. Their probabilities must be checked and corrected before you use them.
 :::
 
 ## How an LLM writes, and why this is a problem for decisions
@@ -67,7 +67,7 @@ An LLM writes one small piece of text at a time, called a **token**. At each ste
 ![What came back when we asked for JSON, over 4,000 alerts. With only the prompt, some responses were wrapped in friendly chat, some were cut off mid-object, and some were valid JSON with a field nobody asked for. With JSON mode on, the first two problems vanish. The third doesn't.](/figures/ch11/json-failures.pdf){#fig-json-failures}
 
 ::: {.keyidea}
-A correct format does not mean a correct answer.
+**A neat answer is not a correct answer.** An LLM can return a perfectly formatted "safe" for a real attack. Check the decision, not only the format.
 :::
 
 ## Three kinds of "confidence"

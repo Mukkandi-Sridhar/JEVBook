@@ -146,6 +146,17 @@ function Div(div)
     local keep = cls == "deeper" and "\\needspace{7\\baselineskip}" or ""
     local label = (div.identifier ~= "" and cls == "keyidea") and ("\\phantomsection\\label{" .. div.identifier .. "}") or ""
     blocks:insert(latex(keep .. "\\begin{" .. ENVS[cls] .. "}" .. label))
+    -- Key idea: the bold opening phrase becomes the headline on its own line; the rest explains it
+    local first = div.content[1]
+    if cls == "keyidea" and first and first.t == "Para" and first.content[1] and first.content[1].t == "Strong" then
+      local ils = pandoc.List({pandoc.RawInline("latex", "{\\keyheadfont ")})
+      ils:extend(first.content[1].content)
+      ils:insert(pandoc.RawInline("latex", "\\par}\\vspace{3pt}"))
+      local rest = 2
+      if first.content[rest] and first.content[rest].t == "Space" then rest = 3 end
+      for i = rest, #first.content do ils:insert(first.content[i]) end
+      first.content = ils
+    end
     blocks:extend(div.content)
     blocks:insert(latex("\\end{" .. ENVS[cls] .. "}"))
     return blocks

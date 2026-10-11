@@ -15,7 +15,7 @@ Suppose the weather app says there is a 70% chance of rain tomorrow, and it does
 One day cannot tell us. We need to look at many days. Take all the days when the app said "70%". If it rained on about 70 out of every 100 such days, the app is doing its job. Tomorrow was simply one of the other 30 days.
 
 ::: {.keyidea}
-A **probability** tells us how often something happens among many similar cases.
+**A probability is a promise about many cases.** "70% chance of rain" means it rains on about 70 out of 100 such days. One dry day does not prove it wrong.
 :::
 
 This is useful because we can check it. When a model says "this alert is 70% likely to be an attack", it is making the same kind of promise as the weather app, and we can check it in the same way.
@@ -33,7 +33,7 @@ The easy way to see this is to count, as in @fig-base-rate-tree. Take 1,00,000 e
 The chance before we see any evidence, here 1 in 1,000, is called the **base rate**. Forgetting the base rate is one of the most common mistakes with probability. This is why a fraud model that is "95% accurate" can still send a bank lakhs of false alarms. Whenever a probability surprises you, convert it into counts like this [@gigerenzer1995].
 
 ::: {.keyidea}
-When something is rare, it stays fairly unlikely even after an alarm.
+**First ask: how common is it to begin with?** If only 1 in 1,000 events is an attack, even a 99%-accurate alarm is right only about 2% of the time. Counting the cases makes this clear.
 :::
 
 There is a related mistake. "How often do attacks have a bad score?" and "How often is an alert with a bad score an attack?" are two different questions. In our example, only {{< num ch02 ioc_attack_share pct >}} of attacks come with a bad threat score, but an alert with a bad score is an attack {{< num ch02 p1 pct >}} of the time.
@@ -42,9 +42,7 @@ There is a related mistake. "How often do attacks have a bad score?" and "How of
 
 How should a new clue change our belief? It is easiest with **odds**. A probability of 20% means odds of 20 to 80, or 0.25. Each clue has a strength called the **likelihood ratio**: how many times more common the clue is among attacks than among harmless alerts. In our example, a bad threat score is about {{< num ch02 lr_ioc f1 >}} times more common among attacks.
 
-::: {.keyidea}
 New odds = old odds × strength of the clue. This is Bayes' rule.
-:::
 
 ![Starting from the base rate and multiplying the odds by each clue's likelihood ratio. Three ordinary clues take an alert from "probably nothing" to "probably an attack".](/figures/ch02/odds-update.pdf){#fig-odds-update}
 
@@ -77,7 +75,7 @@ Log loss has an important property. The only way to get the best score, on avera
 Training means finding the weights with the lowest log loss. Imagine standing on a hill in thick fog. You cannot see the bottom, but you can feel which way the ground slopes. So you take a small step downhill, and repeat. This method is called **gradient descent**.
 
 ::: {.keyidea}
-Machine learning is one simple loop: predict, measure the mistake, adjust a little, and repeat.
+**All machine learning is one loop.** Predict, measure the mistake, adjust a little, and repeat. From logistic regression to ChatGPT, only the size of the model changes.
 :::
 
 Even large language models are trained with this same loop, only with a much bigger model and much more data.

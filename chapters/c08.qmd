@@ -31,7 +31,7 @@ In our example, a model was asked to label {{< num ch17 n_harmless int >}} harml
 The model was not exactly wrong: we asked *which type of attack*, and it answered (@fig-forced). But anyone who reads "malware, 0.95" will take the wrong action.
 
 ::: {.keyidea}
-In a pick-one question, always include an option like "none of these", so every real case has a correct place to go.
+**Every pick-one question needs a "none of these" option.** Otherwise the model is forced to choose a wrong label, often with high confidence.
 :::
 
 Also make sure only one option can be true at a time. If two options can both be true, ask separate yes/no questions instead.
@@ -45,7 +45,7 @@ A **score** question returns a probability for each level of a scale, for exampl
 Look at the first alert in @fig-severity. Its average level is {{< num ch17 sev_example.expected f2 >}}, which reads as "low". But almost no probability is actually at "low". The model is really saying: *this is either nothing, or something serious*. There is a {{< num ch17 sev_example.p_high pct >}} chance it is medium or high. The average of two very different possibilities describes neither of them.
 
 ::: {.keyidea}
-An average can hide the extremes. Set thresholds on the probability of the levels you care about.
+**Do not trust the average level.** "Low on average" can really mean "either nothing, or something serious". Set rules on the probability of the levels that matter.
 :::
 
 A rule like "call someone if P(medium or high) is above 0.3" is clear and can be set using costs. A rule like "call someone if the average is above 1.5" is not.

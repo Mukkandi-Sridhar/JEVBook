@@ -188,9 +188,11 @@
 % photocopy); it never splits across pages. "Keep these" repeats a chapter's key ideas before its exercises, and the
 % Key ideas appendix lists them all with their pages.
 \newcommand{\keylabel}[1]{{\sffamily\bfseries\fontsize{7.2}{9}\selectfont\color{keybar}\iconkey[keybar]\hspace{0.45em}\addfontfeature{LetterSpace=12}#1}\par\vspace{4pt}}
+% The headline of a key idea: big and bold, on its own line; the explanation follows in regular weight
+\newcommand{\keyheadfont}{\bfseries\fontsize{13}{17}\selectfont}
 \newtcolorbox{keyidea}[1][]{enhanced, unbreakable, colback=keytint, colframe=keytint, boxrule=0pt, arc=0pt,
   borderline west={5pt}{0pt}{keybar}, left=12pt, right=10pt, top=7pt, bottom=8pt, before skip=12pt, after skip=12pt,
-  fontupper=\sffamily\bfseries\fontsize{11.5}{15.5}\selectfont\color{ink}\raggedright,
+  fontupper=\sffamily\fontsize{10}{14}\selectfont\color{ink}\raggedright,
   before upper={\keylabel{KEY IDEA}}, #1}
 \newtcolorbox{keepthese}[1][]{enhanced, unbreakable, colback=keytint, colframe=keybar, boxrule=0.8pt, arc=0pt,
   borderline west={5pt}{0pt}{keybar}, left=12pt, right=10pt, top=7pt, bottom=7pt, before skip=12pt, after skip=10pt,

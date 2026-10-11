@@ -13,7 +13,7 @@ An experienced cook does not need a recipe for every dish, because most dishes u
 All six patterns in @fig-catalog follow one rule.
 
 ::: {.keyidea}
-A decision model never writes and never acts by itself. It only answers a clear question, and normal program code takes the action.
+**A decision model answers; your program acts.** It never writes text and never acts alone, so every action passes through rules you control.
 :::
 
 ## Six patterns
@@ -53,14 +53,12 @@ In our example, across {{< num ch24 n int >}} alerts, the step "which evidence s
 A clean answer format does not guarantee a correct answer, and nothing later in the system will complain.
 
 ::: {.keyidea}
-Count how often each answer is chosen at every decision step. An option that is never chosen, or always chosen, is a warning sign, even without any error.
+**Count the answers at every decision step.** An option that is never chosen is a silent bug. No error message will warn you.
 :::
 
 The fix was not a better model. The threat lookup takes a fraction of a second and costs almost nothing. Deciding *whether* to do the lookup costs about the same as simply doing it.
 
-::: {.keyidea}
 When checking something is cheaper than deciding whether to check it, just check it.
-:::
 
 ## Hybrid agent against an LLM-only agent
 
@@ -75,7 +73,7 @@ In our example, the hybrid agent took {{< num ch24 v2_seconds f1 >}} seconds per
 @fig-labour shows where the time goes. The LLM-only agent spends most of its time deciding. The hybrid agent spends its biggest share on *writing* notes that people will read, which is exactly the work an LLM is best at.
 
 ::: {.keyidea}
-Use the LLM for the work that only an LLM can do: reading messy text and writing for people.
+**Use the LLM only for what only an LLM can do.** That means reading messy text and writing for people. Leave the deciding to a decision model.
 :::
 
 ::: {.breaks}

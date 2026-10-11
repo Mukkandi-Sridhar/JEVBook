@@ -17,7 +17,7 @@ In every project there comes a day when the prototype works and someone asks: "C
 **Fix the model version.** A name like "latest" can point to a new model at any time, without warning.
 
 ::: {.keyidea}
-Fix the model version, so that any change in behaviour is your decision, not a surprise.
+**Fix the model version.** Then the behaviour changes only when you decide, not when the company updates its model.
 :::
 
 **Retry only the right errors.** Your own mistakes, such as a wrong key or a wrong model name, will fail the same way every time, so fix them instead of retrying. Problems outside your control, such as a busy server or a broken connection, are worth retrying. In our example, if one request in five fails, only {{< num ch23 ok_20_0 pct >}} of calls succeed with no retry, but {{< num ch23 ok_20_2 pct1 >}} succeed with two retries. Retries take time, though, and a login check may have only 300 milliseconds.
@@ -25,7 +25,7 @@ Fix the model version, so that any change in behaviour is your decision, not a s
 **Decide in advance what a failure means.** Treat a failed call as one more kind of case. For a login, the right rule may be "allow it, but mark it for review". For closing an alert, it should be "do not close; send to a person". Write this rule in the policy, where everyone can see it.
 
 ::: {.keyidea}
-When time is short, decide in advance what a failed call means.
+**Decide in advance what a failure means.** For important actions, a failed call should send the case to a person, never close it.
 :::
 
 **Ask questions together.** In our example, four questions in one request used about {{< num ch23 tokens_four_one int >}} input tokens, and the same four questions in four separate requests used {{< num ch23 tokens_four_sep int >}}. One request is also faster.
@@ -39,7 +39,7 @@ You will recognise every part of @fig-architecture-21 from earlier chapters. Fou
 **One settings file, with a version.** The model version, the calibration numbers, the thresholds and every business rule are kept in one place, and every decision is stamped with that version.
 
 ::: {.keyidea}
-Everything that can change a decision is kept in one place, with a version number.
+**Keep every setting in one place, with a version number.** Then any decision can be explained and repeated, even a year later.
 :::
 
 **A record for every decision.** A decision model gives probabilities, not reasons. But if we record the raw and calibrated probabilities, the thresholds, the rule that was applied and the version, then every *action* can be fully explained, even though the model itself explains nothing.
@@ -50,9 +50,7 @@ Everything that can change a decision is kept in one place, with a version numbe
 
 ![Alerts sent to review each day of the live week, before and after the fix. Fitted without the critical-asset rule, the thresholds let the queue run over capacity every day. Fitted with it, the act threshold rises slightly and the queue fits.](/figures/ch28/dry-run.pdf){#fig-dry-run}
 
-::: {.keyidea}
 Thresholds and business rules are one decision, and must be set together.
-:::
 
 **Daily monitoring, a responsible person, and shadow testing.** Every day, check four numbers: the share of cases at each door, the review queue compared with capacity, how often calls fail, and predicted attacks compared with confirmed attacks. When a campaign starts, the last number shows the problem on day one, in plain numbers: the probabilities are no longer correct. A named person should have the authority to switch the service to "review everything" while the cause is found. And every improvement should first run in shadow mode beside the current version. In our example, the new version agreed with the old one on {{< num ch28 shadow_agree pct >}} of alerts, and the shadow test showed, before anyone paid the price, how many attacks its changes would let through.
 
@@ -71,7 +69,7 @@ Imagine a small model built for alerts. One shared part, the **encoder**, reads 
 In our example, the temperature correction reduced the calibration error from {{< num ch27 raw_ece f3 >}} to {{< num ch27 temp_ece f3 >}}, without changing the ranking. A much bigger version trained for too long was a warning: its error was {{< num ch27 over_ece f3 >}}, and after a temperature correction it was no better, {{< num ch27 over_ece_temp f3 >}} (@fig-calibration). A correction can soften answers, but it cannot bring back what was lost by memorising.
 
 ::: {.keyidea}
-Train with an honest scoring rule, stop before the model memorises, and then calibrate on data it has never seen.
+**Train honestly, stop early, then calibrate.** Train with log loss, stop before the model memorises, and correct it on unseen data. Skip one step and the numbers cannot be trusted.
 :::
 
 ::: {.breaks}

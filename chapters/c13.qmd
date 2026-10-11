@@ -23,7 +23,7 @@ The new system uses only what we have already seen: clear questions (Chapter 8),
 But we do not switch on such a system and simply hope. First we run it in **shadow mode**: it sees every alert and records what it *would* have done, while people continue working as before. Nothing it decides has any effect yet.
 
 ::: {.keyidea}
-Before a new decision system is allowed to act, run it in shadow mode and compare its choices with reality.
+**Test quietly before you trust.** In shadow mode, the system decides but does not act, so you can compare its choices with reality at no risk.
 :::
 
 After the shadow week, the team discusses one main number: how many real attacks the system *would* have closed automatically. In our example it was about {{< num ch25 new_threats_closed_per_day f1 >}} per day. That sounds bad, until we compare it with the {{< num ch25 old.threats_unseen_per_day f1 >}} per day that the old queue missed. It was also a little higher than predicted from past data. The honest thing is to say this clearly in the meeting, and watch the daily numbers to see whether it is chance or a trend. The team switched the system on, with random checks of closed alerts and a rule to send any failed case to review.
@@ -35,7 +35,7 @@ The new review queue is sorted by probability, with the most likely attacks firs
 ![How long it takes for a real threat to reach a person. Before, rule-flagged threats were seen quickly and the rest waited up to a day or were never seen. After, urgent calls reach someone in about fifteen minutes and the queue takes the likeliest threats first.](/figures/ch25/time-to-human.pdf){#fig-time-to-human}
 
 ::: {.keyidea}
-A probability decides not only *whether* a person looks at a case, but also *which* case they look at first.
+**The order of the queue matters as much as its size.** Sorting by probability brings real attacks to people within minutes instead of hours, with the same team.
 :::
 
 ## When an attack campaign hits
@@ -47,7 +47,7 @@ Then a phishing campaign started. Alerts about suspicious links came three times
 It helped. Over the week, real attacks never seen by anyone fell from about {{< num ch25 camp_missed_base int >}} to about {{< num ch25 camp_missed_resp int >}} (@fig-campaign). But with correct probabilities, the queue became even longer than the overtime capacity, because many more alerts really needed checking.
 
 ::: {.keyidea}
-Good calibration tells you honestly how much work there is. It cannot reduce the work.
+**Honest probabilities show the real workload; they do not reduce it.** When attacks increase, the answer may simply be more people.
 :::
 
 The team was never the problem. The old queue decided what they saw by accident; the new system decides it on purpose.
@@ -65,7 +65,7 @@ Security was only our teaching example. Once you understand decision layers, you
 Where decisions are many and each mistake is cheap, like checking social media posts or card payments for fraud, no team can look at everything. So the model decides, and people check a sample (@fig-domains). Where decisions are few and each mistake is costly, like a hospital deciding which patient needs care first, the model should never close a case. Its job is to put the right patient at the top of the list, and a doctor or nurse decides.
 
 ::: {.keyidea}
-When decisions are many and cheap, the model decides. When they are few and costly, a person decides.
+**Many cheap decisions: the machine decides. Few costly decisions: a person decides.** Checking millions of payments suits a machine; a hospital emergency needs a doctor.
 :::
 
 The threshold formula stays the same; only the costs change. A late reply to a support ticket costs a little customer goodwill, so the threshold may be near 5%. A missed emergency at a hospital costs far more than seeing someone early, so the threshold falls to about 0.3%. Such a low threshold needs probabilities that are correct even below one percent.

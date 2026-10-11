@@ -26,14 +26,12 @@ Any yes-or-no decision can go wrong in two ways:
 - a **miss**: you did not act, but you should have.
 
 ::: {.keyidea}
-Act when the probability is more than: cost of a false alarm ÷ (cost of a false alarm + cost of a miss).
+**The threshold comes from the costs.** Act when the probability is above: false-alarm cost ÷ (false-alarm cost + miss cost). If a miss costs four times a false alarm, act above 20%, not 50%.
 :::
 
 For the umbrella: 1 ÷ (1 + 4) = 0.2. Now see what happens when both costs are equal: the formula gives 1 ÷ 2 = 0.5. So 0.5 is correct only when a false alarm and a miss cost exactly the same. That is almost never true in real problems.
 
-::: {.keyidea}
 The 0.5 threshold is correct only when both kinds of mistakes cost the same.
-:::
 
 ![The right threshold for any ratio between the cost of a miss and the cost of a false alarm (both axes on a log scale). Equal costs give 0.5. As misses get more expensive, the threshold drops fast.](/figures/ch05/threshold-ratio.pdf){#fig-threshold-ratio}
 
@@ -52,7 +50,7 @@ In our example company, the team must decide for each alert: block it or allow i
 This is why calibration comes first. The rebalanced model from Chapter 3 gives numbers that are too high. If we use the formula with its numbers, the cost is {{< num ch05 bal_penalty pct >}} higher (@fig-cost-curve). Its best threshold is somewhere else, and we could only find it by trial and error, again and again whenever the costs change.
 
 ::: {.keyidea}
-With calibrated probabilities, the costs directly tell us the threshold. Without calibration, we are only guessing.
+**Only calibrated probabilities let costs set the threshold.** With wrong numbers, the formula points to the wrong place, and you are back to guessing.
 :::
 
 ## "I am not sure, ask a person" is also a choice
@@ -64,7 +62,7 @@ Usually there is a third option, and it is often the best one: do not decide, an
 If the model decides every alert, {{< num ch05 risk_100 pct1 >}} of its decisions are wrong. If it decides only the 80% of alerts it is most sure about, the error falls to {{< num ch05 risk_80 pct1 >}}. If it decides only the most certain half, the error is just {{< num ch05 risk_50 pct1 >}} (@fig-coverage-risk). This chart is very useful for managers. It answers their real question: *how much of this work can we safely give to the machine, and with how many mistakes?*
 
 ::: {.keyidea}
-If a model decides only the cases it is most sure about, its mistakes drop sharply.
+**"Ask a person" is also a decision.** Let the machine decide only the cases it is most sure about, and send the rest to people. Mistakes fall sharply.
 :::
 
 ## Three doors
