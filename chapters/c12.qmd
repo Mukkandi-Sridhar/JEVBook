@@ -1,91 +1,91 @@
 # Decision patterns, and a hybrid agent {#sec-ch12}
 
-::: {.epigraph by="Alfred North Whitehead, 1911"}
-Civilization advances by extending the number of important operations which we can perform without thinking about them.
-:::
+An experienced cook does not need a recipe for every dish, because most dishes use the same few steps: fry, add water, cook till thick. Software also has such common steps. We call them **patterns**: well-known solutions with a name, so that a team can simply say "put a gate before that action" and everyone understands. In this chapter we collect the patterns for using decision models, and then build an agent with them.
 
-Cooks stop needing recipes once they see the few steps every recipe shares. Software has steps like that too, called **patterns**: common solutions with names. This chapter collects the patterns decision layers use, then builds an agent from them and races it against one where the LLM does everything.
+::: {.goals}
+- Recognise six common patterns for using decision models in real systems.
+- Find a decision step that is wrong even when nothing crashes.
+- Divide work correctly between a decision model and an LLM.
+:::
 
 ![The six patterns in this chapter, as small diagrams. In every one, something else writes or acts, and a typed question decides.](/figures/ch22/catalog.pdf){#fig-catalog}
 
-Every pattern shares one rule.
+All six patterns in @fig-catalog follow one rule.
 
 ::: {.keyidea}
-A decision model never writes and never acts on its own: it answers a typed question, and code acts.
-:::
-
-::: {.goals}
-- Recognise six patterns for decision models in real systems.
-- Find a decision step that's wrong without any error.
-- Split work between a decision model and an LLM.
+A decision model never writes and never acts by itself. It only answers a clear question, and normal program code takes the action.
 :::
 
 ## Six patterns
 
-**1. Extract, then decide.** Input is messy (an email, a chat, a PDF) but the decision is small. LLMs read messy input superbly; they're weaker at the decision itself. So let the LLM turn the text into fields, and let a decision model decide from the fields. On our alerts, extracting first raised ranking (AUC) from {{< num ch22 llm_decides_auc f3 >}}, with the LLM deciding alone, to {{< num ch22 extract_then_jev_auc f3 >}}. But the security system's own structured fields scored higher still ({{< num ch22 jev_fields_auc f3 >}}): the alert text never mentions how critical the machine is or the user's job. No extractor can find a fact that isn't written down. So when structured data exists, use it.
+**1. Extract, then decide.** The input is messy, like an email or a PDF, but the decision is small. LLMs are very good at reading messy text, but weaker at the decision itself. So we let the LLM convert the text into clean fields, and let a decision model decide using those fields.
 
 ![Extract, then decide. The LLM reads the raw text and writes structured fields; a decision model answers a typed question about them; policy thresholds turn the answer into an action. The LLM writes but never decides; the decision model decides but never writes.](/figures/ch22/extract.pdf){#fig-extract}
 
-**2. The decide step.** An agent's loop is mostly small decisions. Give them to a decision model as typed questions, and call the LLM only when there's something to write. Because each decision comes with probabilities, the loop can notice when it's unsure and stop, instead of continuing confidently.
+In our example, extracting first improved the ranking (AUC) from {{< num ch22 llm_decides_auc f3 >}}, when the LLM decided alone, to {{< num ch22 extract_then_jev_auc f3 >}}. But the company's own clean data fields did even better ({{< num ch22 jev_fields_auc f3 >}}), because the alert text never mentions things like how important the computer is. No LLM can extract a fact that is not written. So if clean data already exists, use it.
 
-**3. The guardrail gate.** Before any risky action, ask a typed question about it using only *trusted* facts, never text an attacker could write. High probability allows the action, low blocks it, the middle asks a person: the three doors again, for actions instead of alerts.
+**2. The decide step.** Most steps in an agent's loop are small decisions. Give these to a decision model as clear questions, and call the LLM only when something must be written. Since every decision comes with a probability, the agent can notice when it is unsure and stop, instead of continuing confidently.
+
+**3. The safety gate.** Before any risky action, ask a clear question about it, using only facts the attacker cannot change. A high probability allows the action, a low probability blocks it, and anything in the middle goes to a person. These are the three doors again, now for actions.
 
 ![A guardrail gate. The agent proposes an action. A decision model estimates whether it's safe, from trusted facts only, never from text an attacker could write. High probability allows the action, low probability blocks it, and the middle asks a person.](/figures/ch22/gate.pdf){#fig-gate}
 
-**4. Check the writer.** Some outputs must be written: an incident note, a customer reply. After the LLM drafts, ask typed questions *about* the draft: is every claim supported by the evidence? Is the tone right? Then send it, return it once for a rewrite, or give it to a person. Limit retries, or "write, reject, rewrite" never ends.
+**4. Check the writer.** Some outputs must be written, such as a report or a reply to a customer. After the LLM writes a draft, ask clear questions *about* the draft: is every statement supported by the evidence? Is the tone suitable? Then send it, return it once for correction, or give it to a person. Limit the number of corrections, or the loop may never end.
 
-**5. The router.** Send each case to the right team with a pick-one question, but only automatically when the top option is clearly ahead. Routing every alert by its top label sent {{< num ch22 route_all_acc pct >}} to the right team; routing only when the top probability was at least {{< num ch22 route_line f1 >}} covered {{< num ch22 route_cov pct >}} of alerts and got {{< num ch22 route_acc pct >}} of those right. The rest went to a general queue. The same pattern can route between a cheap model and a slow one: Chapter 7's routing by doubt.
+**5. The router.** To send each case to the right team, use a pick-one question, but send automatically only when the top option is clearly ahead. In our example, sending every alert by its top answer sent {{< num ch22 route_all_acc pct >}} to the right team. Sending automatically only when the top probability was at least {{< num ch22 route_line f1 >}} covered {{< num ch22 route_cov pct >}} of alerts, and {{< num ch22 route_acc pct >}} of those went to the right team. The rest went to a general queue for a person to sort.
 
-**6. The memory controller.** Agents keep notes and look things up, and each read and write is a small decision: is this worth remembering? Where should I look? A published system, Jev-Mem, uses a System One model for exactly these and calls a slow reasoning model only for the final answer; its authors report better answers and faster responses than the systems they compared [@jevmem2026]. Memory mistakes fail silently (a discarded fact just isn't there when needed), so log what gets thrown away.
+**6. The memory manager.** Agents save notes and look things up. Each save and each lookup is a small decision: is this worth remembering? Where should I search? A published system called Jev-Mem uses a System One model for these small decisions and calls a slower reasoning model only for the final answer; its authors report better and faster answers than the systems they compared it with [@jevmem2026]. Memory mistakes are silent: a fact that was wrongly thrown away is simply missing when needed. So keep a record of what gets thrown away.
 
-## The hybrid agent
+## A hybrid agent
 
-Now build Chapter 6's security agent as a **hybrid**: the decision model makes every decision, and the LLM writes only what a person will read. Every run leaves a **trace**, a step-by-step record of what was observed and what each decision said with what probability. It's a debugging tool, an audit log and an explanation in one.
+Now let us design the security agent from Chapter 6 as a **hybrid**: a decision model makes every decision, and the LLM writes only what a person will read. Every run leaves a **trace**, a step-by-step record of what the agent saw and what each decision said, with its probability. A trace works as a debugging tool, an audit record and an explanation, all at once.
 
-![The hybrid agent. A cheap lookup always runs first. Jev decides which other evidence to collect, then answers the three verdict questions together. Chapter 14's policy turns the verdict into an action, and the LLM writes a case note or urgent message only when a person will read it.](/figures/ch24/architecture.pdf){#fig-architecture-17}
+![The hybrid agent. A cheap lookup always runs first. Jev decides which other evidence to collect, then answers the three verdict questions together. The policy turns the verdict into an action, and the LLM writes a case note or urgent message only when a person will read it.](/figures/ch24/architecture.pdf){#fig-architecture-17}
 
-## The bug that didn't crash
+## A mistake with no error message
 
-When I first ran it over a live week, everything looked fine: no errors, every answer parsed, actions spread across the three doors. Then I ran a check worth running on every decision step of every agent: *count its answers*. Across {{< num ch24 n int >}} alerts, the "which evidence next?" step never once chose the threat-intelligence lookup, the most useful fact about an alert. Verdicts were reached without it, ranking dropped from {{< num ch24 v2_auc f3 >}} to {{< num ch24 v1_auc f3 >}}, and about {{< num ch24 v1_closed_threats_day f1 >}} real threats a day were auto-closed.
-
-Typed answers always have the right format. The right format isn't the right answer, and nothing downstream will complain.
+Suppose we run the agent for a week. Everything looks fine: no errors, every answer is readable, and the actions are spread across all three doors. Then we do one simple check that should be done for every decision step of every agent: *count how often each answer is chosen.*
 
 ![How often the first version of the agent chose each option at its "which evidence next?" step, across 700 live alerts. It never once chose threat intel.](/figures/ch24/never-picked.pdf){#fig-never-picked}
 
-::: {.keyidea}
-Count every decision step's answers: an option never or always chosen is a warning, even without a crash.
-:::
+In our example, across {{< num ch24 n int >}} alerts, the step "which evidence should I collect next?" *never* chose the threat-intelligence lookup, the most useful information about an alert (@fig-never-picked). So all verdicts were made without it. The ranking dropped from {{< num ch24 v2_auc f3 >}} to {{< num ch24 v1_auc f3 >}}, and about {{< num ch24 v1_closed_threats_day f1 >}} real attacks per day were closed automatically.
 
-The fix wasn't a better model. A threat-intel lookup takes a fraction of a second and costs nothing; deciding *whether* to look it up costs about as much as just looking.
+A clean answer format does not guarantee a correct answer, and nothing later in the system will complain.
 
 ::: {.keyidea}
-When looking is cheaper than deciding whether to look, don't decide. Just look.
+Count how often each answer is chosen at every decision step. An option that is never chosen, or always chosen, is a warning sign, even without any error.
 :::
 
-## Hybrid against all-LLM
+The fix was not a better model. The threat lookup takes a fraction of a second and costs almost nothing. Deciding *whether* to do the lookup costs about the same as simply doing it.
 
-The all-LLM agent runs the same loop, tools and thresholds; only who decides changes.
+::: {.keyidea}
+When checking something is cheaper than deciding whether to check it, just check it.
+:::
+
+## Hybrid agent against an LLM-only agent
+
+Now compare it with an agent where the LLM makes every decision, using the same steps, tools and thresholds.
 
 ![Four measures for the two agents on the same 700 live alerts, scaled to a day. The LLM's stated confidences sent far more alerts to review than the queue can take, so more real threats were never seen by a person.](/figures/ch24/compare.pdf){#fig-compare-17}
 
-The hybrid took {{< num ch24 v2_seconds f1 >}} seconds per alert; the all-LLM agent, {{< num ch24 llm_seconds f1 >}}. The bigger difference is the queue (@fig-compare-17). The LLM's written confidences cluster at a few round values, so the thresholds have almost nothing to separate, and it sent about {{< num ch24 llm_reviews_day int >}} alerts a day to a review queue that can take 240. The hybrid sent {{< num ch24 v2_reviews_day int >}}. A queue at twice capacity isn't worked twice as hard; the extra alerts just aren't seen. Counting threats closed unseen *and* never reached, the hybrid missed about {{< num ch24 v2_missed_day int >}} a day; the all-LLM agent, about {{< num ch24 llm_missed_day int >}}.
-
-And where does the time go? The all-LLM agent spends most of it deciding. The hybrid spends its largest share *writing*: notes a person will read. That's where an LLM's time belongs.
+In our example, the hybrid agent took {{< num ch24 v2_seconds f1 >}} seconds per alert, while the LLM-only agent took {{< num ch24 llm_seconds f1 >}}. The bigger difference is the review queue (@fig-compare-17). The LLM's written confidences are mostly a few round numbers, so the thresholds cannot separate cases well, and it sent about {{< num ch24 llm_reviews_day int >}} alerts per day to a team that can review 240. The hybrid sent {{< num ch24 v2_reviews_day int >}}. When the queue is twice too long, the extra alerts are simply not seen. Counting both automatically closed attacks and attacks never reached in the queue, the hybrid missed about {{< num ch24 v2_missed_day int >}} per day, and the LLM-only agent about {{< num ch24 llm_missed_day int >}}.
 
 ![Share of each agent's total time spent on each kind of step. In the hybrid, the largest share is the LLM writing for people. In the all-LLM agent, most of the time goes on deciding.](/figures/ch24/labour.pdf){#fig-labour}
 
+@fig-labour shows where the time goes. The LLM-only agent spends most of its time deciding. The hybrid agent spends its biggest share on *writing* notes that people will read, which is exactly the work an LLM is best at.
+
 ::: {.keyidea}
-Use the LLM for the work only an LLM can do.
+Use the LLM for the work that only an LLM can do: reading messy text and writing for people.
 :::
 
 ::: {.breaks}
-Everything here is synthetic, timings included, and part of the quality gap between the agents is built into the stand-ins. Treat the speed, the queue and the design lessons as the findings. And combining patterns adds failure points: an extractor feeding a gate feeding a router has three places to be wrong, and the errors multiply.
+All numbers in this chapter are illustrative, including the timings, and part of the difference between the two agents comes from how the example was set up. Treat the speed, the queue and the design lessons as the main findings. Also, combining several patterns adds more places to fail: an extractor, then a gate, then a router means three places where a mistake can happen.
 :::
 
 ::: {.exercises}
-1. Design a guardrail gate for an email agent that can message customers. What's the typed question, which facts are trusted, and where do the thresholds go?
+1. Design a safety gate for an email agent that can send messages to customers. What is the clear question, which facts can be trusted, and where are the thresholds?
 :::
 
 ::: {.nexthook}
-Next: one team's triage, start to finish, and the same design far from security.
+Next chapter: one team's complete journey from start to finish, and the same design in fields far from security.
 :::

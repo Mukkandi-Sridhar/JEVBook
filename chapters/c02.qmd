@@ -1,93 +1,99 @@
 # Probability, and how a machine learns it {#sec-ch02}
 
-::: {.epigraph by="Joseph Butler, The Analogy of Religion, 1736"}
-But to us, probability is the very guide of life.
-:::
-
-"Probability? Coins and dice. I don't need it to build AI." That thought is the most expensive mistake in this field. This chapter makes sure you can read a chance without being fooled, and shows how a machine learns one.
+Many people think probability is only about coins and dice, something from school maths that has nothing to do with building AI. This is a costly mistake. In this chapter we learn to read a probability correctly, see a common trap that even doctors fall into, and see how a machine learns probabilities from examples.
 
 ::: {.goals}
-- Say what "70%" means in a way you could check.
-- Spot the base-rate trap, and update a probability by multiplying odds.
-- Explain how a machine learns a probability, and how it fools you.
+- Understand what "70% chance" really means, in a way you can check.
+- Avoid the base-rate trap, and update a probability when new evidence comes.
+- See how a machine learns a probability, and two ways it can fool you.
 :::
 
-## What "70%" means
+## What "70% chance" means
 
-Your weather app says 70% chance of rain. It stays dry. Was it wrong? One day can't tell you. The forecaster's *record* can: across every day they said "70%", did it rain on about 70 of every 100?
+Suppose the weather app says there is a 70% chance of rain tomorrow, and it does not rain. Was the app wrong?
+
+One day cannot tell us. We need to look at many days. Take all the days when the app said "70%". If it rained on about 70 out of every 100 such days, the app is doing its job. Tomorrow was simply one of the other 30 days.
 
 ::: {.keyidea}
-A **probability** is a claim about how often something happens among cases like this one.
+A **probability** tells us how often something happens among many similar cases.
 :::
 
-This definition matters because you can *check* it. A model that calls an alert "70% likely" makes the weather app's promise, and can be checked the same way.
+This is useful because we can check it. When a model says "this alert is 70% likely to be an attack", it is making the same kind of promise as the weather app, and we can check it in the same way.
 
 ## The trap that fools doctors
 
-Try this before reading on. A detector catches 99% of real attacks and raises a false alarm on 5% of normal activity. Real attacks are rare: one event in a thousand. The detector fires. What's the chance it's a real attack?
+Try this question before reading further. A test catches 99% of real attacks. It also gives a false alarm on 5% of normal activity. Real attacks are rare: about 1 in every 1,000 events. The test now raises an alarm. What is the chance that it is a real attack?
 
-Most people say about 95%. The answer is about **2%**. In a famous 1978 study, doctors at Harvard Medical School got the same puzzle about a medical test, and the most common answer was 95% [@casscells1978].
+Most people answer about 95%. The correct answer is about **2%**. In a famous study from 1978, doctors at a top American medical college were asked the same question about a medical test, and the most common answer was also 95% [@casscells1978].
 
 ![The same puzzle, counted out. Of 100,000 events, 100 are attacks and the detector catches 99 of them. But 5% of the 99,900 normal events also set it off: 4,995 false alarms. When the alarm sounds, you're holding one of 5,094 alerts, and only 99 of them are real.](/figures/ch02/base-rate-tree.pdf){#fig-base-rate-tree}
 
-The way out is to count (@fig-base-rate-tree). The 5% false-alarm rate is 5% of a *huge* number; the 99% hit rate is 99% of a *tiny* one. The chance before any evidence, here 1 in 1,000, is the **base rate**, and ignoring it is the most common probability mistake there is. It's why a "95% accurate" fraud model can drown a bank in false alarms. Whenever a probability surprises you, turn it into counts [@gigerenzer1995].
+The easy way to see this is to count, as in @fig-base-rate-tree. Take 1,00,000 events. Only 100 are attacks, and the test catches 99 of them. But 5% of the 99,900 normal events also raise an alarm, which is 4,995 false alarms. So out of 5,094 alarms, only 99 are real. That is about 2%.
+
+The chance before we see any evidence, here 1 in 1,000, is called the **base rate**. Forgetting the base rate is one of the most common mistakes with probability. This is why a fraud model that is "95% accurate" can still send a bank lakhs of false alarms. Whenever a probability surprises you, convert it into counts like this [@gigerenzer1995].
 
 ::: {.keyidea}
-Rare things stay rare even after the alarm goes off.
+When something is rare, it stays fairly unlikely even after an alarm.
 :::
 
-A related trap: "how often do attacks look like this?" is not "how often is something that looks like this an attack?" Only {{< num ch02 ioc_attack_share pct >}} of attacks come with a bad threat score, but that doesn't make a bad-score alert {{< num ch02 ioc_attack_share pct >}} likely to be one; it's {{< num ch02 p1 pct >}}. In court, mixing the two up is the *prosecutor's fallacy*, and it has jailed innocent people.
+There is a related mistake. "How often do attacks have a bad score?" and "How often is an alert with a bad score an attack?" are two different questions. In our example, only {{< num ch02 ioc_attack_share pct >}} of attacks come with a bad threat score, but an alert with a bad score is an attack {{< num ch02 p1 pct >}} of the time.
 
-## Bayes' rule in one line
+## Updating with new evidence
 
-How *should* a clue change your mind? Use **odds**: 20% is odds of 20 to 80, or 0.25. Each clue has a strength, its **likelihood ratio**: how much more common it is among attacks than among harmless alerts. A bad threat score is about {{< num ch02 lr_ioc f1 >}} times more common among attacks.
+How should a new clue change our belief? It is easiest with **odds**. A probability of 20% means odds of 20 to 80, or 0.25. Each clue has a strength called the **likelihood ratio**: how many times more common the clue is among attacks than among harmless alerts. In our example, a bad threat score is about {{< num ch02 lr_ioc f1 >}} times more common among attacks.
 
 ::: {.keyidea}
-New odds = old odds × likelihood ratio.
+New odds = old odds × strength of the clue. This is Bayes' rule.
 :::
-
-An ordinary alert starts at {{< num ch02 base pct >}}. A bad threat score takes it to {{< num ch02 p1 pct >}}; "outside business hours" to {{< num ch02 p2 pct >}}; "sign-in from a new country" to {{< num ch02 p3 pct >}}. One warning: this assumes each clue says something *new*. Real clues overlap, so in practice we let a model learn how much each is worth.
 
 ![Starting from the base rate and multiplying the odds by each clue's likelihood ratio. Three ordinary clues take an alert from "probably nothing" to "probably an attack".](/figures/ch02/odds-update.pdf){#fig-odds-update}
 
-## Why accuracy lies
+An ordinary alert starts at {{< num ch02 base pct >}}. With a bad threat score, it goes up to {{< num ch02 p1 pct >}}. If it also happened outside office hours, it becomes {{< num ch02 p2 pct >}}. If the login was also from a new country, it becomes {{< num ch02 p3 pct >}} (@fig-odds-update). One caution: this assumes each clue gives new information. In real life, clues often overlap, so in practice we let a model learn how much each clue is worth.
 
-Score the rule *flag any alert with a threat score of 0.5 or more*. **Precision**, how often a flag is real, is {{< num ch02 precision pct >}}. **Recall**, how many attacks it catches, is {{< num ch02 recall pct >}}. **Accuracy**, the share of all alerts judged correctly, is {{< num ch02 accuracy pct >}}. Sounds good, until you see that flagging *nothing at all* scores {{< num ch02 always_benign_acc pct >}}. When one outcome is rare, accuracy mostly measures how common the other one is.
+## Why accuracy can mislead
+
+Suppose our rule is: *mark an alert as an attack if its threat score is 0.5 or more.* Three common measures:
+
+- **Precision**: when the rule raises an alarm, how often is it a real attack? Here, {{< num ch02 precision pct >}}.
+- **Recall**: out of all real attacks, how many does the rule catch? Here, {{< num ch02 recall pct >}}.
+- **Accuracy**: out of all alerts, how many did the rule judge correctly? Here, {{< num ch02 accuracy pct >}}.
 
 ![Every one of the 20,000 alerts, sorted by what the rule said and what really happened. Precision and recall each ignore one of the two columns, which makes them fair judges of rare events.](/figures/ch02/confusion.pdf){#fig-confusion}
 
+The accuracy of {{< num ch02 accuracy pct >}} sounds good. But a rule that *never* raises any alarm has an accuracy of {{< num ch02 always_benign_acc pct >}}. When one outcome is rare, accuracy mostly measures how common the other outcome is. So for rare events, look at precision and recall.
+
 ## How a machine learns a probability
 
-Bayes multiplies odds; adding is easier. Take the logarithm of the odds and multiplication becomes addition. That gives a simple machine: start from a base number, add a **weight** for each clue, and turn the total into a probability with an S-shaped curve. That's **logistic regression**, behind credit and medical risk scores for decades. It learns all the weights *together*, so overlapping clues aren't counted twice.
+Bayes' rule multiplies odds. Adding is easier than multiplying, so we take the logarithm of the odds, and then each clue simply adds a number. This gives a very simple model: start with a base number, add a **weight** for each clue, and convert the total into a probability using an S-shaped curve. This model is called **logistic regression**. Banks and hospitals have used it for decades for credit scores and risk scores.
 
 ![The S-curve (the logistic, or sigmoid, function) turns total evidence into a probability. Every step to the right multiplies the odds by the same amount, which is why the curve flattens out: once you're very sure, more evidence changes the probability only a little.](/figures/ch03/sigmoid.pdf){#fig-sigmoid}
 
-To set the weights, we need to score a probability. Say 90% and be right: lose almost nothing. Say 1% and be wrong: lose a lot, for being confidently wrong. That score is **log loss**, a measure of surprise.
+To find good weights, we need a way to score a probability. If the model says 90% and the event happens, it should lose very few points. If it says 1% and the event happens, it should lose many points, because it was confident and wrong. This score is called **log loss**.
 
 ![Log loss for a single alert. If it really was an attack (red, solid curve), the penalty is small when the model gave "attack" a high probability. It grows very fast as that probability gets close to zero. Harmless alerts (blue, dashed curve) work the same way from the other side.](/figures/ch03/logloss.pdf){#fig-logloss}
 
-Log loss has a property the whole book leans on. It's a **proper scoring rule**: the only way to score best on average is to report what you actually believe (@fig-logloss). Exaggerate, and over many cases you lose. So models trained on log loss tend to come out honest, or *calibrated*.
+Log loss has an important property. The only way to get the best score, on average, is to give honest probabilities (@fig-logloss). If a model exaggerates and says 99% when the truth is 80%, it loses more over many cases. So models trained with log loss tend to give honest probabilities.
 
-Training is a walk downhill. Picture log loss as hilly ground, where each combination of weights is a place. Stand in thick fog, feel which way the ground slopes, step downhill, repeat. That's **gradient descent**. Run on our alerts and tested on alerts held back from training, it comes within {{< num ch03 gap_pct pct >}} of the best score any model could reach.
+Training means finding the weights with the lowest log loss. Imagine standing on a hill in thick fog. You cannot see the bottom, but you can feel which way the ground slopes. So you take a small step downhill, and repeat. This method is called **gradient descent**.
 
 ::: {.keyidea}
-All of machine learning is one loop: predict, measure the surprise, step downhill.
+Machine learning is one simple loop: predict, measure the mistake, adjust a little, and repeat.
 :::
 
-Training an LLM is the same loop with a vastly bigger model.
+Even large language models are trained with this same loop, only with a much bigger model and much more data.
 
 ## Two ways a model fools you
 
-**Overfitting** is memorising instead of learning. A decision tree allowed twenty levels of yes-or-no questions nearly memorises its training alerts (loss {{< num ch03 tree_deep_train f3 >}}) and does badly on new ones ({{< num ch03 tree_deep_test f2 >}}). You only see it by testing on data the model never trained on.
+**Overfitting** means memorising instead of learning. A very flexible model can remember every small detail of its training data, including random noise. It then looks excellent on that data but performs badly on new cases. The only way to catch this is to test the model on data it has never seen.
 
 ![A decision tree allowed only a few questions learns general patterns. Allowed dozens, it memorises individual training alerts: its loss on them approaches zero while its loss on new alerts climbs.](/figures/ch03/overfit.pdf){#fig-overfit}
 
-**Leakage** is a clue that secretly contains the answer. Train with analysts' notes and results look amazing, because "confirmed phishing" is written *after* someone decided. Ask of every clue: *would I have this value at the moment of the decision?*
+**Leakage** means a clue secretly contains the answer. For example, if we train with the analysts' notes, results look amazing, because notes like "confirmed phishing" are written *after* someone has already decided. When the model has to decide, that note does not exist yet. So for every clue, ask: *will I really have this information at the moment of the decision?*
 
 ::: {.exercises}
-1. A spam filter catches 98% of spam and wrongly flags 1% of real email. If only 1% of incoming email is spam, what fraction of flagged emails are real? Use counts.
+1. A spam filter catches 98% of spam and wrongly flags 1% of normal emails. If only 1% of all emails are spam, what fraction of flagged emails are actually normal? Use counts, as in @fig-base-rate-tree.
 :::
 
 ::: {.nexthook}
-Next: our model says 0.8. Does 0.8 really mean 80%?
+Next chapter: if a model says 80%, does it really mean 80%? We learn how to check, and how to fix it.
 :::

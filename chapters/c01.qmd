@@ -1,8 +1,8 @@
 # What "learning" means {#sec-ch01}
 
-When I started learning AI as an engineering student, I kept hearing new words: machine learning, deep learning, LLM, RAG, agents. I thought I had to learn seven different subjects. Later I understood that all these words belong to one story. Each new idea came because the old idea had a problem it could not solve.
+Anyone who starts learning AI today hears many new words at once: machine learning, deep learning, LLM, RAG, agents. It feels like seven different subjects. But all these words belong to one story. Each new idea came because the old idea had a problem it could not solve.
 
-In this chapter I will tell that story from the beginning, in simple steps. At the end, you will see where this book fits.
+In this chapter we go through that story from the beginning, in simple steps. At the end, you will see where this book fits.
 
 ::: {.goals}
 - Understand the difference between a computer that follows rules and a computer that learns.
@@ -40,7 +40,7 @@ You already use many models. When your bank sends an SMS like *"Did you just mak
 
 ## A model can learn the wrong thing
 
-To make the ideas concrete, this book uses one example again and again: a logistics company I have invented, called Kestrel Logistics. Like any company, its computers raise warnings when something looks suspicious, for example a login from a strange country. These warnings are called **alerts**. In four weeks, the security team receives {{< num ch01 n_alerts int >}} alerts, about {{< num ch01 per_day int >}} per day. Only {{< num ch01 base_rate pct1 >}} of them are real attacks; the rest are false alarms. Because I generated these alerts with a program, I know the correct answer for every alert, so we can check every model properly.
+To make the ideas concrete, this book uses one example again and again. Let us imagine a logistics company called Kestrel Logistics. Like any company, its computers raise warnings when something looks suspicious, for example a login from a strange country. These warnings are called **alerts**. Suppose that in four weeks the security team receives {{< num ch01 n_alerts int >}} alerts, about {{< num ch01 per_day int >}} per day, and only {{< num ch01 base_rate pct1 >}} of them are real attacks; the rest are false alarms. Since this is an example, we can assume we know the correct answer for every alert, which lets us check every idea properly.
 
 Each alert comes with a *threat score* between 0 and 1. A higher score means outside security sources think it is more dangerous. Let us try a simple rule: *if the score is above some number t, mark the alert as an attack.* A cut-off number like *t* is called a **threshold**.
 
@@ -84,7 +84,7 @@ When you watch an agent work, you notice something interesting. Most of its step
 
 ![The same question, two ways. An LLM writes its answer piece by piece, and your code has to read the sentence. A decision model returns the answer as data, with a probability for every option, in one pass.](/figures/ch01/generate-vs-decide.pdf){#fig-generate-vs-decide}
 
-In 2026, a company called TypeSafe AI released a model named **Jev** for exactly these small decisions. Jev does not write any text. You give it the situation and a clear question, and it gives back the answer with a probability for each option (@fig-generate-vs-decide). TypeSafe calls it a *System One* model. The name comes from the psychologist Daniel Kahneman, who called our fast, automatic thinking "System 1" [@kahneman2011]. I did not have access to Jev while writing this book, so every Jev answer here comes from a stand-in model I built that copies Jev's public interface. Such numbers are marked *synthetic*.
+In 2026, a company called TypeSafe AI released a model named **Jev** for exactly these small decisions. Jev does not write any text. You give it the situation and a clear question, and it gives back the answer with a probability for each option (@fig-generate-vs-decide). TypeSafe calls it a *System One* model. The name comes from the psychologist Daniel Kahneman, who called our fast, automatic thinking "System 1" [@kahneman2011]. In this book, the numbers shown for Jev are examples to explain the ideas, not measurements of the real product. They are marked *synthetic*.
 
 ![The story so far. Each step exists because the one before it hit a problem it couldn't solve. System One models like Jev grow out of deep learning and fit into the "decide" step of an agent.](/figures/ch01/ai-story-map.pdf){#fig-ai-story-map}
 

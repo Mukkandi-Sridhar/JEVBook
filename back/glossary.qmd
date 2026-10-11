@@ -129,9 +129,6 @@ Logistic regression
 Loss
 : A number that measures how wrong a model is on some examples. Training tries to make it smaller (Chapter 2).
 
-Mock
-: A stand-in for a real service that answers in the same shape. This book's is `jev-mock-synthetic` (Chapter 14).
-
 Noul
 : TypeSafe's name for a yes-or-no question. The answer is the probability of yes (Chapter 8).
 
@@ -223,7 +220,7 @@ Transformer
 : The network design built from attention layers that underlies modern LLMs (Chapter 5).
 
 Transport
-: The lowest layer of an HTTP client, which sends a finished request and returns a response. The book's stand-in is one (Chapter 14).
+: The last layer of a software library, which actually sends a request over the network. Replacing it with a practice version lets you test without the real service (Chapter 14).
 
 Triage
 : Sorting cases by how likely they are to be real and how urgent they are, so the most important ones are handled first (Preface, Chapter 13).

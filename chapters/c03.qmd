@@ -1,91 +1,95 @@
 # Calibration: when 0.8 really means 80% {#sec-ch03}
 
-::: {.epigraph by="Lord Kelvin, 1883"}
-When you can measure what you are speaking about, and express it in numbers, you know something about it.
-:::
-
-*"If a model says 80%, does that mean 80%?"* It sounds silly until it costs you money. Nothing in a model's maths forces its 0.8 to match reality. It matches only if the model was built well and *checked*, and even then it can drift. Checking is the most important habit in this book.
+If a model says 80%, does it really mean 80%? This sounds like a silly question, but it can cost a lot of money. Nothing inside a model forces its 80% to match reality. It matches only if the model was built carefully and then checked. Checking this is the most important habit in this book.
 
 ::: {.goals}
-- Say what *calibrated* means, and why it differs from accurate.
-- Check calibration with a reliability diagram and ECE.
-- Fix a miscalibrated model, and check it group by group.
+- Understand what *calibrated* means, and why it is different from accurate.
+- Check calibration using a reliability diagram and one simple number.
+- Fix a model whose probabilities are wrong, and check it group by group.
 :::
 
-## The weather forecaster's secret
+## What weather forecasters do well
 
-In the 1970s, researchers checked American weather forecasters against what actually happened. When they said "30% chance of rain", it rained on about 30% of those days; when they said 70%, about 70% [@murphy1977]. Most people are nothing like this: ask for a range they're "90% sure" of, and they're right far less than 90% of the time.
+In the 1970s, researchers in the United States compared weather forecasts with what actually happened. When forecasters said "30% chance of rain", it rained on about 30% of those days. When they said "70%", it rained on about 70% [@murphy1977].
 
-Forecasters aren't good because they're always right. They're good because their numbers mean what they say.
+Most people are not like this. If you ask someone for a range they are "90% sure" about, the true answer falls inside that range much less than 90% of the time. People are usually too confident.
 
 ![Two forecasters. For each thing they said ("30%", "70%" and so on), we count how often it actually happened. The careful forecaster sits on the diagonal: their 70% happens about 70% of the time. The overconfident one says 90% about things that happen only about 70% of the time.](/figures/ch04/forecasters.pdf){#fig-forecasters}
 
+Good forecasters are not always right; nobody can be. They are good because their numbers mean what they say (@fig-forecasters). This is called **calibration**.
+
 ::: {.keyidea}
-A model is calibrated when its 80% happens about 80% of the time.
+A model is **calibrated** when its 80% comes true about 80% of the time.
 :::
 
-## Ranking is not calibration
+## Ranking and calibration are two different things
 
-A model's numbers can be good at two different things. **Ranking**: do attacks get higher numbers than harmless alerts? The **AUC** measures it: the chance a random attack scores above a random harmless alert (1 is perfect, 0.5 a coin toss). **Calibration**: when the model says 0.3, are three in ten of those alerts attacks?
+A model's numbers can be good at two separate jobs.
+
+**Ranking**: does the model give higher numbers to attacks than to harmless alerts? If we sort alerts by the model's number, do real attacks come to the top? This is measured by **AUC**. It is the chance that a random attack gets a higher number than a random harmless alert. An AUC of 1 is perfect; 0.5 is no better than tossing a coin.
+
+**Calibration**: when the model says 0.3, are about three out of ten such alerts real attacks?
 
 ![Two models, identical at ranking (same AUC) but not at calibration. Model A is the logistic regression from Chapter 2. Model B is the same model with its probabilities distorted: it still sorts the alerts in the same order, but its numbers no longer mean anything.](/figures/ch04/same-auc.pdf){#fig-same-auc}
 
-Both models in @fig-same-auc have AUC {{< num ch04 lr.auc f3 >}}. Model B says 40% about alerts that are attacks only a few percent of the time. If you only sort, B is as good as A. The moment you put a threshold on its numbers or multiply them by a cost, it misleads you. Leaderboards report ranking scores; calibration is often not measured at all. For decisions, it's usually what matters most.
+In @fig-same-auc, both models have the same AUC of {{< num ch04 lr.auc f3 >}}. But model B says 40% for alerts that are attacks only a few times in a hundred. If you only sort alerts, B is as good as A. But the moment you use its numbers to make a decision, B will mislead you. Most leaderboards report only ranking. For decisions, calibration usually matters more.
 
 ::: {.keyidea}
-Ranking well and being calibrated are different skills; decisions need both.
+Ranking well and being calibrated are different skills. Good decisions need both.
 :::
 
-## How to check
+## How to check calibration
 
-Do what the weather researchers did. Take predictions where you know the outcome, group them by what the model said (0–10%, 10–20%…), and in each group compare the average prediction with how often it happened. Plotted, that's a **reliability diagram**: points on the diagonal mean the numbers can be trusted. Always look at how many cases sit in each group; a dot built on twelve alerts is weak evidence.
+Do what the weather researchers did. Take predictions where you already know the outcome. Put them in groups by what the model said: 0–10%, 10–20%, and so on. In each group, compare the average prediction with how often the event really happened. When we draw this, it is called a **reliability diagram**. If the points lie on the diagonal line, the numbers can be trusted.
 
 ![The reliability diagram of our Chapter 2 model on alerts it never saw. Points on the dashed diagonal mean the model's numbers can be trusted as they are. Underneath, a histogram (log scale) shows how many alerts fall in each part of the range: most are near zero, and only a few are above 50%.](/figures/ch04/anatomy.pdf){#fig-anatomy-03}
 
-For one number, use the **expected calibration error (ECE)**: the average gap between "said" and "happened", weighted by how many predictions each group holds [@naeini2015]. Our logistic regression's ECE is {{< num ch04 lr.ece f3 >}}, under one percentage point; Model B's is {{< num ch04 squashed.ece f2 >}}. But ECE is an average, so it can hide a badly calibrated corner, and the high end, where the dangerous cases are, is exactly such a corner.
+Always look at how many cases are in each group, shown at the bottom of @fig-anatomy-03. A point based on only twelve alerts is weak evidence.
 
-## How calibration breaks, and how to fix it
+For a single number, we use the **expected calibration error**, or **ECE**. It is the average gap between "what the model said" and "what actually happened", across all groups [@naeini2015]. In our example, the model's ECE is {{< num ch04 lr.ece f3 >}}, which means it is off by less than one percentage point on average. Model B's ECE is {{< num ch04 squashed.ece f2 >}}. But remember that ECE is an average, so it can hide one bad area. Always look at the diagram too.
 
-**Rebalancing the data.** The most common cause, usually well meant. Attacks are rare ({{< num ch04 base pct >}}), so someone trains on a 50/50 mix "so the model sees more attacks". The ranking stays fine, but the model learns a world where attacks are common: its average prediction becomes {{< num ch04 bal_mean_pred pct >}}. Put a threshold on that and the team drowns.
+## Why calibration goes wrong, and how to fix it
 
-**Overfitting** pushes probabilities towards 0 and 1. **Very large neural networks** tend to be overconfident [@guo2017]. And **the world changing**, say an attack campaign doubling the base rate, breaks a model that was calibrated last month.
+**Rebalancing the training data.** This is a very common cause. Attacks are rare, only {{< num ch04 base pct >}} in our example. So someone trains the model on equal numbers of attacks and normal alerts, "so the model sees more attacks". The ranking stays fine, but the model now believes attacks are common. Its average prediction becomes {{< num ch04 bal_mean_pred pct >}}. If we use these numbers for decisions, the team gets far too many alerts.
+
+**Overfitting** pushes probabilities towards 0 and 1. **Very large neural networks** also tend to be overconfident [@guo2017]. And **changes in the world**, like a sudden increase in attacks, can make last month's calibrated model wrong today.
 
 ![A model trained on 50/50 rebalanced data (red, solid line with squares) thinks attacks are about ten times more common than they are, and its probabilities sit far below the diagonal. After Platt scaling fitted on a separate calibration set (green, dashed line with circles), the same model is well calibrated again.](/figures/ch04/rebalanced.pdf){#fig-rebalanced}
 
-The good news: a model that ranks well but is miscalibrated is usually easy to fix, without retraining. Keep back a **calibration set** it never trained on, and learn a small correction on top:
+The good news is that a model which ranks well but is badly calibrated is usually easy to fix. We do not need to train it again. We keep aside some data the model has never seen, called a **calibration set**, and learn a small correction on top of the model:
 
-- **Platt scaling** fits a stretch and a shift on the model's log-odds [@platt1999]. The usual first choice.
-- **Temperature scaling** fits one number that softens overconfident answers. The standard fix for neural networks.
-- **Isotonic regression** fits any rising staircase [@zadrozny2002]. Flexible, but needs more data.
-
-On the rebalanced model, Platt brings ECE from {{< num ch04 balanced.ece f3 >}} to {{< num ch04 fixes.Platt.ece f3 >}}. Temperature does nothing ({{< num ch04 fixes.Temperature.ece f3 >}}), and the reason is worth knowing: rebalancing didn't make the model *overconfident*, it *shifted* every prediction up. A temperature can only stretch around the middle.
+- **Platt scaling** learns two numbers that stretch and shift the model's output [@platt1999]. This is usually the first choice.
+- **Temperature scaling** learns one number that softens overconfident answers. It is the standard fix for neural networks.
+- **Isotonic regression** learns any rising staircase shape [@zadrozny2002]. It is flexible but needs more data.
 
 ![The three corrections, each fitted to the rebalanced model on the calibration set. Platt scaling learns an S-curve that can shift and stretch. Temperature scaling learns one number that only stretches around the middle, and here it barely changes anything. Isotonic regression learns any rising staircase.](/figures/ch04/fixes.pdf){#fig-fixes}
 
+For the rebalanced model, Platt scaling brings the ECE down from {{< num ch04 balanced.ece f3 >}} to {{< num ch04 fixes.Platt.ece f3 >}}. Temperature scaling does not help at all; the ECE stays at {{< num ch04 fixes.Temperature.ece f3 >}}. The reason is useful to know. Rebalancing did not make the model overconfident. It *shifted* all its predictions upwards. Temperature can only stretch or squeeze around the middle; it cannot shift everything down.
+
 ::: {.keyidea}
-Temperature fixes overconfidence. It can't fix a wrong base rate.
+Temperature scaling fixes overconfidence. It cannot fix a wrong base rate.
 :::
 
-## Calibrated on average, wrong for one group
+## Correct on average, wrong for one group
 
 ![Calibration checked separately for each alert source. Across all sources together, this model is well calibrated, with an ECE of about half a percentage point. But it overestimates the risk of DLP and Cloud alerts and underestimates EDR alerts, which really are more dangerous here. Averaging hides both mistakes.](/figures/ch04/by-source.pdf){#fig-by-source}
 
-A model can be well calibrated overall and wrong for one group. Take a model that can't tell which system raised each alert. Overall ECE: an excellent {{< num ch04 generic.ece f3 >}}. But for alerts from laptops and servers it says {{< num ch04 by_source.EDR.pred pct1 >}} when the truth is {{< num ch04 by_source.EDR.actual pct1 >}}, and for data-leak alerts {{< num ch04 by_source.DLP.pred pct1 >}} when the truth is {{< num ch04 by_source.DLP.actual pct1 >}} (@fig-by-source). The errors cancel in the average, and the policy quietly closes real laptop attacks.
+A model can be well calibrated overall but wrong for one group. Suppose a model cannot tell which system raised each alert. Its overall ECE is an excellent {{< num ch04 generic.ece f3 >}}. But for alerts from laptops and servers (EDR in @fig-by-source), it says {{< num ch04 by_source.EDR.pred pct1 >}} when the truth is {{< num ch04 by_source.EDR.actual pct1 >}}. For data-leak alerts (DLP), it says {{< num ch04 by_source.DLP.pred pct1 >}} when the truth is {{< num ch04 by_source.DLP.actual pct1 >}}. The errors cancel out in the average, and real attacks on laptops get closed without anyone looking.
 
 ::: {.keyidea}
-Check calibration inside every group you'll treat differently, not just on average.
+Check calibration separately for every group you treat differently, not only on average.
 :::
 
-That means sources, customer tiers, languages, regions, and, when a model affects people's lives, groups of people.
+These groups can be sources, customer types, languages and regions. When a model affects people's lives, they must also include groups of people, such as age or gender.
 
 ::: {.breaks}
-Calibration only holds for data like the data you measured it on, and it fades as tools, attackers and people change. And it says nothing about any single prediction: a perfectly calibrated 70% is still wrong three times in ten. Keep a fresh calibration set and recheck on a schedule.
+Calibration is true only for data similar to the data you checked it on, and it slowly fades as things change. Also, calibration says nothing about one single prediction: a perfectly calibrated 70% is still wrong three times out of ten. Keep fresh data for checking, and check again regularly.
 :::
 
 ::: {.exercises}
-1. Explain to a friend, with no technical words, the difference between a model that ranks well and one that's calibrated.
+1. Explain to a friend, without technical words, the difference between a model that ranks well and a model that is calibrated.
 :::
 
 ::: {.nexthook}
-Next: we have probabilities we can trust. Where do we put the threshold?
+Next chapter: now that we have probabilities we can trust, where should we draw the line between "act" and "ignore"?
 :::

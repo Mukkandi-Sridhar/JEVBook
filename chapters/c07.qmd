@@ -1,85 +1,83 @@
 # Fast and slow: System One models and Jev {#sec-ch07}
 
-::: {.epigraph by="David Hume, 1748"}
-A wise man, therefore, proportions his belief to the evidence.
-:::
-
-TypeSafe didn't call Jev a better LLM. It called it the first of a new class: a *System One* model [@typesafe2026]. Is that a real idea, or a clever name? Both. This chapter explains the idea, then separates what we actually know about Jev from what's only claimed.
+When TypeSafe AI released Jev, it did not call it a better LLM. It called it the first of a new type of model, a *System One* model [@typesafe2026]. In this chapter we first understand the idea behind this name. Then we separate what is actually known about Jev from what is only claimed.
 
 ::: {.goals}
-- Describe System 1 and System 2, in people and in software.
-- Route cases by doubt between a fast and a slow system.
-- Sort claims about a new model into three piles.
+- Understand System 1 and System 2 thinking, in people and in software.
+- Send cases between a fast system and a slow system based on doubt.
+- Sort claims about a new model into three groups.
 :::
 
 ## Two ways of thinking
 
-What's 2 + 2? The answer was just there. Now 17 × 24. That felt different: you had to stop and work in steps. The psychologist Daniel Kahneman called these **System 1**, fast and automatic, and **System 2**, slow and effortful [@kahneman2011]. System 1 runs almost everything you do and is usually right, but it can be confidently wrong. (A bat and a ball cost \$1.10; the bat costs \$1.00 more than the ball. The ball isn't 10 cents [@frederick2005].)
+What is 2 + 2? The answer came immediately. Now try 17 × 24. This feels different: you have to stop and work step by step. The psychologist Daniel Kahneman called these two ways of thinking **System 1**, which is fast and automatic, and **System 2**, which is slow and careful [@kahneman2011]. System 1 handles most of our daily life and is usually right, but it can also be confidently wrong. Try this: a bat and a ball cost ₹110 together, and the bat costs ₹100 more than the ball. The quick answer, ₹10 for the ball, is wrong. The ball costs ₹5 [@frederick2005].
 
-Software maps onto this surprisingly well. Rules and classifiers are System 1: fast, good at familiar patterns. LLMs, especially "reasoning" ones, are the nearest thing to System 2: slow, general, and paid for by the token. For years the industry has used System 2 machinery for everything, including the thousands of quick judgements a day that System 1 handles well.
+![Tasks in and around a security team, placed by how often they happen and how much thinking each needs (illustrative). The frequent ones are grouped at the bottom right: quick judgements made hundreds or thousands of times a day. The few that need real reasoning happen rarely.](/figures/ch15/task-map.pdf){#fig-task-map}
 
-![Tasks in and around a SOC, placed by how often they happen and how much thinking each needs (illustrative). The frequent ones are grouped at the bottom right: quick judgements made hundreds or thousands of times a day. The few that need real reasoning happen rarely.](/figures/ch15/task-map.pdf){#fig-task-map}
+Software fits this idea well. Rules and simple classifiers work like System 1: fast and good with familiar patterns. LLMs, especially the ones that "reason" step by step, are closest to System 2: slow, general, and paid for by every word. In real work, as @fig-task-map shows, most tasks are quick judgements that happen many times a day. Only a few need deep thinking. Yet today we often use slow System 2 tools for everything.
 
 ::: {.keyidea}
-Most of the work is System 1 work, but most of the machinery we use is System 2.
+Most real work needs fast System 1 judgement, but we often use slow System 2 tools for it.
 :::
 
-## Route by doubt
+## Send the doubtful cases to the slow system
 
-With a fast system and a slow one, how do you split the work? A good expert sorts most cases in seconds and *notices* the ones that don't feel right. So: let the fast system see everything, and send only the cases it's unsure about to the slow one.
+If we have a fast system and a slow system, how should we divide the work? A good expert handles most cases in seconds, and *notices* the cases that do not feel right. We can do the same: let the fast system see every case, and send only the cases it is unsure about to the slow system.
 
 ![Expected cost per day as more alerts go to System 2. Sending the alerts System 1 is least sure about (green, solid line) gets most of the benefit early. Sending a random share (grey, dashed line) gets almost nothing until you send nearly everything.](/figures/ch15/routing-curve.pdf){#fig-routing-curve}
 
-On our alerts, sending the 20% that System 1 is least sure about gets {{< num ch15 share_gain_20 pct >}} of everything a perfect investigation could add. A random 20% gets {{< num ch15 share_gain_20_random pct >}} (@fig-routing-curve). And you pay the slow price only on that 20%.
+In our example, sending the 20% of alerts that the fast system is least sure about gives {{< num ch15 share_gain_20 pct >}} of the total benefit that careful checking could give. Sending a random 20% gives only {{< num ch15 share_gain_20_random pct >}} (@fig-routing-curve). And we pay the slow cost only for that 20%.
 
 ::: {.keyidea}
-A fast system is valuable in two ways: its speed, and knowing which cases it shouldn't decide.
+A fast system is useful in two ways: it is quick, and it knows which cases it should not decide.
 :::
 
-This only works if the fast system is *calibrated*: its 0.5 must really mean "could go either way". An overconfident System 1 keeps the dangerous cases for itself. Kahneman and the psychologist Gary Klein, after years on opposite sides, agreed on when fast judgement can be trusted: a regular world, lots of practice, and quick, clear feedback [@kahneman2009]. For machines I'd add a fourth condition: honest doubt.
+This works only if the fast system is calibrated: its "50%" must really mean "could go either way". Kahneman and the psychologist Gary Klein agreed that fast judgement can be trusted when the situation is regular, there is a lot of practice, and feedback comes quickly [@kahneman2009].
 
-![Conditions under which fast, intuitive judgement tends to be reliable, adapted from Kahneman and Klein. SOC triage mostly meets the first three. The fourth is what separates good experts, and good models, from confident ones.](/figures/ch15/conditions.pdf){#fig-conditions}
+![Conditions under which fast, intuitive judgement tends to be reliable, adapted from Kahneman and Klein. Alert triage mostly meets the first three. The fourth is what separates good experts, and good models, from confident ones.](/figures/ch15/conditions.pdf){#fig-conditions}
 
-## What we know about Jev: three piles
+For machines, we add a fourth condition, as in @fig-conditions: the system must honestly know when it is unsure.
 
-I've never called Jev; it was in early access when I wrote this. What I had was its official Python library (anyone can read it), its documentation, the launch coverage and early papers. How much can anyone say from the outside? More than you'd think, less than most articles suggest. The trick is to sort every claim into three piles.
+## What we know about Jev: three groups
+
+When this book was written, Jev was new and in early access. The public information was its official software library, its documentation, news reports and a few early research papers. How much can we really know about a model from outside? The best method is to sort every claim into three groups.
 
 ![Every claim about Jev in this book, sorted into three piles. The first pile you can check yourself today. The second is what TypeSafe says. The third is what nobody outside the company can know yet.](/figures/ch16/ledger.pdf){#fig-ledger}
 
 ::: {.keyidea}
-Sort every claim about a new model into three piles: verified, vendor-reported and unknown.
+Sort every claim about a new model into three groups: checked, claimed by the company, and unknown.
 :::
 
-**Verified: the interface.** You send one request with three things: the **state** (the situation, as text or structured data), the **model** name, and a set of named, typed **questions**. You get back, for each question, a typed answer with a probability for every option. There are three question types: yes/no, pick-one and rate-on-a-scale (Chapter 8).
+**Checked: how you use it.** You send one request with three parts: the **state** (a description of the situation), the **model** name, and a set of clear **questions**. For each question, you get back an answer with a probability for every option. There are three types of questions: yes/no, pick-one, and rate-on-a-scale (Chapter 8).
 
-![A real request as the official SDK builds it, and the response. The answers here come from the book's stand-in, but their shape is just what the SDK's own data models expect.](/figures/ch16/anatomy.pdf){#fig-anatomy-09}
+![What a request to Jev contains, and the shape of the answer that comes back. The values shown are an example.](/figures/ch16/anatomy.pdf){#fig-anatomy-09}
 
-**Vendor-reported: two ideas.** A "parallel sampler" that produces all its outputs in one pass instead of word by word, which TypeSafe says is where the speed comes from. And a training method, **RLCD**, said to reward *calibrated* probabilities. We don't know the details. But Chapter 2 tells you how such a reward could work: a proper scoring rule makes honesty the best strategy. That's my reasoning, not something TypeSafe has published.
+**Claimed by the company: two ideas.** First, a "parallel sampler" that produces all answers in a single step instead of word by word, which TypeSafe says makes it fast. Second, a training method called **RLCD**, which is said to reward calibrated probabilities. The details are not public. But from Chapter 2 we know one way such a method could work: a scoring rule like log loss rewards honest probabilities.
 
-**Unknown:** model size, design and training data; calibration on *your* data; behaviour on attacker-written input; how behaviour changes between versions. Exactly what a decision layer depends on most.
+**Unknown:** the model's size, design and training data; how well calibrated it is on *your* data; how it behaves when attackers write the input; and how its behaviour changes between versions. These are exactly the things a decision system depends on most.
 
-## Check the numbers against each other
+## Check if the company's numbers agree
 
-TypeSafe reports a response time of about 70 to 500 milliseconds and a price of \$0.042 per million input tokens, with output free. At 500 tokens a decision, that's about \$21 per million decisions, against roughly \$660 at this book's illustrative mid-range LLM price. Real LLM prices vary a hundredfold, so treat the ratio as a size, not a fact. And always ask of speed claims: *faster than what, doing what?* A non-reasoning LLM asked for a one-word label is far closer than a reasoning one [@regolo2026].
+TypeSafe reports a response time of about 70 to 500 milliseconds and a price of \$0.042 per million input tokens, with output free. If each decision reads about 500 tokens, a million decisions cost about \$21. With an example mid-range LLM price, the same million decisions would cost about \$660. LLM prices vary a lot, so treat this only as a rough size. And for any speed claim, always ask: *faster than what, and for which task?* [@regolo2026]
 
 ::: {.keyidea}
-When a vendor gives you several numbers, check whether they agree with each other.
+When a company gives several numbers, check whether they agree with each other.
 :::
 
-In TypeSafe's launch demo, Jev played the video game *Doom*, about ten decisions a second at a reported \$7 an hour. That's 36,000 decisions an hour, about \$0.0002 each, which at the listed price means about 4,600 tokens of game description per decision: plausible. The numbers agree. That doesn't prove them; if they had implied three tokens, or three million, you'd have learned something.
+In its launch demo, Jev played the video game *Doom*, making about ten decisions per second at a reported cost of \$7 per hour. That is 36,000 decisions per hour, or about \$0.0002 per decision. At the listed price, that means about 4,600 tokens of game description per decision, which is reasonable. The numbers agree. This does not prove they are true, but if they had disagreed, we would have learned something important.
 
 ::: {.keyidea}
-Unknowns about a new model aren't reasons to avoid it; they're reasons to test it on your own data.
+Unknown facts about a new model are not a reason to avoid it. They are a reason to test it on your own data.
 :::
 
 ::: {.breaks}
-The two-systems idea is a metaphor, not a fact about the brain, and a System One model isn't "intuitive"; it's a trained function. Routing by doubt fails when the fast system is confidently wrong about a whole kind of case, such as a new attack it has never seen; random audits and drift checks are there to catch what doubt misses. And vendor numbers come from the vendor's tasks, setup and comparisons; early-access models change fast, so pin a version and recheck.
+System 1 and System 2 are a way of describing thinking, not two real parts of the brain, and a System One model does not have "intuition"; it is a trained function. Sending doubtful cases to the slow system fails when the fast system is confidently wrong about a whole new type of case. Random checks and monitoring are needed to catch this. And company numbers come from the company's own tests; for a new model, behaviour can change quickly, so fix a version and test again.
 :::
 
 ::: {.exercises}
-1. List five decisions from your own work that are System 1 work and two that need System 2. What makes the difference?
+1. List five decisions in your own work that are quick System 1 judgements, and two that need slow System 2 thinking. What makes them different?
 :::
 
 ::: {.nexthook}
-Next: the three question types, and the design choices that make each work.
+Next chapter: the three types of questions, and how to ask each one well.
 :::

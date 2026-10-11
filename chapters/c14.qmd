@@ -1,91 +1,87 @@
 # From model to service {#sec-ch14}
 
-::: {.epigraph by="A saying among site reliability engineers"}
-Hope is not a strategy.
-:::
-
-Every project reaches the moment when the prototype works and someone asks: "Can we run it on Monday?" A model that decides well on a laptop is not a service. A service answers at 3 a.m. when the API is slow, explains itself to an auditor a year later, tells someone when the world has changed, and changes safely when you improve it. This chapter covers what that takes, and ends by building a small System One model of your own.
+In every project there comes a day when the prototype works and someone asks: "Can we use this from Monday?" A model that makes good decisions on a laptop is not yet a service. A real service must answer at 3 a.m. even when the network is slow, explain its decisions to an auditor a year later, warn someone when the situation changes, and change safely when it is improved. This chapter explains what that needs, and then looks inside a small System One model.
 
 ::: {.goals}
-- Call a model you don't own safely: versions, retries, failures.
+- Use a model you do not own safely: fixed versions, retries and failures.
 - Make every decision explainable with a record.
-- See what's inside a small System One model.
+- Understand what is inside a small System One model.
 :::
 
-## Calling a model you don't own
+## Using a model you do not own
 
-**Build against a stand-in, then flip one switch.** The official library builds requests, retries failures and parses answers; only its last layer, the *transport*, talks to the network, and you can swap it. The book's stand-in plugs in there, so your code runs exactly as it would for real, for free. Then go live by changing one setting.
+**Test with a practice version first.** Most AI services give an official software library. The library prepares the request, retries when there is a problem, and reads the answer. Only its last layer actually talks to the internet. If we replace that last layer with a practice version that answers locally, we can test all our logic for free, and then switch to the real service by changing one setting.
 
-![The official library does all the work of building requests, retrying and parsing answers. The transport decides where requests go. The book's stand-in answers locally; the default sends them over the network to TypeSafe.](/figures/ch23/layers.pdf){#fig-layers}
+![The official library does all the work of building requests, retrying and parsing answers. The transport decides where requests go. A practice version answers locally; the default sends them over the network to the real service.](/figures/ch23/layers.pdf){#fig-layers}
 
-**Pin the model version.** A name like "latest" can point to a new model at any time.
+**Fix the model version.** A name like "latest" can point to a new model at any time, without warning.
 
 ::: {.keyidea}
-Fix the model version, so a change in behaviour is your decision, not a surprise.
+Fix the model version, so that any change in behaviour is your decision, not a surprise.
 :::
 
-**Retry the right errors.** Your own mistakes (no key, a model name that doesn't exist) fail the same way every time: fix them. Problems outside your code (rate limits, server errors, dropped connections) are worth retrying. If one request in five fails, only {{< num ch23 ok_20_0 pct >}} of calls succeed with no retries and {{< num ch23 ok_20_2 pct1 >}} with two. But retries cost time, and a login check may have only 300 milliseconds.
+**Retry only the right errors.** Your own mistakes, such as a wrong key or a wrong model name, will fail the same way every time, so fix them instead of retrying. Problems outside your control, such as a busy server or a broken connection, are worth retrying. In our example, if one request in five fails, only {{< num ch23 ok_20_0 pct >}} of calls succeed with no retry, but {{< num ch23 ok_20_2 pct1 >}} succeed with two retries. Retries take time, though, and a login check may have only 300 milliseconds.
 
-**Decide what failure means.** So treat a failed call as just another case the policy must handle. For a login, "allow, but flag for review" may be right; for closing an alert, "don't close, send to a person". Put that rule in the policy where people can see it.
+**Decide in advance what a failure means.** Treat a failed call as one more kind of case. For a login, the right rule may be "allow it, but mark it for review". For closing an alert, it should be "do not close; send to a person". Write this rule in the policy, where everyone can see it.
 
 ::: {.keyidea}
-When time matters, decide in advance what a failed call means.
+When time is short, decide in advance what a failed call means.
 :::
 
-**Ask together, and test for free.** Four questions in one call used about {{< num ch23 tokens_four_one int >}} input tokens; in four calls, {{< num ch23 tokens_four_sep int >}}. And record real answers once, then replay them in every test run, so tests cost nothing and a changed question fails loudly.
+**Ask questions together.** In our example, four questions in one request used about {{< num ch23 tokens_four_one int >}} input tokens, and the same four questions in four separate requests used {{< num ch23 tokens_four_sep int >}}. One request is also faster.
 
 ## The service
 
 ![The decision service. Each alert's trusted fields go to Jev as three typed questions; the answer is calibrated, and the policy, business rules and capacity turn it into a zone. Every decision is recorded before it is returned. Any failure falls back to review. A daily monitor reads the log, and a candidate version can run in shadow beside the current one.](/figures/ch28/architecture.pdf){#fig-architecture-21}
 
-You'll recognise every box in @fig-architecture-21. What turns a chain of steps into a service is four habits.
+You will recognise every part of @fig-architecture-21 from earlier chapters. Four habits turn these parts into a reliable service.
 
-**One configuration, one fingerprint.** The model version, calibration numbers, thresholds and every business rule live in one place, and every decision is stamped with its version.
+**One settings file, with a version.** The model version, the calibration numbers, the thresholds and every business rule are kept in one place, and every decision is stamped with that version.
 
 ::: {.keyidea}
-Everything that can change a decision lives in one place, with a version number.
+Everything that can change a decision is kept in one place, with a version number.
 :::
 
-**A record for every decision.** A decision model gives probabilities, not reasons. But record the raw and calibrated probabilities, the thresholds they met, the rule that fired and the version that decided, and every *action* becomes explainable, even though the model explains nothing.
+**A record for every decision.** A decision model gives probabilities, not reasons. But if we record the raw and calibrated probabilities, the thresholds, the rule that was applied and the version, then every *action* can be fully explained, even though the model itself explains nothing.
 
 ![One decision record, with notes on why each field is there. Together they say what the service saw, what the model said, what the policy did, which version decided, and why.](/figures/ch28/record.pdf){#fig-record}
 
-**Fitted together.** A dry run over a live week flagged day one: the queue was over capacity. The thresholds had been fitted for 240 reviews a day, and *afterwards* someone added a sensible rule, never auto-close an alert on a critical system. Every alert it moved to review was work the thresholds hadn't allowed for. Fitted *with* the rule, the queue fit again, from about {{< num ch28 v1_mean_reviews int >}} a day to {{< num ch28 v2_mean_reviews int >}}.
+**Thresholds and rules set together.** In our example, a test run over one week showed that the review queue was over capacity from the first day. The thresholds had been set for 240 reviews per day, but *after* that, someone added a sensible rule: never close an alert on a critical system automatically. Every alert this rule moved to review was extra work that the thresholds had not planned for. When the thresholds were set again *with* the rule included, the average queue went from about {{< num ch28 v1_mean_reviews int >}} to {{< num ch28 v2_mean_reviews int >}} per day.
 
 ![Alerts sent to review each day of the live week, before and after the fix. Fitted without the critical-asset rule, the thresholds let the queue run over capacity every day. Fitted with it, the act threshold rises slightly and the queue fits.](/figures/ch28/dry-run.pdf){#fig-dry-run}
 
 ::: {.keyidea}
-Thresholds and business rules are one decision, and they have to be fitted together.
+Thresholds and business rules are one decision, and must be set together.
 :::
 
-**A monitor, an owner, and shadow mode.** Once a day, check the share of cases in each door, the queue against capacity, the fallback rate, and predicted against confirmed threats. On a campaign's first day, two flags go up, and the second, *predicted real far below confirmed real*, says in plain numbers that the probabilities are no longer calibrated. A named owner can switch the service to "review everything" while they find out why. And every improvement runs in shadow beside the current version first: here, the candidate agreed on {{< num ch28 shadow_agree pct >}} of alerts, and the shadow run measured, before anyone paid it, the threats its changes would let through.
+**Daily monitoring, a responsible person, and shadow testing.** Every day, check four numbers: the share of cases at each door, the review queue compared with capacity, how often calls fail, and predicted attacks compared with confirmed attacks. When a campaign starts, the last number shows the problem on day one, in plain numbers: the probabilities are no longer correct. A named person should have the authority to switch the service to "review everything" while the cause is found. And every improvement should first run in shadow mode beside the current version. In our example, the new version agreed with the old one on {{< num ch28 shadow_agree pct >}} of alerts, and the shadow test showed, before anyone paid the price, how many attacks its changes would let through.
 
 ![Two weeks of the daily monitor: the live week, then the phishing campaign. Top: the review queue, red and striped on days a flag was raised. Bottom: for alerts people saw, the share the model predicted to be real against the share they confirmed. The campaign opens a gap on its first day.](/figures/ch28/monitor.pdf){#fig-monitor}
 
-## Build your own System One model
+## What is inside a small System One model
 
-You don't need to build one to use one. But building a small one shows what its probabilities are made of.
+You do not need to build a System One model to use one. But it helps to understand what one looks like inside.
 
 ![The three heads. A noul turns one number into P(yes) with the S-curve. A choice turns one number per label into probabilities that add up to 1. A score turns one number into probabilities for levels in order, by cutting it at points that must stay in order.](/figures/ch27/heads.pdf){#fig-heads}
 
-The design follows the interface. A shared **encoder** reads an alert once and turns it into 32 numbers. Three small **heads** read those numbers, one per question type (@fig-heads). Yes/no uses Chapter 2's S-curve. Pick-one uses a softmax, so the probabilities add to 1. Rate-on-a-scale uses one "dial" cut at ordered points, so that "high" stays above "medium". All three are trained together with log loss, which rewards honest probabilities (Chapter 2), then a temperature per head is fitted on held-back data (Chapter 3). The whole model has {{< num ch27 n_params int >}} numbers and trains in seconds.
+Imagine a small model built for alerts. One shared part, the **encoder**, reads an alert once and turns it into a short list of numbers. Three small parts, called **heads**, read those numbers, one for each question type (@fig-heads). The yes/no head uses the S-curve from Chapter 2. The pick-one head makes probabilities that add up to 1. The scale head uses one "dial" with ordered cut points, so that "high" always stays above "medium". All three heads are trained together with log loss, which rewards honest probabilities, and then each head gets a temperature correction on unseen data (Chapter 3). Such a model can be very small, about {{< num ch27 n_params int >}} numbers.
 
-Calibration error on a fresh week fell from {{< num ch27 raw_ece f3 >}} to {{< num ch27 temp_ece f3 >}} after the temperature, with ranking unchanged. A deliberately oversized, overtrained version was the warning: its calibration error was {{< num ch27 over_ece f3 >}}, and after a temperature it was no better, {{< num ch27 over_ece_temp f3 >}}. A correction can soften answers; it can't restore what memorising destroyed.
+![Reliability of P(attack) on the live week. Left: the small model as trained, slightly overconfident. Middle: after dividing by the fitted temperature. Right: the overtrained network before any temperature; its problems are ones no single temperature can fix.](/figures/ch27/calibration.pdf){#fig-calibration}
 
-![Reliability of P(attack) on the live week. Left: TinyJev as trained, slightly overconfident. Middle: after dividing by the fitted temperature. Right: the overtrained network before any temperature; its problems are ones no single temperature can fix.](/figures/ch27/calibration.pdf){#fig-calibration}
+In our example, the temperature correction reduced the calibration error from {{< num ch27 raw_ece f3 >}} to {{< num ch27 temp_ece f3 >}}, without changing the ranking. A much bigger version trained for too long was a warning: its error was {{< num ch27 over_ece f3 >}}, and after a temperature correction it was no better, {{< num ch27 over_ece_temp f3 >}} (@fig-calibration). A correction can soften answers, but it cannot bring back what was lost by memorising.
 
 ::: {.keyidea}
-Train with a proper scoring rule, stop before the model memorises, then calibrate on data it has never seen.
+Train with an honest scoring rule, stop before the model memorises, and then calibrate on data it has never seen.
 :::
 
 ::: {.breaks}
-This is a teaching design. A real service also needs authentication, rate limits, a proper log store, access control on the configuration, and protection for personal data in what it records. Shadow comparisons only show where versions *disagree*; if both are wrong the same way, keep the random audit going. And the small model reads structured fields from one company; it will drift as soon as the world changes.
+A real service also needs login security for its users, limits on usage, safe storage for its records, control over who can change the settings, and protection for any personal data. Shadow tests show only where two versions *disagree*; if both are wrong in the same way, only random checks will catch it. And a small model trained on one company's alerts will drift as soon as the situation changes.
 :::
 
 ::: {.exercises}
-1. For a service you rely on, list three errors you'd retry and three you'd fix. What should a failed call *mean* for each decision it makes?
+1. For an online service you depend on, list three errors you would retry and three you would fix. For each decision it makes, what should a failed call mean?
 :::
 
 ::: {.nexthook}
-Next: what changes, for the industry and for you, when deciding becomes cheap, fast and calibrated.
+Next chapter: what changes, for the industry and for you, when decisions become cheap, fast and calibrated.
 :::
