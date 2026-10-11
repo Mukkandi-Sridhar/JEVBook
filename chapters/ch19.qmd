@@ -4,16 +4,9 @@
 Far better an approximate answer to the right question, which is often vague, than an exact answer to the wrong question, which can always be made precise.
 :::
 
-```{python}
-#| include: false
-from jevkit import gallery
-```
+This isn't a book about security. The security team was a teaching example because it has everything: many decisions, a real cost to mistakes, and people with limited time. Once you can see a decision layer, you see them everywhere: behind a support inbox, the fraud check on your card, a social network's review queue, a hospital's triage desk.
 
-By now you might be thinking that this is a book about security operations.
-
-It isn't. Kestrel's SOC was a teaching example. We chose it because it has everything: lots of decisions, a real cost to mistakes, and a queue of people with limited time. But once you've learned to see a decision layer, you start seeing them everywhere. There's one behind a support inbox and one behind the fraud check on your card. There's one behind the queue of posts a social network reviews, and one at the triage desk in a hospital.
-
-This chapter is a short tour. At each stop we ask the same four questions. What does the model read? What does it answer? Where does the threshold go? And who makes the final call?
+A short tour. At each stop, the same four questions: What does the model read? What does it answer? Where does the threshold go? Who makes the final call?
 
 ::: {.goals}
 - Recognise decision layers in domains outside security.
@@ -51,13 +44,6 @@ This surprises people. In every domain, the same formula sets the threshold wher
 
 ![Where the threshold falls in each domain, from its (illustrative) costs of a miss and a false alarm. Support tickets flag at about 5%; clinical intake at about 0.3%. Same formula, different jobs.](/figures/ch26/lines.pdf){#fig-lines}
 
-::: {.tryit lab="ch19"}
-```{python}
-for d in gallery.DOMAINS:
-    print(f"{d.name:>20}: flag above {gallery.line(d):.2%}")
-```
-:::
-
 For support tickets, a missed urgent ticket costs a little customer goodwill, and a false "urgent" costs a few minutes. The threshold lands near 5%. For clinical intake, a missed emergency costs far more than moving a patient forward who didn't need it. So the threshold drops to about 0.3% (@fig-lines).
 
 A threshold that low means a lot of flagging, which is fine: flagging is cheap. But it needs probabilities that are calibrated even below one percent. That's where Chapter 5 said big models are least reliable, and where Chapter 11's calibration checks matter most.
@@ -68,15 +54,15 @@ The threshold formula never changes; the costs do, and they can move the thresho
 
 ## A tour stop, measured
 
-Let's take one stop and actually run it: support tickets. I made {{< num ch26 n_tickets int >}} synthetic tickets. Each has a known team and a known answer to "does this need a reply today?". Then I asked the mock.
+Let's take one stop and actually run it: support tickets. I made {{< num ch26 n_tickets int >}} synthetic tickets. Each has a known team and a known answer to "does this need a reply today?". Then I asked the stand-in.
 
 It didn't go that well, and I want to show you why.
 
-![The mock routing synthetic support tickets. Left: where each true team's tickets were sent. Billing was perfect; account problems often went to technical. Right: routing only the tickets it was confident about trades coverage for accuracy.](/figures/ch26/tickets.pdf){#fig-tickets}
+![The stand-in routing synthetic support tickets. Left: where each true team's tickets were sent. Billing was perfect; account problems often went to technical. Right: routing only the tickets it was confident about trades coverage for accuracy.](/figures/ch26/tickets.pdf){#fig-tickets}
 
-The mock sent {{< num ch26 topic_acc pct >}} of tickets to the right team. Billing was perfect. Account problems went to the right place only {{< num ch26 per_topic.account pct >}} of the time; login trouble kept landing in "technical" (@fig-tickets). Its answers to "does this need a reply today?" were weak too. They barely ranked the urgent tickets above the rest, with an AUC of {{< num ch26 urgent_auc f2 >}}.
+The stand-in sent {{< num ch26 topic_acc pct >}} of tickets to the right team. Billing was perfect. Account problems went to the right place only {{< num ch26 per_topic.account pct >}} of the time; login trouble kept landing in "technical" (@fig-tickets). Its answers to "does this need a reply today?" were weak too. They barely ranked the urgent tickets above the rest, with an AUC of {{< num ch26 urgent_auc f2 >}}.
 
-The reason is simple. Outside the SOC, the book's mock only matches words, and "I can't log in" shares words with "the app isn't working". Real Jev would do better or worse; I can't say which. What I can say is that you'd only know by measuring, and the test took twenty lines of code.
+The reason is simple. Outside security, the book's stand-in only matches words, and "I can't log in" shares words with "the app isn't working". Real Jev would do better or worse; I can't say which. What I can say is that you'd only know by measuring, and the test took twenty lines of code.
 
 ::: {.keyidea}
 Measure a model on each new domain before you trust it, even if it works well elsewhere.
@@ -101,7 +87,7 @@ Some decisions also carry legal weight. In many places, lending, hiring, benefit
 Not everything is a decision layer. @fig-fit is a quick checklist for telling the two apart. It's a good fit when there are many similar cases a day and a fixed set of answers. You should also be able to learn the outcomes in time, and put a cost on a mistake. It's the wrong tool when the problem happens only once, or when the answer has to be written. It's also wrong when there are no labels, or when the job needs a plan rather than a verdict. That's the System 2 work from Chapter 8, and it still belongs to people and to slower models.
 
 ::: {.breaks}
-Every volume and cost in this chapter is an illustrative assumption. Your organisation's numbers will be different, sometimes by a factor of a hundred, and the thresholds move with them. The support-ticket demo uses the mock's general engine, which only matches words. So its weak numbers say nothing about real Jev, good or bad. And "a person decides" only protects anyone if the person has time to think. A clinician who must approve four hundred model suggestions an hour isn't deciding; they're just clicking. Watch the workload of the people in the loop as carefully as you watch the model.
+Every volume and cost in this chapter is an illustrative assumption. Your organisation's numbers will be different, sometimes by a factor of a hundred, and the thresholds move with them. The support-ticket demo uses the stand-in's general engine, which only matches words. So its weak numbers say nothing about real Jev, good or bad. And "a person decides" only protects anyone if the person has time to think. A clinician who must approve four hundred model suggestions an hour isn't deciding; they're just clicking. Watch the workload of the people in the loop as carefully as you watch the model.
 :::
 
 ::: {.threshold}
@@ -110,21 +96,12 @@ An online shop wants to approve refunds under \$50 automatically. Approving a fr
 (A wrong approval costs \$40; a wrong refusal costs about \$70. Send it to a person when P(fraud) is above 70 ÷ 110, about 64%. That's a high threshold, and rightly so: for small refunds, sometimes paying a fraudster is cheaper than annoying honest customers. For a \$500 refund, the same arithmetic gives about 12%.)
 :::
 
-::: {.bookquote by="Abraham Maslow, The Psychology of Science, 1966"}
-I suppose it is tempting, if the only tool you have is a hammer, to treat everything as if it were a nail.
-:::
-
-Maslow was talking about scientists and their methods [@maslow1966]. It's a fair warning for this chapter too. Once you've learned to see decision layers, it's tempting to see nothing else. The checklist in @fig-fit is there to stop you using one out of habit.
-
-## Where we are
-
-We toured six decision layers and found the same parts in every one: a state, a few typed questions, and an option for what fits nowhere. What changed from job to job was who decides. Where decisions are many and cheap, the model decides and people audit. Where they're few and costly, the model orders the queue and a person decides. The Chapter 4 formula put the threshold anywhere from 5% to 0.3%, depending only on costs. Then we ran one stop for real, support tickets, and saw why you measure first. The mock that did well at Kestrel did badly on a new kind of text. Routing only when it was sure fixed most of the damage.
+"If the only tool you have is a hammer, everything looks like a nail" [@maslow1966]. Once you've learned to see decision layers, it's tempting to see nothing else. The checklist in @fig-fit is there to stop you reaching for one out of habit.
 
 ::: {.exercises}
 1. Pick a decision from your own work. Write its card in the style of @fig-cards: state, typed questions, the escape option, who decides.
-2. In the lab, rewrite the `account` description to separate it from `technical`. What happens to accuracy on each team?
-3. Using the threshold formula, find the refund amount at which the threshold in the box above reaches 50%.
-4. For clinical intake, list three things you'd log for every case, so that in a month you could tell whether the model's probabilities were calibrated.
+2. Using the threshold formula, find the refund amount at which the threshold in the box above reaches 50%.
+3. For clinical intake, list three things you'd log for every case, so that in a month you could tell whether the model's probabilities were calibrated.
 :::
 
 ::: {.nexthook}

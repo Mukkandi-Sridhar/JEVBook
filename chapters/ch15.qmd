@@ -4,20 +4,9 @@
 Civilization advances by extending the number of important operations which we can perform without thinking about them.
 :::
 
-```{python}
-#| include: false
-from typesafe_sdk import Choice, Noul, TypeSafeClient
-from jevkit import MockJevTransport, soc, llm
-client = TypeSafeClient(api_key="mock", transport=MockJevTransport())
-mock = llm.MockLLM()
-alert = soc.load().iloc[118]
-```
+Cooks stop needing recipes once they see the few steps every recipe shares: brown it, add liquid, reduce. Software has steps like that too, called **patterns**: common solutions with names, so a team can say "put a gate in front of that" and everyone understands.
 
-When you learn to cook, you start with recipes. After a while, you notice that most recipes use the same few steps with different ingredients: fry something until brown, add liquid, cook until it thickens. Once you can see the steps, you stop needing the recipe.
-
-Software has steps like that too, and people call them **patterns**. A pattern is a common kind of solution with a name. Then a team can say "put a gate in front of that" and everyone knows what they mean.
-
-We've already met most of the decision patterns in this book, one at a time, inside Kestrel's story. This chapter puts them side by side. There are six. For each one, we look at what it's for, what it looks like, what we measured where we could, and how it goes wrong.
+You've met most of the decision patterns already, one at a time. Here are all six side by side: what each is for, what we measured where we could, and how it goes wrong.
 
 ::: {.goals}
 - Recognise six common ways to put a decision model inside a larger system.
@@ -45,23 +34,13 @@ That's true in every pattern, and that separation is what a decision layer is.
 
 ![Extract, then decide. The LLM reads the raw text and writes structured fields; a decision model answers a typed question about them; policy thresholds turn the answer into an action. The LLM writes but never decides; the decision model decides but never writes.](/figures/ch22/extract.pdf){#fig-extract}
 
-::: {.tryit lab="ch15"}
-```{python}
-fields = mock.extract(alert.description)        # the LLM writes...
-attack = Noul(instructions="Is this alert a real attack?")
-r = client.system_one(state={"alert": alert.title, **fields},
-                      questions={"attack": attack})
-print(round(r.nouls["attack"].noul, 3))          # ...Jev decides
-```
-:::
+We ran this on the live week, next to three other ways of making the same decision.
 
-We ran this on Kestrel's live week, next to three other ways of making the same decision.
-
-![Four ways to make Kestrel's decision, ranked by AUC on the live week. Extracting fields first beats letting the LLM decide, and is slightly better than Jev reading the raw text. The SIEM's own fields beat everything, because they hold facts the alert text never mentions.](/figures/ch22/extract-results.pdf){#fig-extract-results}
+![Four ways to make the same decision, ranked by AUC on the live week. Extracting fields first beats letting the LLM decide, and is slightly better than Jev reading the raw text. The SIEM's own fields beat everything, because they hold facts the alert text never mentions.](/figures/ch22/extract-results.pdf){#fig-extract-results}
 
 Extracting first raised the AUC from {{< num ch22 llm_decides_auc f3 >}}, when the LLM decided on its own, to {{< num ch22 extract_then_jev_auc f3 >}} (@fig-extract-results). It was also slightly better than Jev reading the raw text directly, at {{< num ch22 jev_text_auc f3 >}}. The LLM misread about {{< num ch22 misread pct >}} of alerts, writing a wrong number, but that cost little.
 
-But look at the bottom row. The SIEM's own fields scored {{< num ch22 jev_fields_auc f3 >}}, better than any extraction. The extractor isn't to blame. The alert text simply never mentions some of what the SIEM knows, like how critical the machine is or the user's job. No extractor can find a fact that isn't written down.
+But the bottom row wins: the security system's own structured fields scored {{< num ch22 jev_fields_auc f3 >}}, better than any extraction. The alert text simply never mentions some of what that system knows, like how critical the machine is or the user's job. No extractor can find a fact that isn't written down.
 
 ::: {.keyidea}
 Extract when the only input you have is text: extraction can't add facts the text doesn't contain.
@@ -73,19 +52,9 @@ When structured data exists, use it.
 
 ## Pattern 2: the decide step
 
-**The problem.** An agent runs a loop: observe, decide, act, repeat. Chapter 7 counted Kestrel's agent making about {{< num ch22 decide_per_alert f1 >}} small decisions per alert, and writing something only about {{< num ch22 generate_per_alert f2 >}} times. Yet most agent frameworks (the libraries people use to build agents) send every one of those decisions to the LLM, as text.
+**The problem.** An agent runs a loop: observe, decide, act, repeat. Chapter 7 counted the agent making about {{< num ch22 decide_per_alert f1 >}} small decisions per alert, and writing something only about {{< num ch22 generate_per_alert f2 >}} times. Yet most agent frameworks (the libraries people use to build agents) send every one of those decisions to the LLM, as text.
 
 **The pattern.** Give the loop's decide step to a decision model. Each decision is a typed question with named options. The LLM is called only when there's something to write.
-
-```{python}
-next_step = Choice(
-    instructions="Which evidence should the agent gather next?",
-    criteria={"threat_intel": None, "host_history": None,
-              "policy": None, "none": None})
-a = client.system_one(state=alert.description,
-                      questions={"next": next_step})
-print("next step:", a.choices["next"].choice)
-```
 
 Each decision comes back with probabilities. So the loop can do something an LLM-driven loop can't easily do: notice when it's unsure. If no option is clearly ahead, stop and escalate, instead of picking one and continuing confidently. Chapter 7's arithmetic shows why that matters: a small error rate per step becomes a large one over ten steps.
 
@@ -101,18 +70,6 @@ Each decision comes back with probabilities. So the loop can do something an LLM
 
 ![A guardrail gate. The agent proposes an action. A decision model estimates whether it's safe, from trusted facts only, never from text an attacker could write. High probability allows the action, low probability blocks it, and the middle asks a person.](/figures/ch22/gate.pdf){#fig-gate}
 
-```{python}
-def gate(p_safe, low=0.3, high=0.75):
-    if p_safe >= high:
-        return "allow"
-    return "block" if p_safe < low else "ask a person"
-
-trusted = {k: alert[k].item() if hasattr(alert[k], "item")
-           else alert[k] for k in ("rule", "ioc_score", "known_tool")}
-p = client.system_one(state=trusted, questions={"attack": attack})
-print(gate(1 - p.nouls["attack"].noul))
-```
-
 In Chapter 7, reading only the trusted fields kept auto-close at {{< num ch22 inj_trusted pct >}} under the same attack. The gate didn't need to be clever. It needed to look at the right things.
 
 The three outcomes are the three zones of Chapter 14, used for actions instead of alerts. The thresholds come from the same arithmetic: what a wrongly allowed action costs, against what it costs to ask a person.
@@ -127,17 +84,7 @@ The three outcomes are the three zones of Chapter 14, used for actions instead o
 
 ![Check the writer. The LLM drafts; a decision model answers typed questions about the draft and the evidence together; the answer decides whether the draft is sent, goes back once to be rewritten, or goes to a person.](/figures/ch22/judge.pdf){#fig-judge}
 
-```{python}
-check = Noul(instructions="Is every claim in the note supported "
-                          "by the evidence?")
-r = client.system_one(
-    state={"evidence": alert.description,
-           "note": "Benign admin activity; the change ticket covers it."},
-    questions={"supported": check})
-supported = r.nouls["supported"].noul    # a probability: put lines on it
-```
-
-The listing doesn't print the answer, on purpose. The book's mock can't really check claims against evidence, so any number it gave here would be meaningless, even though it would look like a result. The design is what matters. It's the same design as the LLM-as-judge from Chapter 13, with two differences. The answer is a probability you can calibrate and put thresholds on, not a 1-to-10 rating. And the check is cheap enough to run on every draft, not just a sample.
+There's no measurement here, on purpose: the book's stand-in can't really check claims against evidence, so any number would look like a result and mean nothing. The design is the point. It's Chapter 13's LLM-as-judge, with two differences. The answer is a probability you can calibrate and put thresholds on, not a 1-to-10 rating. And the check is cheap enough to run on every draft, not just a sample.
 
 **How it breaks.** A checker with the same weaknesses as the writer will let its mistakes through. Test the checker on drafts you know are wrong. And limit the rewrites: a loop of "write, reject, rewrite" can run forever. After one retry, a person takes over.
 
@@ -147,7 +94,7 @@ The listing doesn't print the answer, on purpose. The book's mock can't really c
 
 **The pattern.** Ask a `choice` with one option per team. Send the case automatically only when the top option is clearly ahead. Send the rest to a general queue, where a person decides where they go.
 
-![Routing Kestrel's alerts by category. Routing everything automatically sends 88% to the right team. Routing only when the top label is at least 0.8 covers about four in five alerts, and gets 94% of those right. The rest go to a general queue.](/figures/ch22/router.pdf){#fig-router-15}
+![Routing alerts by category. Routing everything automatically sends 88% to the right team. Routing only when the top label is at least 0.8 covers about four in five alerts, and gets 94% of those right. The rest go to a general queue.](/figures/ch22/router.pdf){#fig-router-15}
 
 On a sample of the live week, routing every alert by the top label sent {{< num ch22 route_all_acc pct >}} to the right team. Routing only when the top probability was at least {{< num ch22 route_line f1 >}} covered {{< num ch22 route_cov pct >}} of alerts, and {{< num ch22 route_acc pct >}} of those went to the right place (@fig-router-15). It's Chapter 4's coverage trade-off again, and the curve lets you choose your point on it.
 
@@ -167,14 +114,6 @@ Jev-Mem works much like this. It was designed by Jiang, Li and Li at the Univers
 
 The idea underneath is the one this book keeps coming back to. Memory operations are frequent, small and typed. That makes them exactly the kind of decision a decision model is for.
 
-```{python}
-keep = Noul(instructions="Will this fact matter for future alerts "
-                         "about the same host or user?")
-fact = "rhea.novak has an approved change ticket until Friday."
-r = client.system_one(state=fact, questions={"keep": keep})
-print(round(r.nouls["keep"].noul, 2))
-```
-
 **How it breaks.** Memory decisions fail silently. A fact thrown away by mistake never shows up as an error; it just isn't there when it's needed. Log what the controller throws away, and audit a sample, as Chapter 14 did with auto-closed alerts.
 
 ::: {.breaks}
@@ -182,30 +121,19 @@ Only patterns 1, 3 and 5 have measurements in this chapter, and all of them are 
 :::
 
 ::: {.threshold}
-Kestrel's agent wants to disable a user account when it suspects a stolen password. Disabling a real attacker's account early saves about \$10,000. Disabling an innocent user's account costs about \$300 in lost work and a help-desk call. Asking the analyst on call costs about \$15 and a few minutes. Where would you put the gate's two thresholds on P(attack)?
+An agent wants to disable a user account when it suspects a stolen password. Disabling a real attacker's account early saves about \$10,000. Disabling an innocent user's account costs about \$300 in lost work and a help-desk call. Asking the analyst on call costs about \$15 and a few minutes. Where would you put the gate's two thresholds on P(attack)?
 
-(Allow when disabling is clearly worth it and asking adds nothing. Block when it clearly isn't worth it. Using Chapter 14's arithmetic: asking is better than blocking once P × \$10,000 is more than about \$15, so above about 0.2%. Allowing is better than asking once the expected cost of a wrong disable, (1 − P) × \$300, drops below \$15, so above about 0.95. Most cases land in the middle and go to a person. That's fine at Kestrel's volume. At a hundred times the volume, it wouldn't be.)
+(Allow when disabling is clearly worth it and asking adds nothing. Block when it clearly isn't worth it. Using Chapter 14's arithmetic: asking is better than blocking once P × \$10,000 is more than about \$15, so above about 0.2%. Allowing is better than asking once the expected cost of a wrong disable, (1 − P) × \$300, drops below \$15, so above about 0.95. Most cases land in the middle and go to a person. That's fine at modest volume. At a hundred times the volume, it wouldn't be.)
 :::
 
-::: {.bookquote by="Christopher Alexander, A Pattern Language, 1977"}
-Each pattern describes a problem which occurs over and over again in our environment, and then describes the core of the solution to that problem, in such a way that you can use this solution a million times over, without ever doing it the same way twice.
-:::
-
-Alexander was an architect writing about towns and buildings [@alexander1977]. Software engineers borrowed his idea, and it fits decision layers well: the same few designs, never used in exactly the same way twice.
-
-## Where we are
-
-We put six patterns side by side, and all of them had the same structure. Something else writes, reads or acts, and a typed question decides. Letting the LLM extract fields and Jev decide beat letting the LLM decide, though nothing beat the facts the SIEM already had. Gates stopped a planted sentence from closing real threats, because they looked only at trusted facts. A router that passed cases on when unsure was right far more often than one that always answered. Checking drafts and managing memory are decisions too, and so are the small steps inside every agent loop.
-
-That ends Part IV. We've compared the methods, set the thresholds and named the patterns. Part V builds them.
+The architect Christopher Alexander described patterns as solutions you can use "a million times over, without ever doing it the same way twice" [@alexander1977]. Decision layers are like that: the same six designs, never used quite the same way twice.
 
 ::: {.exercises}
-1. In the lab, change the router's threshold from 0.8 to 0.6 and to 0.9. Which would you choose if sending an alert to the wrong team costs an hour and the general queue costs twenty minutes per alert?
-2. Design a guardrail gate for an email agent that can send messages to customers. What's the typed question? Which facts are trusted? Where do the thresholds go?
-3. Take an agent you've seen or built. List its steps and sort them into observe, decide, generate and act. How many decide steps could be typed questions?
-4. The checker in the "check the writer" pattern can have the same weaknesses as the writer. Describe a test that would show that.
+1. Design a guardrail gate for an email agent that can send messages to customers. What's the typed question? Which facts are trusted? Where do the thresholds go?
+2. Take an agent you've seen or built. List its steps and sort them into observe, decide, generate and act. How many decide steps could be typed questions?
+3. The checker in the "check the writer" pattern can have the same weaknesses as the writer. Describe a test that would show that.
 :::
 
 ::: {.nexthook}
-Next: Part V starts building. Your first real calls to Jev through the official SDK, with retries, rate limits, and a mock that makes every one of them free.
+Next, Part V: building. What it takes to call a decision model for real, and to test without paying for every call.
 :::

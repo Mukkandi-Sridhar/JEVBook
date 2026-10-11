@@ -4,20 +4,9 @@
 A wise man, therefore, proportions his belief to the evidence.
 :::
 
-```{python}
-#| include: false
-import json
-from typesafe_sdk import Choice, Noul, Score, TypeSafeClient
-from jevkit import MockJevTransport
-```
+An admission that shapes this chapter: I've never called Jev. It was in early access when I wrote this, and I had no API key. What I had: TypeSafe's official Python library (anyone can read it), its public documentation, the launch coverage, and early papers from people who *had* used it.
 
-I have to admit something that shapes this chapter: I've never called Jev.
-
-When I wrote this book, Jev had been public for a couple of weeks, in early access, and I didn't have an API key. But I did have four things. I had TypeSafe's official Python library, which anyone can download and read, and TypeSafe's public documentation. I had the news coverage and early comments from the launch. And I had a growing number of research papers from people who *had* used it.
-
-*"So how much can anyone actually say about what's inside it?"*
-
-More than you'd think, and less than most articles suggest. The trick is to sort every claim into one of three piles: what you can check yourself, what the vendor says, and what nobody outside the company knows.
+How much can anyone say about a model from the outside? More than you'd think, less than most articles suggest. The trick is to sort every claim into three piles: what you can check yourself, what the vendor says, and what nobody outside knows.
 
 ::: {.keyidea}
 Sort every claim about a new model into three piles: verified, vendor-reported and unknown.
@@ -37,7 +26,7 @@ That habit is worth more than any single fact in this chapter. Jev won't be the 
 
 ![Every claim about Jev in this book, sorted into three piles. The first pile you can check yourself today. The second is what TypeSafe says. The third is what nobody outside the company can know yet.](/figures/ch16/ledger.pdf){#fig-ledger}
 
-@fig-ledger is a summary of the book's facts ledger, which lives in the repository as `docs/jev-facts.md`. The rules I followed:
+The rules behind @fig-ledger:
 
 **Verified** means I read it myself in something anyone can inspect. For Jev, that's mainly the `typesafe-sdk` library on PyPI, version 0.7.2, including the data models generated from the API's own specification.
 
@@ -57,30 +46,11 @@ Jev's interface is pleasantly small. You send one request to one address, `POST 
 
 And you get back, for each question, a typed answer with probabilities, plus a count of tokens used.
 
-![A real request as the official SDK builds it, and the response. The answers here come from the book's mock, but their shape is just what the SDK's own data models expect.](/figures/ch16/anatomy.pdf){#fig-anatomy-09}
+![A real request as the official SDK builds it, and the response. The answers here come from the book's stand-in, but their shape is just what the SDK's own data models expect.](/figures/ch16/anatomy.pdf){#fig-anatomy-09}
 
-You don't have to trust me about the shape. This is the exchange as the SDK actually sends it; the mock records it as it passes through.
+A few details from the SDK and TypeSafe's documentation are worth knowing [@typesafedocs2026]. A `choice` answer includes the chosen label, a `confidence` and a probability for every label. A `score` answer includes an expected score, a `confidence`, the scoring guide (the rubric) and a probability for every level. A `noul` (yes or no) answer is a single number: the probability of "yes", with no `confidence`. Output tokens are described as "currently free of charge".
 
-::: {.tryit lab="ch09"}
-```{python}
-exchanges = []
-client = TypeSafeClient(api_key="mock",
-                        transport=MockJevTransport(log=exchanges))
-client.system_one(
-    state="I was charged twice. Please fix this ASAP.",
-    questions={
-        "topic": Choice(criteria={"billing": None, "technical": None}),
-        "urgent": Noul(instructions="Does this need a reply today?"),
-    },
-)
-request_body, response_body = exchanges[0]
-print(json.dumps(request_body, indent=1))
-```
-:::
-
-A few details from the SDK and TypeSafe's documentation are worth knowing [@typesafedocs2026]. A `choice` answer includes the chosen label, a `confidence` and a probability for every label. A `score` answer includes an expected score, a `confidence`, the scoring guide (the rubric) and a probability for every level. A `noul` (yes or no) answer is a single number: the probability of "yes", with no `confidence`. The schema describes output tokens as "currently free of charge". And the library handles retries and rate limits for you, which Chapter 16 uses.
-
-What about `confidence`? TypeSafe's documentation describes it as a number computed from the *shape* of the answer's probabilities. It's high when the probability is mostly on one option, and low when it's spread across several. The formula isn't published. Its quick-start example shows why that matters: a support ticket goes to "technical" with probability 0.85, and the answer's confidence is 0.78. So real confidence isn't simply the top probability. The book's mock uses the simplest stand-in anyway, the top option's probability, and the repository's `docs/mock-design.md` says so. With a real key, read the `probabilities`, and test `confidence` on your own labels before you set a threshold on it.
+What about `confidence`? TypeSafe's documentation describes it as a number computed from the *shape* of the answer's probabilities. It's high when the probability is mostly on one option, and low when it's spread across several. The formula isn't published. Its quick-start example shows why that matters: a support ticket goes to "technical" with probability 0.85, and the answer's confidence is 0.78. So real confidence isn't simply the top probability. The book's stand-in simply uses the top probability. With a real key, read the `probabilities`, and test `confidence` on your own labels before you set a threshold on it.
 
 ## What TypeSafe says: two ideas
 
@@ -141,24 +111,15 @@ Vendor numbers are measured on the vendor's tasks, in the vendor's setup, agains
 :::
 
 ::: {.threshold}
-Kestrel's agent makes about 3,700 small decisions a day (Chapter 7's count, scaled up). At the vendor-reported price and 500 tokens each, what would a year of those decisions cost? What would they cost at the illustrative LLM price? At what daily volume would the saving pay for a week of an engineer's time to switch?
+An agent makes about 3,700 small decisions a day (Chapter 7's count, scaled up). At the vendor-reported price and 500 tokens each, what would a year of those decisions cost? What would they cost at the illustrative LLM price? At what daily volume would the saving pay for a week of an engineer's time to switch?
 
-(About 1.35 million decisions a year: roughly \$28 at the Jev price and about \$900 at the illustrative LLM price. At Kestrel's volume, price alone isn't a reason to switch. Speed and calibration might be. At a hundred times the volume, price becomes a real reason.)
+(About 1.35 million decisions a year: roughly \$28 at the Jev price and about \$900 at the illustrative LLM price. At that volume, price alone isn't a reason to switch. Speed and calibration might be. At a hundred times the volume, price becomes a real reason.)
 :::
-
-::: {.bookquote by="Carl Sagan, Cosmos, 1980"}
-Extraordinary claims require extraordinary evidence.
-:::
-
-## Where we are
-
-I started without an API key, so we sorted what can be known into three piles. The interface could be checked, and it was small: state and typed questions in, probabilities out. The speed and the training method were the vendor's claims. We could reason about them without accepting them. The prices let us do our own arithmetic, and the vendor's numbers turned out to agree with each other. What stayed unknown was what a decision layer depends on most. So the next job is testing.
 
 ::: {.exercises}
 1. Find a claim about Jev in a recent article and put it in one of the three piles. What would it take to move it to "verified"?
-2. In the lab, send a `score` question with five levels instead of three. Look at the raw response. What does `score` mean when its value is 2.4?
-3. Redo the Doom check with a different assumption: suppose each decision read 500 tokens. What hourly cost would that imply? What would you conclude if the vendor had quoted that figure instead?
-4. Write three questions you'd ask TypeSafe before using Jev for a decision that affects customers. Which pile would each answer go in?
+2. Redo the Doom check with a different assumption: suppose each decision read 500 tokens. What hourly cost would that imply? What would you conclude if the vendor had quoted that figure instead?
+3. Write three questions you'd ask TypeSafe before using Jev for a decision that affects customers. Which pile would each answer go in?
 :::
 
 ::: {.nexthook}

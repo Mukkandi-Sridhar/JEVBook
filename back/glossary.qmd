@@ -223,7 +223,7 @@ Transformer
 : The network design built from attention layers that underlies modern LLMs (Chapter 5).
 
 Transport
-: The lowest layer of an HTTP client, which sends a finished request and returns a response. The book's mock is one (Chapter 16).
+: The lowest layer of an HTTP client, which sends a finished request and returns a response. The book's stand-in is one (Chapter 16).
 
 Triage
 : Sorting cases by how likely they are to be real and how urgent they are, so the most important ones are handled first (Preface, Chapter 18).

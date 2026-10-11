@@ -1,37 +1,31 @@
-# Prologue: the night shift {.unnumbered}
+# Prologue: two nights {.unnumbered}
 
-It's 2:14 a.m. at Kestrel Logistics, and you're the only analyst on shift.
+Picture a shipping company's security team. Its computers raise a warning, called an **alert**, whenever something looks suspicious: a sign-in from a strange country, an email with an odd link, a laptop talking to an unknown server. Someone has to look at each alert and decide: real attack, or nothing?
 
-The building is quiet. On your left screen, the alert queue is moving the way it always does at this hour: a sign-in from an unusual country, a program that ran from a temporary folder, an email with a link to a website created last week, a laptop talking to a server nobody recognises.
+Tonight one person is on duty. Checking an alert properly takes about twelve minutes, so they can check about five an hour.
 
-Most of them are nothing. You know that. A salesperson on a trip, an IT tool doing its job, a newsletter with a tracking link. After a few months of night shifts, you can feel which ones are nothing before you finish reading them.
+![One night, midnight to 7 a.m. Each line is an alert; the real attacks are red, taller and marked on top. Working in the order they arrive, the person on duty checks the ones on the left. The rest wait for the morning.](/figures/front/night.pdf){#fig-night}
 
-But not always. And *not always* is the whole job.
+@fig-night shows the whole night. {{< num front night_alerts int >}} alerts arrived between midnight and seven. {{< num front night_threats int >}} of them were real attacks. Working through them in the order they arrived, the person on duty checked {{< num front night_opened int >}}, and only {{< num front night_threats_opened int >}} of those were real.
 
-You open the next alert. Twelve minutes later, you've read the logs, checked the user's history, looked up the website and decided: fine. Close it. Next.
+They made no mistakes. Every alert they checked, they judged correctly. The problem was the order. The queue decided what they looked at, and a queue only knows what arrived first.
 
-At five alerts an hour, you'll get through about thirty-five tonight. The queue will get about two hundred.
+Now picture a second night.
 
-![One night at Kestrel, midnight to 7 a.m. Each line is an alert; the real ones are red, taller and marked on top. Working in the order they arrive, you open the ones on the left and the rest wait for the morning.](/figures/front/night.pdf){#fig-night}
+A model reads every alert the moment it arrives. It writes nothing. It answers one question with a number: *how likely is this to be real?* And that number can be trusted: of the alerts it calls "one in ten", about one in ten really are attacks.
 
-@fig-night shows the whole night at once, a view you never get from your desk. There were {{< num front night_alerts int >}} alerts between midnight and seven. {{< num front night_threats int >}} of them were real. Working through the queue in order, you opened {{< num front night_opened int >}}.
+Alerts it is almost sure are harmless get closed, and a random few of those are kept aside to be checked later. Alerts it is fairly sure are dangerous wake someone up at once. Everything in between goes to the person on duty, most likely first.
 
-{{< num front night_threats_opened int >}} of those were real.
+The person still makes the decisions that matter. They just make them on the right alerts.
 
-You didn't do anything wrong. You were careful and quick, and you got every one you opened right. The problem is that the queue decided what you'd look at, and the queue doesn't know anything. It only knows what arrived first.
+That second night is what this book builds. It needs surprisingly little new technology and quite a lot of clear thinking:
 
-Now imagine a different night.
+- what a probability really is, and how to tell if one can be trusted;
+- what each kind of mistake costs, and where that puts the line between "act" and "ignore";
+- when a machine should decide, and when it should hand the case to a person.
 
-A model reads every alert that arrives in a fraction of a second. It doesn't write a report or explain itself. It answers three small questions: how likely is this to be real, what kind of threat would it be, and how bad? Its answers are probabilities. Someone checked last week that they're calibrated: of the alerts it calls one in ten, about one in ten turn out to be real.
-
-The alerts it's nearly certain are nothing get closed, and a random few of those go into a pile for you to check. For the ones it's fairly sure are serious, the analyst on call is woken up straight away. Everything in between comes to you, likeliest first.
-
-You still make the decisions that matter. You just make them on the right alerts.
-
-That second night is what this book builds, piece by piece. It takes surprisingly little new technology and quite a lot of careful thinking. You need to know what a probability is and how to tell whether one can be trusted. You need to know how much a mistake costs, and where to set a threshold so that the mistakes you make are the cheap ones. And you need to know what to do when the world changes, as it will, on some ordinary day.
-
-We'll start at the very beginning, with the simplest question of all.
+None of this is only about security. The same thinking runs a bank's fraud check, a hospital's waiting list and every AI agent that has to choose its next step. The security team is just the example we'll keep coming back to, because its mistakes are easy to count.
 
 ::: {.nexthook}
-Next: before we can teach a machine to decide, what does it actually mean for a machine to learn?
+Next: before a machine can decide anything, it has to learn. What does that actually mean?
 :::

@@ -4,38 +4,26 @@
 There are two ways of constructing a software design: One way is to make it so simple that there are obviously no deficiencies, and the other way is to make it so complicated that there are no obvious deficiencies.
 :::
 
-```{python}
-#| include: false
-from jevkit import bakeoff as B
-```
+Every team that makes decisions has the same never-ending argument. The senior expert says the hand-written rules are fine: you can read every one. The data scientist says a trained model would beat them, if someone labelled enough cases. The new engineer says an LLM reads cases better than both. And now someone has read about Jev.
 
-Every SOC has the same argument, and it never really ends.
-
-The senior analyst says the rules are fine. People who know the attacks wrote them, and you can read every one. The data scientist says a trained model would beat the rules, if only someone would label enough alerts. The new engineer has connected an LLM to the ticket system and says it reads alerts better than either of them. And now someone has read about Jev.
-
-Each of them is right about something. The argument never ends because they're judging different things. One cares about explaining decisions, one about accuracy, one about flexibility, and one about price. Nobody puts all the numbers on one page.
-
-So let's do that: six methods, one dataset, one fair contest, and a scorecard with every column that matters. We'll call it a "bake-off", the name for a contest where everyone makes the same thing. I'll tell you now that Jev doesn't win every round.
+Each is right about something; they're judging different things (explainability, accuracy, flexibility, price) and nobody puts all the numbers on one page. So let's: six methods, one dataset, one fair contest, every column that matters. Jev doesn't win every round.
 
 ::: {.goals}
 - Compare rules, logistic regression, a trained text classifier, LLM structured output, LLM-as-judge and Jev on the same decision.
 - Score them on ranking, calibration, labels needed, speed, price and stability, not on one number.
 - See where Jev loses, and why that's useful to know.
-- Tell which results come from how the synthetic contestants were built, and which would also appear in your own test.
 - Pick a method, or a combination, from a scorecard.
 :::
 
 ## The contestants
 
-The decision is Kestrel's: is this alert a real threat? Every method gets the three history weeks to train or tune on: {{< num ch20 n_hist int >}} alerts with analysts' verdicts. Then every method is scored on the fourth week, the "live week": {{< num ch20 n_live int >}} alerts it has never seen, of which {{< num ch20 live_threats int >}} are real.
+The decision: is this alert a real threat? Every method gets the three history weeks to train or tune on: {{< num ch20 n_hist int >}} alerts with analysts' verdicts. Then every method is scored on the fourth week, the "live week": {{< num ch20 n_live int >}} alerts it has never seen, of which {{< num ch20 live_threats int >}} are real.
 
 ![The six contestants: what each one reads, what it returns, and what it needs before it can start.](/figures/ch20/contenders.pdf){#fig-contenders}
 
-Each one reads what it would normally read in practice (@fig-contenders). The rules and the logistic regression get the alert's structured fields from the SIEM. A SIEM (security information and event management system) is the tool that collects the company's logs and raises the alerts. The text classifier and both LLM methods get the raw alert text. Jev gets the fields as a JSON state, the same information the logistic regression sees.
+Each reads what it would read in practice (@fig-contenders). Rules and logistic regression get the alert's structured fields. The **text classifier**, a simple word-counting model trained on the labels (a stand-in for a fine-tuned model, which would usually do better), and both LLM methods get the raw text. Jev gets the fields as structured input.
 
-The **text classifier** needs a short explanation. It stands in for a fine-tuned model. It's a classic classifier that counts words (word weights plus logistic regression), trained on the history labels. It re-trains in seconds on any laptop. A fine-tuned transformer, even a small one, would usually read the text better. So treat this row as the lowest result a trained text model should get.
-
-One warning before any results, and it's the most important paragraph in this chapter. Both LLM contestants are the book's mock, and I built it to read alerts *less accurately* than mock Jev (the repository's `docs/mock-design.md` explains how). So when the LLM ranks alerts worse than Jev below, that's because of how the mocks were made. It isn't evidence about real LLMs or real Jev. What you *can* rely on is the pattern of the other results. That means how stated confidences behave, how often free-text JSON breaks, what happens when you ask twice, and what labels cost. Those come from how each kind of method works, not from choices I made in the mocks.
+The most important paragraph in this chapter: both LLM contestants are the book's stand-in, built to read alerts *less accurately* than the Jev stand-in. So when the LLM ranks worse than Jev below, that's how the stand-ins were made, not evidence about real models. What you *can* rely on is the rest: how stated confidences behave, how often free-text JSON breaks, what asking twice does, and what labels cost. Those come from how each *kind* of method works.
 
 ## Round one: ranking
 
@@ -43,9 +31,9 @@ The first question is the one people usually ask: which method puts the real thr
 
 ![Three views of how well each method separates threats from harmless alerts, on the live week. Left: ranking quality (AUC). Middle: the share of all real threats found if the team reviews the top 240 alerts each day. Right: calibration error, where lower is better.](/figures/ch20/scores.pdf){#fig-scores}
 
-Logistic regression wins round one, by a small margin: an AUC of {{< num ch20 logistic_auc f3 >}} against Jev's {{< num ch20 jev_auc f3 >}} (@fig-scores). With Kestrel's review capacity of 240 alerts a day, it catches {{< num ch20 logistic_caught pct >}} of real threats; Jev catches {{< num ch20 jev_caught pct >}}.
+Logistic regression wins round one, by a small margin: an AUC of {{< num ch20 logistic_auc f3 >}} against Jev's {{< num ch20 jev_auc f3 >}} (@fig-scores). With a review capacity of 240 alerts a day, it catches {{< num ch20 logistic_caught pct >}} of real threats; Jev catches {{< num ch20 jev_caught pct >}}.
 
-That isn't luck. The logistic regression was trained on fifteen thousand of Kestrel's own labelled alerts, on clean structured fields. And the decision depends on those fields in a nearly straight-line way. This is exactly the kind of problem classic machine learning is good at. A general model reading the same fields, with no training on Kestrel at all, shouldn't be expected to beat it here, and it doesn't.
+That isn't luck. It was trained on fifteen thousand of this company's own labelled alerts, on clean fields, for a decision that depends on them almost in a straight line. That's classic machine learning's home ground. A general model with no training on this company shouldn't be expected to beat it there.
 
 The rules come last on ranking, with an AUC of {{< num ch20 rules_auc f2 >}}. The reason is simple: a rule only says yes or no. Among the hundreds of alerts it says yes to, it has no way to say which to look at first.
 
@@ -53,17 +41,11 @@ Give Jev the raw text instead of the fields, and its AUC drops to {{< num ch20 j
 
 ## Round two: calibration
 
-Ranking is only half the job. Chapter 14 will put thresholds on probabilities, and thresholds only work if the probabilities mean what they say.
+Ranking is half the job; thresholds need probabilities that mean what they say.
 
 ![Reliability diagrams for each method on the live week. On the dashed line, what a method said matches what happened. Most methods here are close. The LLM's stated confidences are grouped on a few values; the judge's ratings, read as probabilities, are far too high in the middle.](/figures/ch20/reliability.pdf){#fig-reliability}
 
-Most of the contestants are close to the diagonal (@fig-reliability). The logistic regression was fitted with log loss on this company's data. Chapter 2 said that method produces calibrated probabilities. Mock Jev was designed to be well calibrated at Kestrel. Chapter 11 showed that you should check this at your own company, not assume it.
-
-The two LLM methods are the interesting ones.
-
-The LLM's stated confidence came from the JSON it wrote: `"confidence": 0.95`. Across five thousand alerts, it used only {{< num ch20 conf_levels int >}} different values, mostly 0.9, 0.95 and 0.99. Chapter 6 predicted this. A number that a model *writes* is text, and text tends to use round numbers. So it can't rank alerts finely. That's why the LLM's AUC is the lowest of the methods that give probabilities.
-
-In the LLM-as-judge method, the LLM rates each alert from 1 to 10. That rating was never meant to be a probability. Reading it as one gives the worst calibration in the contest: {{< num ch20 llm_judge_ece f3 >}}. You could fix that with Platt scaling on a few hundred labels, as Chapter 3 showed. But then it's no longer a method that needs zero labels.
+Most contestants sit near the diagonal (@fig-reliability). The two LLM methods are the interesting ones. The LLM's *written* confidence used only {{< num ch20 conf_levels int >}} different values across five thousand alerts, mostly 0.9, 0.95 and 0.99: a number a model *writes* is text, and text likes round numbers. So it can't rank finely. And the **LLM-as-judge**, rating each alert 1 to 10, gives the worst calibration in the contest ({{< num ch20 llm_judge_ece f3 >}}) when its rating is read as a probability. Platt scaling on a few hundred labels would fix it, but then it's no longer a method that needs zero labels.
 
 ## Round three: how many labels?
 
@@ -71,11 +53,7 @@ In the LLM-as-judge method, the LLM rates each alert from 1 to 10. That rating w
 
 ![Ranking on the live week as the trained methods see more labelled alerts, averaged over random samples. Jev and the LLMs need no labels to start, so they're flat lines. Logistic regression catches up with Jev at about 3,000 labels.](/figures/ch20/labels.pdf){#fig-labels}
 
-@fig-labels is the chart I'd show the data scientist in that argument. Logistic regression needs about 3,000 labelled alerts to catch up with Jev. With a few hundred, it's clearly behind.
-
-Where would 3,000 labels come from? Not from analysts' reviews alone: at 240 a day, that's nearly two weeks of verdicts. Kestrel's labels are *what finally happened*: the incident that was confirmed or ruled out, the user who said "that was me", the alert nobody followed up that turned out to be nothing. Every alert gets a label sooner or later. So at about 700 alerts a day, 3,000 labels is about four days of history, and Kestrel has that. A team that's just starting doesn't, and neither does a new decision nobody has labelled yet.
-
-The text classifier never catches up, even with every label we have. Counting words doesn't capture the numbers in the text.
+@fig-labels is the chart for the data scientist. Logistic regression needs about 3,000 labelled cases to catch up with Jev; with a few hundred it's clearly behind. A mature team with months of history has that. A new team, or a brand-new decision nobody has labelled, doesn't. (The word-counting classifier never catches up: counting words misses the numbers in the text.)
 
 ::: {.keyidea}
 Labels are the hidden cost of trained models: a method that needs none can start today.
@@ -87,25 +65,21 @@ A method that needs thousands has to wait for them, and needs them again when th
 
 ![Time and cost per decision for each method, on log scales. Classic models run in millionths of a second, for fractions of a cent per million decisions (an assumption: computing cost only). The LLM figures are this book's illustrative assumptions; Jev's are vendor-reported.](/figures/ch20/cost-latency.pdf){#fig-cost-latency}
 
-Nothing beats a rule on speed or price, and the classic models are close behind (@fig-cost-latency). They run in millionths of a second, on computers you already own. Jev's vendor-reported figures put it in between: about \${{< num ch20 jev_cost_m int >}} per million decisions, in tens to hundreds of milliseconds. The illustrative LLM costs about \${{< num ch20 llm_json_cost_m int >}} per million and takes about {{< num ch20 llm_json_latency f1 >}} seconds. That's a little more than Chapter 9's figures. The bake-off's JSON answer has four fields (verdict, confidence, rule and threat-intel score), so it's about 60 output tokens rather than 40.
+Nothing beats a rule on speed or price, and classic models are close behind: millionths of a second, on computers you already own (@fig-cost-latency). Jev's vendor-reported figures sit in between: about \${{< num ch20 jev_cost_m int >}} per million decisions, tens to hundreds of milliseconds. The illustrative LLM: about \${{< num ch20 llm_json_cost_m int >}} per million and {{< num ch20 llm_json_latency f1 >}} seconds.
 
 ::: {.keyidea}
 If a rule or a logistic regression can make a decision well, use one of them.
 :::
 
-It's the cheapest and fastest option by a factor of a thousand or more. Jev's price advantage is against *LLMs*, not against everything.
+It's cheaper and faster by a factor of a thousand or more. Jev's price advantage is against *LLMs*, not against everything.
 
 ## Round five: the same answer twice
 
 ![Left: the share of alerts whose verdict changed across five identical calls. Right: the share of answers that couldn't be parsed at all.](/figures/ch20/variance.pdf){#fig-variance-13}
 
-Ask the LLM the same question five times at a temperature of 0.7, and {{< num ch20 flip_rate pct1 >}} of verdicts change at least once (@fig-variance-13). At temperature 0, the mock always gives the same answer. Real APIs mostly do too, though not always. And {{< num ch20 parse_fail pct1 >}} of its JSON answers were so broken that they couldn't be parsed. We used the base rate for those, but in a real system each one is an error your code has to handle.
-
-Jev's typed answers can't fail to parse: the probabilities arrive as numbers in a fixed shape. The mock always gives the same answer to the same question. You should check whether real Jev does.
+Ask the LLM the same question five times at a temperature of 0.7, and {{< num ch20 flip_rate pct1 >}} of verdicts change at least once (@fig-variance-13). At temperature 0 answers mostly repeat, though not always with real APIs. And {{< num ch20 parse_fail pct1 >}} of its JSON answers couldn't be parsed at all; in a real system, each is an error your code must handle. Typed answers can't fail to parse: the probabilities arrive as numbers in a fixed shape.
 
 ## The scorecard
-
-Now put everything on one page.
 
 ::: {.wide}
 ![The whole contest on one page. Bold marks the best in each numeric column. Every accuracy number is synthetic; every cost and time is an assumption, an illustration, or vendor-reported, as marked.](/figures/ch20/scorecard.pdf){#fig-scorecard-13}
@@ -119,50 +93,29 @@ If you need to explain every decision to an auditor, rules clearly win the last 
 
 If you have no labels, raw text, or many different decisions to make, Jev's row is the strongest. It starts with zero labels and ranks nearly as well as the trained model. After a calibration check, you can put thresholds on its probabilities. Its answers come in a shape that can't break, and it costs a small fraction of an LLM call.
 
-And the LLM? In this contest it's the weakest at deciding, partly because of how the mock was built. But notice what it does that no other row even tries: it reads anything, and it *writes*. That's why Chapter 15's first pattern gives it the job of extracting and explaining, and gives the decision to something else.
-
-::: {.tryit lab="ch13"}
-```{python}
-from jevkit import bakeoff as B    # the six contestants, one live week
-r = B.run()
-for m in B.METHODS:
-    s = B.scores(r["probs"][m], r["y"])
-    print(f"{B.NAMES[m]:>26}: AUC {s['auc']:.3f}, "
-          f"ECE {s['ece']:.3f}")
-```
-:::
+And the LLM? Weakest at deciding here, partly by construction. But it does what no other row tries: it reads anything, and it *writes*. That's why Chapter 15's first pattern gives it extracting and explaining, and gives the decision to something else.
 
 ::: {.breaks}
-This is one decision, at one synthetic company, with mocks standing in for the LLM and for Jev. The accuracy gap between the LLM and Jev was built into the mocks. It says nothing about the real models. The text classifier is a weak stand-in for a fine-tuned model. And a single live week has only about four hundred real threats, so differences in the second decimal place of AUC could be chance. The value of a bake-off is the *method*. Run the same contest on your own data, with the real models, and fill in your own scorecard.
+One decision, one synthetic company, stand-ins for the LLM and for Jev; the gap between those two was built in. One live week has only about four hundred real threats, so second-decimal differences in AUC could be chance. The value of a bake-off is the *method*: run the same contest on your own data, with the real models.
 :::
 
 ::: {.threshold}
-A new team at Kestrel is taking over cloud-storage alerts, a decision nobody has labelled. They'll get about 300 labels a week from their own reviews. Which method would you start with, and when would you think about switching? What would you use the first 300 labels for?
+A new team is taking over cloud-storage alerts, a decision nobody has labelled. They'll get about 300 labels a week from their own reviews. Which method would you start with, and when would you think about switching? What would you use the first 300 labels for?
 
 (Start with a method that needs no labels, Jev in this contest. Use the first 300 labels to check and fix its calibration, as in Chapter 11. After three or four weeks of labels, train a logistic regression next to it and compare them on the next week. If the two agree closely, keep the cheaper one. If they disagree, look at the alerts where they disagree.)
 :::
 
-::: {.bookquote by="David Wolpert and William Macready, No Free Lunch Theorems for Optimization, 1997"}
-For any algorithm, any elevated performance over one class of problems is offset by performance over another class.
-:::
-
-Wolpert and Macready proved this about search and optimisation [@wolpert1997], but the idea fits any bake-off.
+There's even a theorem behind this, for optimisation [@wolpert1997], and it fits any bake-off:
 
 ::: {.keyidea}
 There is no best method, only a best method for a particular decision.
 :::
 
-## Where we are
-
-Six methods took the same test. The trained logistic regression won on ranking and calibration, because it had fifteen thousand labels on clean fields. It needed about three thousand of them just to catch up with a method that needed none. The rules won on explanation and price. The LLM's stated confidences turned out to be round numbers, and its free-text JSON broke often enough to matter. Jev's row was the strongest wherever labels were few or the input was raw text. None of that tells you what real models will do on your data. It tells you which columns to measure when you try.
-
 ::: {.exercises}
-1. In the lab, write a better hand-written rule. How close to the logistic regression can you get? What did you have to add?
-2. Fit Platt scaling to the LLM-as-judge ratings using 300 history alerts. What happens to its ECE? To its AUC? Why does one change and not the other?
-3. Run the labels curve again with the text classifier using bigrams (pairs of words) only. Does it help? Why might a fine-tuned transformer do better?
-4. Build a scorecard for a decision in your own work. Which three columns matter most? Which method would you try first?
+1. If you Platt-scale the LLM-as-judge ratings on 300 labelled alerts, what happens to its ECE? To its AUC? Why does one change and not the other?
+2. Build a scorecard for a decision in your own work. Which three columns matter most? Which method would you try first?
 :::
 
 ::: {.nexthook}
-Next: a probability isn't an action. Chapter 14 turns these numbers into three doors, act, review and escalate, and puts the thresholds where the costs say they belong.
+Next: a probability isn't an action. Chapter 14 turns these numbers into three doors (act, review, escalate) and puts the thresholds where the costs say.
 :::

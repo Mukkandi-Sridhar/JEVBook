@@ -4,28 +4,14 @@
 Hope is not a strategy.
 :::
 
-```{python}
-#| include: false
-import json
-import numpy as np
-from typesafe_sdk import RetryPolicy, TypeSafeClient
-from jevkit import soc, service as S, MockJevTransport
-from jevkit.batch import score_alerts
-alerts = soc.load()
-alerts["p"] = score_alerts(alerts)
-history, live = soc.history_and_live(alerts)
-```
+Every project reaches the moment when the prototype works and someone asks: "Great. Can we run it on Monday?"
 
-In every project, there's a moment when the notebook works and someone asks, "Great. Can we run it on Monday?"
-
-That question is harder than anything in the notebook. A model that decides well on a laptop is not a service. A service has to answer at three in the morning when the API is slow. It has to explain itself to an auditor a year later. It has to tell someone when the world has changed. And when you improve it, it has to change safely.
-
-This chapter builds a small version of that service from pieces built across the book. It's under two hundred lines of Python, in `jevkit/service.py`. You could read it all at once, and I'd encourage you to.
+That's harder than anything in the prototype. A model that decides well on a laptop is not a service. A service answers at three in the morning when the API is slow, explains itself to an auditor a year later, tells someone when the world has changed, and changes safely when you improve it. This chapter assembles one from pieces built across the book.
 
 ::: {.goals}
 - Put everything that changes a decision into one versioned config, and stamp every decision with it.
 - Design a decision record that answers "why?" a year later.
-- Give every failure a decided meaning, and test it by making calls fail.
+- Give every failure a decided meaning, and test it by making calls fail on purpose.
 - Monitor a decision service with a handful of numbers that raise flags a person reads.
 - Try a new version in shadow before it touches anything.
 :::
@@ -34,7 +20,7 @@ This chapter builds a small version of that service from pieces built across the
 
 ![The decision service. Each alert's trusted fields go to Jev as three typed questions; the answer is calibrated, and the policy, business rules and capacity turn it into a zone. Every decision is recorded before it is returned. Any failure falls back to review. A daily monitor reads the log, and a candidate version can run in shadow beside the current one.](/figures/ch28/architecture.pdf){#fig-architecture-21}
 
-Read @fig-architecture-21 from left to right, and you'll recognise every box. The state is built from trusted fields only, never the alert's free text, because Chapter 7 showed what a planted sentence can do. The three typed questions are Chapter 10's. The calibration is Chapter 11's. The policy, with its capacity, is Chapter 14's. The rest is what turns a chain of steps into a service.
+You'll recognise every box in @fig-architecture-21. The input is built from trusted fields only, never free text an attacker could write (Chapter 7). The three typed questions are Chapter 10's. The calibration is Chapter 11's. The policy, with its capacity, is Chapter 14's. The rest is what turns a chain of steps into a service.
 
 ## One config, one fingerprint
 
@@ -44,17 +30,7 @@ The first rule is this:
 Everything that can change a decision lives in one place, with a version number.
 :::
 
-That means the model name, the calibration numbers, the two thresholds and every business rule, such as "never auto-close a critical asset". They all live in one small config object. Every decision the service makes is stamped with that config's version and a fingerprint of its contents: a short code that changes if anything in it changes.
-
-::: {.tryit lab="ch21"}
-```{python}
-cfg = S.fit_config(history, version="triage-2026.10.2")
-print(cfg.version, cfg.fingerprint())
-print(f"lines: {cfg.low:.3f} / {cfg.high:.2f}")
-```
-:::
-
-Why so strict? Because months later, the question you'll hear most is "why did it do *that*?" If the answer depends on which calibration was in use that week, you need to know which one it was.
+The model version, the calibration numbers, the thresholds and every business rule ("never auto-close a critical system") live in one small configuration. Every decision is stamped with its version and a fingerprint that changes if anything in it changes. Why so strict? Because months later the question you'll hear most is "why did it do *that*?", and the answer depends on which settings were live that week.
 
 ## The decision record
 
@@ -62,25 +38,19 @@ Every call to the service returns, and logs, a record like this one.
 
 ![One decision record, with notes on why each field is there. Together they say what the service saw, what the model said, what the policy did, which version decided, and why.](/figures/ch28/record.pdf){#fig-record}
 
-```{python}
-client = TypeSafeClient(api_key="mock", transport=MockJevTransport(),
-                        retry=RetryPolicy(max_retries=0))
-svc = S.DecisionService(cfg, client)
-rec = svc.decide(live.iloc[118])
-print(rec.zone, "|", rec.reason, "|", rec.config_version)
-```
+A decision model gives probabilities, not reasons. The answer for audits is to audit the *policy*, not the model. The record in @fig-record holds the raw and calibrated probabilities, the thresholds they met, the rule that fired and the version that decided. Together they explain every action in a way anyone can check, even though the model itself explains nothing.
 
-Jev gives no reasons, only probabilities. Some early critics saw that as a problem for audits, and Chapter 14 answered it: audit the *policy*, not the model. The record in @fig-record is how. It holds the raw and calibrated probabilities, the thresholds they were compared with, the rule that fired, and the version that decided. Together they explain every action completely, in a way anyone can check, even though the model itself explains nothing.
+::: {.keyidea}
+You can't explain the model's probability, but you can make every action it led to fully explainable.
+:::
 
 ## The dry run that found a bug
 
-Before the service touched anything, I ran it over the live week as a test, a "dry run". It logged its decisions without acting on them. The monitor raised a flag on the first day: the review queue was over capacity.
-
-It shouldn't have been. As in Chapter 14, the thresholds had been chosen to fit a queue of 240 a day. But after they were fitted, someone added a sensible business rule: never auto-close an alert on a critical asset. Every alert that rule moved from "act" to "review" was extra work the thresholds hadn't allowed for.
+Before it touched anything, I ran the service over the live week as a "dry run", logging decisions without acting. The monitor flagged day one: the queue was over capacity. It shouldn't have been; the thresholds were fitted for 240 a day. But *after* fitting, someone had added a sensible rule: never auto-close an alert on a critical system. Every alert it moved from "act" to "review" was work the thresholds hadn't allowed for.
 
 ![Alerts sent to review each day of the live week, before and after the fix. Fitted without the critical-asset rule, the thresholds let the queue run over capacity every day. Fitted with it, the act threshold rises slightly and the queue fits.](/figures/ch28/dry-run.pdf){#fig-dry-run}
 
-The fix was to fit the thresholds *with* the rule in place, so the model's share of the queue gets smaller and leaves room for the rule. The act threshold moved from {{< num ch28 v1_low f3 >}} to {{< num ch28 v2_low f3 >}}, and the average queue went from about {{< num ch28 v1_mean_reviews int >}} to {{< num ch28 v2_mean_reviews int >}} a day (@fig-dry-run).
+The fix: fit the thresholds *with* the rule in place. The act threshold moved from {{< num ch28 v1_low f3 >}} to {{< num ch28 v2_low f3 >}}, and the average queue went from about {{< num ch28 v1_mean_reviews int >}} to {{< num ch28 v2_mean_reviews int >}} a day (@fig-dry-run).
 
 It's a small bug, and it's the most common kind: two reasonable changes, each tested alone, that don't work together. That's why the config holds the rules *and* the thresholds.
 
@@ -90,7 +60,7 @@ Thresholds and business rules are one decision, and they have to be fitted toget
 
 ## When the call fails
 
-The API will fail sometimes. Chapter 16 said to decide in advance what a failure *means*. The service makes that a config setting: `fallback="review"`.
+The API will fail sometimes, and Chapter 16 said to decide in advance what failure *means*. Here it's a setting: a failed call sends the case to review.
 
 ![What happens to real threats when 10% of calls fail, under two fallbacks. Sending failures to review puts them in front of a person. Treating a failure as "act" would have closed them unseen, and nothing would have looked wrong.](/figures/ch28/failsafe.pdf){#fig-failsafe}
 
@@ -102,57 +72,45 @@ Every failure needs a decided meaning, and the safe one puts a person in front o
 
 ## The monitor
 
-The service writes every record to a log. Once a day, a small report reads the log and checks a few numbers against expected ranges. It checks the share of alerts in each zone, the review queue against capacity, and the fallback rate. And for alerts a person has seen, it compares the share predicted to be real with the share confirmed to be real.
+Once a day, a small report reads the log and checks a few numbers against expected ranges: the share of cases in each zone, the queue against capacity, the fallback rate, and, for cases a person has seen, the share predicted real against the share confirmed real.
 
 ![Two weeks of the daily monitor: the live week, then the phishing campaign. Top: the review queue, red and striped on days a flag was raised. Bottom: for alerts people saw, the share the model predicted to be real against the share they confirmed. The campaign opens a gap on its first day.](/figures/ch28/monitor.pdf){#fig-monitor}
 
-The live week raised no flags at all. That matters as much as what comes next. People soon stop reading a monitor that raises false alarms. That's why the queue check allows 10% over capacity before it raises a flag.
+The quiet week raised no flags, which matters as much as what follows: people stop reading a monitor that cries wolf. On the campaign's first day, two flags went up: the queue was far over capacity, and the cases people saw were real far more often than predicted (@fig-monitor). That second flag is the one I'd most want in any decision service. It says, in plain numbers, *the probabilities are no longer calibrated*.
 
-On the first day of the campaign week, two flags went up. The queue was well over capacity, and the alerts people saw were real far more often than predicted (@fig-monitor). That second flag is the one I'd most want in any decision service. It says, in plain numbers, "the probabilities are no longer calibrated". Chapter 11 taught you to test for that, and Chapter 18 showed you how to fix it.
-
-A flag is only useful if someone reads it. The last item on the checklist below is a named owner. That person has the authority to switch the service to "review everything" while they find out what happened.
+A flag only helps if someone reads it. So the service has a named owner with the authority to switch it to "review everything" while they find out what happened.
 
 ## Changing it safely
 
-The service will improve: new calibration, new thresholds, a new model version. Each change is a new config, and a new config runs in **shadow mode** first. It decides every alert next to the current version and logs what it would have done, but it doesn't act on anything.
+Every improvement (new calibration, thresholds, model version) is a new configuration, and it runs in **shadow mode** first: deciding every case beside the current version, logging what it would do, acting on nothing.
 
 ![A week of the candidate version in shadow beside the current one, in alerts per day. They agree on most alerts. The candidate would move about {{< num ch28 shadow_review_to_act_day int >}} alerts a day from review to auto-close: the gold cell, in the "current: review" row and the "new: act" column. That's the cell to look at before switching.](/figures/ch28/shadow.pdf){#fig-shadow-21}
 
 The candidate here is the fixed config from the dry run. It agreed with the current version on {{< num ch28 shadow_agree pct >}} of alerts (@fig-shadow-21). The disagreements all go the same way. There are about {{< num ch28 shadow_review_to_act_day f1 >}} alerts a day that the current version sends to review and the candidate would close. Among those, about {{< num ch28 shadow_moved_threats_day f1 >}} a day were real threats.
 
-That's the price of fitting the queue, not a bug. The shadow run measures that price before anyone pays it. Someone can now decide, with that number in front of them, whether to switch, to hire, or to accept a queue that runs over.
+That's the price of fitting the queue, not a bug, and the shadow run measures it before anyone pays it. Now someone can decide, with that number in front of them, whether to switch, hire, or accept an overflowing queue.
 
 ## The checklist
 
 ![Eight things a decision service needs before it runs on Monday.](/figures/ch28/checklist.pdf){#fig-checklist}
 
-@fig-checklist is the list I'd want completed before switching on any decision service, whatever model is inside it. None of it is specific to Jev. All of it is specific to *deciding*. Once a model's output closes a case, calls a person or blocks a login, every item on that list stops being optional. It becomes part of the job.
+@fig-checklist is what I'd want done before switching on any decision service, whatever model is inside. None of it is specific to Jev; all of it is specific to *deciding*. Once a model's output closes a case, calls a person or blocks a login, every item stops being optional.
 
 ::: {.breaks}
 This is a teaching service. A real one needs things this chapter leaves out. It needs sign-in for its callers and limits on how often they can call. It needs a proper log store rather than a file, and control over who can change the config. And it needs to protect the states it records, which may hold personal data. The monitor's expected ranges were set by eye from one quiet week, so treat them as a starting point to adjust. And shadow comparisons only show where versions *disagree*. If both versions are wrong in the same way, a shadow run can't tell you. Keep the random audit going.
 :::
 
 ::: {.threshold}
-To keep the queue at capacity, the candidate config in shadow would auto-close about 29 more alerts a day. About one of them is a real threat. A missed threat costs about \$10,000. An extra analyst costs about \$600 a day and clears 40 reviews. Should Kestrel switch to the candidate, or keep the current version and add capacity?
+To keep the queue at capacity, the candidate config in shadow would auto-close about 29 more alerts a day. About one of them is a real threat. A missed threat costs about \$10,000. An extra analyst costs about \$600 a day and clears 40 reviews. Should the company switch to the candidate, or keep the current version and add capacity?
 
 (Switching saves about 29 reviews a day and costs about one missed threat, around \$10,000 a day in expected loss. Adding one analyst, at about \$600 a day, would handle those reviews instead. Unless hiring is impossible, keep the current thresholds and add capacity. The shadow run turned that from a guess into arithmetic.)
 :::
 
-::: {.bookquote by="Werner Vogels, Amazon CTO, widely quoted"}
-Everything fails, all the time.
-:::
-
-Vogels has said this in many talks. A decision service is built around it. Calls fail, models drift, and attack campaigns arrive without warning. The service doesn't prevent any of that. It makes sure each failure has a decided meaning, leaves a record, and reaches a person who can act.
-
-## Where we are
-
-We built the service from the book's pieces. One versioned config held the model, calibration, thresholds and rules. Every decision left a record that explains it. A dry run caught a rule and a set of thresholds that didn't work together, and fitting them together fixed it. A planned failure test showed why failures must fall back to review. A daily monitor stayed quiet through a normal week and raised a flag on the first day of a campaign. And a shadow run measured the cost of the next change before anyone paid it.
+Amazon's CTO Werner Vogels likes to say that everything fails, all the time. A decision service is built around that. Calls fail, models drift, campaigns arrive without warning. The service prevents none of it. It makes sure each failure has a decided meaning, leaves a record, and reaches a person who can act.
 
 ::: {.exercises}
-1. In the lab, set `fallback="escalate"`. What happens to the pager on a day when 30% of calls fail? Which fallback would you choose, and why?
-2. Add a new check to `daily_report`: flag the day if the share of "none" answers from any choice question moves by more than ten points from last week (Chapter 17's lesson).
-3. Read a week of decision records and answer, from the log alone: which alert with P above 0.3 was auto-closed, and why?
-4. Write one paragraph of instructions for the person who owns the flags: what they check first, and when they switch the service to review everything.
+1. Read a week of decision records and answer, from the log alone: which alert with P above 0.3 was auto-closed, and why?
+2. Write one paragraph of instructions for the person who owns the flags: what they check first, and when they switch the service to review everything.
 :::
 
 ::: {.nexthook}

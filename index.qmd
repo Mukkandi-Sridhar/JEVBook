@@ -2,27 +2,22 @@
 
 This is a book about deciding.
 
-It isn't about artificial intelligence in general, though you'll learn a lot of that along the way. The subject is one narrow, very common job: looking at a situation and choosing what to do about it. Is this email phishing? Which team should get this ticket? Is this login safe? Should this agent call that tool?
+Not about AI in general, though you'll learn a lot of that on the way. It's about one narrow, very common job: looking at a situation and choosing what to do. Is this email phishing? Which team gets this ticket? Is this payment safe? Should this agent call that tool?
 
-Software makes millions of those decisions every day. For the last few years, we've been giving more and more of them to large language models. LLMs are extremely good at reading and writing. But a decision is different from a paragraph. It's a choice between a few options, made without being sure, with a cost for getting it wrong. To make it well, you need a calibrated probability, one that means what it says, and a threshold set by what mistakes cost. And you need to know when to give the case to a person.
+Software makes millions of these decisions every day, and more and more of them are handed to large language models. LLMs are superb at reading and writing. But a decision isn't a paragraph. It's a choice between a few options, made without being sure, with a price for getting it wrong. To make one well you need three things:
 
-In 2026, a company called TypeSafe AI released Jev. It describes Jev as the first of a new kind of model, a **System One model**. These models don't write at all. They only answer typed questions with probabilities, in a single fast pass [@typesafe2026]. You'll learn to test for yourself whether Jev does what its makers claim. But the idea behind it is worth understanding whatever happens to any one product. Some decisions belong in a separate, fast, measurable layer of an AI system, and that layer needs different skills from the rest.
+- a **probability you can trust**, one that means what it says;
+- a **threshold set by what mistakes cost**, not by habit;
+- a clear rule for **when to hand the case to a person**.
 
-## Who this book is for
+Most people building with AI today have none of the three. This book gives you all of them, from first principles, in plain language.
 
-It's for anyone who builds, buys or runs systems that make decisions. If you're new to machine learning, Part I starts from the beginning. It assumes only that you're comfortable with a little arithmetic and a little Python. If you already build with LLMs, you'll move quickly through Part II and find the main content in Parts III to V. If you lead a team, "How to read this book" suggests a shorter route.
-
-## How it's built
-
-Every chapter follows one made-up company, Kestrel Logistics, and its security operations centre (SOC). There, a small team triages hundreds of alerts a day: it sorts them by how likely they are to be real and how urgent they are. SOC triage turned out to be an almost perfect teaching example. It has lots of decisions, a real cost for mistakes, and a queue of people with limited time.
-
-Every figure is drawn by code, and almost every number in the book is computed by it. Each chapter has a lab: a notebook in the book's repository that recreates its numbers and lets you change them.
+In 2026 a company called TypeSafe AI released Jev, which it calls the first **System One model**: a model that never writes, and only answers typed questions with probabilities, in one fast pass [@typesafe2026]. You'll learn to test whether Jev does what its makers claim. But the idea behind it outlives any one product: some decisions belong in a separate, fast, measurable layer of an AI system, and that layer needs different skills from the rest.
 
 ## Three rules I followed
 
-**No invented measurements.** I didn't have access to Jev's API while writing. So every Jev number in this book comes from a mock model called `jev-mock-synthetic`. It's built to copy the real API's shape, through TypeSafe's official Python library. Those numbers are marked *synthetic*, every time. They show you how to reason and test; they are not claims about the real model.
+**No invented measurements.** I had no access to Jev's API while writing, so every Jev number comes from a stand-in that copies its public interface, and is marked *synthetic* every time. These numbers show you how to reason and test; they're not claims about the real model.
 
-**Vendor claims are labelled.** When I report what TypeSafe says about Jev, such as its speed or its price, I say it's vendor-reported and cite where it came from.
+**Vendor claims are labelled.** When I report what TypeSafe says about Jev, I say it's *vendor-reported* and cite the source.
 
-**Claims go in piles.** Everything said about Jev is sorted into three piles: what I could check, what the vendor reports, and what nobody outside the company knows yet. Chapter 9 explains how. I'd encourage you to keep the same three piles for anything you read about new models, including this book.
-
+**Claims go in piles.** Everything said about Jev is sorted into what I could check, what the vendor reports, and what nobody outside the company knows yet. Chapter 9 explains how. Use the same three piles for anything you read about new models, this book included.

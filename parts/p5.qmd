@@ -1,7 +1,7 @@
 # Building
 
 ::: {.partintro}
-Time to build. You'll make your first calls through the official SDK. You'll build a hybrid agent, where Jev decides and an LLM writes. Then come a full SOC triage case study and a tour of other uses.
+Time to build. First, what it takes to call a decision model for real. Then a hybrid agent, where a decision model decides and an LLM writes; a full case study of a security team's triage; and a tour of other uses.
 
-Then you'll build a small System One model of your own, and finish with a decision service you could actually run on Monday.
+Then a small System One model of your own, and finally a decision service you could actually run on Monday.
 :::

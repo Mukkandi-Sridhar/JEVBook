@@ -4,27 +4,12 @@
 Not everything that can be counted counts, and not everything that counts can be counted.
 :::
 
-```{python}
-#| include: false
-import numpy as np
-import pandas as pd
-from sklearn.linear_model import LogisticRegression
-from jevkit import soc, policy as pol
-```
+You now have probabilities you can trust: when the model says 20%, about one in five of those alerts is an attack. Next comes the question everyone reaches: *where do I put the threshold?*
 
-You made it. You have a model whose probabilities you've checked and, where needed, fixed. When it says 20%, about one in five of those alerts really is an attack.
-
-And now you reach the problem everyone reaches:
-
-*"Great. So where do I put the threshold?"*
-
-Most people pick 0.5 without thinking about it. It's the default in almost every library. It *feels* neutral.
-
-It isn't neutral at all. It's a very specific opinion about your business, and it's usually the wrong one. This chapter shows you how to put the threshold where it belongs, using only the arithmetic you already know.
+Most people pick 0.5. It's the default in almost every library, and it *feels* neutral. It isn't. It's a very specific opinion about your business, usually the wrong one. This chapter puts the threshold where it belongs, with school arithmetic.
 
 ::: {.goals}
 - Turn two costs into one threshold, and explain why 0.5 is a special case.
-- Check the formula against a search that tries every threshold, on realistic (synthetic) data.
 - See why the formula only works when the probabilities are calibrated.
 - Read the precision–recall trade-off as a business choice.
 - Treat "I don't know, ask a person" as a real action, and meet the three doors: act, review, escalate.
@@ -32,11 +17,7 @@ It isn't neutral at all. It's a very specific opinion about your business, and i
 
 ## The umbrella question
 
-Let's start with the weather again.
-
-The forecast says there's a 30% chance of rain. Do you take an umbrella?
-
-It depends on two things you already know without thinking about them. Carrying an umbrella you didn't need is a little annoying; call it 1 unit of annoyance. Getting very wet on the way to a meeting is much worse; call it 4.
+The forecast says 30% chance of rain. Do you take an umbrella? It depends on two things you already know. Carrying an umbrella you didn't need is a little annoying; call it 1 unit of annoyance. Getting very wet on the way to a meeting is much worse; call it 4.
 
 If you carry it, you pay 1, rain or not. If you leave it, you pay 4, but only if it rains. So on average you pay 4 × the chance of rain.
 
@@ -44,7 +25,7 @@ If you carry it, you pay 1, rain or not. If you leave it, you pay 4, but only if
 
 The two lines in @fig-umbrella cross where 4 × *P* = 1, which is *P* = 0.2. Above a 20% chance of rain, carry the umbrella. Below it, leave it at home. At 30%, you take it, even though it probably won't rain.
 
-The rest of the chapter uses this same idea on real work.
+Everything else in this chapter is that umbrella, applied to real work.
 
 ## One formula, two costs
 
@@ -61,11 +42,15 @@ Act when P > C~fa~ ÷ (C~fa~ + C~miss~): the false-alarm cost over the sum of bo
 
 Check it with the umbrella: 1 ÷ (1 + 4) = 0.2. That's exactly where the two lines crossed.
 
-Now look at what happens when the two costs are equal. The formula gives 1 ÷ 2 = 0.5. *That's* where 0.5 comes from. It's the right threshold only when a false alarm and a miss hurt the same amount. That's almost never true for anything worth building a model for.
+When the two costs are equal, the formula gives 1 ÷ 2 = 0.5. *That's* where 0.5 comes from: it's right only when a false alarm and a miss hurt exactly the same. That's almost never true of anything worth building a model for.
+
+::: {.keyidea}
+0.5 is not neutral: it's the threshold for a world where every mistake costs the same.
+:::
 
 ![The right threshold for any ratio between the cost of a miss and the cost of a false alarm (both axes on a log scale). Equal costs give 0.5. As misses get more expensive, the threshold drops fast.](/figures/ch05/threshold-ratio.pdf){#fig-threshold-ratio}
 
-@fig-threshold-ratio puts a few real decisions on one curve. In Chapter 14, Kestrel decides whether an alert may close itself without any person looking at it. That decision is in the far bottom-right corner. A miss there is about 630 times worse than twelve minutes of an analyst's time, so the threshold drops to about {{< num ch05 soc_review_t f4 >}}. A different decision has different costs, so it gets a different threshold.
+@fig-threshold-ratio puts real decisions on one curve. Letting an alert close itself with nobody looking (Chapter 14) sits in the far corner: a miss is about 630 times worse than twelve minutes of a person's time, so the threshold falls to about {{< num ch05 soc_review_t f4 >}}. Different costs, different threshold.
 
 ::: {.deeper}
 Where the formula comes from. For a single case with probability *P*, acting costs (1 − *P*) × *C*~fa~ on average, because you pay only if it was harmless. Not acting costs *P* × *C*~miss~, because you pay only if it was real. Act when the first is smaller: (1 − *P*) *C*~fa~ < *P* *C*~miss~. Rearranged, that's *P* > *C*~fa~ / (*C*~fa~ + *C*~miss~). Getting it *right* can also have costs or benefits; for example, blocking a real threat might earn some credit. Then the same logic works with a 2×2 table of costs, one for each combination of action and truth. This is the basis of cost-sensitive learning [@elkan2001].
@@ -73,76 +58,41 @@ Where the formula comes from. For a single case with probability *P*, acting cos
 
 ## Does it work on real alerts?
 
-A formula is nice, but evidence is better. Let's test it.
+Test it. For every alert the team decides: **block it or allow it?** Wrongly blocking something harmless costs about \$200 in lost work (a delayed shipment, a locked-out engineer). Letting a real threat through costs about \$4,000, since other defences may still catch it. (Illustrative but realistic numbers.)
 
-Kestrel makes one decision on every alert: **block it or allow it?** Blocking means automatically stopping the sender, the connection or the sign-in. Wrongly blocking something harmless costs about \$200 in lost work: a delayed shipment, an angry customer, an engineer who can't sign in. Letting a real threat through at this step costs about \$4,000, since other defences still have a chance to catch it later. Those numbers are illustrative, but realistic.
-
-The formula says block when *P* > 200 ÷ 4,200, which is about {{< num ch05 t_formula f3 >}}.
-
-::: {.tryit lab="ch04"}
-Compare the formula with a search that tries 300 thresholds, using the calibrated logistic regression from Chapter 2 on the test alerts.
-
-```{python}
-alerts = soc.load()
-train, calib, test = soc.split(alerts)
-F = lambda d: soc.feature_matrix(d).to_numpy()
-model = LogisticRegression(C=1e4, max_iter=5000).fit(
-    F(train), train.malicious)
-p, y = model.predict_proba(F(test))[:, 1], test.malicious.to_numpy()
-
-false_alarm, miss = 200, 4_000
-t = false_alarm / (false_alarm + miss)
-
-def total_cost(p, t):
-    block = p >= t
-    return ((block & (y == 0)).sum() * false_alarm
-            + (~block & (y == 1)).sum() * miss)
-
-grid = np.linspace(0.005, 0.9, 300)
-best = grid[np.argmin([total_cost(p, g) for g in grid])]
-print(f"brute force {best:.3f}: ${total_cost(p, best):,}")
-print(f"formula     {t:.3f}: ${total_cost(p, t):,}")
-print(f"0.5              : ${total_cost(p, 0.5):,}")
-```
-:::
-
-The formula lands close to the best threshold the search found, and the cost difference is small. A threshold of 0.5 costs {{< num ch05 half_penalty f1 >}} times as much.
+The formula says block when *P* > 200 ÷ 4,200, about {{< num ch05 t_formula f3 >}}. A brute-force search over 300 thresholds lands almost exactly there. Using 0.5 instead costs {{< num ch05 half_penalty f1 >}} times as much.
 
 ![Total cost on the test alerts at every threshold. For the calibrated model (green, solid line), the formula's threshold is near the lowest point of the curve. For the same model trained on rebalanced data (red, dashed line), the same threshold lands far from its lowest point.](/figures/ch05/cost-curve.pdf){#fig-cost-curve}
 
-And now you can see why Chapter 3 came first. @fig-cost-curve also shows the rebalanced model from Chapter 3. It ranks alerts almost as well, but its probabilities are too high. Use the formula's threshold on *its* numbers and the cost is {{< num ch05 bal_penalty pct >}} higher. Its own cheapest threshold is far away, at about {{< num ch05 t_bal_best f2 >}}, and no formula could have told you so. You'd have to find it by trial and error, and search again every time the costs change.
+Now you see why calibration came first. The rebalanced model from Chapter 3 ranks almost as well, but its numbers are too high. Apply the formula to *its* numbers and the cost is {{< num ch05 bal_penalty pct >}} higher (@fig-cost-curve). Its own best threshold is far away, near {{< num ch05 t_bal_best f2 >}}, and only trial and error could find it, again every time the costs change.
 
 ::: {.keyidea}
 With calibrated probabilities, costs set the threshold directly. Without them, you're guessing.
 :::
 
-That's the practical value of calibration, in one sentence. It turns setting a threshold from endless trial and error into one line of arithmetic you can explain to your finance team.
+Calibration turns threshold-setting from endless trial and error into one line of arithmetic you can explain to your finance team.
 
 ## Precision, recall, and the price of each
 
-In Chapter 2, precision and recall looked like two separate scores. Now you can see what they really are: two sides of one trade-off. When one goes up, the other goes down.
+Precision and recall aren't two scores; they're two sides of one trade-off.
 
 ![As the threshold moves up, precision (how many blocks were real) rises and recall (how many threats got blocked) falls. The grey dotted curve shows how much traffic you're blocking. The vertical line is the cost-based threshold.](/figures/ch05/pr-threshold.pdf){#fig-pr-threshold}
 
-At the cost-based threshold in @fig-pr-threshold, Kestrel blocks about {{< num ch05 blocked_frac pct >}} of alerts. That catches {{< num ch05 caught pct >}} of real threats, but only {{< num ch05 precision pct >}} of the blocks are real ones. That precision sounds poor. Is it?
+At the cost-based threshold in @fig-pr-threshold, the team blocks about {{< num ch05 blocked_frac pct >}} of alerts. That catches {{< num ch05 caught pct >}} of real threats, but only {{< num ch05 precision pct >}} of the blocks are real ones. That precision sounds poor. Is it?
 
-Only the costs can say. Each wrong block costs \$200; each missed threat costs \$4,000. The threshold is 200 ÷ 4,200, about {{< num ch05 t_formula f3 >}}: block an alert when the chance it's real is better than about 1 in 21. The rule is about the alert that sits *exactly* on the threshold. For that alert, blocking it and letting it through cost the same on average.
-
-Precision is a different thing. It's an average over *every* alert above the threshold, and most of those are far more likely than 1 in 21 to be real. That's why precision comes out nearer one in five. Nobody chose that number. It's simply what happens when you put the threshold where the costs say. A model that ranks better would raise precision without moving the threshold at all. So precision or recall alone, without the costs, tells you only part of the story.
+Only the costs can say. The rule blocks anything better than about 1 in 21 to be real, because a miss costs 20 times a false alarm. Precision, around one in five, is just the average over everything above that line. Nobody chose it; it falls out of the costs. A better-ranking model raises precision without moving the threshold at all. Precision or recall alone, without costs, is half a story.
 
 ::: {.threshold}
-Kestrel's sales team complains that blocked customer emails are losing them sales. They say a wrong block costs \$800, not \$200. Work out the blocking threshold again. About what happens to the share of alerts blocked, and to recall?
+The sales team complains that blocked customer emails are losing them sales. They say a wrong block costs \$800, not \$200. Work out the blocking threshold again. About what happens to the share of alerts blocked, and to recall?
 
 (800 ÷ 4,800 ≈ 0.17. The threshold moves up, fewer alerts get blocked, and more threats get through. The model didn't change. The business's priorities did, and the threshold should follow them.)
 :::
 
 ## "I don't know" is an action too
 
-So far every decision has been yes or no. But there's almost always a third option, and it's the most useful one: *don't decide; ask a person*.
+There's almost always a third option, and it's the most useful: *don't decide; ask a person*. In 1970 the engineer C. K. Chow showed that a character-reading machine allowed to refuse its least certain cases made far fewer errors [@chow1970]. Today it's called *selective prediction* [@geifman2017].
 
-The idea is old. In 1970, the engineer C. K. Chow showed something about systems that recognise characters. If they were allowed to refuse their least certain cases, their error rate fell sharply. He also worked out the best trade-off [@chow1970]. Today this is called *selective prediction*, or classification with a reject option [@geifman2017].
-
-At Kestrel it works like this. Sort the alerts by how confident the model is, surest first. Let the machine decide only the top part of the list, and send the rest to people. How low does the error rate go?
+Sort alerts by how sure the model is. Let the machine decide only the top of the list; send the rest to people.
 
 ![Coverage against risk. Reading from right to left: if the machine decides every alert, you take its full error rate. Let it decide only the alerts it's surest about and send the rest to people, and the error rate among its decisions falls steeply. A better model (green, solid line) gives you more coverage at the same risk.](/figures/ch05/coverage-risk.pdf){#fig-coverage-risk}
 
@@ -152,7 +102,7 @@ Deciding every alert, the model gets {{< num ch05 risk_100 pct1 >}} wrong. Decid
 Let a model decide only the cases it's surest about, and its error rate falls steeply.
 :::
 
-That curve, in @fig-coverage-risk, is one of the most useful pictures you can show a manager. It changes the question from "how good is the model?" to "how much of this work can we safely hand over, at what error rate?". That's the question managers actually have.
+@fig-coverage-risk is one of the most useful pictures you can show a manager. It replaces "how good is the model?" with the question they actually have: *how much of this work can we safely hand over, at what error rate?*
 
 ## Three doors
 
@@ -162,34 +112,20 @@ Put the two ideas together, cost-based thresholds and "ask a person", and you ge
 
 **Act** when the model is confident the machine can handle it alone. **Review** when it's unsure, so a person checks it as part of normal work. **Escalate** when it's confident something important is wrong, so a person is called in right now. These three choices are the book's three zones: act, review and escalate.
 
-The two boundaries between the zones come from the same kind of cost arithmetic you've just done, with one extra threshold for each extra action. Chapter 14 does that for Kestrel's SOC. Then it does the part this chapter skips: what happens when you don't have enough people for the middle zone.
+The two boundaries come from the same cost arithmetic, one threshold per action. Chapter 14 sets them, and handles the part skipped here: what happens when there aren't enough people for the middle zone.
 
 ::: {.breaks}
-Costs are guesses, and the formula treats guesses exactly like facts. Two habits help. First, try your costs at half and at double their value, and see how much the threshold moves. If the answer barely changes, stop arguing about the exact number. Second, remember that costs often differ from case to case. A false alarm on the CEO's laptop costs more than a false alarm on a test server. Different costs for different cases mean different thresholds, and that's fine, as long as you write them down. And some costs aren't money at all: trust, fairness, safety and the law. Discuss those openly, or someone else's default settings will decide them for you.
+Costs are guesses, and the formula treats guesses like facts. Two habits help. Try each cost at half and at double, and see how far the threshold moves; if it barely moves, stop arguing about the exact number. And remember costs differ by case: a false alarm on the CEO's laptop costs more than on a test server. Some costs aren't money at all (trust, fairness, safety, law). Discuss them openly, or someone's default settings decide them for you.
 :::
 
-::: {.bookquote by="Dwight D. Eisenhower, as quoted by Richard Nixon in Six Crises, 1962"}
-Plans are worthless, but planning is everything.
-:::
-
-The same is true of cost estimates. The numbers will be wrong. The value comes from writing them down, discussing them and seeing what they lead to.
-
-## The end of Part I
-
-Step back and look at what you've built over four chapters.
-
-In Chapter 1, a machine learned what we asked and was useless, because we asked for yes or no. So we asked for a chance instead, and had to learn what a chance means. That led to a model that outputs one, and then to an uncomfortable discovery: its number might not be calibrated. Once we could check and fix that, this chapter took the last step. We let costs, not habit, decide where the thresholds go. And we left a door open for the cases a machine shouldn't decide alone.
-
-Everything else is built on this. Every system in the rest of the book, from deep networks to LLMs to Jev, is judged by it.
+That's Part I. A machine asked for yes-or-no was useless, so we asked for a chance; learned what a chance means and how to check it; and let costs, not habit, place the thresholds, with a door left open for the cases a machine shouldn't decide alone. Every system in the rest of the book, from neural networks to LLMs to Jev, is judged by these four chapters.
 
 ::: {.exercises}
 1. A hospital test flags a serious but treatable condition. Treating someone who doesn't have it costs \$500 and some discomfort; missing someone who does costs \$50,000. What's the treatment threshold? What would you want to know about the test's calibration before trusting it?
-2. In the lab, halve and double both costs (together and separately). When does the threshold move, and when doesn't it? Why?
-3. Explain in two sentences why "0.5 is the neutral threshold" is wrong.
-4. Using the coverage–risk curve, how much of Kestrel's blocking decision could you automate if the business accepts a 2% error rate among automated decisions? Where would the rest go?
-5. Pick a decision at your work or in your life with a natural third option ("ask someone", "wait a day", "get a second opinion"). Draw its three doors and say what would move each boundary.
+2. Explain in two sentences why "0.5 is the neutral threshold" is wrong.
+3. Using @fig-coverage-risk, how much of the blocking decision could you automate if the business accepts a 2% error rate? Where would the rest go?
 :::
 
 ::: {.nexthook}
-Next, Part II. So far, our models were given neat clues like a threat-intel score. What about raw pixels, raw words, raw logs? That's where deep learning comes in, and it starts with a single artificial neuron.
+Next, Part II. So far our models were handed neat clues like a threat score. What about raw words and pixels? That's deep learning.
 :::

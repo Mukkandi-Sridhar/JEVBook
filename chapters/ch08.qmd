@@ -4,13 +4,6 @@
 Intuition is nothing more and nothing less than recognition.
 :::
 
-```{python}
-#| include: false
-import numpy as np
-from jevkit import soc, calibration as cal
-from jevkit.batch import score_alerts
-```
-
 When TypeSafe AI released Jev, it didn't call it a better LLM. It called it the first of a new class: a **System One model** [@typesafe2026].
 
 *"Is that a real idea, or just a clever name?"*
@@ -34,10 +27,6 @@ You didn't work it out. The answer was just there. Now try 17 × 24.
 That one felt different. You had to stop, keep numbers in your head, and do steps in order. You could feel the effort. The dark centres of your eyes probably got a little bigger.
 
 The psychologist Daniel Kahneman used these same examples to describe two ways of thinking. He called them **System 1** and **System 2** [@kahneman2011]. System 1 is fast, automatic and effortless: recognising a face, reading a word, sensing that a sentence is unfriendly, knowing that 2 + 2 is 4. System 2 is slow, careful and effortful: long multiplication, filling in a tax form, checking an argument.
-
-::: {.bookquote by="Daniel Kahneman, Thinking, Fast and Slow, 2011"}
-System 1 operates automatically and quickly, with little or no effort and no sense of voluntary control.
-:::
 
 Neither is better. System 1 runs almost everything you do, and it's usually right. But it can be confidently wrong. Try this famous test [@frederick2005]:
 
@@ -75,35 +64,7 @@ A good analyst already knows the answer. They sort most alerts in seconds, and t
 
 ![Route by doubt. A fast System 1 looks at every case and returns a decision with a probability. Confident cases are decided on the spot. Unsure ones go to System 2: slow reasoning, more evidence, or a person.](/figures/ch15/router.pdf){#fig-router-08}
 
-Let's measure what that design gains at Kestrel. System 1 is the mock decision model reading each alert's raw text, recalibrated on the history weeks. System 2 is a careful investigation. In our synthetic world I can model it perfectly: it learns each alert's *true* probability. That's the best any investigation could do, so it's the most that System 2 could add.
-
-We decide whether each live alert is a threat using the cost-based threshold from Chapter 4, with a missed threat at \$10,000 and a false alarm at \$400. Then we send a share of alerts to System 2: either the ones System 1 is least sure about, or a random selection.
-
-::: {.tryit lab="ch08"}
-```{python}
-alerts = soc.load()
-alerts["p"] = score_alerts(alerts, "text")
-history, live = soc.history_and_live(alerts)
-system1 = cal.Platt().fit(history.p, history.malicious)(live.p)
-system2 = live.p_true.to_numpy()        # idealised investigation
-y = live.malicious.to_numpy()
-
-miss, fa = 10_000, 400
-line = fa / (fa + miss)
-lo = lambda x: np.log(x / (1 - x))
-doubt = np.argsort(np.abs(lo(np.clip(system1, 1e-6, 1 - 1e-6)) - lo(line)))
-
-def daily_cost(share):
-    act = (system1 >= line).astype(int)
-    sent = doubt[: int(share * len(y))]
-    act[sent] = (system2[sent] >= line).astype(int)
-    wrong = ((act == 1) & (y == 0)) * fa + ((act == 0) & (y == 1)) * miss
-    return wrong.sum() / 7
-
-for share in (0, 0.1, 0.2, 1.0):
-    print(f"send {share:4.0%} to System 2: ${daily_cost(share):,.0f} a day")
-```
-:::
+How much does it gain? On our alerts, System 1 is a fast decision model reading each alert's text. System 2 is a careful investigation; in a synthetic world I can make it perfect, so it shows the *most* slow thinking could add. Each alert is decided with Chapter 4's cost threshold (a missed threat \$10,000, a false alarm \$400). Then we send a share of alerts to System 2: either the ones System 1 is least sure about, or a random selection.
 
 ![Expected cost per day as more alerts go to System 2. Sending the alerts System 1 is least sure about (green, solid line) gets most of the benefit early. Sending a random share (grey, dashed line) gets almost nothing until you send nearly everything.](/figures/ch15/routing-curve.pdf){#fig-routing-curve}
 
@@ -134,22 +95,15 @@ The two-systems idea is a comparison, not a fact about the brain. Kahneman himse
 :::
 
 ::: {.threshold}
-Kestrel's System 2 is expensive: it's a senior analyst's time. The team can afford to send 10% of alerts, not 20%. Using @fig-routing-curve, about how much of the benefit do they keep? And if they could make System 1 better calibrated, would the curve move up, move down, or change shape?
+System 2 is expensive: it's a senior analyst's time. The team can afford to send 10% of alerts, not 20%. Using @fig-routing-curve, about how much of the benefit do they keep? And if they could make System 1 better calibrated, would the curve move up, move down, or change shape?
 
 (They'd keep a little over half. Better calibration makes the solid green curve drop *faster*. The cases System 1 marks as uncertain would really be the uncertain ones, so each case sent to System 2 gains more.)
 :::
 
-## Where we are
-
-We started with 2 + 2 and 17 × 24, and found two ways of thinking in each of us. Software, we saw, has mostly used its slow, general way for every job, even though most jobs are quick judgements. So we put a fast system in front of a slow one, and sent across only the cases it doubted. A fifth of the cases got most of the benefit. That only worked because the fast system was calibrated. That's the same condition under which psychologists say intuition can be trusted.
-
-Now we can look inside the model that took the name.
-
 ::: {.exercises}
 1. List five decisions from your own work that are System 1 work and two that need System 2. What makes the difference?
-2. In the lab, route the alerts randomly instead of by doubt, and plot both curves. At what share does random routing do as well?
-3. Explain in plain words why an overconfident System 1 makes routing by doubt fail.
-4. Using Kahneman and Klein's conditions, would you trust a System One model to triage insurance claims? To approve mortgages? To decide which patient a nurse sees first? Why or why not?
+2. Explain in plain words why an overconfident System 1 makes routing by doubt fail.
+3. Using Kahneman and Klein's conditions, would you trust a System One model to triage insurance claims? To approve mortgages? To decide which patient a nurse sees first? Why or why not?
 :::
 
 ::: {.nexthook}

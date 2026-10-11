@@ -4,14 +4,6 @@
 Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away.
 :::
 
-```{python}
-#| include: false
-import numpy as np
-from typesafe_sdk import (Choice, ChoiceAnswer, Noul, NoulAnswer, Score,
-                          ScoreAnswer, SystemOneResponse, TypeSafeClient)
-from jevkit import MockJevTransport, soc
-```
-
 Jev asks you to put every question into one of three shapes: yes or no, pick one, or rate it on a scale.
 
 That's the first thing people object to:
@@ -46,21 +38,7 @@ A `noul` is the most useful type, and the easiest to ask badly. Three habits hel
 
 **One fact per question.** "Is this a real attack on a critical server?" joins two facts, and a "no" can't tell you which one was false. Ask two nouls and combine them in your code, where the logic is visible.
 
-**Say exactly what yes and no mean.** "Is this malicious?" leaves the unclear cases open. Is an employee breaking a company rule malicious? Is a test attack that the company paid for? Say what counts. The API lets you describe both outcomes:
-
-::: {.tryit lab="ch10"}
-```{python}
-client = TypeSafeClient(api_key="mock", transport=MockJevTransport())
-alerts = soc.load()
-attack = Noul(
-    instructions="Is this alert a real attack?",
-    criteria={"true": "A real attacker or real malware is involved",
-              "false": "Normal activity, a test, or a false positive"})
-r = client.system_one(state=alerts.description[118],
-                      questions={"attack": attack})
-print(round(r.nouls["attack"].noul, 3))
-```
-:::
+**Say exactly what yes and no mean.** "Is this malicious?" leaves the unclear cases open. Is an employee breaking a company rule malicious? Is a test attack that the company paid for? Say what counts. The API lets you describe both: *yes* means "a real attacker or real malware is involved"; *no* means "normal activity, a paid test, or a false positive".
 
 **No double negatives.** "Is this not unlikely to be benign?" is hard for people and models. Ask the question in the simple, positive way.
 
@@ -72,7 +50,7 @@ A `choice` gives the model a set of labels, each with an optional description, a
 
 That "add up to 1" is important, and it has a downside. The model *must* spread all of its belief across the labels you gave it. If the right answer isn't among them, the probability doesn't disappear. It lands on the wrong labels.
 
-Here's what that looks like. I asked the mock to label {{< num ch17 n_harmless int >}} harmless alerts twice. The first time it had the full list of categories, including "benign". The second time it had only the threat categories.
+Here's what that looks like. I asked the stand-in to label {{< num ch17 n_harmless int >}} harmless alerts twice. The first time it had the full list of categories, including "benign". The second time it had only the threat categories.
 
 ![How confident the top label was for harmless alerts. With "benign" among the options (green, striped), almost all were labelled benign; only the few that weren't are shown. Without it (red, solid), every harmless alert got a threat label, most of them with high confidence.](/figures/ch17/forced.pdf){#fig-forced}
 
@@ -94,16 +72,7 @@ That average is convenient, but it can badly mislead you.
 
 Look at the first panel of @fig-severity. The alert's average severity is {{< num ch17 sev_example.expected f2 >}}, which reads as "low: review within a week". But there's hardly any probability *at* low. The model is really saying: *this is either nothing, or it's serious.* There's a {{< num ch17 sev_example.p_high pct >}} chance it's medium or high. The average of two very different possibilities describes neither of them.
 
-That happens whenever the model is unsure *whether* something is real. A harmless alert would be informational, and a real one would be serious. So the probabilities form two peaks, one at each end. Act on the probability of the levels you care about, here the high end:
-
-```{python}
-t = client.system_one(state=alerts.description[118], questions={
-    "severity": Score(instructions="How severe is this?",
-                      criteria=soc.SEVERITY_LEVELS)})
-p = t.scores["severity"].probabilities
-print(f"average level {t.scores['severity'].score:.2f}; "
-      f"P(medium or high) = {p[2] + p[3]:.2f}")
-```
+That happens whenever the model is unsure *whether* something is real. A harmless alert would be informational, and a real one would be serious. So the probabilities form two peaks, one at each end. Act on the probability of the levels you care about, here the high end.
 
 "Call someone if P(medium or high) is above 0.3" is a rule you can reason about and set with costs. "Call someone if the average is above 1.5" isn't.
 
@@ -123,24 +92,7 @@ It's also why you want probabilities for every option, not just the top label. A
 
 ## Several questions, one call
 
-Real decisions usually need a few answers about the same situation. You can ask the questions together. The state is sent once, and each question gets its own typed answer. The SDK even lets you describe the response as your own class. Then your code works with typed fields instead of dictionaries:
-
-```{python}
-class Triage(SystemOneResponse):
-    attack: NoulAnswer
-    kind: ChoiceAnswer
-    severity: ScoreAnswer
-
-t = client.system_one(
-    state=alerts.description[118],
-    questions={"attack": attack,
-               "kind": Choice(criteria={c: None for c in soc.CATEGORIES}),
-               "severity": Score(criteria=soc.SEVERITY_LEVELS)},
-    response_model=Triage)
-print(round(t.attack.noul, 2), t.kind.choice, round(t.severity.score, 2))
-```
-
-Then combine the answers in ordinary code, where every rule is visible and testable, like Chapter 14's `route()` function.
+Real decisions usually need a few answers about the same situation: *is it an attack, what kind, how severe?* Ask them together. The situation is sent once and each question gets its own typed answer. Then combine the answers in ordinary code, where every rule is visible and testable (Chapter 14).
 
 ::: {.breaks}
 Three types can't express everything. Some answers still need something else, often an LLM: a number on a continuous range ("how many megabytes?"), free text ("which username?"), or several fields pulled out of a document. Chapter 15's "extract, then decide" pattern shows how. The answers to separate questions in one call may not agree with each other. A low P(attack) next to a high P(severity high) is possible, and the code that combines them should expect it. And wording matters: a clearer description can change the probabilities, so test wording changes like any other change.
@@ -152,23 +104,11 @@ Kestrel calls the analyst on call when P(severity medium or high) is at least so
 (400 ÷ 10,400 ≈ 0.04, so call at about 4%. That's low, and it would mean many calls. That's why Chapter 14 limits calls to what the on-call analyst can handle. For critical assets a miss costs more, so the threshold should be even lower.)
 :::
 
-::: {.bookquote by="Fred Brooks, The Mythical Man-Month, 1975"}
-Show me your flowcharts and conceal your tables, and I shall continue to be mystified. Show me your tables, and I won't usually need your flowcharts; they'll be obvious.
-:::
-
-Brooks meant data structures in software. The same is true for decisions: get the *shape* of the question and its answers right, and most of the logic around it becomes obvious.
-
-## Where we are
-
-Three shapes, we found, cover most small decisions, as long as the questions are asked carefully. A noul needs one fact and a clear idea of what yes means. A choice spreads all its belief over the options you give it, so every real case needs an option. A score's average can describe a case that doesn't exist, so thresholds belong on the probability of the levels you care about. And for all three, the full set of probabilities is better than the top answer, because decisions are made with costs.
-
-Everything here has assumed the probabilities are calibrated. Time to check.
+Fred Brooks said that if you show him your data tables, your program becomes obvious. The same holds for decisions: get the *shape* of the question and its answers right, and most of the logic around it becomes obvious.
 
 ::: {.exercises}
 1. Rewrite each of these two-part questions as separate nouls, and say how you'd combine them: "Is this a phishing email that someone clicked on?"; "Is this login suspicious and from an admin account?"
-2. In the lab, remove "benign" and "policy_violation" from the choice for 50 harmless alerts. What's the mean confidence? Then add an "other" option instead. What changes?
-3. Find an alert in the lab whose severity probabilities have two peaks. What does its P(attack) look like? Why do the two go together?
-4. Design the typed questions for a decision in a domain you know (loan applications, support tickets, insurance claims). Which are nouls, which choices, which scores? What's the "benign" option each choice needs?
+2. Design the typed questions for a decision in a domain you know (loan applications, support tickets, insurance claims). Which are nouls, which choices, which scores? What's the "benign" option each choice needs?
 :::
 
 ::: {.nexthook}

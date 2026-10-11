@@ -131,8 +131,10 @@
   \begin{tcolorbox}[breakable, enhanced, colback=codebg, colframe=codebg, boxrule=0pt, arc=2pt,
     left=7pt, right=5pt, top=4pt, bottom=4pt, before skip=6pt, after skip=8pt,
     borderline west={1.6pt}{0pt}{barc}]}{\end{tcolorbox}}
+\ifdefined\Highlighting % only when the book has highlighted code
 \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},fontsize=\codesize,
   breaklines, breakanywhere, breaksymbolleft={}, breaksymbolright={}}
+\fi
 \fvset{fontsize=\codesize, breaklines, breakanywhere, breaksymbolleft={}, breaksymbolright={}, breakindent=1.2em}
 % Spaces in code are real space glyphs (same width), so text copied from the PDF keeps Python's indentation
 \fvset{showspaces}

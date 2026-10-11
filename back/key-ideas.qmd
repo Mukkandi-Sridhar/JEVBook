@@ -95,7 +95,7 @@ If a line no longer makes sense to you, go back to its page and read that part a
 - A decision model never writes and never acts on its own: it answers a typed question, and code acts. [ ]{.kref ref="key-ch15-1"}
 - Extract when the only input you have is text: extraction can't add facts the text doesn't contain. [ ]{.kref ref="key-ch15-2"}
 
-`\keychapter{`{=latex}**Chapter 16. First calls, and the mock that makes them free**`}`{=latex}
+`\keychapter{`{=latex}**Chapter 16. First calls, and the stand-in that makes them free**`}`{=latex}
 
 - Fix the model version, so a change in behaviour is your decision, not a surprise. [ ]{.kref ref="key-ch16-1"}
 - Retry errors from outside your code, never your own. [ ]{.kref ref="key-ch16-2"}

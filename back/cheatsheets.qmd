@@ -69,29 +69,14 @@ Here $z = \log\frac{p}{1-p}$ and $\sigma$ is the S-curve.
 - Ask related questions in one call: the state is sent once.
 - Decide with all the probabilities and the costs of each action, not just the top label.
 
-## The official SDK (Chapters 9, 10 and 16)
+## Calling a decision model (Chapters 9, 10 and 16)
 
-```python
-from typesafe_sdk import Choice, Noul, Score, TypeSafeClient, RetryPolicy
-from jevkit import MockJevTransport       # real API: drop this, add a key
-
-client = TypeSafeClient(api_key="mock", transport=MockJevTransport(),
-                        retry=RetryPolicy(max_retries=2))
-r = client.system_one(
-    state="…",                                           # text, JSON object or list
-    questions={
-        "attack": Noul(instructions="Is this a real attack?"),
-        "kind": Choice(criteria={"phishing": "…", "malware": "…", "none": None}),
-        "severity": Score(criteria=["low", "medium", "high"]),
-    },
-    model="jev-latest")                                  # pin a dated version
-r.nouls["attack"].noul                   # P(yes)
-r.choices["kind"].probabilities          # {label: P}
-r.scores["severity"].probabilities       # {level: P}
-r.usage, r.request_id                    # log both
-```
-
-Retry rate limits (429) and server errors (5xx). Never retry 4xx errors: fix the request.
+- Ask several typed questions about the same situation in **one call**: yes/no (noul), pick one (choice), rate on a scale (score).
+- Every choice needs an escape option: "none", "other", "not enough information".
+- **Pin the model version.** "latest" can change under you.
+- Retry rate limits and server errors; never retry your own mistakes, fix them.
+- Decide in advance what a **failed call means**; the safe default is "send to a person".
+- Log the probabilities, the policy version and the request ID with every decision.
 
 ## Choosing a method (Chapter 13)
 
