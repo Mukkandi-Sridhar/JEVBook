@@ -50,7 +50,7 @@ It helped. Over the week, real attacks never seen by anyone fell from about {{< 
 **True numbers show how much work there really is; they do not reduce it.** During an attack campaign, honest numbers showed that many more cases needed checking. Sometimes the right answer is simply more people.
 :::
 
-The team was never the problem. The old queue decided what they saw by accident; the new system decides it on purpose.
+The team was never the problem. With the old queue, what they checked depended on luck: whichever alert arrived first. With the new system, they check the most dangerous alerts first, by design.
 
 ## Beyond security
 

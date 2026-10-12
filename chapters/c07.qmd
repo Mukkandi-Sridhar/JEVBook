@@ -67,7 +67,7 @@ In its launch demo, Jev played the video game *Doom*, making about ten decisions
 Unknown facts about a new model are not a reason to avoid it. They are a reason to test it on your own data.
 
 ::: {.breaks}
-System 1 and System 2 are a way of describing thinking, not two real parts of the brain, and a System One model does not have "intuition"; it is a trained function. Sending doubtful cases to the slow system fails when the fast system is confidently wrong about a whole new type of case. Random checks and monitoring are needed to catch this. And company numbers come from the company's own tests; for a new model, behaviour can change quickly, so fix a version and test again.
+System 1 and System 2 are only a simple way to describe thinking; they are not two real parts of the brain. A System One model also has no real "intuition"; it is a learned formula. Sending doubtful cases to the slow system works only if the fast system knows when it is unsure. When a completely new kind of case appears, the fast system may be confidently wrong, and only random checks will catch it. Finally, the company's numbers come from its own tests, and a new model can change quickly, so fix a version and test it yourself.
 :::
 
 ::: {.exercises}

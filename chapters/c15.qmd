@@ -14,7 +14,7 @@ For the last few years, the usual AI system has been one big model doing everyth
 
 ![Two ways to build an AI system. Left: one model does everything as text. Right: each layer does one job. An LLM reads and writes, a decision layer answers typed questions with probabilities, a policy turns those into actions, and tools, logs and people sit underneath.](/figures/ch29/stack.pdf){#fig-stack}
 
-The right side of @fig-stack shows the design this book keeps reaching. The LLM does what only an LLM can do: read anything and write for people. The decision layer answers small, clear questions in one step, with probabilities we can test. The policy sets thresholds based on costs and team capacity. And at the bottom, tools take actions and people review. Each part is smaller than the whole system, can be tested on its own, and can be replaced without rebuilding everything else. This is the main reason this design is likely to last.
+The right side of @fig-stack shows the design this book has been building, chapter by chapter. The LLM does what only an LLM can do: read anything and write for people. The decision layer answers small, clear questions in one step, with probabilities we can test. The policy sets thresholds based on costs and team capacity. And at the bottom, tools take actions and people review. Each part is smaller than the whole system, can be tested on its own, and can be replaced without rebuilding everything else. So when a better LLM or a cheaper decision model appears, you can change one part and keep the rest. This is why we think the design will last.
 
 ::: {.keyidea}
 **Give each part of the system one job.** The LLM reads and writes, the decision model decides, your rules choose the action, and people decide what mistakes cost.
@@ -67,7 +67,7 @@ If you do only one thing after reading this book, make a list of every decision 
 Then choose *one* decision. Collect a few hundred cases with known outcomes and test the calibration. Put a cost on each type of mistake and set the thresholds. Run it in shadow mode. Switch it on with a rule for failures, random checks and daily monitoring. Then move to the next decision. This is not exciting work, but it is how every system in this book became better.
 
 ::: {.breaks}
-This chapter is the least certain part of the book. The cost and speed numbers are examples, and Jev's numbers are as reported by the company during early access. The idea that a separate decision layer will become standard is a reading of the evidence, not a proven fact. It could be wrong if general models become fast and well calibrated enough. Even then, everything about costs, thresholds and calibration will still apply.
+This chapter is the least certain part of the book. The cost and speed numbers are examples, and Jev's numbers are as reported by the company during early access. The idea that every AI system will soon have a separate decision layer is our opinion based on the evidence, not a proven fact. It could be wrong if general models become fast and well calibrated enough. Even then, everything about costs, thresholds and calibration will still apply.
 :::
 
 ::: {.threshold}

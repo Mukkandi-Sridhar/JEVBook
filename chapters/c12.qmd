@@ -38,7 +38,7 @@ In our example, extracting first improved the ranking (AUC) from {{< num ch22 ll
 
 ## A hybrid agent
 
-Now let us design the security agent from Chapter 6 as a **hybrid**: a decision model makes every decision, and the LLM writes only what a person will read. Every run leaves a **trace**, a step-by-step record of what the agent saw and what each decision said, with its probability. A trace works as a debugging tool, an audit record and an explanation, all at once.
+Now let us design the security agent from Chapter 6 as a **hybrid**: a decision model makes every decision, and the LLM writes only what a person will read. Every run leaves a **trace**, a step-by-step record of what the agent saw and what each decision said, with its probability. This one record helps the team find mistakes, answer questions from auditors, and explain any decision later.
 
 ![The hybrid agent. A cheap lookup always runs first. Jev decides which other evidence to collect, then answers the three verdict questions together. The policy turns the verdict into an action, and the LLM writes a case note or urgent message only when a person will read it.](/figures/ch24/architecture.pdf){#fig-architecture-17}
 
@@ -73,7 +73,7 @@ In our example, the hybrid agent took {{< num ch24 v2_seconds f1 >}} seconds per
 :::
 
 ::: {.breaks}
-All numbers in this chapter are illustrative, including the timings, and part of the difference between the two agents comes from how the example was set up. Treat the speed, the queue and the design lessons as the main findings. Also, combining several patterns adds more places to fail: an extractor, then a gate, then a router means three places where a mistake can happen.
+All numbers in this chapter are illustrative, including the timings, and part of the difference between the two agents comes from how the example was set up. Treat the speed, the queue and the design lessons as the main findings. Also, every pattern you add is one more place where something can go wrong: if an LLM first reads the text, then a safety check runs, and then a router sends the case on, a mistake can happen at any of these three steps.
 :::
 
 ::: {.exercises}

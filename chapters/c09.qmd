@@ -4,8 +4,8 @@ A week after Jev was launched, two opinions were being shared. TypeSafe said Jev
 
 ::: {.goals}
 - Understand why calibration depends on your data.
-- Fix a base-rate mismatch using a few hundred labelled cases.
-- Know how many labelled cases a calibration check needs.
+- Correct a model's numbers when attacks are more or less common at your company.
+- Know how many past cases with known answers you need for a fair check.
 :::
 
 ## Why the critic has a point
@@ -61,7 +61,7 @@ For pick-one questions, first check the top answer: when its confidence is about
 So, the company may be right that Jev is calibrated on the data it tested. The critic is right that this does not prove it is calibrated on yours. This routine turns the argument into a measurement. Until you have done it, treat a new model's outputs as scores, not as probabilities.
 
 ::: {.breaks}
-Labelled cases are not perfect either. People disagree, some attacks are never discovered, and some outcomes become clear only later: an alert closed today may turn out to be part of an attack found next month. So use cases old enough that their outcome is settled. And be careful with cases that have labels only because of the model's own decisions: if the model closed a case, nobody checked it.
+Even the "known answers" of past cases are not perfect. Experts sometimes disagree, some attacks are never discovered, and some become clear only later: an alert closed today may turn out to be part of an attack found next month. So test with cases that are old enough for the truth to be known. And remember that cases the model closed by itself were never checked by anyone, so their "answer" is only the model's own guess.
 :::
 
 ::: {.exercises}

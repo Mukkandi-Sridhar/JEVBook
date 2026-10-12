@@ -64,7 +64,7 @@ Almost every protection in this chapter is the same thing: a check that becomes 
 
 ![A decision layer between what an agent proposes and what actually happens: schema and allow-list checks, a typed decision with a calibrated probability, a threshold from costs, a budget and trusted facts, then one of three doors.](/figures/ch14/defences.pdf){#fig-defences}
 
-The decision layer checks each proposed action against what is allowed, asks clear questions, uses thresholds based on costs, takes risky facts only from trusted systems, and sends each case through one of the three doors: act, review or escalate (@fig-defences). If anything fails, such as a timeout or an unreadable answer, the case goes to a person. None of this needs a smarter model. It needs decisions that are fast, cheap and calibrated.
+Before any action happens, the decision layer does a few simple checks. Is this action on the list of allowed actions? What does a clear question about it say, and with what probability? Is that probability above the line set by the costs? Did the important facts come from a trusted system, not from text an attacker could write? Then it sends the case through one of the three doors: act, review or escalate (@fig-defences). If anything fails, such as a timeout or an unreadable answer, the case goes to a person. None of this needs a smarter model. It needs decisions that are fast, cheap and calibrated.
 
 ::: {.threshold}
 An agent can close an alert, add a note, block a sender's website, or disconnect a laptop from the network. Which actions can it do automatically when confident, and which should always need a person?

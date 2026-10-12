@@ -78,7 +78,7 @@ Suppose an LLM replies: `"verdict": "malicious", "confidence": 0.95`. Can we tru
 
 - **The written confidence** is just text that the model wrote. In our example, the LLM used only {{< num ch11 n_distinct_stated int >}} different values, mostly 0.9 or more, so it hardly separates attacks from normal alerts.
 - **The token probability** is the probability the model gave to the word "malicious". It ranks better but is overconfident, and it is the probability of a *word*, not of an answer.
-- **A decision model's probability** is designed to be the probability of the answer itself (@fig-three-confidences). This is the gap that System One models try to fill.
+- **A decision model's probability** is designed to be the probability of the answer itself (@fig-three-confidences). Getting such a trustworthy number in one fast step is exactly what System One models are designed for.
 
 ::: {.exercises}
 1. A company says its classifier is "97% accurate" and gives a confidence with every answer. You plan to act automatically when the confidence is above 0.9. What would you check first?

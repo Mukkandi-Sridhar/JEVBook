@@ -42,7 +42,7 @@ A **score** question returns a probability for each level of a scale, for exampl
 
 ![Severity probabilities for three alerts, with the average level marked. The first alert's average sits at "low". But its probability is split between "informational" and "medium or high". Almost nothing is actually at "low".](/figures/ch17/severity.pdf){#fig-severity}
 
-Look at the first alert in @fig-severity. Its average level is {{< num ch17 sev_example.expected f2 >}}, which reads as "low". But almost no probability is actually at "low". The model is really saying: *this is either nothing, or something serious*. There is a {{< num ch17 sev_example.p_high pct >}} chance it is medium or high. The average of two very different possibilities describes neither of them.
+Look at the first alert in @fig-severity. Its average level is {{< num ch17 sev_example.expected f2 >}}, which reads as "low". But almost no probability is actually at "low". The model is really saying: *this is either nothing, or something serious*. There is a {{< num ch17 sev_example.p_high pct >}} chance it is medium or high. It is like a student who scores either 20 or 90 in every exam: the average, 55, describes neither result.
 
 ::: {.keyidea}
 **An "average level" can hide the real danger.** A model may be saying "either nothing, or something serious", but the average comes out as "low". Look at the chance of the serious levels, not the average.

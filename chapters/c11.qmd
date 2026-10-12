@@ -4,8 +4,8 @@ Suppose an alert comes in at 2 a.m., and the model gives it a probability of 0.3
 
 ::: {.goals}
 - Set the act and escalate thresholds using costs.
-- Adjust the policy to the number of people you actually have.
-- Run the policy safely, with random checks, logs and daily monitoring.
+- Fit your rules to the number of people you actually have.
+- Run the system safely, with random checks, records and daily monitoring.
 :::
 
 ## Why 0.5 fails
@@ -87,7 +87,7 @@ Write the policy down with a version number, for example: "Version 3: act below 
 Then watch three numbers every day: the share of cases at each door, the review queue compared with the team's capacity, and the predicted number of attacks compared with the confirmed number. When an attack campaign starts in week five, no single alert looks unusual. But the model expected {{< num ch21 campaign_pred pct >}} of alerts to be attacks while the real figure was {{< num ch21 campaign_actual pct >}}, and the review queue overflowed (@fig-drift-watch). Both problems are clear on a daily chart. Then a person decides what to do: re-calibrate with the latest week, tighten the act threshold for that type of alert for some time, or add more reviewers.
 
 ::: {.breaks}
-Thresholds are set using past data, but attackers act in the future. An attacker who learns what makes the model relax will try to make their activity look exactly like that. Random checks, keeping the model's scores private, and never auto-closing critical systems make this harder, but not impossible. The cost estimates also need to be reviewed whenever the business changes, not only when the model changes.
+The lines are set using past data, but attackers act in the future. An attacker who learns which kinds of alerts the model treats as safe will try to make the attack look exactly like those. Random checks, keeping the model's scores private, and never auto-closing critical systems make this harder, but not impossible. The cost estimates also need to be reviewed whenever the business changes, not only when the model changes.
 :::
 
 ::: {.exercises}

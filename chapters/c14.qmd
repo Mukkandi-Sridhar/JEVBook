@@ -61,14 +61,14 @@ Imagine a small model built for alerts. One shared part, the **encoder**, reads 
 
 ![Reliability of P(attack) on the live week. Left: the small model as trained, slightly overconfident. Middle: after dividing by the fitted temperature. Right: the overtrained network before any temperature; its problems are ones no single temperature can fix.](/figures/ch27/calibration.pdf){#fig-calibration}
 
-In our example, the temperature correction reduced the calibration error from {{< num ch27 raw_ece f3 >}} to {{< num ch27 temp_ece f3 >}}, without changing the ranking. A much bigger version trained for too long was a warning: its error was {{< num ch27 over_ece f3 >}}, and after a temperature correction it was no better, {{< num ch27 over_ece_temp f3 >}} (@fig-calibration). A correction can soften answers, but it cannot bring back what was lost by memorising.
+In our example, the temperature correction reduced the calibration error from {{< num ch27 raw_ece f3 >}} to {{< num ch27 temp_ece f3 >}}, without changing the ranking. A much bigger version trained for too long was a warning: its error was {{< num ch27 over_ece f3 >}}, and after a temperature correction it was no better, {{< num ch27 over_ece_temp f3 >}} (@fig-calibration). Once a model has memorised its training cases, a correction afterwards cannot fully repair it. It is better to stop training at the right time.
 
 ::: {.keyidea}
 **Train carefully, stop at the right time, then correct the numbers.** Training too long makes a model memorise and become overconfident. After training, correct its numbers on cases it has never seen.
 :::
 
 ::: {.breaks}
-A real service also needs login security for its users, limits on usage, safe storage for its records, control over who can change the settings, and protection for any personal data. Shadow tests show only where two versions *disagree*; if both are wrong in the same way, only random checks will catch it. And a small model trained on one company's alerts will drift as soon as the situation changes.
+A real service also needs login security for its users, limits on usage, safe storage for its records, control over who can change the settings, and protection for any personal data. Shadow tests show only where two versions *disagree*; if both are wrong in the same way, only random checks will catch it. And a small model trained on one company's alerts will slowly become wrong as that company's situation changes, so it must be checked and retrained regularly.
 :::
 
 ::: {.exercises}

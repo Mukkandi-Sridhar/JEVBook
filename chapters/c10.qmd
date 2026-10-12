@@ -66,11 +66,11 @@ Read @fig-scorecard-13 column by column, and ask which columns matter for *your*
 :::
 
 ::: {.breaks}
-This is one decision in one example company, with illustrative numbers for the LLM and Jev. The test week has only about four hundred real attacks, so small differences in AUC may be due to chance. The real value of a bake-off is the *method*: run the same comparison on your own data, with the real models.
+This is one decision in one imagined company, and the numbers for the LLM and Jev are only illustrations. The test week has only about four hundred real attacks, so small differences between methods may be pure chance. What you should take from this chapter is the *way* of comparing: run the same comparison on your own data, with the real models.
 :::
 
 ::: {.threshold}
-A new team will handle cloud storage alerts, a decision nobody has labelled yet. They will get about 300 labelled cases per week. Which method should they start with, and when should they reconsider?
+A new team will handle alerts about cloud storage. Nobody has checked any of these alerts before, so there are no past answers yet. The team will check and mark about 300 cases per week. Which method should they start with, and when should they reconsider?
 
 (Start with a method that needs no labels. Use the first 300 labelled cases to check and fix its calibration. After a few weeks, train a logistic regression next to it. If both agree, keep the cheaper one. If they disagree, study the cases where they disagree.)
 :::

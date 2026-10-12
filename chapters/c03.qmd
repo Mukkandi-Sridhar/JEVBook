@@ -4,7 +4,7 @@ If a model says 80%, does it really mean 80%? This sounds like a silly question,
 
 ::: {.goals}
 - Understand what *calibrated* means, and why it is different from accurate.
-- Check calibration using a reliability diagram and one simple number.
+- Check a model's numbers with one simple chart and one simple score.
 - Fix a model whose probabilities are wrong, and check it group by group.
 :::
 
@@ -32,7 +32,7 @@ A model's numbers can be good at two separate jobs, and it is important not to m
 
 ![Two models, identical at ranking (same AUC) but not at calibration. Model A is the logistic regression from Chapter 2. Model B is the same model with its probabilities distorted: it still sorts the alerts in the same order, but its numbers no longer mean anything.](/figures/ch04/same-auc.pdf){#fig-same-auc}
 
-In @fig-same-auc, both models have the same AUC of {{< num ch04 lr.auc f3 >}}. But model B says 40% for alerts that are attacks only a few times in a hundred. If you only sort alerts, B is as good as A. But the moment you use its numbers to make a decision, B will mislead you. Most leaderboards report only ranking. For decisions, calibration usually matters more.
+In @fig-same-auc, both models have the same AUC of {{< num ch04 lr.auc f3 >}}. But model B says 40% for alerts that are attacks only a few times in a hundred. If you only want to know which alerts to check first, B is as good as A. But if you use B's numbers to decide, for example "close every alert below 10%", B will mislead you. Most published comparisons of AI models report only the ranking, but for decisions, correct numbers usually matter more.
 
 ::: {.keyidea}
 **Putting cases in the right order is not enough; the numbers must also be right.** A model can put the most dangerous alerts at the top of the list and still say "40%" when the truth is "4%". To decide, you need both the right order and the right numbers.
@@ -64,9 +64,7 @@ The good news is that a model which ranks well but is badly calibrated is usuall
 
 ![The three corrections, each fitted to the rebalanced model on the calibration set. Platt scaling learns an S-curve that can shift and stretch. Temperature scaling learns one number that only stretches around the middle, and here it barely changes anything. Isotonic regression learns any rising staircase.](/figures/ch04/fixes.pdf){#fig-fixes}
 
-For the rebalanced model, Platt scaling brings the ECE down from {{< num ch04 balanced.ece f3 >}} to {{< num ch04 fixes.Platt.ece f3 >}}. Temperature scaling does not help at all; the ECE stays at {{< num ch04 fixes.Temperature.ece f3 >}}. The reason is useful to know. Rebalancing did not make the model overconfident. It *shifted* all its predictions upwards. Temperature can only stretch or squeeze around the middle; it cannot shift everything down.
-
-Temperature scaling fixes overconfidence. It cannot fix a wrong base rate.
+For the rebalanced model, Platt scaling brings the ECE down from {{< num ch04 balanced.ece f3 >}} to {{< num ch04 fixes.Platt.ece f3 >}}. Temperature scaling does not help at all; the ECE stays at {{< num ch04 fixes.Temperature.ece f3 >}}. The reason is useful to know. Rebalancing did not make the model overconfident. It *shifted* all its predictions upwards. Temperature scaling can only make answers less extreme, pulling 99% towards 90% or 1% towards 10%. It cannot move all the numbers down together. So it fixes a model that is too sure of itself, but not a model that believes attacks are more common than they really are.
 
 ## Correct on average, wrong for one group
 
@@ -81,7 +79,7 @@ A model can be well calibrated overall but wrong for one group. Suppose a model 
 These groups can be sources, customer types, languages and regions. When a model affects people's lives, they must also include groups of people, such as age or gender.
 
 ::: {.breaks}
-Calibration is true only for data similar to the data you checked it on, and it slowly fades as things change. Also, calibration says nothing about one single prediction: a perfectly calibrated 70% is still wrong three times out of ten. Keep fresh data for checking, and check again regularly.
+A model whose numbers were correct last month may not be correct today, because the world changes: new kinds of attacks, new software, new users. Also, correct numbers do not make every single answer right: if the model honestly says 70%, it will still be wrong about three times out of ten. So keep checking the model on recent cases, again and again.
 :::
 
 ::: {.exercises}
