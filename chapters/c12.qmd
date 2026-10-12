@@ -13,7 +13,7 @@ An experienced cook does not need a recipe for every dish, because most dishes u
 All six patterns in @fig-catalog follow one rule.
 
 ::: {.keyidea}
-**A decision model answers; your program acts.** It never writes text and never acts alone, so every action passes through rules you control.
+**The model only answers; your own program takes the action.** The model gives an answer with a probability, and your rules decide what to do with it. So nothing happens without passing through rules you control.
 :::
 
 ## Six patterns
@@ -51,7 +51,7 @@ Suppose we run the agent for a week. Everything looks fine: no errors, every ans
 In our example, across {{< num ch24 n int >}} alerts, the step "which evidence should I collect next?" *never* chose the threat-intelligence lookup, the most useful information about an alert (@fig-never-picked). So all verdicts were made without it. The ranking dropped from {{< num ch24 v2_auc f3 >}} to {{< num ch24 v1_auc f3 >}}, and about {{< num ch24 v1_closed_threats_day f1 >}} real attacks per day were closed automatically. Every answer was in a clean, correct format, so nothing in the system complained.
 
 ::: {.keyidea}
-**Count the answers at every decision step.** An option that is never chosen is a silent bug. No error message will warn you.
+**Count how often each answer is chosen.** In our example, the agent never once chose the most useful option, and there was no error message. Simple counting is the only way to catch such hidden mistakes.
 :::
 
 The fix was not a better model. The threat lookup takes a fraction of a second and costs almost nothing. Deciding *whether* to do the lookup costs about the same as simply doing it. So the agent now always does the lookup. When checking something is cheaper than deciding whether to check it, just check it.
@@ -69,7 +69,7 @@ In our example, the hybrid agent took {{< num ch24 v2_seconds f1 >}} seconds per
 @fig-labour shows where the time goes. The LLM-only agent spends most of its time deciding. The hybrid agent spends its biggest share on *writing* notes that people will read, which is exactly the work an LLM is best at.
 
 ::: {.keyidea}
-**Use the LLM only for what only an LLM can do.** That means reading messy text and writing for people. Leave the deciding to a decision model.
+**Use an LLM for reading and writing, not for deciding.** LLMs are excellent at understanding messy text and writing for people. For the decisions themselves, a decision model is faster, cheaper and more reliable.
 :::
 
 ::: {.breaks}

@@ -17,7 +17,7 @@ What is 2 + 2? The answer came immediately. Now try 17 × 24. This feels differe
 Software fits this idea well. Rules and simple classifiers work like System 1: fast and good with familiar patterns. LLMs, especially the ones that "reason" step by step, are closest to System 2: slow, general, and paid for by every word. In real work, as @fig-task-map shows, most tasks are quick judgements that happen many times a day. Only a few need deep thinking. Yet today we often use slow System 2 tools for everything.
 
 ::: {.keyidea}
-**Most work needs fast thinking, but we often use slow tools for it.** Hundreds of quick judgements happen every day; only a few need deep reasoning. Match the tool to the task.
+**Most daily decisions are quick ones, but we use slow, expensive AI for all of them.** Like a cashier who does not need a calculator for 2 + 2, most decisions need a fast answer. Keep the slow, careful AI for the few hard cases.
 :::
 
 ## Send the doubtful cases to the slow system
@@ -29,7 +29,7 @@ If we have a fast system and a slow system, how should we divide the work? A goo
 In our example, sending the 20% of alerts that the fast system is least sure about gives {{< num ch15 share_gain_20 pct >}} of the total benefit that careful checking could give. Sending a random 20% gives only {{< num ch15 share_gain_20_random pct >}} (@fig-routing-curve). And we pay the slow cost only for that 20%.
 
 ::: {.keyidea}
-**Send only the doubtful cases to the slow system.** A fast model that honestly knows when it is unsure saves most of the cost and keeps most of the quality.
+**Let a fast model handle the easy cases, and send only the doubtful ones to the slow one.** If the fast model honestly knows when it is unsure, you get almost the full quality while paying the slow cost for only a few cases.
 :::
 
 This works only if the fast system is calibrated: its "50%" must really mean "could go either way". Kahneman and the psychologist Gary Klein agreed that fast judgement can be trusted when the situation is regular, there is a lot of practice, and feedback comes quickly [@kahneman2009].
@@ -45,7 +45,7 @@ When this book was written, Jev was new and in early access. The public informat
 ![Every claim about Jev in this book, sorted into three piles. The first pile you can check yourself today. The second is what TypeSafe says. The third is what nobody outside the company can know yet.](/figures/ch16/ledger.pdf){#fig-ledger}
 
 ::: {.keyidea}
-**Sort every claim into three groups: checked, claimed by the company, and unknown.** This simple habit protects you from the hype around any new AI model.
+**For any new AI product, separate what is proven from what is only claimed.** Put each claim in one of three groups: checked by you, said by the company, or unknown. This protects you from advertising hype.
 :::
 
 **Checked: how you use it.** You send one request with three parts: the **state** (a description of the situation), the **model** name, and a set of clear **questions**. For each question, you get back an answer with a probability for every option. There are three types of questions: yes/no, pick-one, and rate-on-a-scale (Chapter 8).

@@ -23,7 +23,7 @@ The problem starts when the situation keeps changing. Think about fake messages 
 So we change the approach. Instead of writing the rules ourselves, we collect thousands of old emails where we already know the answer: this one was phishing, this one was normal. Then we ask the computer to find the pattern by itself (@fig-rules-vs-examples).
 
 ::: {.keyidea}
-**Learning means finding the rules from examples.** Instead of writing every rule by hand, we show the computer many cases with known answers, and it discovers the pattern itself. That is why it can keep up when the world changes.
+**A computer can learn the rules by itself from examples.** We do not write every rule by hand. We show it thousands of old cases where we already know the answer, and it finds the pattern. When the cheaters change their tricks, we simply show it new examples.
 :::
 
 ## What is a model?
@@ -33,7 +33,7 @@ After the computer studies the examples, we get something we can use on new case
 You can imagine a model as a machine with many small knobs. During learning, the computer keeps turning the knobs until the machine gives the right answer for most of the examples. After that, we stop turning the knobs and use the machine on new emails, where nobody knows the answer yet.
 
 ::: {.keyidea}
-**A model is a function whose settings come from examples, not from a programmer.** You give it a new case, and it gives back an answer using what it learned.
+**A model is a learned rule.** It is like a formula whose numbers were not typed by a programmer but found from examples. You give it a new case, and it gives back an answer.
 :::
 
 You already use many models. When your bank sends an SMS like *"Did you just make a payment of ₹40,000 in another city? Reply NO if not you,"* no person wrote a rule about you. A model learned your normal spending pattern, and this payment did not match it.
@@ -53,7 +53,7 @@ The computer chooses {{< num ch01 best_t f2 >}}. With this threshold it makes {{
 Why did this happen? There are about twelve harmless alerts for every real attack. So the easiest way to reduce the number of mistakes is to almost never raise an alarm. The computer did exactly what we asked. Our question was wrong.
 
 ::: {.keyidea}
-**A model learns exactly what you ask for.** Ask it only to make fewer mistakes, and it may learn to never raise an alarm. Asking the right question matters more than the algorithm.
+**If you ask the wrong question, you get a useless answer.** We asked the computer only to "make as few mistakes as possible". Since attacks are rare, it learned the easiest trick: never say "attack". The computer did what we asked, not what we wanted.
 :::
 
 In fact, our question had two problems. First, it counted every mistake as equal, although missing a real attack costs much more than one false alarm; Chapter 4 fixes this. Second, it forced the answer to be only *yes* or *no*, which throws away useful information, as we see next.
@@ -71,7 +71,7 @@ So for an alert with a score of 0.55, the honest answer is not "attack" or "safe
 This kind of answer is much more useful. It tells the team how worried to be, which alerts to check first, and, once we know the cost of each mistake, where to draw the line.
 
 ::: {.keyidea}
-**A useful answer also says how sure it is.** "About one in five cases like this is an attack" is far more useful than "yes" or "no", but only if that one-in-five is correct.
+**"How likely" is more useful than "yes" or "no".** An answer like "one in five alerts like this is an attack" tells you how worried to be and which case to check first. But it helps only if that "one in five" is true.
 :::
 
 When a model's "how sure" is correct, we say the model is **calibrated**. You will see this word many times in this book, and Chapter 3 explains it fully.

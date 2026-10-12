@@ -19,7 +19,7 @@ Most people are not like this. If you ask someone for a range they are "90% sure
 Good forecasters are not always right; nobody can be. They are good because their numbers mean what they say (@fig-forecasters). This is called **calibration**.
 
 ::: {.keyidea}
-**Calibrated means the numbers can be trusted.** If a model says 80% for a hundred cases, about eighty of them should really happen. If not, every decision built on its numbers is misled.
+**A model's "80%" must really mean 80%.** Take all the cases where it said 80%: about 80 out of 100 should turn out true. This is called being calibrated. If its 80% really means 50%, every decision based on it goes wrong.
 :::
 
 ## Ranking and calibration are two different things
@@ -35,7 +35,7 @@ A model's numbers can be good at two separate jobs, and it is important not to m
 In @fig-same-auc, both models have the same AUC of {{< num ch04 lr.auc f3 >}}. But model B says 40% for alerts that are attacks only a few times in a hundred. If you only sort alerts, B is as good as A. But the moment you use its numbers to make a decision, B will mislead you. Most leaderboards report only ranking. For decisions, calibration usually matters more.
 
 ::: {.keyidea}
-**Sorting well is not the same as being correct.** A model can put the attacks at the top of the list and still give wrong percentages. For decisions, you need both.
+**Putting cases in the right order is not enough; the numbers must also be right.** A model can put the most dangerous alerts at the top of the list and still say "40%" when the truth is "4%". To decide, you need both the right order and the right numbers.
 :::
 
 ## How to check calibration
@@ -75,7 +75,7 @@ Temperature scaling fixes overconfidence. It cannot fix a wrong base rate.
 A model can be well calibrated overall but wrong for one group. Suppose a model cannot tell which system raised each alert. Its overall ECE is an excellent {{< num ch04 generic.ece f3 >}}. But for alerts from laptops and servers (EDR in @fig-by-source), it says {{< num ch04 by_source.EDR.pred pct1 >}} when the truth is {{< num ch04 by_source.EDR.actual pct1 >}}. For data-leak alerts (DLP), it says {{< num ch04 by_source.DLP.pred pct1 >}} when the truth is {{< num ch04 by_source.DLP.actual pct1 >}}. The errors cancel out in the average, and real attacks on laptops get closed without anyone looking.
 
 ::: {.keyidea}
-**An average can hide a group that is badly wrong.** A model can be correct overall but wrong for laptops, or for one language or region. Check every group you treat differently.
+**A model that is right on average can still be wrong for one group.** It may be correct for all alerts together but wrong for laptop alerts, or for one language or one region. Check each group separately.
 :::
 
 These groups can be sources, customer types, languages and regions. When a model affects people's lives, they must also include groups of people, such as age or gender.

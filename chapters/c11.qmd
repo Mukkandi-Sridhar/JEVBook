@@ -27,7 +27,7 @@ Every case can leave through one of three doors:
 The same idea works outside security. In customer support, the three doors are an automatic reply, a support agent and a supervisor. In checking social media posts, they are automatic approval, a human reviewer and the legal team.
 
 ::: {.keyidea}
-**Three doors: act, review, escalate.** The machine handles the clear cases at both ends, and people handle the unclear middle.
+**Every case can go through one of three doors: act, review or escalate.** The machine closes the clearly safe cases, a person checks the unclear ones, and the clearly dangerous ones wake someone up immediately.
 :::
 
 In @fig-zones-strip, most harmless alerts are on the left, and most real attacks are on the right. But some attacks are scattered in the middle, and a few hide among the harmless ones. No two lines can put every alert in the right place. Our job is to make sure the mistakes we cannot avoid are the cheap ones.
@@ -49,7 +49,7 @@ Look at the first number again. The machine may close an alert by itself only wh
 **Check the probabilities first.** These lines assume that *P* is correct. In our example, for alerts the raw model called "below 2%", it said {{< num ch21 raw_believed pct1 >}} on average, but the real rate was {{< num ch21 raw_actual pct1 >}}, which is {{< num ch21 raw_ratio f1 >}} times higher. Most models are overconfident at the extremes. Platt scaling on past data brings them close to the truth.
 
 ::: {.keyidea}
-**Check the probabilities before you set any threshold.** A threshold on wrong numbers quietly closes real attacks.
+**Check that the model's numbers are true before you draw any lines.** If the model says 1% when the truth is 3%, your line will quietly close real attacks without anyone noticing.
 :::
 
 ## The real limit: the number of people
@@ -57,7 +57,7 @@ Look at the first number again. The machine may close an alert by itself only wh
 If we use only the cost-based thresholds, about {{< num ch21 ideal.review int >}} alerts per day go to review. That is a full day's work for about {{< num ch21 ideal_reviews_analysts int >}} people. But the team has only {{< num ch21 analysts int >}} people, so it can review about {{< num ch21 capacity int >}} alerts per day. Anything beyond that is simply not looked at, and nobody chooses which ones are skipped.
 
 ::: {.keyidea}
-**The size of the team is part of the policy.** If the review queue is bigger than the team, cases get skipped at random. Design for the team you actually have.
+**Plan for the number of people you actually have.** If about 640 cases a day go to a team that can check 240, the other 400 are never seen, and nobody chooses which ones are skipped.
 :::
 
 So we ask a better question: *among the policies that fit the team we actually have, which one costs the least?* With such a policy, tested on a new week, the machine closes {{< num ch21 chosen.act int >}} alerts per day, people review {{< num ch21 chosen.review int >}}, and {{< num ch21 chosen.escalate int >}} are escalated. The number of real attacks closed without anyone seeing them falls from {{< num ch21 naive.missed_by_automation int >}} per day to about {{< num ch21 chosen.missed_by_automation f1 >}}.
@@ -75,7 +75,7 @@ About six per day is still not zero. Now think like the manager who approves the
 **Randomly check what the machine closed.** Cases sent to people come back with an answer. Cases closed by the machine come back with *nothing*, so you never see the machine's own mistakes, exactly where they hurt most. So send a small random share, say 3%, of automatically closed cases to a person anyway.
 
 ::: {.keyidea}
-**Randomly check what the machine closed.** Closed cases never come back with an answer, so without random checks you will never see the machine's mistakes.
+**Always check a few of the cases the machine closed by itself.** Nobody looks at a closed case again, so the machine's mistakes stay hidden unless you pick some at random and check them.
 :::
 
 ## Running it every day
