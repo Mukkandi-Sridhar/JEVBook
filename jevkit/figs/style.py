@@ -136,6 +136,13 @@ def save(f, chapter: str, name: str, outdir: str | os.PathLike | None = None, ti
     out = Path(outdir) if outdir else ROOT / "figures" / chapter
     out.mkdir(parents=True, exist_ok=True)
     kw = dict(bbox_inches="tight", pad_inches=0.04) if tight else {}
+    # Diagram canvases (axes with no axis lines): never trim a box, line or label at the canvas edge.
+    # With clipping off, the tight bounding box grows to include anything drawn just past the edge.
+    for ax in f.axes:
+        if not ax.axison:
+            for a in ax.get_children():
+                if a is not ax.patch:
+                    a.set_clip_on(False)
     f.savefig(out / f"{name}.pdf", metadata={"CreationDate": None, "ModDate": None, "Producer": None, "Creator": None}, **kw)
     f.savefig(out / f"{name}.svg", metadata={"Date": None, "Creator": None}, **kw)
     plt.close(f)

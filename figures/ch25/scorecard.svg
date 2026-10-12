@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="344.16pt" height="205.243781pt" viewBox="0 0 344.16 205.243781" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="344.16pt" height="208.123781pt" viewBox="0 0 344.16 208.123781" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
@@ -15,8 +15,8 @@
  </defs>
  <g id="figure_1">
   <g id="patch_1">
-   <path d="M 0 205.243781 
-L 344.16 205.243781 
+   <path d="M 0 208.123781 
+L 344.16 208.123781 
 L 344.16 0 
 L 0 0 
 z
@@ -29,7 +29,7 @@ L 341.28 75.643781
 L 341.28 55.483781 
 L 2.88 55.483781 
 z
-" clip-path="url(#p912ec797e2)" style="fill: #d5d8dd"/>
+" style="fill: #d5d8dd"/>
    </g>
    <g id="patch_3">
     <path d="M 2.88 118.843781 
@@ -37,7 +37,7 @@ L 341.28 118.843781
 L 341.28 98.683781 
 L 2.88 98.683781 
 z
-" clip-path="url(#p912ec797e2)" style="fill: #d5d8dd"/>
+" style="fill: #d5d8dd"/>
    </g>
    <g id="patch_4">
     <path d="M 2.88 162.043781 
@@ -45,7 +45,7 @@ L 341.28 162.043781
 L 341.28 141.883781 
 L 2.88 141.883781 
 z
-" clip-path="url(#p912ec797e2)" style="fill: #d5d8dd"/>
+" style="fill: #d5d8dd"/>
    </g>
    <g id="patch_5">
     <path d="M 2.88 205.243781 
@@ -53,7 +53,7 @@ L 341.28 205.243781
 L 341.28 185.083781 
 L 2.88 185.083781 
 z
-" clip-path="url(#p912ec797e2)" style="fill: #d5d8dd"/>
+" style="fill: #d5d8dd"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 700; font-size: 6.6px; font-family: 'Inter'; text-anchor: middle; fill: #5b6b82" x="186.48" y="46.441875" transform="rotate(-0 186.48 46.441875)">before</text>
@@ -142,9 +142,4 @@ z
    <text style="font-weight: 500; font-size: 5.6px; font-family: 'Inter'; text-anchor: end; fill: #6b7280" x="339.588" y="8.305" transform="rotate(-0 339.588 8.305)">SYNTHETIC · not measured on real Jev</text>
   </g>
  </g>
- <defs>
-  <clipPath id="p912ec797e2">
-   <rect x="2.88" y="11.563781" width="338.4" height="190.8"/>
-  </clipPath>
- </defs>
 </svg>
