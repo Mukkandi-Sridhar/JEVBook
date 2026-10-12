@@ -42,9 +42,9 @@ You already use many models. When your bank sends an SMS like *"Did you just mak
 
 To make the ideas concrete, this book uses one example again and again. Let us imagine a logistics company called Kestrel Logistics. Like any company, its computers raise warnings when something looks suspicious, for example a login from a strange country. These warnings are called **alerts**. Suppose that in four weeks the security team receives {{< num ch01 n_alerts int >}} alerts, about {{< num ch01 per_day int >}} per day, and only {{< num ch01 base_rate pct1 >}} of them are real attacks; the rest are false alarms. Since this is an example, we can assume we know the correct answer for every alert, which lets us check every idea properly.
 
-Each alert comes with a *threat score* between 0 and 1. A higher score means outside security sources think it is more dangerous. Let us try a simple rule: *if the score is above some number t, mark the alert as an attack.* A cut-off number like *t* is called a **threshold**.
+Each alert comes with a *threat score* between 0 and 1. The score comes from outside security services that keep lists of known dangerous websites and computers. A high score means the alert involves something already known to be dangerous. Let us try a simple rule: *if the score is above some number t, mark the alert as an attack.* A cut-off number like *t* is called a **threshold**.
 
-Which value of *t* should we choose? We let the computer try every value from 0 to 1, count the mistakes for each value, and keep the value with the fewest mistakes. This is learning in its smallest form.
+Which value of *t* should we choose? We let the computer try every value from 0 to 1, count the mistakes for each value, and keep the value with the fewest mistakes. This is learning in its simplest form: try many settings on the examples, and keep the one that works best.
 
 ![Every possible threshold and the mistakes it makes. Low thresholds bury the team in false alarms; high ones miss attacks. The total is lowest at the far right, just below the dotted line for "flag nothing at all".](/figures/ch01/threshold-search.pdf){#fig-threshold-search}
 
@@ -78,9 +78,16 @@ When a model's "how sure" is correct, we say the model is **calibrated**. You wi
 
 ## The bigger story, and where this book fits
 
-The threat score was one simple number. But a photo has lakhs of pixels, and an email is a long sentence. Nobody can write rules for them by hand. So researchers built models with many layers that learn their own clues. This is **deep learning**. Then they trained very large deep-learning models on huge amounts of text, with one task: guess the next word. These models learned language itself. They are called **large language models**, or LLMs, like ChatGPT. An LLM knows a lot about the world but nothing about your company, so we give it your documents to read before it answers. This is called **RAG**. Finally, we let the model use tools and take actions step by step. This is an **agent**. Chapters 5 and 6 explain all of these.
+The threat score was one simple number. Real data is often much messier, and each new step in AI came to handle that:
 
-When you watch an agent work, you notice something interesting. Most of its steps are not writing. They are small decisions with only a few possible answers: *Is this alert real? Which team should handle this ticket? Is this action safe?* Today, people usually send each such question to an LLM. The LLM writes a full paragraph, and then more code has to find the actual answer inside that paragraph. It works, but it is slow and costly for such a small job.
+- **Deep learning.** A photo has lakhs of pixels, and an email is a long piece of text. Nobody can write rules for these by hand. So researchers built models with many layers, which find their own clues in the raw data.
+- **Large language models (LLMs).** Researchers then trained very large deep-learning models on a huge amount of text, with one simple task: guess the next word. To do this well, the models had to learn the language itself. ChatGPT is an LLM.
+- **RAG.** An LLM knows a lot about the world, but nothing about your company. So before it answers, we search your company's documents and give it the right pages to read.
+- **Agents.** Finally, we let the model use tools, such as searching, sending an email or closing a ticket, and work step by step towards a goal.
+
+Chapters 5 and 6 explain each of these in more detail.
+
+When you watch an agent work, you notice something interesting. Most of its steps are not writing. They are small decisions with only a few possible answers: *Is this alert real? Which team should handle this ticket? Is this action safe?* Today, people usually send each such question to an LLM. The LLM writes a full paragraph, and then another program has to search that paragraph for the actual answer. It works, but it is like asking someone to write an essay when you only wanted a tick in a box: slow and costly for such a small job.
 
 ![The same question, two ways. An LLM writes its answer piece by piece, and your code has to read the sentence. A decision model returns the answer as data, with a probability for every option, in one pass.](/figures/ch01/generate-vs-decide.pdf){#fig-generate-vs-decide}
 
@@ -88,7 +95,7 @@ In 2026, a company called TypeSafe AI released a model named **Jev** for exactly
 
 ![The story so far. Each step exists because the one before it hit a problem it couldn't solve. System One models like Jev grow out of deep learning and fit into the "decide" step of an agent.](/figures/ch01/ai-story-map.pdf){#fig-ai-story-map}
 
-@fig-ai-story-map shows the whole story on one page. The next three chapters stay at the base of this map, because everything above it depends on one idea: an answer should come with a probability, and that probability should be correct.
+@fig-ai-story-map shows the whole story on one page. The next three chapters stay with the basics, because everything else in the book depends on one idea: a good answer should say how likely it is, and that "how likely" should be correct.
 
 ::: {.exercises}
 1. Name one system you use that follows fixed rules, and one that has learned from examples. How did you know?

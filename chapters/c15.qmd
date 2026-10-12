@@ -14,7 +14,7 @@ For the last few years, the usual AI system has been one big model doing everyth
 
 ![Two ways to build an AI system. Left: one model does everything as text. Right: each layer does one job. An LLM reads and writes, a decision layer answers typed questions with probabilities, a policy turns those into actions, and tools, logs and people sit underneath.](/figures/ch29/stack.pdf){#fig-stack}
 
-The right side of @fig-stack shows the design this book has been building, chapter by chapter. The LLM does what only an LLM can do: read anything and write for people. The decision layer answers small, clear questions in one step, with probabilities we can test. The policy sets thresholds based on costs and team capacity. And at the bottom, tools take actions and people review. Each part is smaller than the whole system, can be tested on its own, and can be replaced without rebuilding everything else. So when a better LLM or a cheaper decision model appears, you can change one part and keep the rest. This is why we think the design will last.
+The right side of @fig-stack shows the design this book has been building, chapter by chapter. The LLM does what only an LLM can do: read anything and write for people. The decision layer answers small, clear questions in one step, with probabilities we can check. The policy, your own rules, draws the lines based on the cost of mistakes and the size of the team. And at the bottom, tools take actions and people review. Each part is smaller than the whole system, can be tested on its own, and can be replaced without rebuilding everything else. So when a better LLM or a cheaper decision model appears, you can change one part and keep the rest. This is why we think the design will last.
 
 ::: {.keyidea}
 **Give each part of the system one job.** The LLM reads and writes, the decision model decides, your rules choose the action, and people decide what mistakes cost.
@@ -24,9 +24,9 @@ The right side of @fig-stack shows the design this book has been building, chapt
 
 In 1865, the economist William Stanley Jevons noticed something surprising about coal [@jevons1865]. James Watt's steam engine produced much more work from each tonne of coal. People expected Britain to use less coal. Instead, it used much more, because cheaper coal power was now used for many more things. We have seen the same with mobile data in India: when data became very cheap, people did not just save money; they started watching videos all day. This pattern is called the **Jevons paradox**. The name Jev comes from Jevons, and this time the "coal" is decisions.
 
-A decision is worth making only when the loss it prevents is bigger than its cost, and when it can be made in time. A company makes a few thousand careful decisions per day, but it *could* make millions: one for every email, every login and every line in its logs. Each of these is worth only a tiny amount to check. At the example LLM price of \${{< num ch19 llm_price f5 >}} per decision, almost none are worth checking. At Jev's reported price of \${{< num ch19 jev_price f6 >}}, many are.
+A check is worth doing only when the loss it can prevent is bigger than what the check costs, and when it can be done in time. Today a company makes a few thousand careful decisions per day. But it *could* make millions: one for every email, every login and every line in its computer logs. Checking any one of these is worth only a tiny amount of money. At the example LLM price of \${{< num ch19 llm_price f5 >}} per decision, almost none are worth checking. At Jev's reported price of \${{< num ch19 jev_price f6 >}}, many are.
 
-The interesting part is where the change shows up. For work a company already does, cheaper decisions mean many more decisions (in our example, {{< num ch19 decisions_ratio int >}} times more), but the total bill goes *down*. The bill goes up only when cheap decisions make *new* work worth doing, such as checking every file shared outside the company.
+Where does the bill change? For checks a company already does, cheaper decisions mean many more checks (in our example, {{< num ch19 decisions_ratio int >}} times more), but the total bill still goes *down*, because each check is so cheap. The bill goes up only when cheap decisions make *new* kinds of checks worth doing, such as checking every file that anyone shares outside the company.
 
 ::: {.keyidea}
 **When decisions become cheap, we make many more of them.** When mobile data became cheap in India, people did not save money; they used far more data. Cheap decisions will be used for many new tasks in the same way.
@@ -34,7 +34,7 @@ The interesting part is where the change shows up. For work a company already do
 
 ![Alerts sent to a person per day, under two rules (illustrative). A rule that flags a fixed share of what the model looks at grows with the number of decisions, and at Jev volumes it sends far more than the team can handle. A cost-based threshold, which flags only when the expected loss is larger than the cost of a review, barely moves.](/figures/ch19/flags.pdf){#fig-flags}
 
-There is a hidden cost: more decisions also means more cases sent to people. A rule that seemed fine at low volume, such as "send the top 0.1% to a person", sends {{< num ch19 flags_top_llm int >}} cases per day, within the team's capacity of {{< num ch19 capacity int >}}. At the new, higher volume, the same rule sends {{< num ch19 flags_top_jev int >}} per day, even though nobody changed it (@fig-flags). A cost-based rule, which sends a case only when its expected loss is higher than the cost of a review, sends {{< num ch19 flags_cost_jev int >}} per day in both cases.
+There is a hidden cost: more decisions also means more cases sent to people. Consider a rule that seemed fine when there were few decisions: "send the top 0.1% to a person". It sends {{< num ch19 flags_top_llm int >}} cases per day, which the team, able to check {{< num ch19 capacity int >}}, can handle. At the new, higher volume, the same rule sends {{< num ch19 flags_top_jev int >}} per day, even though nobody changed it (@fig-flags). A rule based on cost, which sends a case to a person only when the loss it may cause is higher than the cost of checking it, sends {{< num ch19 flags_cost_jev int >}} per day at both volumes.
 
 ::: {.keyidea}
 **As the number of cases grows, set the line by cost, not by percentage.** "Send the top 0.1% to a person" sends more and more cases as volume grows. "Send it when the possible loss is more than the cost of checking" stays steady.
@@ -42,7 +42,7 @@ There is a hidden cost: more decisions also means more cases sent to people. A r
 
 ## What becomes valuable
 
-If deciding becomes cheap, what becomes rare and valuable? Good judgement about the decision itself. Someone still has to decide what each mistake costs, where the thresholds should be, how many cases the team can review, and whether the probabilities are still correct this week. No model can do this for you. This is why the first chapters of this book, about probability, calibration and costs, are the foundation. They are the difference between a system that makes a million cheap decisions well and one that makes a million cheap mistakes.
+If deciding becomes cheap, what becomes rare and valuable? Good human judgement about the decision itself. Someone still has to decide what each mistake costs, where the thresholds should be, how many cases the team can review, and whether the probabilities are still correct this week. No model can do this for you. This is why the first chapters of this book, about probability, correct numbers and costs, are the foundation. They make the difference between a system that makes a million cheap decisions well and one that makes a million cheap mistakes.
 
 ![Skills that matter more when decisions get cheap, and skills that matter less on their own, with the chapters that teach each.](/figures/ch29/skills.pdf){#fig-skills}
 
@@ -50,7 +50,7 @@ If deciding becomes cheap, what becomes rare and valuable? Good judgement about 
 **When machines decide cheaply, human judgement becomes more valuable.** Someone must still decide what each mistake costs, where the lines are, and how many people are needed. No model can do this for you.
 :::
 
-Many things are still unknown: how well any System One model is calibrated on your data, how it changes between versions, how it handles attackers, and what prices will finally be. None of these is a reason to wait. Calibration can be tested this week. Version changes can be handled with a fixed version and daily monitoring. Prices can be checked in a spreadsheet. And this design does not depend on any one company: a clear question in, a probability out, and a policy in your own code can be moved to a different model in a day.
+Many things are still unknown: whether a System One model's numbers are correct on your data, how it changes between versions, how it behaves when attackers write the input, and what the final prices will be. None of these is a reason to wait. You can check its numbers on your own past cases this week. You can handle version changes with a fixed version and daily monitoring. You can check prices in a spreadsheet. And this design does not depend on any one company: if your system sends a clear question, gets back a probability, and keeps its rules in your own program, you can move to a different model in a day.
 
 ![Open questions, and what you can do about each today.](/figures/ch29/unknowns.pdf){#fig-unknowns}
 
@@ -64,7 +64,7 @@ If you do only one thing after reading this book, make a list of every decision 
 
 ![A first three months, one decision at a time.](/figures/ch29/monday.pdf){#fig-monday}
 
-Then choose *one* decision. Collect a few hundred cases with known outcomes and test the calibration. Put a cost on each type of mistake and set the thresholds. Run it in shadow mode. Switch it on with a rule for failures, random checks and daily monitoring. Then move to the next decision. This is not exciting work, but it is how every system in this book became better.
+Then choose *one* decision. Collect a few hundred past cases with known answers and check whether the model's numbers are correct. Put a cost on each type of mistake and draw the lines. Run it in shadow mode. Switch it on with a rule for failures, random checks and daily monitoring. Then move to the next decision. This is not exciting work, but it is how every system in this book became better.
 
 ::: {.breaks}
 This chapter is the least certain part of the book. The cost and speed numbers are examples, and Jev's numbers are as reported by the company during early access. The idea that every AI system will soon have a separate decision layer is our opinion based on the evidence, not a proven fact. It could be wrong if general models become fast and well calibrated enough. Even then, everything about costs, thresholds and calibration will still apply.

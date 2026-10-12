@@ -36,13 +36,15 @@ The chance before we see any evidence, here 1 in 1,000, is called the **base rat
 **When something is rare, most alarms are false.** If only 1 in 1,000 events is an attack, even a 99%-accurate alarm is right only about 2 times in 100. To see this, count it out with 1,00,000 cases instead of using percentages.
 :::
 
-There is a related mistake. "How often do attacks have a bad score?" and "How often is an alert with a bad score an attack?" are two different questions. In our example, only {{< num ch02 ioc_attack_share pct >}} of attacks come with a bad threat score, but an alert with a bad score is an attack {{< num ch02 p1 pct >}} of the time.
+There is a related mistake: mixing up a question with its reverse. Most international cricketers are right-handed, but that does not mean most right-handed people are international cricketers. In the same way, "How often do attacks have a bad score?" and "How often is an alert with a bad score an attack?" are two different questions with very different answers. In our example, only {{< num ch02 ioc_attack_share pct >}} of attacks come with a bad threat score, but an alert with a bad score is an attack {{< num ch02 p1 pct >}} of the time.
 
 ## Updating with new evidence
 
-How should a new clue change our belief? It is easiest with **odds**. A probability of 20% means odds of 20 to 80, or 0.25. Each clue has a strength called the **likelihood ratio**: how many times more common the clue is among attacks than among harmless alerts. In our example, a bad threat score is about {{< num ch02 lr_ioc f1 >}} times more common among attacks.
+How should a new clue change our belief? The easiest way uses **odds**, the way people talk about a cricket match: "odds of 1 to 4" means one win for every four losses. A probability of 20% is the same as odds of 20 to 80, or 1 to 4.
 
-New odds = old odds × strength of the clue. This is Bayes' rule.
+Next, we measure how strong each clue is: how many times more often it appears with attacks than with harmless alerts. This number is called the **likelihood ratio**. In our example, a bad threat score appears about {{< num ch02 lr_ioc f1 >}} times more often with attacks than with harmless alerts, so it is a strong clue.
+
+The rule is simple: *new odds = old odds × strength of the clue*. This is called **Bayes' rule**.
 
 ![Starting from the base rate and multiplying the odds by each clue's likelihood ratio. Three ordinary clues take an alert from "probably nothing" to "probably an attack".](/figures/ch02/odds-update.pdf){#fig-odds-update}
 
@@ -58,11 +60,11 @@ Suppose our rule is: *mark an alert as an attack if its threat score is 0.5 or m
 
 ![Every one of the 20,000 alerts, sorted by what the rule said and what really happened. Precision and recall each ignore one of the two columns, which makes them fair judges of rare events.](/figures/ch02/confusion.pdf){#fig-confusion}
 
-The accuracy of {{< num ch02 accuracy pct >}} sounds good. But a rule that *never* raises any alarm has an accuracy of {{< num ch02 always_benign_acc pct >}}. When one outcome is rare, accuracy mostly measures how common the other outcome is. So for rare events, look at precision and recall.
+The accuracy of {{< num ch02 accuracy pct >}} sounds good. But a rule that *never* raises any alarm has an even higher accuracy, {{< num ch02 always_benign_acc pct >}}, simply because most alerts are harmless. It is like a weather forecaster in Rajasthan who always says "no rain": right on most days, and useless on the days that matter. So for rare events, look at precision and recall instead.
 
 ## How a machine learns a probability
 
-Bayes' rule multiplies odds. Adding is easier than multiplying, so we take the logarithm of the odds, and then each clue simply adds a number. This gives a very simple model: start with a base number, add a **weight** for each clue, and convert the total into a probability using an S-shaped curve. This model is called **logistic regression**. Banks and hospitals have used it for decades for credit scores and risk scores.
+Bayes' rule multiplies the odds by each clue. Mathematicians found an easier way: change the odds into a scale where each clue simply *adds* points instead of multiplying. (This scale is called the log-odds, but you do not need the name.) This gives a very simple model, much like a credit score: start with a base number, add some points for each clue, and then turn the total into a probability with an S-shaped curve. The points for each clue are called **weights**, and this model is called **logistic regression**. Banks and hospitals have used it for decades to score loans and patient risk.
 
 ![The S-curve (the logistic, or sigmoid, function) turns total evidence into a probability. Every step to the right multiplies the odds by the same amount, which is why the curve flattens out: once you're very sure, more evidence changes the probability only a little.](/figures/ch03/sigmoid.pdf){#fig-sigmoid}
 
@@ -70,7 +72,7 @@ To find good weights, we need a way to score a probability. If the model says 90
 
 ![Log loss for a single alert. If it really was an attack (red, solid curve), the penalty is small when the model gave "attack" a high probability. It grows very fast as that probability gets close to zero. Harmless alerts (blue, dashed curve) work the same way from the other side.](/figures/ch03/logloss.pdf){#fig-logloss}
 
-Log loss has an important property. The only way to get the best score, on average, is to give honest probabilities (@fig-logloss). If a model exaggerates and says 99% when the truth is 80%, it loses more over many cases. So models trained with log loss tend to give honest probabilities.
+Log loss has an important property: over many cases, the only way to get the best score is to give honest probabilities (@fig-logloss). If a model exaggerates and says 99% when the truth is 80%, it gains a little on the cases that happen but loses heavily on the ones that do not. So a model trained with log loss is pushed towards honest probabilities.
 
 Training means finding the weights with the lowest log loss. Imagine standing on a hill in thick fog. You cannot see the bottom, but you can feel which way the ground slopes. So you take a small step downhill, and repeat. This method is called **gradient descent**.
 
@@ -79,11 +81,11 @@ Training means finding the weights with the lowest log loss. Imagine standing on
 :::
 ## Two ways a model fools you
 
-**Overfitting** means memorising instead of learning. A very flexible model can remember every small detail of its training data, including random noise. It then looks excellent on that data but performs badly on new cases. @fig-overfit shows this with a decision tree, a model that sorts cases by asking a series of yes/no questions: the more questions it may ask, the more it memorises. The only way to catch this is to test the model on data it has never seen.
+**Overfitting** means memorising instead of learning, like a student who memorises last year's question paper and then fails when the questions change. A very flexible model can remember every small detail of its training examples, including details that were just chance. It then looks excellent on those examples but performs badly on new cases. @fig-overfit shows this with a decision tree, a model that sorts cases by asking a series of yes/no questions: the more questions it may ask, the more it memorises. The only way to catch this is to test the model on data it has never seen.
 
 ![A decision tree allowed only a few questions learns general patterns. Allowed dozens, it memorises individual training alerts: its loss on them approaches zero while its loss on new alerts climbs.](/figures/ch03/overfit.pdf){#fig-overfit}
 
-**Leakage** means a clue secretly contains the answer. For example, if we train with the analysts' notes, results look amazing, because notes like "confirmed phishing" are written *after* someone has already decided. When the model has to decide, that note does not exist yet. So for every clue, ask: *will I really have this information at the moment of the decision?*
+**Leakage** means a clue secretly contains the answer, like a student who has seen the answer key. For example, if we train with the analysts' notes, results look amazing, because notes like "confirmed phishing" are written *after* someone has already decided. When the model has to decide, that note does not exist yet. So for every clue, ask: *will I really have this information at the moment of the decision?*
 
 ::: {.exercises}
 1. A spam filter catches 98% of spam and wrongly flags 1% of normal emails. If only 1% of all emails are spam, what fraction of flagged emails are actually normal? Use counts, as in @fig-base-rate-tree.

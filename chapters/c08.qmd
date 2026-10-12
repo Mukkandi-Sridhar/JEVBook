@@ -1,6 +1,6 @@
 # Asking the right question: choice, score, noul {#sec-ch08}
 
-A System One model asks you to put every question into one of three shapes: yes or no, pick one option, or rate on a scale. You may think real decisions are more complex than this. But look at your own daily work, and you will see that most complex decisions can be broken into a few simple questions of these three shapes: *Is this real? Which team? How urgent?* The difficulty is usually in how we ask the question, not in the shape of the answer.
+A System One model asks you to put every question into one of three shapes: yes or no, pick one option, or rate on a scale. You may think real decisions are more complex than this. But look at your own daily work, and you will see that most complex decisions can be broken into a few simple questions of these three shapes: *Is this real? Which team? How urgent?* The hard part is usually asking the question clearly, not the shape of the answer.
 
 ::: {.goals}
 - Choose between yes/no, pick-one and scale questions.
@@ -12,9 +12,9 @@ A System One model asks you to put every question into one of three shapes: yes 
 
 ## Yes or no: one fact at a time
 
-TypeSafe calls a yes-or-no question a **noul**. It returns one number: the probability of "yes". This is the most useful type, and also the easiest to ask badly. Three habits help.
+TypeSafe calls a yes-or-no question a **noul**. It returns one number: the probability of "yes". This is the most useful type, and also the easiest to ask badly. Three habits help you ask it well.
 
-**Ask about one fact at a time.** "Is this a real attack on an important server?" combines two facts. If the answer is "no", you cannot know which part was false. Ask two separate questions, and combine the answers in your own program, where the logic is clear.
+**Ask about one fact at a time.** "Is this a real attack on an important server?" combines two facts. If the answer is "no", you cannot know which part was false: is it not an attack, or is the server not important? Ask two separate questions, and combine the two answers in your own program, where anyone can see the logic.
 
 **Say exactly what "yes" and "no" mean.** Is an employee breaking a company rule "malicious"? Is a test attack paid for by the company "malicious"? Write it clearly: *yes* means "a real attacker or real harmful software is involved"; *no* means "normal activity, an approved test, or a false alarm".
 
@@ -22,9 +22,9 @@ TypeSafe calls a yes-or-no question a **noul**. It returns one number: the proba
 
 ## Pick one: always give a "none of these" option
 
-A **choice** question returns a probability for every option, and all of them add up to 1. This has a hidden danger: the model *must* spread its belief across the options you gave it. If the correct answer is not in your list, the probability does not disappear. It goes to the wrong options.
+A **choice** question returns a probability for every option, and all of them add up to 1. This has a hidden danger. Because the probabilities must add up to 1, the model has to share all of its belief among the options you gave it. If the correct answer is not in your list, that belief does not disappear; it goes to the wrong options. It is like a multiple-choice exam with no correct option: a student who must tick one box will tick a wrong one.
 
-In our example, a model was asked to label {{< num ch17 n_harmless int >}} harmless alerts twice. When "benign" (harmless) was one of the options, {{< num ch17 full_benign_share pct >}} were labelled benign. When "benign" was removed, every single alert got a threat label, most of them with high confidence.
+In our example, a model was asked to label the same {{< num ch17 n_harmless int >}} harmless alerts twice, with two different lists of options. When "benign" (harmless) was one of the options, {{< num ch17 full_benign_share pct >}} were labelled benign. When "benign" was removed, every single alert got a threat label, most of them with high confidence.
 
 ![How confident the top label was for harmless alerts. With "benign" among the options (green, striped), almost all were labelled benign; only the few that weren't are shown. With only threat categories to choose from (red, solid), every harmless alert got a threat label, most with high confidence.](/figures/ch17/forced.pdf){#fig-forced}
 
@@ -48,7 +48,7 @@ Look at the first alert in @fig-severity. Its average level is {{< num ch17 sev_
 **An "average level" can hide the real danger.** A model may be saying "either nothing, or something serious", but the average comes out as "low". Look at the chance of the serious levels, not the average.
 :::
 
-A rule like "call someone if P(medium or high) is above 0.3" is clear and can be set using costs. A rule like "call someone if the average is above 1.5" is not.
+So write rules on the probability of the levels you care about. A rule like "call someone if the chance of medium or high is above 0.3" is clear, and its line can be set from costs, as in Chapter 4. A rule like "call someone if the average is above 1.5" has no clear meaning.
 
 ## Decide using all the probabilities
 
@@ -56,9 +56,9 @@ The most likely option is not always the one to act on. Suppose a pick-one quest
 
 ![An illustrative choice between four labels, and the expected cost of four actions. "Benign" is the single most likely label, but closing the alert is the most expensive action, because the other 60% of the probability is spread across threats that are costly to miss.](/figures/ch17/expected-cost.pdf){#fig-expected-cost}
 
-The better way, as in @fig-expected-cost, is to calculate the expected cost of each action using all the probabilities, and choose the cheapest action. Here, that means sending the alert to the identity team. This is the formula from Chapter 4, extended to more options. It is also why we need a probability for every option. A text answer that only says "benign" throws away exactly the information we need.
+The better way, as in @fig-expected-cost, is to work out, for each possible action, how much it would cost on average, taking every option's probability into account, and then choose the cheapest action. Here, that means sending the alert to the identity team. This is the umbrella idea from Chapter 4, extended to more than two options. It is also why we need a probability for every option: a text answer that only says "benign" hides the 60% chance of an attack, which is exactly the information we need.
 
-When one situation needs several answers, ask all the questions together in one request, and combine the answers in your own program, where every rule is visible.
+Finally, when one situation needs several answers, ask all the questions together in one request. Then combine the answers in your own program, where every rule can be read and checked.
 
 ::: {.breaks}
 These three shapes cannot express everything. A quantity ("how many megabytes?"), a name ("which username?") or several details from a long document still need something else, often an LLM (see Chapter 12). Answers to separate questions about the same case may not agree, so your program should handle that. And changing the wording of a question changes the probabilities, so test every wording change.

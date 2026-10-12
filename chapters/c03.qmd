@@ -24,11 +24,11 @@ Good forecasters are not always right; nobody can be. They are good because thei
 
 ## Ranking and calibration are two different things
 
-A model's numbers can be good at two separate jobs, and it is important not to mix them up.
+A model's numbers can be good at two separate jobs, and it is important not to mix them up. Think of a teacher who ranks every student correctly, from first to last, but writes everyone's marks 30 points too high. The order is right; the marks are wrong.
 
-**Ranking**: does the model give higher numbers to attacks than to harmless alerts? If we sort alerts by the model's number, do real attacks come to the top? This is measured by **AUC**. It is the chance that a random attack gets a higher number than a random harmless alert. An AUC of 1 is perfect; 0.5 is no better than tossing a coin.
+**Ranking**: does the model give higher numbers to attacks than to harmless alerts? If we sort alerts by the model's number, do real attacks come to the top? This is measured by **AUC**. Pick one real attack and one harmless alert at random: AUC is the chance that the model gives the attack the higher number. An AUC of 1 is perfect; 0.5 is no better than tossing a coin.
 
-**Calibration**: when the model says 0.3, are about three out of ten such alerts real attacks?
+**Calibration**: are the numbers themselves correct? When the model says 0.3, are about three out of ten such alerts real attacks?
 
 ![Two models, identical at ranking (same AUC) but not at calibration. Model A is the logistic regression from Chapter 2. Model B is the same model with its probabilities distorted: it still sorts the alerts in the same order, but its numbers no longer mean anything.](/figures/ch04/same-auc.pdf){#fig-same-auc}
 
@@ -46,21 +46,21 @@ Do what the weather researchers did. Take predictions where you already know the
 
 Always look at how many cases are in each group, shown at the bottom of @fig-anatomy-03. A point based on only twelve alerts is weak evidence.
 
-For a single number, we use the **expected calibration error**, or **ECE**. It is the average gap between "what the model said" and "what actually happened", across all groups [@naeini2015]. In our example, the model's ECE is {{< num ch04 lr.ece f3 >}}, which means it is off by less than one percentage point on average. Model B's ECE is {{< num ch04 squashed.ece f2 >}}. But remember that ECE is an average, so it can hide one bad area. Always look at the diagram too.
+To sum up the chart in a single number, we use the **expected calibration error**, or **ECE**. It is the average gap between "what the model said" and "what actually happened", across all groups [@naeini2015]. In our example, the model's ECE is {{< num ch04 lr.ece f3 >}}, which means it is off by less than one percentage point on average. Model B's ECE is {{< num ch04 squashed.ece f2 >}}. But remember that ECE is an average, so it can hide one bad area. Always look at the diagram too.
 
 ## Why calibration goes wrong, and how to fix it
 
-**Rebalancing the training data.** This is a very common cause. Attacks are rare, only {{< num ch04 base pct >}} in our example. So someone trains the model on equal numbers of attacks and normal alerts, "so the model sees more attacks". The ranking stays fine, but the model now believes attacks are common. Its average prediction becomes {{< num ch04 bal_mean_pred pct >}}. If we use these numbers for decisions, the team gets far too many alerts.
+**Rebalancing the training data.** This is a very common cause. Attacks are rare, only {{< num ch04 base pct >}} in our example. So someone trains the model on equal numbers of attacks and normal alerts, "so the model sees more attacks". The ranking stays fine, but the model now believes attacks are common. It is like a doctor who has worked only in a hospital ward: having seen sick people all day, the doctor starts to think everyone is sick. Its average prediction becomes {{< num ch04 bal_mean_pred pct >}}. If we use these numbers for decisions, the team gets far too many alerts.
 
-**Overfitting** pushes probabilities towards 0 and 1. **Very large neural networks** also tend to be overconfident [@guo2017]. And **changes in the world**, like a sudden increase in attacks, can make last month's calibrated model wrong today.
+**Overfitting** makes a model too sure of itself, so it says 0% or 100% too easily. **Very large neural networks** also tend to be overconfident [@guo2017]. And **changes in the world**, like a sudden increase in attacks, can make last month's calibrated model wrong today.
 
 ![A model trained on 50/50 rebalanced data (red, solid line with squares) puts the odds of an attack about ten times higher than they really are, and its probabilities sit far below the diagonal. After Platt scaling fitted on a separate calibration set (green, dashed line with circles), the same model is well calibrated again.](/figures/ch04/rebalanced.pdf){#fig-rebalanced}
 
 The good news is that a model which ranks well but is badly calibrated is usually easy to fix. We do not need to train it again. We keep aside some data the model has never seen, called a **calibration set**, and learn a small correction on top of the model:
 
-- **Platt scaling** learns two numbers that stretch and shift the model's output [@platt1999]. This is usually the first choice.
-- **Temperature scaling** learns one number that softens overconfident answers. It is the standard fix for neural networks.
-- **Isotonic regression** learns any rising staircase shape [@zadrozny2002]. It is flexible but needs more data.
+- **Platt scaling** moves all the model's numbers up or down, and makes them more or less extreme, using two learned settings [@platt1999]. This is usually the first choice.
+- **Temperature scaling** uses one learned setting that makes over-sure answers less extreme. It is the standard fix for large neural networks.
+- **Isotonic regression** builds a correction table: for each range of the model's numbers, it learns the true rate [@zadrozny2002]. It is flexible, but needs more past cases.
 
 ![The three corrections, each fitted to the rebalanced model on the calibration set. Platt scaling learns an S-curve that can shift and stretch. Temperature scaling learns one number that only stretches around the middle, and here it barely changes anything. Isotonic regression learns any rising staircase.](/figures/ch04/fixes.pdf){#fig-fixes}
 
@@ -70,7 +70,7 @@ For the rebalanced model, Platt scaling brings the ECE down from {{< num ch04 ba
 
 ![Calibration checked separately for each alert source. Across all sources together, this model is well calibrated, with an ECE of about half a percentage point. But it overestimates the risk of DLP and Cloud alerts and underestimates EDR alerts, which really are more dangerous here. Averaging hides both mistakes.](/figures/ch04/by-source.pdf){#fig-by-source}
 
-A model can be well calibrated overall but wrong for one group. Suppose a model cannot tell which system raised each alert. Its overall ECE is an excellent {{< num ch04 generic.ece f3 >}}. But for alerts from laptops and servers (EDR in @fig-by-source), it says {{< num ch04 by_source.EDR.pred pct1 >}} when the truth is {{< num ch04 by_source.EDR.actual pct1 >}}. For data-leak alerts (DLP), it says {{< num ch04 by_source.DLP.pred pct1 >}} when the truth is {{< num ch04 by_source.DLP.actual pct1 >}}. The errors cancel out in the average, and real attacks on laptops get closed without anyone looking.
+A model can be well calibrated overall but wrong for one group. Suppose a model is not told which system raised each alert: a laptop, an email server, a cloud service, and so on. Its overall ECE is an excellent {{< num ch04 generic.ece f3 >}}. But for alerts from laptops and servers (marked EDR in @fig-by-source), it says {{< num ch04 by_source.EDR.pred pct1 >}} when the truth is {{< num ch04 by_source.EDR.actual pct1 >}}. For alerts about company data leaving the company (marked DLP), it says {{< num ch04 by_source.DLP.pred pct1 >}} when the truth is {{< num ch04 by_source.DLP.actual pct1 >}}. The errors cancel out in the average, and real attacks on laptops get closed without anyone looking.
 
 ::: {.keyidea}
 **A model that is right on average can still be wrong for one group.** It may be correct for all alerts together but wrong for laptop alerts, or for one language or one region. Check each group separately.

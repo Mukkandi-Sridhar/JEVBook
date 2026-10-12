@@ -1,6 +1,6 @@
 # From model to service {#sec-ch14}
 
-In every project there comes a day when the prototype works and someone asks: "Can we use this from Monday?" A model that makes good decisions on a laptop is not yet a service. A real service must answer at 3 a.m. even when the network is slow, explain its decisions to an auditor a year later, warn someone when the situation changes, and change safely when it is improved. This chapter explains what that needs, and then looks inside a small System One model.
+In every project there comes a day when the prototype works and someone asks: "Can we use this from Monday?" A model that makes good decisions on one person's laptop is not yet a service that a whole company can depend on. A real service must answer at 3 a.m. even when the network is slow, explain its decisions to an auditor a year later, warn someone when the situation changes, and change safely when it is improved. This chapter explains what that needs, and then looks inside a small System One model.
 
 ::: {.goals}
 - Use a model you do not own safely: fixed versions, retries and failures.
@@ -10,7 +10,9 @@ In every project there comes a day when the prototype works and someone asks: "C
 
 ## Using a model you do not own
 
-**Test with a practice version first.** Most AI services give an official software library. The library prepares the request, retries when there is a problem, and reads the answer. Only its last layer actually talks to the internet. If we replace that last layer with a practice version that answers locally, we can test all our logic for free, and then switch to the real service by changing one setting.
+**Test with a practice version first.** Most AI companies provide an official software library: ready-made code that your program uses to talk to their model. The library prepares each request, tries again when there is a problem, and reads the answer. Only its last step actually sends the request over the internet. If we replace that last step with a practice version that answers on our own computer, we can test all our own rules for free, and then switch to the real service by changing one setting.
+
+**Use a fixed version.** AI companies update their models often, and each update can change the numbers your rules depend on.
 
 ![The official library does all the work of building requests, retrying and parsing answers. One setting decides where requests go: a practice version answers locally; the default sends them over the network to the real service.](/figures/ch23/layers.pdf){#fig-layers}
 
@@ -18,15 +20,15 @@ In every project there comes a day when the prototype works and someone asks: "C
 **Always use a fixed version of the AI model.** A name like "latest" can change to a new model overnight. With a fixed version, the behaviour changes only when you decide to change it.
 :::
 
-**Retry only the right errors.** Your own mistakes, such as a wrong key or a wrong model name, will fail the same way every time, so fix them instead of retrying. Problems outside your control, such as a busy server or a broken connection, are worth retrying. In our example, if one request in five fails, only {{< num ch23 ok_20_0 pct >}} of calls succeed with no retry, but {{< num ch23 ok_20_2 pct1 >}} succeed with two retries. Retries take time, though, and a login check may have only 300 milliseconds.
+**Retry only the right errors.** Your own mistakes, such as a wrong key or a wrong model name, will fail the same way every time, so fix them instead of retrying. Problems outside your control, such as a busy server or a broken connection, are worth retrying. In our example, if one request in five fails, only {{< num ch23 ok_20_0 pct >}} of calls succeed with no retry, but {{< num ch23 ok_20_2 pct1 >}} succeed with two retries. But each retry takes time, and a login check may have to answer within 300 milliseconds, about a third of a second, so there is no time for many retries.
 
-**Plan for failures.** Treat a failed call as one more kind of case. For a login, the right rule may be "allow it, but mark it for review". For closing an alert, it should be "do not close; send to a person". Write this rule in the policy, where everyone can see it.
+**Plan for failures.** Sometimes the AI service will not answer at all, or will answer too late. Decide in advance what happens then, and treat it as one more kind of case. For a login, the right rule may be "allow it, but mark it for review". For closing an alert, it should be "do not close; send to a person". Write this rule in the policy, where everyone can see it.
 
 ::: {.keyidea}
 **Decide in advance what to do when the AI does not answer.** For important actions, a failed or late answer should send the case to a person, never close it automatically.
 :::
 
-**Ask questions together.** In our example, four questions in one request used about {{< num ch23 tokens_four_one int >}} input tokens, and the same four questions in four separate requests used {{< num ch23 tokens_four_sep int >}}. One request is also faster.
+**Ask questions together.** In our example, four questions about the same alert in one request used about {{< num ch23 tokens_four_one int >}} tokens, and the same four questions in four separate requests used {{< num ch23 tokens_four_sep int >}}, because the alert's description was sent four times. One request is also faster.
 
 ## The service
 
@@ -34,20 +36,20 @@ In every project there comes a day when the prototype works and someone asks: "C
 
 You will recognise every part of @fig-architecture-21 from earlier chapters. Four habits turn these parts into a reliable service.
 
-**One settings file, with a version.** The model version, the calibration numbers, the thresholds and every business rule are kept in one place, and every decision is stamped with that version.
+**One settings file, with a version.** The model version, the correction numbers from Chapter 3, the lines between the doors, and every business rule are kept in one file. Every decision is stamped with that file's version number.
 
 ::: {.keyidea}
 **Keep all the settings in one file, with a version number.** Then, even a year later, you can explain exactly why any decision was made.
 :::
 
-**A record for every decision.** A decision model gives probabilities, not reasons. But if we record the raw and calibrated probabilities, the thresholds, the rule that was applied and the version, then every *action* can be fully explained, even though the model itself explains nothing.
+**A record for every decision.** A decision model gives probabilities, not reasons. But suppose we record the model's original number, the corrected number, the lines that were used, any business rule that applied, and the settings version. Then every *action* can be fully explained later, even though the model itself gives no reasons.
 
 ![One decision record, with notes on why each field is there. Together they say what the service saw, what the model said, what the policy did, which version decided, and why.](/figures/ch28/record.pdf){#fig-record}
 
-**Thresholds and rules set together.** In our example, a test run over one week showed that the review queue was over capacity from the first day. The thresholds had been set for 240 reviews per day, but *after* that, someone added a sensible rule: never close an alert on a critical system automatically. Every alert this rule moved to review was extra work that the thresholds had not planned for. When the thresholds were set again *with* the rule included, the average queue went from about {{< num ch28 v1_mean_reviews int >}} to {{< num ch28 v2_mean_reviews int >}} per day. Thresholds and business rules work together, so they must be set together.
+**Thresholds and rules set together.** In our example, a test run over one week showed that the review queue had more alerts than the team could check, from the very first day. The lines had been set for 240 reviews per day. But *after* that, someone added a sensible rule: never close an alert on an important system automatically. Every alert this rule sent to review was extra work that nobody had planned for. When the thresholds were set again *with* the rule included, the average queue went from about {{< num ch28 v1_mean_reviews int >}} to {{< num ch28 v2_mean_reviews int >}} per day. Thresholds and business rules work together, so they must be set together.
 
 ![Alerts sent to review each day of the live week, before and after the fix. Fitted without the critical-asset rule, the thresholds let the queue run over capacity every day. Fitted with it, the act threshold rises slightly and the queue fits.](/figures/ch28/dry-run.pdf){#fig-dry-run}
-**Daily monitoring, a responsible person, and shadow testing.** Every day, check four numbers: the share of cases at each door, the review queue compared with capacity, how often calls fail, and predicted attacks compared with confirmed attacks. When a campaign starts, the last number shows the problem on day one, in plain numbers: the probabilities are no longer correct. A named person should have the authority to switch the service to "review everything" while the cause is found. And every improvement should first run in shadow mode beside the current version. In our example, the new version agreed with the old one on {{< num ch28 shadow_agree pct >}} of alerts, and the shadow test showed, before anyone paid the price, how many attacks its changes would let through.
+**Daily monitoring, a responsible person, and shadow testing.** Every day, check four numbers: how many cases went through each door, how long the review queue is compared with what the team can handle, how often calls to the AI service failed, and how many attacks the model expected compared with how many people confirmed. When an attack campaign starts, the last number shows the problem on the very first day: the model's numbers no longer match reality. A named person should have the authority to switch the service to "review everything" while the cause is found. And every improvement should first run in shadow mode beside the current version. In our example, the new version agreed with the old one on {{< num ch28 shadow_agree pct >}} of alerts, and the shadow test showed, before anyone paid the price, how many attacks its changes would let through.
 
 ![Two weeks of the daily monitor: the live week, then the phishing campaign. Top: the review queue, red and striped on days a flag was raised. Bottom: for alerts people saw, the share the model predicted to be real against the share they confirmed. The campaign opens a gap on its first day.](/figures/ch28/monitor.pdf){#fig-monitor}
 
@@ -57,11 +59,11 @@ You do not need to build a System One model to use one. But it helps to understa
 
 ![The three heads. A noul turns one number into P(yes) with the S-curve. A choice turns one number per label into probabilities that add up to 1. A score turns one number into probabilities for levels in order, by cutting it at points that must stay in order.](/figures/ch27/heads.pdf){#fig-heads}
 
-Imagine a small model built for alerts. One shared part, the **encoder**, reads an alert once and turns it into a short list of numbers. Three small parts, called **heads**, read those numbers, one for each question type (@fig-heads). The yes/no head uses the S-curve from Chapter 2. The pick-one head makes probabilities that add up to 1. The scale head uses one "dial" with ordered cut points, so that "high" always stays above "medium". All three heads are trained together with log loss, which rewards honest probabilities, and then each head gets a temperature correction on unseen data (Chapter 3). Such a model can be very small, about {{< num ch27 n_params int >}} numbers.
+Imagine a small model built for alerts. It works like a doctor who examines a patient once and then fills in three different forms. One shared part, the **encoder**, reads the alert once and sums it up as a short list of numbers. Then three small parts, called **heads**, read that summary, one for each type of question (@fig-heads). The yes/no head uses the S-curve from Chapter 2. The pick-one head gives probabilities that add up to 1. The scale head uses a single dial with marks on it, so that "high" always stays above "medium". All three heads are trained together with log loss, which rewards honest probabilities (Chapter 2), and afterwards each head's numbers are corrected with temperature scaling on cases it has never seen (Chapter 3). Such a model can be very small, about {{< num ch27 n_params int >}} numbers.
 
 ![Reliability of P(attack) on the live week. Left: the small model as trained, slightly overconfident. Middle: after dividing by the fitted temperature. Right: the overtrained network before any temperature; its problems are ones no single temperature can fix.](/figures/ch27/calibration.pdf){#fig-calibration}
 
-In our example, the temperature correction reduced the calibration error from {{< num ch27 raw_ece f3 >}} to {{< num ch27 temp_ece f3 >}}, without changing the ranking. A much bigger version trained for too long was a warning: its error was {{< num ch27 over_ece f3 >}}, and after a temperature correction it was no better, {{< num ch27 over_ece_temp f3 >}} (@fig-calibration). Once a model has memorised its training cases, a correction afterwards cannot fully repair it. It is better to stop training at the right time.
+In our example, the temperature correction reduced the error in the model's numbers (ECE) from {{< num ch27 raw_ece f3 >}} to {{< num ch27 temp_ece f3 >}}, without changing the ranking. A much bigger version trained for too long was a warning: its error was {{< num ch27 over_ece f3 >}}, and after a temperature correction it was no better, {{< num ch27 over_ece_temp f3 >}} (@fig-calibration). Once a model has memorised its training cases, a correction afterwards cannot fully repair it. It is better to stop training at the right time.
 
 ::: {.keyidea}
 **Train carefully, stop at the right time, then correct the numbers.** Training too long makes a model memorise and become overconfident. After training, correct its numbers on cases it has never seen.

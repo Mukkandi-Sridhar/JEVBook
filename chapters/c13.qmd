@@ -12,25 +12,25 @@ So far, each chapter looked at one part of the problem. In this chapter we follo
 
 In our example, the security team gets about {{< num ch21 live_per_day int >}} alerts per day and can review {{< num ch25 capacity int >}}. Before the new system, alerts flagged by the senior expert's rules went to the front of one queue, and all other alerts waited in the order they arrived. Any alert not reached within a day was closed without anyone looking at it.
 
-This is a very common way of working, and it hides its own failures. Nobody sees the alerts that were closed unseen, so nobody knows how many of them were real. In our example we do know: about {{< num ch25 old.threats_unseen_per_day f1 >}} real attacks per day were never seen by anyone.
+This is a very common way of working, and its failures stay hidden. The alerts closed at the end of the day were never opened, so nobody knows how many of them were real attacks. In our example we do know: about {{< num ch25 old.threats_unseen_per_day f1 >}} real attacks per day were never seen by anyone.
 
 ![Where each day's alerts go, and where the real threats go, before and after. Before, most alerts aged out of the queue unseen, and so did a large share of real threats. After, most alerts are closed by the policy on purpose, and most real threats are queued or paged.](/figures/ch25/routes.pdf){#fig-routes}
 
 ## Testing quietly: shadow mode
 
-The new system uses only what we have already seen: clear questions (Chapter 8), calibration on past data (Chapters 3 and 9), three doors sized to the team (Chapter 11), and an LLM that writes only for people (Chapter 12).
+The new system uses only what we have already learned: clear questions (Chapter 8), numbers checked and corrected on past cases (Chapters 3 and 9), three doors with lines that fit the size of the team (Chapter 11), and an LLM that only writes notes for people (Chapter 12).
 
-But we do not switch on such a system and simply hope. First we run it in **shadow mode**: it sees every alert and records what it *would* have done, while people continue working as before. Nothing it decides has any effect yet.
+But we do not switch on such a system and simply hope. First we run it in **shadow mode**: it sees every alert and writes down what it *would* have done, while people continue working exactly as before. It is like a trainee driver with a driving instructor: the trainee says what they would do, but the instructor still drives.
 
 ::: {.keyidea}
 **Test a new system silently before you let it act.** In shadow mode, it makes decisions but nothing actually happens, so you can compare its choices with what really happened, at no risk.
 :::
 
-After the shadow week, the team discusses one main number: how many real attacks the system *would* have closed automatically. In our example it was about {{< num ch25 new_threats_closed_per_day f1 >}} per day. That sounds bad, until we compare it with the {{< num ch25 old.threats_unseen_per_day f1 >}} per day that the old queue missed. It was also a little higher than predicted from past data. The honest thing is to say this clearly in the meeting, and watch the daily numbers to see whether it is chance or a trend. The team switched the system on, with random checks of closed alerts and a rule to send any failed case to review.
+After the shadow week, the team discusses one main number: how many real attacks the system *would* have closed automatically. In our example it was about {{< num ch25 new_threats_closed_per_day f1 >}} per day. That sounds bad, until we compare it with the {{< num ch25 old.threats_unseen_per_day f1 >}} per day that the old queue missed. The number was also a little higher than the team had expected from past data. The honest thing is to say this clearly in the meeting, and then watch the daily numbers to see whether it was bad luck or a real problem. The team switched the system on, with random checks of closed alerts, and a rule that any case the system fails to answer goes to a person.
 
 ## The order of the queue matters
 
-The new review queue is sorted by probability, with the most likely attacks first. If we kept the old way, in order of arrival, the typical real attack would wait about {{< num ch25 fifo_wait int >}} minutes. Sorted by probability, it waits about {{< num ch25 prio_wait int >}} minutes. Same people, same alerts, same queue; only the order changed. The share of real attacks seen by a person within one hour went up from {{< num ch25 old.threats_within_hour_share pct >}} to {{< num ch25 new.threats_within_hour_share pct >}}.
+The new review queue is sorted by probability, with the most likely attacks first. If we kept the old way, in order of arrival, the typical real attack would wait about {{< num ch25 fifo_wait int >}} minutes. Sorted by probability, it waits about {{< num ch25 prio_wait int >}} minutes. The people, the alerts and the queue are the same; only the order changed. The share of real attacks seen by a person within one hour went up from {{< num ch25 old.threats_within_hour_share pct >}} to {{< num ch25 new.threats_within_hour_share pct >}}.
 
 ![How long it takes for a real threat to reach a person. Before, rule-flagged threats were seen quickly and the rest waited up to a day or were never seen. After, urgent calls reach someone in about fifteen minutes and the queue takes the likeliest threats first.](/figures/ch25/time-to-human.pdf){#fig-time-to-human}
 
@@ -40,11 +40,11 @@ The new review queue is sorted by probability, with the most likely attacks firs
 
 ## When an attack campaign hits
 
-Then a phishing campaign started. Alerts about suspicious links came three times more often than usual, and many more of them were real. On the first day, the review queue was already over capacity. Also, the probabilities for link alerts were now too *low*, because they had been calibrated on weeks when such alerts were mostly harmless. The daily monitoring caught both problems on day two. On day three, the team re-estimated the base rate for link alerts, corrected those probabilities (Chapter 9), and approved overtime.
+Then a phishing campaign started: attackers sent many fake emails with dangerous links at the same time. Alerts about suspicious links came three times more often than usual, and many more of them were real. On the first day, the review queue already had more alerts than the team could check. Also, the model's numbers for link alerts were now too *low*, because they had been corrected on past weeks when such alerts were mostly harmless. The daily monitoring showed both problems on day two. On day three, the team measured how common real attacks now were among link alerts, corrected those numbers (Chapter 9), and approved overtime.
 
 ![The campaign week, day by day, with and without a response on day 3. Left: alerts sent to review, against the team's capacity. Right: real threats never seen by a person, added up over the week. Recalibrating link alerts and adding overtime helped, but it didn't make the problem go away.](/figures/ch25/campaign.pdf){#fig-campaign}
 
-It helped. Over the week, real attacks never seen by anyone fell from about {{< num ch25 camp_missed_base int >}} to about {{< num ch25 camp_missed_resp int >}} (@fig-campaign). But with correct probabilities, the queue became even longer than the overtime capacity, because many more alerts really needed checking.
+It helped. Over the week, real attacks never seen by anyone fell from about {{< num ch25 camp_missed_base int >}} to about {{< num ch25 camp_missed_resp int >}} (@fig-campaign). But with the corrected numbers, the queue became even longer than the team could handle with overtime, because many more alerts truly needed checking.
 
 ::: {.keyidea}
 **True numbers show how much work there really is; they do not reduce it.** During an attack campaign, honest numbers showed that many more cases needed checking. Sometimes the right answer is simply more people.
@@ -54,11 +54,11 @@ The team was never the problem. With the old queue, what they checked depended o
 
 ## Beyond security
 
-Security was only our teaching example. Once you understand decision layers, you can see them everywhere.
+Security was only our teaching example. The same design, a model that answers clear questions and rules that turn its answers into actions, appears in many other fields.
 
 ![Six decision layers, each described the same way: what the model reads, the typed questions it answers, the option every choice must include, and who makes the final call. Green cards, which end "the model decides; people audit", let the model decide. Red cards, which end "a person decides", keep a person as the decider.](/figures/ch26/cards.pdf){#fig-cards}
 
-@fig-cards describes six examples in the same way: what the model reads, the clear questions it answers, the "none of these" option, and who makes the final decision. What changes from card to card is *who decides*.
+@fig-cards describes six examples in the same way: what the model reads, the clear questions it answers, the "none of these" option, and who makes the final decision. The biggest difference between the cards is the last one: *who decides*, the machine or a person.
 
 ![The six domains placed by how many decisions a day they involve and how much one missed problem costs (illustrative). Where volume is high and each mistake is cheap, the model decides and people check samples. Where each mistake is expensive, the model orders the queue and a person makes the call.](/figures/ch26/domains.pdf){#fig-domains}
 
@@ -68,13 +68,13 @@ Where decisions are many and each mistake is cheap, like checking social media p
 **Let the machine decide when cases are many and mistakes are cheap; let a person decide when mistakes are costly.** Checking millions of card payments is a job for a machine; deciding about a hospital emergency is a job for a doctor.
 :::
 
-The threshold formula stays the same; only the costs change. A late reply to a support ticket costs a little customer goodwill, so the threshold may be near 5%. A missed emergency at a hospital costs far more than seeing someone early, so the threshold falls to about 0.3%. Such a low threshold needs probabilities that are correct even below one percent.
+The umbrella rule from Chapter 4 works in every field; only the costs change. A late reply to a support ticket costs a little customer goodwill, so the line may be near 5%. A missed emergency at a hospital costs far more than seeing a patient early, so the line falls to about 0.3%. A line that low only works if the model's numbers are correct even for very small chances, below one percent.
 
 Always test before you trust. In our example with {{< num ch26 n_tickets int >}} support tickets, the same model that worked well on security alerts sent only {{< num ch26 topic_acc pct >}} of tickets to the right team. Account problems went to the right team only {{< num ch26 per_topic.account pct >}} of the time, because "I can't log in" uses similar words to "the app is not working". Sending automatically only when the top answer was above 0.6 covered {{< num ch26 cov60 pct >}} of tickets, with {{< num ch26 acc60 pct >}} correct.
 
 ![Signs that a decision suits a System One model, and signs that it doesn't, or that a person must make it.](/figures/ch26/fit.pdf){#fig-fit}
 
-Not every problem needs a decision layer. It fits well when there are many similar cases, a fixed set of answers, outcomes you can learn from, and a cost you can put on each mistake (@fig-fit). It does not fit one-time judgements, answers that must be written, or problems that need a plan rather than a verdict.
+Not every problem needs a decision layer. It fits well when there are many similar cases every day, a fixed list of possible answers, a way to find out later which answer was right, and a cost you can put on each kind of mistake (@fig-fit). It does not fit a one-time judgement, an answer that must be written out, or a problem that needs a plan rather than a verdict.
 
 ::: {.breaks}
 All numbers here are examples, and real teams differ in many ways. Shadow mode is only as good as the outcomes you compare it with. And "a person decides" protects people only if that person has time to think. A doctor who must approve four hundred suggestions an hour is not really deciding. Watch the workload of the people in the loop as carefully as you watch the model.

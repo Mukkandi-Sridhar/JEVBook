@@ -6,13 +6,13 @@ Every day, software makes millions of small decisions: whether a message is a sc
 
 To make such decisions well, you need three things:
 
-- a **probability you can trust**, which means what it says;
-- a **threshold based on the cost of mistakes**, not on habit;
+- a **number for how likely each answer is, which you can trust**: when it says 80%, it should be right about 80 times out of 100;
+- a **line for when to act**, based on what each kind of mistake costs, not on habit;
 - a clear rule for **when to hand the case to a person**.
 
 Most people building with AI today do not have all three. This book explains each of them from the beginning, in simple language, without any code.
 
-In 2026, a company called TypeSafe AI released Jev, which it calls the first **System One model**: a model that never writes text, and only answers clear questions with probabilities, in one fast step [@typesafe2026]. This book shows how to judge such a model for yourself. But the main idea is bigger than any one product: decisions deserve their own fast, testable layer in an AI system, and that layer needs its own skills.
+In 2026, a company called TypeSafe AI released Jev, which it calls the first **System One model**: a model that never writes text, and only answers clear questions with probabilities, in one fast step [@typesafe2026]. This book shows how to judge such a model for yourself. But the main idea is bigger than any one product: in an AI system, the small decisions should be handled by their own fast, checkable part, separate from the part that reads and writes text. Building that part well needs its own skills, and this book teaches them.
 
 ## How to trust the numbers in this book
 

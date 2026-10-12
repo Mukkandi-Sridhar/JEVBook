@@ -1,6 +1,6 @@
 # The bake-off: six ways to make a decision {#sec-ch10}
 
-In every team that makes many decisions, there is a long-running debate. The senior expert says the hand-written rules are enough, because anyone can read them. The data scientist says a trained model would do better, if someone labels enough data. The new engineer says an LLM understands cases better than both. And now someone has read about Jev. Each of them is right about something, because each is looking at a different quality. So let us put all the numbers on one page: six methods, one decision, one fair comparison. A comparison like this, where everyone makes the same thing, is sometimes called a "bake-off".
+In every team that makes many decisions, there is a long-running debate. The senior expert says the hand-written rules are enough, because anyone can read them. The data scientist says a trained model would do better, if someone marks enough past cases with the right answer. The new engineer says an LLM understands cases better than both. And now someone has read about Jev. Each of them is right about something, because each is looking at a different strength. So let us compare them fairly: six methods, the same decision, the same test, and all the results on one page. A comparison like this, like a cooking contest where everyone makes the same dish, is sometimes called a "bake-off".
 
 ::: {.goals}
 - Compare six ways of making the same decision.
@@ -12,26 +12,26 @@ In every team that makes many decisions, there is a long-running debate. The sen
 
 ![The six contestants: what each one reads, what it returns, and what it needs before it can start.](/figures/ch20/contenders.pdf){#fig-contenders}
 
-The decision is: *is this alert a real attack?* Every method gets three weeks of labelled history ({{< num ch20 n_hist int >}} alerts) to learn from, and is then tested on a fourth week it has never seen ({{< num ch20 n_live int >}} alerts, of which {{< num ch20 live_threats int >}} are real attacks). The six methods are shown in @fig-contenders:
+The decision is: *is this alert a real attack?* Every method gets three weeks of past alerts with known answers ({{< num ch20 n_hist int >}} alerts) to learn from, and is then tested on a fourth week it has never seen ({{< num ch20 n_live int >}} alerts, of which {{< num ch20 live_threats int >}} are real attacks). The six methods are shown in @fig-contenders:
 
 - hand-written **rules**;
-- **logistic regression** on the alert's clean data fields;
-- a simple **text classifier** that counts words in the raw text;
-- an **LLM** asked to answer in a fixed format;
+- **logistic regression** (from Chapter 2), reading the alert's clean data fields, such as the threat score and the time;
+- a simple **text classifier**, which learns which words in the alert's text usually mean an attack;
+- an **LLM**, asked to give its verdict and its confidence in a fixed format;
 - an **LLM as judge**, giving each alert a rating from 1 to 10;
-- **Jev**, reading the clean data fields.
+- **Jev**, reading the same clean data fields as logistic regression.
 
-An important note: the numbers for the LLM and for Jev in this comparison are illustrative examples, not measurements of the real products, and the example LLM was set up to read alerts less accurately. So if the LLM ranks below Jev, do not take that as proof about the real models. What you *can* rely on are the patterns that come from how each *type* of method works: how written confidences behave, how often text answers break, what happens when you ask twice, and what labels cost.
+An important note: the numbers for the LLM and for Jev in this comparison are illustrative examples, not measurements of the real products, and the example LLM was set up to read alerts less accurately. So if the LLM ranks below Jev, do not take that as proof about the real models. What you *can* rely on are the lessons that come from how each *type* of method works: how an LLM's written confidence behaves, how often text answers break, what happens when you ask the same question twice, and how much the training examples cost.
 
 ## The results
 
 ![Three views of how well each method separates threats from harmless alerts, on the live week. Left: ranking quality (AUC). Middle: the share of all real threats found if the team reviews the top 240 alerts each day. Right: calibration error, where lower is better.](/figures/ch20/scores.pdf){#fig-scores}
 
-**Ranking.** Logistic regression wins, by a small margin: AUC {{< num ch20 logistic_auc f3 >}} against Jev's {{< num ch20 jev_auc f3 >}} (@fig-scores). This is not luck. It was trained on fifteen thousand of this company's own labelled alerts, with clean data, for a decision that depends on that data in a fairly simple way. This is exactly where classic machine learning is strongest. Rules come last ({{< num ch20 rules_auc f2 >}}): a rule only says yes or no, so it cannot tell which of its many "yes" cases to check first.
+**Ranking.** Logistic regression wins, by a small margin: AUC {{< num ch20 logistic_auc f3 >}} against Jev's {{< num ch20 jev_auc f3 >}} (@fig-scores). This is not luck. It learned from fifteen thousand of this company's own past alerts, with clean data, and the decision depends on that data in a fairly simple way. This is exactly the situation where traditional machine learning is strongest. Rules come last ({{< num ch20 rules_auc f2 >}}): a rule only says yes or no, so it cannot tell which of its many "yes" cases to check first.
 
-**Calibration.** Most methods are close to the diagonal. The LLM methods are not. The LLM's *written* confidence used only {{< num ch20 conf_levels int >}} different values across five thousand alerts, mostly 0.9, 0.95 and 0.99. A number that a model writes is just text, and text prefers round numbers. The LLM-as-judge rating from 1 to 10, when read as a probability, has the worst calibration of all ({{< num ch20 llm_judge_ece f3 >}}).
+**Correct numbers (calibration).** Most methods give numbers close to the truth. The LLM methods do not. The LLM's *written* confidence used only {{< num ch20 conf_levels int >}} different values across five thousand alerts, mostly 0.9, 0.95 and 0.99. A number that an LLM writes is just text, and like people, it prefers round numbers. The LLM-as-judge rating from 1 to 10, when read as a probability, has the worst calibration of all ({{< num ch20 llm_judge_ece f3 >}}).
 
-**Labels needed.** Logistic regression needs about 3,000 labelled cases to catch up with Jev, which needs none to start. A team with months of history has these labels. A new team, or a completely new decision, does not.
+**Examples needed.** Logistic regression must first learn from about 3,000 past cases with known answers before it catches up with Jev, which needs none to start. A team with months of history already has such cases. A new team, or a completely new decision, does not.
 
 ![Ranking on the live week as the trained methods see more labelled alerts, averaged over random samples. Jev and the LLMs need no labels to start, so they're flat lines. Logistic regression catches up with Jev at about 3,000 labels.](/figures/ch20/labels.pdf){#fig-labels}
 
@@ -39,14 +39,14 @@ An important note: the numbers for the LLM and for Jev in this comparison are il
 **A model you train yourself needs thousands of answered examples first.** Someone has to check and mark those cases, and that takes time and money. A ready-made model can start today, without them.
 :::
 
-**Speed and price.** Nothing is faster or cheaper than a rule, and classic models are close behind: they take millionths of a second on computers you already have. Jev's figures, as reported by the company, are in between: about \${{< num ch20 jev_cost_m int >}} per million decisions. So Jev is cheap compared with an LLM, but not compared with a simple rule. The example LLM costs about \${{< num ch20 llm_json_cost_m int >}} per million (a little more than in Chapter 7, because here it also writes a short answer with a confidence) and takes about {{< num ch20 llm_json_latency f1 >}} seconds per answer.
+**Speed and price.** Nothing is faster or cheaper than a rule, and simple models like logistic regression are close behind: they answer in millionths of a second on computers you already have. Jev's figures, as reported by the company, are in between: about \${{< num ch20 jev_cost_m int >}} per million decisions. So Jev is cheap compared with an LLM, but not compared with a simple rule. The example LLM costs about \${{< num ch20 llm_json_cost_m int >}} per million (a little more than in Chapter 7, because here it also writes a short answer with a confidence) and takes about {{< num ch20 llm_json_latency f1 >}} seconds per answer.
 
 ![Time and cost per decision for each method, on log scales. Classic models run in millionths of a second, for fractions of a cent per million decisions (an assumption: computing cost only). The LLM figures are this book's illustrative assumptions; Jev's are vendor-reported.](/figures/ch20/cost-latency.pdf){#fig-cost-latency}
 
 ::: {.keyidea}
 **If a simple rule or a simple model does the job, use it.** It is faster, cheaper and easier to explain than any large AI model.
 :::
-**Stability.** When the same question was asked to the LLM five times, {{< num ch20 flip_rate pct1 >}} of the answers changed at least once, and {{< num ch20 parse_fail pct1 >}} of its answers could not be read by the program at all. Answers in a fixed typed shape cannot break like this.
+**Stability.** When the same question was asked to the LLM five times, {{< num ch20 flip_rate pct1 >}} of the answers changed at least once, and {{< num ch20 parse_fail pct1 >}} of its answers could not be read by the program at all. A model that always answers with a fixed set of options and probabilities cannot break like this.
 
 ## The scorecard
 
@@ -56,9 +56,9 @@ An important note: the numbers for the LLM and for Jev in this comparison are il
 
 Read @fig-scorecard-13 column by column, and ask which columns matter for *your* decision.
 
-- Thousands of labelled cases, clean data and a stable decision: logistic regression is hard to beat.
-- Every decision must be explained to an auditor: rules are the clear winner.
-- No labelled cases, raw text, or many different decisions: a System One model is the strongest choice, after a calibration check.
+- If you have thousands of past cases with answers, clean data and a decision that does not change much: logistic regression is hard to beat.
+- If every decision must be explained to an auditor: rules are the clear winner.
+- If you have no past answers, only raw text, or many different decisions: a System One model is the strongest choice, after you check its numbers.
 - The LLM is the weakest at deciding here, but it can do something no other method can: read anything, and *write*. Chapter 12 gives it exactly that job.
 
 ::: {.keyidea}
@@ -72,7 +72,7 @@ This is one decision in one imagined company, and the numbers for the LLM and Je
 ::: {.threshold}
 A new team will handle alerts about cloud storage. Nobody has checked any of these alerts before, so there are no past answers yet. The team will check and mark about 300 cases per week. Which method should they start with, and when should they reconsider?
 
-(Start with a method that needs no labels. Use the first 300 labelled cases to check and fix its calibration. After a few weeks, train a logistic regression next to it. If both agree, keep the cheaper one. If they disagree, study the cases where they disagree.)
+(Start with a method that needs no past answers, such as a System One model. Use the first 300 checked cases to test and correct its numbers. After a few weeks, when more cases are checked, train a logistic regression next to it. If both agree, keep the cheaper one. If they disagree, study the cases where they disagree.)
 :::
 
 ::: {.exercises}
