@@ -301,18 +301,6 @@
    ]
   },
   {
-   "display": "Gradient descent",
-   "sort": "gradient descent",
-   "patterns": [
-    "gradient descent"
-   ],
-   "strict": false,
-   "code": false,
-   "taught": [
-    2
-   ]
-  },
-  {
    "display": "Guardrail gate",
    "sort": "guardrail gate",
    "patterns": [
@@ -347,18 +335,6 @@
    "code": false,
    "taught": [
     12
-   ]
-  },
-  {
-   "display": "Isotonic regression",
-   "sort": "isotonic regression",
-   "patterns": [
-    "isotonic"
-   ],
-   "strict": false,
-   "code": false,
-   "taught": [
-    3
    ]
   },
   {
@@ -427,36 +403,12 @@
    ]
   },
   {
-   "display": "Log loss",
-   "sort": "log loss",
-   "patterns": [
-    "log loss"
-   ],
-   "strict": false,
-   "code": false,
-   "taught": [
-    2
-   ]
-  },
-  {
    "display": "Logistic regression",
    "sort": "logistic regression",
    "patterns": [
     "logistic regression"
    ],
    "strict": false,
-   "code": false,
-   "taught": [
-    2
-   ]
-  },
-  {
-   "display": "Loss",
-   "sort": "loss",
-   "patterns": [
-    "loss"
-   ],
-   "strict": true,
    "code": false,
    "taught": [
     2
@@ -608,18 +560,6 @@
    "code": false,
    "taught": [
     6
-   ]
-  },
-  {
-   "display": "Reliability diagram",
-   "sort": "reliability diagram",
-   "patterns": [
-    "reliability diagram*"
-   ],
-   "strict": false,
-   "code": false,
-   "taught": [
-    3
    ]
   },
   {
@@ -883,16 +823,6 @@
    "taught": [
     10
    ]
-  },
-  {
-   "display": "Bayes' rule",
-   "sort": "bayes rule",
-   "patterns": [
-    "bayes"
-   ],
-   "strict": false,
-   "code": false,
-   "taught": []
   },
   {
    "display": "Doom demo",

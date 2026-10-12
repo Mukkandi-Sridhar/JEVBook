@@ -4,7 +4,7 @@
 \begingroup\small
 ```
 
-Everything on these pages is explained fully in the chapter given in brackets. They're here for the day you need the formula and not the explanation.
+Everything on these pages is explained fully in the chapter given in brackets. They're here for the day you need a quick reminder, not the full explanation.
 
 ## Setting the threshold (Chapter 4)
 
@@ -16,49 +16,34 @@ $$
 
 A false alarm costing \$400 and a miss costing \$10,000 give $p^{*} = 400 / 10{,}400 \approx 0.04$.
 
-## Three zones (Chapter 11)
+## Three doors (Chapter 11)
 
-Say a review costs $C_r$ and misses a share $m$ of real problems. A miss costs $C_{\text{miss}}$ and a false urgent call costs $C_{\text{page}}$. Then the cheapest thresholds for calibrated probabilities are
+- **Act** when the chance of a problem is so small that a person's time costs more than the risk.
+- **Escalate** when the chance is so high that waiting costs more than waking someone up.
+- **Review** everything in between.
 
-$$
-\text{low} = \frac{C_r}{C_{\text{miss}}\,(1-m)} \qquad
-\text{high} = \frac{C_{\text{page}} - C_r}{C_{\text{page}} + m\,C_{\text{miss}}}
-$$
+Then check the queue. If more cases go to review than people can check, move the "act" line until the queue fits, and write down what that costs.
 
-Then check the queue. If the review zone holds more cases than people can clear, raise the low (act) threshold until it fits, and write down what that costs.
+## Checking a model's numbers (Chapters 2 and 3)
 
-## Measuring probabilities (Chapters 2 and 3)
+- A probability is checked over many cases: of all the cases where the model said 70%, about 70 in 100 should be true.
+- **Ranking (AUC)**: does the model put the dangerous cases at the top? 1 is perfect, 0.5 is a coin toss.
+- **Calibration (ECE)**: the average gap between what the model said and what really happened. Lower is better.
+- A model can rank well and still give wrong numbers. For decisions, you need both.
 
-For predictions $p_i$ and outcomes $y_i \in \{0, 1\}$:
+## Fixing a model's numbers (Chapters 3 and 9)
 
-$$
-\text{log loss} = -\frac{1}{n}\sum_i \big[y_i \log p_i + (1-y_i)\log(1-p_i)\big]
-$$
-
-$$
-\text{ECE} = \sum_{b} \frac{n_b}{n}\,\big|\,\bar p_b - \bar y_b\,\big|
-$$
-
-where each bin $b$ holds $n_b$ predictions with average $\bar p_b$ and observed rate $\bar y_b$. AUC measures ranking only: a model can have a perfect AUC and useless probabilities.
-
-## Fixing probabilities (Chapters 3 and 9)
-
-| Method | What it fits | Use when |
-|---|---|---|
-| Temperature | $p' = \sigma(z / T)$, one number | the model is too confident (or not confident enough) everywhere |
-| Platt scaling | $p' = \sigma(a z + b)$, two numbers | a few hundred labels; the usual first fix |
-| Isotonic | any increasing curve | thousands of labels |
-| Prior shift | odds × $\dfrac{b'/(1-b')}{b/(1-b)}$ | only the base rate changed, from $b$ to $b'$ |
-
-Here $z = \log\frac{p}{1-p}$ and $\sigma$ is the S-curve.
+- **Platt scaling**: the usual first fix. Learn a small correction from a few hundred past cases with known answers.
+- **Temperature scaling**: for a model that is too sure of itself everywhere.
+- If attacks are simply more or less common at your company, the numbers will all be wrong in one direction; a correction from your own cases fixes this.
 
 ## Testing a model's calibration on your data (Chapter 9)
 
-1. Collect labels for a random sample of real cases, not just the interesting ones.
-2. Measure ranking (AUC) and calibration (ECE, with a bootstrap range) separately.
-3. Compare the average predicted probability with the observed base rate. A big gap usually means the base rate has changed (prior shift).
-4. Fix the base rate first; then use Platt scaling on a few hundred labels if needed.
-5. Test again on labels you didn't fit on. Repeat on a schedule and whenever the model version changes.
+1. Collect recent cases whose final answer is known, including a random sample of cases the machine closed by itself.
+2. Check ranking (AUC) and correct numbers (ECE) separately, using a few hundred cases or more.
+3. If the numbers are all too high or all too low, correct them with Platt scaling on your own cases.
+4. Check each group you treat differently: source, customer type, language.
+5. Repeat regularly, and whenever the model version changes.
 
 ## Designing typed questions (Chapter 8)
 

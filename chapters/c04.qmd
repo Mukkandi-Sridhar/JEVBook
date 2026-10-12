@@ -30,13 +30,10 @@ Any yes-or-no decision can go wrong in two ways:
 :::
 
 For the umbrella: 1 ÷ (1 + 4) = 0.2. Now see what happens when both costs are equal: the formula gives 1 ÷ 2 = 0.5. So 0.5 is correct only when a false alarm and a miss cost exactly the same. That is almost never true in real problems.
-![The right threshold for any ratio between the cost of a miss and the cost of a false alarm (both axes on a log scale). Equal costs give 0.5. As misses get more expensive, the threshold drops fast.](/figures/ch05/threshold-ratio.pdf){#fig-threshold-ratio}
 
-Different costs give different thresholds (@fig-threshold-ratio). For example, suppose a security alert closes automatically and it was a real attack. That missed attack may cost about 630 times more than the few minutes a person would have needed to check it. Then the threshold falls to about {{< num ch05 soc_review_t f4 >}}.
 
-::: {.deeper}
-Where the formula comes from. If you act, you pay the false-alarm cost only when the case was harmless, so on average (1 − *P*) × *C*~fa~. If you do not act, you pay the miss cost only when it was real, so *P* × *C*~miss~. Act when the first is smaller, and rearrange: *P* > *C*~fa~ / (*C*~fa~ + *C*~miss~) [@elkan2001].
-:::
+Different costs give different thresholds. For example, suppose a security alert closes automatically and it was a real attack. That missed attack may cost about 630 times more than the few minutes a person would have needed to check it. Then the threshold falls to about {{< num ch05 soc_review_t f4 >}}.
+
 
 ## Does it work in practice?
 
@@ -44,7 +41,7 @@ In our example company, the team must decide for each alert: block it or allow i
 
 ![Total cost on the test alerts at every threshold. For the calibrated model (green, solid line), the formula's threshold is near the lowest point of the curve. For the same model trained on rebalanced data (red, dashed line), the same threshold lands far from its lowest point.](/figures/ch05/cost-curve.pdf){#fig-cost-curve}
 
-This is why calibration comes first. The rebalanced model from Chapter 3 gives numbers that are too high. If we use the formula with its numbers, the cost is {{< num ch05 bal_penalty pct >}} higher (@fig-cost-curve). Its best threshold is somewhere else, and we could only find it by trial and error, again and again whenever the costs change.
+This is why calibration comes first. The model trained on a 50/50 mix in Chapter 3 gives numbers that are too high. If we use the formula with its numbers, the cost is {{< num ch05 bal_penalty pct >}} higher (@fig-cost-curve). Its best threshold is somewhere else, and we could only find it by trial and error, again and again whenever the costs change.
 
 ::: {.keyidea}
 **The cost rule works only if the model's numbers are true.** If the model says 30% when the real chance is 5%, the rule draws the line in the wrong place. So check the numbers first, then use the costs.

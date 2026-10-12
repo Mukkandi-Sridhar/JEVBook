@@ -78,8 +78,6 @@ Fail-safe
 : The decided meaning of a failure, such as "if the call fails, send the case to review" (Chapters 11 and 14).
 
 
-Gradient descent
-: Improving a model step by step by nudging its numbers in the direction that reduces the loss (Chapter 2).
 
 Guardrail gate
 : A typed check on trusted facts that runs before an agent's action is allowed to happen (Chapter 12).
@@ -88,8 +86,6 @@ Guardrail gate
 Hybrid agent
 : An agent in which a decision model answers the small decisions and an LLM only writes (Chapter 12).
 
-Isotonic regression
-: A calibration method that learns any increasing mapping from scores to probabilities. It's flexible, but needs more data than Platt scaling (Chapter 3).
 
 Jevons paradox
 : When making something more efficient to use makes people use more of it in total, not less (Chapter 15).
@@ -106,14 +102,10 @@ LLM (large language model)
 LLM-as-judge
 : Using an LLM to rate or check an output, often on a numbered scale (Chapter 10).
 
-Log loss
-: A score that punishes confident wrong answers heavily. It's a proper scoring rule (Chapter 2).
 
 Logistic regression
-: A model that adds up weighted evidence and passes the total through an S-curve to get a probability (Chapter 2).
+: A simple model that works like a credit score: it adds points for each clue and turns the total into a probability (Chapter 2).
 
-Loss
-: A number that measures how wrong a model is on some examples. Training tries to make it smaller (Chapter 2).
 
 Noul
 : TypeSafe's name for a yes-or-no question. The answer is the probability of yes (Chapter 8).
@@ -134,20 +126,16 @@ Platt scaling
 Policy
 : The rules that turn a probability into an action, usually as thresholds between zones (Chapter 11).
 
-Prior shift
-: A change in the base rate between where a model was calibrated and where it's used. You can correct it if you know the new base rate (Chapter 9).
 
 Prompt injection
 : Text planted in an input that tries to make a model follow the attacker's instructions (Chapter 6).
 
-Proper scoring rule
-: A way of scoring predictions under which reporting your honest probability gives the best average score (Chapter 2).
 
 RAG (retrieval-augmented generation)
 : Giving an LLM relevant documents, found by search, before it answers (Chapter 6).
 
 Reliability diagram
-: A chart of what a model said against what happened. A calibrated model sits on the diagonal (Chapter 3).
+: A chart of what a model said against what really happened. If the points lie on the diagonal, the model's numbers can be trusted (Chapter 3).
 
 RLCD
 : TypeSafe's name for reinforcement learning for calibrated decisions, which it says trains Jev. The details aren't published (Chapter 7).

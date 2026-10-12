@@ -55,15 +55,9 @@ You will recognise every part of @fig-architecture-21 from earlier chapters. Fou
 
 ## What is inside a small System One model
 
-You do not need to build a System One model to use one. But it helps to understand what one looks like inside.
+You do not need to build a System One model to use one, but it helps to have a simple picture of one. Imagine a small model built for alerts. It works like a doctor who examines a patient once and then fills in three different forms. One shared part reads the alert once and sums it up. Then three small parts use that summary to answer the three types of question: yes/no, pick one, and rate on a scale. The model is trained in a way that rewards honest numbers (Chapter 2), and afterwards its numbers are corrected on cases it has never seen (Chapter 3).
 
-![The three heads. A noul turns one number into P(yes) with the S-curve. A choice turns one number per label into probabilities that add up to 1. A score turns one number into probabilities for levels in order, by cutting it at points that must stay in order.](/figures/ch27/heads.pdf){#fig-heads}
-
-Imagine a small model built for alerts. It works like a doctor who examines a patient once and then fills in three different forms. One shared part, the **encoder**, reads the alert once and sums it up as a short list of numbers. Then three small parts, called **heads**, read that summary, one for each type of question (@fig-heads). The yes/no head uses the S-curve from Chapter 2. The pick-one head gives probabilities that add up to 1. The scale head uses a single dial with marks on it, so that "high" always stays above "medium". All three heads are trained together with log loss, which rewards honest probabilities (Chapter 2), and afterwards each head's numbers are corrected with temperature scaling on cases it has never seen (Chapter 3). Such a model can be very small, about {{< num ch27 n_params int >}} numbers.
-
-![Reliability of P(attack) on the live week. Left: the small model as trained, slightly overconfident. Middle: after dividing by the fitted temperature. Right: the overtrained network before any temperature; its problems are ones no single temperature can fix.](/figures/ch27/calibration.pdf){#fig-calibration}
-
-In our example, the temperature correction reduced the error in the model's numbers (ECE) from {{< num ch27 raw_ece f3 >}} to {{< num ch27 temp_ece f3 >}}, without changing the ranking. A much bigger version trained for too long was a warning: its error was {{< num ch27 over_ece f3 >}}, and after a temperature correction it was no better, {{< num ch27 over_ece_temp f3 >}} (@fig-calibration). Once a model has memorised its training cases, a correction afterwards cannot fully repair it. It is better to stop training at the right time.
+In our example, this correction reduced the error in the model's numbers from {{< num ch27 raw_ece f3 >}} to {{< num ch27 temp_ece f3 >}}. But a much bigger version that was trained for too long could not be repaired this way. Once a model has memorised its training cases, a correction afterwards does not help much. It is better to stop training at the right time.
 
 ::: {.keyidea}
 **Train carefully, stop at the right time, then correct the numbers.** Training too long makes a model memorise and become overconfident. After training, correct its numbers on cases it has never seen.

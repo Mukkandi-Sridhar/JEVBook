@@ -50,9 +50,8 @@ When this book was written, Jev was new, and only some companies could use it. T
 
 **Checked: how you use it.** You send one request with three parts: the **state** (a description of the situation), the **model** name, and a set of clear **questions**. For each question, you get back an answer with a probability for every option. There are three types of questions: yes/no, pick-one, and rate-on-a-scale (Chapter 8).
 
-![What a request to Jev contains, and the shape of the answer that comes back. The values shown are an example.](/figures/ch16/anatomy.pdf){#fig-anatomy-09}
 
-**Claimed by the company: two ideas.** First, Jev is said to produce all its answers together in a single step, instead of word by word like an LLM, and TypeSafe says this is why it is fast. Second, it is said to be trained with a method called **RLCD**, which rewards correct probabilities. The details are not public. But Chapter 2 showed one way such training can work: log loss gives the best score only to honest probabilities.
+**Claimed by the company: two ideas.** First, Jev is said to produce all its answers together in a single step, instead of word by word like an LLM, and TypeSafe says this is why it is fast. Second, it is said to be trained with a method called **RLCD**, which rewards correct probabilities. The details are not public. But Chapter 2 showed that a model can be trained in a way that rewards honest numbers, so the idea is reasonable.
 
 **Unknown:** the model's size, design and training data; how well calibrated it is on *your* data; how it behaves when attackers write the input; and how its behaviour changes between versions. These are exactly the things a decision system depends on most.
 

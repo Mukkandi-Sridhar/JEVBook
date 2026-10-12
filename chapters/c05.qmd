@@ -18,7 +18,7 @@ Some problems need more. For example, activity can be suspicious when it is unus
 
 The solution is to pass the clues through a layer of neurons first. Each neuron draws its own line, and the next neuron combines these lines. Three lines make a triangle; twelve lines make almost a circle (@fig-line-limit). A network with several such layers is called a **deep** network. Training works the same way as before: predict, measure the mistake, and adjust. To decide how much to change each weight, the mistake is passed backwards through the layers, from the answer to the first layer; this is called **backpropagation** [@rumelhart1986].
 
-The big advantage of deep networks is that they can learn their own clues from raw data like images or text [@lecun2015]. But when we already have clean, useful numbers, a deep network adds little. In our example, a small network does about as well as simple logistic regression: their log loss is {{< num ch06 k_small.log_loss f3 >}} and {{< num ch06 k_lr.log_loss f3 >}}, where lower is better.
+The big advantage of deep networks is that they can learn their own clues from raw data like images or text [@lecun2015]. But when we already have clean, useful numbers, a deep network adds little. In our example, a small network does no better than simple logistic regression.
 
 ::: {.keyidea}
 **Big neural networks are for messy data like photos and text.** When your data is already clean numbers, such as a score or a count, a simple model works almost as well and is much easier to understand.
@@ -34,9 +34,8 @@ But embeddings capture what a text is *about*, not the exact numbers inside it. 
 
 "Invoice, not phishing" and "phishing, not invoice" have the same words but opposite meanings. **Attention** solves this. Each word looks at the other words in the sentence and decides which of them change its meaning. In "invoice, not phishing", the word "phishing" pays most attention to "not".
 
-![What each word attends to after training. In "invoice not phishing", the word "phishing" puts nearly all its attention on "not". Nobody told the model about negation; it found that looking at the word before was the cheapest way to get the answers right.](/figures/ch08/heatmaps.pdf){#fig-heatmaps}
 
-In @fig-heatmaps, nobody told the model about the word "not"; it learned this by itself. A model that only counts words reaches {{< num ch08 acc_bow pct >}} accuracy on this task, while attention reaches {{< num ch08 acc_att pct >}}.
+Nobody tells the model about the word "not"; it learns this by itself from examples.
 
 A **transformer** is many attention layers stacked together [@vaswani2017]. There are two types. A **reader** sees the whole input at once, which suits understanding and deciding. A **writer** sees only the words before the current one, because it is producing text one word at a time. LLMs like ChatGPT are writers.
 
@@ -44,9 +43,8 @@ A **transformer** is many attention layers stacked together [@vaswani2017]. Ther
 
 If we train a huge writer to guess the next word on a huge amount of text, it learns grammar, facts and some reasoning [@kaplan2020]. Then it is tuned with good example answers, and with feedback on which answers people prefer [@ouyang2022]. But people usually prefer answers that sound confident. OpenAI reported that GPT-4's confidence was well calibrated before this tuning and less calibrated after it [@openai2023].
 
-![The same training run, on test alerts. Accuracy (left) barely moves. Log loss (middle) and calibration error (right) are flat for a while, then climb steeply. Watch only accuracy and you'd never notice.](/figures/ch09/overtraining.pdf){#fig-overtraining}
 
-There is a deeper reason too. If we train a network that is much bigger than needed for too long, its accuracy hardly changes, but its calibration error grows from {{< num ch09 first.ece f3 >}} to {{< num ch09 last.ece f3 >}} (@fig-overtraining). Once the model gets most training cases right, the only way to improve its score further is to become more and more certain. It becomes certain about everything, even noise. Temperature scaling from Chapter 3 brings the error back to {{< num ch09 ece_after_T f3 >}}.
+There is a second reason. If a large network is trained for too long, it gets almost every training case right, and then the only way to improve further is to become more and more sure of itself. In the end it is sure about everything. The temperature correction from Chapter 3 helps.
 
 ::: {.keyidea}
 **Big models are often too sure of themselves.** After long training, they say "99% sure" even when they are often wrong. Always check their numbers on real cases before trusting them.
@@ -74,11 +72,10 @@ An LLM writes one small piece of text at a time, called a **token**: usually a w
 
 Suppose an LLM replies: `"verdict": "malicious", "confidence": 0.95`. Can we trust this 0.95?
 
-![Reliability of three "confidences" on the same test alerts, all reading the same raw text. The stated confidence barely separates attacks from harmless alerts. The token probability ranks well but is overconfident. The decision model ranks best and also sits close to the diagonal. Synthetic: an illustration, not a measurement of real models.](/figures/ch11/three-confidences.pdf){#fig-three-confidences}
 
 - **The written confidence** is just text that the model wrote. In our example, the LLM used only {{< num ch11 n_distinct_stated int >}} different values, mostly 0.9 or more, so it hardly separates attacks from normal alerts.
 - **The token probability** is the probability the model gave to the word "malicious". It ranks better but is overconfident. It is also the probability of one *word*, not of the answer: the same answer can be written as "malicious", "Malicious" or "likely malicious", and the probability gets split among all these spellings.
-- **A decision model's probability** is designed to be the probability of the answer itself (@fig-three-confidences). Getting such a trustworthy number in one fast step is exactly what System One models are designed for.
+- **A decision model's probability** is designed to be the probability of the answer itself. Getting such a trustworthy number in one fast step is exactly what System One models are designed for.
 
 ::: {.exercises}
 1. A company says its classifier is "97% accurate" and gives a confidence with every answer. You plan to act automatically when the confidence is above 0.9. What would you check first?
