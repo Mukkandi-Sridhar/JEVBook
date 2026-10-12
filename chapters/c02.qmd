@@ -10,7 +10,7 @@ A decision model gives you a number, such as "this alert is 70% likely to be an 
 
 ## What "70%" promises
 
-If the weather app says "70% chance of rain" and it does not rain, the app was not wrong. The promise is about many days: of all the days it says 70%, it should rain on about 70 out of 100.
+If the weather app says "70% chance of rain" and it does not rain, the app was not wrong. The promise is about many days. Of all the days it says 70%, it should rain on about 70 out of 100.
 
 A model's number is the same kind of promise. Among all the alerts it calls "70% likely", about 70 in 100 should turn out to be real attacks. One alert cannot prove the model right or wrong; only many alerts can.
 
@@ -26,7 +26,7 @@ Suppose an alarm catches 99% of real attacks, but also goes off by mistake for 5
 
 Count it out with one lakh (100,000) events. Only 100 are attacks, and the alarm catches 99 of them. But 5% of the 99,900 normal events also set it off: 4,995 false alarms. So out of 5,094 alarms, only 99 are real.
 
-How common something is before you look at any clue is called the **base rate**. When the base rate is low, most alarms are false, and "accuracy" becomes misleading: in our example company, a rule that *never* raises any alarm is {{< num ch02 always_benign_acc pct >}} accurate, simply because most alerts are harmless. So for rare events, ask two better questions: *of the real attacks, how many did it catch?* and *of its alarms, how many were real?*
+How common something is before you look at any clue is called the **base rate**. When the base rate is low, most alarms are false, and "accuracy" becomes misleading. In the example company, a rule that *never* raises any alarm is {{< num ch02 always_benign_acc pct >}} accurate, simply because most alerts are harmless. So for rare events, ask two better questions: *of the real attacks, how many did it catch?* and *of its alarms, how many were real?*
 
 ::: {.keyidea}
 **When something is rare, most alarms are false.** If only 1 in 1,000 events is an attack, even a 99%-accurate alarm is right only about 2 times in 100. To see this, count it out with 1,00,000 cases instead of using percentages.
@@ -58,16 +58,16 @@ Three things commonly spoil a model's numbers:
 - **Big, over-trained models** become too sure of themselves.
 - **The world changes**, so last month's correct numbers can be wrong today.
 
-The fix is usually simple and does not need retraining. Keep aside a few hundred past cases the model never trained on, and learn a small correction on top of it. The usual correction is called **Platt scaling**; another, **temperature scaling**, only tones down numbers that are too extreme. In our example, Platt scaling brought the 50/50 model's error (ECE) down from {{< num ch04 balanced.ece f2 >}} to {{< num ch04 fixes.Platt.ece f2 >}}.
+The fix is usually simple and does not need retraining. Keep aside a few hundred past cases the model never trained on, and learn a small correction on top of it. The usual correction is called **Platt scaling**; another, **temperature scaling**, only tones down numbers that are too extreme. At Kestrel, Platt scaling brought the 50/50 model's error (ECE) down from {{< num ch04 balanced.ece f2 >}} to {{< num ch04 fixes.Platt.ece f2 >}}.
 
-Finally, check each group you treat differently. A model can be right for all alerts together but wrong for one group: in our example, for alerts from laptops it said {{< num ch04 by_source.EDR.pred pct1 >}} when the truth was {{< num ch04 by_source.EDR.actual pct1 >}}, and real attacks on laptops were closed without anyone looking.
+Finally, check each group you treat differently. A model can be right for all alerts together but wrong for one group. At Kestrel, for alerts from laptops it said {{< num ch04 by_source.EDR.pred pct1 >}} when the truth was {{< num ch04 by_source.EDR.actual pct1 >}}, and real attacks on laptops were closed without anyone looking.
 
 ::: {.keyidea}
 **A model that is right on average can still be wrong for one group.** It may be correct for all alerts together but wrong for laptop alerts, or for one language or one region. Check each group separately.
 :::
 
 ::: {.breaks}
-A model whose numbers were correct last month may not be correct today, because the world changes: new kinds of attacks, new software, new users. And correct numbers do not make every single answer right: if the model honestly says 70%, it will still be wrong about three times out of ten. So keep checking the model on recent cases, again and again.
+A model whose numbers were correct last month may not be correct today, because the world changes: new kinds of attacks, new software, new users. And correct numbers do not make every single answer right: if the model correctly says 70%, it will still be wrong about three times out of ten. So keep checking the model on recent cases, again and again.
 :::
 
 ::: {.exercises}

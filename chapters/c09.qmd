@@ -21,13 +21,13 @@ The decision is: *is this alert a real attack?* Every method gets three weeks of
 - an **LLM as judge**, giving each alert a rating from 1 to 10;
 - **Jev**, reading the same clean data fields as logistic regression.
 
-An important note: the numbers for the LLM and for Jev in this comparison are illustrative examples, not measurements of the real products, and the example LLM was set up to read alerts less accurately. So if the LLM ranks below Jev, do not take that as proof about the real models. What you *can* rely on are the lessons that come from how each *type* of method works: how an LLM's written confidence behaves, how often text answers break, what happens when you ask the same question twice, and how much the training examples cost.
+Please note that the numbers for the LLM and for Jev in this comparison are illustrative examples, not measurements of the real products, and the example LLM was set up to read alerts less accurately. So if the LLM ranks below Jev, do not take that as proof about the real models. What you *can* rely on are the lessons that come from how each *type* of method works: how an LLM's written confidence behaves, how often text answers break, what happens when you ask the same question twice, and how much the training examples cost.
 
 ## The results
 
 ![Three views of how well each method separates threats from harmless alerts, on the live week. Left: ranking quality (AUC). Middle: the share of all real threats found if the team reviews the top 240 alerts each day. Right: calibration error, where lower is better.](/figures/ch20/scores.pdf){#fig-scores}
 
-**Ranking.** Logistic regression wins, by a small margin: AUC {{< num ch20 logistic_auc f3 >}} against Jev's {{< num ch20 jev_auc f3 >}} (@fig-scores). This is not luck. It learned from fifteen thousand of this company's own past alerts, with clean data, and the decision depends on that data in a fairly simple way. This is exactly the situation where traditional machine learning is strongest. Rules come last ({{< num ch20 rules_auc f2 >}}): a rule only says yes or no, so it cannot tell which of its many "yes" cases to check first.
+**Ranking.** Logistic regression wins, by a small margin: AUC {{< num ch20 logistic_auc f3 >}} against Jev's {{< num ch20 jev_auc f3 >}} (@fig-scores). This is not luck. It learned from fifteen thousand of this company's own past alerts, with clean data, and the decision depends on that data in a fairly simple way. This is the situation where traditional machine learning is strongest. Rules come last ({{< num ch20 rules_auc f2 >}}): a rule only says yes or no, so it cannot tell which of its many "yes" cases to check first.
 
 **Correct numbers (calibration).** Most methods give numbers close to the truth. The LLM methods do not. The LLM's *written* confidence used only {{< num ch20 conf_levels int >}} different values across five thousand alerts, mostly 0.9, 0.95 and 0.99. A number that an LLM writes is just text, and like people, it prefers round numbers. The LLM-as-judge rating from 1 to 10, when read as a probability, has the worst calibration of all ({{< num ch20 llm_judge_ece f3 >}}).
 
@@ -59,7 +59,7 @@ Read @fig-scorecard-13 column by column, and ask which columns matter for *your*
 - If you have thousands of past cases with answers, clean data and a decision that does not change much: logistic regression is hard to beat.
 - If every decision must be explained to an auditor: rules are the clear winner.
 - If you have no past answers, only raw text, or many different decisions: a System One model is the strongest choice, after you check its numbers.
-- The LLM is the weakest at deciding here, but it can do something no other method can: read anything, and *write*. Chapter 11 gives it exactly that job.
+- The LLM is the weakest at deciding here, but it can do something no other method can: read anything, and *write*. Chapter 11 gives it that job.
 
 ::: {.keyidea}
 **There is no best method for every decision.** Choose based on what matters for this decision: how accurate it is, how trustworthy its numbers are, how much data it needs, its cost and its speed.

@@ -24,11 +24,11 @@ TypeSafe calls a yes-or-no question a **noul**. It returns one number: the proba
 
 A **choice** question returns a probability for every option, and all of them add up to 1. This has a hidden danger. Because the probabilities must add up to 1, the model has to share all of its belief among the options you gave it. If the correct answer is not in your list, that belief does not disappear; it goes to the wrong options. It is like a multiple-choice exam with no correct option: a student who must tick one box will tick a wrong one.
 
-In our example, a model was asked to label the same {{< num ch17 n_harmless int >}} harmless alerts twice, with two different lists of options. When "benign" (harmless) was one of the options, {{< num ch17 full_benign_share pct >}} were labelled benign. When "benign" was removed, every single alert got a threat label, most of them with high confidence.
+We asked a model to label the same {{< num ch17 n_harmless int >}} harmless alerts twice, with two different lists of options. When "benign" (harmless) was one of the options, {{< num ch17 full_benign_share pct >}} were labelled benign. When "benign" was removed, every single alert got a threat label, most of them with high confidence.
 
 ![How confident the top label was for harmless alerts. With "benign" among the options (green, striped), almost all were labelled benign; only the few that weren't are shown. With only threat categories to choose from (red, solid), every harmless alert got a threat label, most with high confidence.](/figures/ch17/forced.pdf){#fig-forced}
 
-The model was not exactly wrong: we asked *which type of attack*, and it answered (@fig-forced). But anyone who reads "malware, 0.95" will take the wrong action.
+The model was not really wrong, since we asked *which type of attack* and it answered (@fig-forced). But anyone who reads "malware, 0.95" will take the wrong action.
 
 ::: {.keyidea}
 **When the model must pick one option, always include "none of these".** If the right answer is not in your list, the model will still pick something from the list, often with high confidence, and that answer will be wrong.
@@ -42,7 +42,7 @@ A **score** question returns a probability for each level of a scale, for exampl
 
 ![Severity probabilities for three alerts, with the average level marked. The first alert's average sits at "low". But its probability is split between "informational" and "medium or high". Almost nothing is actually at "low".](/figures/ch17/severity.pdf){#fig-severity}
 
-Look at the first alert in @fig-severity. Its average level is {{< num ch17 sev_example.expected f2 >}}, which reads as "low". But almost no probability is actually at "low". The model is really saying: *this is either nothing, or something serious*. There is a {{< num ch17 sev_example.p_high pct >}} chance it is medium or high. It is like a student who scores either 20 or 90 in every exam: the average, 55, describes neither result.
+Look at the first alert in @fig-severity. Its average level is {{< num ch17 sev_example.expected f2 >}}, which reads as "low". But almost no probability is actually at "low". What the model is really saying is *this is either nothing, or something serious*. There is a {{< num ch17 sev_example.p_high pct >}} chance it is medium or high. It is like a student who scores either 20 or 90 in every exam: the average, 55, describes neither result.
 
 ::: {.keyidea}
 **An "average level" can hide the real danger.** A model may be saying "either nothing, or something serious", but the average comes out as "low". Look at the chance of the serious levels, not the average.
@@ -56,7 +56,7 @@ The most likely option is not always the one to act on. Suppose a pick-one quest
 
 ![An illustrative choice between four labels, and the expected cost of four actions. "Benign" is the single most likely label, but closing the alert is the most expensive action, because the other 60% of the probability is spread across threats that are costly to miss.](/figures/ch17/expected-cost.pdf){#fig-expected-cost}
 
-The better way, as in @fig-expected-cost, is to work out, for each possible action, how much it would cost on average, taking every option's probability into account, and then choose the cheapest action. Here, that means sending the alert to the identity team. This is the umbrella idea from Chapter 3, extended to more than two options. It is also why we need a probability for every option: a text answer that only says "benign" hides the 60% chance of an attack, which is exactly the information we need.
+The better way, as in @fig-expected-cost, is to work out, for each possible action, how much it would cost on average, taking every option's probability into account, and then choose the cheapest action. Here, that means sending the alert to the identity team. This is the umbrella idea from Chapter 3, extended to more than two options. It is also why we need a probability for every option: a text answer that only says "benign" hides the 60% chance of an attack, and that is the information we need.
 
 Finally, when one situation needs several answers, ask all the questions together in one request. Then combine the answers in your own program, where every rule can be read and checked.
 

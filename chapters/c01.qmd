@@ -44,16 +44,16 @@ To make the ideas concrete, this book uses one example again and again. Let us i
 
 Each alert comes with a *threat score* between 0 and 1. The score comes from outside security services that keep lists of known dangerous websites and computers. A high score means the alert involves something already known to be dangerous. Let us try a simple rule: *if the score is above some number t, mark the alert as an attack.* A cut-off number like *t* is called a **threshold**.
 
-Which value of *t* should we choose? We let the computer try every value from 0 to 1, count the mistakes for each value, and keep the value with the fewest mistakes. This is learning in its simplest form: try many settings on the examples, and keep the one that works best.
+Which value of *t* should we choose? We let the computer try every value from 0 to 1, count the mistakes for each value, and keep the value with the fewest mistakes. This is learning in its simplest form, where we try many settings on the examples and keep the one that works best.
 
 ![Every possible threshold and the mistakes it makes. Low thresholds bury the team in false alarms; high ones miss attacks. The total is lowest at the far right, just below the dotted line for "flag nothing at all".](/figures/ch01/threshold-search.pdf){#fig-threshold-search}
 
-The computer chooses {{< num ch01 best_t f2 >}}. With this threshold it makes {{< num ch01 best_mistakes int >}} mistakes. But look at this: a rule that *never* marks anything as an attack makes {{< num ch01 never_flag_mistakes int >}} mistakes, almost the same number. Out of {{< num ch01 attacks int >}} real attacks, the "best" rule catches only {{< num ch01 best_caught int >}} (@fig-threshold-search).
+The computer chooses {{< num ch01 best_t f2 >}}. With this threshold it makes {{< num ch01 best_mistakes int >}} mistakes. Yet a rule that *never* marks anything as an attack makes {{< num ch01 never_flag_mistakes int >}} mistakes, almost the same number. Out of {{< num ch01 attacks int >}} real attacks, the "best" rule catches only {{< num ch01 best_caught int >}} (@fig-threshold-search).
 
 Why did this happen? There are about twelve harmless alerts for every real attack. So the easiest way to reduce the number of mistakes is to almost never raise an alarm. The computer did exactly what we asked. Our question was wrong.
 
 ::: {.keyidea}
-**If you ask the wrong question, you get a useless answer.** We asked the computer only to "make as few mistakes as possible". Since attacks are rare, it learned the easiest trick: never say "attack". The computer did what we asked, not what we wanted.
+**If you ask the wrong question, you get a useless answer.** We asked the computer only to "make as few mistakes as possible". Since attacks are rare, it learned the easiest trick, which is never to say "attack". The computer did what we asked, not what we wanted.
 :::
 
 In fact, our question had two problems. First, it counted every mistake as equal, although missing a real attack costs much more than one false alarm; Chapter 3 fixes this. Second, it forced the answer to be only *yes* or *no*, which throws away useful information, as we see next.
@@ -66,7 +66,7 @@ Let us ask a different question: *among alerts with a similar score, how many we
 
 @fig-not-yes-no shows the answer. There is no clear line where alerts suddenly become dangerous. Even in the lowest-score group, {{< num ch01 bottom_bin_rate pct >}} were attacks. That looks small, but the group has {{< num ch01 bottom_bin_n int >}} alerts, so more than a hundred attacks are hiding there. And in the highest-score group, only {{< num ch01 top_bin_rate pct >}} were attacks.
 
-So for an alert with a score of 0.55, the honest answer is not "attack" or "safe". The honest answer is: *about one in five alerts like this is an attack.*
+So for an alert with a score of 0.55, "attack" or "safe" is the wrong answer. A more useful answer would be *about one in five alerts like this is an attack.*
 
 This kind of answer is much more useful. It tells the team how worried to be, which alerts to check first, and, once we know the cost of each mistake, where to draw the line.
 
@@ -91,7 +91,7 @@ When you watch an agent work, you notice something interesting. Most of its step
 
 ![The same question, two ways. An LLM writes its answer piece by piece, and your code has to read the sentence. A decision model returns the answer as data, with a probability for every option, in one pass.](/figures/ch01/generate-vs-decide.pdf){#fig-generate-vs-decide}
 
-In 2026, a company called TypeSafe AI released a model named **Jev** for exactly these small decisions. Jev does not write any text. You give it the situation and a clear question, and it gives back the answer with a probability for each option (@fig-generate-vs-decide). TypeSafe calls it a *System One* model. The name comes from the psychologist Daniel Kahneman, who called our fast, automatic thinking "System 1" [@kahneman2011]. In this book, the numbers shown for Jev are examples to explain the ideas, not measurements of the real product. They are marked *synthetic*.
+In 2026, a company called TypeSafe AI released a model named **Jev** for these small decisions. Jev does not write any text. You give it the situation and a clear question, and it gives back the answer with a probability for each option (@fig-generate-vs-decide). TypeSafe calls it a *System One* model. The name comes from the psychologist Daniel Kahneman, who called our fast, automatic thinking "System 1" [@kahneman2011]. In this book, the numbers shown for Jev are examples to explain the ideas, not measurements of the real product. They are marked *synthetic*.
 
 ![The story so far. Each step exists because the one before it hit a problem it couldn't solve. System One models like Jev grow out of deep learning and fit into the "decide" step of an agent.](/figures/ch01/ai-story-map.pdf){#fig-ai-story-map}
 

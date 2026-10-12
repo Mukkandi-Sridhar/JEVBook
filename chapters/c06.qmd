@@ -26,17 +26,17 @@ If we have a fast system and a slow system, how should we divide the work? A goo
 
 ![Expected cost per day as more alerts go to System 2. Sending the alerts System 1 is least sure about (green, solid line) gets most of the benefit early. Sending a random share (grey, dashed line) gets almost nothing until you send nearly everything.](/figures/ch15/routing-curve.pdf){#fig-routing-curve}
 
-In our example, suppose careful checking of *every* alert by the slow system would bring a certain total benefit. Sending only the 20% of alerts that the fast system is least sure about already gives {{< num ch15 share_gain_20 pct >}} of that benefit. Sending a random 20% gives only {{< num ch15 share_gain_20_random pct >}} (@fig-routing-curve). And we pay the slow cost only for that 20%.
+Suppose careful checking of *every* alert by the slow system would bring a certain total benefit. Sending only the 20% of alerts that the fast system is least sure about already gives {{< num ch15 share_gain_20 pct >}} of that benefit. Sending a random 20% gives only {{< num ch15 share_gain_20_random pct >}} (@fig-routing-curve). And we pay the slow cost only for that 20%.
 
 ::: {.keyidea}
-**Let a fast model handle the easy cases, and send only the doubtful ones to the slow one.** If the fast model honestly knows when it is unsure, you get almost the full quality while paying the slow cost for only a few cases.
+**Let a fast model handle the easy cases, and send only the doubtful ones to the slow one.** If the fast model really knows when it is unsure, you get almost the full quality while paying the slow cost for only a few cases.
 :::
 
-This works only if the fast system's numbers are honest: when it says "50%", the case really must be a toss-up. People are similar. Kahneman and the psychologist Gary Klein agreed that fast, gut-feeling judgement can be trusted in three conditions: the same situations keep repeating, the person has a lot of practice, and they quickly find out whether they were right [@kahneman2009]. An experienced traffic policeman meets all three; a person picking shares on the stock market usually does not.
+This works only if the fast system's numbers are correct: when it says "50%", the case really must be a toss-up. People are similar. Kahneman and the psychologist Gary Klein agreed that fast, gut-feeling judgement can be trusted in three conditions: the same situations keep repeating, the person has a lot of practice, and they quickly find out whether they were right [@kahneman2009]. An experienced traffic policeman meets all three; a person picking shares on the stock market usually does not.
 
 ![Conditions under which fast, intuitive judgement tends to be reliable, adapted from Kahneman and Klein. Alert triage mostly meets the first three. The fourth is what separates good experts, and good models, from confident ones.](/figures/ch15/conditions.pdf){#fig-conditions}
 
-For machines, we add a fourth condition, as in @fig-conditions: the system must honestly know when it is unsure.
+For machines, we add a fourth condition, as in @fig-conditions: the system must know when it is unsure.
 
 ## What we know about Jev: three groups
 
@@ -51,15 +51,15 @@ When this book was written, Jev was new, and only some companies could use it. T
 **Checked: how you use it.** You send one request with three parts: the **state** (a description of the situation), the **model** name, and a set of clear **questions**. For each question, you get back an answer with a probability for every option. There are three types of questions: yes/no, pick-one, and rate-on-a-scale (Chapter 7).
 
 
-**Claimed by the company: two ideas.** First, Jev is said to produce all its answers together in a single step, instead of word by word like an LLM, and TypeSafe says this is why it is fast. Second, it is said to be trained with a method called **RLCD**, which rewards correct probabilities. The details are not public. The idea is reasonable: a model can be trained so that honest numbers get the best score.
+**Claimed by the company: two ideas.** First, Jev is said to produce all its answers together in a single step, instead of word by word like an LLM, and TypeSafe says this is why it is fast. Second, it is said to be trained with a method called **RLCD**, which rewards correct probabilities. The details are not public. The idea is reasonable, because a model can be trained so that correct numbers get the best score.
 
-**Unknown:** the model's size, design and training data; how well calibrated it is on *your* data; how it behaves when attackers write the input; and how its behaviour changes between versions. These are exactly the things a decision system depends on most.
+**Unknown:** the model's size, design and training data; how well calibrated it is on *your* data; how it behaves when attackers write the input; and how its behaviour changes between versions. Yet these are the things a decision system depends on most.
 
 ## Check if the company's numbers agree
 
 TypeSafe reports that Jev answers in about 70 to 500 milliseconds (less than half a second), and charges \$0.042 for every million tokens it reads, with nothing extra for its answers. If each decision needs about 500 tokens of description, a million decisions cost about \$21. With an example mid-range LLM price, the same million decisions would cost about \$660. LLM prices vary a lot, so treat this only as a rough size. And for any speed claim, always ask: *faster than what, and for which task?* [@regolo2026]
 
-There is also a simple test anyone can do: when a company gives several numbers, check whether they agree with each other. In its launch demo, Jev played the video game *Doom*, making about ten decisions per second at a reported cost of \$7 per hour. That is 36,000 decisions per hour, or about \$0.0002 per decision. At the listed price, that means about 4,600 tokens of game description per decision, which is reasonable. The numbers agree. This does not prove they are true, but if they had disagreed, we would have learned something important.
+There is also a simple test anyone can do. When a company gives several numbers, check whether they agree with each other. In its launch demo, Jev played the video game *Doom*, making about ten decisions per second at a reported cost of \$7 per hour. That is 36,000 decisions per hour, or about \$0.0002 per decision. At the listed price, that means about 4,600 tokens of game description per decision, which is reasonable. The numbers agree. This does not prove they are true, but if they had disagreed, we would have learned something important.
 
 The unknowns about a new model are not a reason to avoid it. They are a reason to test it on your own data before you trust it.
 

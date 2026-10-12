@@ -46,7 +46,7 @@ For each value of *P*, we choose the cheapest door. The two points where the lin
 
 Look at the first number again. The machine may close an alert by itself only when it is *99.8% sure* the alert is harmless. This is not over-caution; it comes directly from the costs. A real attack that nobody sees costs about 630 times more than one review.
 
-**Check the probabilities first.** These lines assume that *P* is correct. In our example, for alerts the raw model called "below 2%", it said {{< num ch21 raw_believed pct1 >}} on average, but the real rate was {{< num ch21 raw_actual pct1 >}}, which is {{< num ch21 raw_ratio f1 >}} times higher. Most models are too sure of themselves when they give very small or very large numbers. Correcting the numbers with Platt scaling on past cases (Chapter 2) brings them close to the truth.
+**Check the probabilities first.** These lines assume that *P* is correct. For alerts the raw model called "below 2%", it said {{< num ch21 raw_believed pct1 >}} on average, but the real rate was {{< num ch21 raw_actual pct1 >}}, which is {{< num ch21 raw_ratio f1 >}} times higher. Most models are too sure of themselves when they give very small or very large numbers. Correcting the numbers with Platt scaling on past cases (Chapter 2) brings them close to the truth.
 
 ::: {.keyidea}
 **Check that the model's numbers are true before you draw any lines.** If the model says 1% when the truth is 3%, your line will quietly close real attacks without anyone noticing.
@@ -72,7 +72,7 @@ About six per day is still not zero. Now think like the manager who approves the
 
 **What is at risk matters, not only how likely.** A model can be 99% sure that an alert on the payroll server is harmless, but the remaining 1% is still on the payroll server. So nothing on a critical system should close automatically, however confident the model is. And any case that does not clearly belong to another door should go to a person. When in doubt, review.
 
-**Randomly check what the machine closed.** Cases sent to people come back with an answer. Cases closed by the machine come back with *nothing*, so you never see the machine's own mistakes, exactly where they hurt most. So send a small random share, say 3%, of automatically closed cases to a person anyway.
+**Randomly check what the machine closed.** Cases sent to people come back with an answer. Cases closed by the machine come back with *nothing*, so you never see the machine's own mistakes, which is where they hurt most. So send a small random share, say 3%, of automatically closed cases to a person anyway.
 
 ::: {.keyidea}
 **Always check a few of the cases the machine closed by itself.** Nobody looks at a closed case again, so the machine's mistakes stay hidden unless you pick some at random and check them.
@@ -87,7 +87,7 @@ Write down the **policy**, the rules that turn a probability into an action, wit
 Then watch three numbers every day: the share of cases at each door, the review queue compared with the team's capacity, and the predicted number of attacks compared with the confirmed number. When an attack campaign starts in week five, no single alert looks unusual. But the model expected {{< num ch21 campaign_pred pct >}} of alerts to be attacks while the real figure was {{< num ch21 campaign_actual pct >}}, and the review queue overflowed (@fig-drift-watch). Both problems are clear on a daily chart. Then a person decides what to do: correct the model's numbers using the latest week, close fewer alerts of that type automatically for some time, or add more reviewers.
 
 ::: {.breaks}
-The lines are set using past data, but attackers act in the future. An attacker who learns which kinds of alerts the model treats as safe will try to make the attack look exactly like those. Random checks, keeping the model's scores private, and never auto-closing critical systems make this harder, but not impossible. The cost estimates also need to be reviewed whenever the business changes, not only when the model changes.
+The lines are set using past data, but attackers act in the future. An attacker who learns which kinds of alerts the model treats as safe will try to make the attack look like those. Random checks, keeping the model's scores private, and never auto-closing critical systems make this harder, but not impossible. The cost estimates also need to be reviewed whenever the business changes, not only when the model changes.
 :::
 
 ::: {.exercises}

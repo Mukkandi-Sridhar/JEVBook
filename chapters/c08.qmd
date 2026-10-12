@@ -10,7 +10,7 @@ A week after Jev was launched, two opinions were being shared. TypeSafe said Jev
 
 ## Why the critic has a point
 
-Remember from Chapter 2 that a probability tells us how often something happens among similar cases. Now imagine two companies send exactly the same alert to the same model. The model sees the same input, so it gives both companies the same number, say 10%. But suppose one company is attacked often and the other rarely. Then, among alerts like this one, real attacks will be more common at the first company than at the second. The same 10% cannot be correct for both.
+Remember from Chapter 2 that a probability tells us how often something happens among similar cases. Now imagine two companies send the same alert to the same model. The model sees the same input, so it gives both companies the same number, say 10%. But suppose one company is attacked often and the other rarely. Then, among alerts like this one, real attacks will be more common at the first company than at the second. The same 10% cannot be correct for both.
 
 This is the base-rate trap from Chapter 2 again, but now it catches the model instead of a person. A model can give correct numbers for one company and numbers that are always too high, or always too low, for another.
 
@@ -32,13 +32,13 @@ This kind of error is usually easy to fix, because all the numbers are wrong in 
 To check a model, we need past cases where we already know the final answer. These are called **labelled cases**, because someone has marked each one as "attack" or "harmless". Collecting them takes people's time, so it is tempting to check with only a few. But a small sample can badly mislead.
 
 
-In our example, the model's real ECE over all 20,000 alerts is {{< num ch18 ece_full f3 >}}. But if we measure it on only 100 alerts, the typical result is {{< num ch18 ece_n100 f3 >}}, more than three times too high. The reason is chance: with only a few cases in each group, the results jump up and down, like tossing a coin ten times and getting seven heads. These jumps always make the error look bigger, never smaller.
+In our example, the model's real ECE over all 20,000 alerts is {{< num ch18 ece_full f3 >}}. But if we measure it on only 100 alerts, the typical result is {{< num ch18 ece_n100 f3 >}}, more than three times too high. The reason is chance. With only a few cases in each group, the results jump up and down, like tossing a coin ten times and getting seven heads. These jumps always make the error look bigger, never smaller.
 
 ::: {.keyidea}
 **Testing on too few cases can make a good model look bad.** With only 100 cases, chance alone can make the error look three times bigger than it really is. Use a few hundred cases to correct a model, and a few thousand to be sure.
 :::
 
-A simple rule: a few hundred labelled cases are enough to *fix* a big error that always goes in one direction. A few thousand are needed to *prove* that a model's numbers are correct to within one or two percent.
+As a rough guide, a few hundred labelled cases are enough to *fix* a big error that always goes in one direction. A few thousand are needed to *prove* that a model's numbers are correct to within one or two percent.
 
 
 ## A routine you can repeat
