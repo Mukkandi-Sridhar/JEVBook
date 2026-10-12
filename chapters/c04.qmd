@@ -30,9 +30,6 @@ Any yes-or-no decision can go wrong in two ways:
 :::
 
 For the umbrella: 1 ÷ (1 + 4) = 0.2. Now see what happens when both costs are equal: the formula gives 1 ÷ 2 = 0.5. So 0.5 is correct only when a false alarm and a miss cost exactly the same. That is almost never true in real problems.
-
-The 0.5 threshold is correct only when both kinds of mistakes cost the same.
-
 ![The right threshold for any ratio between the cost of a miss and the cost of a false alarm (both axes on a log scale). Equal costs give 0.5. As misses get more expensive, the threshold drops fast.](/figures/ch05/threshold-ratio.pdf){#fig-threshold-ratio}
 
 Different costs give different thresholds (@fig-threshold-ratio). For example, if we let a security alert close automatically, a missed attack may cost about 630 times more than a quick check by a person. Then the threshold falls to about {{< num ch05 soc_review_t f4 >}}.

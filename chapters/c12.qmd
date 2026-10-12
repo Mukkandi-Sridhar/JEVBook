@@ -48,17 +48,13 @@ Suppose we run the agent for a week. Everything looks fine: no errors, every ans
 
 ![How often the first version of the agent chose each option at its "which evidence next?" step, across 700 live alerts. It never once chose threat intel.](/figures/ch24/never-picked.pdf){#fig-never-picked}
 
-In our example, across {{< num ch24 n int >}} alerts, the step "which evidence should I collect next?" *never* chose the threat-intelligence lookup, the most useful information about an alert (@fig-never-picked). So all verdicts were made without it. The ranking dropped from {{< num ch24 v2_auc f3 >}} to {{< num ch24 v1_auc f3 >}}, and about {{< num ch24 v1_closed_threats_day f1 >}} real attacks per day were closed automatically.
-
-A clean answer format does not guarantee a correct answer, and nothing later in the system will complain.
+In our example, across {{< num ch24 n int >}} alerts, the step "which evidence should I collect next?" *never* chose the threat-intelligence lookup, the most useful information about an alert (@fig-never-picked). So all verdicts were made without it. The ranking dropped from {{< num ch24 v2_auc f3 >}} to {{< num ch24 v1_auc f3 >}}, and about {{< num ch24 v1_closed_threats_day f1 >}} real attacks per day were closed automatically. Every answer was in a clean, correct format, so nothing in the system complained.
 
 ::: {.keyidea}
 **Count the answers at every decision step.** An option that is never chosen is a silent bug. No error message will warn you.
 :::
 
-The fix was not a better model. The threat lookup takes a fraction of a second and costs almost nothing. Deciding *whether* to do the lookup costs about the same as simply doing it.
-
-When checking something is cheaper than deciding whether to check it, just check it.
+The fix was not a better model. The threat lookup takes a fraction of a second and costs almost nothing. Deciding *whether* to do the lookup costs about the same as simply doing it. So the agent now always does the lookup. When checking something is cheaper than deciding whether to check it, just check it.
 
 ## Hybrid agent against an LLM-only agent
 

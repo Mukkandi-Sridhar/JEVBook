@@ -1,22 +1,20 @@
 # Prologue: two nights {.unnumbered}
 
-Picture a shipping company's security team. Its computers raise a warning, called an **alert**, whenever something looks suspicious: a sign-in from a strange country, an email with an odd link, a laptop talking to an unknown server. Someone has to look at each alert and decide: real attack, or nothing?
+Let us imagine a logistics company called Kestrel Logistics. Like every large company, it has computers that watch for trouble. Whenever something looks suspicious, such as a login from a strange country, an email with an odd link, or a laptop connecting to an unknown server, the computer raises a warning. This warning is called an **alert**. Each alert must be checked by a person, who decides whether it is a real attack or a false alarm.
 
-Tonight one person is on duty. Checking an alert properly takes about twelve minutes, so they can check about five an hour.
+On this night, only one security engineer is on duty. Checking one alert carefully takes about twelve minutes, so the engineer can check about five alerts in an hour.
 
-![One night, midnight to 7 a.m. Each line is an alert; the real attacks are red, taller and marked on top. Working in the order they arrive, the person on duty checks the ones on the left. The rest wait for the morning.](/figures/front/night.pdf){#fig-night}
+![One night, from midnight to 7 a.m. Each line is one alert; real attacks are the taller red lines, marked on top. The engineer checks alerts in the order they arrive, so only the alerts on the left get checked. The rest wait until morning.](/figures/front/night.pdf){#fig-night}
 
-@fig-night shows the whole night. {{< num front night_alerts int >}} alerts arrived between midnight and seven. {{< num front night_threats int >}} of them were real attacks. Working through them in the order they arrived, the person on duty checked {{< num front night_opened int >}}, and only {{< num front night_threats_opened int >}} of those were real.
+Between midnight and 7 a.m., {{< num front night_alerts int >}} alerts arrive, and {{< num front night_threats int >}} of them are real attacks (@fig-night). The engineer checks the alerts in the order in which they arrive, and by morning has finished {{< num front night_opened int >}} of them. Only {{< num front night_threats_opened int >}} of those were real attacks. All the other attacks were still waiting in the queue, unchecked.
 
-They made no mistakes. Every alert they checked, they judged correctly. The problem was the order. The queue decided what they looked at, and a queue only knows what arrived first.
+The engineer did nothing wrong: every alert that was checked was judged correctly. The real problem was the order of the work. Alerts were checked because they arrived first, not because they were the most dangerous.
 
-Now picture a second night.
+Now let us imagine the same night again, with one change. A computer model reads each alert as soon as it arrives and gives it a number: the chance that it is a real attack. This number can be trusted. Among all the alerts it gives a 10% chance, about one in ten really turns out to be an attack.
 
-A model reads every alert the moment it arrives. It writes nothing. It answers one question with a number: *how likely is this to be real?* And that number can be trusted: of the alerts it calls "one in ten", about one in ten really are attacks.
+With such numbers, the work can be divided sensibly. Alerts that are almost surely harmless are closed automatically, and a few of them are picked at random so that a person can later check that the model is not making mistakes. Alerts that are very likely to be attacks wake up a senior person immediately. All the remaining alerts go to the engineer on duty, with the most dangerous ones at the top of the list. The engineer still makes the important decisions, but now spends the night on the alerts that matter most.
 
-Alerts it's almost sure are harmless get closed, with a random few kept aside to check later. Alerts it's fairly sure are dangerous wake someone up at once. Everything in between goes to the person on duty, most likely first. The person still makes the decisions that matter, on the right alerts.
-
-That second night is what this book builds. It needs little new technology and a lot of clear thinking: what a probability really is and how to tell if one can be trusted; what each mistake costs, and where that puts the line between "act" and "ignore"; and when a machine should decide and when it should hand the case to a person. The same thinking runs a bank's fraud check, a hospital's waiting list and every AI agent choosing its next step. The security team is just the example, because its mistakes are easy to count.
+This book explains how to build that second night. It does not need much new technology, but it needs clear thinking about three questions. What does a probability really mean, and how can we check that it is correct? What does each kind of mistake cost, and where should we draw the line between "act" and "ignore"? And when should a machine decide by itself, and when should it hand the case to a person? The same three questions come up when a bank checks payments for fraud, when a hospital decides which patient to see first, and when an AI agent chooses its next step. We use a security team as the example only because its mistakes are easy to count.
 
 ::: {.nexthook}
 Next: before a machine can decide anything, it has to learn. What does that actually mean?

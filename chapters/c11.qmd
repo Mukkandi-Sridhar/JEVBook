@@ -1,6 +1,6 @@
 # Act, review, or escalate {#sec-ch11}
 
-An alert comes in at 2 a.m. The model says 0.37. We know this is a probability, and we know how to check it. But now the team asks the real question: *what should we do with it?* Close it? Keep it for the morning? Call someone immediately? This step, from a number to an action, is the least exciting part of an AI system, but it is where most of the money is saved or lost.
+Suppose an alert comes in at 2 a.m., and the model gives it a probability of 0.37. We already know what this number means and how to check it. But the team now has a more practical question: *what should we do with this alert?* Should we close it, keep it for the morning, or call someone immediately? This step, from a number to an action, is the least exciting part of an AI system, but it is where most of the money is saved or lost.
 
 ::: {.goals}
 - Set the act and escalate thresholds using costs.
@@ -12,7 +12,7 @@ An alert comes in at 2 a.m. The model says 0.37. We know this is a probability, 
 
 Most tutorials say: above 0.5, treat it as an attack; below 0.5, treat it as safe. Let us test this on one realistic week in our example company. About {{< num ch21 naive.act int >}} alerts per day get closed automatically. That sounds great, until we see that every day about {{< num ch21 naive.missed_by_automation int >}} of these closed alerts were real attacks, and nobody looked at them.
 
-The 0.5 rule makes two wrong assumptions. It assumes a missed attack and a false alarm cost the same. And it assumes there are only two possible actions. In fact, there are three.
+The 0.5 rule makes two wrong assumptions: that a missed attack and a false alarm cost the same, and that there are only two possible actions. In fact, there are three.
 
 ## Three doors
 

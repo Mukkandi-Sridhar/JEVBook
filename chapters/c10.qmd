@@ -39,16 +39,13 @@ An important note: the numbers for the LLM and for Jev in this comparison are il
 **Labels are the hidden cost of trained models.** A trained model can win, but only after thousands of checked cases. A model that needs no labels can start today.
 :::
 
-**Speed and price.** Nothing is faster or cheaper than a rule, and classic models are close behind: they take millionths of a second on computers you already have. Jev's figures, as reported by the company, are in between: about \${{< num ch20 jev_cost_m int >}} per million decisions. The example LLM costs about \${{< num ch20 llm_json_cost_m int >}} per million (a little more than in Chapter 7, because here it also writes a short answer with a confidence) and takes about {{< num ch20 llm_json_latency f1 >}} seconds per answer.
+**Speed and price.** Nothing is faster or cheaper than a rule, and classic models are close behind: they take millionths of a second on computers you already have. Jev's figures, as reported by the company, are in between: about \${{< num ch20 jev_cost_m int >}} per million decisions. So Jev is cheap compared with an LLM, but not compared with a simple rule. The example LLM costs about \${{< num ch20 llm_json_cost_m int >}} per million (a little more than in Chapter 7, because here it also writes a short answer with a confidence) and takes about {{< num ch20 llm_json_latency f1 >}} seconds per answer.
 
 ![Time and cost per decision for each method, on log scales. Classic models run in millionths of a second, for fractions of a cent per million decisions (an assumption: computing cost only). The LLM figures are this book's illustrative assumptions; Jev's are vendor-reported.](/figures/ch20/cost-latency.pdf){#fig-cost-latency}
 
 ::: {.keyidea}
 **If a simple rule or logistic regression works, use it.** It is faster, cheaper and easier to explain than any large model.
 :::
-
-Jev's price advantage is only against LLMs, not against everything.
-
 **Stability.** When the same question was asked to the LLM five times, {{< num ch20 flip_rate pct1 >}} of the answers changed at least once, and {{< num ch20 parse_fail pct1 >}} of its answers could not be read by the program at all. Answers in a fixed typed shape cannot break like this.
 
 ## The scorecard

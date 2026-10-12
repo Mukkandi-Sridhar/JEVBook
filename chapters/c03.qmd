@@ -24,7 +24,7 @@ Good forecasters are not always right; nobody can be. They are good because thei
 
 ## Ranking and calibration are two different things
 
-A model's numbers can be good at two separate jobs.
+A model's numbers can be good at two separate jobs, and it is important not to mix them up.
 
 **Ranking**: does the model give higher numbers to attacks than to harmless alerts? If we sort alerts by the model's number, do real attacks come to the top? This is measured by **AUC**. It is the chance that a random attack gets a higher number than a random harmless alert. An AUC of 1 is perfect; 0.5 is no better than tossing a coin.
 

@@ -14,7 +14,7 @@ In every project there comes a day when the prototype works and someone asks: "C
 
 ![The official library does all the work of building requests, retrying and parsing answers. One setting decides where requests go: a practice version answers locally; the default sends them over the network to the real service.](/figures/ch23/layers.pdf){#fig-layers}
 
-**Fix the model version.** A name like "latest" can point to a new model at any time, without warning.
+**Use a fixed version name.** A name like "latest" can point to a new model at any time, without warning, and your probabilities can change overnight.
 
 ::: {.keyidea}
 **Fix the model version.** Then the behaviour changes only when you decide, not when the company updates its model.
@@ -22,7 +22,7 @@ In every project there comes a day when the prototype works and someone asks: "C
 
 **Retry only the right errors.** Your own mistakes, such as a wrong key or a wrong model name, will fail the same way every time, so fix them instead of retrying. Problems outside your control, such as a busy server or a broken connection, are worth retrying. In our example, if one request in five fails, only {{< num ch23 ok_20_0 pct >}} of calls succeed with no retry, but {{< num ch23 ok_20_2 pct1 >}} succeed with two retries. Retries take time, though, and a login check may have only 300 milliseconds.
 
-**Decide in advance what a failure means.** Treat a failed call as one more kind of case. For a login, the right rule may be "allow it, but mark it for review". For closing an alert, it should be "do not close; send to a person". Write this rule in the policy, where everyone can see it.
+**Plan for failures.** Treat a failed call as one more kind of case. For a login, the right rule may be "allow it, but mark it for review". For closing an alert, it should be "do not close; send to a person". Write this rule in the policy, where everyone can see it.
 
 ::: {.keyidea}
 **Decide in advance what a failure means.** For important actions, a failed call should send the case to a person, never close it.
@@ -46,12 +46,9 @@ You will recognise every part of @fig-architecture-21 from earlier chapters. Fou
 
 ![One decision record, with notes on why each field is there. Together they say what the service saw, what the model said, what the policy did, which version decided, and why.](/figures/ch28/record.pdf){#fig-record}
 
-**Thresholds and rules set together.** In our example, a test run over one week showed that the review queue was over capacity from the first day. The thresholds had been set for 240 reviews per day, but *after* that, someone added a sensible rule: never close an alert on a critical system automatically. Every alert this rule moved to review was extra work that the thresholds had not planned for. When the thresholds were set again *with* the rule included, the average queue went from about {{< num ch28 v1_mean_reviews int >}} to {{< num ch28 v2_mean_reviews int >}} per day.
+**Thresholds and rules set together.** In our example, a test run over one week showed that the review queue was over capacity from the first day. The thresholds had been set for 240 reviews per day, but *after* that, someone added a sensible rule: never close an alert on a critical system automatically. Every alert this rule moved to review was extra work that the thresholds had not planned for. When the thresholds were set again *with* the rule included, the average queue went from about {{< num ch28 v1_mean_reviews int >}} to {{< num ch28 v2_mean_reviews int >}} per day. Thresholds and business rules work together, so they must be set together.
 
 ![Alerts sent to review each day of the live week, before and after the fix. Fitted without the critical-asset rule, the thresholds let the queue run over capacity every day. Fitted with it, the act threshold rises slightly and the queue fits.](/figures/ch28/dry-run.pdf){#fig-dry-run}
-
-Thresholds and business rules are one decision, and must be set together.
-
 **Daily monitoring, a responsible person, and shadow testing.** Every day, check four numbers: the share of cases at each door, the review queue compared with capacity, how often calls fail, and predicted attacks compared with confirmed attacks. When a campaign starts, the last number shows the problem on day one, in plain numbers: the probabilities are no longer correct. A named person should have the authority to switch the service to "review everything" while the cause is found. And every improvement should first run in shadow mode beside the current version. In our example, the new version agreed with the old one on {{< num ch28 shadow_agree pct >}} of alerts, and the shadow test showed, before anyone paid the price, how many attacks its changes would let through.
 
 ![Two weeks of the daily monitor: the live week, then the phishing campaign. Top: the review queue, red and striped on days a flag was raised. Bottom: for alerts people saw, the share the model predicted to be real against the share they confirmed. The campaign opens a gap on its first day.](/figures/ch28/monitor.pdf){#fig-monitor}

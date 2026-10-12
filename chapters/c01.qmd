@@ -56,7 +56,7 @@ Why did this happen? There are about twelve harmless alerts for every real attac
 **A model learns exactly what you ask for.** Ask it only to make fewer mistakes, and it may learn to never raise an alarm. Asking the right question matters more than the algorithm.
 :::
 
-We made two mistakes in the question. First, we counted every mistake as equal. But missing a real attack is much more costly than one false alarm. Chapter 4 fixes this. Second, we forced the answer to be only *yes* or *no*.
+In fact, our question had two problems. First, it counted every mistake as equal, although missing a real attack costs much more than one false alarm; Chapter 4 fixes this. Second, it forced the answer to be only *yes* or *no*, which throws away useful information, as we see next.
 
 ## A better answer: how likely?
 

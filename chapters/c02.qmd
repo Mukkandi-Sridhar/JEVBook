@@ -22,7 +22,7 @@ This is useful because we can check it. When a model says "this alert is 70% lik
 
 ## The trap that fools doctors
 
-Try this question before reading further. A test catches 99% of real attacks. It also gives a false alarm on 5% of normal activity. Real attacks are rare: about 1 in every 1,000 events. The test now raises an alarm. What is the chance that it is a real attack?
+Try this question before reading further. Suppose a test catches 99% of real attacks, but also raises a false alarm on 5% of normal activity, and real attacks are rare: about 1 in every 1,000 events. If the test raises an alarm, what is the chance that it is a real attack?
 
 Most people answer about 95%. The correct answer is about **2%**. In a famous study from 1978, doctors at a top American medical college were asked the same question about a medical test, and the most common answer was also 95% [@casscells1978].
 
@@ -77,9 +77,6 @@ Training means finding the weights with the lowest log loss. Imagine standing on
 ::: {.keyidea}
 **All machine learning is one loop.** Predict, measure the mistake, adjust a little, and repeat. From logistic regression to ChatGPT, only the size of the model changes.
 :::
-
-Even large language models are trained with this same loop, only with a much bigger model and much more data.
-
 ## Two ways a model fools you
 
 **Overfitting** means memorising instead of learning. A very flexible model can remember every small detail of its training data, including random noise. It then looks excellent on that data but performs badly on new cases. @fig-overfit shows this with a decision tree, a model that sorts cases by asking a series of yes/no questions: the more questions it may ask, the more it memorises. The only way to catch this is to test the model on data it has never seen.
