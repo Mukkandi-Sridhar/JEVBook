@@ -1,76 +1,73 @@
-# Fast and slow: System One models and Jev {#sec-ch07}
+# Asking the right question: choice, score, noul {#sec-ch07}
 
-When TypeSafe AI released Jev, it did not call it a better LLM. It called it the first of a new type of model, a *System One* model [@typesafe2026]. In this chapter we first understand the idea behind this name. Then we separate what is actually known about Jev from what is only claimed.
+A System One model asks you to put every question into one of three shapes: yes or no, pick one option, or rate on a scale. You may think real decisions are more complex than this. But look at your own daily work, and you will see that most complex decisions can be broken into a few simple questions of these three shapes: *Is this real? Which team? How urgent?* The hard part is usually asking the question clearly, not the shape of the answer.
 
 ::: {.goals}
-- Understand System 1 and System 2 thinking, in people and in software.
-- Send cases between a fast system and a slow system based on doubt.
-- Sort claims about a new model into three groups.
+- Choose between yes/no, pick-one and scale questions.
+- Avoid two common traps: the missing option and the misleading average.
+- Make decisions using all the probabilities, not only the top answer.
 :::
 
-## Two ways of thinking
+![The three question types, what you send, and what comes back. A noul returns one probability. A choice returns a probability for every label. A score returns a probability for every level, plus the average level.](/figures/ch17/three-types.pdf){#fig-three-types}
 
-What is 2 + 2? The answer came immediately. Now try 17 × 24. This feels different: you have to stop and work step by step. The psychologist Daniel Kahneman called these two ways of thinking **System 1**, which is fast and automatic, and **System 2**, which is slow and careful [@kahneman2011]. System 1 handles most of our daily life and is usually right, but it can also be confidently wrong. Try this: a bat and a ball cost ₹110 together, and the bat costs ₹100 more than the ball. The quick answer, ₹10 for the ball, is wrong. The ball costs ₹5 [@frederick2005].
+## Yes or no: one fact at a time
 
-![Tasks in and around a security team, placed by how often they happen and how much thinking each needs (illustrative). The frequent ones are grouped at the bottom right: quick judgements made hundreds or thousands of times a day. The few that need real reasoning happen rarely.](/figures/ch15/task-map.pdf){#fig-task-map}
+TypeSafe calls a yes-or-no question a **noul**. It returns one number: the probability of "yes". This is the most useful type, and also the easiest to ask badly. Three habits help you ask it well.
 
-Software fits this idea well. Rules and simple models work like System 1: fast, cheap and good with familiar patterns. LLMs, especially the ones that "think" step by step before answering, are closer to System 2: slow and able to handle almost anything, but you pay for every word they write. In real work, as @fig-task-map shows, most tasks are quick judgements that happen many times a day. Only a few need deep thinking. Yet today we often use slow System 2 tools for everything.
+**Ask about one fact at a time.** "Is this a real attack on an important server?" combines two facts. If the answer is "no", you cannot know which part was false: is it not an attack, or is the server not important? Ask two separate questions, and combine the two answers in your own program, where anyone can see the logic.
+
+**Say exactly what "yes" and "no" mean.** Is an employee breaking a company rule "malicious"? Is a test attack paid for by the company "malicious"? Write it clearly: *yes* means "a real attacker or real harmful software is involved"; *no* means "normal activity, an approved test, or a false alarm".
+
+**Avoid double negatives.** "Is this not unlikely to be safe?" confuses both people and models.
+
+## Pick one: always give a "none of these" option
+
+A **choice** question returns a probability for every option, and all of them add up to 1. This has a hidden danger. Because the probabilities must add up to 1, the model has to share all of its belief among the options you gave it. If the correct answer is not in your list, that belief does not disappear; it goes to the wrong options. It is like a multiple-choice exam with no correct option: a student who must tick one box will tick a wrong one.
+
+In our example, a model was asked to label the same {{< num ch17 n_harmless int >}} harmless alerts twice, with two different lists of options. When "benign" (harmless) was one of the options, {{< num ch17 full_benign_share pct >}} were labelled benign. When "benign" was removed, every single alert got a threat label, most of them with high confidence.
+
+![How confident the top label was for harmless alerts. With "benign" among the options (green, striped), almost all were labelled benign; only the few that weren't are shown. With only threat categories to choose from (red, solid), every harmless alert got a threat label, most with high confidence.](/figures/ch17/forced.pdf){#fig-forced}
+
+The model was not exactly wrong: we asked *which type of attack*, and it answered (@fig-forced). But anyone who reads "malware, 0.95" will take the wrong action.
 
 ::: {.keyidea}
-**Most daily decisions are quick ones, but we use slow, expensive AI for all of them.** Like a cashier who does not need a calculator for 2 + 2, most decisions need a fast answer. Keep the slow, careful AI for the few hard cases.
+**When the model must pick one option, always include "none of these".** If the right answer is not in your list, the model will still pick something from the list, often with high confidence, and that answer will be wrong.
 :::
 
-## Send the doubtful cases to the slow system
+Also make sure only one option can be true at a time. If two options can both be true, ask separate yes/no questions instead.
 
-If we have a fast system and a slow system, how should we divide the work? A good expert handles most cases in seconds, and *notices* the cases that do not feel right. We can do the same: let the fast system see every case, and send only the cases it is unsure about to the slow system.
+## Rate on a scale: do not trust the average
 
-![Expected cost per day as more alerts go to System 2. Sending the alerts System 1 is least sure about (green, solid line) gets most of the benefit early. Sending a random share (grey, dashed line) gets almost nothing until you send nearly everything.](/figures/ch15/routing-curve.pdf){#fig-routing-curve}
+A **score** question returns a probability for each level of a scale, for example informational, low, medium and high, and also the *average* level. This average can mislead you badly.
 
-In our example, suppose careful checking of *every* alert by the slow system would bring a certain total benefit. Sending only the 20% of alerts that the fast system is least sure about already gives {{< num ch15 share_gain_20 pct >}} of that benefit. Sending a random 20% gives only {{< num ch15 share_gain_20_random pct >}} (@fig-routing-curve). And we pay the slow cost only for that 20%.
+![Severity probabilities for three alerts, with the average level marked. The first alert's average sits at "low". But its probability is split between "informational" and "medium or high". Almost nothing is actually at "low".](/figures/ch17/severity.pdf){#fig-severity}
+
+Look at the first alert in @fig-severity. Its average level is {{< num ch17 sev_example.expected f2 >}}, which reads as "low". But almost no probability is actually at "low". The model is really saying: *this is either nothing, or something serious*. There is a {{< num ch17 sev_example.p_high pct >}} chance it is medium or high. It is like a student who scores either 20 or 90 in every exam: the average, 55, describes neither result.
 
 ::: {.keyidea}
-**Let a fast model handle the easy cases, and send only the doubtful ones to the slow one.** If the fast model honestly knows when it is unsure, you get almost the full quality while paying the slow cost for only a few cases.
+**An "average level" can hide the real danger.** A model may be saying "either nothing, or something serious", but the average comes out as "low". Look at the chance of the serious levels, not the average.
 :::
 
-This works only if the fast system's numbers are honest: when it says "50%", the case really must be a toss-up. People are similar. Kahneman and the psychologist Gary Klein agreed that fast, gut-feeling judgement can be trusted in three conditions: the same situations keep repeating, the person has a lot of practice, and they quickly find out whether they were right [@kahneman2009]. An experienced traffic policeman meets all three; a person picking shares on the stock market usually does not.
+So write rules on the probability of the levels you care about. A rule like "call someone if the chance of medium or high is above 0.3" is clear, and its line can be set from costs, as in Chapter 3. A rule like "call someone if the average is above 1.5" has no clear meaning.
 
-![Conditions under which fast, intuitive judgement tends to be reliable, adapted from Kahneman and Klein. Alert triage mostly meets the first three. The fourth is what separates good experts, and good models, from confident ones.](/figures/ch15/conditions.pdf){#fig-conditions}
+## Decide using all the probabilities
 
-For machines, we add a fourth condition, as in @fig-conditions: the system must honestly know when it is unsure.
+The most likely option is not always the one to act on. Suppose a pick-one question says: benign 0.40, stolen password 0.35, phishing 0.15, malware 0.10. "Benign" is the top answer, but together 60% says *some kind of attack*. Closing the alert would risk all of that.
 
-## What we know about Jev: three groups
+![An illustrative choice between four labels, and the expected cost of four actions. "Benign" is the single most likely label, but closing the alert is the most expensive action, because the other 60% of the probability is spread across threats that are costly to miss.](/figures/ch17/expected-cost.pdf){#fig-expected-cost}
 
-When this book was written, Jev was new, and only some companies could use it. The public information was its official software library, its documentation, news reports and a few early research papers. With so little information, how can we judge it? The best method is to sort every claim we hear into three groups.
+The better way, as in @fig-expected-cost, is to work out, for each possible action, how much it would cost on average, taking every option's probability into account, and then choose the cheapest action. Here, that means sending the alert to the identity team. This is the umbrella idea from Chapter 3, extended to more than two options. It is also why we need a probability for every option: a text answer that only says "benign" hides the 60% chance of an attack, which is exactly the information we need.
 
-![Every claim about Jev in this book, sorted into three piles. The first pile you can check yourself today. The second is what TypeSafe says. The third is what nobody outside the company can know yet.](/figures/ch16/ledger.pdf){#fig-ledger}
-
-::: {.keyidea}
-**For any new AI product, separate what is proven from what is only claimed.** Put each claim in one of three groups: checked by you, said by the company, or unknown. This protects you from advertising hype.
-:::
-
-**Checked: how you use it.** You send one request with three parts: the **state** (a description of the situation), the **model** name, and a set of clear **questions**. For each question, you get back an answer with a probability for every option. There are three types of questions: yes/no, pick-one, and rate-on-a-scale (Chapter 8).
-
-
-**Claimed by the company: two ideas.** First, Jev is said to produce all its answers together in a single step, instead of word by word like an LLM, and TypeSafe says this is why it is fast. Second, it is said to be trained with a method called **RLCD**, which rewards correct probabilities. The details are not public. But Chapter 2 showed that a model can be trained in a way that rewards honest numbers, so the idea is reasonable.
-
-**Unknown:** the model's size, design and training data; how well calibrated it is on *your* data; how it behaves when attackers write the input; and how its behaviour changes between versions. These are exactly the things a decision system depends on most.
-
-## Check if the company's numbers agree
-
-TypeSafe reports that Jev answers in about 70 to 500 milliseconds (less than half a second), and charges \$0.042 for every million tokens it reads, with nothing extra for its answers. If each decision needs about 500 tokens of description, a million decisions cost about \$21. With an example mid-range LLM price, the same million decisions would cost about \$660. LLM prices vary a lot, so treat this only as a rough size. And for any speed claim, always ask: *faster than what, and for which task?* [@regolo2026]
-
-There is also a simple test anyone can do: when a company gives several numbers, check whether they agree with each other. In its launch demo, Jev played the video game *Doom*, making about ten decisions per second at a reported cost of \$7 per hour. That is 36,000 decisions per hour, or about \$0.0002 per decision. At the listed price, that means about 4,600 tokens of game description per decision, which is reasonable. The numbers agree. This does not prove they are true, but if they had disagreed, we would have learned something important.
-
-The unknowns about a new model are not a reason to avoid it. They are a reason to test it on your own data before you trust it.
+Finally, when one situation needs several answers, ask all the questions together in one request. Then combine the answers in your own program, where every rule can be read and checked.
 
 ::: {.breaks}
-System 1 and System 2 are only a simple way to describe thinking; they are not two real parts of the brain. A System One model also has no real "intuition"; it is a learned formula. Sending doubtful cases to the slow system works only if the fast system knows when it is unsure. When a completely new kind of case appears, the fast system may be confidently wrong, and only random checks will catch it. Finally, the company's numbers come from its own tests, and a new model can change quickly, so fix a version and test it yourself.
+These three shapes cannot express everything. A quantity ("how many megabytes?"), a name ("which username?") or several details from a long document still need something else, often an LLM (see Chapter 11). Answers to separate questions about the same case may not agree, so your program should handle that. And changing the wording of a question changes the probabilities, so test every wording change.
 :::
 
 ::: {.exercises}
-1. List five decisions in your own work that are quick System 1 judgements, and two that need slow System 2 thinking. What makes them different?
+1. Design the questions for a decision you know, such as loan applications or customer complaints. Which are yes/no, which are pick-one, and which are scales? What "none of these" option does each pick-one question need?
 :::
 
 ::: {.nexthook}
-Next chapter: the three types of questions, and how to ask each one well.
+Next chapter: the company says Jev's probabilities are calibrated, and a critic says they cannot be. Here is how to check this yourself.
 :::

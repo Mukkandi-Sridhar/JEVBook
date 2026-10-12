@@ -56,7 +56,7 @@ Why did this happen? There are about twelve harmless alerts for every real attac
 **If you ask the wrong question, you get a useless answer.** We asked the computer only to "make as few mistakes as possible". Since attacks are rare, it learned the easiest trick: never say "attack". The computer did what we asked, not what we wanted.
 :::
 
-In fact, our question had two problems. First, it counted every mistake as equal, although missing a real attack costs much more than one false alarm; Chapter 4 fixes this. Second, it forced the answer to be only *yes* or *no*, which throws away useful information, as we see next.
+In fact, our question had two problems. First, it counted every mistake as equal, although missing a real attack costs much more than one false alarm; Chapter 3 fixes this. Second, it forced the answer to be only *yes* or *no*, which throws away useful information, as we see next.
 
 ## A better answer: how likely?
 
@@ -74,7 +74,7 @@ This kind of answer is much more useful. It tells the team how worried to be, wh
 **"How likely" is more useful than "yes" or "no".** An answer like "one in five alerts like this is an attack" tells you how worried to be and which case to check first. But it helps only if that "one in five" is true.
 :::
 
-When a model's "how sure" is correct, we say the model is **calibrated**. You will see this word many times in this book, and Chapter 3 explains it fully.
+When a model's "how sure" is correct, we say the model is **calibrated**. You will see this word many times in this book, and Chapter 2 explains it fully.
 
 ## The bigger story, and where this book fits
 
@@ -85,7 +85,7 @@ The threat score was one simple number. Real data is often much messier, and eac
 - **RAG.** An LLM knows a lot about the world, but nothing about your company. So before it answers, we search your company's documents and give it the right pages to read.
 - **Agents.** Finally, we let the model use tools, such as searching, sending an email or closing a ticket, and work step by step towards a goal.
 
-Chapters 5 and 6 explain each of these in more detail.
+Chapters 4 and 5 explain each of these in more detail.
 
 When you watch an agent work, you notice something interesting. Most of its steps are not writing. They are small decisions with only a few possible answers: *Is this alert real? Which team should handle this ticket? Is this action safe?* Today, people usually send each such question to an LLM. The LLM writes a full paragraph, and then another program has to search that paragraph for the actual answer. It works, but it is like asking someone to write an essay when you only wanted a tick in a box: slow and costly for such a small job.
 

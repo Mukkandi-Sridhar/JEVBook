@@ -60,10 +60,10 @@ def task():
 
 @figure(CH, "skills")
 def skills():
-    rows = [("Thinking in probabilities", "2, 3", "jev"), ("Putting a price on mistakes", "4, 11", "jev"),
-            ("Testing calibration on your own data", "3, 9", "jev"), ("Designing typed questions", "8, 12", "jev"),
-            ("Sizing queues and people", "11, 13", "review"), ("Monitoring a decision system", "11, 14", "review"),
-            ("Writing prompts for everything", "5, 6", "llm"), ("Picking the biggest model", "5, 10", "llm")]
+    rows = [("Thinking in probabilities", "2", "jev"), ("Putting a price on mistakes", "3, 10", "jev"),
+            ("Testing calibration on your own data", "2, 8", "jev"), ("Designing typed questions", "7, 11", "jev"),
+            ("Sizing queues and people", "10, 12", "review"), ("Monitoring a decision system", "10, 13", "review"),
+            ("Writing prompts for everything", "4, 5", "llm"), ("Picking the biggest model", "4, 9", "llm")]
     f, ax = draw.canvas("text", 2.9)
     draw.text(ax, 0.0, 2.78, "MATTERS MORE", size=6.4, weight="bold", color=C["jev"])
     draw.text(ax, 0.0, 0.7, "MATTERS LESS ON ITS OWN", size=6.4, weight="bold", color=C["llm"])
@@ -73,7 +73,7 @@ def skills():
             y = 0.42
         draw.box(ax, 0.0, y - 0.14, 0.12, 0.28, "", kind=k)
         draw.text(ax, 0.22, y, t, size=6.4)
-        draw.text(ax, 4.7, y, f"Chapters {chs}", size=5.8, ha="right", color=C["ink2"])
+        draw.text(ax, 4.7, y, f"Chapter{'s' if ',' in chs else ''} {chs}", size=5.8, ha="right", color=C["ink2"])
         y -= 0.3
     return f
 
@@ -81,9 +81,9 @@ def skills():
 @figure(CH, "unknowns")
 def unknowns():
     f, ax = draw.canvas("text", 2.4)
-    items = [("Does Jev’s calibration hold on data like yours?", "Chapter 9 tells you how to find out."),
+    items = [("Does Jev’s calibration hold on data like yours?", "Chapter 8 tells you how to find out."),
              ("How fast do System One models improve, and do they drift between versions?", "Pin versions; re-test."),
-             ("Will prices stay this low?", "Early-access prices change. Chapter 15 shows what depends on it."),
+             ("Will prices stay this low?", "Early-access prices change. Chapter 14 shows what depends on it."),
              ("Who else builds decision models?", "The interface pattern outlives any one vendor."),
              ("How will rules on automated decisions evolve?", "Keep people deciding where stakes are high.")]
     for i, (q, a) in enumerate(items):
@@ -98,8 +98,8 @@ def unknowns():
 def monday():
     f, ax = draw.canvas("text", 2.3)
     phases = [("WEEK 1", "Audit", "List every decision your system makes. Count them. Mark which are small, typed and frequent."),
-              ("WEEKS 2–4", "Measure", "Pick one. Get a few hundred labels. Test ranking and calibration: Chapters 3 and 9."),
-              ("MONTH 2", "Shadow", "Put costs on mistakes, set thresholds, run in shadow: Chapters 4, 11 and 13."),
+              ("WEEKS 2–4", "Measure", "Pick one. Get a few hundred labels. Test ranking and calibration: Chapters 2 and 8."),
+              ("MONTH 2", "Shadow", "Put costs on mistakes, set thresholds, run in shadow: Chapters 3, 10 and 12."),
               ("MONTH 3", "Switch, and watch", "Switch on with a fail-safe, an audit and a daily monitor. Then the next decision.")]
     w = 1.12
     for i, (when, what, detail) in enumerate(phases):

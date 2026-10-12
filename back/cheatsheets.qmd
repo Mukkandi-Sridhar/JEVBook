@@ -6,7 +6,7 @@
 
 Everything on these pages is explained fully in the chapter given in brackets. They're here for the day you need a quick reminder, not the full explanation.
 
-## Setting the threshold (Chapter 4)
+## Setting the threshold (Chapter 3)
 
 For a yes-or-no decision, act when the probability of a problem is above
 
@@ -16,7 +16,7 @@ $$
 
 A false alarm costing \$400 and a miss costing \$10,000 give $p^{*} = 400 / 10{,}400 \approx 0.04$.
 
-## Three doors (Chapter 11)
+## Three doors (Chapter 10)
 
 - **Act** when the chance of a problem is so small that a person's time costs more than the risk.
 - **Escalate** when the chance is so high that waiting costs more than waking someone up.
@@ -24,20 +24,20 @@ A false alarm costing \$400 and a miss costing \$10,000 give $p^{*} = 400 / 10{,
 
 Then check the queue. If more cases go to review than people can check, move the "act" line until the queue fits, and write down what that costs.
 
-## Checking a model's numbers (Chapters 2 and 3)
+## Checking a model's numbers (Chapter 2)
 
 - A probability is checked over many cases: of all the cases where the model said 70%, about 70 in 100 should be true.
 - **Ranking (AUC)**: does the model put the dangerous cases at the top? 1 is perfect, 0.5 is a coin toss.
 - **Calibration (ECE)**: the average gap between what the model said and what really happened. Lower is better.
 - A model can rank well and still give wrong numbers. For decisions, you need both.
 
-## Fixing a model's numbers (Chapters 3 and 9)
+## Fixing a model's numbers (Chapters 2 and 8)
 
 - **Platt scaling**: the usual first fix. Learn a small correction from a few hundred past cases with known answers.
 - **Temperature scaling**: for a model that is too sure of itself everywhere.
 - If attacks are simply more or less common at your company, the numbers will all be wrong in one direction; a correction from your own cases fixes this.
 
-## Testing a model's calibration on your data (Chapter 9)
+## Testing a model's calibration on your data (Chapter 8)
 
 1. Collect recent cases whose final answer is known, including a random sample of cases the machine closed by itself.
 2. Check ranking (AUC) and correct numbers (ECE) separately, using a few hundred cases or more.
@@ -45,7 +45,7 @@ Then check the queue. If more cases go to review than people can check, move the
 4. Check each group you treat differently: source, customer type, language.
 5. Repeat regularly, and whenever the model version changes.
 
-## Designing typed questions (Chapter 8)
+## Designing typed questions (Chapter 7)
 
 - **Noul**: one fact per question; say what counts as yes and as no; no double negatives.
 - **Choice**: options that don't overlap; always an escape option ("other", "none", "not enough information").
@@ -53,7 +53,7 @@ Then check the queue. If more cases go to review than people can check, move the
 - Ask related questions in one call: the state is sent once.
 - Decide with all the probabilities and the costs of each action, not just the top label.
 
-## Calling a decision model (Chapters 7, 8 and 14)
+## Calling a decision model (Chapters 6, 7 and 13)
 
 - Ask several typed questions about the same situation in **one call**: yes/no (noul), pick one (choice), rate on a scale (score).
 - Every choice needs an escape option: "none", "other", "not enough information".
@@ -62,7 +62,7 @@ Then check the queue. If more cases go to review than people can check, move the
 - Decide in advance what a **failed call means**; the safe default is "send to a person".
 - Log the probabilities, the policy version and the request ID with every decision.
 
-## Choosing a method (Chapter 10)
+## Choosing a method (Chapter 9)
 
 | If you have… | Start with |
 |---|---|
@@ -72,7 +72,7 @@ Then check the queue. If more cases go to review than people can check, move the
 | messy input and a clear decision | an LLM to extract, a decision model to decide |
 | output a person must read | an LLM, checked by typed questions |
 
-## Before a decision service runs (Chapter 14)
+## Before a decision service runs (Chapter 13)
 
 A fixed model version · a config with a version number and a fingerprint · a meaning for every failure · a record for every decision · random audits of automatic actions · a daily monitor · shadow runs for new versions · an owner who can switch everything to review.
 

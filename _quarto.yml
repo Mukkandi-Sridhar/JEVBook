@@ -31,7 +31,6 @@ book:
     - chapters/c12.qmd
     - chapters/c13.qmd
     - chapters/c14.qmd
-    - chapters/c15.qmd
   appendices:
     - back/glossary.qmd
     - back/cheatsheets.qmd

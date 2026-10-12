@@ -1,99 +1,85 @@
-# Act, review, or escalate {#sec-ch11}
+# Decision patterns, and a hybrid agent {#sec-ch11}
 
-Suppose an alert comes in at 2 a.m., and the model gives it a probability of 0.37. We already know what this number means and how to check it. But the team now has a more practical question: *what should we do with this alert?* Should we close it, keep it for the morning, or call someone immediately? This step, from a number to an action, is the least exciting part of an AI system, but it is where most of the money is saved or lost.
+An experienced cook does not need a recipe for every dish, because most dishes use the same few steps: fry, add water, cook till thick. Software also has such common steps. We call them **patterns**: well-known solutions with a name, so that a team can simply say "put a gate before that action" and everyone understands. In this chapter we collect the patterns for using decision models, and then build an agent with them.
 
 ::: {.goals}
-- Set the act and escalate thresholds using costs.
-- Fit your rules to the number of people you actually have.
-- Run the system safely, with random checks, records and daily monitoring.
+- Recognise six common patterns for using decision models in real systems.
+- Find a decision step that is wrong even when nothing crashes.
+- Divide work correctly between a decision model and an LLM.
 :::
 
-## Why 0.5 fails
+![The six patterns in this chapter, as small diagrams. In every one, something else writes or acts, and a typed question decides.](/figures/ch22/catalog.pdf){#fig-catalog}
 
-Most tutorials say: above 0.5, treat it as an attack; below 0.5, treat it as safe. Let us test this on one realistic week in our example company. About {{< num ch21 naive.act int >}} alerts per day get closed automatically. That sounds great, until we see that every day about {{< num ch21 naive.missed_by_automation int >}} of these closed alerts were real attacks, and nobody looked at them.
-
-The 0.5 rule makes two wrong assumptions: that a missed attack and a false alarm cost the same, and that there are only two possible actions. In fact, there are three.
-
-## Three doors
-
-![420 alerts from the live week, placed by how likely the (calibrated) model thinks they are to be real threats. Note the log scale: most alerts are crowded at the far left, where the model is confident they're harmless. The red crosses, real threats, are mostly to the right, but not all of them. The two lines are the thresholds this chapter arrives at, for a team of six.](/figures/ch21/zones-strip.pdf){#fig-zones-strip}
-
-Every case can leave through one of three doors:
-
-- **Act**: the system handles it alone, and no person reads it. Most cases should go this way, because most cases are harmless.
-- **Review**: a person checks it during normal working hours. This takes about twelve minutes of a skilled person's time.
-- **Escalate**: someone is called immediately, even at 2 a.m., because it cannot wait.
-
-The same idea works outside security. In customer support, the three doors are an automatic reply, a support agent and a supervisor. In checking social media posts, they are automatic approval, a human reviewer and the legal team.
+All six patterns in @fig-catalog follow one rule.
 
 ::: {.keyidea}
-**Every case can go through one of three doors: act, review or escalate.** The machine closes the clearly safe cases, a person checks the unclear ones, and the clearly dangerous ones wake someone up immediately.
+**The model only answers; your own program takes the action.** The model gives an answer with a probability, and your rules decide what to do with it. So nothing happens without passing through rules you control.
 :::
 
-In @fig-zones-strip, most harmless alerts are on the left, and most real attacks are on the right. But some attacks are scattered in the middle, and a few hide among the harmless ones. No two lines can put every alert in the right place. Our job is to make sure the mistakes we cannot avoid are the cheap ones.
+## Six patterns
 
-## Let costs decide the thresholds
+**1. Extract, then decide.** The input is messy, like an email or a PDF, but the decision is small. LLMs are very good at reading messy text, but weaker at the decision itself. So we let the LLM read the text and fill in a simple form, with fields like "sender", "amount" and "deadline". Then a decision model decides using that form.
 
-Let *P* be the chance that an alert is a real attack. For each door, we write down what it costs on average. These are example estimates for a mid-sized company; the method matters more than the exact numbers.
+![Extract, then decide. The LLM reads the raw text and writes structured fields; a decision model answers a typed question about them; policy thresholds turn the answer into an action. The LLM writes but never decides; the decision model decides but never writes.](/figures/ch22/extract.pdf){#fig-extract}
 
-- **Act.** If the alert was real, an attack got through. Expected loss about \$10,000. Cost: *P* × \$10,000.
-- **Review.** Twelve minutes of a person's time at \$75 per hour is \$15. Reviewers also miss about one attack in twenty. Cost: \$15, plus *P* × 5% × \$10,000 for the attacks they miss.
-- **Escalate.** Calling someone for nothing costs about \$400. Cost: (1 − *P*) × \$400.
+In our example, extracting first improved the ranking (AUC) from {{< num ch22 llm_decides_auc f3 >}}, when the LLM decided alone, to {{< num ch22 extract_then_jev_auc f3 >}}. But the company's own clean data fields did even better ({{< num ch22 jev_fields_auc f3 >}}), because the alert text never mentions things like how important the computer is. No LLM can extract a fact that is not written. So if clean data already exists, use it.
 
-![Expected cost of each action as the probability of a real threat rises (both axes on a log scale). Acting is cheapest when P is tiny, escalating when P is large, and review wins everywhere in between. The two crossing points are the thresholds.](/figures/ch21/cost-lines.pdf){#fig-cost-lines}
+**2. The decide step.** As Chapter 5 showed, most steps of an agent are small decisions. Give each of these to a decision model as a clear question, and call the LLM only when something must be written. Since every decision comes with a probability, the agent can notice when it is unsure and stop, instead of continuing confidently.
 
-For each value of *P*, we choose the cheapest door. The two points where the lines cross in @fig-cost-lines are our thresholds, and we can find them with simple arithmetic: act when *P* is below about 0.0016, and escalate when *P* is above about 0.43.
+**3. The safety gate.** Before any risky action, such as deleting a file or sending money, ask a clear question: *is this action safe?* Answer it using only facts the attacker cannot change, such as the company's own records. A high probability allows the action, a low probability blocks it, and anything in the middle goes to a person. These are the three doors again, now for actions.
 
-Look at the first number again. The machine may close an alert by itself only when it is *99.8% sure* the alert is harmless. This is not over-caution; it comes directly from the costs. A real attack that nobody sees costs about 630 times more than one review.
+![A guardrail gate. The agent proposes an action. A decision model estimates whether it's safe, from trusted facts only, never from text an attacker could write. High probability allows the action, low probability blocks it, and the middle asks a person.](/figures/ch22/gate.pdf){#fig-gate}
 
-**Check the probabilities first.** These lines assume that *P* is correct. In our example, for alerts the raw model called "below 2%", it said {{< num ch21 raw_believed pct1 >}} on average, but the real rate was {{< num ch21 raw_actual pct1 >}}, which is {{< num ch21 raw_ratio f1 >}} times higher. Most models are too sure of themselves when they give very small or very large numbers. Correcting the numbers with Platt scaling on past cases (Chapter 3) brings them close to the truth.
+**4. Check the writer.** Some outputs must be written, such as a report or a reply to a customer. After the LLM writes a draft, ask clear questions *about* the draft: is every statement supported by the evidence? Is the tone suitable? Then send it, return it once for correction, or give it to a person. Limit the number of corrections, or the loop may never end.
+
+**5. The router.** To send each case to the right team, ask a pick-one question ("which team?"), but send it automatically only when one team is clearly the most likely. In our example, sending every alert by its top answer sent {{< num ch22 route_all_acc pct >}} to the right team. Sending automatically only when the top probability was at least {{< num ch22 route_line f1 >}} covered {{< num ch22 route_cov pct >}} of alerts, and {{< num ch22 route_acc pct >}} of those went to the right team. The rest went to a general queue for a person to sort.
+
+**6. The memory manager.** Agents keep notes, like a diary, and look things up in them later. Each note and each lookup is a small decision: is this worth remembering? Where should I search? A published system called Jev-Mem uses a System One model for these small decisions and calls a slower, more careful model only to write the final answer; its authors report better and faster answers than the systems they compared it with [@jevmem2026]. Memory mistakes are silent: a fact that was wrongly thrown away is simply missing later, and nothing tells you so. So keep a record of what gets thrown away.
+
+## A hybrid agent
+
+Now let us design the security agent from Chapter 5 as a **hybrid**: a decision model makes every decision, and the LLM writes only what a person will read. Every run leaves a **trace**, a step-by-step record of what the agent saw and what each decision said, with its probability. This one record helps the team find mistakes, answer questions from auditors, and explain any decision later.
+
+![The hybrid agent. A cheap lookup always runs first. Jev decides which other evidence to collect, then answers the three verdict questions together. The policy turns the verdict into an action, and the LLM writes a case note or urgent message only when a person will read it.](/figures/ch24/architecture.pdf){#fig-architecture-17}
+
+## A mistake with no error message
+
+Suppose we run the agent for a week. Everything looks fine: no errors, every answer is readable, and the actions are spread across all three doors. Then we do one simple check that should be done for every decision step of every agent: *count how often each answer is chosen.*
+
+![How often the first version of the agent chose each option at its "which evidence next?" step, across 700 live alerts. It never once chose threat intel.](/figures/ch24/never-picked.pdf){#fig-never-picked}
+
+In our example, across {{< num ch24 n int >}} alerts, the step "which evidence should I collect next?" *never* chose the threat-intelligence lookup, which checks the alert against lists of known dangerous websites and computers, and is the most useful information about an alert (@fig-never-picked). So every verdict was made without it. The ranking quality (AUC) dropped from {{< num ch24 v2_auc f3 >}} to {{< num ch24 v1_auc f3 >}}, and about {{< num ch24 v1_closed_threats_day f1 >}} real attacks per day were closed automatically. Every answer was in a clean, correct format, so nothing in the system complained.
 
 ::: {.keyidea}
-**Check that the model's numbers are true before you draw any lines.** If the model says 1% when the truth is 3%, your line will quietly close real attacks without anyone noticing.
+**Count how often each answer is chosen.** In our example, the agent never once chose the most useful option, and there was no error message. Simple counting is the only way to catch such hidden mistakes.
 :::
 
-## The real limit: the number of people
+The fix was not a better model. The threat lookup takes a fraction of a second and costs almost nothing. Deciding *whether* to do the lookup costs about the same as simply doing it. So the agent now always does the lookup. When checking something is cheaper than deciding whether to check it, just check it.
 
-If we use only the cost-based thresholds, about {{< num ch21 ideal.review int >}} alerts per day go to review. That is a full day's work for about {{< num ch21 ideal_reviews_analysts int >}} people. But the team has only {{< num ch21 analysts int >}} people, so it can review about {{< num ch21 capacity int >}} alerts per day. The rest wait in the queue until the day ends, and are then closed without anyone looking at them.
+## Hybrid agent against an LLM-only agent
+
+Now compare it with an agent where the LLM makes every decision, using the same steps, tools and thresholds.
+
+![Four measures for the two agents on the same 700 live alerts, scaled to a day. The LLM's stated confidences sent far more alerts to review than the queue can take, so more real threats were never seen by a person.](/figures/ch24/compare.pdf){#fig-compare-17}
+
+In our example, the hybrid agent took {{< num ch24 v2_seconds f1 >}} seconds per alert, while the LLM-only agent took {{< num ch24 llm_seconds f1 >}}. The bigger difference is the review queue (@fig-compare-17). The LLM's written confidences are mostly a few round numbers like 0.9 and 0.95, so the lines between the doors cannot separate the cases well, and it sent about {{< num ch24 llm_reviews_day int >}} alerts per day to a team that can review 240. The hybrid sent {{< num ch24 v2_reviews_day int >}}. When the queue is twice too long, the extra alerts are simply not seen. Adding up the attacks that were closed automatically and the attacks that waited in the queue until they were closed unseen, the hybrid missed about {{< num ch24 v2_missed_day int >}} per day, and the LLM-only agent about {{< num ch24 llm_missed_day int >}}.
+
+![Share of each agent's total time spent on each kind of step. In the hybrid, the largest share is the LLM writing for people. In the all-LLM agent, most of the time goes on deciding.](/figures/ch24/labour.pdf){#fig-labour}
+
+@fig-labour shows where the time goes. The LLM-only agent spends most of its time deciding. The hybrid agent spends its biggest share on *writing* notes that people will read, which is exactly the work an LLM is best at.
 
 ::: {.keyidea}
-**Plan for the number of people you actually have.** If about 640 cases a day go to a team that can check 240, the other 400 are never seen, and nobody chooses which ones are skipped.
+**Use an LLM for reading and writing, not for deciding.** LLMs are excellent at understanding messy text and writing for people. For the decisions themselves, a decision model is faster, cheaper and more reliable.
 :::
-
-So we ask a better question: *of all the ways to place the two lines that keep the review queue within what six people can handle, which one costs the least?* With the best such lines, tested on a new week, the machine closes {{< num ch21 chosen.act int >}} alerts per day, people review {{< num ch21 chosen.review int >}}, and {{< num ch21 chosen.escalate int >}} are escalated. The number of real attacks closed without anyone seeing them falls from {{< num ch21 naive.missed_by_automation int >}} per day to about {{< num ch21 chosen.missed_by_automation f1 >}}.
-
-![Where the live week's real threats (left) and harmless alerts (right) end up each day, under one threshold at 0.5 and under the three-zone policy that respects capacity. The light, plain segment on the left (act) is the number that matters: threats closed with no person involved.](/figures/ch21/one-vs-three.pdf){#fig-one-vs-three}
-
-![Threats auto-closed per day, for every team size from 3 to 14 analysts, with thresholds fitted again for each. The gap between the two curves is what better input is worth: the same model reading structured alert fields instead of raw alert text.](/figures/ch21/capacity.pdf){#fig-capacity}
-
-About six per day is still not zero. Now think like the manager who approves the budget. @fig-capacity shows the best policy for every team size. Going from six people to eight reduces unseen attacks from {{< num ch21 chosen.missed_by_automation f1 >}} to {{< num ch21 eight.missed_by_automation f1 >}} per day, which avoids about {{< num ch21 saved_money_per_day money >}} of expected loss every day. The model does not make this choice. But now the choice has a clear price, instead of being a guess. The lower curve in @fig-capacity is the same model reading clean data fields instead of the raw alert text. It shows that giving the model better input helps about as much as hiring more people.
-
-## Two more rules
-
-**What is at risk matters, not only how likely.** A model can be 99% sure that an alert on the payroll server is harmless, but the remaining 1% is still on the payroll server. So nothing on a critical system should close automatically, however confident the model is. And any case that does not clearly belong to another door should go to a person. When in doubt, review.
-
-**Randomly check what the machine closed.** Cases sent to people come back with an answer. Cases closed by the machine come back with *nothing*, so you never see the machine's own mistakes, exactly where they hurt most. So send a small random share, say 3%, of automatically closed cases to a person anyway.
-
-::: {.keyidea}
-**Always check a few of the cases the machine closed by itself.** Nobody looks at a closed case again, so the machine's mistakes stay hidden unless you pick some at random and check them.
-:::
-
-## Running it every day
-
-Write down the **policy**, the rules that turn a probability into an action, with a version number, for example: "Version 3: act below 0.031, escalate above 0.34, set on 1–21 September, six people". Then it can be reviewed, and changed back if needed. Record every decision: what the model saw, what it said, and which policy turned that into an action. If the model fails or does not answer in time, send the case to review, never to automatic closing.
-
-![Top: the share of alerts that were real threats each day (black, solid line) against what the calibrated model expected (green, dashed line). Bottom: alerts sent to review each day against the team's capacity. In week five (shaded, between dotted lines), reality moves away from the model, and the queue overflows.](/figures/ch21/drift-watch.pdf){#fig-drift-watch}
-
-Then watch three numbers every day: the share of cases at each door, the review queue compared with the team's capacity, and the predicted number of attacks compared with the confirmed number. When an attack campaign starts in week five, no single alert looks unusual. But the model expected {{< num ch21 campaign_pred pct >}} of alerts to be attacks while the real figure was {{< num ch21 campaign_actual pct >}}, and the review queue overflowed (@fig-drift-watch). Both problems are clear on a daily chart. Then a person decides what to do: correct the model's numbers using the latest week, close fewer alerts of that type automatically for some time, or add more reviewers.
 
 ::: {.breaks}
-The lines are set using past data, but attackers act in the future. An attacker who learns which kinds of alerts the model treats as safe will try to make the attack look exactly like those. Random checks, keeping the model's scores private, and never auto-closing critical systems make this harder, but not impossible. The cost estimates also need to be reviewed whenever the business changes, not only when the model changes.
+All numbers in this chapter are illustrative, including the timings, and part of the difference between the two agents comes from how the example was set up. Treat the speed, the queue and the design lessons as the main findings. Also, every pattern you add is one more place where something can go wrong: if an LLM first reads the text, then a safety check runs, and then a router sends the case on, a mistake can happen at any of these three steps.
 :::
 
 ::: {.exercises}
-1. Design an act/review/escalate policy for something outside security, such as refund requests or insurance claims. What does each door mean, which mistake is expensive, and what limits the review door?
+1. Design a safety gate for an email agent that can send messages to customers. What is the clear question, which facts can be trusted, and where are the thresholds?
 :::
 
 ::: {.nexthook}
-Next chapter: common designs for using decision models in real systems, and an agent built from them.
+Next chapter: one team's complete journey from start to finish, and the same design in fields far from security.
 :::

@@ -1,68 +1,90 @@
-# Calibration: when 0.8 really means 80% {#sec-ch03}
+# From probabilities to actions {#sec-ch03}
 
-If a model says 80%, does it really mean 80%? Nothing inside a model forces this to be true. It is true only if the model was built carefully and then checked. This chapter shows, in simple steps, how to check it and how to fix it. It is the most important habit in this book.
+Now we have probabilities we can trust. The next question is: *where should we draw the line?* Most people choose 0.5, because it is the default in almost every software library and it feels neutral. But 0.5 is not neutral. Using it quietly assumes that a false alarm and a missed problem cost exactly the same, and for most businesses that is far from true.
 
 ::: {.goals}
-- Understand what *calibrated* means.
-- Check a model's numbers with one simple chart.
-- Know why a model's numbers go wrong, and how they are fixed.
+- Turn the cost of two kinds of mistakes into one threshold.
+- Understand why 0.5 is only a special case.
+- Treat "ask a person" as a real choice, and meet the three doors: act, review, escalate.
 :::
 
-## What weather forecasters do well
+## The umbrella question
 
-In the 1970s, researchers in the United States compared weather forecasts with what actually happened. When forecasters said "30% chance of rain", it rained on about 30% of those days. When they said "70%", it rained on about 70% [@murphy1977]. Most people are not like this: we are usually too sure of ourselves.
+During the monsoon, the forecast says there is a 30% chance of rain. Should you carry an umbrella?
 
-![Two forecasters. For each thing they said ("30%", "70%" and so on), we count how often it actually happened. The careful forecaster sits on the diagonal: their 70% happens about 70% of the time. The overconfident one says 90% about things that happen only about 70% of the time.](/figures/ch04/forecasters.pdf){#fig-forecasters}
+You already know the answer depends on two costs. Carrying an umbrella you did not need is a small trouble; call it 1. Getting fully wet on the way to an important meeting is much worse; call it 4. If you carry the umbrella, you always pay 1. If you do not carry it, you pay 4, but only when it rains. So on average you pay 4 × the chance of rain. At a 30% chance, that is 4 × 0.3 = 1.2, which is more than the 1 you pay for carrying the umbrella.
 
-Good forecasters are not always right; nobody can be. They are good because their numbers mean what they say. This is called **calibration**.
+![The umbrella decision. Carrying always costs 1. Leaving it costs 4 times the chance of rain. The lines cross at 20%: above that, carry it.](/figures/ch05/umbrella.pdf){#fig-umbrella}
+
+The two costs are equal when the chance of rain is 20% (@fig-umbrella). Above 20%, carry the umbrella. So at 30%, you carry it, even though it will probably not rain.
+
+## One simple formula
+
+Any yes-or-no decision can go wrong in two ways:
+
+- a **false alarm**: you acted, but there was no need;
+- a **miss**: you did not act, but you should have.
 
 ::: {.keyidea}
-**A model's "80%" must really mean 80%.** Take all the cases where it said 80%: about 80 out of 100 should turn out true. This is called being calibrated. If its 80% really means 50%, every decision based on it goes wrong.
+**Where to draw the line depends on what each mistake costs.** If getting wet costs four times more than carrying an umbrella, carry it whenever the chance of rain is above 20%, not 50%. The rule: act when the chance is above false-alarm cost ÷ (false-alarm cost + miss cost).
 :::
 
-## How to check
+For the umbrella: 1 ÷ (1 + 4) = 0.2. Now see what happens when both costs are equal: the formula gives 1 ÷ 2 = 0.5. So 0.5 is correct only when a false alarm and a miss cost exactly the same. That is almost never true in real problems.
 
-@fig-forecasters is also the way to check any model. Take past cases where you already know the answer. Put them in groups by what the model said: 0–10%, 10–20%, and so on. In each group, count how often the event really happened. If the points lie on the diagonal line, the model's numbers can be trusted. If they lie below it, the model is too sure of itself.
 
-To sum up the chart in one number, people use the **expected calibration error** (ECE): the average gap between what the model said and what really happened [@naeini2015]. In our example, the model's ECE is {{< num ch04 lr.ece f3 >}}, which means its numbers are off by less than one percentage point on average.
+Different costs give different thresholds. For example, suppose a security alert closes automatically and it was a real attack. That missed attack may cost about 630 times more than the few minutes a person would have needed to check it. Then the threshold falls to about {{< num ch05 soc_review_t f4 >}}.
 
-## Putting in order is not the same as correct numbers
 
-A model's numbers can do two different jobs. Think of a teacher who ranks every student correctly, from first to last, but writes everyone's marks 30 points too high. The order is right; the marks are wrong.
+## Does it work in practice?
 
-- **Ranking**: does the model put the dangerous cases at the top of the list? This is measured by a score called **AUC**: 1 is perfect, and 0.5 is no better than tossing a coin.
-- **Calibration**: are the numbers themselves correct?
+In our example company, the team must decide for each alert: block it or allow it? Suppose wrongly blocking a harmless activity costs about \$200 of lost work, and letting a real attack through costs about \$4,000. The formula says: block when the probability is above {{< num ch05 t_formula f3 >}}. If we try all possible thresholds one by one, the best one is almost exactly the same. Using 0.5 instead costs {{< num ch05 half_penalty f1 >}} times as much.
 
-A model can be good at ranking and still give wrong numbers. If you only want to know which alert to check first, ranking is enough. But if you use the numbers to decide, for example "close every alert below 10%", wrong numbers will mislead you.
+![Total cost on the test alerts at every threshold. For the calibrated model (green, solid line), the formula's threshold is near the lowest point of the curve. For the same model trained on rebalanced data (red, dashed line), the same threshold lands far from its lowest point.](/figures/ch05/cost-curve.pdf){#fig-cost-curve}
+
+This is why calibration comes first. The model trained on a 50/50 mix in Chapter 2 gives numbers that are too high. If we use the formula with its numbers, the cost is {{< num ch05 bal_penalty pct >}} higher (@fig-cost-curve). Its best threshold is somewhere else, and we could only find it by trial and error, again and again whenever the costs change.
 
 ::: {.keyidea}
-**Putting cases in the right order is not enough; the numbers must also be right.** A model can put the most dangerous alerts at the top of the list and still say "40%" when the truth is "4%". To decide, you need both the right order and the right numbers.
+**The cost rule works only if the model's numbers are true.** If the model says 30% when the real chance is 5%, the rule draws the line in the wrong place. So check the numbers first, then use the costs.
 :::
 
-## Why the numbers go wrong, and how to fix them
+## "I am not sure, ask a person" is also a choice
 
-Three things often spoil a model's numbers:
+Usually there is a third option, and it is often the best one: do not decide, and send the case to a person. A machine that is allowed to skip its least certain cases makes far fewer mistakes on the cases it does decide.
 
-- **Training on a made-up 50/50 mix.** Attacks are rare, only {{< num ch04 base pct >}} of alerts in our example. So someone trains the model on equal numbers of attacks and normal alerts, "so it sees more attacks". The model then believes attacks are common: its average prediction becomes {{< num ch04 bal_mean_pred pct >}}. It is like a doctor who has worked only in a hospital ward and starts to think everyone is sick.
-- **Large, over-trained models** become too sure of themselves and say "99%" too easily [@guo2017].
-- **The world changes.** A sudden rise in attacks can make last month's correct numbers wrong today.
+![Coverage against risk. Reading from right to left: if the machine decides every alert, you take its full error rate. Let it decide only the alerts it's surest about and send the rest to people, and the error rate among its decisions falls steeply. A better model (green, solid line) gives you more coverage at the same risk.](/figures/ch05/coverage-risk.pdf){#fig-coverage-risk}
 
-The good news: such a model usually does not need to be trained again. We keep aside some past cases the model has never seen, and learn a small correction on top of it. The two common corrections are **Platt scaling**, which moves all the numbers up or down and makes them more or less extreme [@platt1999], and **temperature scaling**, which only makes over-sure numbers less extreme. In our example, Platt scaling brought this 50/50 model's error down from {{< num ch04 balanced.ece f3 >}} to {{< num ch04 fixes.Platt.ece f3 >}}.
-
-Finally, a model can be correct on average but wrong for one group. In our example, a model is correct for all alerts together, but for alerts from laptops it says {{< num ch04 by_source.EDR.pred pct1 >}} when the truth is {{< num ch04 by_source.EDR.actual pct1 >}}. The errors of different groups cancel out in the average, and real attacks on laptops get closed without anyone looking.
+If the model decides every alert, {{< num ch05 risk_100 pct1 >}} of its decisions are wrong. If it decides only the 80% of alerts it is most sure about, the error falls to {{< num ch05 risk_80 pct1 >}}. If it decides only the most certain half, the error is just {{< num ch05 risk_50 pct1 >}} (@fig-coverage-risk). This chart is very useful for managers. It answers their real question: *how much of this work can we safely give to the machine, and with how many mistakes?*
 
 ::: {.keyidea}
-**A model that is right on average can still be wrong for one group.** It may be correct for all alerts together but wrong for laptop alerts, or for one language or one region. Check each group separately.
+**The machine does not have to decide every case.** Let it handle only the cases it is very sure about, and send the doubtful ones to a person. In our example, letting it decide only the surest half of the cases cut its mistakes from about 6% to under 1%.
 :::
+
+## Three doors
+
+When we combine cost-based thresholds with "ask a person", we get the design used in the rest of this book.
+
+![The three doors. At one end the model is confident nothing's needed, so the machine handles it. At the other end it's confident something's badly wrong, so a person is called in immediately. In between, where it's unsure, a person looks when they can.](/figures/ch05/three-doors.pdf){#fig-three-doors}
+
+- **Act**: the machine handles the case alone.
+- **Review**: a person checks the case during normal work.
+- **Escalate**: a person is called immediately.
+
+The lines between these doors also come from costs. Chapter 10 shows how to set them, and what to do when there are not enough people for the review door.
 
 ::: {.breaks}
-A model whose numbers were correct last month may not be correct today, because the world changes: new kinds of attacks, new software, new users. Also, correct numbers do not make every single answer right: if the model honestly says 70%, it will still be wrong about three times out of ten. So keep checking the model on recent cases, again and again.
+The costs we use are estimates, but the formula treats them as exact. Two habits help. First, try each cost at half and at double its value. If the threshold hardly moves, do not waste time arguing about the exact number. Second, remember that costs change from case to case: a false alarm on the CEO's laptop costs more than one on a test computer. And some costs are not money at all, such as trust, fairness and safety. Discuss them openly.
+:::
+
+::: {.threshold}
+The sales team says a wrongly blocked customer email costs \$800, not \$200. Where should the blocking threshold go now?
+
+(800 ÷ 4,800 ≈ 0.17. Fewer alerts will be blocked, and a few more attacks will get through. The model did not change; the business priorities changed, and the threshold should follow them.)
 :::
 
 ::: {.exercises}
-1. Explain to a friend, without technical words, the difference between a model that ranks well and a model that is calibrated.
+1. A hospital test checks for a serious but treatable disease. Treating a healthy person by mistake costs ₹50,000. Missing a sick person costs ₹50,00,000. At what probability should the doctor start treatment?
 :::
 
 ::: {.nexthook}
-Next chapter: now that we have probabilities we can trust, where should we draw the line between "act" and "ignore"?
+Next chapter: how modern AI models work inside, from one artificial neuron to ChatGPT, and why this matters for decisions.
 :::

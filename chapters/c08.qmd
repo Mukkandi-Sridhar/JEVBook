@@ -1,73 +1,66 @@
-# Asking the right question: choice, score, noul {#sec-ch08}
+# Testing a model's calibration yourself {#sec-ch08}
 
-A System One model asks you to put every question into one of three shapes: yes or no, pick one option, or rate on a scale. You may think real decisions are more complex than this. But look at your own daily work, and you will see that most complex decisions can be broken into a few simple questions of these three shapes: *Is this real? Which team? How urgent?* The hard part is usually asking the question clearly, not the shape of the answer.
+A week after Jev was launched, two opinions were being shared. TypeSafe said Jev gives *calibrated* probabilities [@typesafe2026]. The data scientist Alex Molas replied with a post titled "Jev can't be calibrated". His point was that calibration depends on *your* data, and Jev has never seen your data, so its outputs should be treated as scores, not probabilities [@molas2026]. Who is right? In a precise sense, both are. And you can settle the question for your own use in one afternoon.
 
 ::: {.goals}
-- Choose between yes/no, pick-one and scale questions.
-- Avoid two common traps: the missing option and the misleading average.
-- Make decisions using all the probabilities, not only the top answer.
+- Understand why calibration depends on your data.
+- Correct a model's numbers when attacks are more or less common at your company.
+- Know how many past cases with known answers you need for a fair check.
 :::
 
-![The three question types, what you send, and what comes back. A noul returns one probability. A choice returns a probability for every label. A score returns a probability for every level, plus the average level.](/figures/ch17/three-types.pdf){#fig-three-types}
+## Why the critic has a point
 
-## Yes or no: one fact at a time
+Remember from Chapter 2 that a probability tells us how often something happens among similar cases. Now imagine two companies send exactly the same alert to the same model. The model sees the same input, so it gives both companies the same number, say 10%. But suppose one company is attacked often and the other rarely. Then, among alerts like this one, real attacks will be more common at the first company than at the second. The same 10% cannot be correct for both.
 
-TypeSafe calls a yes-or-no question a **noul**. It returns one number: the probability of "yes". This is the most useful type, and also the easiest to ask badly. Three habits help you ask it well.
-
-**Ask about one fact at a time.** "Is this a real attack on an important server?" combines two facts. If the answer is "no", you cannot know which part was false: is it not an attack, or is the server not important? Ask two separate questions, and combine the two answers in your own program, where anyone can see the logic.
-
-**Say exactly what "yes" and "no" mean.** Is an employee breaking a company rule "malicious"? Is a test attack paid for by the company "malicious"? Write it clearly: *yes* means "a real attacker or real harmful software is involved"; *no* means "normal activity, an approved test, or a false alarm".
-
-**Avoid double negatives.** "Is this not unlikely to be safe?" confuses both people and models.
-
-## Pick one: always give a "none of these" option
-
-A **choice** question returns a probability for every option, and all of them add up to 1. This has a hidden danger. Because the probabilities must add up to 1, the model has to share all of its belief among the options you gave it. If the correct answer is not in your list, that belief does not disappear; it goes to the wrong options. It is like a multiple-choice exam with no correct option: a student who must tick one box will tick a wrong one.
-
-In our example, a model was asked to label the same {{< num ch17 n_harmless int >}} harmless alerts twice, with two different lists of options. When "benign" (harmless) was one of the options, {{< num ch17 full_benign_share pct >}} were labelled benign. When "benign" was removed, every single alert got a threat label, most of them with high confidence.
-
-![How confident the top label was for harmless alerts. With "benign" among the options (green, striped), almost all were labelled benign; only the few that weren't are shown. With only threat categories to choose from (red, solid), every harmless alert got a threat label, most with high confidence.](/figures/ch17/forced.pdf){#fig-forced}
-
-The model was not exactly wrong: we asked *which type of attack*, and it answered (@fig-forced). But anyone who reads "malware, 0.95" will take the wrong action.
+This is the base-rate trap from Chapter 2 again, but now it catches the model instead of a person. A model can give correct numbers for one company and numbers that are always too high, or always too low, for another.
 
 ::: {.keyidea}
-**When the model must pick one option, always include "none of these".** If the right answer is not in your list, the model will still pick something from the list, often with high confidence, and that answer will be wrong.
+**A model can be right for one company and wrong for yours.** If attacks are rarer at your company than at the companies it learned from, all its numbers will be too high. Always test it on your own past cases.
 :::
 
-Also make sure only one option can be true at a time. If two options can both be true, ask separate yes/no questions instead.
+![The same model's reliability at two companies. At Kestrel, whose mix of alerts matches what the model was tuned for, it sits close to the diagonal. At Harbor, where attacks are rarer, every probability is too high.](/figures/ch18/two-companies.pdf){#fig-two-companies}
 
-## Rate on a scale: do not trust the average
+To see this, let us imagine a second company, Harbor Pharma. Its alerts come from the same kind of systems and look the same, but real attacks are rarer: {{< num ch18 harbor_base pct1 >}} of alerts, compared with Kestrel's {{< num ch18 kestrel_base pct1 >}}. The same model has a calibration error of {{< num ch18 ece_kestrel f3 >}} at Kestrel, but {{< num ch18 ece_harbor f3 >}} at Harbor, and the error is always in the same direction. Harbor's average predicted risk is {{< num ch18 harbor_mean_p pct1 >}}, while the real rate is {{< num ch18 harbor_base pct1 >}} (@fig-two-companies). The model did not change. Only the situation changed.
 
-A **score** question returns a probability for each level of a scale, for example informational, low, medium and high, and also the *average* level. This average can mislead you badly.
+## Fixing it
 
-![Severity probabilities for three alerts, with the average level marked. The first alert's average sits at "low". But its probability is split between "informational" and "medium or high". Almost nothing is actually at "low".](/figures/ch17/severity.pdf){#fig-severity}
+This kind of error is usually easy to fix, because all the numbers are wrong in the same direction. The simplest fix is **Platt scaling** from Chapter 2: learn a small correction from a few hundred of your own past alerts with known answers. At Harbor, a correction learned from just 300 past alerts brought the error down from {{< num ch18 ece_harbor f3 >}} to {{< num ch18 ece_platt300 f3 >}}.
 
-Look at the first alert in @fig-severity. Its average level is {{< num ch17 sev_example.expected f2 >}}, which reads as "low". But almost no probability is actually at "low". The model is really saying: *this is either nothing, or something serious*. There is a {{< num ch17 sev_example.p_high pct >}} chance it is medium or high. It is like a student who scores either 20 or 90 in every exam: the average, 55, describes neither result.
+
+## How many labelled cases do you need?
+
+To check a model, we need past cases where we already know the final answer. These are called **labelled cases**, because someone has marked each one as "attack" or "harmless". Collecting them takes people's time, so it is tempting to check with only a few. But a small sample can badly mislead.
+
+
+In our example, the model's real ECE over all 20,000 alerts is {{< num ch18 ece_full f3 >}}. But if we measure it on only 100 alerts, the typical result is {{< num ch18 ece_n100 f3 >}}, more than three times too high. The reason is chance: with only a few cases in each group, the results jump up and down, like tossing a coin ten times and getting seven heads. These jumps always make the error look bigger, never smaller.
 
 ::: {.keyidea}
-**An "average level" can hide the real danger.** A model may be saying "either nothing, or something serious", but the average comes out as "low". Look at the chance of the serious levels, not the average.
+**Testing on too few cases can make a good model look bad.** With only 100 cases, chance alone can make the error look three times bigger than it really is. Use a few hundred cases to correct a model, and a few thousand to be sure.
 :::
 
-So write rules on the probability of the levels you care about. A rule like "call someone if the chance of medium or high is above 0.3" is clear, and its line can be set from costs, as in Chapter 4. A rule like "call someone if the average is above 1.5" has no clear meaning.
+A simple rule: a few hundred labelled cases are enough to *fix* a big error that always goes in one direction. A few thousand are needed to *prove* that a model's numbers are correct to within one or two percent.
 
-## Decide using all the probabilities
 
-The most likely option is not always the one to act on. Suppose a pick-one question says: benign 0.40, stolen password 0.35, phishing 0.15, malware 0.10. "Benign" is the top answer, but together 60% says *some kind of attack*. Closing the alert would risk all of that.
+## A routine you can repeat
 
-![An illustrative choice between four labels, and the expected cost of four actions. "Benign" is the single most likely label, but closing the alert is the most expensive action, because the other 60% of the probability is spread across threats that are costly to miss.](/figures/ch17/expected-cost.pdf){#fig-expected-cost}
+1. **Collect recent cases whose final answer is now known.** Include a random sample of cases the machine closed by itself; otherwise, you will only have answers for the cases people looked at.
+2. **Draw the chart from Chapter 2**, showing how many cases are in each group, and give ECE as a range, not a single number. Look most carefully near the lines where you act.
+3. **Check each group separately**: every source, customer type or language that you treat differently.
+4. **Fix the problem**: if attacks are simply more or less common at your company, adjust for that; otherwise, use Platt or temperature scaling.
+5. **Repeat** this regularly, and whenever the model version or your data changes.
 
-The better way, as in @fig-expected-cost, is to work out, for each possible action, how much it would cost on average, taking every option's probability into account, and then choose the cheapest action. Here, that means sending the alert to the identity team. This is the umbrella idea from Chapter 4, extended to more than two options. It is also why we need a probability for every option: a text answer that only says "benign" hides the 60% chance of an attack, which is exactly the information we need.
+![A testing routine for any model that returns probabilities, Jev included.](/figures/ch18/protocol.pdf){#fig-protocol}
 
-Finally, when one situation needs several answers, ask all the questions together in one request. Then combine the answers in your own program, where every rule can be read and checked.
+So, the company may be right that Jev is calibrated on the data it tested. The critic is right that this does not prove it is calibrated on yours. This routine turns the argument into a measurement. Until you have done it, treat a new model's outputs as scores, not as probabilities.
 
 ::: {.breaks}
-These three shapes cannot express everything. A quantity ("how many megabytes?"), a name ("which username?") or several details from a long document still need something else, often an LLM (see Chapter 12). Answers to separate questions about the same case may not agree, so your program should handle that. And changing the wording of a question changes the probabilities, so test every wording change.
+Even the "known answers" of past cases are not perfect. Experts sometimes disagree, some attacks are never discovered, and some become clear only later: an alert closed today may turn out to be part of an attack found next month. So test with cases that are old enough for the truth to be known. And remember that cases the model closed by itself were never checked by anyone, so their "answer" is only the model's own guess.
 :::
 
 ::: {.exercises}
-1. Design the questions for a decision you know, such as loan applications or customer complaints. Which are yes/no, which are pick-one, and which are scales? What "none of these" option does each pick-one question need?
+1. You have 150 labelled cases and you measure an ECE of 0.05. A colleague says the model is badly calibrated. What would you reply, and what would you do next?
 :::
 
 ::: {.nexthook}
-Next chapter: the company says Jev's probabilities are calibrated, and a critic says they cannot be. Here is how to check this yourself.
+Next chapter: six different ways to make the same decision, compared fairly. Jev does not win every round.
 :::

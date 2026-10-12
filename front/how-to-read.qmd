@@ -1,10 +1,10 @@
 # How to read this book {.unnumbered}
 
-**If you are new to machine learning,** read the book in order. Chapters 1 to 4 are the foundation: what a probability means, how to check it, and how to turn it into an action. Chapters 5 and 6 give a short, simple tour of neural networks, LLMs and AI agents.
+**If you are new to machine learning,** read the book in order. Chapters 1 to 3 are the foundation: what a probability means, how to check it, and how to turn it into an action. Chapters 4 and 5 give a short, simple tour of neural networks, LLMs and AI agents.
 
-**If you already work with LLMs,** still read Chapters 3 and 4, because everything after them depends on these two chapters. Then continue from Chapter 7.
+**If you already work with LLMs,** still read Chapters 2 and 3, because everything after them depends on these two chapters. Then continue from Chapter 6.
 
-**If you lead a team or a product,** read Chapters 1 to 4, then Chapters 7, 10, 11, 13 and 15. After that, you will be able to ask your team the four questions that matter most: What does a mistake cost? Where is the threshold? Can we trust the probabilities? Who checks the warnings?
+**If you lead a team or a product,** read Chapters 1 to 3, then Chapters 6, 9, 10, 12 and 14. After that, you will be able to ask your team the four questions that matter most: What does a mistake cost? Where is the threshold? Can we trust the probabilities? Who checks the warnings?
 
 ## The boxes
 

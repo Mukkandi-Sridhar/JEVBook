@@ -1,66 +1,84 @@
-# Testing a model's calibration yourself {#sec-ch09}
+# The bake-off: six ways to make a decision {#sec-ch09}
 
-A week after Jev was launched, two opinions were being shared. TypeSafe said Jev gives *calibrated* probabilities [@typesafe2026]. The data scientist Alex Molas replied with a post titled "Jev can't be calibrated". His point was that calibration depends on *your* data, and Jev has never seen your data, so its outputs should be treated as scores, not probabilities [@molas2026]. Who is right? In a precise sense, both are. And you can settle the question for your own use in one afternoon.
+In every team that makes many decisions, there is a long-running debate. The senior expert says the hand-written rules are enough, because anyone can read them. The data scientist says a trained model would do better, if someone marks enough past cases with the right answer. The new engineer says an LLM understands cases better than both. And now someone has read about Jev. Each of them is right about something, because each is looking at a different strength. So let us compare them fairly: six methods, the same decision, the same test, and all the results on one page. A comparison like this, like a cooking contest where everyone makes the same dish, is sometimes called a "bake-off".
 
 ::: {.goals}
-- Understand why calibration depends on your data.
-- Correct a model's numbers when attacks are more or less common at your company.
-- Know how many past cases with known answers you need for a fair check.
+- Compare six ways of making the same decision.
+- Judge methods on more than accuracy.
+- Choose a method using a scorecard.
 :::
 
-## Why the critic has a point
+## The six methods
 
-Remember from Chapter 2 that a probability tells us how often something happens among similar cases. Now imagine two companies send exactly the same alert to the same model. The model sees the same input, so it gives both companies the same number, say 10%. But suppose one company is attacked often and the other rarely. Then, among alerts like this one, real attacks will be more common at the first company than at the second. The same 10% cannot be correct for both.
+![The six contestants: what each one reads, what it returns, and what it needs before it can start.](/figures/ch20/contenders.pdf){#fig-contenders}
 
-This is the base-rate trap from Chapter 2 again, but now it catches the model instead of a person. A model can give correct numbers for one company and numbers that are always too high, or always too low, for another.
+The decision is: *is this alert a real attack?* Every method gets three weeks of past alerts with known answers ({{< num ch20 n_hist int >}} alerts) to learn from, and is then tested on a fourth week it has never seen ({{< num ch20 n_live int >}} alerts, of which {{< num ch20 live_threats int >}} are real attacks). The six methods are shown in @fig-contenders:
+
+- hand-written **rules**;
+- **logistic regression** (from Chapter 2), reading the alert's clean data fields, such as the threat score and the time;
+- a simple **text classifier**, which learns which words in the alert's text usually mean an attack;
+- an **LLM**, asked to give its verdict and its confidence in a fixed format;
+- an **LLM as judge**, giving each alert a rating from 1 to 10;
+- **Jev**, reading the same clean data fields as logistic regression.
+
+An important note: the numbers for the LLM and for Jev in this comparison are illustrative examples, not measurements of the real products, and the example LLM was set up to read alerts less accurately. So if the LLM ranks below Jev, do not take that as proof about the real models. What you *can* rely on are the lessons that come from how each *type* of method works: how an LLM's written confidence behaves, how often text answers break, what happens when you ask the same question twice, and how much the training examples cost.
+
+## The results
+
+![Three views of how well each method separates threats from harmless alerts, on the live week. Left: ranking quality (AUC). Middle: the share of all real threats found if the team reviews the top 240 alerts each day. Right: calibration error, where lower is better.](/figures/ch20/scores.pdf){#fig-scores}
+
+**Ranking.** Logistic regression wins, by a small margin: AUC {{< num ch20 logistic_auc f3 >}} against Jev's {{< num ch20 jev_auc f3 >}} (@fig-scores). This is not luck. It learned from fifteen thousand of this company's own past alerts, with clean data, and the decision depends on that data in a fairly simple way. This is exactly the situation where traditional machine learning is strongest. Rules come last ({{< num ch20 rules_auc f2 >}}): a rule only says yes or no, so it cannot tell which of its many "yes" cases to check first.
+
+**Correct numbers (calibration).** Most methods give numbers close to the truth. The LLM methods do not. The LLM's *written* confidence used only {{< num ch20 conf_levels int >}} different values across five thousand alerts, mostly 0.9, 0.95 and 0.99. A number that an LLM writes is just text, and like people, it prefers round numbers. The LLM-as-judge rating from 1 to 10, when read as a probability, has the worst calibration of all ({{< num ch20 llm_judge_ece f3 >}}).
+
+**Examples needed.** Logistic regression must first learn from about 3,000 past cases with known answers before it catches up with Jev, which needs none to start. A team with months of history already has such cases. A new team, or a completely new decision, does not.
+
+![Ranking on the live week as the trained methods see more labelled alerts, averaged over random samples. Jev and the LLMs need no labels to start, so they're flat lines. Logistic regression catches up with Jev at about 3,000 labels.](/figures/ch20/labels.pdf){#fig-labels}
 
 ::: {.keyidea}
-**A model can be right for one company and wrong for yours.** If attacks are rarer at your company than at the companies it learned from, all its numbers will be too high. Always test it on your own past cases.
+**A model you train yourself needs thousands of answered examples first.** Someone has to check and mark those cases, and that takes time and money. A ready-made model can start today, without them.
 :::
 
-![The same model's reliability at two companies. At Kestrel, whose mix of alerts matches what the model was tuned for, it sits close to the diagonal. At Harbor, where attacks are rarer, every probability is too high.](/figures/ch18/two-companies.pdf){#fig-two-companies}
+**Speed and price.** Nothing is faster or cheaper than a rule, and simple models like logistic regression are close behind: they answer in millionths of a second on computers you already have. Jev's figures, as reported by the company, are in between: about \${{< num ch20 jev_cost_m int >}} per million decisions. So Jev is cheap compared with an LLM, but not compared with a simple rule. The example LLM costs about \${{< num ch20 llm_json_cost_m int >}} per million (a little more than in Chapter 6, because here it also writes a short answer with a confidence) and takes about {{< num ch20 llm_json_latency f1 >}} seconds per answer.
 
-To see this, let us imagine a second company, Harbor Pharma. Its alerts come from the same kind of systems and look the same, but real attacks are rarer: {{< num ch18 harbor_base pct1 >}} of alerts, compared with Kestrel's {{< num ch18 kestrel_base pct1 >}}. The same model has a calibration error of {{< num ch18 ece_kestrel f3 >}} at Kestrel, but {{< num ch18 ece_harbor f3 >}} at Harbor, and the error is always in the same direction. Harbor's average predicted risk is {{< num ch18 harbor_mean_p pct1 >}}, while the real rate is {{< num ch18 harbor_base pct1 >}} (@fig-two-companies). The model did not change. Only the situation changed.
-
-## Fixing it
-
-This kind of error is usually easy to fix, because all the numbers are wrong in the same direction [@saerens2002]. The simplest fix is **Platt scaling** from Chapter 3: learn a small correction from a few hundred of your own past alerts with known answers. At Harbor, a correction learned from just 300 past alerts brought the error down from {{< num ch18 ece_harbor f3 >}} to {{< num ch18 ece_platt300 f3 >}}.
-
-
-## How many labelled cases do you need?
-
-To check a model, we need past cases where we already know the final answer. These are called **labelled cases**, because someone has marked each one as "attack" or "harmless". Collecting them takes people's time, so it is tempting to check with only a few. But a small sample can badly mislead.
-
-
-In our example, the model's real ECE over all 20,000 alerts is {{< num ch18 ece_full f3 >}}. But if we measure it on only 100 alerts, the typical result is {{< num ch18 ece_n100 f3 >}}, more than three times too high. The reason is chance: with only a few cases in each group, the results jump up and down, like tossing a coin ten times and getting seven heads. These jumps always make the error look bigger, never smaller.
+![Time and cost per decision for each method, on log scales. Classic models run in millionths of a second, for fractions of a cent per million decisions (an assumption: computing cost only). The LLM figures are this book's illustrative assumptions; Jev's are vendor-reported.](/figures/ch20/cost-latency.pdf){#fig-cost-latency}
 
 ::: {.keyidea}
-**Testing on too few cases can make a good model look bad.** With only 100 cases, chance alone can make the error look three times bigger than it really is. Use a few hundred cases to correct a model, and a few thousand to be sure.
+**If a simple rule or a simple model does the job, use it.** It is faster, cheaper and easier to explain than any large AI model.
+:::
+**Stability.** When the same question was asked to the LLM five times, {{< num ch20 flip_rate pct1 >}} of the answers changed at least once, and {{< num ch20 parse_fail pct1 >}} of its answers could not be read by the program at all. A model that always answers with a fixed set of options and probabilities cannot break like this.
+
+## The scorecard
+
+::: {.wide}
+![The whole contest on one page. Bold marks the best in each numeric column. Every accuracy number is synthetic; every cost and time is an assumption, an illustration, or vendor-reported, as marked.](/figures/ch20/scorecard.pdf){#fig-scorecard-13}
 :::
 
-A simple rule: a few hundred labelled cases are enough to *fix* a big error that always goes in one direction. A few thousand are needed to *prove* that a model's numbers are correct to within one or two percent.
+Read @fig-scorecard-13 column by column, and ask which columns matter for *your* decision.
 
+- If you have thousands of past cases with answers, clean data and a decision that does not change much: logistic regression is hard to beat.
+- If every decision must be explained to an auditor: rules are the clear winner.
+- If you have no past answers, only raw text, or many different decisions: a System One model is the strongest choice, after you check its numbers.
+- The LLM is the weakest at deciding here, but it can do something no other method can: read anything, and *write*. Chapter 11 gives it exactly that job.
 
-## A routine you can repeat
-
-1. **Collect recent cases whose final answer is now known.** Include a random sample of cases the machine closed by itself; otherwise, you will only have answers for the cases people looked at.
-2. **Draw the chart from Chapter 3**, showing how many cases are in each group, and give ECE as a range, not a single number. Look most carefully near the lines where you act.
-3. **Check each group separately**: every source, customer type or language that you treat differently.
-4. **Fix the problem**: if attacks are simply more or less common at your company, adjust for that; otherwise, use Platt or temperature scaling.
-5. **Repeat** this regularly, and whenever the model version or your data changes.
-
-![A testing routine for any model that returns probabilities, Jev included.](/figures/ch18/protocol.pdf){#fig-protocol}
-
-So, the company may be right that Jev is calibrated on the data it tested. The critic is right that this does not prove it is calibrated on yours. This routine turns the argument into a measurement. Until you have done it, treat a new model's outputs as scores, not as probabilities.
+::: {.keyidea}
+**There is no best method for every decision.** Choose based on what matters for this decision: how accurate it is, how trustworthy its numbers are, how much data it needs, its cost and its speed.
+:::
 
 ::: {.breaks}
-Even the "known answers" of past cases are not perfect. Experts sometimes disagree, some attacks are never discovered, and some become clear only later: an alert closed today may turn out to be part of an attack found next month. So test with cases that are old enough for the truth to be known. And remember that cases the model closed by itself were never checked by anyone, so their "answer" is only the model's own guess.
+This is one decision in one imagined company, and the numbers for the LLM and Jev are only illustrations. The test week has only about four hundred real attacks, so small differences between methods may be pure chance. What you should take from this chapter is the *way* of comparing: run the same comparison on your own data, with the real models.
+:::
+
+::: {.threshold}
+A new team will handle alerts about cloud storage. Nobody has checked any of these alerts before, so there are no past answers yet. The team will check and mark about 300 cases per week. Which method should they start with, and when should they reconsider?
+
+(Start with a method that needs no past answers, such as a System One model. Use the first 300 checked cases to test and correct its numbers. After a few weeks, when more cases are checked, train a logistic regression next to it. If both agree, keep the cheaper one. If they disagree, study the cases where they disagree.)
 :::
 
 ::: {.exercises}
-1. You have 150 labelled cases and you measure an ECE of 0.05. A colleague says the model is badly calibrated. What would you reply, and what would you do next?
+1. Make a scorecard for a decision in your own work. Which three columns matter most?
 :::
 
 ::: {.nexthook}
-Next chapter: six different ways to make the same decision, compared fairly. Jev does not win every round.
+Next chapter: a probability is not an action. We set up three doors, act, review and escalate, with thresholds based on costs.
 :::
