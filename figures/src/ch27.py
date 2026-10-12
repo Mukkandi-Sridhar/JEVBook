@@ -177,7 +177,7 @@ def calibration():
     y, s = scores()
     f, axes = subplots(1, 3, width="text", height=1.9, sharey=True)
     for ax, key, title, col in zip(axes, ("raw", "temp", "over"),
-                                   ("TinyJev as trained", "after temperature", "overtrained, no temperature"),
+                                   ("small model as trained", "after temperature", "overtrained, no temperature"),
                                    (C["data"], C["jev"], C["fail"])):
         clean(ax, "both")
         b = cal.reliability(s[key], y, n_bins=15)

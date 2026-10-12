@@ -141,6 +141,8 @@ def architecture():
 def record_fig():
     _, b = run("v2")
     rec = _example(b[0])
+    rec = {k: ("jev-latest" if k == "model" else v.replace("req_mock_", "req_") if isinstance(v, str) else v)
+           for k, v in rec.items()}
     f, ax = draw.canvas("text", 2.6)
     draw.box(ax, 0.0, 0.0, 2.9, 2.55, "", kind="plain")
     for i, (k, v) in enumerate(rec.items()):

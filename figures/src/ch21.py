@@ -220,8 +220,8 @@ def capacity():
     ax.axvline(ANALYSTS, color=C["muted"], lw=0.7)
     ax.text(ANALYSTS + 0.12, ax.get_ylim()[1] * 0.93 if False else max(out["text"]) * 0.98, "Kestrel today:\n6 analysts",
             fontsize=6.3, color=C["ink2"], va="top")
-    ax.text(8.3, out["text"][5] + 1.0, "mock reads the raw alert text (solid, squares)", fontsize=6.4, color=C["slate"], ha="left", va="bottom")
-    ax.text(4.3, 5.2, "mock reads structured fields (dashed, circles)", fontsize=6.4, color=C["jev"], ha="left",
+    ax.text(8.3, out["text"][5] + 1.0, "model reads the raw alert text (solid, squares)", fontsize=6.4, color=C["slate"], ha="left", va="bottom")
+    ax.text(4.3, 5.2, "model reads structured fields (dashed, circles)", fontsize=6.4, color=C["jev"], ha="left",
             va="top", fontweight="semibold")
     ax.set_ylim(0, max(out["text"]) * 1.08)
     ax.set_xlabel("Analysts on the review queue (40 reviews each per day)")

@@ -24,7 +24,7 @@ To see this, let us imagine a second company, Harbor Pharma. Its alerts come fro
 
 ## Fixing it
 
-This kind of error is often easy to fix. If the model's probabilities were right for one base rate, and you know your own base rate, you can adjust the odds by the ratio of the two. This is Bayes' rule again [@saerens2002]. With Harbor's base rate known, its ECE falls to {{< num ch18 ece_prior_known f3 >}}. **Platt scaling**, fitted on just 300 of Harbor's labelled alerts, does even better: {{< num ch18 ece_platt300 f3 >}}.
+This kind of error is often easy to fix. If the model's probabilities were right for one base rate, and you know your own base rate, you can adjust the odds by the ratio of the two. This is Bayes' rule again [@saerens2002]. If Harbor's base rate is known exactly, its ECE falls to {{< num ch18 ece_prior_known f3 >}}; if the base rate is estimated from 300 labelled alerts, it falls to {{< num ch18 ece_prior_est f3 >}}. **Platt scaling**, fitted on just 300 of Harbor's labelled alerts, does even better: {{< num ch18 ece_platt300 f3 >}}.
 
 ![Harbor's alerts, on the cases not used for fitting: as returned (red, solid line), after adjusting the odds for Harbor's base rate (blue, dashed line), and after Platt scaling on 300 labelled alerts (green, dotted line). Both fixes bring the curve most of the way back to the diagonal.](/figures/ch18/harbor-fixes.pdf){#fig-harbor-fixes}
 

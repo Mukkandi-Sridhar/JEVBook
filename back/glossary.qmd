@@ -24,8 +24,6 @@ AUC
 Base rate
 : How common something is before you look at any evidence, like the share of alerts that are real threats (Chapter 2).
 
-Brier score
-: The average squared gap between a predicted probability and what happened. Lower is better (Chapters 2 and 3).
 
 Calibration
 : A model is calibrated when the things it calls 70% likely happen about 70% of the time: its probabilities are honest (Chapter 3).
@@ -33,26 +31,22 @@ Calibration
 Capacity
 : How many cases the people in the loop can handle in a day. A policy that ignores it isn't a policy (Chapter 11).
 
-Cassette
-: A file of recorded requests and responses that a test can replay without calling the real API (Chapter 14).
 
 CISO
-: Chief information security officer: the person in charge of an organisation's security (Chapter 13).
+: Chief information security officer: the person in charge of an organisation's security (Chapter 7).
 
 Choice
 : A typed question with a set of named options. The answer is a probability for each option, adding up to 1 (Chapter 8).
 
 Confidence
-: In a Jev `choice` or `score` answer, a number from 0 to 1 computed from the shape of the probabilities. It's high when most of the probability is on one option, and low when it's spread out. It isn't simply the top probability (TypeSafe's quick-start shows 0.78 beside 0.85). The book's mock uses the top probability as a stand-in (Chapter 7).
+: In a Jev choice or score answer, a number from 0 to 1 that is high when most of the probability is on one option and low when it is spread out. It is not simply the top probability (Chapter 7).
 
-Context window
-: The amount of text an LLM can read at once (Chapter 6).
 
 Cost-based threshold
 : The probability above which acting is cheaper than not acting, set by what each kind of mistake costs (Chapter 4).
 
 Decision layer
-: The part of a system that turns probabilities into actions: typed questions, calibration, thresholds, rules and fail-safes (Part IV).
+: The part of a system that turns probabilities into actions: typed questions, calibration, thresholds, rules and fail-safes (Chapters 6 and 15).
 
 Decision record
 : The logged account of one decision: what was seen, what the model said, what the policy did, which version decided and why (Chapter 14).
@@ -66,8 +60,6 @@ DLP (data loss prevention)
 ECE (expected calibration error)
 : The average gap between what a model said and what happened, across groups of similar predictions (Chapter 3).
 
-Elasticity
-: How much more of something people use when its price falls (Chapter 15).
 
 Embedding
 : A list of numbers that places a word, sentence or item in a space where similar things sit close together (Chapter 5).
@@ -81,14 +73,10 @@ Escape option
 Extract, then decide
 : A pattern in which an LLM turns messy input into fields and a decision model decides on those fields (Chapter 12).
 
-F1
-: One score that balances how many flagged cases are real and how many real cases get flagged. It measures ranking and labelling, not calibration (Chapter 3).
 
 Fail-safe
 : The decided meaning of a failure, such as "if the call fails, send the case to review" (Chapters 11 and 14).
 
-Fine-tuning
-: Further training of an existing model on examples from one task (Chapter 5).
 
 Gradient descent
 : Improving a model step by step by nudging its numbers in the direction that reduces the loss (Chapter 2).
@@ -96,8 +84,6 @@ Gradient descent
 Guardrail gate
 : A typed check on trusted facts that runs before an agent's action is allowed to happen (Chapter 12).
 
-Hallucination
-: An LLM stating something fluent and false (Chapter 5).
 
 Hybrid agent
 : An agent in which a decision model answers the small decisions and an LLM only writes (Chapter 12).
@@ -135,8 +121,6 @@ Noul
 Observe, Decide, Act
 : The loop an agent runs: read something, choose what to do, do it, repeat (Chapter 6).
 
-Ordinal
-: Having a meaningful order, like severity levels. An ordinal model keeps that order in its probabilities (Chapter 14).
 
 Overconfidence
 : Probabilities that are more extreme than the evidence justifies. It's common in large models and in overtrained small ones (Chapter 5).
@@ -168,8 +152,6 @@ Reliability diagram
 RLCD
 : TypeSafe's name for reinforcement learning for calibrated decisions, which it says trains Jev. The details aren't published (Chapter 7).
 
-RLHF
-: Reinforcement learning from human feedback, which trains an LLM towards answers people prefer (Chapter 5).
 
 Router
 : A pattern that sends each case to a destination with a choice question, falling back to a person when unsure (Chapter 12).
@@ -181,10 +163,10 @@ Shadow mode
 : Running a new system or version beside the current one, recording what it would do without letting it act (Chapters 13 and 14).
 
 SIEM (security information and event management)
-: The tool that collects a company's logs and raises security alerts. Kestrel's alerts come from one (Chapter 10).
+: The tool that collects a company's logs and raises security alerts. Kestrel's alerts come from one (Chapter 12).
 
 Softmax
-: The function that turns a list of scores into probabilities that add up to 1 (Chapters 5 and 8).
+: The function that turns a list of scores into probabilities that add up to 1 (Chapter 14).
 
 State
 : What a decision model reads: the situation, as text or structured fields (Chapter 7).
@@ -219,8 +201,6 @@ Trace
 Transformer
 : The network design built from attention layers that underlies modern LLMs (Chapter 5).
 
-Transport
-: The last layer of a software library, which actually sends a request over the network. Replacing it with a practice version lets you test without the real service (Chapter 14).
 
 Triage
 : Sorting cases by how likely they are to be real and how urgent they are, so the most important ones are handled first (Preface, Chapter 13).

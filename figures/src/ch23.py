@@ -109,16 +109,15 @@ def record():
 @figure(CH, "layers")
 def layers():
     f, ax = draw.canvas("text", 2.35)
-    draw.box(ax, 0.0, 1.55, 4.7, 0.5, "your code:  client.system_one(state=…, questions=…)", kind="neutral", size=6.6,
-             family="JetBrains Mono")
-    draw.box(ax, 0.0, 0.9, 4.7, 0.45, "typesafe-sdk: builds the request, retries, parses typed answers", kind="jev", size=6.4)
+    draw.box(ax, 0.0, 1.55, 4.7, 0.5, "your program asks: the situation + the questions", kind="neutral", size=6.6)
+    draw.box(ax, 0.0, 0.9, 4.7, 0.45, "official library: builds the request, retries, reads typed answers", kind="jev", size=6.4)
     draw.arrow(ax, (2.35, 1.55), (2.35, 1.35))
-    draw.box(ax, 0.0, 0.05, 2.25, 0.6, "MockJevTransport\nanswers locally, free,\nthe same every time", kind="data", size=6.1)
+    draw.box(ax, 0.0, 0.05, 2.25, 0.6, "practice version\nanswers locally, free,\nthe same every time", kind="data", size=6.1)
     draw.box(ax, 2.45, 0.05, 2.25, 0.6, "the real network\nPOST /v1/systemone\nneeds an API key", kind="neutral", size=6.1,
              dashed=True)
     draw.arrow(ax, (1.6, 0.9), (1.1, 0.65))
     draw.arrow(ax, (3.1, 0.9), (3.55, 0.65), dashed=True)
-    draw.text(ax, 2.35, 0.77, "transport=", size=6.0, ha="center", family="JetBrains Mono", color=C["ink2"])
+    draw.text(ax, 2.35, 0.77, "one setting chooses", size=6.0, ha="center", color=C["ink2"])
     return f
 
 

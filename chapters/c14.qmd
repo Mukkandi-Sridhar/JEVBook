@@ -12,7 +12,7 @@ In every project there comes a day when the prototype works and someone asks: "C
 
 **Test with a practice version first.** Most AI services give an official software library. The library prepares the request, retries when there is a problem, and reads the answer. Only its last layer actually talks to the internet. If we replace that last layer with a practice version that answers locally, we can test all our logic for free, and then switch to the real service by changing one setting.
 
-![The official library does all the work of building requests, retrying and parsing answers. The transport decides where requests go. A practice version answers locally; the default sends them over the network to the real service.](/figures/ch23/layers.pdf){#fig-layers}
+![The official library does all the work of building requests, retrying and parsing answers. One setting decides where requests go: a practice version answers locally; the default sends them over the network to the real service.](/figures/ch23/layers.pdf){#fig-layers}
 
 **Fix the model version.** A name like "latest" can point to a new model at any time, without warning.
 

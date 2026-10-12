@@ -60,10 +60,10 @@ def task():
 
 @figure(CH, "skills")
 def skills():
-    rows = [("Thinking in probabilities", "2, 3", "jev"), ("Putting a price on mistakes", "4, 14", "jev"),
-            ("Testing calibration on your own data", "3, 11", "jev"), ("Designing typed questions", "10, 15", "jev"),
-            ("Sizing queues and people", "14, 18", "review"), ("Monitoring a decision system", "17, 21", "review"),
-            ("Writing prompts for everything", "6, 7", "llm"), ("Picking the biggest model", "5, 13", "llm")]
+    rows = [("Thinking in probabilities", "2, 3", "jev"), ("Putting a price on mistakes", "4, 11", "jev"),
+            ("Testing calibration on your own data", "3, 9", "jev"), ("Designing typed questions", "8, 12", "jev"),
+            ("Sizing queues and people", "11, 13", "review"), ("Monitoring a decision system", "11, 14", "review"),
+            ("Writing prompts for everything", "5, 6", "llm"), ("Picking the biggest model", "5, 10", "llm")]
     f, ax = draw.canvas("text", 2.9)
     draw.text(ax, 0.0, 2.78, "MATTERS MORE", size=6.4, weight="bold", color=C["jev"])
     draw.text(ax, 0.0, 0.7, "MATTERS LESS ON ITS OWN", size=6.4, weight="bold", color=C["llm"])
@@ -81,9 +81,9 @@ def skills():
 @figure(CH, "unknowns")
 def unknowns():
     f, ax = draw.canvas("text", 2.4)
-    items = [("Does Jev’s calibration hold on data like yours?", "Chapter 11 tells you how to find out."),
+    items = [("Does Jev’s calibration hold on data like yours?", "Chapter 9 tells you how to find out."),
              ("How fast do System One models improve, and do they drift between versions?", "Pin versions; re-test."),
-             ("Will prices stay this low?", "Early-access prices change. Chapter 12’s model shows what depends on it."),
+             ("Will prices stay this low?", "Early-access prices change. Chapter 15 shows what depends on it."),
              ("Who else builds decision models?", "The interface pattern outlives any one vendor."),
              ("How will rules on automated decisions evolve?", "Keep people deciding where stakes are high.")]
     for i, (q, a) in enumerate(items):
@@ -98,8 +98,8 @@ def unknowns():
 def monday():
     f, ax = draw.canvas("text", 2.3)
     phases = [("WEEK 1", "Audit", "List every decision your system makes. Count them. Mark which are small, typed and frequent."),
-              ("WEEKS 2–4", "Measure", "Pick one. Get a few hundred labels. Test ranking and calibration: Chapters 3, 11 and 13."),
-              ("MONTH 2", "Shadow", "Put costs on mistakes, set thresholds, run in shadow: Chapters 4, 14 and 21."),
+              ("WEEKS 2–4", "Measure", "Pick one. Get a few hundred labels. Test ranking and calibration: Chapters 3 and 9."),
+              ("MONTH 2", "Shadow", "Put costs on mistakes, set thresholds, run in shadow: Chapters 4, 11 and 13."),
               ("MONTH 3", "Switch, and watch", "Switch on with a fail-safe, an audit and a daily monitor. Then the next decision.")]
     w = 1.12
     for i, (when, what, detail) in enumerate(phases):
@@ -114,11 +114,11 @@ def monday():
 @figure(CH, "journey")
 def journey():
     f, ax = draw.canvas("text", 2.9)
-    story = [("I", "We learned to speak in probabilities, make them calibrated and turn them into actions."),
+    story = [("I", "We learned to speak in probabilities, check that they are calibrated, and turn them into actions."),
              ("II", "Networks learned patterns, LLMs learned to write, and agents to act."),
-             ("III", "A new kind of model decided in one pass, with probabilities we could test."),
+             ("III", "A new kind of model decides in one pass, and we learned to test its probabilities ourselves."),
              ("IV", "We compared methods, set thresholds from costs and named the patterns."),
-             ("V", "We built it: calls, an agent, a case study, our own model, a service."),
+             ("V", "We followed one team from shadow mode to a reliable service, and saw the same design in other fields."),
              ("VI", "Now decisions are cheap. The question is which ones deserve them.")]
     for i, (r, t) in enumerate(story):
         y = 2.7 - i * 0.38

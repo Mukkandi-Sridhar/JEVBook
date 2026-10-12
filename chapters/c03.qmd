@@ -54,7 +54,7 @@ For a single number, we use the **expected calibration error**, or **ECE**. It i
 
 **Overfitting** pushes probabilities towards 0 and 1. **Very large neural networks** also tend to be overconfident [@guo2017]. And **changes in the world**, like a sudden increase in attacks, can make last month's calibrated model wrong today.
 
-![A model trained on 50/50 rebalanced data (red, solid line with squares) thinks attacks are about ten times more common than they are, and its probabilities sit far below the diagonal. After Platt scaling fitted on a separate calibration set (green, dashed line with circles), the same model is well calibrated again.](/figures/ch04/rebalanced.pdf){#fig-rebalanced}
+![A model trained on 50/50 rebalanced data (red, solid line with squares) puts the odds of an attack about ten times higher than they really are, and its probabilities sit far below the diagonal. After Platt scaling fitted on a separate calibration set (green, dashed line with circles), the same model is well calibrated again.](/figures/ch04/rebalanced.pdf){#fig-rebalanced}
 
 The good news is that a model which ranks well but is badly calibrated is usually easy to fix. We do not need to train it again. We keep aside some data the model has never seen, called a **calibration set**, and learn a small correction on top of the model:
 

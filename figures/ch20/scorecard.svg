@@ -29,7 +29,7 @@ L 429.84 79.747781
 L 429.84 49.507781 
 L 2.88 49.507781 
 z
-" clip-path="url(#p941b12794d)" style="fill: #d5d8dd"/>
+" clip-path="url(#pd587eefe41)" style="fill: #d5d8dd"/>
    </g>
    <g id="patch_3">
     <path d="M 2.88 140.227781 
@@ -37,7 +37,7 @@ L 429.84 140.227781
 L 429.84 109.987781 
 L 2.88 109.987781 
 z
-" clip-path="url(#p941b12794d)" style="fill: #d5d8dd"/>
+" clip-path="url(#pd587eefe41)" style="fill: #d5d8dd"/>
    </g>
    <g id="patch_4">
     <path d="M 2.88 200.707781 
@@ -45,7 +45,7 @@ L 429.84 200.707781
 L 429.84 170.467781 
 L 2.88 170.467781 
 z
-" clip-path="url(#p941b12794d)" style="fill: #d5d8dd"/>
+" clip-path="url(#pd587eefe41)" style="fill: #d5d8dd"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 600; font-size: 5.6px; font-family: 'Inter'; fill: #4b5563" transform="translate(103.741438 27.193461)">ranking</text>
@@ -215,7 +215,7 @@ z
     <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle" x="408.78" y="187.880812" transform="rotate(-0 408.78 187.880812)">in words*</text>
    </g>
    <g id="text_54">
-    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: start" x="6.48" y="217.862281" transform="rotate(-0 6.48 217.862281)">Jev (mock)</text>
+    <text style="font-weight: 700; font-size: 6.4px; font-family: 'Inter'; text-anchor: start" x="6.48" y="217.862281" transform="rotate(-0 6.48 217.862281)">Jev (illustrative)</text>
    </g>
    <g id="text_55">
     <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle" x="113.94" y="218.087391" transform="rotate(-0 113.94 218.087391)">0.89</text>
@@ -236,7 +236,7 @@ z
     <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle" x="324.54" y="218.046703" transform="rotate(-0 324.54 218.046703)">none‡</text>
    </g>
    <g id="text_61">
-    <text style="font-size: 5.7px; font-family: 'Inter'; text-anchor: middle" x="366.66" y="217.435359" transform="rotate(-0 366.66 217.435359)">yes (mock)</text>
+    <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle" x="366.66" y="216.896797" transform="rotate(-0 366.66 216.896797)">yes</text>
    </g>
    <g id="text_62">
     <text style="font-size: 6.2px; font-family: 'Inter'; text-anchor: middle" x="408.78" y="217.505172" transform="rotate(-0 408.78 217.505172)">no</text>
@@ -245,7 +245,7 @@ z
     <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="6.48" y="243.27075" transform="rotate(-0 6.48 243.27075)">Bold: best in column.  † vendor-reported.  ‡ none to start; about 300 to check and calibrate.  Classic costs: compute only (assumption).</text>
    </g>
    <g id="text_64">
-    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="6.48" y="253.453688" transform="rotate(-0 6.48 253.453688)">* reasons written after the fact, which may not be how the verdict was reached (Chapter 6).  LLM figures: illustrative.</text>
+    <text style="font-size: 5.4px; font-family: 'Inter'; text-anchor: start; fill: #4b5563" x="6.48" y="253.301812" transform="rotate(-0 6.48 253.301812)">* reasons written after the fact, which may not be how the verdict was reached.  LLM figures: illustrative.</text>
    </g>
   </g>
   <g id="text_65">
@@ -266,7 +266,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p941b12794d">
+  <clipPath id="pd587eefe41">
    <rect x="2.88" y="12.067781" width="428.4" height="241.2"/>
   </clipPath>
  </defs>

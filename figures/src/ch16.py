@@ -51,12 +51,12 @@ def anatomy():
     req = ['POST /v1/systemone', '{', '  "state": "I was charged twice…",', '  "model": "jev-latest",', '  "questions": {',
            '    "topic":  {"type": "choice", "criteria": {…}},', '    "urgent": {"type": "noul", "instructions": …},',
            '    "tone":   {"type": "score", "criteria": […]}', '  }', '}']
-    res = ['{', '  "model": "jev-mock-synthetic",', '  "answers": {', '    "topic":  {"choice": "billing",',
+    res = ['{', '  "model": "jev-latest",', '  "answers": {', '    "topic":  {"choice": "billing",',
            '               "probabilities": {…}},', '    "urgent": {"noul": 0.61},', '    "tone":   {"score": 0.22,',
            '               "probabilities": {…}}', '  },', '  "usage": {"input_tokens": 89, …}', '}']
     draw.box(ax, 0.0, 0.05, 2.3, 2.7, "", kind="data", radius=0.05)
     draw.box(ax, 2.4, 0.05, 2.3, 2.7, "", kind="jev", radius=0.05)
-    draw.text(ax, 0.08, 2.62, "request (what the SDK sends)", size=6.4, weight="bold", color=C["data"])
+    draw.text(ax, 0.08, 2.62, "request", size=6.4, weight="bold", color=C["data"])
     draw.text(ax, 2.48, 2.62, "response", size=6.4, weight="bold", color=C["jev"])
     for i, l in enumerate(req):
         draw.text(ax, 0.08, 2.38 - i * 0.22, l, size=5.5, family="JetBrains Mono")

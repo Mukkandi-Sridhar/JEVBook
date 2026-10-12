@@ -174,7 +174,7 @@ def variance_fig():
     ax.legend(handles=[Patch(color=C["fail"], label="really a threat (solid)"),
                        Patch(fc=C["neutral_t"], ec=C["slate"], hatch="////", lw=0.6, label="really harmless (striped)")],
               loc="upper left", fontsize=6.2, handlelength=1.4)
-    synthetic_tag(f, "SYNTHETIC · llm-mock-synthetic, not a real model")
+    synthetic_tag(f, "SYNTHETIC · illustrative LLM, not a real model")
     return f
 
 

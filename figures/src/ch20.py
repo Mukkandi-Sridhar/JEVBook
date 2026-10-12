@@ -14,7 +14,7 @@ PCT = FuncFormatter(lambda v, _: f"{v:.0%}")
 COL = dict(rules=C["slate"], logistic=C["data"], text_clf=C["gold"], llm_json=C["llm"], llm_judge=C["llm"], jev=C["jev"])
 HOLLOW = {"llm_judge"}
 SHORT = {"rules": "Rules", "logistic": "Logistic regression", "text_clf": "Text classifier",
-         "llm_json": "LLM, JSON", "llm_judge": "LLM-as-judge", "jev": "Jev (mock)"}
+         "llm_json": "LLM, JSON", "llm_judge": "LLM-as-judge", "jev": "Jev (illustrative)"}
 
 # Time and price per decision. Classic models: compute only (an assumption). LLM: this book's illustrative
 # figures. Jev: vendor-reported.
@@ -62,7 +62,7 @@ def contenders():
              ("text_clf", "Trained text classifier", "raw text", "a probability", "thousands of labels"),
              ("llm_json", "LLM, structured output", "raw text", "JSON: verdict +\nstated confidence", "a prompt"),
              ("llm_judge", "LLM-as-judge", "raw text", "a 1–10 rating", "a prompt and a rubric"),
-             ("jev", "Jev (mock)", "fields as JSON", "a probability", "typed questions")]
+             ("jev", "Jev (illustrative)", "fields as JSON", "a probability", "typed questions")]
     w, h = 1.48, 1.28
     for i, (m, name, inp, out, needs) in enumerate(cards):
         x, y = (i % 3) * (w + 0.13), 1.55 - (i // 3) * (h + 0.2)
@@ -145,7 +145,7 @@ def labels():
     ax.text(n[-1] * 1.12, curve["logistic"][-1] + 0.022, "logistic regression\n(fields)", fontsize=6.0, va="center",
             color=C["ink"])
     ax.text(n[-1] * 1.12, curve["text_clf"][-1], "text classifier", fontsize=6.0, va="center", color=C["ink"])
-    for m, y, lab in (("jev", sc["jev"]["auc"], "Jev (mock), no labels"),
+    for m, y, lab in (("jev", sc["jev"]["auc"], "Jev (illustrative), no labels"),
                       ("llm_judge", sc["llm_judge"]["auc"], "LLM-as-judge, no labels"),
                       ("llm_json", sc["llm_json"]["auc"], "LLM JSON, no labels")):
         ax.axhline(y, color=COL[m], lw=1.1, ls=(0, (4, 2)) if m != "jev" else "-")
@@ -196,7 +196,7 @@ def variance():
     r, sc, curve, flips = data()
     f, (a1, a2) = subplots(1, 2, width="text", height=1.9)
     rows = [("LLM, temperature 0.7", flips, C["llm"]), ("LLM, temperature 0", 0.0, C["llm"]),
-            ("Jev (mock)", 0.0, C["jev"]), ("logistic regression", 0.0, C["data"])]
+            ("Jev (illustrative)", 0.0, C["jev"]), ("logistic regression", 0.0, C["data"])]
     clean(a1, "x")
     for i, (lab, v, col) in enumerate(rows):
         y = len(rows) - 1 - i
@@ -239,7 +239,7 @@ def scorecard():
         "text_clf": [None, None, None, cost(SPEED["text_clf"][1]), lat(SPEED["text_clf"][0]), "15,000+", "yes", "word weights"],
         "llm_json": [None, None, None, cost(SPEED["llm_json"][1]), lat(SPEED["llm_json"][0]), "none", "not always", "in words*"],
         "llm_judge": [None, None, None, cost(SPEED["llm_judge"][1]), lat(SPEED["llm_judge"][0]), "none", "not always", "in words*"],
-        "jev": [None, None, None, f"${JEV_PRICE * 1e6:.0f}†", "70–500 ms†", "none‡", "yes (mock)", "no"],
+        "jev": [None, None, None, f"${JEV_PRICE * 1e6:.0f}†", "70–500 ms†", "none‡", "yes", "no"],
     }
     for m in B.METHODS:
         rows[m][0] = f"{sc[m]['auc']:.2f}"
@@ -263,7 +263,7 @@ def scorecard():
                       weight="bold" if bold else "normal", color=C["jev"] if bold else C["ink"])
     draw.text(ax, 0.05, 0.16, "Bold: best in column.  † vendor-reported.  ‡ none to start; about 300 to check and calibrate.  "
                               "Classic costs: compute only (assumption).", size=5.4, color=C["ink2"])
-    draw.text(ax, 0.05, 0.02, "* reasons written after the fact, which may not be how the verdict was reached (Chapter 6).  "
+    draw.text(ax, 0.05, 0.02, "* reasons written after the fact, which may not be how the verdict was reached.  "
                               "LLM figures: illustrative.", size=5.4, color=C["ink2"])
     synthetic_tag(f)
     return f

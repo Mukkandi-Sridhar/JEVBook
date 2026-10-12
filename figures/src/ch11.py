@@ -71,7 +71,7 @@ def json_failures():
     ax.set_ylabel(f"responses (of {n:,})")
     ax.set_ylim(0, 90)
     ax.legend(loc="upper center", fontsize=6.4, ncol=2)
-    synthetic_tag(f, "SYNTHETIC \u00b7 llm-mock-synthetic, not a real model")
+    synthetic_tag(f, "SYNTHETIC \u00b7 illustrative LLM, not a real model")
     return f
 
 
@@ -108,7 +108,7 @@ def three_confidences():
     # each line has its own dash pattern and marker, named in the legend, so none depends on colour
     specs = [("verb", C["gold"], "confidence the LLM wrote in its JSON", ":", "^", "dotted, triangles"),
              ("tok", C["llm"], "LLM token probability of “malicious”", (0, (5, 2)), "s", "dashed, squares"),
-             ("jev", C["jev"], "jev-mock-synthetic noul, same raw text", "-", "o", "solid, circles")]
+             ("jev", C["jev"], "decision model, same raw text", "-", "o", "solid, circles")]
     for k, col, lab, ls, mk, how in specs:
         b = cal.reliability(d[k], y, n_bins=10, strategy="quantile")
         s = cal.summary(d[k], y)
@@ -134,7 +134,7 @@ def stated():
     ax.set_xlabel("“confidence” value written in the JSON")
     ax.set_ylabel("alerts")
     ax.set_ylim(0, counts.max() * 1.18)
-    synthetic_tag(f, "SYNTHETIC · llm-mock-synthetic, not a real model")
+    synthetic_tag(f, "SYNTHETIC · illustrative LLM, not a real model")
     return f
 
 

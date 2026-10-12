@@ -28,7 +28,7 @@ Most people answer about 95%. The correct answer is about **2%**. In a famous st
 
 ![The same puzzle, counted out. Of 100,000 events, 100 are attacks and the detector catches 99 of them. But 5% of the 99,900 normal events also set it off: 4,995 false alarms. When the alarm sounds, you're holding one of 5,094 alerts, and only 99 of them are real.](/figures/ch02/base-rate-tree.pdf){#fig-base-rate-tree}
 
-The easy way to see this is to count, as in @fig-base-rate-tree. Take 1,00,000 events. Only 100 are attacks, and the test catches 99 of them. But 5% of the 99,900 normal events also raise an alarm, which is 4,995 false alarms. So out of 5,094 alarms, only 99 are real. That is about 2%.
+The easy way to see this is to count, as in @fig-base-rate-tree. Take 100,000 events (one lakh). Only 100 are attacks, and the test catches 99 of them. But 5% of the 99,900 normal events also raise an alarm, which is 4,995 false alarms. So out of 5,094 alarms, only 99 are real. That is about 2%.
 
 The chance before we see any evidence, here 1 in 1,000, is called the **base rate**. Forgetting the base rate is one of the most common mistakes with probability. This is why a fraud model that is "95% accurate" can still send a bank lakhs of false alarms. Whenever a probability surprises you, convert it into counts like this [@gigerenzer1995].
 
@@ -82,7 +82,7 @@ Even large language models are trained with this same loop, only with a much big
 
 ## Two ways a model fools you
 
-**Overfitting** means memorising instead of learning. A very flexible model can remember every small detail of its training data, including random noise. It then looks excellent on that data but performs badly on new cases. The only way to catch this is to test the model on data it has never seen.
+**Overfitting** means memorising instead of learning. A very flexible model can remember every small detail of its training data, including random noise. It then looks excellent on that data but performs badly on new cases. @fig-overfit shows this with a decision tree, a model that sorts cases by asking a series of yes/no questions: the more questions it may ask, the more it memorises. The only way to catch this is to test the model on data it has never seen.
 
 ![A decision tree allowed only a few questions learns general patterns. Allowed dozens, it memorises individual training alerts: its loss on them approaches zero while its loss on new alerts climbs.](/figures/ch03/overfit.pdf){#fig-overfit}
 

@@ -16,7 +16,7 @@ The 0.5 rule makes two wrong assumptions. It assumes a missed attack and a false
 
 ## Three doors
 
-![420 alerts from the live week, placed by how likely the (calibrated) model thinks they are to be real threats. Note the log scale: most alerts are crowded at the far left, where the model is confident they're harmless. The red crosses, real threats, are mostly to the right, but not all of them.](/figures/ch21/zones-strip.pdf){#fig-zones-strip}
+![420 alerts from the live week, placed by how likely the (calibrated) model thinks they are to be real threats. Note the log scale: most alerts are crowded at the far left, where the model is confident they're harmless. The red crosses, real threats, are mostly to the right, but not all of them. The two lines are the thresholds this chapter arrives at, for a team of six.](/figures/ch21/zones-strip.pdf){#fig-zones-strip}
 
 Every case can leave through one of three doors:
 

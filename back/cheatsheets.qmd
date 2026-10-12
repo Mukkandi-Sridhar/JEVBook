@@ -32,7 +32,6 @@ Then check the queue. If the review zone holds more cases than people can clear,
 For predictions $p_i$ and outcomes $y_i \in \{0, 1\}$:
 
 $$
-\text{Brier} = \frac{1}{n}\sum_i (p_i - y_i)^2 \qquad
 \text{log loss} = -\frac{1}{n}\sum_i \big[y_i \log p_i + (1-y_i)\log(1-p_i)\big]
 $$
 

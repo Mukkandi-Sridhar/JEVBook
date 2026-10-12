@@ -18,7 +18,7 @@ Some problems need more. For example, activity can be suspicious when it is unus
 
 The solution is to pass the clues through a layer of neurons first. Each neuron draws its own line, and the next neuron combines these lines. Three lines make a triangle; twelve lines make almost a circle (@fig-line-limit). A network with several such layers is called a **deep** network. Training works the same way as before: predict, measure the mistake, and adjust. The mistake is passed backwards through the layers to adjust each weight; this is called **backpropagation** [@rumelhart1986].
 
-The big advantage of deep networks is that they can learn their own clues from raw data like images or text [@lecun2015]. But when we already have clean, useful numbers, a deep network adds little. In our example, a small network does about as well as simple logistic regression ({{< num ch06 k_small.log_loss f3 >}} against {{< num ch06 k_lr.log_loss f3 >}}).
+The big advantage of deep networks is that they can learn their own clues from raw data like images or text [@lecun2015]. But when we already have clean, useful numbers, a deep network adds little. In our example, a small network does about as well as simple logistic regression: their log loss is {{< num ch06 k_small.log_loss f3 >}} and {{< num ch06 k_lr.log_loss f3 >}}, where lower is better.
 
 ::: {.keyidea}
 **Use deep learning for messy data, and simple models for clean data.** Deep networks shine on images and text. On clean numbers, a simple model is often just as good and easier to trust.

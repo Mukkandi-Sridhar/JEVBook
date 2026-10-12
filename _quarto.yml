@@ -35,6 +35,7 @@ book:
   appendices:
     - back/glossary.qmd
     - back/cheatsheets.qmd
+    - back/answers.qmd
     - back/bibliography.qmd
     - back/index-terms.qmd
     - back/about-author.qmd
