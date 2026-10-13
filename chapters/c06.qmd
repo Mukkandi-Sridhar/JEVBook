@@ -1,6 +1,6 @@
 # Fast and slow: System One models and Jev {#sec-ch06}
 
-When TypeSafe AI released Jev, it did not call it a better LLM. It called it the first of a new type of model, a *System One* model [@typesafe2026]. In this chapter we first see what this name means. Then we separate what is actually known about Jev from what is only claimed.
+When TypeSafe AI released Jev, it did not call it a better LLM. It called it the first of a new type of model, a *System One* model [@typesafe2026]. In this chapter we first see what this name means and why it is useful. Then we look at what is really known about Jev, and what is only claimed.
 
 ::: {.goals}
 - The idea of fast and slow thinking, in people and in software.
@@ -10,68 +10,87 @@ When TypeSafe AI released Jev, it did not call it a better LLM. It called it the
 
 ## Two ways of thinking
 
-What is 2 + 2? The answer came immediately. Now try 17 × 24. This feels different: you have to stop and work step by step. The psychologist Daniel Kahneman called these two ways of thinking **System 1**, which is fast and automatic, and **System 2**, which is slow and careful [@kahneman2011]. System 1 handles most of our daily life and is usually right, but it can also be confidently wrong. Try this: a bat and a ball cost ₹110 together, and the bat costs ₹100 more than the ball. The quick answer, ₹10 for the ball, is wrong. The ball costs ₹5 [@frederick2005].
+What is 2 + 2? The answer came to you immediately. Now try 17 × 24. This feels different: you have to stop and work it out step by step.
 
-![Tasks in and around a security team, placed by how often they happen and how much thinking each needs (illustrative). The frequent ones are grouped at the bottom right: quick judgements made hundreds or thousands of times a day. The few that need real reasoning happen rarely.](/figures/ch15/task-map.pdf){#fig-task-map}
+People often call these two ways of thinking **System 1** (fast and automatic) and **System 2** (slow and careful). Most of daily life runs on System 1, and it is usually right. We use System 2 only for the few things that need real effort.
 
-Software fits this idea well. Rules and simple models work like System 1: fast, cheap and good with familiar patterns. LLMs, especially the ones that "think" step by step before answering, are closer to System 2: slow and able to handle almost anything, but you pay for every word they write. In real work, as @fig-task-map shows, most tasks are quick judgements that happen many times a day. Only a few need deep thinking. Yet today we often use slow System 2 tools for everything.
+Software has the same two kinds:
+
+- **Fast tools**, like simple rules and small models, answer in a fraction of a second and cost almost nothing. They are good at familiar, repeated cases.
+- **Slow tools**, like LLMs that "think" step by step before answering, can handle almost anything, but they take seconds and you pay for every word they write.
+
+In real work, most decisions are quick and repeated many times a day: "Is this alert real?", "Which team gets this ticket?" Only a few need deep thinking, like writing an incident report (@fig-task-map). Yet today, many companies send everything to slow LLMs.
+
+![Tasks in a security team, placed by how often they happen and how much thinking they need (illustrative). Most frequent tasks are quick judgements, shown at the bottom right. The few tasks that need real thinking happen rarely.](/figures/ch15/task-map.pdf){#fig-task-map}
 
 ::: {.keyidea}
 **Most daily decisions are quick ones, but we use slow, expensive AI for all of them.** Like a cashier who does not need a calculator for 2 + 2, most decisions need a fast answer. Keep the slow, careful AI for the few hard cases.
 :::
 
-## Send the doubtful cases to the slow system
+## Send only the doubtful cases to the slow system
 
-If we have a fast system and a slow system, how should we divide the work? A good expert handles most cases in seconds, and *notices* the cases that do not feel right. We can do the same: let the fast system see every case, and send only the cases it is unsure about to the slow system.
+Think of a busy hospital. A nurse at the front desk sees every patient quickly. Most cases are clear: a small cut, a routine check-up. The nurse sends only the unclear cases to the senior doctor. The doctor's time is used where it matters, and nobody waits for hours.
 
-![Expected cost per day as more alerts go to System 2. Sending the alerts System 1 is least sure about (green, solid line) gets most of the benefit early. Sending a random share (grey, dashed line) gets almost nothing until you send nearly everything.](/figures/ch15/routing-curve.pdf){#fig-routing-curve}
+AI systems can work the same way: a fast model sees every case, and only the cases it is unsure about go to the slow, expensive model.
 
-Suppose careful checking of *every* alert by the slow system would bring a certain total benefit. Sending only the 20% of alerts that the fast system is least sure about already gives {{< num ch15 share_gain_20 pct >}} of that benefit. Sending a random 20% gives only {{< num ch15 share_gain_20_random pct >}} (@fig-routing-curve). And we pay the slow cost only for that 20%.
+How much does this help? Suppose sending *every* alert to the slow model would give the best possible result. At Kestrel:
+
+- Sending only the 20% of alerts the fast model was least sure about gave {{< num ch15 share_gain_20 pct >}} of that best result.
+- Sending a random 20% of alerts gave only {{< num ch15 share_gain_20_random pct >}} (@fig-routing-curve).
+
+So choosing *which* cases to send matters far more than how many you send. And you pay the slow cost for only 20% of the alerts.
+
+![Total cost per day as more alerts go to the slow model. Sending the alerts the fast model is least sure about (green, solid line) gives most of the benefit early. Sending a random share (grey, dashed line) helps very little until almost everything is sent.](/figures/ch15/routing-curve.pdf){#fig-routing-curve}
 
 ::: {.keyidea}
 **Let a fast model handle the easy cases, and send only the doubtful ones to the slow one.** If the fast model really knows when it is unsure, you get almost the full quality while paying the slow cost for only a few cases.
 :::
 
-This works only if the fast system's numbers are correct: when it says "50%", the case really must be a toss-up. People are similar. Kahneman and the psychologist Gary Klein agreed that fast, gut-feeling judgement can be trusted in three conditions: the same situations keep repeating, the person has a lot of practice, and they quickly find out whether they were right [@kahneman2009]. An experienced traffic policeman meets all three; a person picking shares on the stock market usually does not.
+This works only if the fast checker knows when it is unsure. A good nurse says, "I'm not sure about this one; let the doctor see it." A bad one is confidently wrong. For a model, this means its numbers must be correct: when it says "50%", the case really must be a toss-up (Chapter 2).
 
-![Conditions under which fast, intuitive judgement tends to be reliable, adapted from Kahneman and Klein. Alert triage mostly meets the first three. The fourth is what separates good experts, and good models, from confident ones.](/figures/ch15/conditions.pdf){#fig-conditions}
-
-For machines, we add a fourth condition, as in @fig-conditions: the system must know when it is unsure.
+Fast judgement, by a person or a model, works best when the same kinds of cases keep coming, there is plenty of practice, and you soon find out whether you were right. Sorting security alerts fits this well. Predicting share prices does not.
 
 ## What we know about Jev: three groups
 
-When this book was written, Jev was new, and only some companies could use it. The public information was its official software library, its documentation, news reports and a few early research papers. With so little information, how can we judge it? The best method is to sort every claim we hear into three groups.
+When this book was written, Jev was new, and only some companies could use it. So how can we judge it? Think of buying a used car. Some things you check yourself on a test drive. Some things only the seller tells you, like how far it has been driven. And some things nobody can tell you yet, like how it will run next winter. It is wise to keep these three groups separate. We can do the same for Jev.
 
-![Every claim about Jev in this book, sorted into three piles. The first pile you can check yourself today. The second is what TypeSafe says. The third is what nobody outside the company can know yet.](/figures/ch16/ledger.pdf){#fig-ledger}
+**What you can check yourself: how it is used.** You send Jev a short description of the situation and a few clear questions. For each question, you get back an answer with a probability for every option. There are three types of question: yes/no, pick one, and rate on a scale (Chapter 7).
+
+**What the company says, but nobody outside has proved:**
+
+- Jev answers all your questions together in one quick step, instead of writing word by word like an LLM. TypeSafe says this is why it is fast.
+- Jev is trained to give correct probabilities, using a method TypeSafe calls **RLCD**. The details are not public. The idea is reasonable, because a model can be trained so that correct numbers get the best score.
+
+**What nobody outside the company knows yet:**
+
+- how big the model is and what data it learned from;
+- whether its numbers are correct on *your* data;
+- how it behaves when an attacker writes the text it reads;
+- how much it changes from one version to the next.
+
+These unknowns are exactly the things you most need to know before you trust a model with real decisions.
 
 ::: {.keyidea}
 **For any new AI product, separate what is proven from what is only claimed.** Put each claim in one of three groups: checked by you, said by the company, or unknown. This protects you from advertising hype.
 :::
 
-**Checked: how you use it.** You send one request with three parts: the **state** (a description of the situation), the **model** name, and a set of clear **questions**. For each question, you get back an answer with a probability for every option. There are three types of questions: yes/no, pick-one, and rate-on-a-scale (Chapter 7).
-
-
-**Claimed by the company: two ideas.** First, Jev is said to produce all its answers together in a single step, instead of word by word like an LLM, and TypeSafe says this is why it is fast. Second, it is said to be trained with a method called **RLCD**, which rewards correct probabilities. The details are not public. The idea is reasonable, because a model can be trained so that correct numbers get the best score.
-
-**Unknown:** the model's size, design and training data; how well calibrated it is on *your* data; how it behaves when attackers write the input; and how its behaviour changes between versions. Yet these are the things you most need to know before you trust a model with real decisions.
-
 ## Check if the company's numbers agree
 
 Here is what TypeSafe reports, and what it means in practice:
 
-- **Speed:** about 70 to 500 milliseconds per answer (less than half a second).
+- **Speed:** about 70 to 500 milliseconds per answer, which is less than half a second.
 - **Price:** \$0.042 for every million tokens it reads, and nothing extra for its answers.
 - **Cost of a million decisions**, if each needs about 500 tokens of description: about **\$21** with Jev, against about **\$660** with an example mid-range LLM.
 
-LLM prices vary a lot, so treat this only as a rough size. And for any speed claim, always ask: *faster than what, and for which task?* [@regolo2026]
+LLM prices vary a lot, so treat this only as a rough guide. And for any claim that something is "faster", always ask: *faster than what, and for which task?* [@regolo2026]
 
-There is also a simple test anyone can do: when a company gives several numbers, check whether they agree with each other. In its launch demo, Jev played the video game *Doom*:
+There is also a simple test anyone can do: when a company gives several numbers, check whether they fit together. In its launch demo, Jev played the video game *Doom*:
 
 1. It made about 10 decisions per second, at a reported cost of \$7 per hour.
 2. That is 36,000 decisions per hour, or about \$0.0002 per decision.
-3. At the listed price, \$0.0002 buys about 4,600 tokens of game description per decision, which is a reasonable size.
+3. At the listed price, \$0.0002 pays for about 4,600 tokens of game description per decision, which is a sensible amount.
 
-The numbers agree. This does not prove they are true, but if they had disagreed, we would have learned something important.
+The numbers fit together. This does not prove they are true, but if they had not fitted, we would have learned something important.
 
 The unknowns about a new model are not a reason to avoid it. They are a reason to test it on your own data before you trust it.
 

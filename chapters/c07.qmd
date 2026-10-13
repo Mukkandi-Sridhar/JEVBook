@@ -16,7 +16,7 @@ TypeSafe calls a yes-or-no question a **noul**. It returns one number: the proba
 
 **Ask about one fact at a time.** "Is this a real attack on an important server?" combines two facts. If the answer is "no", you cannot know which part was false: is it not an attack, or is the server not important? Ask two separate questions, and combine the two answers in your own program, where anyone can see the logic.
 
-**Say exactly what "yes" and "no" mean.** Is an employee breaking a company rule "malicious"? Is a test attack paid for by the company "malicious"? Write it clearly: *yes* means "a real attacker or real harmful software is involved"; *no* means "normal activity, an approved test, or a false alarm".
+**Say exactly what "yes" and "no" mean.** Take the question "Is this payment fraud?" Is a customer who disputes their own genuine purchase committing fraud? Is a payment made by the bank's own testing team fraud? Different people would answer differently, and so would the model. So write the meaning down: *yes* means "someone used the card without the owner's permission"; *no* means "the owner made the payment, including tests and disputes".
 
 **Avoid double negatives.** "Is this not unlikely to be safe?" confuses both people and models.
 
@@ -24,11 +24,14 @@ TypeSafe calls a yes-or-no question a **noul**. It returns one number: the proba
 
 A **choice** question returns a probability for every option, and all of them add up to 1. This has a hidden danger. Because the probabilities must add up to 1, the model has to share all of its belief among the options you gave it. If the correct answer is not in your list, that belief does not disappear; it goes to the wrong options. It is like a multiple-choice exam with no correct option: a student who must tick one box will tick a wrong one.
 
-We asked a model to label the same {{< num ch17 n_harmless int >}} harmless alerts twice, with two different lists of options. When "benign" (harmless) was one of the options, {{< num ch17 full_benign_share pct >}} were labelled benign. When "benign" was removed, every single alert got a threat label, most of them with high confidence.
+We tried this at Kestrel with {{< num ch17 n_harmless int >}} alerts that we knew were harmless:
+
+- First, the list of options included "benign" (harmless). The model labelled {{< num ch17 full_benign_share pct >}} of the alerts benign, which is correct.
+- Then we removed "benign" from the list, so the only options were types of attack. Now the model gave *every one* of these harmless alerts an attack label, most of them with high confidence.
 
 ![How confident the top label was for harmless alerts. With "benign" among the options (green, striped), almost all were labelled benign; only the few that weren't are shown. With only threat categories to choose from (red, solid), every harmless alert got a threat label, most with high confidence.](/figures/ch17/forced.pdf){#fig-forced}
 
-The model was not really wrong, since we asked *which type of attack* and it answered (@fig-forced). But anyone who reads "malware, 0.95" will take the wrong action.
+The model only did what we asked: we asked *which type of attack*, so it picked one (@fig-forced). But a person who reads "malware, 95% sure" will treat a harmless alert as a serious attack.
 
 ::: {.keyidea}
 **When the model must pick one option, always include "none of these".** If the right answer is not in your list, the model will still pick something from the list, often with high confidence, and that answer will be wrong.
