@@ -1,6 +1,8 @@
 # Probabilities: can you trust the number? {#sec-ch02}
 
-An AI model often gives an answer with a number, such as "this alert is 70% likely to be an attack". This number is a **probability**: a number from 0% to 100% that says how likely something is. You do not need probability theory to use such numbers. But you do need to know what "70%" really means, one common mistake people make with rare events, and how to check whether the model's numbers are correct before you use them for real decisions.
+An AI model often gives its answer with a number, such as "this alert is 70% likely to be an attack". This number is a **probability**: a number from 0% to 100% that says how likely something is.
+
+You do not need maths to use these numbers. You need only four simple ideas, and this chapter explains them one by one.
 
 ::: {.goals}
 - What "70% chance" really means.
@@ -8,59 +10,118 @@ An AI model often gives an answer with a number, such as "this alert is 70% like
 - How to check whether a model's numbers are correct, and how to fix them.
 :::
 
-## What "70%" really means
+## Idea 1: "70%" is about many cases, not one
 
-If the weather app says "70% chance of rain" and it does not rain, the app was not wrong. "70%" does not tell you about one day. It means that on all the days when the app says 70%, it should rain on about 70 out of 100.
+The weather app says "70% chance of rain". It does not rain. Was the app wrong?
 
-A model's number works the same way. Among all the alerts it calls "70% likely", about 70 in 100 should turn out to be real attacks. One alert cannot prove the model right or wrong; only many alerts can.
+No. "70%" does not tell you about one day. It means:
 
-**Logistic regression** is the simplest model that turns clues into a probability. It works like a credit score: it adds some points for each clue (a bad threat score, a login at 3 a.m., a new country) and turns the total into a chance between 0% and 100%. Do not worry about the long name; just remember "points for each clue, turned into a chance". Banks and hospitals have used it for decades, and we will meet it again in later chapters.
+- Take **all** the days when the app said 70%.
+- On about **70 out of 100** of those days, it should rain.
+
+A model's number works the same way. Take all the alerts it called "70% likely". About 70 out of 100 of them should be real attacks. One alert alone can never prove the model right or wrong.
 
 ::: {.keyidea}
 **A probability is checked over many cases, not one.** "70% chance of rain" means that on 100 such days, it should rain on about 70. If it does not rain tomorrow, the forecast was not wrong.
 :::
 
-## The rare-event trap
+**Where do such numbers come from?** The simplest model that gives a probability is called **logistic regression**. It works like a credit score:
 
-Suppose an alarm catches 99% of real attacks, but also goes off by mistake for 5% of normal activity, and real attacks are rare: 1 in 1,000 events. When the alarm goes off, what is the chance of a real attack? Most people say 95%. The answer is about **2%**.
+1. It gives some points for each clue: a bad threat score, a login at 3 a.m., a login from a new country.
+2. It adds up the points.
+3. It turns the total into a chance between 0% and 100%.
 
-Count it out with one lakh (100,000) events. Only 100 are attacks, and the alarm catches 99 of them. But 5% of the 99,900 normal events also set it off: 4,995 false alarms. So out of 5,094 alarms, only 99 are real.
+Do not worry about the long name. Just remember: *points for each clue, turned into a chance*. We will meet it again in later chapters.
 
-How common something is before you look at any clue is called the **base rate**. When the base rate is low, most alarms are false, and **accuracy**, the share of all cases a model gets right, becomes misleading. In the example company, a rule that *never* raises any alarm is {{< num ch02 always_benign_acc pct >}} accurate, simply because most alerts are harmless. So for rare events, ask two better questions: *of the real attacks, how many did it catch?* and *of its alarms, how many were real?*
+## Idea 2: When something is rare, most alarms are false
+
+Try this puzzle. An alarm system has these three facts:
+
+- It catches **99%** of real attacks.
+- It goes off by mistake for **5%** of normal activity.
+- Real attacks are rare: only **1 in 1,000** events.
+
+The alarm goes off. What is the chance that it is a real attack?
+
+Most people say 95%. The correct answer is only about **2%**. The easiest way to see why is to count, using one lakh events:
+
+| Step | Count |
+|:---|---:|
+| All events | 1,00,000 |
+| Real attacks (1 in 1,000) | 100 |
+| Attacks the alarm catches (99% of 100) | 99 |
+| Normal events (everything else) | 99,900 |
+| False alarms (5% of 99,900) | 4,995 |
+| **Total alarms (99 + 4,995)** | **5,094** |
+| **Real attacks among the alarms** | **99, about 2 in 100** |
+
+There are so many normal events that even a small 5% mistake rate creates far more false alarms than real ones.
+
+How common something is *before* you look at any clue is called the **base rate**. Here it is 1 in 1,000. Always ask for the base rate first.
 
 ::: {.keyidea}
 **When something is rare, most alarms are false.** If only 1 in 1,000 events is an attack, even a 99%-accurate alarm is right only about 2 times in 100. To see this, count it out with 1,00,000 cases instead of using percentages.
 :::
 
-## Check the numbers before you trust them
+**The same trap hides in "accuracy".** **Accuracy** is the share of all cases a model gets right. When something is rare, accuracy can fool you:
 
-When a model's numbers are correct in this way (its 70% really happens about 70 times in 100), the model is called **calibrated**. Nothing forces a model to be calibrated, so you check it, the same way you would check the weather app:
+- At Kestrel, a lazy rule that *never* raises any alarm is {{< num ch02 always_benign_acc pct >}} accurate.
+- It looks good only because most alerts are harmless.
+- But it catches zero attacks.
+
+So for rare events, ask two better questions instead:
+
+1. Of all the real attacks, how many did the model catch?
+2. Of all the model's alarms, how many were real?
+
+## Idea 3: Check the numbers before you trust them
+
+A model whose numbers are correct (its "70%" really happens about 70 times in 100) is called **calibrated**. Nothing forces a model to be calibrated, so you must check it. The check is simple:
 
 1. Take a few hundred past cases where you already know the answer.
 2. Put them in groups by what the model said: 0–10%, 10–20%, and so on.
 3. In each group, count how often the event really happened.
+4. Compare. If the model said about 70% for a group, about 70% should really have happened.
 
-If the model said about 70% for a group and about 70% really happened, good. @fig-forecasters shows the result as a chart: points on the diagonal line mean the numbers can be trusted; points below it mean the model is too sure of itself. People often sum up this chart in one number. The **ECE** (expected calibration error) is the average gap between what the model said and what really happened. 0 is perfect, and smaller is better: an ECE of 0.01 means the model is off by about one percentage point.
+You can draw the result as a chart, like @fig-forecasters:
+
+- Points **on** the diagonal line: the numbers can be trusted.
+- Points **below** the line: the model is too sure of itself.
 
 ![Two forecasters. For each thing they said ("30%", "70%" and so on), we count how often it actually happened. The careful forecaster sits on the diagonal: their 70% happens about 70% of the time. The overconfident one says 90% about things that happen only about 70% of the time.](/figures/ch04/forecasters.pdf){#fig-forecasters}
+
+People often sum up this chart in one number, the **ECE** (expected calibration error). It is the average gap between what the model said and what really happened. Smaller is better: 0 is perfect, and 0.01 means the model is off by about one percentage point.
 
 ::: {.keyidea}
 **A model's "80%" must really mean 80%.** Take all the cases where it said 80%: about 80 out of 100 should turn out true. This is called being calibrated. If its 80% really means 50%, every decision based on it goes wrong.
 :::
 
-Be careful not to mix this up with **ranking**: whether the model puts the most dangerous cases at the top of the list. Ranking is measured by a score called **AUC**: if you pick one real attack and one harmless alert, it is the chance that the model gives the attack the higher number. 1 is perfect, and 0.5 is no better than tossing a coin. A model can rank well and still give wrong numbers, like a teacher who orders the students correctly but writes everyone's marks 30 points too high. If you only use the order, ranking is enough. If you draw a line on the numbers, as the rest of this book does, the numbers must be right too.
+**Do not confuse correct numbers with correct order.** A model can do two different jobs well or badly:
 
-## Why the numbers go wrong, and the fix
+| | Correct order (ranking) | Correct numbers (calibration) |
+|:---|:---|:---|
+| The question | Are the most dangerous cases at the top of the list? | When it says 70%, does it happen 70 times in 100? |
+| Measured by | **AUC**: 1 is perfect, 0.5 is a coin toss | **ECE**: 0 is perfect |
+| Classroom example | The teacher ranks the students in the right order | The teacher writes the right marks |
+
+A teacher can rank every student correctly but write everyone's marks 30 points too high. The order is right; the marks are wrong. In this book we draw lines on the numbers ("close every alert below 1%"), so we need both.
+
+## Idea 4: Why the numbers go wrong, and how to fix them
 
 Three things commonly spoil a model's numbers:
 
-- **A made-up 50/50 training mix.** Attacks are only {{< num ch04 base pct >}} of alerts, so someone trains the model on equal numbers of attacks and normal alerts. The model then believes attacks are common, and its numbers come out far too high.
-- **Big, over-trained models** become too sure of themselves.
-- **The world changes**, so last month's correct numbers can be wrong today.
+- **A made-up 50/50 training mix.** Attacks are only {{< num ch04 base pct >}} of alerts. If someone trains the model on equal numbers of attacks and normal alerts, the model believes attacks are common, and its numbers come out far too high.
+- **Big, over-trained models** become too sure of themselves and say "99%" too easily.
+- **The world changes.** Last month's correct numbers can be wrong today.
 
-The fix is usually simple and does not need retraining. Keep aside a few hundred past cases the model never trained on, and learn a small correction on top of it. The usual correction is **Platt scaling**: a small adjustment, learned from your past cases, that moves all the model's numbers up or down until they match what really happened. Another is **temperature scaling**, which only makes numbers that are too extreme (like 99%) less extreme. At Kestrel, Platt scaling brought the 50/50 model's error (ECE) down from {{< num ch04 balanced.ece f2 >}} to {{< num ch04 fixes.Platt.ece f2 >}}.
+The fix is usually simple, and you do not need to train the model again:
 
-Finally, check each group you treat differently. A model can be right for all alerts together but wrong for one group. At Kestrel, for alerts from laptops it said {{< num ch04 by_source.EDR.pred pct1 >}} when the truth was {{< num ch04 by_source.EDR.actual pct1 >}}, and real attacks on laptops were closed without anyone looking.
+1. Keep aside a few hundred past cases that the model never saw during training.
+2. Learn a small correction on top of the model, using those cases.
+
+The usual correction is called **Platt scaling**: it moves all the model's numbers up or down until they match what really happened. Another is **temperature scaling**, which only makes numbers that are too extreme (like 99%) less extreme. At Kestrel, Platt scaling brought the 50/50 model's error (ECE) down from {{< num ch04 balanced.ece f2 >}} to {{< num ch04 fixes.Platt.ece f2 >}}.
+
+**Finally, check each group separately.** A model can be right for all alerts together but wrong for one group. At Kestrel, for alerts from laptops the model said {{< num ch04 by_source.EDR.pred pct1 >}}, but the truth was {{< num ch04 by_source.EDR.actual pct1 >}}. Real attacks on laptops were closed without anyone looking.
 
 ::: {.keyidea}
 **A model that is right on average can still be wrong for one group.** It may be correct for all alerts together but wrong for laptop alerts, or for one language or one region. Check each group separately.
@@ -71,7 +132,7 @@ A model whose numbers were correct last month may not be correct today, because 
 :::
 
 ::: {.exercises}
-1. A spam filter catches 98% of spam and wrongly flags 1% of normal emails. If only 1% of all emails are spam, what fraction of flagged emails are actually normal? Count it out with 10,000 emails.
+1. A spam filter catches 98% of spam and wrongly flags 1% of normal emails. If only 1% of all emails are spam, what fraction of flagged emails are actually normal? Count it out with 10,000 emails, using a table like the one in this chapter.
 :::
 
 ::: {.nexthook}
