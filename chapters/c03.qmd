@@ -1,6 +1,6 @@
 # From probabilities to actions {#sec-ch03}
 
-Now we have probabilities we can trust. The next question is: *where should we draw the line?* Most people choose 0.5, because it is the default in almost every software library and it feels neutral. But 0.5 is not neutral. Choosing 0.5 means you believe a false alarm and a missed problem cost exactly the same. For most businesses, that is far from true.
+A model says an alert is 30% likely to be an attack. Should we block it? The number alone cannot answer this. We also need to know what each kind of mistake costs. This chapter shows, with simple counting, how costs turn a probability into a decision. Many people simply act whenever the number is above 50%. We will see why that is usually the wrong line.
 
 ::: {.goals}
 - How to decide when to act, using what each kind of mistake costs.
@@ -12,72 +12,81 @@ Now we have probabilities we can trust. The next question is: *where should we d
 
 During the monsoon, the forecast says there is a 30% chance of rain. Should you carry an umbrella?
 
-You already know the answer depends on two costs. Give each a simple number:
+First, put a number on each kind of trouble:
 
-- Carrying an umbrella you did not need is a small trouble. Call it **1**.
-- Getting fully wet on the way to an important meeting is much worse. Call it **4**.
+- You carry the umbrella and it stays dry. You carried it for nothing. Call this trouble **1**.
+- You leave it at home and it rains. You get wet on the way to an important meeting, which is much worse. Call this trouble **4**.
+- In the other two cases (you carry it and it rains, or you leave it and it stays dry), you made the right choice, so there is no trouble.
 
-Now compare the two choices:
+Now imagine 100 days like this. With a 30% chance of rain, it rains on about 30 days and stays dry on about 70.
 
-- **Carry it:** you always pay 1.
-- **Leave it:** you pay 4, but only if it rains. On average, that is 4 × the chance of rain. At a 30% chance, it is 4 × 0.3 = **1.2**.
+- If you **always carry** the umbrella, you carry it for nothing on the 70 dry days. Total trouble: 70 × 1 = **70**.
+- If you **never carry** it, you get wet on the 30 rainy days. Total trouble: 30 × 4 = **120**.
 
-1.2 is more than 1, so at 30% it is cheaper to carry the umbrella.
+Carrying gives less trouble. So you should carry it, even though it will probably not rain.
 
-![The umbrella decision. Carrying always costs 1. Leaving it costs 4 times the chance of rain. The lines cross at 20%: above that, carry it.](/figures/ch05/umbrella.pdf){#fig-umbrella}
+Now try a 10% chance of rain: 10 rainy days and 90 dry days. Always carrying gives 90 × 1 = 90. Never carrying gives 10 × 4 = 40. This time, leaving the umbrella at home is better.
 
-The two costs are equal when the chance of rain is 20% (@fig-umbrella). Above 20%, carry the umbrella. So at 30%, you carry it, even though it will probably not rain.
+Somewhere between 10% and 30%, the two choices must be equal. At 20%, there are 80 dry days and 20 rainy days: 80 × 1 = 80, and 20 × 4 = 80. They are equal. So **20% is the line**: above it, carry the umbrella; below it, leave it at home (@fig-umbrella).
 
-## One simple formula
+![The umbrella decision, counted over many days. Carrying costs 1 on each dry day; leaving it costs 4 on each rainy day. The lines cross at 20%: above that chance of rain, carry the umbrella.](/figures/ch05/umbrella.pdf){#fig-umbrella}
 
-Any yes-or-no decision can go wrong in two ways:
+## A rule for any yes-or-no decision
 
-- a **false alarm**: you acted, but there was no need;
-- a **miss**: you did not act, but you should have.
+Every yes-or-no decision can go wrong in exactly two ways:
+
+- a **false alarm**: you acted, but there was no need (you carried the umbrella on a dry day);
+- a **miss**: you did not act, but you should have (you got wet).
+
+The counting we just did always ends with the same result, so we can write it as one short rule:
+
+> **Act when the chance is above: false-alarm cost ÷ (false-alarm cost + miss cost).**
+
+For the umbrella, that is 1 ÷ (1 + 4) = 1 ÷ 5 = 20%, the same line we found by counting.
+
+Why is 0.5 so popular? Because it is the answer when both mistakes cost the same: 1 ÷ (1 + 1) = 0.5. But in real work, the two mistakes almost never cost the same, so 0.5 is almost never the right line.
 
 ::: {.keyidea}
 **Where to draw the line depends on what each mistake costs.** If getting wet costs four times more than carrying an umbrella, carry it whenever the chance of rain is above 20%, not 50%. The rule: act when the chance is above false-alarm cost ÷ (false-alarm cost + miss cost).
 :::
 
-For the umbrella: 1 ÷ (1 + 4) = 0.2. When both costs are equal, the formula gives 1 ÷ 2 = 0.5. So 0.5 is correct only when a false alarm and a miss cost exactly the same. That is almost never true in real problems.
+The two costs can be very unequal. In security, a missed attack may cost about 630 times more than the few minutes a person needs to check an alert. Then the rule gives 1 ÷ (1 + 630), which is about {{< num ch05 soc_review_t f4 >}}, or 1 in 600. In plain words: if there is even a 1-in-600 chance that an alert is a real attack, a person should look at it.
 
+## Testing the rule on real cases
 
-Different costs give different thresholds. For example, suppose a security alert closes automatically and it was a real attack. That missed attack may cost about 630 times more than the few minutes a person would have needed to check it. Then the threshold falls to about {{< num ch05 soc_review_t f4 >}}, or about 1 in 600: if there is even a 1-in-600 chance that the alert is real, a person should look at it.
+Does this simple rule really find the best line? We can test it on Kestrel's alerts, because in our example we know which ones were real attacks.
 
+The team must decide, for each alert, whether to block the activity. They estimate two costs:
 
-## Does it work in practice?
-
-At Kestrel, the team must decide for each alert: block it or allow it?
-
-- Wrongly blocking a harmless activity costs about \$200 of lost work.
+- Wrongly blocking harmless work costs about \$200, because people cannot do their jobs for a while.
 - Letting a real attack through costs about \$4,000.
-- The formula says: block when the probability is above {{< num ch05 t_formula f3 >}}.
-- Trying every possible threshold one by one finds almost the same best line, so the formula works.
-- Using 0.5 instead costs {{< num ch05 half_penalty f1 >}} times as much.
 
-![Total cost on the test alerts at every threshold. For the calibrated model (green, solid line), the formula's threshold is near the lowest point of the curve. For the same model trained on rebalanced data (red, dashed line), the same threshold lands far from its lowest point.](/figures/ch05/cost-curve.pdf){#fig-cost-curve}
+The rule says: block when the chance is above 200 ÷ (200 + 4,000), which is about {{< num ch05 t_formula f3 >}}, or roughly 5%.
 
-This is why calibration comes first. The model trained on a 50/50 mix in Chapter 2 gives numbers that are too high. If we use the formula with its numbers, the cost is {{< num ch05 bal_penalty pct >}} higher (@fig-cost-curve). Its best threshold is somewhere else, and we could only find it by trial and error, again and again whenever the costs change.
+To test this, we took 4,000 past alerts. For every possible line, from 0% to 100%, we added up what the mistakes would really have cost (@fig-cost-curve). Two things stood out:
+
+- The cheapest line was almost exactly where the rule said, near 5%.
+- The popular 0.5 line cost {{< num ch05 half_penalty f1 >}} times as much, because it let many real attacks through.
+
+So the rule is not just theory. On real cases, it finds the cheapest line.
+
+![What the mistakes would have cost on 4,000 past alerts, for every possible blocking line. For a model with correct numbers (green, solid line), the rule's line sits near the lowest point. For the model trained on a 50/50 mix in Chapter 2 (red, dashed line), whose numbers are too high, the same rule lands far from the lowest point.](/figures/ch05/cost-curve.pdf){#fig-cost-curve}
+
+There is one condition. The rule trusts the model's number. If the model says 30% when the real chance is 5%, the rule puts the line in the wrong place. The model trained on a 50/50 mix in Chapter 2 gives numbers that are too high, and with that model the same rule costs {{< num ch05 bal_penalty pct >}} more (the red line). This is why Chapter 2 came first: check the numbers, then use the costs.
 
 ::: {.keyidea}
 **The cost rule works only if the model's numbers are true.** If the model says 30% when the real chance is 5%, the rule draws the line in the wrong place. So check the numbers first, then use the costs.
 :::
 
-## "I am not sure, ask a person" is also a choice
+## A third choice: ask a person
 
-Usually there is a third option, and it is often the best one: do not decide, and send the case to a person. A machine that is allowed to skip its least certain cases makes far fewer mistakes on the cases it does decide.
+So far, the machine had only two choices: act, or do nothing. In real work there is often a third: do not decide, and send the case to a person.
 
-![Coverage against risk. Reading from right to left: if the machine decides every alert, you take its full error rate. Let it decide only the alerts it's surest about and send the rest to people, and the error rate among its decisions falls steeply. A better model (green, solid line) gives you more coverage at the same risk.](/figures/ch05/coverage-risk.pdf){#fig-coverage-risk}
+Why does this help so much? Because a model's mistakes are not spread evenly. Most of them happen on the cases where it is unsure, with numbers in the middle. If the machine decides only the cases where it is very sure, and passes the unsure ones to a person, it avoids most of its own mistakes.
 
-Here is what happened at Kestrel (@fig-coverage-risk):
+At Kestrel, when the machine decided every alert, {{< num ch05 risk_100 pct1 >}} of its decisions were wrong. When it decided only the 80% of alerts it was most sure about, {{< num ch05 risk_80 pct1 >}} were wrong. When it decided only the surest half, just {{< num ch05 risk_50 pct1 >}} were wrong (@fig-coverage-risk). This answers a question every manager asks: *how much of this work can we safely give to the machine, and with how many mistakes?*
 
-| The machine decides… | Its decisions that are wrong |
-|:---|---:|
-| every alert | {{< num ch05 risk_100 pct1 >}} |
-| only the 80% it is most sure about | {{< num ch05 risk_80 pct1 >}} |
-| only the most certain half | {{< num ch05 risk_50 pct1 >}} |
-
-This table answers a manager's real question: *how much of this work can we safely give to the machine, and with how many mistakes?*
+![How the machine's mistakes fall when it decides fewer alerts. On the right, it decides every alert and makes the most mistakes. Moving left, it keeps only the alerts it is surest about and sends the rest to people, and its mistakes fall quickly. The better model (green, solid line) can decide more alerts for the same number of mistakes.](/figures/ch05/coverage-risk.pdf){#fig-coverage-risk}
 
 ::: {.keyidea}
 **The machine does not have to decide every case.** Let it handle only the cases it is very sure about, and send the doubtful ones to a person. When we tried this on the Kestrel alerts, letting it decide only the surest half of the cases cut its mistakes from about 6% to under 1%.
@@ -85,24 +94,24 @@ This table answers a manager's real question: *how much of this work can we safe
 
 ## Three doors
 
-Put the cost-based line and "ask a person" together, and every case has three possible actions. The rest of this book uses these three:
+Put these ideas together, and every case has three possible actions, like three doors:
+
+- **Act**: the machine handles it alone, for example by closing a harmless alert.
+- **Review**: a person checks it during normal working hours.
+- **Escalate**: a person is called immediately, because it cannot wait.
 
 ![The three doors. At one end the model is confident nothing's needed, so the machine handles it. At the other end it's confident something's badly wrong, so a person is called in immediately. In between, where it's unsure, a person looks when they can.](/figures/ch05/three-doors.pdf){#fig-three-doors}
 
-- **Act**: the machine handles the case alone.
-- **Review**: a person checks the case during normal work.
-- **Escalate**: a person is called immediately.
-
-The lines between these doors also come from costs. Chapter 10 shows how to set them, and what to do when there are not enough people for the review door.
+Where exactly to put the lines between these doors also comes from costs. Chapter 10 shows how, and what to do when there are not enough people for the review door.
 
 ::: {.breaks}
-The costs we use are estimates, but the formula treats them as exact. Two habits help. First, try each cost at half and at double its value. If the threshold hardly moves, do not waste time arguing about the exact number. Second, remember that costs change from case to case: a false alarm on the CEO's laptop costs more than one on a test computer. And some costs are not money at all, such as trust, fairness and safety. Discuss them openly.
+The costs in this chapter are estimates, not exact numbers. Two habits help. First, try each cost at half and at double its value. If the line hardly moves, the exact cost does not matter much, so do not spend days arguing about it. Second, the same mistake can cost different amounts: a false alarm on the CEO's laptop costs more than one on a test computer. And some costs are not money at all, such as trust, fairness and safety. Discuss these openly with the people affected.
 :::
 
 ::: {.threshold}
-The sales team says a wrongly blocked customer email costs \$800, not \$200. Where should the blocking threshold go now?
+The sales team says that wrongly blocking a customer's email costs \$800, not \$200. Where should the blocking line go now?
 
-(800 ÷ 4,800 ≈ 0.17. Fewer alerts will be blocked, and a few more attacks will get through. The model did not change; the business priorities changed, and the threshold should follow them.)
+(800 ÷ (800 + 4,000) = 800 ÷ 4,800, which is about 0.17, or 17%. The line moves up, so fewer emails are blocked and a few more attacks get through. The model did not change; only the costs changed, and the line follows them.)
 :::
 
 ::: {.exercises}

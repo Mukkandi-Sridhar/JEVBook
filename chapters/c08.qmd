@@ -20,14 +20,12 @@ This is the base-rate trap from Chapter 2 again, but now it catches the model in
 
 ![The same model's reliability at two companies. At Kestrel, whose mix of alerts matches what the model was tuned for, it sits close to the diagonal. At Harbor, where attacks are rarer, every probability is too high.](/figures/ch18/two-companies.pdf){#fig-two-companies}
 
-To see this, let us imagine a second company, Harbor Pharma. Its alerts look the same as Kestrel's, but real attacks are rarer. The same model gives these results (@fig-two-companies):
+To see this, let us imagine a second company, Harbor Pharma. Its alerts look the same as Kestrel's, but real attacks are rarer (@fig-two-companies):
 
-| | Kestrel | Harbor |
-|:---|---:|---:|
-| Share of alerts that are real attacks | {{< num ch18 kestrel_base pct1 >}} | {{< num ch18 harbor_base pct1 >}} |
-| Model's error in its numbers (ECE) | {{< num ch18 ece_kestrel f3 >}} | {{< num ch18 ece_harbor f3 >}} |
+- At Kestrel, {{< num ch18 kestrel_base pct1 >}} of alerts are real attacks, and the model's numbers are close to the truth (ECE {{< num ch18 ece_kestrel f3 >}}).
+- At Harbor, only {{< num ch18 harbor_base pct1 >}} are real attacks. The same model's average prediction there is {{< num ch18 harbor_mean_p pct1 >}}, about twice the real rate, and its error is almost three times bigger (ECE {{< num ch18 ece_harbor f3 >}}).
 
-At Harbor, the model's average prediction is {{< num ch18 harbor_mean_p pct1 >}}, but the real rate is only {{< num ch18 harbor_base pct1 >}}. The model did not change; only the company changed.
+The model did not change; only the company changed.
 
 ## Fixing it
 

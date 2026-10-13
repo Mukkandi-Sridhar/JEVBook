@@ -46,12 +46,7 @@ Consider an example security agent. For each alert, it decides which evidence to
 
 ## Small mistakes multiply
 
-Small mistakes add up. A task is fully correct only if *every* step is correct:
-
-| Each step correct | Steps in the task | Whole task correct |
-|:---|---:|---:|
-| 95% of the time | 10 | about {{< num ch13 compound_95_10 pct >}} |
-| 95% of the time | 20 | about {{< num ch13 compound_95_20 pct >}} |
+Small mistakes add up. A task is fully correct only if *every* step is correct. If each step is correct 95% of the time, a task with 10 steps is fully correct only about {{< num ch13 compound_95_10 pct >}} of the time, and a task with 20 steps only about {{< num ch13 compound_95_20 pct >}}.
 
 ![The chance that every step of a task goes right, for different per-step reliabilities. Small per-step error rates become large task failure rates as the number of steps grows.](/figures/ch13/compound.pdf){#fig-compound}
 

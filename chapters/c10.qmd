@@ -60,13 +60,7 @@ If we use only the cost-based thresholds, about {{< num ch21 ideal.review int >}
 **Plan for the number of people you actually have.** If about 640 cases a day go to a team that can check 240, the other 400 are never seen, and nobody chooses which ones are skipped.
 :::
 
-So we ask a better question: *of all the ways to place the two lines that keep the review queue within what six people can handle, which one costs the least?* With the best such lines, tested on a new week:
-
-| Door | Alerts per day |
-|:---|---:|
-| Act (closed by the machine) | {{< num ch21 chosen.act int >}} |
-| Review (checked by a person) | {{< num ch21 chosen.review int >}} |
-| Escalate (someone called now) | {{< num ch21 chosen.escalate int >}} |
+So we ask a better question: *of all the ways to place the two lines that keep the review queue within what six people can handle, which one costs the least?* With the best such lines, tested on a new week, the machine closes {{< num ch21 chosen.act int >}} alerts per day, people review {{< num ch21 chosen.review int >}}, and {{< num ch21 chosen.escalate int >}} are escalated.
 
 Real attacks closed without anyone seeing them fall from {{< num ch21 naive.missed_by_automation int >}} per day to about {{< num ch21 chosen.missed_by_automation f1 >}}.
 

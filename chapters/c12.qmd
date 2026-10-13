@@ -30,12 +30,7 @@ After the shadow week, the team's meeting is mostly about one number, the count 
 
 ## The order of the queue matters
 
-The new review queue is sorted by probability, with the most likely attacks first. The people, the alerts and the queue are the same; only the order changed:
-
-| | Old queue (order of arrival) | New queue (most likely first) |
-|:---|---:|---:|
-| Typical wait for a real attack | about {{< num ch25 fifo_wait int >}} minutes | about {{< num ch25 prio_wait int >}} minutes |
-| Real attacks seen within one hour | {{< num ch25 old.threats_within_hour_share pct >}} | {{< num ch25 new.threats_within_hour_share pct >}} |
+The new review queue is sorted by probability, with the most likely attacks first. The people, the alerts and the queue are the same; only the order changed. Yet the typical real attack now waits about {{< num ch25 prio_wait int >}} minutes instead of {{< num ch25 fifo_wait int >}}, and the share of real attacks seen by a person within one hour went up from {{< num ch25 old.threats_within_hour_share pct >}} to {{< num ch25 new.threats_within_hour_share pct >}}.
 
 ![How long it takes for a real threat to reach a person. Before, rule-flagged threats were seen quickly and the rest waited up to a day or were never seen. After, urgent calls reach someone in about fifteen minutes and the queue takes the likeliest threats first.](/figures/ch25/time-to-human.pdf){#fig-time-to-human}
 

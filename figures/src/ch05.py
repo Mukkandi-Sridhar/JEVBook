@@ -64,18 +64,18 @@ def umbrella():
     f, ax = subplots(width="text", height=2.2)
     clean(ax, "y")
     p = np.linspace(0, 1, 100)
-    carry = np.full_like(p, 1.0)
-    leave = p * 4.0
+    carry = (1 - p) * 1.0      # you lose 1 only on a dry day, when you carried it for nothing
+    leave = p * 4.0            # you lose 4 only on a rainy day, when you get wet
     ax.plot(p, carry, color=C["data"], lw=1.8)
     ax.plot(p, leave, color=C["fail"], lw=1.8)
     ax.fill_between(p, np.minimum(carry, leave), 0, color=C["neutral_t"], zorder=0)
     ax.axvline(0.2, color=C["ink"], lw=0.8)
     ax.text(0.21, 3.6, "carry it whenever the\nchance of rain is above 20%", fontsize=6.5, color=C["ink"])
-    ax.text(0.55, 1.12, "carry: always costs 1 (annoying)", fontsize=6.5, color=C["data"], fontweight="semibold")
-    ax.text(0.47, 2.35, "leave it: costs 4 (soaked)\n× the chance of rain", fontsize=6.5, color=C["fail"],
+    ax.text(0.5, 0.62, "carry it: lose 1 on each dry day", fontsize=6.5, color=C["data"], fontweight="semibold")
+    ax.text(0.27, 2.75, "leave it: lose 4 on each rainy day", fontsize=6.5, color=C["fail"],
             fontweight="semibold", rotation=0)
     ax.set_xlabel("Chance of rain")
-    ax.set_ylabel("Expected cost (units of annoyance)")
+    ax.set_ylabel("Average trouble per day")
     ax.xaxis.set_major_formatter(PCT)
     ax.set_ylim(0, 4.2)
     ax.set_xlim(0, 1)
@@ -114,13 +114,13 @@ def cost_curve():
     ax.plot(ts, c1, color=C["jev"], lw=1.8, ls="-")              # calibrated: solid
     ax.plot(ts, c2, color=C["fail"], lw=1.6, ls=(0, (5, 2)))     # rebalanced: dashed
     ax.axvline(t, color=C["ink"], lw=0.8)
-    ax.text(t + 0.01, 1.2e6, f"formula: {t:.3f}", fontsize=6.4, color=C["ink"], fontweight="bold")
+    ax.text(t + 0.01, 1.2e6, f"the rule's line: {t:.3f}", fontsize=6.4, color=C["ink"], fontweight="bold")
     ax.scatter([t], [cost(d["p"], d["y"], t)], color=C["jev"], s=26, zorder=5, edgecolor="white", lw=0.8)
     ax.scatter([t], [cost(d["pb"], d["y"], t)], color=C["fail"], s=26, zorder=5, edgecolor="white", lw=0.8)
     ax.axvline(0.5, color=C["muted"], lw=0.6)
     ax.text(0.51, 1.2e6, "0.5", fontsize=6.4, color=C["ink2"])
-    ax.text(0.62, c1[-60] + 60000, "calibrated model", fontsize=6.5, color=C["jev"], fontweight="semibold")
-    ax.text(0.45, 0.2e6, "rebalanced (miscalibrated) model", fontsize=6.5, color=C["fail"], fontweight="semibold")
+    ax.text(0.62, c1[-60] + 60000, "model with correct numbers", fontsize=6.5, color=C["jev"], fontweight="semibold")
+    ax.text(0.45, 0.2e6, "model trained on a 50/50 mix", fontsize=6.5, color=C["fail"], fontweight="semibold")
     ax.set_xlim(0, 0.9)
     ax.set_ylim(0, 1.3e6)
     ax.yaxis.set_major_formatter(MONEY)

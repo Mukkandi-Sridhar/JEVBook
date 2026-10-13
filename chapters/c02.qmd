@@ -96,13 +96,10 @@ People often sum up this chart in one number, the **ECE** (expected calibration 
 **A model's "80%" must really mean 80%.** Take all the cases where it said 80%: about 80 out of 100 should turn out true. This is called being calibrated. If its 80% really means 50%, every decision based on it goes wrong.
 :::
 
-**Do not confuse correct numbers with correct order.** A model can do two different jobs well or badly:
+**Do not confuse correct numbers with correct order.** A model can do two different jobs, and it can be good at one and bad at the other:
 
-| | Correct order (ranking) | Correct numbers (calibration) |
-|:---|:---|:---|
-| The question | Are the most dangerous cases at the top of the list? | When it says 70%, does it happen 70 times in 100? |
-| Measured by | **AUC**: 1 is perfect, 0.5 is a coin toss | **ECE**: 0 is perfect |
-| Classroom example | The teacher ranks the students in the right order | The teacher writes the right marks |
+- **Correct order (ranking)** means the most dangerous cases are at the top of the list. It is measured by a score called **AUC**: 1 is perfect, and 0.5 is no better than tossing a coin.
+- **Correct numbers (calibration)** means that when the model says 70%, it really happens about 70 times in 100. It is measured by the ECE: 0 is perfect.
 
 A teacher can rank every student correctly but write everyone's marks 30 points too high. The order is right; the marks are wrong. In this book we draw lines on the numbers ("close every alert below 1%"), so we need both.
 
@@ -121,10 +118,8 @@ The fix is usually simple, and you do not need to train the model again:
 
 There are two common corrections. You do not need to know how they work inside, only what each one does:
 
-| Correction | What it does | Use it when |
-|:---|:---|:---|
-| **Platt scaling** | Moves all the model's numbers up or down until they match what really happened. | The model's numbers are wrong in general. This is the usual first choice. |
-| **Temperature scaling** | Makes extreme numbers less extreme: a 99% becomes, say, 90%. | The model is simply too sure of itself. |
+- **Platt scaling** moves all the model's numbers up or down until they match what really happened. It is the usual first choice.
+- **Temperature scaling** only makes extreme numbers less extreme: a 99% becomes, say, 90%. Use it when the model is simply too sure of itself.
 
 **Did it work at Kestrel?** Yes. The model trained on the 50/50 mix was off by about 22 percentage points on average (ECE {{< num ch04 balanced.ece f2 >}}). After Platt scaling, it was off by only about 1 point (ECE {{< num ch04 fixes.Platt.ece f2 >}}).
 
