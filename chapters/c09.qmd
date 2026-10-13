@@ -3,9 +3,9 @@
 In every team that makes many decisions, there is a long-running debate. The senior expert says the hand-written rules are enough, because anyone can read them. The data scientist says a trained model would do better, if someone marks enough past cases with the right answer. The new engineer says an LLM understands cases better than both. And now someone has read about Jev. Each of them is right about something, because each is looking at a different strength. So let us compare them fairly: six methods, the same decision, the same test, and all the results on one page. A comparison like this, like a cooking contest where everyone makes the same dish, is sometimes called a "bake-off".
 
 ::: {.goals}
-- Compare six ways of making the same decision.
-- Judge methods on more than accuracy.
-- Choose a method using a scorecard.
+- How six different methods compare on the same decision.
+- Why accuracy alone is not enough to choose a method.
+- How to choose a method for your own decision, using a simple scorecard.
 :::
 
 ## The six methods

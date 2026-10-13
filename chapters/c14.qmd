@@ -1,11 +1,11 @@
 # What changes now {#sec-ch14}
 
-Predictions about AI often turn out wrong, so this last chapter stays with three things: what this book has shown, what it suggests, and what nobody knows yet.
+Predictions about AI often turn out wrong, so this last chapter is careful. It covers what this book has shown, what we think will happen next, what nobody knows yet, and what you can do on Monday.
 
 ::: {.goals}
-- See the decision layer as a separate part of an AI system.
-- Understand why cheaper decisions can mean more work for people.
-- Leave with a clear plan for your first decision.
+- Why the AI system of the future gives each part one job.
+- Why cheaper decisions can mean more work for people.
+- A simple plan for your first decision project.
 :::
 
 ## A separate layer for decisions
@@ -42,7 +42,7 @@ There is a hidden cost, because more decisions also means more cases sent to peo
 
 ## What becomes valuable
 
-If deciding becomes cheap, what becomes rare and valuable? Good human judgement about the decision itself. Someone still has to decide what each mistake costs, where the thresholds should be, how many cases the team can review, and whether the probabilities are still correct this week. No model can do this for you. This is why the first chapters of this book, about probability, correct numbers and costs, are the foundation. They make the difference between a system that makes a million cheap decisions well and one that makes a million cheap mistakes.
+If deciding becomes cheap, what becomes rare and valuable? Good human judgement about the decision itself. Someone still has to decide what each mistake costs, where the thresholds should be, how many cases the team can review, and whether the probabilities are still correct this week. No model can do this for you. This is why the early chapters of this book, about probability, correct numbers and costs, matter so much. They make the difference between a system that makes a million cheap decisions well and one that makes a million cheap mistakes.
 
 ![Skills that matter more when decisions get cheap, and skills that matter less on their own, with the chapters that teach each.](/figures/ch29/skills.pdf){#fig-skills}
 

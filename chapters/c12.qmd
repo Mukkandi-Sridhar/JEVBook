@@ -1,11 +1,11 @@
 # One team, start to finish, and beyond {#sec-ch12}
 
-So far, each chapter looked at one part of the problem. In this chapter we follow the whole journey, the way a real team would: how the team worked before, how the new system was tested quietly before it was allowed to act, how it was switched on, and what happened when an attack campaign hit. Then we leave security and see the same design in other fields.
+So far, each chapter looked at one part of the problem. In this chapter we follow the whole journey, the way a real team would: how the team worked before, how the new system was tested quietly before it was allowed to act, how it was switched on, and what happened when an attack campaign hit. Finally, we see how the same approach works outside security: in banks, hospitals and customer support.
 
 ::: {.goals}
-- Test a new decision system in shadow mode before trusting it.
-- See why the order of a queue matters as much as its size.
-- Recognise decision layers in banking, healthcare, customer support and more.
+- How to test a new system safely before it is allowed to act.
+- Why checking the most dangerous cases first matters as much as checking more cases.
+- How the same design is used in banking, hospitals, customer support and more.
 :::
 
 ## Before: one long queue

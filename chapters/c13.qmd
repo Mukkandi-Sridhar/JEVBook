@@ -3,9 +3,9 @@
 In every project there comes a day when the prototype works and someone asks: "Can we use this from Monday?" A model that makes good decisions on one person's laptop is not yet a service that a whole company can depend on. A real service must answer at 3 a.m. even when the network is slow, explain its decisions to an auditor a year later, warn someone when the situation changes, and change safely when it is improved. This chapter explains what that needs, and then looks inside a small System One model.
 
 ::: {.goals}
-- Use a model you do not own safely: fixed versions, retries and failures.
-- Make every decision explainable with a record.
-- Understand what is inside a small System One model.
+- How to use an AI service you do not control: fixed versions, retries and failures.
+- How to record every decision so that it can be explained later.
+- What a small System One model looks like inside.
 :::
 
 ## Using a model you do not own

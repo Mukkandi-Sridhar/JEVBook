@@ -1,11 +1,11 @@
 # Testing a model's calibration yourself {#sec-ch08}
 
-A week after Jev was launched, two opinions were being shared. TypeSafe said Jev gives *calibrated* probabilities [@typesafe2026]. The data scientist Alex Molas replied with a post titled "Jev can't be calibrated". His point was that calibration depends on *your* data, and Jev has never seen your data, so its outputs should be treated as scores, not probabilities [@molas2026]. Who is right? In a precise sense, both are. And you can settle the question for your own use in one afternoon.
+A week after Jev was launched, two opinions were being shared. TypeSafe said Jev gives *calibrated* probabilities [@typesafe2026]. The data scientist Alex Molas replied with a post titled "Jev can't be calibrated". His point was that calibration depends on *your* data, and Jev has never seen your data, so its outputs should be treated as scores, not probabilities [@molas2026]. Who is right? Both are, partly. And you can find out which one is right for *your* data in one afternoon, using the simple test in this chapter.
 
 ::: {.goals}
-- Understand why calibration depends on your data.
-- Correct a model's numbers when attacks are more or less common at your company.
-- Know how many past cases with known answers you need for a fair check.
+- Why a model's numbers can be right at one company and wrong at yours.
+- How to correct the numbers using a few hundred of your own past cases.
+- How many past cases you need for a fair check.
 :::
 
 ## Why the critic has a point
@@ -51,7 +51,7 @@ As a rough guide, a few hundred labelled cases are enough to *fix* a big error t
 
 ![A testing routine for any model that returns probabilities, Jev included.](/figures/ch18/protocol.pdf){#fig-protocol}
 
-So, the company may be right that Jev is calibrated on the data it tested. The critic is right that this does not prove it is calibrated on yours. This routine turns the argument into a measurement. Until you have done it, treat a new model's outputs as scores, not as probabilities.
+So, the company may be right that Jev is calibrated on the data it tested. The critic is right that this does not prove it is calibrated on yours. So instead of arguing, run this test on your own data. Until you have done it, treat a new model's outputs as scores, not as probabilities.
 
 ::: {.breaks}
 Even the "known answers" of past cases are not perfect. Experts sometimes disagree, some attacks are never discovered, and some become clear only later: an alert closed today may turn out to be part of an attack found next month. So test with cases that are old enough for the truth to be known. And remember that cases the model closed by itself were never checked by anyone, so their "answer" is only the model's own guess.

@@ -3,9 +3,9 @@
 An experienced cook does not need a recipe for every dish, because most dishes use the same few steps: fry, add water, cook till thick. Software also has such common steps. We call them **patterns**: well-known solutions with a name, so that a team can simply say "put a gate before that action" and everyone understands. In this chapter we collect the patterns for using decision models, and then build an agent with them.
 
 ::: {.goals}
-- Recognise six common patterns for using decision models in real systems.
-- Find a decision step that is wrong even when nothing crashes.
-- Divide work correctly between a decision model and an LLM.
+- Six common designs for using a decision model in a real system.
+- How to find a decision step that is wrong even when there is no error message.
+- Which work to give an LLM, and which to give a decision model.
 :::
 
 ![The six patterns in this chapter, as small diagrams. In every one, something else writes or acts, and a typed question decides.](/figures/ch22/catalog.pdf){#fig-catalog}
@@ -73,7 +73,7 @@ The hybrid agent took {{< num ch24 v2_seconds f1 >}} seconds per alert, while th
 :::
 
 ::: {.breaks}
-All numbers in this chapter are illustrative, including the timings, and part of the difference between the two agents comes from how the example was set up. Treat the speed, the queue and the design lessons as the main findings. Also, every pattern you add is one more place where something can go wrong: if an LLM first reads the text, then a safety check runs, and then a router sends the case on, a mistake can happen at any of these three steps.
+All numbers in this chapter are illustrative, including the timings, and part of the difference between the two agents comes from how the example was set up. So trust the general lessons, such as "the LLM-only agent is slower and floods the review queue", more than the exact numbers. Also, every pattern you add is one more place where something can go wrong: if an LLM first reads the text, then a safety check runs, and then a router sends the case on, a mistake can happen at any of these three steps.
 :::
 
 ::: {.exercises}

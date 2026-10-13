@@ -3,9 +3,9 @@
 Words like "deep learning" and "large language model" sound very complex. But they are built from four simple ideas. In this chapter we go through these four ideas, and then see why asking an LLM like ChatGPT to make a decision is not as simple as it looks.
 
 ::: {.goals}
-- Understand layers, embeddings and attention in simple words.
-- See why big models often become overconfident.
-- Understand why getting a clean decision out of an LLM is difficult.
+- How neural networks, embeddings and attention work, in simple words.
+- Why big AI models are often too sure of themselves.
+- Why it is hard to get a clean, reliable decision out of an LLM like ChatGPT.
 :::
 
 ## Idea one: layers can draw any shape

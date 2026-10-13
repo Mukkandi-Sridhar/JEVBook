@@ -3,9 +3,9 @@
 A System One model asks you to put every question into one of three shapes: yes or no, pick one option, or rate on a scale. You may think real decisions are more complex than this. But look at your own daily work, and you will see that most complex decisions can be broken into a few simple questions of these three shapes: *Is this real? Which team? How urgent?* The hard part is usually asking the question clearly, not the shape of the answer.
 
 ::: {.goals}
-- Choose between yes/no, pick-one and scale questions.
-- Avoid two common traps: the missing option and the misleading average.
-- Make decisions using all the probabilities, not only the top answer.
+- The three types of questions: yes/no, pick one, and rate on a scale.
+- Two common mistakes: leaving out a "none of these" option, and trusting an average level.
+- How to choose an action using all the answer's probabilities, not only the top one.
 :::
 
 ![The three question types, what you send, and what comes back. A noul returns one probability. A choice returns a probability for every label. A score returns a probability for every level, plus the average level.](/figures/ch17/three-types.pdf){#fig-three-types}

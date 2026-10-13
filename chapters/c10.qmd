@@ -3,9 +3,9 @@
 Suppose an alert comes in at 2 a.m., and the model gives it a probability of 0.37. We already know what this number means and how to check it. But the team now has a more practical question: *what should we do with this alert?* Should we close it, keep it for the morning, or call someone immediately? This step, from a number to an action, is the least exciting part of an AI system, but it is where most of the money is saved or lost.
 
 ::: {.goals}
-- Set the act and escalate thresholds using costs.
-- Fit your rules to the number of people you actually have.
-- Run the system safely, with random checks, records and daily monitoring.
+- How to set the lines for "act" and "call someone now" using costs.
+- How to fit those lines to the number of people in your team.
+- How to run the system safely every day: random checks, records and monitoring.
 :::
 
 ## Why 0.5 fails

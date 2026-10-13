@@ -8,7 +8,7 @@
 --   ::: {.keyidea}               ... :::   Key idea: one sentence to remember (listed again in "Keep these" and the appendix)
 --   ::: {.keyideaslist}          ... :::   The Key ideas appendix (back/key-ideas.qmd, made by tools/make_key_ideas.py)
 --   [ ]{.kref ref="key-ch05-2"}             Page number (print) or link (ebook) for a key idea, used in that appendix
---   ::: {.goals}                 ... :::   By the end of this chapter
+--   ::: {.goals}                 ... :::   In this chapter you will learn
 --   ::: {.exercises}             ... :::   Exercises
 --   ::: {.nexthook}              ... :::   Closing hook to the next chapter
 --   ::: {.bookquote by="Name, Source"} ... ::: Pull quote
@@ -35,7 +35,7 @@ local ENVS = {
 
 local LABELS = {
   tryit = "Try it", breaks = "Where this breaks", threshold = "Set the threshold",
-  deeper = "Going deeper", goals = "By the end of this chapter", exercises = "Exercises",
+  deeper = "Going deeper", goals = "In this chapter you will learn", exercises = "Exercises",
   keyidea = "Key idea", keepthese = "Keep these",
 }
 

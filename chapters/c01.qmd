@@ -2,12 +2,12 @@
 
 Anyone who starts learning AI today hears many new words at once: machine learning, deep learning, LLM, RAG, agents. It feels like seven different subjects. But all these words belong to one story. Each new idea came because the old idea had a problem it could not solve.
 
-In this chapter we go through that story from the beginning, in simple steps. At the end, you will see where this book fits.
+In this chapter we go through that story from the beginning, in simple steps. At the end, you will see which part of this story this book is about: the many small decisions inside AI systems.
 
 ::: {.goals}
-- Understand the difference between a computer that follows rules and a computer that learns.
-- Explain what a *model* is, in one sentence.
-- See the full picture: AI, machine learning, deep learning, LLMs, RAG, agents and Jev.
+- The difference between a computer that follows rules and a computer that learns from examples.
+- What a *model* is, in one simple sentence.
+- How AI, machine learning, deep learning, LLMs, RAG, agents and Jev fit together.
 :::
 
 ## Rules work, until they don't
@@ -95,7 +95,7 @@ In 2026, a company called TypeSafe AI released a model named **Jev** for these s
 
 ![The story so far. Each step exists because the one before it hit a problem it couldn't solve. System One models like Jev grow out of deep learning and fit into the "decide" step of an agent.](/figures/ch01/ai-story-map.pdf){#fig-ai-story-map}
 
-@fig-ai-story-map shows the whole story on one page. The next two chapters stay with the basics, because everything else in the book depends on one idea: a good answer should say how likely it is, and that "how likely" should be correct.
+@fig-ai-story-map shows the whole story on one page. The next two chapters cover the basics you need for the rest of the book: how to read a number like "70% likely", how to check that it is correct, and how to decide what to do with it.
 
 ::: {.exercises}
 1. Name one system you use that follows fixed rules, and one that has learned from examples. How did you know?

@@ -1,11 +1,11 @@
 # From probabilities to actions {#sec-ch03}
 
-Now we have probabilities we can trust. The next question is: *where should we draw the line?* Most people choose 0.5, because it is the default in almost every software library and it feels neutral. But 0.5 is not neutral. Using it quietly assumes that a false alarm and a missed problem cost the same, and for most businesses that is far from true.
+Now we have probabilities we can trust. The next question is: *where should we draw the line?* Most people choose 0.5, because it is the default in almost every software library and it feels neutral. But 0.5 is not neutral. Choosing 0.5 means you believe a false alarm and a missed problem cost exactly the same. For most businesses, that is far from true.
 
 ::: {.goals}
-- Turn the cost of two kinds of mistakes into one threshold.
-- Understand why 0.5 is only a special case.
-- Treat "ask a person" as a real choice, and meet the three doors: act, review, escalate.
+- How to decide when to act, using what each kind of mistake costs.
+- Why 0.5 is usually the wrong line.
+- Why "send it to a person" is often the best choice, and the three doors: act, review, escalate.
 :::
 
 ## The umbrella question
@@ -61,7 +61,7 @@ If the model decides every alert, {{< num ch05 risk_100 pct1 >}} of its decision
 
 ## Three doors
 
-When we combine cost-based thresholds with "ask a person", we get the design used in the rest of this book.
+Put the cost-based line and "ask a person" together, and every case has three possible actions. The rest of this book uses these three:
 
 ![The three doors. At one end the model is confident nothing's needed, so the machine handles it. At the other end it's confident something's badly wrong, so a person is called in immediately. In between, where it's unsure, a person looks when they can.](/figures/ch05/three-doors.pdf){#fig-three-doors}
 

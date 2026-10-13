@@ -1,18 +1,18 @@
 # Probabilities: can you trust the number? {#sec-ch02}
 
-A decision model gives you a number, such as "this alert is 70% likely to be an attack". As an engineer, you do not need probability theory to use that number. You need to know three practical things: what the number promises, one trap to avoid, and how to check that the number can be trusted before you build on it.
+An AI model often gives an answer with a number, such as "this alert is 70% likely to be an attack". You do not need probability theory to use such numbers. But you do need to know what "70%" really means, one common mistake people make with rare events, and how to check whether the model's numbers are correct before you use them for real decisions.
 
 ::: {.goals}
-- Know what "70% likely" promises, and the rare-event trap.
-- Check a model's numbers on your own past cases.
-- Know why the numbers go wrong, and how they are fixed.
+- What "70% chance" really means.
+- Why most alarms are false when the thing you look for is rare.
+- How to check whether a model's numbers are correct, and how to fix them.
 :::
 
-## What "70%" promises
+## What "70%" really means
 
-If the weather app says "70% chance of rain" and it does not rain, the app was not wrong. The promise is about many days. Of all the days it says 70%, it should rain on about 70 out of 100.
+If the weather app says "70% chance of rain" and it does not rain, the app was not wrong. "70%" does not tell you about one day. It means that on all the days when the app says 70%, it should rain on about 70 out of 100.
 
-A model's number is the same kind of promise. Among all the alerts it calls "70% likely", about 70 in 100 should turn out to be real attacks. One alert cannot prove the model right or wrong; only many alerts can.
+A model's number works the same way. Among all the alerts it calls "70% likely", about 70 in 100 should turn out to be real attacks. One alert cannot prove the model right or wrong; only many alerts can.
 
 The simplest model that gives such a number is called **logistic regression**. It works like a credit score: it adds some points for each clue (a bad threat score, a login at 3 a.m., a new country) and turns the total into a probability. Banks and hospitals have used it for decades, and we will meet it again in later chapters.
 
@@ -34,7 +34,7 @@ How common something is before you look at any clue is called the **base rate**.
 
 ## Check the numbers before you trust them
 
-When a model's numbers keep their promise, the model is called **calibrated**. Nothing forces a model to be calibrated, so you check it, the same way you would check the weather app:
+When a model's numbers are correct in this way (its 70% really happens about 70 times in 100), the model is called **calibrated**. Nothing forces a model to be calibrated, so you check it, the same way you would check the weather app:
 
 1. Take a few hundred past cases where you already know the answer.
 2. Put them in groups by what the model said: 0–10%, 10–20%, and so on.
