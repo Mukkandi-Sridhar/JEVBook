@@ -12,7 +12,7 @@ If you ask an LLM what your company's leave policy says about working from home,
 
 ![Retrieval-augmented generation. The question goes to a search step first, which pulls the most relevant chunks from your documents. The LLM sees the question plus those chunks, and answers from them, ideally citing which one it used.](/figures/ch12/pipeline.pdf){#fig-pipeline}
 
-**Retrieval-augmented generation**, or **RAG**, works in three steps. First, search your documents for the passages most related to the question. Second, add those passages to the question. Third, ask the LLM to answer using them (@fig-pipeline) [@lewis2020]. At Kestrel, the company's policy documents were mixed with many documents that look similar but do not help. Among all of them, the search put the correct passage at the top {{< num ch12 recall.char.0 pct >}} of the time.
+**Retrieval-augmented generation**, or **RAG**, works in three steps. First, search your documents for the passages most related to the question. Second, add those passages to the question. (The full text you send to an LLM is called the **prompt**.) Third, ask the LLM to answer using them (@fig-pipeline) [@lewis2020]. At Kestrel, the company's policy documents were mixed with many documents that look similar but do not help. Among all of them, the search put the correct passage at the top {{< num ch12 recall.char.0 pct >}} of the time.
 
 The most important part of RAG is not the LLM; it is the search. If the correct passage is not found, the LLM simply writes the most believable answer it can from whatever it was given. The answer will read well, will even name a source document, and will still be wrong.
 

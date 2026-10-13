@@ -1,6 +1,6 @@
 # Probabilities: can you trust the number? {#sec-ch02}
 
-An AI model often gives an answer with a number, such as "this alert is 70% likely to be an attack". You do not need probability theory to use such numbers. But you do need to know what "70%" really means, one common mistake people make with rare events, and how to check whether the model's numbers are correct before you use them for real decisions.
+An AI model often gives an answer with a number, such as "this alert is 70% likely to be an attack". This number is a **probability**: a number from 0% to 100% that says how likely something is. You do not need probability theory to use such numbers. But you do need to know what "70%" really means, one common mistake people make with rare events, and how to check whether the model's numbers are correct before you use them for real decisions.
 
 ::: {.goals}
 - What "70% chance" really means.
@@ -14,7 +14,7 @@ If the weather app says "70% chance of rain" and it does not rain, the app was n
 
 A model's number works the same way. Among all the alerts it calls "70% likely", about 70 in 100 should turn out to be real attacks. One alert cannot prove the model right or wrong; only many alerts can.
 
-The simplest model that gives such a number is called **logistic regression**. It works like a credit score: it adds some points for each clue (a bad threat score, a login at 3 a.m., a new country) and turns the total into a probability. Banks and hospitals have used it for decades, and we will meet it again in later chapters.
+**Logistic regression** is the simplest model that turns clues into a probability. It works like a credit score: it adds some points for each clue (a bad threat score, a login at 3 a.m., a new country) and turns the total into a chance between 0% and 100%. Do not worry about the long name; just remember "points for each clue, turned into a chance". Banks and hospitals have used it for decades, and we will meet it again in later chapters.
 
 ::: {.keyidea}
 **A probability is checked over many cases, not one.** "70% chance of rain" means that on 100 such days, it should rain on about 70. If it does not rain tomorrow, the forecast was not wrong.
@@ -26,7 +26,7 @@ Suppose an alarm catches 99% of real attacks, but also goes off by mistake for 5
 
 Count it out with one lakh (100,000) events. Only 100 are attacks, and the alarm catches 99 of them. But 5% of the 99,900 normal events also set it off: 4,995 false alarms. So out of 5,094 alarms, only 99 are real.
 
-How common something is before you look at any clue is called the **base rate**. When the base rate is low, most alarms are false, and "accuracy" becomes misleading. In the example company, a rule that *never* raises any alarm is {{< num ch02 always_benign_acc pct >}} accurate, simply because most alerts are harmless. So for rare events, ask two better questions: *of the real attacks, how many did it catch?* and *of its alarms, how many were real?*
+How common something is before you look at any clue is called the **base rate**. When the base rate is low, most alarms are false, and **accuracy**, the share of all cases a model gets right, becomes misleading. In the example company, a rule that *never* raises any alarm is {{< num ch02 always_benign_acc pct >}} accurate, simply because most alerts are harmless. So for rare events, ask two better questions: *of the real attacks, how many did it catch?* and *of its alarms, how many were real?*
 
 ::: {.keyidea}
 **When something is rare, most alarms are false.** If only 1 in 1,000 events is an attack, even a 99%-accurate alarm is right only about 2 times in 100. To see this, count it out with 1,00,000 cases instead of using percentages.
@@ -40,7 +40,7 @@ When a model's numbers are correct in this way (its 70% really happens about 70 
 2. Put them in groups by what the model said: 0–10%, 10–20%, and so on.
 3. In each group, count how often the event really happened.
 
-If the model said about 70% for a group and about 70% really happened, good. @fig-forecasters shows the result as a chart: points on the diagonal line mean the numbers can be trusted; points below it mean the model is too sure of itself. People often sum up this chart in one number, the **ECE**: the average gap between what the model said and what really happened. Smaller is better.
+If the model said about 70% for a group and about 70% really happened, good. @fig-forecasters shows the result as a chart: points on the diagonal line mean the numbers can be trusted; points below it mean the model is too sure of itself. People often sum up this chart in one number. The **ECE** (expected calibration error) is the average gap between what the model said and what really happened. 0 is perfect, and smaller is better: an ECE of 0.01 means the model is off by about one percentage point.
 
 ![Two forecasters. For each thing they said ("30%", "70%" and so on), we count how often it actually happened. The careful forecaster sits on the diagonal: their 70% happens about 70% of the time. The overconfident one says 90% about things that happen only about 70% of the time.](/figures/ch04/forecasters.pdf){#fig-forecasters}
 
@@ -48,7 +48,7 @@ If the model said about 70% for a group and about 70% really happened, good. @fi
 **A model's "80%" must really mean 80%.** Take all the cases where it said 80%: about 80 out of 100 should turn out true. This is called being calibrated. If its 80% really means 50%, every decision based on it goes wrong.
 :::
 
-Be careful not to mix this up with **ranking**: whether the model puts the most dangerous cases at the top of the list. Ranking is measured by a score called **AUC** (1 is perfect, 0.5 is a coin toss). A model can rank well and still give wrong numbers, like a teacher who orders the students correctly but writes everyone's marks 30 points too high. If you only use the order, ranking is enough. If you draw a line on the numbers, as the rest of this book does, the numbers must be right too.
+Be careful not to mix this up with **ranking**: whether the model puts the most dangerous cases at the top of the list. Ranking is measured by a score called **AUC**: if you pick one real attack and one harmless alert, it is the chance that the model gives the attack the higher number. 1 is perfect, and 0.5 is no better than tossing a coin. A model can rank well and still give wrong numbers, like a teacher who orders the students correctly but writes everyone's marks 30 points too high. If you only use the order, ranking is enough. If you draw a line on the numbers, as the rest of this book does, the numbers must be right too.
 
 ## Why the numbers go wrong, and the fix
 
@@ -58,7 +58,7 @@ Three things commonly spoil a model's numbers:
 - **Big, over-trained models** become too sure of themselves.
 - **The world changes**, so last month's correct numbers can be wrong today.
 
-The fix is usually simple and does not need retraining. Keep aside a few hundred past cases the model never trained on, and learn a small correction on top of it. The usual correction is called **Platt scaling**; another, **temperature scaling**, only tones down numbers that are too extreme. At Kestrel, Platt scaling brought the 50/50 model's error (ECE) down from {{< num ch04 balanced.ece f2 >}} to {{< num ch04 fixes.Platt.ece f2 >}}.
+The fix is usually simple and does not need retraining. Keep aside a few hundred past cases the model never trained on, and learn a small correction on top of it. The usual correction is **Platt scaling**: a small adjustment, learned from your past cases, that moves all the model's numbers up or down until they match what really happened. Another is **temperature scaling**, which only makes numbers that are too extreme (like 99%) less extreme. At Kestrel, Platt scaling brought the 50/50 model's error (ECE) down from {{< num ch04 balanced.ece f2 >}} to {{< num ch04 fixes.Platt.ece f2 >}}.
 
 Finally, check each group you treat differently. A model can be right for all alerts together but wrong for one group. At Kestrel, for alerts from laptops it said {{< num ch04 by_source.EDR.pred pct1 >}} when the truth was {{< num ch04 by_source.EDR.actual pct1 >}}, and real attacks on laptops were closed without anyone looking.
 

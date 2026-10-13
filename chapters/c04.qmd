@@ -10,7 +10,7 @@ Words like "deep learning" and "large language model" sound very complex. But th
 
 ## Idea one: layers can draw any shape
 
-One artificial **neuron** is the same as the logistic regression from Chapter 2: it gives each clue some points (its weight), adds them up, and turns the total into a probability. But if you draw the cases on a sheet of paper, one neuron can only divide them with a single straight line.
+A **neural network** is a model built from many small, simple units called **neurons**, connected in layers. One neuron is the same as the logistic regression from Chapter 2: it gives each clue some points (its weight), adds them up, and turns the total into a probability. But if you draw the cases on a sheet of paper, one neuron can only divide them with a single straight line.
 
 Some problems need more. For example, activity can be suspicious when it is unusual in *any* direction: an employee who downloads 10,000 files in a day is suspicious, but so is a server that suddenly sends nothing at all. The normal cases sit in the middle, and the suspicious ones surround them on every side. No single straight line can separate the middle from all the edges.
 
@@ -37,7 +37,7 @@ But embeddings capture what a text is *about*, not the exact numbers inside it. 
 
 Nobody tells the model about the word "not"; it learns this by itself from examples.
 
-A **transformer** is many attention layers stacked together [@vaswani2017]. There are two types. A **reader** sees the whole input at once, which suits understanding and deciding. A **writer** sees only the words before the current one, because it is producing text one word at a time. LLMs like ChatGPT are writers.
+A **transformer** is the type of neural network behind ChatGPT and most modern AI: many attention layers stacked together [@vaswani2017]. There are two types. A **reader** sees the whole input at once, which suits understanding and deciding. A **writer** sees only the words before the current one, because it is producing text one word at a time. LLMs like ChatGPT are writers.
 
 ## Idea four: very large models, and a side effect
 
@@ -60,7 +60,7 @@ An LLM writes one small piece of text at a time, called a **token**: usually a w
 
 **The same question can get different answers.** The model usually picks the next token with some randomness. We sent forty borderline alerts to the model twenty times each, and {{< num ch10 n_split int >}} got different answers at different times.
 
-**The answer is hidden inside text.** We can ask the LLM to answer in a fixed, computer-readable format called JSON. Even then, some answers come back broken: with friendly chatting around them, cut off in the middle, or with extra items nobody asked for. Many LLMs offer a "JSON mode" to prevent this. "JSON mode" fixes the *format*, not the *correctness*: a model can still write "benign" for a real attack in perfect format.
+**The answer is hidden inside text.** We can ask the LLM to answer in a fixed, computer-readable format called **JSON**, a standard way of writing data as named fields, such as `"verdict": "safe"`. Even then, some answers come back broken: with friendly chatting around them, cut off in the middle, or with extra items nobody asked for. Many LLMs offer a "JSON mode" to prevent this. "JSON mode" fixes the *format*, not the *correctness*: a model can still write "benign" for a real attack in perfect format.
 
 ![What came back when we asked for JSON, over 4,000 alerts. With only the prompt, some responses were wrapped in friendly chat, some were cut off mid-object, and some were valid JSON with a field nobody asked for. With JSON mode on, the first two problems vanish. The third doesn't.](/figures/ch11/json-failures.pdf){#fig-json-failures}
 

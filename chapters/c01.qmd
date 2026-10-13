@@ -20,7 +20,7 @@ The problem starts when the situation keeps changing. Think about fake messages 
 
 ![Two ways to catch phishing. On the left, every new trick forces a new exception, and the list never catches up. On the right, we stop writing rules and show the computer labelled examples instead.](/figures/ch01/rules-vs-examples.pdf){#fig-rules-vs-examples}
 
-So we change the approach. Instead of writing the rules ourselves, we collect thousands of old emails where we already know the answer: this one was phishing, this one was normal. Then we ask the computer to find the pattern by itself (@fig-rules-vs-examples).
+So we change the approach. Instead of writing the rules ourselves, we collect thousands of old emails where we already know the answer: this one was phishing, this one was normal. Then we ask the computer to find the pattern by itself (@fig-rules-vs-examples). This is **machine learning**: the computer learns the rules from examples, instead of a programmer writing them.
 
 ::: {.keyidea}
 **A computer can learn the rules by itself from examples.** We do not write every rule by hand. We show it thousands of old cases where we already know the answer, and it finds the pattern. When the cheaters change their tricks, we simply show it new examples.
@@ -28,9 +28,9 @@ So we change the approach. Instead of writing the rules ourselves, we collect th
 
 ## What is a model?
 
-After the computer studies the examples, we get something we can use on new cases. You give it a new email, and it gives back an answer. This thing is called a **model**.
+After the computer studies the examples, we get something we can use on new cases. You give it a new email, and it gives back an answer. This thing is called a **model**. A model that sorts cases into groups, such as "phishing" or "normal", is also called a **classifier**.
 
-You can imagine a model as a machine with many small knobs. During learning, the computer keeps turning the knobs until the machine gives the right answer for most of the examples. After that, we stop turning the knobs and use the machine on new emails, where nobody knows the answer yet.
+You can imagine a model as a machine with many small knobs. During learning, the computer keeps turning the knobs until the machine gives the right answer for most of the examples. This learning step is called **training**. After that, we stop turning the knobs and use the machine on new emails, where nobody knows the answer yet.
 
 ::: {.keyidea}
 **A model is a learned rule.** It is like a formula whose numbers were not typed by a programmer but found from examples. You give it a new case, and it gives back an answer.

@@ -2,7 +2,7 @@
 
 This is a book about making decisions with AI.
 
-Every day, software makes millions of small decisions: whether a message is a scam, which team should handle a complaint, whether a payment is safe, or whether an AI agent should take an action. More and more of these decisions are now given to large language models like ChatGPT. LLMs are excellent at reading and writing, but a decision is not a paragraph of text. It is a choice between a few options, made without being fully sure, and every wrong choice has a cost.
+Every day, software makes millions of small decisions: whether a message is a scam, which team should handle a complaint, whether a payment is safe, or whether an AI agent (a program that uses AI to take actions by itself) should take an action. More and more of these decisions are now given to large language models like ChatGPT. LLMs are excellent at reading and writing, but a decision is not a paragraph of text. It is a choice between a few options, made without being fully sure, and every wrong choice has a cost.
 
 To make such decisions well, you need three things:
 
