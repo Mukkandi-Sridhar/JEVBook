@@ -40,7 +40,7 @@ You already use many models. When your bank sends an SMS like *"Did you just mak
 
 ## A model can learn the wrong thing
 
-To make the ideas concrete, this book uses one example again and again. Let us imagine a logistics company called Kestrel Logistics. Like any company, its computers raise warnings when something looks suspicious, for example a login from a strange country. These warnings are called **alerts**. Suppose that in four weeks the security team receives {{< num ch01 n_alerts int >}} alerts, about {{< num ch01 per_day int >}} per day, and only {{< num ch01 base_rate pct1 >}} of them are real attacks; the rest are false alarms. Since this is an example, we can assume we know the correct answer for every alert, which lets us check every idea properly.
+To make the ideas concrete, this book follows one example all the way through: Kestrel Logistics, the company from the prologue, whose computers raise **alerts** whenever something looks suspicious. Suppose that in four weeks the security team receives {{< num ch01 n_alerts int >}} alerts, about {{< num ch01 per_day int >}} per day, and only {{< num ch01 base_rate pct1 >}} of them are real attacks; the rest are false alarms. Since this is an example, we can assume we know the correct answer for every alert, which lets us check every idea properly.
 
 Each alert comes with a *threat score* between 0 and 1. The score comes from outside security services that keep lists of known dangerous websites and computers. A high score means the alert involves something already known to be dangerous. Let us try a simple rule: *if the score is above some number t, mark the alert as an attack.* A cut-off number like *t* is called a **threshold**.
 
@@ -95,12 +95,12 @@ In 2026, a company called TypeSafe AI released a model named **Jev** for these s
 
 ![The story so far. Each step exists because the one before it hit a problem it couldn't solve. System One models like Jev grow out of deep learning and fit into the "decide" step of an agent.](/figures/ch01/ai-story-map.pdf){#fig-ai-story-map}
 
-@fig-ai-story-map shows the whole story on one page. The next three chapters stay with the basics, because everything else in the book depends on one idea: a good answer should say how likely it is, and that "how likely" should be correct.
+@fig-ai-story-map shows the whole story on one page. The next two chapters stay with the basics, because everything else in the book depends on one idea: a good answer should say how likely it is, and that "how likely" should be correct.
 
 ::: {.exercises}
 1. Name one system you use that follows fixed rules, and one that has learned from examples. How did you know?
 :::
 
 ::: {.nexthook}
-Next chapter: what does "70% chance" really mean? There is a common trap here that even doctors fall into.
+Next chapter: what does "70% chance" really mean? There is also a common trap that catches even experts.
 :::

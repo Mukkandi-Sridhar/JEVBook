@@ -32,7 +32,7 @@ Any yes-or-no decision can go wrong in two ways:
 For the umbrella: 1 ÷ (1 + 4) = 0.2. When both costs are equal, the formula gives 1 ÷ 2 = 0.5. So 0.5 is correct only when a false alarm and a miss cost exactly the same. That is almost never true in real problems.
 
 
-Different costs give different thresholds. For example, suppose a security alert closes automatically and it was a real attack. That missed attack may cost about 630 times more than the few minutes a person would have needed to check it. Then the threshold falls to about {{< num ch05 soc_review_t f4 >}}.
+Different costs give different thresholds. For example, suppose a security alert closes automatically and it was a real attack. That missed attack may cost about 630 times more than the few minutes a person would have needed to check it. Then the threshold falls to about {{< num ch05 soc_review_t f4 >}}, or about 1 in 600: if there is even a 1-in-600 chance that the alert is real, a person should look at it.
 
 
 ## Does it work in practice?

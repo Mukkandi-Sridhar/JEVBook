@@ -44,7 +44,7 @@ As a rough guide, a few hundred labelled cases are enough to *fix* a big error t
 ## A routine you can repeat
 
 1. **Collect recent cases whose final answer is now known.** Include a random sample of cases the machine closed by itself; otherwise, you will only have answers for the cases people looked at.
-2. **Draw the chart from Chapter 2**, showing how many cases are in each group, and give ECE as a range, not a single number. Look most carefully near the lines where you act.
+2. **Draw the chart from Chapter 2**, showing how many cases are in each group, and remember that ECE measured on a small sample can be off by chance. Look most carefully near the lines where you act.
 3. **Check each group separately**: every source, customer type or language that you treat differently.
 4. **Fix the problem**: if attacks are simply more or less common at your company, adjust for that; otherwise, use Platt or temperature scaling.
 5. **Repeat** this regularly, and whenever the model version or your data changes.

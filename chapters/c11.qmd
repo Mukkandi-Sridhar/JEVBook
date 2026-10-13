@@ -22,7 +22,7 @@ All six patterns in @fig-catalog follow one rule.
 
 ![Extract, then decide. The LLM reads the raw text and writes structured fields; a decision model answers a typed question about them; policy thresholds turn the answer into an action. The LLM writes but never decides; the decision model decides but never writes.](/figures/ch22/extract.pdf){#fig-extract}
 
-In our example, extracting first improved the ranking (AUC) from {{< num ch22 llm_decides_auc f3 >}}, when the LLM decided alone, to {{< num ch22 extract_then_jev_auc f3 >}}. But the company's own clean data fields did even better ({{< num ch22 jev_fields_auc f3 >}}), because the alert text never mentions things like how important the computer is. No LLM can extract a fact that is not written. So if clean data already exists, use it.
+In our example, extracting first improved the ranking (AUC) from {{< num ch22 llm_decides_auc f2 >}}, when the LLM decided alone, to {{< num ch22 extract_then_jev_auc f2 >}}. But the company's own clean data fields did even better ({{< num ch22 jev_fields_auc f2 >}}), because the alert text never mentions things like how important the computer is. No LLM can extract a fact that is not written. So if clean data already exists, use it.
 
 **2. The decide step.** As Chapter 5 showed, most steps of an agent are small decisions. Give each of these to a decision model as a clear question, and call the LLM only when something must be written. Since every decision comes with a probability, the agent can notice when it is unsure and stop, instead of continuing confidently.
 
@@ -48,7 +48,7 @@ Suppose we run the agent for a week. Everything looks fine. There are no errors,
 
 ![How often the first version of the agent chose each option at its "which evidence next?" step, across 700 live alerts. It never once chose threat intel.](/figures/ch24/never-picked.pdf){#fig-never-picked}
 
-Across {{< num ch24 n int >}} alerts, the step "which evidence should I collect next?" *never* chose the threat-intelligence lookup, which checks the alert against lists of known dangerous websites and computers, and is the most useful information about an alert (@fig-never-picked). So every verdict was made without it. The ranking quality (AUC) dropped from {{< num ch24 v2_auc f3 >}} to {{< num ch24 v1_auc f3 >}}, and about {{< num ch24 v1_closed_threats_day f1 >}} real attacks per day were closed automatically. Every answer was in a clean, correct format, so nothing in the system complained.
+Across {{< num ch24 n int >}} alerts, the step "which evidence should I collect next?" *never* chose the threat-intelligence lookup, which checks the alert against lists of known dangerous websites and computers, and is the most useful information about an alert (@fig-never-picked). So every verdict was made without it. The ranking quality (AUC) dropped from {{< num ch24 v2_auc f2 >}} to {{< num ch24 v1_auc f2 >}}, and about {{< num ch24 v1_closed_threats_day f1 >}} real attacks per day were closed automatically. Every answer was in a clean, correct format, so nothing in the system complained.
 
 ::: {.keyidea}
 **Count how often each answer is chosen.** In our example, the agent never once chose the most useful option, and there was no error message. Simple counting is the only way to catch such hidden mistakes.
