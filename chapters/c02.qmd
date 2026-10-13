@@ -119,9 +119,22 @@ The fix is usually simple, and you do not need to train the model again:
 1. Keep aside a few hundred past cases that the model never saw during training.
 2. Learn a small correction on top of the model, using those cases.
 
-The usual correction is called **Platt scaling**: it moves all the model's numbers up or down until they match what really happened. Another is **temperature scaling**, which only makes numbers that are too extreme (like 99%) less extreme. At Kestrel, Platt scaling brought the 50/50 model's error (ECE) down from {{< num ch04 balanced.ece f2 >}} to {{< num ch04 fixes.Platt.ece f2 >}}.
+There are two common corrections. You do not need to know how they work inside, only what each one does:
 
-**Finally, check each group separately.** A model can be right for all alerts together but wrong for one group. At Kestrel, for alerts from laptops the model said {{< num ch04 by_source.EDR.pred pct1 >}}, but the truth was {{< num ch04 by_source.EDR.actual pct1 >}}. Real attacks on laptops were closed without anyone looking.
+| Correction | What it does | Use it when |
+|:---|:---|:---|
+| **Platt scaling** | Moves all the model's numbers up or down until they match what really happened. | The model's numbers are wrong in general. This is the usual first choice. |
+| **Temperature scaling** | Makes extreme numbers less extreme: a 99% becomes, say, 90%. | The model is simply too sure of itself. |
+
+**Did it work at Kestrel?** Yes. The model trained on the 50/50 mix was off by about 22 percentage points on average (ECE {{< num ch04 balanced.ece f2 >}}). After Platt scaling, it was off by only about 1 point (ECE {{< num ch04 fixes.Platt.ece f2 >}}).
+
+**Last step: check each group separately.** A model can be right for all alerts *together* and still be wrong for one *group* of alerts. At Kestrel:
+
+- For all alerts together, the model's numbers looked correct.
+- But for alerts from laptops, the model said {{< num ch04 by_source.EDR.pred pct1 >}}, while the real rate was {{< num ch04 by_source.EDR.actual pct1 >}}.
+- So the model thought laptop alerts were safer than they really were, and some real attacks on laptops were closed without anyone looking.
+
+The mistakes for laptops were hidden because other groups had mistakes in the opposite direction, and the average looked fine.
 
 ::: {.keyidea}
 **A model that is right on average can still be wrong for one group.** It may be correct for all alerts together but wrong for laptop alerts, or for one language or one region. Check each group separately.
