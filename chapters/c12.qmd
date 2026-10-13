@@ -30,7 +30,12 @@ After the shadow week, the team's meeting is mostly about one number, the count 
 
 ## The order of the queue matters
 
-The new review queue is sorted by probability, with the most likely attacks first. If we kept the old way, in order of arrival, the typical real attack would wait about {{< num ch25 fifo_wait int >}} minutes. Sorted by probability, it waits about {{< num ch25 prio_wait int >}} minutes. The people, the alerts and the queue are the same; only the order changed. The share of real attacks seen by a person within one hour went up from {{< num ch25 old.threats_within_hour_share pct >}} to {{< num ch25 new.threats_within_hour_share pct >}}.
+The new review queue is sorted by probability, with the most likely attacks first. The people, the alerts and the queue are the same; only the order changed:
+
+| | Old queue (order of arrival) | New queue (most likely first) |
+|:---|---:|---:|
+| Typical wait for a real attack | about {{< num ch25 fifo_wait int >}} minutes | about {{< num ch25 prio_wait int >}} minutes |
+| Real attacks seen within one hour | {{< num ch25 old.threats_within_hour_share pct >}} | {{< num ch25 new.threats_within_hour_share pct >}} |
 
 ![How long it takes for a real threat to reach a person. Before, rule-flagged threats were seen quickly and the rest waited up to a day or were never seen. After, urgent calls reach someone in about fifteen minutes and the queue takes the likeliest threats first.](/figures/ch25/time-to-human.pdf){#fig-time-to-human}
 
@@ -70,7 +75,11 @@ Where decisions are many and each mistake is cheap, like checking social media p
 
 The umbrella rule from Chapter 3 works in every field; only the costs change. A late reply to a support ticket costs a little customer goodwill, so the line may be near 5%. A missed emergency at a hospital costs far more than seeing a patient early, so the line falls to about 0.3%. A line that low only works if the model's numbers are correct even for very small chances, below one percent.
 
-Always test before you trust. On {{< num ch26 n_tickets int >}} example support tickets, the same model that worked well on security alerts sent only {{< num ch26 topic_acc pct >}} of tickets to the right team. Account problems went to the right team only {{< num ch26 per_topic.account pct >}} of the time, because "I can't log in" uses similar words to "the app is not working". Sending automatically only when the top answer was above 0.6 covered {{< num ch26 cov60 pct >}} of tickets, with {{< num ch26 acc60 pct >}} correct.
+Always test before you trust. We tried the same model, which worked well on security alerts, on {{< num ch26 n_tickets int >}} example support tickets:
+
+- It sent only {{< num ch26 topic_acc pct >}} of tickets to the right team.
+- Account problems went to the right team only {{< num ch26 per_topic.account pct >}} of the time, because "I can't log in" uses similar words to "the app is not working".
+- Sending automatically only when the top answer was above 0.6 covered {{< num ch26 cov60 pct >}} of tickets, with {{< num ch26 acc60 pct >}} correct.
 
 ![Signs that a decision suits a System One model, and signs that it doesn't, or that a person must make it.](/figures/ch26/fit.pdf){#fig-fit}
 

@@ -57,9 +57,21 @@ When this book was written, Jev was new, and only some companies could use it. T
 
 ## Check if the company's numbers agree
 
-TypeSafe reports that Jev answers in about 70 to 500 milliseconds (less than half a second), and charges \$0.042 for every million tokens it reads, with nothing extra for its answers. If each decision needs about 500 tokens of description, a million decisions cost about \$21. With an example mid-range LLM price, the same million decisions would cost about \$660. LLM prices vary a lot, so treat this only as a rough size. And for any speed claim, always ask: *faster than what, and for which task?* [@regolo2026]
+Here is what TypeSafe reports, and what it means in practice:
 
-There is also a simple test anyone can do. When a company gives several numbers, check whether they agree with each other. In its launch demo, Jev played the video game *Doom*, making about ten decisions per second at a reported cost of \$7 per hour. That is 36,000 decisions per hour, or about \$0.0002 per decision. At the listed price, that means about 4,600 tokens of game description per decision, which is reasonable. The numbers agree. This does not prove they are true, but if they had disagreed, we would have learned something important.
+- **Speed:** about 70 to 500 milliseconds per answer (less than half a second).
+- **Price:** \$0.042 for every million tokens it reads, and nothing extra for its answers.
+- **Cost of a million decisions**, if each needs about 500 tokens of description: about **\$21** with Jev, against about **\$660** with an example mid-range LLM.
+
+LLM prices vary a lot, so treat this only as a rough size. And for any speed claim, always ask: *faster than what, and for which task?* [@regolo2026]
+
+There is also a simple test anyone can do: when a company gives several numbers, check whether they agree with each other. In its launch demo, Jev played the video game *Doom*:
+
+1. It made about 10 decisions per second, at a reported cost of \$7 per hour.
+2. That is 36,000 decisions per hour, or about \$0.0002 per decision.
+3. At the listed price, \$0.0002 buys about 4,600 tokens of game description per decision, which is a reasonable size.
+
+The numbers agree. This does not prove they are true, but if they had disagreed, we would have learned something important.
 
 The unknowns about a new model are not a reason to avoid it. They are a reason to test it on your own data before you trust it.
 

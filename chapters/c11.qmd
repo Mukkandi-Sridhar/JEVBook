@@ -32,7 +32,11 @@ In our example, extracting first improved the ranking (AUC) from {{< num ch22 ll
 
 **4. Check the writer.** Some outputs must be written, such as a report or a reply to a customer. After the LLM writes a draft, ask clear questions *about* the draft: is every statement supported by the evidence? Is the tone suitable? Then send it, return it once for correction, or give it to a person. Limit the number of corrections, or the loop may never end.
 
-**5. The router.** To send each case to the right team, ask a pick-one question ("which team?"), but send it automatically only when one team is clearly the most likely. Sending every alert by its top answer sent {{< num ch22 route_all_acc pct >}} to the right team. Sending automatically only when the top probability was at least {{< num ch22 route_line f1 >}} covered {{< num ch22 route_cov pct >}} of alerts, and {{< num ch22 route_acc pct >}} of those went to the right team. The rest went to a general queue for a person to sort.
+**5. The router.** To send each case to the right team, ask a pick-one question ("which team?"), but send it automatically only when one team is clearly the most likely:
+
+- Sending every alert to its top answer sent {{< num ch22 route_all_acc pct >}} to the right team.
+- Sending automatically only when the top probability was at least {{< num ch22 route_line f1 >}} covered {{< num ch22 route_cov pct >}} of alerts, and {{< num ch22 route_acc pct >}} of those went to the right team.
+- The rest went to a general queue for a person to sort.
 
 **6. The memory manager.** Agents keep notes, like a diary, and look things up in them later. Each note and each lookup is a small decision: is this worth remembering? Where should I search? A published system called Jev-Mem uses a System One model for these small decisions and calls a slower, more careful model only to write the final answer; its authors report better and faster answers than the systems they compared it with [@jevmem2026]. Memory mistakes are silent. A fact that was wrongly thrown away is simply missing later, and nothing tells you so. So keep a record of what gets thrown away.
 
@@ -62,7 +66,15 @@ Now compare it with an agent where the LLM makes every decision, using the same 
 
 ![Four measures for the two agents on the same 700 live alerts, scaled to a day. The LLM's stated confidences sent far more alerts to review than the queue can take, so more real threats were never seen by a person.](/figures/ch24/compare.pdf){#fig-compare-17}
 
-The hybrid agent took {{< num ch24 v2_seconds f1 >}} seconds per alert, while the LLM-only agent took {{< num ch24 llm_seconds f1 >}}. The bigger difference is the review queue (@fig-compare-17). The LLM's written confidences are mostly a few round numbers like 0.9 and 0.95, so the lines between the doors cannot separate the cases well, and it sent about {{< num ch24 llm_reviews_day int >}} alerts per day to a team that can review 240. The hybrid sent {{< num ch24 v2_reviews_day int >}}. When the queue is twice too long, the extra alerts are simply not seen. Adding up the attacks that were closed automatically and the attacks that waited in the queue until they were closed unseen, the hybrid missed about {{< num ch24 v2_missed_day int >}} per day, and the LLM-only agent about {{< num ch24 llm_missed_day int >}}.
+Here are the two agents side by side, per day (@fig-compare-17):
+
+| | Hybrid agent | LLM-only agent |
+|:---|---:|---:|
+| Seconds per alert | {{< num ch24 v2_seconds f1 >}} | {{< num ch24 llm_seconds f1 >}} |
+| Alerts sent to review (team can check 240) | {{< num ch24 v2_reviews_day int >}} | {{< num ch24 llm_reviews_day int >}} |
+| Real attacks missed | about {{< num ch24 v2_missed_day int >}} | about {{< num ch24 llm_missed_day int >}} |
+
+The biggest difference is the review queue. The LLM's written confidences are mostly a few round numbers like 0.9 and 0.95, so the lines between the doors cannot separate the cases well. It sends about twice as many alerts as the team can check, and the extra alerts are simply never seen.
 
 ![Share of each agent's total time spent on each kind of step. In the hybrid, the largest share is the LLM writing for people. In the all-LLM agent, most of the time goes on deciding.](/figures/ch24/labour.pdf){#fig-labour}
 

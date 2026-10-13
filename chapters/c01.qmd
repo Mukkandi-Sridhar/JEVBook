@@ -48,7 +48,11 @@ Which value of *t* should we choose? We let the computer try every value from 0 
 
 ![Every possible threshold and the mistakes it makes. Low thresholds bury the team in false alarms; high ones miss attacks. The total is lowest at the far right, just below the dotted line for "flag nothing at all".](/figures/ch01/threshold-search.pdf){#fig-threshold-search}
 
-The computer chooses {{< num ch01 best_t f2 >}}. With this threshold it makes {{< num ch01 best_mistakes int >}} mistakes. Yet a rule that *never* marks anything as an attack makes {{< num ch01 never_flag_mistakes int >}} mistakes, almost the same number. Out of {{< num ch01 attacks int >}} real attacks, the "best" rule catches only {{< num ch01 best_caught int >}} (@fig-threshold-search).
+The result surprises most people (@fig-threshold-search):
+
+- The computer chooses a threshold of {{< num ch01 best_t f2 >}}, and makes {{< num ch01 best_mistakes int >}} mistakes.
+- A lazy rule that *never* marks anything as an attack makes {{< num ch01 never_flag_mistakes int >}} mistakes, almost the same number.
+- Out of {{< num ch01 attacks int >}} real attacks, the "best" rule catches only {{< num ch01 best_caught int >}}.
 
 Why did this happen? There are about twelve harmless alerts for every real attack. So the easiest way to reduce the number of mistakes is to almost never raise an alarm. The computer did exactly what we asked. Our question was wrong.
 

@@ -20,7 +20,14 @@ This is the base-rate trap from Chapter 2 again, but now it catches the model in
 
 ![The same model's reliability at two companies. At Kestrel, whose mix of alerts matches what the model was tuned for, it sits close to the diagonal. At Harbor, where attacks are rarer, every probability is too high.](/figures/ch18/two-companies.pdf){#fig-two-companies}
 
-To see this, let us imagine a second company, Harbor Pharma. Its alerts come from the same kind of systems and look the same, but real attacks are rarer: {{< num ch18 harbor_base pct1 >}} of alerts, compared with Kestrel's {{< num ch18 kestrel_base pct1 >}}. The same model has a calibration error of {{< num ch18 ece_kestrel f3 >}} at Kestrel, but {{< num ch18 ece_harbor f3 >}} at Harbor, and the error is always in the same direction. Harbor's average predicted risk is {{< num ch18 harbor_mean_p pct1 >}}, while the real rate is {{< num ch18 harbor_base pct1 >}} (@fig-two-companies). The model did not change. Only the situation changed.
+To see this, let us imagine a second company, Harbor Pharma. Its alerts look the same as Kestrel's, but real attacks are rarer. The same model gives these results (@fig-two-companies):
+
+| | Kestrel | Harbor |
+|:---|---:|---:|
+| Share of alerts that are real attacks | {{< num ch18 kestrel_base pct1 >}} | {{< num ch18 harbor_base pct1 >}} |
+| Model's error in its numbers (ECE) | {{< num ch18 ece_kestrel f3 >}} | {{< num ch18 ece_harbor f3 >}} |
+
+At Harbor, the model's average prediction is {{< num ch18 harbor_mean_p pct1 >}}, but the real rate is only {{< num ch18 harbor_base pct1 >}}. The model did not change; only the company changed.
 
 ## Fixing it
 
@@ -32,7 +39,12 @@ This kind of error is usually easy to fix, because all the numbers are wrong in 
 To check a model, we need past cases where we already know the final answer. These are called **labelled cases**, because someone has marked each one as "attack" or "harmless". Collecting them takes people's time, so it is tempting to check with only a few. But a small sample can badly mislead.
 
 
-In our example, the model's real ECE over all 20,000 alerts is {{< num ch18 ece_full f3 >}}. But if we measure it on only 100 alerts, the typical result is {{< num ch18 ece_n100 f3 >}}, more than three times too high. The reason is chance. With only a few cases in each group, the results jump up and down, like tossing a coin ten times and getting seven heads. These jumps always make the error look bigger, never smaller.
+An example shows how much this matters:
+
+- Measured on all 20,000 alerts, the model's real error (ECE) is {{< num ch18 ece_full f3 >}}.
+- Measured on only 100 alerts, it typically looks like {{< num ch18 ece_n100 f3 >}}: more than three times worse.
+
+The reason is chance. With only a few cases in each group, the results jump up and down, like tossing a coin ten times and getting seven heads. These jumps always make the error look bigger, never smaller.
 
 ::: {.keyidea}
 **Testing on too few cases can make a good model look bad.** With only 100 cases, chance alone can make the error look three times bigger than it really is. Use a few hundred cases to correct a model, and a few thousand to be sure.

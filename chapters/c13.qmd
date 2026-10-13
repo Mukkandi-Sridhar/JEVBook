@@ -20,7 +20,11 @@ In every project there comes a day when the prototype works and someone asks: "C
 **Always use a fixed version of the AI model.** A name like "latest" can change to a new model overnight. With a fixed version, the behaviour changes only when you decide to change it.
 :::
 
-**Retry only the right errors.** Your own mistakes, such as a wrong key or a wrong model name, will fail the same way every time, so fix them instead of retrying. Problems outside your control, such as a busy server or a broken connection, are worth retrying. If one request in five fails, only {{< num ch23 ok_20_0 pct >}} of calls succeed with no retry, but {{< num ch23 ok_20_2 pct1 >}} succeed with two retries. But each retry takes time, and a login check may have to answer within 300 milliseconds, about a third of a second, so there is no time for many retries.
+**Retry only the right errors.**
+
+- **Your own mistakes**, such as a wrong key or a wrong model name, fail the same way every time. Fix them; do not retry.
+- **Problems outside your control**, such as a busy server or a broken connection, are worth retrying. If one request in five fails, only {{< num ch23 ok_20_0 pct >}} of calls succeed with no retry, but {{< num ch23 ok_20_2 pct1 >}} succeed with two retries.
+- **But each retry takes time.** A login check may have to answer within 300 milliseconds, about a third of a second, so there is no time for many retries.
 
 **Plan for failures.** Sometimes the AI service will not answer at all, or will answer too late. Decide in advance what happens then, and treat it as one more kind of case. For a login, the right rule may be "allow it, but mark it for review". For closing an alert, it should be "do not close; send to a person". Write this rule in the policy, where everyone can see it.
 
@@ -46,7 +50,13 @@ You will recognise every part of @fig-architecture-21 from earlier chapters. Fou
 
 ![One decision record, with notes on why each field is there. Together they say what the service saw, what the model said, what the policy did, which version decided, and why.](/figures/ch28/record.pdf){#fig-record}
 
-**Thresholds and rules set together.** At Kestrel, a test run over one week showed that the review queue had more alerts than the team could check, from the very first day. The lines had been set for 240 reviews per day. But *after* that, someone added a sensible rule: never close an alert on an important system automatically. Every alert this rule sent to review was extra work that nobody had planned for. When the thresholds were set again *with* the rule included, the average queue went from about {{< num ch28 v1_mean_reviews int >}} to {{< num ch28 v2_mean_reviews int >}} per day. Thresholds and business rules work together, so they must be set together.
+**Thresholds and rules set together.** At Kestrel, this went wrong in three steps:
+
+1. The lines were set so that 240 alerts per day would go to review.
+2. *After* that, someone added a sensible rule: never close an alert on an important system automatically.
+3. Every alert this rule sent to review was extra work that nobody had planned for, so the queue was too long from the first day.
+
+When the lines were set again *with* the rule included, the average queue went from about {{< num ch28 v1_mean_reviews int >}} to {{< num ch28 v2_mean_reviews int >}} per day. Lines and business rules work together, so they must be set together.
 
 ![Alerts sent to review each day of the live week, before and after the fix. Fitted without the critical-asset rule, the thresholds let the queue run over capacity every day. Fitted with it, the act threshold rises slightly and the queue fits.](/figures/ch28/dry-run.pdf){#fig-dry-run}
 **Daily monitoring, a responsible person, and shadow testing.** Every day, check four numbers: how many cases went through each door, how long the review queue is compared with what the team can handle, how often calls to the AI service failed, and how many attacks the model expected compared with how many people confirmed. When an attack campaign starts, the last number shows the problem on the very first day: the model's numbers no longer match reality. A named person should have the authority to switch the service to "review everything" while the cause is found. And every improvement should first run in shadow mode beside the current version. At Kestrel, the new version agreed with the old one on {{< num ch28 shadow_agree pct >}} of alerts, and the shadow test showed, before anyone paid the price, how many attacks its changes would let through.

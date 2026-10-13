@@ -12,7 +12,17 @@ Now we have probabilities we can trust. The next question is: *where should we d
 
 During the monsoon, the forecast says there is a 30% chance of rain. Should you carry an umbrella?
 
-You already know the answer depends on two costs. Carrying an umbrella you did not need is a small trouble; call it 1. Getting fully wet on the way to an important meeting is much worse; call it 4. If you carry the umbrella, you always pay 1. If you do not carry it, you pay 4, but only when it rains. So on average you pay 4 × the chance of rain. At a 30% chance, that is 4 × 0.3 = 1.2, which is more than the 1 you pay for carrying the umbrella.
+You already know the answer depends on two costs. Give each a simple number:
+
+- Carrying an umbrella you did not need is a small trouble. Call it **1**.
+- Getting fully wet on the way to an important meeting is much worse. Call it **4**.
+
+Now compare the two choices:
+
+- **Carry it:** you always pay 1.
+- **Leave it:** you pay 4, but only if it rains. On average, that is 4 × the chance of rain. At a 30% chance, it is 4 × 0.3 = **1.2**.
+
+1.2 is more than 1, so at 30% it is cheaper to carry the umbrella.
 
 ![The umbrella decision. Carrying always costs 1. Leaving it costs 4 times the chance of rain. The lines cross at 20%: above that, carry it.](/figures/ch05/umbrella.pdf){#fig-umbrella}
 
@@ -37,7 +47,13 @@ Different costs give different thresholds. For example, suppose a security alert
 
 ## Does it work in practice?
 
-At Kestrel, the team must decide for each alert: block it or allow it? Suppose wrongly blocking a harmless activity costs about \$200 of lost work, and letting a real attack through costs about \$4,000. The formula says to block when the probability is above {{< num ch05 t_formula f3 >}}. If we try all possible thresholds one by one, the best one is almost the same. Using 0.5 instead costs {{< num ch05 half_penalty f1 >}} times as much.
+At Kestrel, the team must decide for each alert: block it or allow it?
+
+- Wrongly blocking a harmless activity costs about \$200 of lost work.
+- Letting a real attack through costs about \$4,000.
+- The formula says: block when the probability is above {{< num ch05 t_formula f3 >}}.
+- Trying every possible threshold one by one finds almost the same best line, so the formula works.
+- Using 0.5 instead costs {{< num ch05 half_penalty f1 >}} times as much.
 
 ![Total cost on the test alerts at every threshold. For the calibrated model (green, solid line), the formula's threshold is near the lowest point of the curve. For the same model trained on rebalanced data (red, dashed line), the same threshold lands far from its lowest point.](/figures/ch05/cost-curve.pdf){#fig-cost-curve}
 
@@ -53,7 +69,15 @@ Usually there is a third option, and it is often the best one: do not decide, an
 
 ![Coverage against risk. Reading from right to left: if the machine decides every alert, you take its full error rate. Let it decide only the alerts it's surest about and send the rest to people, and the error rate among its decisions falls steeply. A better model (green, solid line) gives you more coverage at the same risk.](/figures/ch05/coverage-risk.pdf){#fig-coverage-risk}
 
-If the model decides every alert, {{< num ch05 risk_100 pct1 >}} of its decisions are wrong. If it decides only the 80% of alerts it is most sure about, the error falls to {{< num ch05 risk_80 pct1 >}}. If it decides only the most certain half, the error is just {{< num ch05 risk_50 pct1 >}} (@fig-coverage-risk). This chart is very useful for managers. It answers their real question: *how much of this work can we safely give to the machine, and with how many mistakes?*
+Here is what happened at Kestrel (@fig-coverage-risk):
+
+| The machine decides… | Its decisions that are wrong |
+|:---|---:|
+| every alert | {{< num ch05 risk_100 pct1 >}} |
+| only the 80% it is most sure about | {{< num ch05 risk_80 pct1 >}} |
+| only the most certain half | {{< num ch05 risk_50 pct1 >}} |
+
+This table answers a manager's real question: *how much of this work can we safely give to the machine, and with how many mistakes?*
 
 ::: {.keyidea}
 **The machine does not have to decide every case.** Let it handle only the cases it is very sure about, and send the doubtful ones to a person. When we tried this on the Kestrel alerts, letting it decide only the surest half of the cases cut its mistakes from about 6% to under 1%.
