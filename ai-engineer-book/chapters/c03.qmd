@@ -1,0 +1,208 @@
+# Classical machine learning: small, fast and cheap {#sec-ch03}
+
+Every message that reaches Kaveri Kart's support team first has to go to the right person. Refund requests go to the refunds desk, delivery questions to the logistics desk, product questions to the product team, and complaints to a senior agent. During the sale, one person spends the whole day just reading and sorting messages.
+
+You could send each message to a large language model and ask, "Which of these five types is this?" It would work well. But at 4,000 messages a day it costs money, every answer takes a second or two, and the model's own sense of how sure it is cannot be trusted (Chapter 2).
+
+There is an older, simpler tool for this job. Train a small model on a few thousand messages that people have already sorted. It can then sort a new message in a few milliseconds, at almost no cost, and give a probability you can check. This chapter shows how such models learn, how to test them without fooling yourself, and how to turn their probabilities into actions.
+
+::: {.goals}
+- How a model learns from labelled examples, and how to test it honestly.
+- Two classical models every AI engineer should know: logistic regression and gradient-boosted trees.
+- How to decide, using costs, when the model should act alone and when it should ask a person.
+:::
+
+## Learning from examples
+
+Think of a kirana shopkeeper who gives credit to regular customers. Nobody gave the shopkeeper a written rule for who pays back on time. Over the years, they noticed patterns: customers who buy regularly, who have a steady job nearby, who paid back last time. Now, when a new customer asks for credit, the shopkeeper makes a good guess in seconds.
+
+**Machine learning** works the same way. Instead of writing rules by hand, you give a program many examples where the answer is already known, and it finds the patterns itself. Two words come up constantly:
+
+- A **label** is the known answer for an example. For Kaveri Kart, the label of a message is its type: *refund*, *delivery*, *product question*, *complaint* or *other*.
+- A **feature** is a piece of information the model can use to guess the label. For a message, the features are usually its words. For a refund request, features could also be numbers such as the order value and the days since delivery.
+
+Learning from labelled examples is called **supervised learning**. A model that picks one label from a fixed list is called a **classifier**. Almost every decision in an AI system, such as which team, which language, or whether something is safe, can be made by a classifier.
+
+## Turning text into features
+
+A classifier works with numbers, so a message must first become a list of numbers. The simplest way is to count words. Make a list of every word that appears in your messages. For each message, write down how often each word appears. A message about a broken cooker gets a high count for "broken" and "cooker", and zero for "delivery".
+
+Plain counting gives too much weight to common words like "the" and "my", which appear in every message. A small improvement called **TF-IDF** fixes this: it gives each word a weight that is high when the word is frequent in *this* message but rare across *all* messages. "Refund" gets a high weight in a refund request; "the" gets almost none.
+
+For Indian customer messages, one more trick helps a lot. Hinglish has no fixed spelling: "nahi", "nahin" and "nai" all mean the same thing. If you count short groups of letters instead of whole words ("nah", "ahi", and so on), these spellings share most of their pieces, and the model learns that they are similar. These letter groups are called **character n-grams**.
+
+## Practice papers, mock tests and the final exam
+
+To know whether a model has really learned, you must test it on examples it has never seen. Think of how a student prepares for a board exam:
+
+- They learn from **practice papers**, where they can see the answers.
+- They take **mock tests** to check their progress and decide what to study next.
+- The **final exam** has questions they have never seen, and it is taken only once.
+
+Data for machine learning is split the same way (@fig-split):
+
+1. **Training set** (about 70% of your labelled examples): the model learns from these.
+2. **Validation set** (about 15%): you use it to compare settings and choose thresholds.
+3. **Test set** (about 15%): you use it once, at the end, to report how good the model is.
+
+![Labelled examples are split three ways. The model learns from the training set; you tune choices on the validation set; the test set is kept aside and used once, for the final score.](/figures/c03/split.pdf){#fig-split}
+
+If you keep checking the test set while you tune, you slowly tune the model to the test set itself, the way a student who sees the exam paper in advance gets a high mark without learning anything.
+
+That second problem has a name: **leakage**, which means information about the answer slipping into the model's training in a way that will not happen in real use. Leakage is the most common reason a model scores brilliantly in testing and poorly in production. Watch for three kinds:
+
+- **Duplicates.** The same message, or almost the same message, appears in both the training set and the test set. Customers often send the same complaint twice. Remove near-duplicates before you split.
+- **Future information.** A feature that is only known after the answer. If your data has a column "refund_issued", it will predict "refund request" perfectly, but a new message does not have that column yet.
+- **Shared customers.** If one customer's messages are in both sets, the model may learn that customer's writing style instead of the message type. Split by customer, not by message.
+
+::: {.keyidea}
+**Test a model only on examples it has never seen, and use the test set once.** If information about the answers leaks into training, through duplicates, future columns or shared customers, the test score will look excellent and mean nothing.
+:::
+
+## Logistic regression: points for each clue
+
+The most useful classical model is **logistic regression**. Despite the long name, the idea is simple, and it works like a credit score:
+
+1. Each feature gets some points, learned from the training examples. For the *refund* label, "refund" might be worth +3 points, "money back" +2.5, and "where is" −1.
+2. For a new message, add up the points of all its features.
+3. Turn the total into a probability between 0% and 100%. A high total gives a probability near 100%, a very negative total gives one near 0%.
+
+With five labels, the model keeps five sets of points, one per label, and turns the five totals into five probabilities that add up to 100%. The message "paisa wapas karo, cooker toot gaya" (give my money back, the cooker broke) might get *refund* 81%, *complaint* 12%, *product question* 4%, *delivery* 2%, *other* 1%.
+
+How does the model learn the points? It starts with every point at zero, makes guesses on the training examples, measures how wrong they were, and adjusts the points a little to be less wrong. It repeats this many times. This guess-check-adjust loop is how almost every model in this book learns, including the large language models in Part II.
+
+Logistic regression is fast, cheap, easy to understand (you can read its points and see why it decided something), and usually gives fairly well-calibrated probabilities. That makes it the right first model for almost any text classification task.
+
+## Gradient-boosted trees: many small questions
+
+Some decisions depend on numbers more than words. To flag a suspicious refund request, Kaveri Kart might use the order value, the days since delivery, the number of refunds this customer has asked for, and whether the delivery photo was taken.
+
+For this kind of data, in tables with columns of numbers and categories, the strongest common choice is a **gradient-boosted tree** model. A **decision tree** is a chain of yes-or-no questions: "Is the order value above ₹5,000? Has this customer asked for more than three refunds this year?" One tree is weak. Boosting builds hundreds of small trees, one after another, each trying to fix the mistakes of the trees before it. Together, they are very accurate. Popular libraries include XGBoost, LightGBM, and the `HistGradientBoostingClassifier` in scikit-learn.
+
+A simple guide:
+
+- For **text**, start with TF-IDF and logistic regression.
+- For **tables of numbers and categories**, start with gradient-boosted trees.
+- For both, measure first, and only try something more complex if the simple model is not good enough.
+
+## Overfitting: learning the answers instead of the lesson
+
+A student who memorises last year's answer key scores full marks on last year's paper and fails this year's. A model can do the same. If it is flexible enough, it can learn the exact training examples, including their accidents, instead of the general pattern. This is called **overfitting**.
+
+You can see overfitting in your numbers: the score on the training set is much higher than on the validation set. For example, 99% on training and 78% on validation. The fixes are the usual ones: more training examples, a simpler model, or settings that stop the model from leaning too heavily on any single feature. The validation set is what tells you whether a fix worked.
+
+## A baseline in a few lines
+
+Here is a complete message classifier in Python, using the scikit-learn library (`pip install scikit-learn`). `texts` is your list of messages and `labels` is the list of their types.
+
+```python
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import make_pipeline
+
+X_train, X_test, y_train, y_test = train_test_split(
+    texts, labels, test_size=0.2, stratify=labels, random_state=0)
+
+model = make_pipeline(
+    TfidfVectorizer(analyzer="char_wb", ngram_range=(2, 4)),   # letter groups
+    LogisticRegression(max_iter=1000))
+model.fit(X_train, y_train)
+
+probs = model.predict_proba(X_test)   # one probability per type, per message
+```
+
+`stratify=labels` keeps the share of each type the same in both sets, which matters when some types, like complaints, are rare. A model this simple is called a **baseline**: the score any fancier approach must beat to be worth its cost. Always build one first. Sometimes the baseline is good enough, and you have saved weeks of work.
+
+## Measuring a classifier
+
+A single accuracy number hides too much. For each label, look at precision and recall (Chapter 2). Then look at which labels get confused with which. A table of these mix-ups is called a **confusion matrix**, but you can read the important part in plain words. For example, in Kaveri Kart's test set:
+
+- Of 40 delivery messages, 34 were sorted as *delivery*, 5 as *refund* and 1 as *complaint*.
+- Of 12 complaints, only 8 were sorted as *complaint*; 4 went to *refund*.
+
+The second line is the worrying one. An angry customer whose complaint goes to the refunds desk waits longer and gets angrier. Recall on complaints matters more than recall on anything else. This is why you always look at the mistakes label by label, and weigh them by what they cost.
+
+## From probability to action: when to ask a person
+
+The classifier gives probabilities. The business needs actions. For each message, the system can:
+
+- **act**: send it straight to the team the model chose;
+- **review**: send it to a person who sorts it by hand;
+- **escalate**: send it straight to a senior person, because it cannot wait.
+
+Where should the line between *act* and *review* be? It depends on two costs. In our example, suppose:
+
+- A message sent to the wrong team costs about **₹30**: someone reads it, sends it on, and the customer waits longer.
+- A person sorting one message by hand costs about **₹6** of their time.
+
+Now count, using 100 messages that the model sorts with a probability of 85%:
+
+1. If the system acts alone, about 15 of the 100 go to the wrong team. Cost: 15 × ₹30 = ₹450.
+2. If a person sorts all 100 instead, the cost is 100 × ₹6 = ₹600.
+
+At 85%, acting alone is cheaper. Try 70%: acting alone sends 30 to the wrong team, costing ₹900, which is more than ₹600. At 80%, the two are equal: 20 × ₹30 = ₹600. So **80% is the line** (@fig-route). Above it, let the system act. Below it, ask a person.
+
+The counting always works out to the same simple rule, which you can use for any action:
+
+> **Act alone when (chance of being wrong) × (cost of a wrong action) is less than (cost of asking a person).**
+
+For our numbers: at 80%, the chance of being wrong is 20%, and 20% × ₹30 = ₹6, exactly the cost of asking a person.
+
+![The cost of handling 100 messages, for each probability the model gives. Acting alone is cheap when the model is sure and expensive when it is not; asking a person costs the same every time. The lines cross at 80%: that is where the threshold goes.](/figures/c03/route.pdf){#fig-route}
+
+Two things make this rule work in practice. First, the probabilities must be calibrated, as you checked in Chapter 2. If the model says 85% but is really right only 65% of the time, the arithmetic above is wrong and too many messages go astray. Second, the costs are estimates. Try each cost at half and at double its value, and see how far the line moves. If it hardly moves, the exact costs do not matter much. If it moves a lot, spend time getting the costs right.
+
+The *escalate* door uses a separate check. Any message the classifier marks as a complaint with a probability above 30%, or that mentions words like "consumer court" or "legal notice", goes straight to a senior agent. Missing an angry customer costs so much more than a senior agent's minute that even a modest probability is enough.
+
+::: {.keyidea}
+**Let the system act alone only when its expected mistake costs less than asking a person.** If a wrong routing costs ₹30 and a person's check costs ₹6, act alone only above 80% probability. The line comes from costs, not from habit.
+:::
+
+::: {.decision}
+**A small classifier or a large language model for sorting messages?**
+
+Choose a **classifier** when you have a fixed list of labels, a few thousand labelled examples (or can create them), high volume, and a need for speed, low cost and checkable probabilities.
+
+Choose an **LLM** when the labels change often, you have very few examples, or the decision needs reasoning over long text or outside knowledge.
+
+A common middle path: use an LLM to label a few thousand past messages, have a person check a sample of its labels, and train a classifier on the result. You pay for the LLM once, not on every message.
+:::
+
+::: {.project}
+1. Using your 200 labelled messages from Chapter 2, plus more if you can write or generate them (aim for 1,000 or more), train the baseline classifier above.
+2. Report precision and recall for each of the five types on the test set, with the bootstrap range for each.
+3. Check calibration on the validation set, as in Chapter 2.
+4. Estimate your own costs for a wrong routing and for a manual check. Work out the *act* threshold. What share of messages would the system route alone?
+5. Compare costs. At example prices from Chapter 1, sorting each message with an LLM might cost about 13 paise, or about ₹15,600 a month at 4,000 messages a day. The classifier runs on a small server for a fixed monthly cost. Write down both numbers.
+:::
+
+::: {.breaks}
+- **The world changes and the model does not.** A new sale, a new product line or a new kind of complaint appears, and the classifier keeps sorting it into old boxes. Watch the share of messages in each type, and retrain when it shifts.
+- **Labels disagree.** Two support agents label the same message differently. If people cannot agree, the model cannot learn. Write a short labelling guide, and check how often two people agree.
+- **The rare, important label is ignored.** With complaints at 5% of messages, a model can score high accuracy while missing most complaints. Track recall on the important label on its own.
+- **Leakage.** The test score is excellent because of duplicate messages or a column that gives away the answer.
+:::
+
+::: {.defend}
+- **The act threshold.** "A wrong routing costs about ₹30 and a manual check about ₹6, so we route alone above 80%. Halving or doubling the costs moves the line between 70% and 90%."
+- **Recall on complaints.** "Complaints are 5% of messages but the costliest to miss, so we track complaint recall separately. It is 86%, range 75% to 94%."
+- **Training-set size.** "We used 2,000 labelled messages. Adding the last 500 changed validation accuracy by less than one point, so more labels would not help much now."
+:::
+
+::: {.exercises}
+1. A dataset of refund requests has a column "agent_approved" filled in after a person reviewed each request. A model using this column predicts fraud almost perfectly. What has gone wrong?
+2. A wrong automatic refund costs ₹500 on average. A person's check costs ₹25. Above what probability of the refund being valid should the system approve alone?
+3. Your classifier scores 97% on the training set and 81% on the validation set. What is happening, and what would you try?
+:::
+
+::: {.interview}
+1. When would you use a classical ML model instead of an LLM?
+2. What is data leakage? Give an example from a real project.
+3. How do you choose the probability threshold at which a model acts automatically?
+4. Your classifier has high accuracy but customers say complaints are being missed. What do you look at?
+:::
+
+::: {.nexthook}
+Next chapter: what happens when the input is too messy for words and points, such as photos and raw text, and how neural networks learn from it.
+:::

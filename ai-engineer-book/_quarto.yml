@@ -1,0 +1,77 @@
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "The Applied AI Engineer"
+  subtitle: "From Probability to Production Agents"
+  author: "Sridhar Mukkandi"
+  date: "2026"
+  date-format: "YYYY"
+  chapters:
+    - index.qmd
+    - front/how-to-read.qmd
+    - part: parts/p1.qmd
+      chapters:
+        - chapters/c01.qmd
+        - chapters/c02.qmd
+        - chapters/c03.qmd
+        - chapters/c04.qmd
+        - chapters/c05.qmd
+  appendices:
+    - back/answers.qmd
+    - back/bibliography.qmd
+    - back/about-author.qmd
+
+bibliography: references.bib
+csl: assets/chicago-author-date.csl
+link-citations: true
+lang: en-GB
+
+filters:
+  - filters/book.lua
+
+crossref:
+  fig-title: "Figure"
+  tbl-title: "Table"
+  fig-prefix: "Figure"
+  tbl-prefix: "Table"
+
+execute:
+  echo: true
+  eval: false
+  warning: false
+
+format:
+  pdf:
+    pdf-engine: lualatex
+    documentclass: scrbook
+    classoption: [twoside, open=any, fontsize=10.5pt, headings=standardclasses, numbers=noenddot]
+    papersize: custom
+    geometry:
+      - paperwidth=7in
+      - paperheight=10in
+      - top=0.8in
+      - bottom=0.85in
+      - inner=0.9in
+      - outer=0.9in
+      - marginparsep=0.1in
+      - marginparwidth=0.6in
+      - headsep=0.28in
+      - footskip=0.42in
+    toc: true
+    toc-depth: 1
+    number-sections: true
+    fig-pos: "htbp"
+    fig-cap-location: bottom
+    tbl-cap-location: top
+    code-block-bg: false
+    code-block-border-left: false
+    highlight-style: assets/book.theme
+    colorlinks: false
+    include-in-header: assets/latex/preamble.tex
+    template-partials:
+      - assets/latex/before-body.tex
+      - assets/latex/doc-class.tex
+    keep-tex: false
+    cite-method: citeproc

@@ -1,0 +1,132 @@
+# Deep learning in one chapter {#sec-ch04}
+
+Some Kaveri Kart customers do not write at all. They send a photo of a dented pressure cooker, or a voice note in Kannada saying the mixer makes a strange noise. The classifier from Chapter 3 cannot use either. It needs features someone has defined, like word counts or the order value, and nobody can write a useful list of features for the pixels of a photo.
+
+**Deep learning** solves this. A deep learning model takes raw input, such as the pixels of a photo, the sound of a voice or the letters of a sentence, and learns its own features from examples. Every large language model is a deep learning model, so this chapter gives you the core ideas in plain words. You will not build networks from scratch in this book. You need to understand them well enough to use them, choose them, run them, and explain their limits.
+
+::: {.goals}
+- How a neural network is built from small units, and how it learns.
+- Why neural networks are needed for photos, sound and free text, and when they are not needed.
+- What a model needs in GPU memory, and how to estimate it on paper.
+:::
+
+## A team of small checkers
+
+Recall logistic regression from Chapter 3: give each feature some points, add them up, and turn the total into a probability. That single unit, a weighted sum followed by a squashing step, is called an **artificial neuron**. One neuron can only learn simple patterns, where more of something always pushes the answer the same way.
+
+Many real patterns are not like that. Think about a payment for ₹1 on a new card. Large payments can be suspicious, but so can tiny ones, because fraudsters often test a stolen card with a ₹1 payment first. Normal payments sit in the middle. One neuron that says "bigger is riskier" cannot learn "both very small and very large are risky".
+
+A **neural network** solves this with a team of neurons arranged in layers (@fig-network):
+
+1. The first layer has many neurons, each checking something simple. One learns "is the amount very large?" Another learns "is the amount very small?"
+2. The next layer combines their answers: "suspicious if either of those is true."
+3. The last layer gives the final probabilities.
+
+![A small neural network. Each circle is a neuron: it adds up its inputs with learned weights and passes the result on. Early layers learn simple checks; later layers combine them into more complex ones.](/figures/c04/network.pdf){#fig-network}
+
+Between layers, each neuron applies a small bend to its total before passing it on. The most common bend is very simple: if the total is negative, pass on zero; otherwise pass it on unchanged. It is called **ReLU**. Without these bends, stacking layers would add nothing, because a sum of sums is still just a sum. With them, enough neurons can learn almost any pattern.
+
+A network with many layers is called **deep**, which is where "deep learning" gets its name. On photos, researchers found that the first layers of a trained network learn to spot edges, the middle layers learn textures and shapes, and the last layers learn whole objects [@lecun2015]. For Kaveri Kart's photos, that could mean edges, then a dent or a crack, then "damaged product". Nobody wrote a rule for "dent". The network learned it from labelled photos.
+
+::: {.keyidea}
+**A neural network learns its own features from raw input.** That is why it can read photos, sound and free text, where nobody could write the features by hand. On clean tables of numbers, a simpler model such as gradient-boosted trees is usually just as good, and far cheaper.
+:::
+
+## How a network learns
+
+A network starts with random weights, so its first guesses are useless. Training improves them through the same guess-check-adjust loop you saw in Chapter 3, with three new names:
+
+1. **Loss.** For each training example, a number that says how wrong the guess was. A confident wrong answer gets a large loss; a confident right answer gets a loss near zero.
+2. **Gradient descent.** Imagine standing on a hillside in thick fog, trying to reach the valley. You cannot see the valley, but you can feel which way the ground slopes under your feet, so you take a small step downhill, and repeat. The "hill" is the loss, and each step changes every weight a little in the direction that lowers it. The size of each step is the **learning rate**: too large and you overshoot the valley, too small and training takes forever.
+3. **Backpropagation.** How does the network know which of its millions of weights to blame for a mistake? It passes the blame backwards, from the output layer to the first layer, giving each weight a share in proportion to how much it added to the error [@rumelhart1986]. That share tells gradient descent which way to move each weight.
+
+Training does not look at one example at a time. It takes a small group of examples, called a **batch**, works out the average loss, adjusts the weights, and moves to the next batch. One full pass through all the training examples is called an **epoch**. Small models train for a few epochs; large language models see most of their training text only once or twice.
+
+## Bigger networks become overconfident
+
+Train a large network for a long time and something worth knowing happens. Accuracy keeps improving, or stays the same, but the model's probabilities become too extreme. Once it gets most training examples right, the only way left to lower the loss is to push its answers closer to 100% certainty. It carries that certainty onto new examples where it has not earned it. Large modern networks are often overconfident in exactly this way [@guo2017].
+
+This is why Chapter 2 asked you to check calibration before acting on a model's probability. A network that is right 85% of the time while saying 99% will break any threshold rule you build on top of it. The fix is usually simple: a small correction learned on validation data, which you will meet again when we test LLM judges in Part VII.
+
+## Why GPUs?
+
+Inside a neural network, almost all the work is the same simple calculation repeated billions of times: multiply many numbers by many weights and add them up. A computer's main processor, the **CPU**, has a few very capable cores that do tasks one after another. A **GPU**, originally built to draw video-game graphics, has thousands of simple cores that all work at the same time.
+
+Think of a CPU as a few senior chefs, and a GPU as a thousand kitchen helpers who can each only chop vegetables. For a wedding feast that needs a mountain of chopped onions, the thousand helpers win easily. Neural networks are a mountain of chopping, which is why AI runs on GPUs, and why GPU memory is one of the first limits you hit.
+
+## What a model needs in memory
+
+A model's learned weights are called its **parameters**. A "7B model" has about 7 billion of them. Each parameter is a number, and each number takes some bytes of memory, depending on how precisely it is stored:
+
+- **FP32** (full precision): 4 bytes per number.
+- **BF16** or **FP16** (half precision): 2 bytes. This is the normal format for running large models today.
+- **INT8**: 1 byte.
+- **4-bit**: half a byte.
+
+Storing numbers with fewer bytes is a bit like rounding prices to the nearest rupee instead of keeping the paise. You lose a little detail and save a lot of space. Using lower precision where it is safe is called **mixed precision**, and storing a finished model in fewer bits is called **quantisation** (Chapter 11).
+
+Now the arithmetic is easy. To *run* a 7B model, you need at least:
+
+- in BF16: 7 billion × 2 bytes = **14 GB**;
+- in 4-bit: 7 billion × 0.5 bytes = **3.5 GB**.
+
+On top of the weights, a running model needs extra memory for the text it is working on, which grows with the length of the conversation and the number of users at the same time. Chapter 6 shows how to estimate that part. A safe rough plan is to add 20% to 50% to the weights.
+
+To *train* the same model is far more expensive. Training keeps, for every parameter, the weight itself, its gradient (the direction to move it), and two extra running averages used by the common optimiser, Adam [@kingma2015]. With mixed precision, this adds up to about 16 bytes per parameter [@rajbhandari2020], before counting the memory for the examples being processed:
+
+- 7 billion × 16 bytes = **112 GB** just for the training state.
+
+![Memory needed for a 7-billion-parameter model's weights in different formats, compared with the memory needed to train it fully. Running a model is cheap compared with training it.](/figures/c04/memory.pdf){#fig-memory}
+
+That is more than one large GPU holds. @fig-memory shows why almost nobody trains a large model fully for a business task. Instead, engineers use models someone else has trained, and when they must adapt one, they use methods that train only a small number of extra parameters. Chapter 34 covers those methods.
+
+::: {.keyidea}
+**Estimate memory on paper before you rent a GPU.** Running a model needs about 2 bytes per parameter in BF16, plus room for the text it is working on; fully training it needs about 16 bytes per parameter. A 7B model runs in about 14 GB but needs over 100 GB to train.
+:::
+
+## When to use deep learning yourself
+
+As an applied AI engineer, you will almost never design a new network. The everyday choices are these:
+
+- **Use a pre-trained model through an API** for language, vision and speech. This is the default, and most of this book is about doing it well.
+- **Use a pre-trained open model on your own hardware** when data must not leave your servers, or when volume is high enough that your own GPU is cheaper than paying per token.
+- **Adapt a pre-trained model** with a small amount of extra training when prompting alone cannot get the behaviour you need.
+- **Use classical models** (Chapter 3) for tables of numbers and for high-volume, simple text decisions.
+
+Training a deep network from scratch is for companies with large datasets, large budgets, and a problem no existing model handles. For Kaveri Kart, every deep learning need, from reading photos to understanding Kannada voice notes, is met by an existing model.
+
+::: {.project}
+1. Pick two open models you might run yourself: one around 7B parameters and one around 70B. Work out the memory for their weights in BF16 and in 4-bit.
+2. Look up the memory of one common GPU you could rent. Which of the four cases fit on one GPU, after adding 30% for the working memory?
+3. Write one paragraph for Kaveri Kart: should the support system use a model through an API, or run one on its own GPU? Consider the data (customer addresses and phone numbers), the volume (800 to 4,000 messages a day), and the team size. You will revisit this choice in Chapter 12 with real costs.
+:::
+
+::: {.breaks}
+- **The model is too big for the GPU.** The weights fit, but the working memory for long conversations and many users does not. The service crashes under load, not in testing.
+- **Overconfident probabilities.** A large network's "99%" is acted on as if it were reliable. Check calibration before using any threshold.
+- **Training data does not match real inputs.** A damage-photo model trained on bright studio photos fails on blurry phone photos taken in a dark corridor.
+- **Deep learning where it is not needed.** A team spends weeks on a neural network for a clean table of numbers, and it does no better than gradient-boosted trees.
+:::
+
+::: {.defend}
+- **Memory estimate.** "The 7B model needs about 14 GB in BF16. With 30% for working memory, about 18 GB, so it fits on one 24 GB GPU."
+- **Precision.** "We run in 4-bit because quality on our test set dropped by less than one point, and it lets us use a smaller GPU."
+- **Why not train our own model.** "Full training would need over 100 GB of GPU memory for a 7B model, plus a large labelled dataset. Existing models already meet our quality target."
+:::
+
+::: {.exercises}
+1. How much memory do the weights of a 13B model need in BF16, in INT8 and in 4-bit?
+2. Explain gradient descent to a friend who has never studied maths, using an example from daily life other than a hill in fog.
+3. Your team wants to train a neural network to predict delivery delays from a table with 20 columns (distance, courier, weather, and so on). What would you suggest trying first, and why?
+:::
+
+::: {.interview}
+1. What is backpropagation, in simple terms?
+2. How much GPU memory do you need to serve a 7B model? Show your working.
+3. Why do large models tend to be overconfident, and why does it matter?
+4. When would you not use deep learning?
+:::
+
+::: {.nexthook}
+Next chapter: how computers turn words into numbers, from tokens to embeddings, and why Indian languages need special care.
+:::

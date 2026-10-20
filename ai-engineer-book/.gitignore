@@ -1,0 +1,10 @@
+_book/
+_freeze/
+/.quarto/
+*.tex
+!assets/latex/*.tex
+*.log
+__pycache__/
+*_files/
+
+**/*.quarto_ipynb

@@ -1,0 +1,210 @@
+# Probability and statistics you will actually use {#sec-ch02}
+
+Two engineers at Kaveri Kart each write a new set of instructions for the support model. They test both on the same 20 customer questions. Version A gets 17 answers right. Version B gets 15 right. A is better, so the team ships A.
+
+A week later, they test both again on 20 different questions. This time B gets 17 right and A gets 15. Which version is really better?
+
+Neither test can tell. With only 20 questions, a difference of two answers can easily happen by luck. A batsman can score three fifties in five innings and then three single-digit scores in the next five, without becoming a worse player. This chapter gives you the few ideas from probability and statistics that prevent this mistake. It also covers a handful of others that come up every week in AI work. There are no proofs here, and no formulas you cannot work out on paper.
+
+::: {.goals}
+- What a probability means, and why rare events make most alarms false.
+- How sure you can be about a test score, using one simple method called the bootstrap.
+- How a language model uses probability to pick its next word.
+:::
+
+## A probability is a share of many cases
+
+The weather app says "70% chance of rain". It does not rain. Was the app wrong?
+
+It was not, because a probability does not describe one day. It describes many similar days. A **probability** is a number between 0 and 1 (or 0% and 100%) that says how often something happens across many cases like this one. "70% chance of rain" means: of all the days when the app says 70%, it should rain on about 70 out of 100.
+
+The same is true for AI systems. Suppose a model says a customer message is "80% likely to be a refund request". On one message, it will be either right or wrong. Only by looking at many messages where the model said 80% can you check whether it was right about 80 of every 100. You will use this idea in the last section of this chapter.
+
+## When something is rare, most alarms are false
+
+Kaveri Kart has a problem with fake refund requests. Some people claim a product arrived broken when it did not. Suppose:
+
+- 1 in every 200 refund requests is fake;
+- a fraud checker catches 90% of fake requests;
+- it also wrongly flags 4% of genuine requests.
+
+The checker flags a request. What is the chance that it is really fake?
+
+Most people guess something close to 90%. The right answer is about 10%. The easiest way to see why is to count, using 10,000 refund requests:
+
+1. Fake requests: 1 in 200 of 10,000 is **50**.
+2. Fake requests the checker catches: 90% of 50 is **45**.
+3. Genuine requests: 10,000 − 50 is **9,950**.
+4. Genuine requests flagged by mistake: 4% of 9,950 is **398**.
+5. All flagged requests: 45 + 398 is **443**.
+6. Fake requests among the flagged ones: 45 out of 443, which is about **10%**.
+
+There are so many genuine requests that even a small mistake rate produces far more false alarms than real catches. How common something is before you look at any evidence is called its **base rate**. Here the base rate of fake requests is 1 in 200. Whenever someone tells you how good a checker is, ask for the base rate before you believe what its alarms mean.
+
+::: {.keyidea}
+**When the thing you are looking for is rare, most alarms are false.** A checker that catches 90% of fake refunds is right only about 1 time in 10 when it raises an alarm, because genuine requests are 199 times more common. Count it out with 10,000 cases to see this.
+:::
+
+## Accuracy can fool you
+
+**Accuracy** is the share of all cases a model gets right. It sounds like the obvious way to measure a model, but with rare events it misleads you badly.
+
+A "checker" that never flags anything is right on all 9,950 genuine requests and wrong on the 50 fake ones. Its accuracy is 9,950 ÷ 10,000 = 99.5%. It also catches zero fraud. So for rare events, use two better measures, both based on the counting above:
+
+- **Precision**: of all the requests the checker flagged, what share were really fake? Here, 45 ÷ 443, about 10%. Low precision means the fraud team wastes its time on false alarms.
+- **Recall**: of all the fake requests, what share did the checker flag? Here, 45 ÷ 50 = 90%. Low recall means fraud gets through.
+
+Precision and recall usually pull against each other. Make the checker stricter and it flags fewer requests: precision goes up, but recall goes down. Which one matters more depends on what each mistake costs, and Chapter 3 shows how to use costs to choose. In interviews, you will often be asked for both numbers, never accuracy alone.
+
+## How sure is your test score?
+
+Back to the two engineers. Version A got 17 out of 20 questions right, a score of 85%. How much would that score move if we had tested on 20 *different* questions?
+
+A cricket example helps. A batsman's average after 5 innings tells you very little; after 100 innings, it tells you a lot. The more cases you see, the less luck matters. A test score works the same way. We need a way to turn "17 out of 20" into a range: "the real score is probably somewhere between this and that."
+
+There is a simple method that works for almost any score you will meet, called the **bootstrap**. The idea is to pretend to repeat your test many times, using only the results you already have:
+
+1. Write down your test results: 17 ones (right) and 3 zeros (wrong).
+2. Draw 20 results from this list at random, putting each one back after you draw it. Some results will be drawn twice and some not at all. This gives you a slightly different "test".
+3. Work out the score of that new test.
+4. Repeat steps 2 and 3 ten thousand times.
+5. Sort the ten thousand scores. Throw away the lowest 2.5% and the highest 2.5%. What remains is the range.
+
+This range is called a **95% confidence interval**. In plain words, it is the range where the real score probably lies. In Python, the whole method is a few lines:
+
+```python
+import numpy as np
+
+def bootstrap_range(results, rounds=10_000):
+    """results: one number per test case, 1 for right and 0 for wrong."""
+    rng = np.random.default_rng(0)
+    results = np.asarray(results)
+    scores = [rng.choice(results, len(results)).mean() for _ in range(rounds)]
+    return np.percentile(scores, [2.5, 97.5])
+
+print(bootstrap_range([1] * 17 + [0] * 3))   # 17 right out of 20
+```
+
+The answer is about 70% to 100%. For version B, with 15 out of 20, it is about 55% to 90%. The two ranges overlap almost completely. With 20 questions, the test simply cannot tell the two versions apart.
+
+How many test cases do you need? @fig-interval shows how the range shrinks as the test set grows, for a system that is right about 80% of the time:
+
+- With 20 cases, the range is about ±17 percentage points around the score.
+- With 50 cases, about ±11.
+- With 200 cases, about ±5.5.
+- With 1,000 cases, about ±2.5.
+
+![How wide the range around a test score is, for a system that is right about 80% of the time. The range shrinks quickly at first and then slowly: to halve it, you need four times as many test cases.](/figures/c02/interval.pdf){#fig-interval}
+
+Notice the shape of the curve. To make the range half as wide, you need four times as many cases. That is why a test set of 200 to 500 well-chosen cases is a common, practical size for a first version of an AI system: big enough to see a difference of 5 to 10 points, small enough that a person can check the answers.
+
+::: {.keyidea}
+**A score on a small test set is mostly luck.** With 20 test cases, a score of 85% could really be anything from 70% to 100%. Always report the range with the score, and grow your test set until the range is narrow enough to make your decision.
+:::
+
+## Comparing two versions fairly
+
+When you compare two versions of a system, there is a better way than working out two separate ranges. Test both versions on the **same** questions, and look at how they differ question by question. This is called a **paired comparison**.
+
+Suppose the engineers now test A and B on the same 200 questions. On most questions, both versions give the same result: both right, or both wrong. Those questions tell you nothing about which version is better. What matters are the questions where they disagree:
+
+- On 14 questions, A is right and B is wrong.
+- On 6 questions, B is right and A is wrong.
+
+So A is ahead by 8 questions out of 200, or 4 percentage points. Is that real? Use the same bootstrap. For each question, write +1 if only A was right, −1 if only B was right, and 0 if they agreed. Pass this list of 200 numbers to `bootstrap_range`. The answer is a range from about 0 to 8.5 points.
+
+The range touches zero, so we cannot yet be sure A is better. The engineers test on 200 more questions, and the same pattern holds. With 400 questions, the range becomes about 1 to 7 points. Now it no longer includes zero, and they can say with reasonable confidence that A is better, by a few points.
+
+Three habits keep comparisons honest:
+
+1. **Use the same test set** for both versions. If the test questions change, you are measuring the questions, not the versions.
+2. **Fix the test set before you start changing things.** If you keep adjusting the test set until your favourite version wins, the result means nothing.
+3. **Look at the disagreements by hand.** Reading the 20 questions where A and B differ usually teaches you more than the score does.
+
+## How a language model uses probability
+
+Probability is not only for testing. It is also how a language model writes.
+
+Give a model the words "Your order has been". Before it writes the next word, the model works out a probability for every word it knows. For example:
+
+- "shipped": 42%
+- "delivered": 25%
+- "cancelled": 12%
+- "packed": 9%
+- "delayed": 7%
+- "refunded": 5%
+
+(These numbers are made up for the example; a real model spreads its probability over tens of thousands of possible next pieces of text.)
+
+Each probability depends on the words so far. A probability that depends on what you already know is called a **conditional probability**. A language model is, at its heart, a machine for one conditional probability: *the chance of each next word, given all the words before it.*
+
+The model then picks one word. If it always picked the most likely word, it would write "shipped" every time, and long texts would become dull and repetitive. So by default it picks at random, in proportion to the probabilities: "shipped" about 42 times in 100, "delivered" about 25 times, and so on. This random choice is called **sampling**, and it is why the same question gives slightly different answers each time you ask.
+
+You can control how adventurous the choice is with a setting called **temperature** (@fig-temperature):
+
+- A **low temperature**, such as 0.5, makes the likely words even more likely. In our example, "shipped" rises from 42% to about 66%. The answers become more predictable.
+- A **temperature of 1** uses the model's probabilities as they are.
+- A **high temperature**, such as 1.5, flattens the probabilities. "Shipped" falls to about 33%, and rarer words get picked more often. The answers become more varied, and more likely to go wrong.
+
+![The same next-word probabilities at three temperatures. A low temperature sharpens the choice towards the most likely word; a high temperature spreads it out.](/figures/c02/temperature.pdf){#fig-temperature}
+
+For support replies, data extraction and decisions, you want predictable answers, so use a low temperature. For brainstorming product descriptions, a higher temperature gives more variety. Even at temperature 0, which should always pick the most likely word, a model served by a provider can give slightly different answers to the same question, for technical reasons you will meet in Chapter 11. Never build a test that expects an exact word-for-word answer.
+
+## When the model says 80%, is it right 80% of the time?
+
+Many AI systems give a probability with each answer: "refund request, 80%". A system whose probabilities match reality is called **calibrated**. When a calibrated model says a message is 80% likely to be a refund request, about 80 of every 100 such messages really are refund requests.
+
+Nothing forces a model to be calibrated, so you must check. The check uses the idea from the start of this chapter, that a probability is a share of many cases:
+
+1. Take a few hundred past messages where you know the right answer.
+2. Put them in groups by the chance the model gave for "refund request": 0–10%, 10–20%, and so on, up to 90–100%.
+3. In each group, count how many messages really were refund requests.
+4. Draw the result: the chance the model gave along the bottom, how often it really happened up the side (@fig-calibration).
+
+![Checking calibration. Each point is a group of messages. For a calibrated model, the points sit on the diagonal: when it says 80%, it happens about 80% of the time. The overconfident model's numbers are too extreme: when it says 95%, it happens only about 70% of the time, and when it says 5%, it still happens about 30% of the time. (Illustrative data.)](/figures/c02/calibration.pdf){#fig-calibration}
+
+Points on the diagonal mean the probabilities can be trusted. Points that are flatter than the diagonal mean the model is **overconfident**: its numbers are more extreme than reality, so it sounds more sure than it should be. Large models are often overconfident, and the "confidence" an LLM writes in its answer ("I am 95% sure") is usually not calibrated at all. You will check LLM confidence properly in Part VII.
+
+Why does this matter so much? Because in the next chapter, you will make the system act on its probabilities: route the message automatically above one value, send it to a person below it. If the model's 80% really means 60%, every one of those rules is wrong.
+
+::: {.keyidea}
+**Before you act on a model's probability, check that it means what it says.** Group past cases by the probability the model gave, and count how often it was right in each group. If it says 80% but is right only 60% of the time, every rule built on its numbers will be wrong.
+:::
+
+::: {.project}
+1. Create a test set of 200 Kaveri Kart customer messages. Write them yourself, or ask a model to write varied examples and then edit them by hand. Include English, Hindi and Hinglish messages, short and long ones, and a few angry or confusing ones.
+2. Label each message by hand with one of five types: *refund*, *delivery*, *product question*, *complaint*, *other*. This labelled set is your **ground truth**, the answers you trust, and the next chapter trains a model on data like it.
+3. Count the share of each type. These are your base rates. If complaints are only 5% of messages, remember the lesson about rare events.
+4. Save `bootstrap_range` in a file called `stats.py`. You will use it in almost every chapter.
+:::
+
+::: {.breaks}
+- **Tiny test sets.** Teams compare versions on 10 or 20 examples and ship the "winner". The difference is usually luck.
+- **Test cases leak into the prompt.** If an example from the test set is also used as an example in the model's instructions, the model has seen the answer, and the score is too high.
+- **The test set stops matching real traffic.** Customers start asking about a new sale or a new product, and the old test set no longer covers what they ask.
+- **An average hides a weak group.** The system scores 90% overall but only 60% on Hindi messages. Always look at the score for each important group separately.
+:::
+
+::: {.defend}
+- **Test-set size.** "We used 200 cases, which gives a range of about ±5.5 points at our score. That is enough to see the 10-point differences we care about."
+- **The range with every score.** "Version A scored 86%, with a 95% range of 81% to 90%."
+- **Base rates.** "Complaints are 6% of our messages, so we report precision and recall for complaints separately, as well as overall accuracy."
+- **Temperature.** "We use a low temperature for support replies, because we want the same question to get the same answer."
+:::
+
+::: {.exercises}
+1. A spam filter catches 98% of spam and wrongly flags 1% of normal emails. Only 1 in 100 emails is spam. Of the emails it flags, what share are actually normal? Count it out with 10,000 emails.
+2. Your system gets 45 out of 50 test questions right. Without running any code, is the real score more likely to be within ±2 points of 90% or within ±10 points? Why?
+3. Two versions are tested on the same 300 questions. Version A alone is right on 9 questions, and version B alone is right on 7. What would you tell your manager?
+:::
+
+::: {.interview}
+1. Our fraud model has 99% accuracy. Is it good?
+2. How many test cases do you need to compare two prompts?
+3. What does temperature do, and what value would you use for a customer-support bot?
+4. What does it mean for a model to be calibrated, and how do you check it?
+:::
+
+::: {.nexthook}
+Next chapter: small, fast models that learn from examples, and how to turn their probabilities into actions using what each mistake costs.
+:::

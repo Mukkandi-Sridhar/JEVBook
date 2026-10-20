@@ -1,0 +1,11 @@
+# The job and the foundations
+
+::: {.partintro}
+These five chapters give you the ground the rest of the book stands on. You will see what an applied AI engineer does all day, and make your first call to a model. Then you will learn the parts of probability, machine learning, deep learning and language processing that you will actually use at work.
+
+None of it is research-level. If an idea is here, a later chapter or a real job needs it.
+:::
+
+```{=latex}
+\bookmainmatter
+```

@@ -1,0 +1,174 @@
+# From words to tokens and vectors {#sec-ch05}
+
+A Kaveri Kart customer writes: *"mera order abhi tak nahi aaya, tracking bhi kaam nahi kar raha"* (my order has not arrived yet, and the tracking is not working either). Another writes: *"Parcel still not delivered and the tracking link is broken."* A third writes the same complaint in Hindi script.
+
+To a person, these three messages say the same thing. To a computer, they are three completely different strings of characters, and the first one is not even written in a standard spelling. Before any model can work with language, text must become numbers, in a way that keeps the meaning. This chapter shows the two steps that every language model uses: breaking text into **tokens**, and turning tokens into **vectors** that capture meaning. Both steps affect cost, speed and quality, and both need special care for Indian languages.
+
+::: {.goals}
+- What a token is, how text is split into tokens, and why the same message can cost more in Hindi than in English.
+- How embeddings turn text into numbers that capture meaning, and how to measure how similar two texts are.
+- What embeddings miss, and why that leads to the transformer in Part II.
+:::
+
+## The problem: numbers that know nothing
+
+Suppose you number every word in a dictionary: "bill" is 101, "invoice" is 102, "lunch" is 103. A model doing arithmetic would treat these numbers literally, and decide that "invoice" sits halfway between "bill" and "lunch". The numbers carry an order that means nothing.
+
+Suppose instead you give every word its own position in a very long list, with a 1 in its own position and 0 everywhere else. Now no word is closer to any other. "Bill" is exactly as different from "invoice" as it is from "lunch". This is fair, but it knows nothing about meaning either.
+
+We need two things: a sensible way to cut text into pieces, and a way to give each piece numbers so that pieces with similar meaning get similar numbers.
+
+## Tokens: the pieces a model reads
+
+Cutting text into whole words causes trouble. There are too many words, new ones appear every day ("unboxing", "UPI"), and every spelling mistake or Hinglish spelling becomes a new word the model has never seen. Cutting into single letters avoids this, but then even a short message becomes hundreds of pieces, which is slow and expensive.
+
+Modern models use a middle way. They cut text into **tokens**: common words stay whole, and rarer words are split into smaller, common pieces. A model might keep "refund" as one token but split "refundable" into "refund" and "able". A common method for learning these pieces is called **byte-pair encoding**, or **BPE** [@sennrich2016]. It works like this:
+
+1. Start with every word split into single characters.
+2. Count every pair of neighbouring pieces across all the training text.
+3. Join the most common pair into one new piece.
+4. Repeat steps 2 and 3 until you have as many pieces as you want, often 50,000 to 200,000.
+
+Here is BPE on a tiny example. The training text has the word "refund" 10 times, "refunded" 6 times, "refundable" 3 times, "fund" 4 times, "under" 5 times, "return" 8 times and "returned" 5 times. Counting all neighbouring pairs, the most common joins come out in this order:
+
+1. "r" + "e" becomes "re" (it appears 32 times across all the words);
+2. "u" + "n" becomes "un";
+3. "un" + "d" becomes "und";
+4. "f" + "und" becomes "fund";
+5. "re" + "fund" becomes "refund";
+6. and then "re" + "t", and onwards towards "retur".
+
+After only eight joins, "refund" is one token, "refunded" is "refund" + "e" + "d", and "return" is "retur" + "n". With far more text and many thousands of joins, the common words of the training text become single tokens, and everything else is built from pieces.
+
+## Why tokens matter to you
+
+Tokens affect your daily work directly. They decide three practical things:
+
+- **Cost.** Providers charge per token (Chapter 1).
+- **Limits.** Every model has a **context window**, the largest number of tokens it can read and write in one go. Long documents and long chats use it up.
+- **Speed.** A model writes its answer one token at a time, so more output tokens means a longer wait.
+
+For English, a rough rule is that 100 tokens is about 75 words. That rule does not hold for every language.
+
+## Why Indian languages can cost more
+
+BPE learns its pieces from its training text. If that text is mostly English, the common English words become single tokens. Words in Hindi, Tamil, Kannada and other Indian languages are seen less often, so they stay split into many small pieces. The same sentence can therefore need several times more tokens in an Indian script than in English [[VERIFY]]. More tokens means a higher bill, a slower reply, and less room in the context window for the same amount of meaning.
+
+Hinglish written in Latin letters has its own problem. Words like "nahi", "kahan" and "pichhle" are not common English words, so they are often split into odd pieces, and the same word spelled three ways becomes three different sets of tokens.
+
+Newer tokenisers are trained on more languages, and the gap is smaller than it was a few years ago. The only reliable answer is to measure, with the tokeniser of the model you actually plan to use. For OpenAI's models, the `tiktoken` library counts tokens on your own computer (`pip install tiktoken`):
+
+```python
+import tiktoken
+
+enc = tiktoken.get_encoding("o200k_base")    # the tokeniser of one model family
+for text in ["Where is my refund?",
+             "मेरा रिफंड कहाँ है?",
+             "Mera refund kahan hai?"]:
+    print(len(enc.encode(text)), text)
+```
+
+Other providers give a token-counting endpoint or show the count in each response, as you saw with `usage` in Chapter 1. Run the same messages through each model on your shortlist. The differences can change which model is cheapest for your customers.
+
+::: {.keyidea}
+**Count tokens in the languages your customers actually use.** A tokeniser trained mostly on English can split Hindi or Kannada into many more pieces, so the same message costs more, runs slower and fills the context window sooner. Measure with each model's own tokeniser before you choose.
+:::
+
+## Embeddings: meaning as position
+
+Now we need numbers that capture meaning. The idea came from linguistics, decades before deep learning: *"You shall know a word by the company it keeps"* [@firth1957]. Words that appear in similar places tend to mean similar things. "Refund" and "money back" both appear near "return", "credited" and "bank account". "Delivery" appears near "courier", "tracking" and "address".
+
+An **embedding** is a list of numbers, often a few hundred to a few thousand long, given to a word or a piece of text so that texts with similar meaning get similar lists. Think of a well-run library. Books on the same subject stand on the same shelf, whatever their titles say, so you find all the cricket books in one place. An embedding gives every text a position on a huge set of shelves, and texts with similar meaning end up close together (@fig-map).
+
+![A simple sketch of embeddings, squeezed down from hundreds of numbers to two so they fit on the page. Texts with similar meaning sit close together, even when they share no words. (Illustrative positions.)](/figures/c05/map.pdf){#fig-map}
+
+Models learn these positions from huge amounts of text. An early, famous method called word2vec trained a small network to predict each word's neighbours, and the positions it learned turned out to capture meaning surprisingly well [@mikolov2013]. Modern **embedding models** do the same for whole sentences and paragraphs. You send them a text, and they return its list of numbers. You will use one in Part IV.
+
+## Measuring how close two texts are
+
+How do we measure whether two embeddings are close? Picture each list of numbers as an arrow pointing from the centre of the library in some direction. Texts with similar meaning point in similar directions. The usual measure, **cosine similarity**, looks at the angle between two arrows:
+
+- about **1** when they point the same way (very similar meaning);
+- about **0** when they are at a right angle (unrelated);
+- below 0 when they point in opposite directions, which is rare for text.
+
+A small example with just two numbers per text makes it concrete. Suppose:
+
+- "refund" is at (0.9, 0.2);
+- "money back" is at (0.8, 0.3);
+- "delivery" is at (0.1, 0.95).
+
+Cosine similarity multiplies the matching numbers, adds them up, and divides by the lengths of the two arrows. For "refund" and "money back", that gives about **0.99**: almost the same direction. For "refund" and "delivery", it gives about **0.32**: quite different. Real embeddings have hundreds of numbers instead of two, but the calculation is the same, and libraries do it for you.
+
+## Finding similar messages
+
+With embeddings, Kaveri Kart can do something keyword search cannot: find past messages with the same *meaning*, even when they share no words. "Paisa wapas nahi aaya" (the money has not come back) and "refund not credited to my account" can sit close together, if the embedding model has learned enough Hinglish.
+
+This gives a simple and useful classifier, called **k-nearest neighbours**:
+
+1. Embed all your labelled past messages once, and store the embeddings.
+2. When a new message arrives, embed it.
+3. Find the *k* past messages closest to it, for example the 10 with the highest cosine similarity.
+4. Use their labels. If 8 of the 10 nearest messages were refund requests, call the new one a refund request, about 80% likely.
+
+The same idea, finding the most similar stored texts for a question, is the heart of retrieval-augmented generation, which Part IV covers in depth.
+
+## What embeddings miss
+
+Embeddings capture what a text is *about*. They are weak at three things you will meet often:
+
+- **Exact numbers.** "A refund of ₹500" and "a refund of ₹50,000" are about the same topic, so their embeddings are close. If a decision depends on the amount, pass the amount separately as a number.
+- **Small words that flip meaning.** "The parcel was delivered" and "the parcel was not delivered" are about the same topic and can get very similar embeddings.
+- **Word order and who did what.** "The customer cancelled the order" and "the order cancelled the customer" use the same words. An embedding built from word meanings alone cannot tell which makes sense.
+
+Understanding order and small words needs a model that reads each word in the light of the words around it. That is exactly what the **transformer** does, and it is where Part II begins.
+
+## A short history in five steps
+
+You will hear these names in interviews and papers, so here is how they fit together:
+
+1. **Bag of words** (before 2010): count the words, ignore their order. Simple, fast, and still a good baseline, as in Chapter 3.
+2. **Word embeddings** (2013): give each word a learned position by meaning [@mikolov2013]. Similar words become similar numbers.
+3. **Recurrent networks** (around 2014–2017): read a sentence one word at a time, carrying a memory forward. They understood order, but forgot the start of long texts, and were slow because each word had to wait for the one before.
+4. **Attention and the transformer** (2017): let every word look at every other word at once [@vaswani2017]. Fast on GPUs, and good at long-range meaning.
+5. **Large language models** (2018 onwards): transformers made very large and trained on enormous amounts of text. Part II explains how.
+
+::: {.keyidea}
+**Embeddings capture what a text is about, not the exact details.** Two messages about refunds look similar whether the amount is ₹500 or ₹50,000, and "delivered" can look like "not delivered". Pass exact facts such as amounts and dates separately, as numbers or fields.
+:::
+
+::: {.project}
+1. Take 20 messages from your test set and write each in three versions: English, Hindi in Devanagari, and Hinglish. Count the tokens of all 60 with the tokeniser of one model you are considering. Work out the average tokens per message for each version, and the monthly cost difference at 4,000 messages a day.
+2. Using any embedding model, embed your 200 labelled messages. For five new messages, find the 10 nearest neighbours and look at their labels. Do Hinglish messages find the right neighbours?
+3. Write three pairs of messages that differ only by "not" or by an amount, and check their cosine similarity. Keep these pairs; they become test cases in Part IV.
+:::
+
+::: {.breaks}
+- **Token bills grow with language mix.** Costs are planned on English test messages, and the real traffic is half Hindi and Hinglish.
+- **The embedding model does not know the language.** An embedding model trained mostly on English places Hinglish messages almost at random, and search quietly fails for those customers.
+- **Long messages are cut off.** Embedding models and context windows have length limits. A long complaint is silently cut, and the important part was at the end.
+- **Numbers inside text.** Order IDs, amounts and dates are treated as ordinary words, so two different orders look nearly the same.
+:::
+
+::: {.defend}
+- **Tokens per message by language.** "English messages average about 40 tokens, Hinglish about 60 and Hindi about 90 on the model we chose, so our cost plan uses the real mix of languages." (Use your own measured numbers.)
+- **Embedding model choice.** "We tested three embedding models on our own 200 labelled messages, including Hinglish, and chose the one whose nearest neighbours most often had the right label."
+- **How many neighbours.** "We use the 10 nearest messages. With 5, results jumped around; with 20, rare types like complaints were outvoted."
+:::
+
+::: {.exercises}
+1. Using the tiny BPE example in this chapter, explain why "refunded" ends up as "refund" + "e" + "d" and not as one token.
+2. Work out the cosine similarity of (1, 0) and (0, 1), and of (1, 1) and (2, 2). What do the two answers mean?
+3. A customer writes "I was charged ₹4,999 instead of ₹499". Why might an embedding-based search fail to find past cases about this exact problem? What would you add?
+:::
+
+::: {.interview}
+1. What is a token, and why does it matter for cost?
+2. How does byte-pair encoding work?
+3. What is an embedding, and how do you measure similarity between two embeddings?
+4. Our chatbot works well in English but poorly in Hindi. What would you investigate?
+:::
+
+::: {.nexthook}
+Next: Part II opens the transformer, the model that reads every word in the light of all the others, and shows how it became the large language models you use today.
+:::

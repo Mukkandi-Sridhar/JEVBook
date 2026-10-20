@@ -1,0 +1,217 @@
+# What an applied AI engineer does {#sec-ch01}
+
+Kaveri Kart is a small online store in Mysuru. It sells kitchen and home products across India: pressure cookers, steel tiffin boxes, bedsheets, mixer grinders. On a normal day, its six-person support team answers about 800 emails and chat messages. During the Diwali sale, that number jumps to 4,000 a day, and the team falls days behind.
+
+The owner, Meena, decides to "add AI". A developer friend connects a chatbot to the website over a weekend. It is impressive for about a week. Then the problems start:
+
+- It tells a customer that a used pressure cooker can be returned within 30 days. The real policy says 7 days, and only for unused items.
+- It answers a customer who wrote in Hindi in English, and a customer who wrote in Hinglish in formal Hindi.
+- Nobody can say how many of its answers are right. The team only hears about the wrong ones when customers complain.
+- At the end of the month, the bill from the model provider is four times what anyone guessed.
+
+None of this happened because the model was weak. The model wrote fluent, polite replies. Everything around the model was missing: the store's real policies, a way to test answers, a rule for when to hand a case to a person, and a budget. Building those things is the job of an **applied AI engineer**, and it is what this book teaches.
+
+::: {.goals}
+- What an applied AI engineer does, and how the role differs from a data scientist or an ML engineer.
+- The three questions behind every AI system you will build.
+- How to make your first call to a large language model, and what it costs.
+:::
+
+## The model is only one part of the system
+
+Think about a busy restaurant. The cook matters, but a good cook alone does not make a good restaurant. Someone has to plan the menu and write the recipes. Someone has to keep the store room stocked with the right ingredients. Someone tastes the food before it leaves the kitchen, checks hygiene, and keeps an eye on what each plate costs. If any of these is missing, even a great cook sends out bad food.
+
+An AI system works the same way. The **model** is the cook. A **large language model**, or **LLM**, is a program trained on a huge amount of text, which can read a message and write a reply. Around the model, an AI engineer builds everything else (@fig-system):
+
+- **Instructions and context.** What the model is told about its job, and which facts it is given for this particular question. These are the recipes and the ingredients.
+- **Knowledge.** The store's policies, product details and order records, found and handed to the model when needed. This is the store room.
+- **Tools.** Ways for the model to look up an order or start a refund. These are the ovens and knives.
+- **Tests.** Checks that tell you whether the answers are right, before customers see them. This is tasting the food.
+- **Guardrails.** Rules that stop the system from doing harmful things, such as leaking a customer's address. This is hygiene.
+- **Cost and speed.** What each answer costs, and how long the customer waits. This is the bill.
+
+![An AI system is much more than the model. The model sits in the middle; the AI engineer builds everything around it.](/figures/c01/system.pdf){#fig-system}
+
+The weekend chatbot at Kaveri Kart had only the cook. That is why it failed, and it is why companies hire AI engineers instead of just buying access to a model.
+
+::: {.keyidea}
+**The model is one part of an AI system, and usually not the part that fails.** Most failures come from what is missing around the model: the right facts, tests, limits on what it can do, and a budget.
+:::
+
+## Three kinds of AI jobs
+
+Job titles in AI are confusing, because companies use them differently. It helps to sort the work into three kinds, by where each person spends most of their time.
+
+1. **Researchers** invent new kinds of models and new ways to train them. They work at a small number of labs and universities, and most have a PhD.
+2. **Machine learning engineers** train models on a company's own data and run them in production. They spend their time on data pipelines, training jobs and model servers.
+3. **Applied AI engineers** build products on top of models that already exist. They choose a model, give it the right context and tools, test it, make it safe, and ship it.
+
+The writer Shawn Wang described the line between the last two roles simply: the ML engineer's work mostly stops once the model is serving answers, and the AI engineer's work starts there [@wang2023]. In India, the same role often appears as "GenAI engineer" at IT services companies, and as "AI engineer" or "applied AI engineer" at product companies and startups.
+
+The lines blur in practice. An applied AI engineer sometimes trains a small model (you will do this in Chapter 3), and an ML engineer sometimes writes prompts. But the centre of the applied AI engineer's job is clear: **turn a capable model into a system that works reliably for real users.**
+
+## What the work looks like in a week
+
+Here is a realistic week for the engineer who takes over Kaveri Kart's support system.
+
+1. **Monday: read real conversations.** Read 50 recent chats from start to end. Note every wrong or awkward answer, and group them: wrong policy, wrong language, made-up order status, too long.
+2. **Tuesday: fix the biggest group.** Most wrong policy answers come from the model not having the policy at all. Add a step that finds the right policy section and gives it to the model with the question.
+3. **Wednesday: test the fix.** Run the change against a fixed set of 200 past questions with known good answers. The share of correct answers moves from 71% to 88%, and nothing that was right before is now wrong.
+4. **Thursday: decide what the system may do alone.** Questions about delivery dates can be answered automatically. Refunds above ₹2,000 will be prepared by the system but approved by a person.
+5. **Friday: check cost and speed.** Look at the cost per conversation and the slowest replies. Find that very long chats are expensive, and plan a change for next week.
+
+Notice how little of this week is about the model itself. Most of it is reading, testing, deciding and measuring. That is normal. One hiring guide for AI engineers calls "no evals", meaning no habit of testing AI output systematically, the strongest warning sign in a candidate [@nakrani2026]. This book spends a lot of time on testing for that reason.
+
+## Three questions behind every AI system
+
+Every system you build in this book, from a simple email sorter to an agent that issues refunds, has to answer three questions. Keep them in mind from the first chapter, because each part of the book adds to the answers.
+
+**1. Does it work?** You cannot answer this by trying a few examples and feeling happy. You need a set of test cases with known good answers, and a way to score the system against them. If you change a prompt or a model, you run the tests again. Chapter 2 gives you the basic statistics for this, and Chapter 15 builds your first real test suite.
+
+**2. Should it act by itself?** Some actions are cheap and easy to undo, like answering a question about delivery times. Others are costly or permanent, like sending money or deleting data. For each action, the system can do one of three things:
+
+- **act**: do it alone;
+- **review**: prepare it, and let a person check it;
+- **escalate**: hand it to a person straight away.
+
+Where to draw the lines between these three depends on how sure the system is and on what each mistake costs. Chapter 3 shows how to draw them with simple arithmetic.
+
+**3. What happens when it is wrong?** Every AI system makes mistakes. The question is whether a mistake is small and caught quickly, or large and silent. A good design limits the damage: the support bot cannot see payment details, refunds have a maximum amount, and every action is logged so a person can check it later.
+
+::: {.keyidea}
+**Every AI system must answer three questions: does it work, should it act alone, and what happens when it is wrong?** A demo answers none of them. A production system answers all three, with numbers.
+:::
+
+## Writing or deciding?
+
+When people think of AI, they think of writing: essays, emails, code. But look again at Kaveri Kart's support work. For each incoming message, the system must:
+
+- decide which language it is in;
+- decide what kind of request it is: refund, delivery, product question or complaint;
+- decide whether the customer is angry enough to need a senior person;
+- decide which policy applies;
+- decide whether a refund is allowed;
+- and finally, write a reply.
+
+Five of these six steps are decisions with a small number of possible answers. Only the last one is writing. This pattern repeats in almost every real system, and it matters because decisions and writing need different tools. A decision with a few fixed answers can often be made by a small, cheap, fast model, and its quality is easy to measure: it was either right or wrong. Writing needs a large model, and its quality is harder to judge.
+
+A good AI engineer notices which parts of a system are decisions, and handles them carefully: with a clear set of answers, a measured accuracy, and a rule for when to ask a person. You will see this idea in every part of the book.
+
+## Your workbench
+
+You need very little to start. Set up these five things once, and every chapter after this one will work.
+
+1. **Python.** Install a recent version of Python 3 from python.org, or use the one that comes with your system.
+2. **A code editor.** VS Code is free and popular, but any editor you like is fine.
+3. **Git.** It keeps a history of every change, so you can undo a bad prompt change in seconds. Commit your work often.
+4. **An account with a model provider.** Anthropic, OpenAI and Google all sell access to their models through an **API**, a way for your program to send a request over the internet and get an answer back. Create an account and an **API key**, a long secret string that identifies you and lets the provider bill you.
+5. **A safe place for the key.** Never write the key inside your code, and never commit it to git. Anyone who finds it can spend your money. Store it in an **environment variable**, a named value your operating system keeps for your programs:
+
+```bash
+export ANTHROPIC_API_KEY="your-key-here"
+```
+
+On Windows, set it once with `setx ANTHROPIC_API_KEY "your-key-here"` and open a new terminal.
+
+A word on notebooks. Jupyter notebooks are good for trying ideas, and you will use them. But a system that serves customers must run as normal scripts and services, with tests. Hiring managers often reject candidates whose work never left a notebook [@aliansoftware2026]. In this book, ideas start in a notebook and move into scripts as soon as they work.
+
+## Your first call to a model
+
+Install the provider's Python package with `pip install anthropic`. Then save this as `first_call.py` and run it:
+
+```python
+import anthropic
+
+MODEL = "your-model-name"   # copy a current model name from the provider's docs
+
+client = anthropic.Anthropic()   # reads the key from ANTHROPIC_API_KEY
+
+reply = client.messages.create(
+    model=MODEL,
+    max_tokens=300,
+    messages=[{"role": "user",
+               "content": "Can I return a pressure cooker after 10 days?"}],
+)
+print(reply.content[0].text)
+print(reply.usage.input_tokens, reply.usage.output_tokens)
+```
+
+Here is what each part does:
+
+- `anthropic.Anthropic()` creates a **client**, the object that talks to the provider's servers. It finds your key in the environment variable by itself.
+- `model` says which model to use. Model names change every few months, so this book never prints one in its code. Copy a current name from your provider's documentation.
+- `max_tokens` sets the longest reply you are willing to pay for. A **token** is a small piece of text, usually a short word or part of a longer word. Chapter 5 explains tokens properly. For now, think of 100 tokens as about 75 English words.
+- `messages` is the conversation so far. Here it has one message, from the user.
+- The reply contains the model's text, and `usage`, which tells you how many tokens went in and how many came out.
+
+OpenAI's and Google's Python packages look almost the same: a client, a model name, a list of messages, and a reply with text and token counts. Once you can use one, you can use the others.
+
+Run the program and read the answer. It will probably be polite and sensible, something like "Most stores accept returns within 7 to 30 days, but please check the store's return policy." That sounds fine until you remember the question was about Kaveri Kart. The model has never seen Kaveri Kart's policy. It answered with a general guess. If you ask it to be more specific, it may invent a policy that sounds real. This is called a **hallucination**: a confident answer that is not supported by any fact the model was given. Giving the model the right facts is the subject of Part IV.
+
+Run the same program three times. The wording will change a little each time, because the model picks its words with some randomness. Chapter 2 explains why, and later chapters show how to control it.
+
+## What one answer costs
+
+Providers charge by the token, with one price for tokens you send (**input**) and a higher price for tokens the model writes (**output**). Prices are usually given per million tokens.
+
+Let us work out the cost with example prices. Suppose a model charges ₹250 per million input tokens and ₹1,250 per million output tokens. (These are example prices only; real prices vary a lot between models and change often.) Suppose one support reply uses 300 input tokens and 150 output tokens.
+
+1. Input cost: 300 × ₹250 ÷ 10,00,000 = ₹0.075.
+2. Output cost: 150 × ₹1,250 ÷ 10,00,000 = ₹0.1875.
+3. Total: about ₹0.26, or 26 paise, per reply.
+
+That sounds tiny. Now multiply. At 4,000 messages a day during the sale, it is about ₹1,050 a day, or about ₹31,500 a month. And real support replies use far more than 300 input tokens, because the model must also be given the policy text, the order details and the earlier messages in the chat. With 3,000 input tokens per reply, the same month costs about ₹1,12,500.
+
+This is how the weekend chatbot's bill surprised everyone. Cost in AI systems grows with the number of tokens you send, and you send far more than you think. From this chapter on, every project step notes its cost.
+
+::: {.keyidea}
+**Work out the cost per task before you build, and check it after.** A few paise per answer becomes lakhs of rupees a month at real volumes, and most of the cost comes from the context you send, not the reply.
+:::
+
+## The project: Kaveri Kart's support agent
+
+By the end of this book, Kaveri Kart's support system will look like @fig-project. Each part of the book adds a piece:
+
+- In Part I, you collect and label real-looking customer messages, and build a small model that sorts them by type.
+- In Parts II and III, you choose a model, write its instructions, and give it its first tool: looking up an order.
+- In Part IV, the system learns to answer from Kaveri Kart's own policy documents, and to say "I don't know" when the documents do not cover a question.
+- In Parts V and VI, it becomes an agent that can take actions, such as preparing a refund, behind a human check.
+- In Parts VII and VIII, you protect it from attacks, test it properly, deploy it as a service, and bring its cost down.
+
+![The Kaveri Kart support system at the end of the book. Messages are sorted first; questions are answered from policy documents; order lookups and refunds go through tools; refunds above a limit wait for a person. Tests, logs and cost tracking watch everything.](/figures/c01/project.pdf){#fig-project}
+
+::: {.project}
+1. Make your first call to a model, as shown above, and note the token counts.
+2. Write down 20 questions a Kaveri Kart customer might ask. Mix English, Hindi and Hinglish, and include a few angry ones. For example: "My mixer stopped working after 2 weeks, I want a replacement", "Mera order 5 din se pending hai", "Do you deliver to Shillong?"
+3. Send each question to the model with no extra information. Mark each answer as *correct*, *wrong* or *made up*. Since the model knows nothing about Kaveri Kart, expect many made-up answers. This is your starting point, and you will measure every later improvement against it.
+4. Work out the cost of the 20 calls, using your provider's real prices.
+:::
+
+::: {.breaks}
+- **The model invents facts.** Without the business's real documents, the model fills gaps with believable guesses. Customers believe them.
+- **Nobody measures quality.** Without a fixed test set, every change is judged by gut feeling, and quality drifts down without anyone noticing.
+- **Costs grow quietly.** Long conversations and large documents push the number of input tokens up every month.
+- **Private data leaks into prompts and logs.** Customer phone numbers and addresses end up in prompts, logs and test files that many people can read.
+:::
+
+::: {.defend}
+- **Which model, and why?** Name the model tier you chose (large and slow, or small and fast) and the reason: quality on your test questions, cost per answer, or speed.
+- **Cost per answer.** Show the arithmetic: input tokens, output tokens, the price of each, and the total at expected daily volume.
+- **What the system must never do alone.** List these actions, such as refunds above a limit or changes to an address, and say why each one needs a person.
+:::
+
+::: {.exercises}
+1. List the six parts around the model shown in @fig-system. For a food-delivery app's support bot, give one example of each.
+2. A model costs ₹400 per million input tokens and ₹1,600 per million output tokens (example prices). Each answer uses 2,000 input tokens and 200 output tokens. What does one answer cost? What do 10,000 answers a day cost for a 30-day month?
+3. For a bank's customer-support assistant, name two actions it may take alone, two it should prepare for a person to review, and one it should escalate straight away.
+:::
+
+::: {.interview}
+1. What is the difference between an ML engineer and an applied AI engineer?
+2. Our chatbot gives confident answers that turn out to be wrong. What are the first three things you would check?
+3. How would you estimate the monthly cost of an LLM feature before building it?
+:::
+
+::: {.nexthook}
+Next chapter: the probability and statistics you need to answer the first question, *does it work?*, with numbers instead of feelings.
+:::

@@ -1,0 +1,27 @@
+# How to use this book {.unnumbered}
+
+Each chapter follows the same shape, so you always know where to find things.
+
+## The boxes
+
+**In this chapter you will learn.** Three points at the start of each chapter, so you know what to look for.
+
+**Key idea.** One lesson worth remembering, with a thick bar on its left. The bold headline is the lesson; the sentence under it explains why it is true. At the end of the chapter, a **Keep these** box lists the chapter's key ideas again.
+
+**Project step: Kaveri Kart.** What we add to the running project in this chapter. If you are building along, do this step before moving on.
+
+**Decide.** A real choice an AI engineer has to make, with the reasoning for each option.
+
+**What breaks in production.** The common ways the chapter's idea goes wrong once real users arrive. These boxes are short, and they are some of the most useful pages in the book.
+
+**Numbers you must defend.** Every AI system is full of numbers someone chose: how many test cases, which threshold, how long a text chunk. In an interview, or in a design review, you will be asked why. This box lists the numbers from the chapter and how to justify each one.
+
+**Exercises and interview questions.** Try them before you turn the page. Answers to both are at the back of the book.
+
+## Code
+
+Code in this book is short and is written in Python. Each listing runs as printed, once you install the package it imports and supply your own data where the text says so. You do not need to type the code to understand the chapter: the text explains what each part does.
+
+## Numbers and prices
+
+Every number about Kaveri Kart is an assumed example, chosen to make the idea easy to see. Prices marked as example prices are made up, to keep the arithmetic simple. Real prices change often, so check your provider's current price page before you plan a budget.
