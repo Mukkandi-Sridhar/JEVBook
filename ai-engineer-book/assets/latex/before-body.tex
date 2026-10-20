@@ -1,32 +1,32 @@
 \frontmatter
 % ---------- Half title ----------
 \thispagestyle{empty}
-\vspace*{2.2in}
+\vspace*{2.4in}
 \begin{flushleft}
-{\sffamily\bfseries\fontsize{22}{26}\selectfont\color{ink} The Applied AI Engineer}
+{\rmfamily\bfseries\fontsize{22}{26}\selectfont\color{navy} The Applied AI Engineer}
 \end{flushleft}
 \clearpage
 \thispagestyle{empty}\null\clearpage
 % ---------- Title page ----------
 \thispagestyle{empty}
 \begin{tikzpicture}[remember picture, overlay]
-  \fill[accent] ($$(current page.north west)+(0.72in,-0.85in)$$) rectangle ++(0.5in,-0.06in);
-  \fill[zonereview] ($$(current page.north west)+(1.26in,-0.85in)$$) rectangle ++(0.22in,-0.06in);
-  \fill[datablue] ($$(current page.north west)+(1.52in,-0.85in)$$) rectangle ++(0.12in,-0.06in);
+  \fill[navy] (current page.north west) rectangle ($$(current page.north east)+(0,-3.1in)$$);
+  \fill[saffron] ($$(current page.north west)+(0,-3.1in)$$) rectangle ($$(current page.north east)+(0,-3.22in)$$);
+  \node[anchor=north west, text width=5.2in, align=left] at ($$(current page.north west)+(0.9in,-1.15in)$$)
+    {\rmfamily\bfseries\fontsize{36}{40}\selectfont\color{white}The Applied\\AI Engineer};
 \end{tikzpicture}
-\vspace*{1.2in}
+\vspace*{2.75in}
 \begin{flushleft}
-{\sffamily\bfseries\fontsize{34}{38}\selectfont\color{ink} The Applied\\ AI Engineer}\par\vspace{16pt}
-{\sffamily\fontsize{13}{17}\selectfont\color{ink2} From Probability to Production Agents}\par\vspace{1.4in}
+{\sffamily\fontsize{14}{18}\selectfont\color{navy} From Probability to Production Agents}\par\vspace{1.6in}
 {\sffamily\bfseries\fontsize{12}{15}\selectfont\color{ink} Sridhar Mukkandi}\par
 \vfill
-{\sffamily\fontsize{7.5}{10}\selectfont\color{muted} Draft}
+{\sffamily\fontsize{7.5}{10}\selectfont\color{soft} Draft}
 \end{flushleft}
 \clearpage
 % ---------- Copyright page ----------
 \thispagestyle{empty}
 \vspace*{\fill}
-{\sffamily\fontsize{7.2}{10}\selectfont\color{ink2}\raggedright
+{\sffamily\fontsize{7.2}{10}\selectfont\color{slate}\raggedright
 \textbf{The Applied AI Engineer: From Probability to Production Agents}\par\medskip
 Copyright \textcopyright\ 2026 Sridhar Mukkandi. All rights reserved.\par\medskip
 No part of this book may be reproduced, stored or transmitted in any form without written permission from the
@@ -40,6 +40,6 @@ register at the back of the book. All trademarks belong to their respective owne
 The information in this book is provided without warranty. The author assumes no responsibility for errors or
 omissions, or for damages resulting from its use. Nothing in this book is legal, security-compliance or financial
 advice.\par\medskip
-Text set in Source Serif 4, Inter and JetBrains Mono, all under the SIL Open Font License.\par\medskip
+Text set in IBM Plex Serif, Work Sans and IBM Plex Mono, all under the SIL Open Font License.\par\medskip
 Contact: sridhar.authorhub@gmail.com\par}
 \clearpage

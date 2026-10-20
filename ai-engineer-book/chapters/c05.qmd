@@ -4,7 +4,7 @@ A Kaveri Kart customer writes: *"mera order abhi tak nahi aaya, tracking bhi kaa
 
 To a person, these three messages say the same thing. To a computer, they are three completely different strings of characters, and the first one is not even written in a standard spelling. Before any model can work with language, text must become numbers, in a way that keeps the meaning. This chapter shows the two steps that every language model uses: breaking text into **tokens**, and turning tokens into **vectors** that capture meaning. Both steps affect cost, speed and quality, and both need special care for Indian languages.
 
-::: {.goals}
+::: {.glance}
 - What a token is, how text is split into tokens, and why the same message can cost more in Hindi than in English.
 - How embeddings turn text into numbers that capture meaning, and how to measure how similar two texts are.
 - What embeddings miss, and why that leads to the transformer in Part II.
@@ -70,8 +70,8 @@ for text in ["Where is my refund?",
 
 Other providers give a token-counting endpoint or show the count in each response, as you saw with `usage` in Chapter 1. Run the same messages through each model on your shortlist. The differences can change which model is cheapest for your customers.
 
-::: {.keyidea}
-**Count tokens in the languages your customers actually use.** A tokeniser trained mostly on English can split Hindi or Kannada into many more pieces, so the same message costs more, runs slower and fills the context window sooner. Measure with each model's own tokeniser before you choose.
+::: {.remember}
+Count tokens in your customers' real languages, with each model's own tokeniser, before you choose a model.
 :::
 
 ## Embeddings: meaning as position
@@ -133,8 +133,8 @@ You will hear these names in interviews and papers, so here is how they fit toge
 4. **Attention and the transformer** (2017): let every word look at every other word at once [@vaswani2017]. Fast on GPUs, and good at long-range meaning.
 5. **Large language models** (2018 onwards): transformers made very large and trained on enormous amounts of text. Part II explains how.
 
-::: {.keyidea}
-**Embeddings capture what a text is about, not the exact details.** Two messages about refunds look similar whether the amount is ₹500 or ₹50,000, and "delivered" can look like "not delivered". Pass exact facts such as amounts and dates separately, as numbers or fields.
+::: {.remember}
+Embeddings capture the topic, not the details. Pass amounts, dates and IDs separately as fields.
 :::
 
 ::: {.project}
@@ -143,7 +143,7 @@ You will hear these names in interviews and papers, so here is how they fit toge
 3. Write three pairs of messages that differ only by "not" or by an amount, and check their cosine similarity. Keep these pairs; they become test cases in Part IV.
 :::
 
-::: {.breaks}
+::: {.production}
 - **Token bills grow with language mix.** Costs are planned on English test messages, and the real traffic is half Hindi and Hinglish.
 - **The embedding model does not know the language.** An embedding model trained mostly on English places Hinglish messages almost at random, and search quietly fails for those customers.
 - **Long messages are cut off.** Embedding models and context windows have length limits. A long complaint is silently cut, and the important part was at the end.
@@ -156,7 +156,7 @@ You will hear these names in interviews and papers, so here is how they fit toge
 - **How many neighbours.** "We use the 10 nearest messages. With 5, results jumped around; with 20, rare types like complaints were outvoted."
 :::
 
-::: {.exercises}
+::: {.practice}
 1. Using the tiny BPE example in this chapter, explain why "refunded" ends up as "refund" + "e" + "d" and not as one token.
 2. Work out the cosine similarity of (1, 0) and (0, 1), and of (1, 1) and (2, 2). What do the two answers mean?
 3. A customer writes "I was charged ₹4,999 instead of ₹499". Why might an embedding-based search fail to find past cases about this exact problem? What would you add?
@@ -170,5 +170,5 @@ You will hear these names in interviews and papers, so here is how they fit toge
 :::
 
 ::: {.nexthook}
-Next: Part II opens the transformer, the model that reads every word in the light of all the others, and shows how it became the large language models you use today.
+Part II opens the transformer, the model that reads every word in the light of all the others, and shows how it became the large language models you use today.
 :::

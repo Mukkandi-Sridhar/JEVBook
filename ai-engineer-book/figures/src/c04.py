@@ -15,7 +15,7 @@ def fig_network():
         for (x1, y1) in a:
             for (x2, y2) in b:
                 ax.plot([x1, x2], [y1, y2], color=C["rule"], lw=0.5)
-    cols = [C["blue"], C["teal"], C["teal"], C["orange"]]
+    cols = [C["indigo"], C["plum"], C["plum"], C["saffron"]]
     for layer, col in zip(pos, cols):
         for (x, y) in layer:
             ax.scatter([x], [y], s=110, color="white", edgecolor=col, lw=1.4, zorder=3)
@@ -28,7 +28,7 @@ def fig_memory():
     f, ax = fs.subplots(height=2.0)
     labels = ["Run in FP32", "Run in BF16", "Run in INT8", "Run in 4-bit", "Train fully\n(about 16 bytes each)"]
     vals = [28, 14, 7, 3.5, 112]
-    cols = [C["blue"]] * 4 + [C["red"]]
+    cols = [C["indigo"]] * 4 + [C["crimson"]]
     y = range(len(labels))[::-1]
     for yi, v, c, i in zip(y, vals, cols, range(5)):
         ax.barh(yi, v, color=c, height=0.6, hatch="////" if i == 4 else None, edgecolor="white", lw=0.6)

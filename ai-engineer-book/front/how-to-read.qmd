@@ -4,19 +4,19 @@ Each chapter follows the same shape, so you always know where to find things.
 
 ## The boxes
 
-**In this chapter you will learn.** Three points at the start of each chapter, so you know what to look for.
+**This chapter.** A dark strip at the start of each chapter, with the three things it covers.
 
-**Key idea.** One lesson worth remembering, with a thick bar on its left. The bold headline is the lesson; the sentence under it explains why it is true. At the end of the chapter, a **Keep these** box lists the chapter's key ideas again.
+**Remember.** One line worth keeping, set in italics between two rules. At the end of the chapter, the **Chapter checklist** collects these lines so you can tick them off.
 
-**Project step: Kaveri Kart.** What we add to the running project in this chapter. If you are building along, do this step before moving on.
+**Build it: Kaveri Kart.** What we add to the running project in this chapter. If you are building along, do this step before moving on.
 
-**Decide.** A real choice an AI engineer has to make, with the reasoning for each option.
+**Design decision.** A real choice an AI engineer has to make, with the reasoning for each option.
 
-**What breaks in production.** The common ways the chapter's idea goes wrong once real users arrive. These boxes are short, and they are some of the most useful pages in the book.
+**In production, this goes wrong.** The common ways the chapter's idea fails once real users arrive. These boxes are short, and they are some of the most useful pages in the book.
 
-**Numbers you must defend.** Every AI system is full of numbers someone chose: how many test cases, which threshold, how long a text chunk. In an interview, or in a design review, you will be asked why. This box lists the numbers from the chapter and how to justify each one.
+**Defend your numbers.** Every AI system is full of numbers someone chose: how many test cases, which threshold, how long a text chunk. In an interview or a design review, you will be asked why. This box lists the numbers from the chapter and how to justify each one.
 
-**Exercises and interview questions.** Try them before you turn the page. Answers to both are at the back of the book.
+**Practice and Interview corner.** Try them before you turn the page. Answers to both are at the back of the book.
 
 ## Code
 

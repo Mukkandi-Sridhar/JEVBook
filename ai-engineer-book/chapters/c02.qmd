@@ -6,7 +6,7 @@ A week later, they test both again on 20 different questions. This time B gets 1
 
 Neither test can tell. With only 20 questions, a difference of two answers can easily happen by luck. A batsman can score three fifties in five innings and then three single-digit scores in the next five, without becoming a worse player. This chapter gives you the few ideas from probability and statistics that prevent this mistake. It also covers a handful of others that come up every week in AI work. There are no proofs here, and no formulas you cannot work out on paper.
 
-::: {.goals}
+::: {.glance}
 - What a probability means, and why rare events make most alarms false.
 - How sure you can be about a test score, using one simple method called the bootstrap.
 - How a language model uses probability to pick its next word.
@@ -41,8 +41,8 @@ Most people guess something close to 90%. The right answer is about 10%. The eas
 
 There are so many genuine requests that even a small mistake rate produces far more false alarms than real catches. How common something is before you look at any evidence is called its **base rate**. Here the base rate of fake requests is 1 in 200. Whenever someone tells you how good a checker is, ask for the base rate before you believe what its alarms mean.
 
-::: {.keyidea}
-**When the thing you are looking for is rare, most alarms are false.** A checker that catches 90% of fake refunds is right only about 1 time in 10 when it raises an alarm, because genuine requests are 199 times more common. Count it out with 10,000 cases to see this.
+::: {.remember}
+When the thing you look for is rare, most alarms are false. Ask for the base rate, and count it out with 10,000 cases.
 :::
 
 ## Accuracy can fool you
@@ -98,8 +98,8 @@ How many test cases do you need? @fig-interval shows how the range shrinks as th
 
 Notice the shape of the curve. To make the range half as wide, you need four times as many cases. That is why a test set of 200 to 500 well-chosen cases is a common, practical size for a first version of an AI system: big enough to see a difference of 5 to 10 points, small enough that a person can check the answers.
 
-::: {.keyidea}
-**A score on a small test set is mostly luck.** With 20 test cases, a score of 85% could really be anything from 70% to 100%. Always report the range with the score, and grow your test set until the range is narrow enough to make your decision.
+::: {.remember}
+Report every test score with its range. On 20 test cases, 85% could really be anything from 70% to 100%.
 :::
 
 ## Comparing two versions fairly
@@ -167,8 +167,8 @@ Points on the diagonal mean the probabilities can be trusted. Points that are fl
 
 Why does this matter so much? Because in the next chapter, you will make the system act on its probabilities: route the message automatically above one value, send it to a person below it. If the model's 80% really means 60%, every one of those rules is wrong.
 
-::: {.keyidea}
-**Before you act on a model's probability, check that it means what it says.** Group past cases by the probability the model gave, and count how often it was right in each group. If it says 80% but is right only 60% of the time, every rule built on its numbers will be wrong.
+::: {.remember}
+Check that a model's 80% really happens 80% of the time before you build any rule on it.
 :::
 
 ::: {.project}
@@ -178,7 +178,7 @@ Why does this matter so much? Because in the next chapter, you will make the sys
 4. Save `bootstrap_range` in a file called `stats.py`. You will use it in almost every chapter.
 :::
 
-::: {.breaks}
+::: {.production}
 - **Tiny test sets.** Teams compare versions on 10 or 20 examples and ship the "winner". The difference is usually luck.
 - **Test cases leak into the prompt.** If an example from the test set is also used as an example in the model's instructions, the model has seen the answer, and the score is too high.
 - **The test set stops matching real traffic.** Customers start asking about a new sale or a new product, and the old test set no longer covers what they ask.
@@ -192,7 +192,7 @@ Why does this matter so much? Because in the next chapter, you will make the sys
 - **Temperature.** "We use a low temperature for support replies, because we want the same question to get the same answer."
 :::
 
-::: {.exercises}
+::: {.practice}
 1. A spam filter catches 98% of spam and wrongly flags 1% of normal emails. Only 1 in 100 emails is spam. Of the emails it flags, what share are actually normal? Count it out with 10,000 emails.
 2. Your system gets 45 out of 50 test questions right. Without running any code, is the real score more likely to be within ±2 points of 90% or within ±10 points? Why?
 3. Two versions are tested on the same 300 questions. Version A alone is right on 9 questions, and version B alone is right on 7. What would you tell your manager?
@@ -206,5 +206,5 @@ Why does this matter so much? Because in the next chapter, you will make the sys
 :::
 
 ::: {.nexthook}
-Next chapter: small, fast models that learn from examples, and how to turn their probabilities into actions using what each mistake costs.
+Small, fast models that learn from examples, and how to turn their probabilities into actions using what each mistake costs.
 :::

@@ -22,4 +22,4 @@ quarto render --to pdf                      # -> _book/The-Applied-AI-Engineer.p
 BOOK_DRAFT=1 quarto render --to pdf         # same, with [[VERIFY]] markers shown
 ```
 
-Devanagari text falls back to the FreeSans font (`fonts-freefont-ttf`), shaped with HarfBuzz.
+Fonts: IBM Plex Serif, Work Sans and IBM Plex Mono (in assets/fonts). Devanagari text falls back to the FreeSans font (`fonts-freefont-ttf`), shaped with HarfBuzz.

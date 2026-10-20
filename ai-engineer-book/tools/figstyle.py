@@ -14,15 +14,16 @@ from matplotlib import font_manager
 ROOT = Path(__file__).resolve().parents[1]
 FONT_DIR = ROOT / "assets" / "fonts"
 
+# Indigo and saffron, with crimson for failure and slate for neutral; matches assets/latex/preamble.tex
 C = dict(
-    blue="#2F6DB5", orange="#E07A1F", teal="#0F766E", red="#B8323A", purple="#6B4FB3", slate="#5B6B82",
-    ink="#000000", ink2="#4B5563", muted="#6B7280", grid="#E4E7EB", rule="#9AA1AB",
-    blue_t="#CBDAEF", orange_t="#F3D2B6", teal_t="#C7E4E0", red_t="#F0CACA", purple_t="#D8CEEE", grey_t="#D5D8DD",
+    indigo="#3B4BA8", saffron="#D97706", plum="#8E3B7A", crimson="#B42318", slate="#5B6476", navy="#1B2A4A",
+    ink="#14161A", ink2="#4A5160", muted="#7A8191", grid="#E3E5EA", rule="#A3A9B5",
+    indigo_t="#DCE0F3", saffron_t="#F8E3C6", plum_t="#EDD5E6", crimson_t="#F6D5D1", slate_t="#E2E4E9", paper="#EEEBE5",
 )
 LINESTYLES = ["-", (0, (5, 2)), (0, (1, 1.6)), (0, (5, 1.5, 1, 1.5))]
 MARKERS = ["o", "s", "^", "D"]
 SERIES = [dict(color=c, ls=ls, marker=m) for c, ls, m in
-          zip([C["blue"], C["orange"], C["teal"], C["red"]], LINESTYLES, MARKERS)]
+          zip([C["indigo"], C["saffron"], C["plum"], C["crimson"]], LINESTYLES, MARKERS)]
 TEXT_W = 4.7
 _ready = False
 
@@ -34,7 +35,7 @@ def setup():
     for f in FONT_DIR.glob("*.ttf"):
         font_manager.fontManager.addfont(str(f))
     mpl.rcParams.update({
-        "font.family": "Inter", "font.size": 7.8, "axes.labelsize": 7.8, "axes.labelcolor": C["ink2"],
+        "font.family": "Work Sans", "font.size": 7.8, "axes.labelsize": 7.8, "axes.labelcolor": C["ink2"],
         "axes.edgecolor": C["rule"], "axes.linewidth": 0.6, "axes.spines.top": False, "axes.spines.right": False,
         "axes.grid": True, "axes.axisbelow": True, "grid.color": C["grid"], "grid.linewidth": 0.5,
         "xtick.color": C["ink2"], "ytick.color": C["ink2"], "xtick.labelsize": 7, "ytick.labelsize": 7,

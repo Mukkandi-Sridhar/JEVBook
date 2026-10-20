@@ -6,11 +6,11 @@ from matplotlib.patches import Ellipse
 def fig_map():
     f, ax = fs.subplots(height=2.8)
     groups = [
-        (C["blue"], "o", [("refund", .10, .84), ("money back", .27, .80), ("paisa wapas", .07, .68),
+        (C["indigo"], "o", [("refund", .10, .84), ("money back", .27, .80), ("paisa wapas", .07, .68),
                           ("amount not credited", .20, .60)], (.24, .72, .48, .40), "refunds"),
-        (C["orange"], "s", [("delivery", .62, .84), ("courier", .82, .80), ("order nahi aaya", .58, .68),
+        (C["saffron"], "s", [("delivery", .62, .84), ("courier", .82, .80), ("order nahi aaya", .58, .68),
                             ("tracking not working", .70, .59)], (.76, .72, .46, .40), "delivery"),
-        (C["teal"], "^", [("mixer jar size", .33, .30), ("cooker capacity", .50, .21),
+        (C["plum"], "^", [("mixer jar size", .33, .30), ("cooker capacity", .50, .21),
                           ("steel grade", .35, .12)], (.47, .21, .44, .32), "product questions"),
     ]
     for col, m, pts, (cx, cy, w, h), name in groups:

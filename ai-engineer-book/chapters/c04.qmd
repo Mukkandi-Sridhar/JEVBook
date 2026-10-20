@@ -4,7 +4,7 @@ Some Kaveri Kart customers do not write at all. They send a photo of a dented pr
 
 **Deep learning** solves this. A deep learning model takes raw input, such as the pixels of a photo, the sound of a voice or the letters of a sentence, and learns its own features from examples. Every large language model is a deep learning model, so this chapter gives you the core ideas in plain words. You will not build networks from scratch in this book. You need to understand them well enough to use them, choose them, run them, and explain their limits.
 
-::: {.goals}
+::: {.glance}
 - How a neural network is built from small units, and how it learns.
 - Why neural networks are needed for photos, sound and free text, and when they are not needed.
 - What a model needs in GPU memory, and how to estimate it on paper.
@@ -28,8 +28,8 @@ Between layers, each neuron applies a small bend to its total before passing it 
 
 A network with many layers is called **deep**, which is where "deep learning" gets its name. On photos, researchers found that the first layers of a trained network learn to spot edges, the middle layers learn textures and shapes, and the last layers learn whole objects [@lecun2015]. For Kaveri Kart's photos, that could mean edges, then a dent or a crack, then "damaged product". Nobody wrote a rule for "dent". The network learned it from labelled photos.
 
-::: {.keyidea}
-**A neural network learns its own features from raw input.** That is why it can read photos, sound and free text, where nobody could write the features by hand. On clean tables of numbers, a simpler model such as gradient-boosted trees is usually just as good, and far cheaper.
+::: {.remember}
+Use neural networks for photos, sound and free text. For clean tables of numbers, gradient-boosted trees are usually as good and far cheaper.
 :::
 
 ## How a network learns
@@ -80,8 +80,8 @@ To *train* the same model is far more expensive. Training keeps, for every param
 
 That is more than one large GPU holds. @fig-memory shows why almost nobody trains a large model fully for a business task. Instead, engineers use models someone else has trained, and when they must adapt one, they use methods that train only a small number of extra parameters. Chapter 34 covers those methods.
 
-::: {.keyidea}
-**Estimate memory on paper before you rent a GPU.** Running a model needs about 2 bytes per parameter in BF16, plus room for the text it is working on; fully training it needs about 16 bytes per parameter. A 7B model runs in about 14 GB but needs over 100 GB to train.
+::: {.remember}
+Running a model needs about 2 bytes per parameter in BF16; fully training it needs about 16. Do this sum before you rent a GPU.
 :::
 
 ## When to use deep learning yourself
@@ -101,7 +101,7 @@ Training a deep network from scratch is for companies with large datasets, large
 3. Write one paragraph for Kaveri Kart: should the support system use a model through an API, or run one on its own GPU? Consider the data (customer addresses and phone numbers), the volume (800 to 4,000 messages a day), and the team size. You will revisit this choice in Chapter 12 with real costs.
 :::
 
-::: {.breaks}
+::: {.production}
 - **The model is too big for the GPU.** The weights fit, but the working memory for long conversations and many users does not. The service crashes under load, not in testing.
 - **Overconfident probabilities.** A large network's "99%" is acted on as if it were reliable. Check calibration before using any threshold.
 - **Training data does not match real inputs.** A damage-photo model trained on bright studio photos fails on blurry phone photos taken in a dark corridor.
@@ -114,7 +114,7 @@ Training a deep network from scratch is for companies with large datasets, large
 - **Why not train our own model.** "Full training would need over 100 GB of GPU memory for a 7B model, plus a large labelled dataset. Existing models already meet our quality target."
 :::
 
-::: {.exercises}
+::: {.practice}
 1. How much memory do the weights of a 13B model need in BF16, in INT8 and in 4-bit?
 2. Explain gradient descent to a friend who has never studied maths, using an example from daily life other than a hill in fog.
 3. Your team wants to train a neural network to predict delivery delays from a table with 20 columns (distance, courier, weather, and so on). What would you suggest trying first, and why?
@@ -128,5 +128,5 @@ Training a deep network from scratch is for companies with large datasets, large
 :::
 
 ::: {.nexthook}
-Next chapter: how computers turn words into numbers, from tokens to embeddings, and why Indian languages need special care.
+How computers turn words into numbers, from tokens to embeddings, and why Indian languages need special care.
 :::

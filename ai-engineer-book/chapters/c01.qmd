@@ -11,7 +11,7 @@ The owner, Meena, decides to "add AI". A developer friend connects a chatbot to 
 
 None of this happened because the model was weak. The model wrote fluent, polite replies. Everything around the model was missing: the store's real policies, a way to test answers, a rule for when to hand a case to a person, and a budget. Building those things is the job of an **applied AI engineer**, and it is what this book teaches.
 
-::: {.goals}
+::: {.glance}
 - What an applied AI engineer does, and how the role differs from a data scientist or an ML engineer.
 - The three questions behind every AI system you will build.
 - How to make your first call to a large language model, and what it costs.
@@ -34,8 +34,8 @@ An AI system works the same way. The **model** is the cook. A **large language m
 
 The weekend chatbot at Kaveri Kart had only the cook. That is why it failed, and it is why companies hire AI engineers instead of just buying access to a model.
 
-::: {.keyidea}
-**The model is one part of an AI system, and usually not the part that fails.** Most failures come from what is missing around the model: the right facts, tests, limits on what it can do, and a budget.
+::: {.remember}
+Most AI failures come from what is missing around the model: the right facts, tests, limits on its actions, and a budget.
 :::
 
 ## Three kinds of AI jobs
@@ -78,8 +78,8 @@ Where to draw the lines between these three depends on how sure the system is an
 
 **3. What happens when it is wrong?** Every AI system makes mistakes. The question is whether a mistake is small and caught quickly, or large and silent. A good design limits the damage: the support bot cannot see payment details, refunds have a maximum amount, and every action is logged so a person can check it later.
 
-::: {.keyidea}
-**Every AI system must answer three questions: does it work, should it act alone, and what happens when it is wrong?** A demo answers none of them. A production system answers all three, with numbers.
+::: {.remember}
+Before you ship, answer three questions with numbers: does it work, should it act alone, and what happens when it is wrong?
 :::
 
 ## Writing or deciding?
@@ -164,8 +164,8 @@ That sounds tiny. Now multiply. At 4,000 messages a day during the sale, it is a
 
 This is how the weekend chatbot's bill surprised everyone. Cost in AI systems grows with the number of tokens you send, and you send far more than you think. From this chapter on, every project step notes its cost.
 
-::: {.keyidea}
-**Work out the cost per task before you build, and check it after.** A few paise per answer becomes lakhs of rupees a month at real volumes, and most of the cost comes from the context you send, not the reply.
+::: {.remember}
+Work out the cost per task before you build. Most of it comes from the context you send, and a few paise per answer becomes lakhs a month.
 :::
 
 ## The project: Kaveri Kart's support agent
@@ -187,7 +187,7 @@ By the end of this book, Kaveri Kart's support system will look like @fig-projec
 4. Work out the cost of the 20 calls, using your provider's real prices.
 :::
 
-::: {.breaks}
+::: {.production}
 - **The model invents facts.** Without the business's real documents, the model fills gaps with believable guesses. Customers believe them.
 - **Nobody measures quality.** Without a fixed test set, every change is judged by gut feeling, and quality drifts down without anyone noticing.
 - **Costs grow quietly.** Long conversations and large documents push the number of input tokens up every month.
@@ -200,7 +200,7 @@ By the end of this book, Kaveri Kart's support system will look like @fig-projec
 - **What the system must never do alone.** List these actions, such as refunds above a limit or changes to an address, and say why each one needs a person.
 :::
 
-::: {.exercises}
+::: {.practice}
 1. List the six parts around the model shown in @fig-system. For a food-delivery app's support bot, give one example of each.
 2. A model costs ₹400 per million input tokens and ₹1,600 per million output tokens (example prices). Each answer uses 2,000 input tokens and 200 output tokens. What does one answer cost? What do 10,000 answers a day cost for a 30-day month?
 3. For a bank's customer-support assistant, name two actions it may take alone, two it should prepare for a person to review, and one it should escalate straight away.
@@ -213,5 +213,5 @@ By the end of this book, Kaveri Kart's support system will look like @fig-projec
 :::
 
 ::: {.nexthook}
-Next chapter: the probability and statistics you need to answer the first question, *does it work?*, with numbers instead of feelings.
+The probability and statistics you need to answer the first question, *does it work?*, with numbers instead of feelings.
 :::

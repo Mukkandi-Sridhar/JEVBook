@@ -1,342 +1,220 @@
 % ==========================================================================
 %  The Applied AI Engineer -- print design
-%  7 x 10 in, twoside, 4.7in text block with a 1.1in outer margin column.
+%  7 x 10 in. Indigo and saffron. IBM Plex Serif for reading, Work Sans for
+%  structure, IBM Plex Mono for code. Numbered sections, a large chapter number,
+%  and light, open boxes.
 % ==========================================================================
 
 % ---------- Fonts ---------------------------------------------------------
 % Devanagari (Hindi examples) falls back to FreeSans, shaped with HarfBuzz
 \directlua{luaotfload.add_fallback("indic", {"FreeSans:mode=harf;script=dev2;"})}
-\setmainfont{Source Serif 4}[
-  UprightFont = *-Regular, BoldFont = *-Semibold, ItalicFont = *-Italic,
-  BoldItalicFont = *-SemiboldItalic, Extension = .ttf, Path = ./assets/fonts/,
-  Numbers = {Proportional,OldStyle}, Ligatures = TeX, RawFeature = {fallback=indic},
-  WordSpace = {1.0, 1.4, 0.55}]      % word spaces may stretch more and shrink less than the font's default
-\setsansfont{Inter}[
-  UprightFont = *-Regular, BoldFont = *-Bold, ItalicFont = *-Italic,
-  BoldItalicFont = *-BoldItalic, Extension = .ttf, Path = ./assets/fonts/,
-  Numbers = Lining, Scale = 0.92]
-\setmonofont{JetBrainsMono}[
-  UprightFont = *-Regular, BoldFont = *-Bold, ItalicFont = *-Italic,
-  BoldItalicFont = *-BoldItalic, Extension = .ttf, Path = ./assets/fonts/,
-  Scale = 0.84, RawFeature = {-calt;-liga;fallback=indic}]
-\newfontfamily\semibold{Inter}[UprightFont = *-SemiBold, Extension = .ttf, Path = ./assets/fonts/, Scale = 0.92]
-\newfontfamily\serifsemi{SourceSerif4}[UprightFont = *-Semibold, Extension = .ttf, Path = ./assets/fonts/, Numbers = Lining]
-\newfontfamily\liningserif{SourceSerif4}[UprightFont = *-Regular, ItalicFont = *-Italic, Extension = .ttf, Path = ./assets/fonts/, Numbers = Lining]
+\setmainfont{IBMPlexSerif}[
+  UprightFont = *-Regular, BoldFont = *-Bold, ItalicFont = *-Italic, BoldItalicFont = *-BoldItalic,
+  Extension = .ttf, Path = ./assets/fonts/, Ligatures = TeX, Scale = 0.94, RawFeature = {fallback=indic}]
+\setsansfont{WorkSans}[
+  UprightFont = *-Regular, BoldFont = *-Bold, ItalicFont = *-Italic, BoldItalicFont = *-BoldItalic,
+  Extension = .ttf, Path = ./assets/fonts/, Scale = 0.94]
+\setmonofont{IBMPlexMono}[
+  UprightFont = *-Regular, BoldFont = *-Bold, Extension = .ttf, Path = ./assets/fonts/, Scale = 0.86,
+  RawFeature = {fallback=indic}]
 
-% Hanging punctuation only: no font expansion, so letters keep their shapes and lines loosen at the word spaces.
 \microtypesetup{protrusion=true,expansion=false,tracking=false}
-\linespread{1.08}
+\linespread{1.12}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0.5em plus 0.15em minus 0.05em}
+\setlength{\parskip}{0.55em plus 0.15em minus 0.05em}
 \raggedbottom
 \frenchspacing
 \widowpenalty=10000
 \clubpenalty=10000
-\brokenpenalty=5000
 \tolerance=800
 \emergencystretch=3em
 
-% ---------- Colours (keep in sync with tools/figstyle.py) --------------
-% Black-and-white safe (D-88): body text is pure black; every box tint is at least 15% darker than white when printed
-% in greyscale; every box has a bar or border dark enough to survive a photocopy.
-\definecolor{ink}{HTML}{000000}
-\definecolor{ink2}{HTML}{4B5563}
-\definecolor{muted}{HTML}{6B7280}
-\definecolor{gridc}{HTML}{E4E7EB}
-\definecolor{rulec}{HTML}{9AA1AB}
-\definecolor{barc}{HTML}{6B7280}
-\definecolor{framec}{HTML}{8A919C}
-\definecolor{datablue}{HTML}{2F6DB5}
-\definecolor{llmorange}{HTML}{E07A1F}
-\definecolor{accent}{HTML}{0F766E}
-\definecolor{failred}{HTML}{B8323A}
-\definecolor{datatint}{HTML}{CFDDF0}
-\definecolor{llmtint}{HTML}{F5D6BC}
-\definecolor{accenttint}{HTML}{C7E4E0}
-\definecolor{failtint}{HTML}{F0CACA}
-\definecolor{neutraltint}{HTML}{D5D8DD}
-\definecolor{keybar}{HTML}{0B4F4A}
-\definecolor{keytint}{HTML}{CBE3E0}
-\definecolor{zoneact}{HTML}{B7A6E0}
-\definecolor{zonereview}{HTML}{8468C9}
-\definecolor{zoneesc}{HTML}{4B2C8F}
-\definecolor{zonetint}{HTML}{D8CEEE}
-\definecolor{codebg}{HTML}{D6D9DE}
+% ---------- Colours (keep in step with tools/figstyle.py) -----------------
+\definecolor{ink}{HTML}{14161A}
+\definecolor{navy}{HTML}{1B2A4A}
+\definecolor{indigo}{HTML}{3B4BA8}
+\definecolor{saffron}{HTML}{D97706}
+\definecolor{crimson}{HTML}{B42318}
+\definecolor{slate}{HTML}{5B6476}
+\definecolor{soft}{HTML}{7A8191}
+\definecolor{hair}{HTML}{C9CDD5}
+\definecolor{indigotint}{HTML}{DCE0F3}
+\definecolor{saffrontint}{HTML}{F8E3C6}
+\definecolor{paper}{HTML}{EEEBE5}
+\definecolor{codebg}{HTML}{F1F2F5}
 \definecolor{storyyellow}{HTML}{FFF3C4}
-\definecolor{storyedge}{HTML}{E0B400}
 \color{ink}
 
 % ---------- Packages --------------------------------------------------------
 \usepackage{tikz}
 \usetikzlibrary{calc}
 \usepackage[most]{tcolorbox}
-\usepackage{marginnote}
-\renewcommand*{\marginfont}{\sffamily\fontsize{7}{9}\selectfont\color{ink2}}
 \usepackage{changepage}
-\strictpagecheck
 \usepackage{enumitem}
-\setlist{itemsep=2pt, topsep=4pt, parsep=0pt, leftmargin=1.4em}
-\setlist[itemize]{label={\color{muted}\textbullet}}
+\setlist{itemsep=2pt, topsep=4pt, parsep=0pt, leftmargin=1.5em}
+\setlist[itemize]{label={\color{saffron}\rule[0.25ex]{0.45em}{0.45em}}}
+\setlist[enumerate]{label={\sffamily\bfseries\color{indigo}\arabic*}, leftmargin=1.6em}
 \usepackage{needspace}
 \usepackage{booktabs}
 \usepackage{fvextra}
 
 % ---------- Captions --------------------------------------------------------
 \usepackage{caption}
-\captionsetup{font={sf,footnotesize}, labelfont={bf,color=ink}, textfont={color=ink2},
-  labelsep=period, justification=raggedright, singlelinecheck=false, skip=6pt}
+\captionsetup{font={sf,footnotesize}, labelfont={bf,color=indigo}, textfont={color=slate},
+  labelsep=quad, justification=raggedright, singlelinecheck=false, skip=6pt}
 \captionsetup[table]{position=top, skip=4pt}
 
 % ---------- Page style ------------------------------------------------------
 \usepackage[automark,headsepline=false]{scrlayer-scrpage}
 \clearpairofpagestyles
-\setkomafont{pageheadfoot}{\sffamily\fontsize{7}{9}\selectfont\color{muted}}
-\setkomafont{pagenumber}{\sffamily\bfseries\fontsize{7.5}{9}\selectfont\color{ink}}
+\setkomafont{pageheadfoot}{\sffamily\fontsize{7.2}{9}\selectfont\color{soft}}
+\setkomafont{pagenumber}{\sffamily\bfseries\fontsize{8}{9}\selectfont\color{navy}}
 \automark[section]{chapter}
-\renewcommand*{\chaptermarkformat}{\thechapter\enskip\textbar\enskip}
+\renewcommand*{\chaptermarkformat}{}
 \renewcommand*{\sectionmarkformat}{}
-\lehead{\pagemark\hspace{1.2em}\leftmark}
-\rohead{\rightmark\hspace{1.2em}\pagemark}
+\lefoot{\pagemark}\rofoot{\pagemark}
+\lehead{\MakeUppercase{\leftmark}}\rohead{\rightmark}
 \pagestyle{scrheadings}
 \renewcommand*{\chapterpagestyle}{plain.scrheadings}
-\cfoot*{}
-\ofoot[\pagemark]{}
+\lefoot*{\pagemark}\rofoot*{\pagemark}
 
 % ---------- Headings --------------------------------------------------------
-\setcounter{secnumdepth}{0}
-\setkomafont{disposition}{\sffamily\bfseries\color{ink}}
-\setkomafont{chapter}{\sffamily\bfseries\fontsize{25}{29}\selectfont\color{ink}}
-\setkomafont{section}{\sffamily\bfseries\fontsize{13.5}{17}\selectfont\color{ink}}
-\setkomafont{subsection}{\sffamily\bfseries\fontsize{10.5}{13}\selectfont\color{ink}}
-\setkomafont{subsubsection}{\sffamily\bfseries\fontsize{9.5}{12}\selectfont\color{ink2}}
-\setkomafont{paragraph}{\sffamily\bfseries\fontsize{9.5}{12}\selectfont\color{ink}}
-\RedeclareSectionCommand[beforeskip=-0.2in, afterskip=0.12in]{chapter}
-\RedeclareSectionCommand[beforeskip=-1.5\baselineskip plus -4pt, afterskip=0.55\baselineskip]{section}
-\RedeclareSectionCommand[beforeskip=-1.1\baselineskip plus -3pt, afterskip=0.35\baselineskip]{subsection}
-\RedeclareSectionCommand[beforeskip=-0.9\baselineskip, afterskip=0.25\baselineskip]{subsubsection}
+\setcounter{secnumdepth}{1}
+\setkomafont{disposition}{\sffamily\bfseries\color{navy}}
+\setkomafont{chapter}{\rmfamily\bfseries\fontsize{26}{31}\selectfont\color{navy}}
+\setkomafont{section}{\sffamily\bfseries\fontsize{13}{16}\selectfont\color{navy}}
+\setkomafont{subsection}{\sffamily\bfseries\fontsize{10.5}{13}\selectfont\color{indigo}}
+\setkomafont{subsubsection}{\sffamily\itshape\fontsize{10}{12}\selectfont\color{navy}}
+\setkomafont{paragraph}{\sffamily\bfseries\fontsize{9.5}{12}\selectfont\color{navy}}
+\RedeclareSectionCommand[beforeskip=0.1in, afterskip=0.3in]{chapter}
+\RedeclareSectionCommand[beforeskip=-1.7\baselineskip plus -4pt, afterskip=0.6\baselineskip]{section}
+\RedeclareSectionCommand[beforeskip=-1.2\baselineskip plus -3pt, afterskip=0.35\baselineskip]{subsection}
+% Chapter opener: a large saffron number above the title, then a short indigo rule under it
 \renewcommand*{\chapterformat}{%
-  {\fontsize{8.5}{10}\selectfont\color{accent}\addfontfeature{LetterSpace=12}CHAPTER\ \thechapter}\par\vspace{7pt}}
+  {\sffamily\bfseries\fontsize{60}{60}\selectfont\color{saffron}\twodigit{\value{chapter}}}\par\vspace{10pt}}
 \renewcommand*{\chapterlinesformat}[3]{%
-  \parbox[t]{\textwidth}{\raggedright #2#3}}
-\setkomafont{part}{\sffamily\bfseries\fontsize{28}{33}\selectfont\color{ink}}
-\setkomafont{partnumber}{\sffamily\bfseries\fontsize{11}{13}\selectfont\color{accent}}
-\renewcommand*{\partformat}{\addfontfeature{LetterSpace=14}PART\ \thepart}
+  \parbox[t]{\textwidth}{\raggedright #2#3\par\vspace{10pt}{\color{indigo}\rule{0.9in}{2.2pt}}}}
+% Section numbers in saffron
+\renewcommand*{\sectionformat}{{\color{saffron}\thesection}\hspace{0.7em}}
+% Parts
+\setkomafont{part}{\rmfamily\bfseries\fontsize{30}{35}\selectfont\color{navy}}
+\setkomafont{partnumber}{\sffamily\bfseries\fontsize{11}{13}\selectfont\color{saffron}}
+\renewcommand*{\partformat}{\MakeUppercase{Part\ \thepart}}
 \renewcommand*{\raggedpart}{\raggedright}
-\RedeclareSectionCommand[beforeskip=1.6in, afterskip=0.3in]{part}
+\RedeclareSectionCommand[beforeskip=1.5in, afterskip=0.3in]{part}
+\newcommand*{\twodigit}[1]{\ifnum#1<10 0\fi\number#1}
 
 % ---------- Code ------------------------------------------------------------
-\newcommand{\codesize}{\fontsize{8.3}{10.8}\selectfont}
+\newcommand{\codesize}{\fontsize{8.4}{11}\selectfont}
 \makeatletter
 \@ifundefined{Shaded}{\newenvironment{Shaded}{}{}}{}
 \makeatother
 \renewenvironment{Shaded}{%
-  \begin{tcolorbox}[enhanced, colback=codebg, colframe=codebg, boxrule=0pt, arc=2pt,
-    left=7pt, right=5pt, top=4pt, bottom=4pt, before skip=6pt, after skip=8pt,
-    borderline west={1.6pt}{0pt}{barc}]}{\end{tcolorbox}}
-\ifdefined\Highlighting % only when the book has highlighted code
+  \begin{tcolorbox}[enhanced, colback=codebg, colframe=codebg, boxrule=0pt, arc=0pt,
+    left=8pt, right=6pt, top=5pt, bottom=5pt, before skip=7pt, after skip=9pt,
+    borderline north={0.6pt}{0pt}{indigo}, borderline south={0.6pt}{0pt}{indigo}]}{\end{tcolorbox}}
+\ifdefined\Highlighting
 \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},fontsize=\codesize,
   breaklines, breakanywhere, breaksymbolleft={}, breaksymbolright={}}
 \fi
 \fvset{fontsize=\codesize, breaklines, breakanywhere, breaksymbolleft={}, breaksymbolright={}, breakindent=1.2em}
-% Spaces in code are real space glyphs (same width), so text copied from the PDF keeps Python's indentation
 \fvset{showspaces}
 \renewcommand{\FancyVerbSpace}{\char32\relax}
-% Cell outputs (plain verbatim) get a lighter, open style
-\makeatletter
-\renewenvironment{verbatim}{%
-  \VerbatimEnvironment
-  \begin{tcolorbox}[breakable, enhanced, colback=white, colframe=framec, boxrule=0.5pt, arc=2pt,
-    left=7pt, right=5pt, top=3pt, bottom=3pt, before skip=2pt, after skip=8pt]%
-  \begin{Verbatim}[fontsize=\codesize, formatcom=\color{ink2}, breaklines, breakanywhere, breaksymbolleft={}, breakindent=1.2em]}%
-  {\end{Verbatim}\end{tcolorbox}}
-\makeatother
 
-% ---------- Small icons (TikZ, so they print crisp) -------------------------
-\newcommand{\icontryit}[1][accent]{\tikz[baseline=-0.6ex]{\draw[#1,line width=0.7pt,rounded corners=1pt] (0,-0.09) rectangle (0.3,0.13);
-  \draw[#1,line width=0.7pt] (0.05,0.06)--(0.1,0.02)--(0.05,-0.02); \draw[#1,line width=0.7pt] (0.13,-0.03)--(0.21,-0.03);}}
-\newcommand{\iconbreaks}[1][failred]{\tikz[baseline=-0.6ex]{\draw[#1,line width=0.7pt,line join=round] (0,-0.09)--(0.3,-0.09)--(0.15,0.16)--cycle;
-  \fill[#1] (0.15,-0.045) circle (0.017); \draw[#1,line width=0.8pt] (0.15,0.0)--(0.15,0.08);}}
-\newcommand{\iconthreshold}[1][zonereview]{\tikz[baseline=-0.6ex]{\draw[#1,line width=0.7pt] (0,0.02)--(0.32,0.02);
-  \fill[white,draw=#1,line width=0.7pt] (0.2,0.02) circle (0.05); \draw[#1,line width=0.5pt] (0.08,-0.06)--(0.08,0.1);}}
-\newcommand{\icondeeper}[1][ink2]{\tikz[baseline=-0.6ex]{\draw[#1,line width=0.6pt] (0.15,0.02) circle (0.12);
-  \node[#1,font=\sffamily\bfseries\fontsize{6}{6}\selectfont] at (0.15,0.02) {$\Sigma$};}}
-\newcommand{\iconkey}[1][accent]{\tikz[baseline=-0.6ex]{\fill[#1] (0.1,0.02) circle (0.07);}}
-\newcommand{\iconstory}{\tikz[baseline=-0.6ex]{\draw[storyedge,line width=0.7pt] (0,-0.08)--(0.24,0.14); \fill[storyedge] (0,-0.08)--(0.05,-0.06)--(0.02,-0.03)--cycle;}}
-
-\newcommand{\boxlabel}[3]{{\sffamily\bfseries\fontsize{7}{9}\selectfont\color{#1}#2\hspace{0.45em}\addfontfeature{LetterSpace=10}#3}\par\vspace{3pt}}
+% ---------- Box parts --------------------------------------------------------
+\newcommand{\boxtag}[2]{{\sffamily\bfseries\fontsize{7}{9}\selectfont\color{#1}\addfontfeature{LetterSpace=8}#2}}
+\newcommand{\iconwarn}{\tikz[baseline=-0.55ex]{\draw[crimson,line width=0.7pt,line join=round] (0,-0.09)--(0.28,-0.09)--(0.14,0.15)--cycle;
+  \fill[crimson] (0.14,-0.05) circle (0.016); \draw[crimson,line width=0.75pt] (0.14,-0.01)--(0.14,0.07);}}
+\newcommand{\iconbuild}{\tikz[baseline=-0.55ex]{\draw[white,line width=0.8pt] (0,-0.08) rectangle (0.24,0.12); \draw[white,line width=0.8pt] (0.06,0.12)--(0.06,0.17)--(0.18,0.17)--(0.18,0.12);}}
+\newcommand{\iconfork}{\tikz[baseline=-0.55ex]{\draw[indigo,line width=0.8pt] (0,0.02)--(0.12,0.02)--(0.26,0.13); \draw[indigo,line width=0.8pt] (0.12,0.02)--(0.26,-0.09);}}
 
 % ---------- The book's boxes ------------------------------------------------
-% Short boxes stay whole on one page; a split one loses its label on the second page.
-\newtcolorbox{tryit}[1][]{enhanced, colback=accenttint, colframe=accenttint, boxrule=0pt, arc=2pt,
-  borderline west={2.2pt}{0pt}{accent}, left=9pt, right=8pt, top=7pt, bottom=7pt, before skip=10pt, after skip=10pt,
-  fontupper=\small, before upper={\colorlet{codebg}{white}\boxlabel{accent}{\icontryit}{TRY IT}}, #1}
-\newtcolorbox{breaks}[1][]{enhanced, colback=failtint, colframe=failtint, boxrule=0pt, arc=2pt,
-  borderline west={2.2pt}{0pt}{failred}, left=9pt, right=8pt, top=7pt, bottom=7pt, before skip=10pt, after skip=10pt,
-  fontupper=\small, before upper={\boxlabel{failred}{\iconbreaks}{WHAT BREAKS IN PRODUCTION}}, #1}
-\newtcolorbox{threshold}[1][]{enhanced, colback=zonetint, colframe=zonetint, boxrule=0pt, arc=2pt,
-  borderline west={2.2pt}{0pt}{zonereview}, left=9pt, right=8pt, top=7pt, bottom=7pt, before skip=10pt, after skip=10pt,
-  fontupper=\small, before upper={\boxlabel{zonereview}{\iconthreshold}{SET THE THRESHOLD}}, #1}
-\newtcolorbox{deeper}[1][]{breakable, enhanced, colback=neutraltint, colframe=neutraltint, boxrule=0pt, arc=2pt,
-  borderline west={2.2pt}{0pt}{barc}, left=9pt, right=8pt, top=7pt, bottom=7pt, before skip=10pt, after skip=10pt,
-  fontupper=\small, before upper={\colorlet{codebg}{white}\boxlabel{ink2}{\icondeeper}{GOING DEEPER\ \ \textmd{\textcolor{muted}{optional}}}}, #1}
-\newtcolorbox{sidebar}[2][]{breakable, enhanced, colback=neutraltint, colframe=neutraltint, boxrule=0pt, arc=2pt,
-  borderline west={2.2pt}{0pt}{barc}, left=9pt, right=8pt, top=7pt, bottom=7pt, before skip=10pt, after skip=10pt,
-  fontupper=\small, before upper={\boxlabel{ink2}{}{#2}}, #1}
-\newtcolorbox{storybox}[1][]{enhanced, colback=storyyellow, colframe=storyedge, boxrule=0.6pt, arc=2pt,
-  left=7pt, right=7pt, top=4pt, bottom=4pt, before skip=8pt, after skip=8pt,
-  fontupper=\sffamily\footnotesize, #1}
-
-% Key idea: one sentence to remember. The thick dark bar and the KEY IDEA label mark it even with the tint gone (a
-% photocopy); it never splits across pages. "Keep these" repeats a chapter's key ideas before its exercises, and the
-% Key ideas appendix lists them all with their pages.
-\newcommand{\keylabel}[1]{{\sffamily\bfseries\fontsize{7.2}{9}\selectfont\color{keybar}\iconkey[keybar]\hspace{0.45em}\addfontfeature{LetterSpace=12}#1}\par\vspace{4pt}}
-% The headline of a key idea: big and bold, on its own line; the explanation follows in regular weight
-\newcommand{\keyheadfont}{\bfseries\fontsize{13}{17}\selectfont}
-\newtcolorbox{keyidea}[1][]{enhanced, unbreakable, colback=keytint, colframe=keytint, boxrule=0pt, arc=0pt,
-  borderline west={5pt}{0pt}{keybar}, left=12pt, right=10pt, top=7pt, bottom=8pt, before skip=12pt, after skip=12pt,
-  fontupper=\sffamily\fontsize{10}{14}\selectfont\color{ink}\raggedright,
-  before upper={\keylabel{KEY IDEA}}, #1}
-\newtcolorbox{keepthese}[1][]{enhanced, unbreakable, colback=keytint, colframe=keybar, boxrule=0.8pt, arc=0pt,
-  borderline west={5pt}{0pt}{keybar}, left=12pt, right=10pt, top=7pt, bottom=7pt, before skip=12pt, after skip=10pt,
-  fontupper=\sffamily\fontsize{9.3}{12.6}\selectfont\color{ink}\raggedright,
-  before upper={\keylabel{KEEP THESE}\setlist[itemize]{label={\color{keybar}\textbullet}, itemsep=3pt, topsep=0pt}}, #1}
-% The Key ideas appendix: chapter lines, then each key idea with dotted leaders to its page
-\newenvironment{keyideaslist}{\par\fontsize{8.8}{11}\selectfont\setlength{\parskip}{0pt}\setlist[itemize]{label={\color{keybar}\textbullet},
-  itemsep=0.5pt, topsep=1pt, leftmargin=1.2em, rightmargin=2.2em}}{\par}
-\newcommand{\keychapter}[1]{\par\needspace{3.5\baselineskip}\vspace{4pt}{\sffamily\fontsize{8.4}{11}\selectfont #1}}
-\newcommand{\keypage}[1]{\unskip\nobreak\leaders\hbox to 0.6em{\hss.\hss}\hfill\nobreak
-  \makebox[0pt][l]{\hspace{0.3em}\rlap{\makebox[2.2em][r]{\pageref{#1}}}}}
-
-
-% ---------- Boxes for this book ----------------------------------------------
-\newcommand{\iconproject}[1][accent]{\tikz[baseline=-0.6ex]{\draw[#1,line width=0.7pt,rounded corners=0.5pt] (0,-0.09) rectangle (0.28,0.12);
-  \draw[#1,line width=0.7pt] (0.09,0.12)--(0.09,0.16)--(0.19,0.16)--(0.19,0.12);}}
-\newcommand{\icondefend}[1][ink]{\tikz[baseline=-0.6ex]{\draw[#1,line width=0.7pt,line join=round] (0.14,0.17)--(0.27,0.11)--(0.25,-0.03)--(0.14,-0.11)--(0.03,-0.03)--(0.01,0.11)--cycle;}}
-\newtcolorbox{project}[1][]{enhanced, colback=accenttint, colframe=accenttint, boxrule=0pt, arc=2pt,
-  borderline west={2.2pt}{0pt}{accent}, left=9pt, right=8pt, top=7pt, bottom=7pt, before skip=10pt, after skip=10pt,
-  fontupper=\small, before upper={\boxlabel{accent}{\iconproject}{PROJECT STEP: KAVERI KART}}, #1}
-\newtcolorbox{decision}[1][]{enhanced, colback=zonetint, colframe=zonetint, boxrule=0pt, arc=2pt,
-  borderline west={2.2pt}{0pt}{zonereview}, left=9pt, right=8pt, top=7pt, bottom=7pt, before skip=10pt, after skip=10pt,
-  fontupper=\small, before upper={\boxlabel{zonereview}{\iconthreshold}{DECIDE}}, #1}
-\newtcolorbox{defend}[1][]{enhanced, colback=white, colframe=ink, boxrule=0.7pt, arc=2pt,
-  left=9pt, right=8pt, top=7pt, bottom=7pt, before skip=10pt, after skip=10pt,
-  fontupper=\small, before upper={\boxlabel{ink}{\icondefend}{NUMBERS YOU MUST DEFEND}}, #1}
-\newenvironment{interview}{\par\vspace{8pt}\needspace{6\baselineskip}\keeplistend\noindent
-  {\sffamily\bfseries\fontsize{7}{9}\selectfont\color{ink}\addfontfeature{LetterSpace=10}INTERVIEW QUESTIONS}\par
-  \vspace{2pt}{\color{rulec}\rule{\linewidth}{0.6pt}}\par\vspace{2pt}\small}{\par\nopagebreak[4]\vspace{6pt}}
-
-% Pull quote
-\newenvironment{bookquote}[1]{\par\vspace{10pt}\needspace{4\baselineskip}\noindent
-  \begin{minipage}{\linewidth}\raggedright
-  {\fontsize{30}{30}\selectfont\color{accent}\serifsemi\char"201C}\par\vspace{-14pt}
-  \leftskip=1.2em\rightskip=1.5em plus 1fil
-  \itshape\fontsize{11.5}{16}\selectfont\color{ink}\def\quoteattrib{#1}}%
-  {\par\vspace{5pt}\upshape\sffamily\fontsize{7.5}{9}\selectfont\color{ink2}\textemdash\ \quoteattrib\end{minipage}\par\vspace{10pt}}
-
-% Exercises
-% The hook to the next chapter must never sit alone on a page: no page break after the exercise list either.
+% This chapter: a navy strip with the three points underneath
+\newtcolorbox{glance}{enhanced, unbreakable, colback=paper, colframe=navy, boxrule=0pt, arc=0pt,
+  left=10pt, right=10pt, top=6pt, bottom=7pt, before skip=10pt, after skip=12pt, fontupper=\small,
+  title={\boxtag{white}{THIS CHAPTER}}, coltitle=white, colbacktitle=navy, toptitle=3pt, bottomtitle=3pt,
+  lefttitle=10pt}
+% Remember: one sentence, set between two hairlines, with a saffron tag
+\newtcolorbox{remember}{enhanced, unbreakable, colback=white, colframe=white, boxrule=0pt, arc=0pt,
+  left=0pt, right=0pt, top=7pt, bottom=7pt, before skip=12pt, after skip=12pt,
+  borderline north={0.8pt}{0pt}{navy}, borderline south={0.4pt}{0pt}{hair},
+  fontupper=\rmfamily\itshape\fontsize{11}{15.5}\selectfont\color{navy},
+  before upper={\boxtag{saffron}{REMEMBER}\par\vspace{3pt}}}
+% Build step: saffron title bar, white body
+\newtcolorbox{project}{enhanced, breakable, colback=white, colframe=saffron, boxrule=0.8pt, arc=0pt,
+  left=10pt, right=10pt, top=6pt, bottom=6pt, before skip=10pt, after skip=12pt, fontupper=\small,
+  title={\iconbuild\hspace{0.5em}\boxtag{white}{BUILD IT: KAVERI KART}}, coltitle=white, colbacktitle=saffron,
+  toptitle=3pt, bottomtitle=3pt, lefttitle=10pt}
+% Design decision: indigo tint, fork icon
+\newtcolorbox{decision}{enhanced, unbreakable, colback=indigotint, colframe=indigotint, boxrule=0pt, arc=0pt,
+  left=10pt, right=10pt, top=7pt, bottom=7pt, before skip=10pt, after skip=12pt, fontupper=\small,
+  before upper={\iconfork\hspace{0.5em}\boxtag{indigo}{DESIGN DECISION}\par\vspace{4pt}}}
+% In production: dashed crimson outline
+\newtcolorbox{production}{enhanced, unbreakable, colback=white, colframe=crimson, boxrule=0.7pt, arc=0pt,
+  borderline={0.7pt}{0pt}{crimson, dashed}, frame hidden,
+  left=10pt, right=10pt, top=7pt, bottom=7pt, before skip=10pt, after skip=12pt, fontupper=\small,
+  before upper={\iconwarn\hspace{0.5em}\boxtag{crimson}{IN PRODUCTION, THIS GOES WRONG}\par\vspace{4pt}}}
+% Defend your numbers: paper tint, monospace tag
+\newtcolorbox{defend}{enhanced, unbreakable, colback=paper, colframe=paper, boxrule=0pt, arc=0pt,
+  left=10pt, right=10pt, top=7pt, bottom=7pt, before skip=10pt, after skip=12pt, fontupper=\small,
+  before upper={{\ttfamily\bfseries\fontsize{8}{9}\selectfont\color{navy}\#\ }\boxtag{navy}{DEFEND YOUR NUMBERS}\par\vspace{4pt}}}
+% Chapter checklist (made from the Remember notes)
+\newtcolorbox{checklist}{enhanced, unbreakable, colback=white, colframe=navy, boxrule=0.8pt, arc=0pt,
+  left=10pt, right=10pt, top=7pt, bottom=7pt, before skip=14pt, after skip=10pt,
+  fontupper=\small, before upper={\boxtag{navy}{CHAPTER CHECKLIST}\par\vspace{4pt}%
+  \setlist[itemize]{label={\color{indigo}$\square$}, itemsep=3pt, topsep=0pt}}}
+% Practice and interview: a heading line with a saffron rule
 \makeatletter\newcommand*{\keeplistend}{\@endparpenalty=\@M}\makeatother
-\newenvironment{exercises}{\par\vspace{8pt}\needspace{6\baselineskip}\keeplistend\noindent
-  {\sffamily\bfseries\fontsize{7}{9}\selectfont\color{ink}\addfontfeature{LetterSpace=10}EXERCISES}\par
-  \vspace{2pt}{\color{rulec}\rule{\linewidth}{0.6pt}}\par\vspace{2pt}\small}{\par\nopagebreak[4]\vspace{6pt}}
+\newcommand{\closinghead}[1]{\par\vspace{10pt}\needspace{6\baselineskip}\keeplistend\noindent
+  {\sffamily\bfseries\fontsize{10}{12}\selectfont\color{navy}#1}\par\vspace{1pt}
+  {\color{saffron}\rule{\linewidth}{1.2pt}}\par\vspace{3pt}\small}
+\newenvironment{practice}{\closinghead{Practice}}{\par\vspace{6pt}}
+\newenvironment{interview}{\closinghead{Interview corner}}{\par\vspace{6pt}}
+% Up next
+\newenvironment{nexthook}{\par\nopagebreak[4]\vspace{10pt}\noindent\begin{minipage}{\linewidth}\raggedright
+  \sffamily\fontsize{9.3}{13}\selectfont\color{indigo}{\bfseries Up next\quad}\color{ink}}{\end{minipage}\par}
 
-% Chapter goals ("By the end...")
-\newenvironment{goals}{\par\vspace{6pt}\begin{tcolorbox}[enhanced, colback=white, colframe=framec, boxrule=0.6pt, arc=2pt,
-  left=9pt, right=8pt, top=7pt, bottom=6pt, fontupper=\small]
-  {\sffamily\bfseries\fontsize{7}{9}\selectfont\color{ink}\addfontfeature{LetterSpace=10}IN THIS CHAPTER YOU WILL LEARN}\par\vspace{3pt}}%
-  {\end{tcolorbox}\vspace{2pt}}
+% Pull quote, epigraph and sidebar (kept for later chapters)
+\newenvironment{bookquote}[1]{\par\vspace{8pt}\begin{adjustwidth}{1.5em}{1.5em}\itshape\fontsize{11}{15}\selectfont\color{navy}\def\quoteattrib{#1}}%
+  {\par\vspace{3pt}\upshape\sffamily\fontsize{7.5}{9}\selectfont\color{slate}\quoteattrib\end{adjustwidth}\vspace{8pt}}
+\newtcolorbox{sidebar}[1]{enhanced, breakable, colback=paper, colframe=paper, boxrule=0pt, arc=0pt,
+  left=10pt, right=10pt, top=7pt, bottom=7pt, fontupper=\small, before upper={\boxtag{navy}{#1}\par\vspace{4pt}}}
 
-% Next-chapter hook
-% The hook never starts a page on its own: no break is allowed between it and what comes before.
-\newenvironment{nexthook}{\par\nopagebreak[4]\vspace{9pt}\nopagebreak[4]\noindent\begin{minipage}{\linewidth}\raggedright
-  {\color{rulec}\rule{1.2in}{0.5pt}}\par\vspace{6pt}\sffamily\fontsize{9.5}{13}\selectfont\color{ink}}{\end{minipage}\par}
+% Part pages
+\newenvironment{partintro}{\begin{minipage}{0.9\textwidth}\raggedright\fontsize{11.5}{17}\selectfont\color{slate}}{\end{minipage}\clearpage}
 
-% Wide material: extends into the outer margin on both odd and even pages
-\makeatletter
-% Inside a wide block, figures stop floating so they take the widened line width.
-% (The print layout has no margin column, so wide figures stay inside the text block.)
-\newenvironment{widefig}{\par\begin{adjustwidth*}{0pt}{0pt}%
-  \renewenvironment{figure}[1][]{\par\medskip\def\@captype{figure}\centering}{\par\medskip}}%
-  {\end{adjustwidth*}\par}
-\makeatother
-
-% Full-page visual summary
-\newenvironment{summarypage}{\clearpage\thispagestyle{plain.scrheadings}\begin{adjustwidth*}{0pt}{-\dimexpr\marginparwidth+\marginparsep\relax}\centering}{\end{adjustwidth*}\clearpage}
-
-% Margin items
-\newcommand{\sidenote}[1]{\marginnote{\raggedright\sffamily\fontsize{7}{9.2}\selectfont\color{ink2}#1}}
-% A short aside set in the text column (the print layout has no margin notes)
-\newenvironment{asidenote}{\par\vspace{2pt}\begingroup\leftskip=1.2em\sffamily\fontsize{8.5}{11.5}\selectfont\color{ink2}}{\par\endgroup\vspace{2pt}}
-
-% Draft markers (visible on purpose; removed before print)
-\newcommand{\authorstory}[1]{\begin{storybox}\iconstory\hspace{0.4em}\textbf{AUTHOR STORY:} #1\end{storybox}}
+% Draft markers (shown only in draft builds)
+\newtcolorbox{storybox}{colback=storyyellow, colframe=saffron, boxrule=0.6pt, arc=0pt, fontupper=\sffamily\footnotesize}
+\newcommand{\authorstory}[1]{\begin{storybox}\textbf{AUTHOR STORY:} #1\end{storybox}}
 \newcommand{\verifymark}{\,{\sffamily\bfseries\fontsize{6}{7}\selectfont\colorbox{storyyellow}{\color{ink}VERIFY}}}
-\newcommand{\syntheticmark}{{\sffamily\bfseries\fontsize{6}{7}\selectfont\color{muted}SYNTHETIC}}
 
 % Tables
-\renewcommand{\arraystretch}{1.18}
-\AtBeginEnvironment{longtable}{\sffamily\fontsize{8.8}{11.5}\selectfont}
-\AtBeginEnvironment{tabular}{\sffamily\fontsize{7.6}{10}\selectfont}
+\renewcommand{\arraystretch}{1.2}
+\AtBeginEnvironment{longtable}{\sffamily\fontsize{8.6}{11.5}\selectfont}
 
 % Footnotes
 \deffootnote[1.2em]{1.2em}{1em}{\textsuperscript{\thefootnotemark}\,}
 \addtokomafont{footnote}{\fontsize{8}{10.5}\selectfont}
 
-\makeatletter
-\newcommand{\noindentnext}{\@afterindentfalse\@afterheading}
-\makeatother
-
-% Part pages: keep the part's short introduction on the same page as its title
-\renewcommand*{\partheadendvskip}{\vspace{0.35in}}
-\renewcommand*{\partheademptypage}{}
-\newenvironment{partintro}{\begin{minipage}{0.92\textwidth}\raggedright\fontsize{11.5}{17}\selectfont\color{ink2}}{\end{minipage}\cleardoubleoddemptypage}  % the part's first chapter opens on a right-hand page
-
-% Index of terms: two columns, small type
-\usepackage{multicol}
-\newenvironment{indexlist}{\par\begin{multicols}{2}\small\raggedright\setlength{\parskip}{2pt}}{\end{multicols}\par}
-
-% Chapter epigraph: a short quotation set right under the chapter title
-\newenvironment{chapterepigraph}[1]{\par\vspace{-2pt}\begin{flushright}\begin{minipage}{0.72\linewidth}\raggedleft
-  \itshape\fontsize{9.8}{13.5}\selectfont\color{ink2}\def\epiattrib{#1}}%
-  {\par\vspace{3pt}\upshape\sffamily\fontsize{7.2}{9}\selectfont\color{muted}\textemdash\ \epiattrib\end{minipage}\end{flushright}\par\vspace{8pt}}
-
-% Chapters and parts may open on either page: no blank pages before them (print length matters).
+% Chapters and parts may open on either page; parts open on the right
 \KOMAoptions{open=any}
 \makeatletter\@openrightfalse\makeatother
-% Quarto puts a \cleardoublepage before the appendix; with open=any it should only start a new page.
 \let\cleardoublepage\clearpage
-% Part entries in the table of contents are bold; give their page numbers room so three digits stay inside the
-% margin. (Before the patch below: redeclaring \part afterwards would drop it.)
 \RedeclareSectionCommand[tocpagenumberwidth=2.4em]{part}
-% Part pages open on the right, like a printed book's.
 \pretocmd{\part}{\cleardoubleoddemptypage}{}{}
-% Roman numerals run through the front matter and Part I's opener; Chapter 1 is page 1. Quarto calls \mainmatter
-% straight after the table of contents, so that call does nothing and parts/p1.qmd starts the main matter instead.
+% Roman page numbers until Part I; parts/p1.qmd starts the main matter
 \let\bookmainmatter\mainmatter
 \renewcommand*{\mainmatter}{}
 
-% Real space characters in the PDF, so copied or extracted text keeps every space between words.
+% Table of contents in the book's own style
+\setkomafont{chapterentry}{\sffamily\bfseries\color{navy}}
+\setkomafont{partentry}{\sffamily\bfseries\color{saffron}}
+
+% Real space characters in the PDF
 \usepackage{tagpdf}
 \tagpdfsetup{interwordspace=true}
 
-% ---------- Index ----------
-% filters/book.lua writes \index entries (terms listed by tools/make_index.py); Quarto runs makeindex with
-% assets/latex/book.ist. The index page's own heading comes from back/index-terms.qmd, so theindex adds none.
-\usepackage{makeidx}
-\makeindex
-\newcommand*{\indexletter}[1]{\par\vspace{7pt plus 2pt}{\sffamily\bfseries\small\color{ink}#1}\par\nopagebreak\vspace{1pt}}
-\makeatletter
-\renewenvironment{theindex}{%
-  \begin{multicols}{2}\small\raggedright\setlength{\parindent}{0pt}\setlength{\parskip}{0pt plus 0.3pt}%
-  \def\@idxitem{\par\hangindent 1.2em}\let\item\@idxitem
-  \def\subitem{\@idxitem\hspace*{0.8em}}\def\indexspace{\par}}%
-  {\end{multicols}}
-\makeatother
-
-% Reference matter in small type: the bibliography here; the glossary and cheat sheets set it in their own files.
 \AtBeginEnvironment{CSLReferences}{\small}
-
-% PDF bookmarks carry part and chapter numbers.
 \AtBeginDocument{\bookmarksetup{numbered}}
 
 % Headings keep a few lines of text with them

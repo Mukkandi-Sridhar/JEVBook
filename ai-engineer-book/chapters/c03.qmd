@@ -6,7 +6,7 @@ You could send each message to a large language model and ask, "Which of these f
 
 There is an older, simpler tool for this job. Train a small model on a few thousand messages that people have already sorted. It can then sort a new message in a few milliseconds, at almost no cost, and give a probability you can check. This chapter shows how such models learn, how to test them without fooling yourself, and how to turn their probabilities into actions.
 
-::: {.goals}
+::: {.glance}
 - How a model learns from labelled examples, and how to test it honestly.
 - Two classical models every AI engineer should know: logistic regression and gradient-boosted trees.
 - How to decide, using costs, when the model should act alone and when it should ask a person.
@@ -55,8 +55,8 @@ That second problem has a name: **leakage**, which means information about the a
 - **Future information.** A feature that is only known after the answer. If your data has a column "refund_issued", it will predict "refund request" perfectly, but a new message does not have that column yet.
 - **Shared customers.** If one customer's messages are in both sets, the model may learn that customer's writing style instead of the message type. Split by customer, not by message.
 
-::: {.keyidea}
-**Test a model only on examples it has never seen, and use the test set once.** If information about the answers leaks into training, through duplicates, future columns or shared customers, the test score will look excellent and mean nothing.
+::: {.remember}
+Test only on examples the model has never seen, and watch for leaks: duplicates, columns filled in later, and shared customers.
 :::
 
 ## Logistic regression: points for each clue
@@ -155,8 +155,8 @@ Two things make this rule work in practice. First, the probabilities must be cal
 
 The *escalate* door uses a separate check. Any message the classifier marks as a complaint with a probability above 30%, or that mentions words like "consumer court" or "legal notice", goes straight to a senior agent. Missing an angry customer costs so much more than a senior agent's minute that even a modest probability is enough.
 
-::: {.keyidea}
-**Let the system act alone only when its expected mistake costs less than asking a person.** If a wrong routing costs ₹30 and a person's check costs ₹6, act alone only above 80% probability. The line comes from costs, not from habit.
+::: {.remember}
+Act alone only when (chance of being wrong) × (cost of a wrong action) is less than the cost of asking a person.
 :::
 
 ::: {.decision}
@@ -177,7 +177,7 @@ A common middle path: use an LLM to label a few thousand past messages, have a p
 5. Compare costs. At example prices from Chapter 1, sorting each message with an LLM might cost about 13 paise, or about ₹15,600 a month at 4,000 messages a day. The classifier runs on a small server for a fixed monthly cost. Write down both numbers.
 :::
 
-::: {.breaks}
+::: {.production}
 - **The world changes and the model does not.** A new sale, a new product line or a new kind of complaint appears, and the classifier keeps sorting it into old boxes. Watch the share of messages in each type, and retrain when it shifts.
 - **Labels disagree.** Two support agents label the same message differently. If people cannot agree, the model cannot learn. Write a short labelling guide, and check how often two people agree.
 - **The rare, important label is ignored.** With complaints at 5% of messages, a model can score high accuracy while missing most complaints. Track recall on the important label on its own.
@@ -190,7 +190,7 @@ A common middle path: use an LLM to label a few thousand past messages, have a p
 - **Training-set size.** "We used 2,000 labelled messages. Adding the last 500 changed validation accuracy by less than one point, so more labels would not help much now."
 :::
 
-::: {.exercises}
+::: {.practice}
 1. A dataset of refund requests has a column "agent_approved" filled in after a person reviewed each request. A model using this column predicts fraud almost perfectly. What has gone wrong?
 2. A wrong automatic refund costs ₹500 on average. A person's check costs ₹25. Above what probability of the refund being valid should the system approve alone?
 3. Your classifier scores 97% on the training set and 81% on the validation set. What is happening, and what would you try?
@@ -204,5 +204,5 @@ A common middle path: use an LLM to label a few thousand past messages, have a p
 :::
 
 ::: {.nexthook}
-Next chapter: what happens when the input is too messy for words and points, such as photos and raw text, and how neural networks learn from it.
+What happens when the input is too messy for words and points, such as photos and raw text, and how neural networks learn from it.
 :::

@@ -11,7 +11,8 @@ against them before it is called done.
 | Problem in the JEV drafts | Rule for this book |
 |---|---|
 | Sentences that stood alone like slogans, with no link to the sentence before ("meaningless lines") | Each sentence follows from the one before. If a sentence could be moved anywhere in the chapter, rewrite it or cut it. |
-| Key-idea boxes that were short but hard to understand | The bold headline is a plain, complete claim with concrete words. The sentence under it gives an example. Read it aloud to someone outside the field. |
+| Key-idea boxes that were short but hard to understand | No bold headline boxes. A `{.remember}` note is one plain line (two at most) with concrete words. Read it aloud to someone outside the field. |
+| Copying the JEV look (green boxes, bold key-idea headlines, the same fonts and heading style) | This book has its own design: indigo and saffron, IBM Plex Serif / Work Sans / Plex Mono, numbered sections, a large chapter number, open boxes. Never reuse JEV's colours, fonts, box names or labels. |
 | Terms used before they were explained (for example "regression") | Define a term in one short, plain sentence the first time it appears. At most one new term per paragraph. |
 | Results stated with nothing under them ("building rocks on air") | Build up first: an example with real numbers, then the general rule. Never state a rule the reader has not seen working. |
 | Long blocks of explanation with no shape | Use numbered steps for processes, bullets for lists of three or more, and short paragraphs (2 to 4 sentences). |
@@ -49,14 +50,14 @@ against them before it is called done.
 ## 4. Chapter shape
 
 1. Title, then a short opening: a real incident or an everyday picture (half a page).
-2. `{.goals}` box: three plain bullets.
-3. Sections that build from the example to the idea.
-4. `{.keyidea}` boxes: two or three per chapter.
+2. `{.glance}` box: three plain bullets.
+3. Numbered sections that build from the example to the idea.
+4. `{.remember}` notes: two or three per chapter, one line each. They are collected into the chapter checklist.
 5. `{.project}` box: what we add to Kaveri Kart.
 6. `{.decision}` box where the chapter has a real choice to make.
-7. `{.breaks}` box: what goes wrong in production.
+7. `{.production}` box: what goes wrong in production.
 8. `{.defend}` box: the numbers the reader chose and how to justify them.
-9. `{.exercises}`, then `{.interview}`; answers in `back/answers.qmd`.
+9. `{.practice}`, then `{.interview}`; answers in `back/answers.qmd`.
 10. `{.nexthook}`: one line.
 
 ## 5. Facts
