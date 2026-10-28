@@ -140,3 +140,82 @@ Notes written while reading every line, in order. Line numbers refer to the tran
 - Query rewriting motivated by contrast pairs of weak vs strong questions ("explain search algorithm" vs "explain binary search with code"; "how does auth work" vs "how does JWT work") and by refusing to blame users: "we can't make the system depend on users writing good queries."
 - HyDE explained from the paper's own figure, step by step; clarifies that the hypothetical text is only for searching and the answer still comes from real documents. Shows that papers prove claims with evaluation tables (recall@k, NDCG) — ties back to the metrics week.
 - "These are possible solutions; whether they help *you* depends on your queries and your evals."
+
+### Lines 10551–11650
+- Admits when an example is a poor fit ("HyDE is not a good use case for code; I'm still showing how you'd do it").
+- New idea from a problem the learner can picture: "too many chunks, slow search — what would you do?" → group similar chunks, then group the groups → a tree → names it RAPTOR only at the end.
+- **Contrast pairs to separate look-alikes**: tree vs graph (grouping similar things vs relationships between entities, cycles allowed); RAPTOR vs vectorless/PageIndex (both trees; one searches summaries by embedding similarity, the other lets the LLM reason over a table of contents, no vectors).
+- Everyday analogy for vectorless search: using a book's index — "searching about SQL, you open the databases chapter, not networking". Key line: "similarity doesn't mean relevance".
+- Uses what is trending (GitHub stars) to raise interest, then grounds it with a small code example and the trace.
+- Revision as rapid Q&A, including "is fusion necessary before reranking? what's the cost if you skip it?" and a learner's analogy (fusion = first interview round) accepted and reused.
+- Agentic RAG definition widened by example: an extra LLM call for routing, query decomposition, planning — all agentic.
+- **Context engineering opener**: lists what will be covered (what to send, structure, evaluating context, token budgeting, memory). Links token budgeting to HLD capacity estimates (QPS, storage) the audience knows.
+- Elicits the parts of context from the class (system prompt, history/memory, tool outputs, retrieved context, user query) and asks "why manage history?" → "LLMs are stateless" (callback to Day 1).
+- "Does order matter? start or end?" → shows the *Lost in the Middle* paper → explains the intuition twice: recency (next-token prediction weighs recent words) and primacy (training data puts instructions/titles first). Humour ("middle class") kept light.
+- Builds context designs as a ladder: system + query → + history → + retrieved chunks → + tool outputs → all together.
+- Introduces operations as named verbs with one example each: expansion (pull helper functions with a function), compression (summarise), selection (top 10 of 100 after fusion/rerank), pruning (dedupe, stale, irrelevant), ordering (put key items at start/end).
+- Short- vs long-term memory with the ChatGPT example ("it remembers in a new chat that you're learning AI").
+- Advice on using AI to learn new topics: give it the paper or repo link, cross-check, otherwise it invents answers ("hypothetical document instead of real document" — reuses HyDE as a joke).
+
+### Lines 11651–11736 (Day 5 Q&A)
+- Cost objection to PageIndex answered with a drill-down picture (projects → modules → submodules → class): "five or six calls still beat reading lakhs of lines". Use-case fit: legal documents with clause references.
+
+## Day 6 (lines 11737–14060): Memory
+
+### Lines 11737–12750
+- Opens with a long rapid-fire revision of the previous two days in question form, including "why is the end of the context important?" — the learners must give the reason, not just the fact. Asks "is revision useful?" for feedback.
+- **Demonstrates the problem first with the smallest possible code**: ask "who is Dhoni?" then "when was he born?" — it fails. "Let's do it in class so you know I'm not making it up."
+- Tells learners the aim is "what must be happening inside the framework", not the framework's one-liner; if no framework existed, how would you build it?
+- Corrects a naming misconception: short-term memory ≠ RAM; both short- and long-term memory should be persisted ("close ChatGPT and come back — it still remembers").
+- **Builds memory in steps, each run live and traced**: stateless → Python list in RAM (lost on restart) → SQLite with thread IDs (switch threads, restart, delete the DB) → too big → solutions. Each step shows token counts growing in the trace, so cost is felt, not stated.
+- Uses learner-suggested scenarios live ("talk about three people, restart, ask 'tell me more about her'" → it picks the latest: recency again).
+- Recap as numbered list of what was built.
+- Problem "context too long" → asks for solutions, then evaluates each: trim/sliding window (FIFO; shows how a name in message 1 gets lost), summarisation (one LLM call; can't keep everything in 200 tokens), both together (recent messages are most relevant), RAG over messages (learner's idea, credited by name; more context but more latency/cost), hierarchical summaries (callback to RAPTOR). Ends with a goal sentence: "store the history and send the most relevant part with the query, in the most optimised way."
+- Middleware introduced as hooks before/after agent and model calls; asks learners to invent uses (call limits, validation, guardrails, trimming, caching) before listing the built-ins. Human-in-the-loop tied to the project ("would you let generated code edit your file without approval?").
+- "Guardrails sound hard, but the code is simple; that's why this course is about logic, not syntax."
+
+### Lines 12751–13850
+- **De-mystifying names**: "Everything seems fancy, but a tool is a function, and a middleware is a function called before the model." Says this repeatedly so jargon stops being scary.
+- Shows the framework's own diagram of the loop (before-model → model → tool → before-model again) and explains why the hook runs again after every tool call (tool output is also a message, so the window grows).
+- Pattern: first write it by hand ("what must be happening inside"), then show the framework's one-line version (checkpointer, summarisation middleware) and connect the two.
+- Admits live mistakes plainly ("sorry, I was showing the previous code; nobody told me").
+- Summarisation demo: shows the actual summarisation prompt in the trace and points to where it lives in the code. Invites learners to change the numbers (summarise after 6, keep 4) and watch what changes.
+- A learner's concern ("summaries get weaker over time") becomes the bridge to the next topic (long-term memory).
+- Long-term memory motivated with everyday cross-chat examples: "I prefer SQL" told in one project should carry to the next; Apple Watch for fitness; resume and projects. Then names the kinds: preferences (semantic facts), episodes (events), procedures (how I like things done).
+- Live test of conflicting facts (learner's idea): "I like C++ not Python" → updates → code language changes. Shows it is not guaranteed ("it depends on the LLM call") and names the fix (structured output with a schema).
+- **Pairs to remember the framework concepts**: checkpointer (short-term, per thread_id) vs store (long-term, per user_id).
+- Shows a live failure honestly ("it should have remembered bullet points across threads; I'll check why") rather than hiding it.
+- Group project briefing and accountability (quizzes tracked, start projects this weekend; "you will face issues; remember them, we'll cover them").
+- Q&A: helps a learner probe an edge case in her own summarisation demo live, accepts "you are correct, that part is tricky", then checks how the framework handles it (trigger by messages or tokens).
+
+### Lines 13851–14060 (Day 6 Q&A)
+- When a back-and-forth doesn't resolve, takes it offline and promises a clearer demo next class instead of confusing everyone.
+- "What to keep in long-term memory" answered by analogy to people: "even humans don't remember everything from class; we're mimicking human behaviour" — honest about non-determinism.
+
+## Day 7 (lines 14061–15925): Capstone project begins
+
+### Lines 14061–14950
+- Starts by naming students who did the homework (positive reinforcement) and asking who didn't.
+- Frames the shift: "demo code puts retriever and indexer in one place; production needs modular, extensible code where adding a new retriever changes the least code."
+- **Design by asking the class**: "How would you divide this? Where does logging belong? If we switch OpenAI to Anthropic, should we edit everywhere?" Learners arrive at layers: config, LLM, context (indexers, retrievers, memory), agents, tools, MCP/skills, safety, freshness, observability, evals, caching. Refuses buzzwords: "don't give me terms like LLD, HLD; tell me how you would approach it."
+- Explains each setup choice by its job, not by name: poetry (dependency and packaging), pipx (install a CLI globally but isolated), .env vs config ("secrets are never pushed; config is pushed and lets you switch the model"), factory for creating LLM clients ("factories produce").
+- Draws the line on detail openly: "chunk size could go in config too; I have to draw the line somewhere."
+- Shows the payoff of packaging in another folder: type the command anywhere and it runs.
+- Writes every step in the notes so learners can follow even if lost: "literally every line I'm running is written down."
+- Live setup failure (missing `__init__.py`) handled by giving learners a short break and letting the TA take questions; returns and explains the cause in one line.
+- Project brief from TA: build a sellable product, not a demo ("not demo-able — sellable").
+
+### Lines 14951–15925
+- Builds the pipeline **one module at a time, each answering "what's missing now?"**: indexer exists → "do we have retrieval yet? no" → retriever → "do we have an agent yet? no" → tool wrapping the retriever → factory → orchestrator (and why: future planning, multi-agent, agentic RAG) → main calls handle_query. Then traces one question through every layer.
+- Invites disagreement on design: "this is not the only way; tell me what you'd do differently and why."
+- Production tool choice explained by comparison (Chroma for local/hackathons vs Qdrant for scale; Qdrant also does sparse/lexical and hybrid with RRF — callback to RRF day).
+- Makes an abstract number concrete: "why is every embedding 1,536 long? It's the model's dimension — just a list of 1,536 numbers, nothing fancy."
+- **Shows the payoff of the design**: switch Chroma ↔ Qdrant by editing one line of config; "adding graph indexing changes only two places." Asks learners to say where a web retriever would go.
+- Catches herself skipping a step ("I indexed but never added the retriever — everyone pause") and fixes it in front of the class.
+- When learners seem lost, draws the whole module diagram slowly on the iPad, then explains why she didn't start with the diagram: "you'd have been overwhelmed; with steps I can show why each part is needed."
+- Project Q&A: clarifies target user by role (someone who knows traffic needs but not infra), insists on drilling requirements down, values a sellable product.
+
+## Day 8 (lines 15926–17480): Project, MCP
+
+### Lines 15926–15950
+- Frames the course like HLD learning: first learn the parts (databases, networking), then stitch them into an end-to-end design — which is what interviews expect.
