@@ -430,3 +430,17 @@ Notes written while reading every line, in order. Line numbers refer to the tran
 - Uses learner stories as evidence for the course's emphasis (most-asked: latency at scale, sharding/caching, observability; also quantisation and fine-tuning).
 
 ## Day 15 (lines 28409–30119): Project demos, interview discussion
+
+### Lines 28409–30119 (project demos, final interview drills)
+- Demo feedback asks the judge's question first: "any general chatbot can already do this; what is specific to yours?" Pushes from generic advice to action on the user's own data.
+- Feedback is specific and tied to taught concepts: "when does long-term memory update? Every message costs latency and money; favour short-term and write long-term on session switch." "How do you know which user's memory a query reads?" (multi-tenancy, again).
+- Asks for the reasoning behind a number the system produced ("why these four stocks out of ~2,700? Show the tools and context") — trace before trusting.
+- Learner lessons echo the method: they started too big, cut back to small pieces and added one at a time; real cases (general questions, approvals mid-flow) only appeared once they built it. She names it: "you only meet more use cases when you build."
+- Interview drill on "summarise a 10,000-page PDF": first **call out assumptions** ("can I assume chapters, sections, 4–5 paragraphs per page?"), then do the arithmetic (10,000 × 4–5 = 40–50k chunks: workable; 20 per page: rethink), then hierarchical summaries (paragraph → section → chapter → document), then parallelise (reuse the planner's concurrency), then metadata (chapter, section, page) for cross-references and citations.
+- The interviewer's pushback ("financial data, so no hallucinations") is answered by splitting the problem: retrieval or generation? Then the matching check (retrieval evals vs answer relevance/faithfulness).
+- Output tokens cost more than input: explained through how generation works (one token at a time, each needing everything before it), then the system-design consequence: big input → slow first token; big output → long generation even with streaming.
+- "Retrieval got worse over months with no code change": measure first (rerun the eval set, compare recall@k with months ago), confirm it's retrieval not generation, compare old and new query logs for drift, check every version that isn't code (embedding model, generation model, DB, top-k config). Ties back to "version everything."
+
+---
+
+# Reading complete (all 30,119 lines).
