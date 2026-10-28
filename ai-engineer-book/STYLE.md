@@ -60,7 +60,73 @@ against them before it is called done.
 9. `{.practice}`, then `{.interview}`; answers in `back/answers.qmd`.
 10. `{.nexthook}`: one line.
 
-## 5. Facts
+## 6. Teaching method
+
+These rules come from studying how a strong live teacher explains agentic systems (see
+`teaching-analysis/analysis.md`). We use the *method* only. All content, examples and structure are our own.
+
+### 6.1 Order inside a section
+
+1. Start with a problem the reader can feel: a failure, a cost, a customer complaint at Kaveri Kart.
+2. Give the reader a chance to solve it: one line, in italics, starting "Before reading on, …". At most one per
+   section.
+3. Explain the mechanism in plain words, as numbered steps or a timeline.
+4. Only now name the concept. Then the formal term, if there is one.
+5. State the rule with its trigger: "If X, do Y."
+6. Show where it breaks or what it costs (the other side of the trade-off).
+
+### 6.2 Making a point stick
+
+- **Work the numbers.** Every cost, latency, memory or accuracy claim gets a small calculation the reader can follow
+  by hand (assumed example values, marked as such).
+- **One knob at a time.** When showing a change, keep everything else the same and say so.
+- **Predict, then show.** Before a result, ask the reader what they expect in one short sentence.
+- **Failure first.** Show the thing going wrong before showing the fix.
+- **One memorable rule per section.** It becomes the section's `{.remember}` note, so it is said once in the text and
+  once in the note. No more repetition than that.
+
+### 6.3 Making hard things easy
+
+- Define a new thing as a sum of things the reader knows ("an agent is a model plus tools, in a loop").
+- Say when a term only sounds hard ("A *tenant* is just a customer").
+- Split close terms with one deciding question ("Does it call the model? Then it is reranking, not fusion").
+- Spell out acronyms word by word on first use.
+- Build the mechanism by hand first, then show the library call that does it.
+- Skip theory the reader does not need, and say you are skipping it.
+- Use a timeline for anything time-based, and shrinking numbers for anything about search or filtering.
+- Analogies: one short everyday picture, then straight to the AI case. Do not stretch an analogy past one paragraph.
+
+### 6.4 Linking topics
+
+- Each chapter opens by naming the earlier idea it builds on, in one sentence.
+- When an idea mirrors an earlier one, say so ("This is the same split you saw in Chapter 3: rules versus a model").
+- Ordinary engineering ideas (retries, sharding, canary releases) are named as such and covered briefly. Depth goes to
+  the parts specific to AI systems.
+- Keep one architecture map across the book. Each new part shows where its topic sits on that map.
+- Plant terms before they are needed ("we will need this in Part VI"), but never use a term before defining it.
+
+### 6.5 Interview and decision habits
+
+- In `{.decision}` and `{.defend}` boxes, start with the assumptions, put numbers on them, then choose.
+- Every design choice ends with "it depends on …" followed by the actual conditions. Never a choice with no
+  conditions.
+- Diagnosis questions are answered in a fixed order: measure, find the stage, check what changed (including
+  versions that are not code), then fix.
+- Teach the exact words engineers use, in plain sentences the reader can say out loud in an interview.
+
+### 6.6 Honesty
+
+- When an example fails for a boring reason (state, wiring, a limit), say so plainly and say where to look.
+- Name the trade-offs of every approach, including the ones the book recommends.
+- Show that respected teams choose differently, and why, when a real source supports it.
+
+### 6.7 Fit with section 3
+
+The live-teaching habits of constant questions and repetition do not carry over. One "Before reading on" line per
+section is allowed. Rhetorical questions in a row are still banned. "Harness" is allowed only as the technical term
+("the harness around the model"), never as a verb meaning "use".
+
+## 7. Facts
 
 - Every claim about a product, model, protocol, price or company gets a source in `references.bib`.
 - Version numbers, model names and prices stay out of the main text where possible. They go in the dated version
