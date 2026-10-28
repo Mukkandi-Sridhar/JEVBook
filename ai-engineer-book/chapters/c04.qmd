@@ -1,6 +1,6 @@
 # Deep learning in one chapter {#sec-ch04}
 
-Some Tarkika customers do not write at all. They send a photo of a dented pressure cooker, or a voice note in Kannada saying the mixer makes a strange noise. The classifier from Chapter 3 cannot use either. It needs features someone has defined, like word counts or the order value, and nobody can write a useful list of features for the pixels of a photo.
+Some Tarkika customers do not write at all. They send a photo of a phone that arrived with a cracked screen, or a voice note in Kannada saying the new speaker makes a strange noise. The classifier from Chapter 3 cannot use either. It needs features someone has defined, like word counts or the order value, and nobody can write a useful list of features for the pixels of a photo.
 
 **Deep learning** solves this. A deep learning model takes raw input, such as the pixels of a photo, the sound of a voice or the letters of a sentence, and learns its own features from examples. Every large language model is a deep learning model, so this chapter gives you the core ideas in plain words. You will not build networks from scratch in this book. You need to understand them well enough to use them, choose them, run them, and explain their limits.
 
@@ -26,7 +26,7 @@ A **neural network** solves this with a team of neurons arranged in layers (@fig
 
 Between layers, each neuron applies a small bend to its total before passing it on. The most common bend is very simple: if the total is negative, pass on zero; otherwise pass it on unchanged. It is called **ReLU**. Without these bends, stacking layers would add nothing, because a sum of sums is still just a sum. With them, enough neurons can learn almost any pattern.
 
-A network with many layers is called **deep**, which is where "deep learning" gets its name. On photos, researchers found that the first layers of a trained network learn to spot edges, the middle layers learn textures and shapes, and the last layers learn whole objects [@lecun2015]. For Tarkika's photos, that could mean edges, then a dent or a crack, then "damaged product". Nobody wrote a rule for "dent". The network learned it from labelled photos.
+A network with many layers is called **deep**, which is where "deep learning" gets its name. On photos, researchers found that the first layers of a trained network learn to spot edges, the middle layers learn textures and shapes, and the last layers learn whole objects [@lecun2015]. For Tarkika's photos, that could mean edges, then a crack or a scratch, then "damaged product". Nobody wrote a rule for "crack". The network learned it from labelled photos.
 
 ::: {.remember}
 Use neural networks for photos, sound and free text. For clean tables of numbers, gradient-boosted trees are usually as good and far cheaper.

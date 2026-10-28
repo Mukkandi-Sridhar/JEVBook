@@ -10,8 +10,8 @@ def fig_map():
                           ("amount not credited", .20, .60)], (.24, .72, .48, .40), "refunds"),
         (C["saffron"], "s", [("delivery", .62, .84), ("courier", .82, .80), ("order nahi aaya", .58, .68),
                             ("tracking not working", .70, .59)], (.76, .72, .46, .40), "delivery"),
-        (C["plum"], "^", [("mixer jar size", .33, .30), ("cooker capacity", .50, .21),
-                          ("steel grade", .35, .12)], (.47, .21, .44, .32), "product questions"),
+        (C["plum"], "^", [("battery life", .33, .30), ("screen size", .50, .21),
+                          ("size chart", .35, .12)], (.47, .21, .44, .32), "product questions"),
     ]
     for col, m, pts, (cx, cy, w, h), name in groups:
         ax.add_patch(Ellipse((cx, cy), w, h, fc="none", ec=col, lw=0.8, ls=(0, (3, 2))))

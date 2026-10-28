@@ -25,7 +25,7 @@ Learning from labelled examples is called **supervised learning**. A model that 
 
 ## Turning text into features
 
-A classifier works with numbers, so a message must first become a list of numbers. The simplest way is to count words. Make a list of every word that appears in your messages. For each message, write down how often each word appears. A message about a broken cooker gets a high count for "broken" and "cooker", and zero for "delivery".
+A classifier works with numbers, so a message must first become a list of numbers. The simplest way is to count words. Make a list of every word that appears in your messages. For each message, write down how often each word appears. A message about broken earbuds gets a high count for "broken" and "earbuds", and zero for "delivery".
 
 Plain counting gives too much weight to common words like "the" and "my", which appear in every message. A small improvement called **TF-IDF** fixes this: it gives each word a weight that is high when the word is frequent in *this* message but rare across *all* messages. "Refund" gets a high weight in a refund request; "the" gets almost none.
 
@@ -67,7 +67,7 @@ The most useful classical model is **logistic regression**. Despite the long nam
 2. For a new message, add up the points of all its features.
 3. Turn the total into a probability between 0% and 100%. A high total gives a probability near 100%, a very negative total gives one near 0%.
 
-With five labels, the model keeps five sets of points, one per label, and turns the five totals into five probabilities that add up to 100%. The message "paisa wapas karo, cooker toot gaya" (give my money back, the cooker broke) might get *refund* 81%, *complaint* 12%, *product question* 4%, *delivery* 2%, *other* 1%.
+With five labels, the model keeps five sets of points, one per label, and turns the five totals into five probabilities that add up to 100%. The message "paisa wapas karo, earbuds kharab ho gaye" (give my money back, the earbuds stopped working) might get *refund* 81%, *complaint* 12%, *product question* 4%, *delivery* 2%, *other* 1%.
 
 How does the model learn the points? It starts with every point at zero, makes guesses on the training examples, measures how wrong they were, and adjusts the points a little to be less wrong. It repeats this many times. This guess-check-adjust loop is how almost every model in this book learns, including the large language models in Part II.
 

@@ -1,10 +1,10 @@
 # What an applied AI engineer does {#sec-ch01}
 
-Tarkika is a small online store in Mysuru. It sells kitchen and home products across India: pressure cookers, steel tiffin boxes, bedsheets, mixer grinders. On a normal day, its six-person support team answers about 800 emails and chat messages. During the Diwali sale, that number jumps to 4,000 a day, and the team falls days behind.
+Tarkika is a growing online marketplace based in Bengaluru. It sells all kinds of products across India: phones, earbuds, laptops, clothes, shoes and home appliances. On a normal day, its six-person support team answers about 800 emails and chat messages. During the Diwali sale, that number jumps to 4,000 a day, and the team falls days behind.
 
 The owner, Meena, decides to "add AI". A developer friend connects a chatbot to the website over a weekend. It is impressive for about a week. Then the problems start:
 
-- It tells a customer that a used pressure cooker can be returned within 30 days. The real policy says 7 days, and only for unused items.
+- It tells a customer that opened earbuds can be returned within 30 days. The real policy says 7 days, and only if the seal is unbroken.
 - It answers a customer who wrote in Hindi in English, and a customer who wrote in Hinglish in formal Hindi.
 - Nobody can say how many of its answers are right. The team only hears about the wrong ones when customers complain.
 - At the end of the month, the bill from the model provider is four times what anyone guessed.
@@ -130,7 +130,7 @@ reply = client.messages.create(
     model=MODEL,
     max_tokens=300,
     messages=[{"role": "user",
-               "content": "Can I return a pressure cooker after 10 days?"}],
+               "content": "Can I return opened earbuds after 10 days?"}],
 )
 print(reply.content[0].text)
 print(reply.usage.input_tokens, reply.usage.output_tokens)
@@ -182,7 +182,7 @@ By the end of this book, Tarkika's support system will look like @fig-project. E
 
 ::: {.project}
 1. Make your first call to a model, as shown above, and note the token counts.
-2. Write down 20 questions a Tarkika customer might ask. Mix English, Hindi and Hinglish, and include a few angry ones. For example: "My mixer stopped working after 2 weeks, I want a replacement", "Mera order 5 din se pending hai", "Do you deliver to Shillong?"
+2. Write down 20 questions a Tarkika customer might ask. Mix English, Hindi and Hinglish, and include a few angry ones. For example: "My phone stopped charging after 2 weeks, I want a replacement", "Mera order 5 din se pending hai", "Do you deliver to Shillong?"
 3. Send each question to the model with no extra information. Mark each answer as *correct*, *wrong* or *made up*. Since the model knows nothing about Tarkika, expect many made-up answers. This is your starting point, and you will measure every later improvement against it.
 4. Work out the cost of the 20 calls, using your provider's real prices.
 :::
