@@ -119,7 +119,8 @@ inside the module that first needs them, never on their own.
 
 ## 10. Decide, don't generate: decision models and Jev
 - Is this step writing, or deciding? (most steps in a support system are decisions)
-- When something is rare, most alarms are false (base rates; accuracy that fools you)
+- A probability is a share of many cases; when something is rare, most alarms are false (base rates; accuracy
+  that fools you)
 - Learning from examples: a small classifier (features, practice and test data, leakage, overfitting, baselines)
 - What does a decision need that text does not? (a probability you can trust)
 - When the model says 90%, is it right 90% of the time? (calibration)
@@ -187,7 +188,7 @@ inside the module that first needs them, never on their own.
 - Tests before release, watching after (offline and online evals; in CI)
 - Releasing safely (canary, blue-green, A/B, shadow; rollback)
 - Seeing inside a run (tracing; hosted or self-hosted; low latency can hide wrong answers)
-- From script to service (project layers, config and secrets, packaging; streaming, queues, timeouts,
+- From script to service (project layers, pinned environments, config and secrets, packaging; streaming, queues, timeouts,
   rate limits and gateways; never refunding twice)
 - When to fine-tune, and when not to (behaviour, not knowledge; LoRA and QLoRA; preference pairs; distillation;
   reward hacking)
