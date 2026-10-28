@@ -23,6 +23,10 @@ rules that apply on the way. When two files disagree, this one wins.
 9. Check the internet and primary sources before writing a topic; facts must be right, but the book is about
    understanding, not about collecting facts.
 10. Quality over quantity. Short modules are fine.
+11. Stories are rare. No characters, no narrative openings, no long scenarios. Start from the concept or the
+    problem directly. Use a short example (one or two lines, Tarkika if it fits) only when the idea needs one to be
+    understood. A long story is allowed only when a concept truly cannot be shown any other way, and even then it is
+    a few lines.
 
 ## 1. The standard
 

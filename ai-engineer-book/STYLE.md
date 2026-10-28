@@ -49,7 +49,8 @@ against them before it is called done.
 
 ## 4. Module shape
 
-1. A short opening: a real problem at Tarkika that the reader can feel.
+1. A short opening that states the problem the module solves, directly. No characters or narrative stories;
+   a one-line example only if it helps.
 2. Sections, each a plain question as its title, each built as a reasoning chain (see `PLAYBOOK.md` section 7).
 3. Figures and short code where they show the idea.
 4. A short close that says what changed and names the next problem.
