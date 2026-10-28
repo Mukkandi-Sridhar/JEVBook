@@ -1,180 +1,132 @@
-# Python for AI engineers {#sec-m01}
+# What an AI engineer builds {#sec-m01}
 
-Ravi is a developer at Tarkika. He writes a short Python script that reads customer messages from a file, sends each one to a language model, and asks for one word back: *refund*, *delivery*, *product* or *other*. He tries it on ten messages. All ten come back right.
+A language model can write a polite reply in Hindi, explain a return policy, or sort a thousand complaints in a few minutes. Yet when a company puts one in front of real customers, most of the work has little to do with the model itself. This module explains why. It starts with what a model can and cannot do, and ends with a map of everything an AI engineer builds around it. That map is the plan for the rest of the book.
 
-Then the Diwali sale starts, and he runs it on one day of mail, 4,000 messages.
+## What does a language model actually do?
 
-1. The progress counter says the run will take more than three hours.
-2. Two hours in, at message 2,180, the script stops with `429 Too Many Requests`. Nothing was saved.
-3. When he reruns a small batch, the replies are not always one word. Sometimes "Refund". Sometimes "refund." with a full stop. Once, "This customer seems to want their money back." His code was waiting for exactly `refund`.
-4. A week later, a small change breaks the script, and nobody notices for three days.
+You send it text, and it sends back text. That is all a single call to a model does.
 
-The model was not the problem. Ravi wrote the script as if calling a model were like calling any other function: text goes in, text comes out. It looks like that. It does not behave like that. A normal function is fast, always works, and gives the same output for the same input. A model call is slow, sometimes fails, and gives a different output for the same input. Each of Ravi's four problems comes from one of these differences, and this module takes them one by one.
+GPT, Gemini, Claude, Llama, Qwen and DeepSeek are names of models. It helps to keep three words apart. The **model** is the trained program that turns text into text. The **model provider** is the company that runs it and sells access, such as OpenAI, Google or Anthropic. The **application** is a product built on top, such as the ChatGPT app. ChatGPT is not a model; it is an application that uses OpenAI's models and adds a lot around them.
 
-## The same input does not give the same output
+Now ask a few simple questions about what a model can do on its own.
 
-Ravi's code is strict. For Python, `"Refund" == "refund"` is false. The model is not strict. It writes language, and language allows the same meaning in many forms. Ask it the same question five times and you can get five different sentences, all meaning the same thing.
+*Ask it about an order placed this morning.* It cannot answer. A model learns from data collected up to a certain date, and knows nothing after that. It has also never seen your company's database. This limit is called the **knowledge cutoff**.
 
-So something has to stand between the two, and check each reply before the strict side uses it.
+*Ask a question, then a follow-up such as "and how long will that take?"* It does not know what "that" means. Every call to a model is separate, and the model keeps nothing from one call to the next. Chat apps seem to remember because the app sends the earlier messages again with every new one. Module 4 builds this.
 
-*Before reading on: what exactly would you check in each of Ravi's replies?*
+*Paste in three hundred pages of policy documents and a year of emails.* It will refuse, or fail. Each call accepts only a limited amount of text, called the **context window**. Module 2 explains what fills it and why a longer input does not always give a better answer.
 
-The category must be one of the four allowed words. If the customer mentioned an order number, it should be there. If Ravi also wants to know whether the message is urgent, that must be a plain true or false. This list is a description of the shape Ravi expects. Write it as code, and every reply can be checked against it automatically. Such a description is called a **data model**. In Python, most AI projects write it with a library called Pydantic:
+*Ask the same question twice.* You can get two different answers. An ordinary program gives the same output for the same input, every time. A model picks its words by probability, so its output can change from one call to the next (Module 2 shows how). This is the biggest difference between AI systems and ordinary software, and much of this book deals with its effects.
+
+*Ask it to check an order, send an email or issue a refund.* It cannot. It can only write text. It can write "I have issued your refund", but writing that sentence does not move any money.
+
+## Three kinds of AI work
+
+People who "work in AI" usually do one of three jobs. Some **make models**: they collect data and train models, which needs large research teams and large budgets. Some **serve models**: they make trained models run fast and cheaply on hardware, which is called inference engineering. And some **build applications**: they take a model that already exists and turn it into a product that works for real users.
+
+This book is about the third job. You will learn enough about how models work to use them well, but you will not train a large model.
+
+## If the model cannot act, what can?
+
+In software, what does the actual work, such as looking up an order or sending an email? Code. A function such as `check_order_status(order_id)` can query a database and return the answer.
+
+Can that function understand a customer who writes "mera parcel kab aayega"? No. It needs an exact order number, passed in exactly the right way. The model understands the customer perfectly, but cannot query anything. Each one has exactly what the other lacks.
+
+So put them together. The model reads the customer's message and decides which function should run and with which values. Your program runs the function. The result goes back to the model, which writes the reply (@fig-two-halves). A model connected to functions it can ask your program to run is called an **agent**, and each such function is called a **tool**.
+
+![A model understands language but cannot act. A tool can act but cannot understand language. Connected, the model chooses the tool and your program runs it.](/figures/m01/two-halves.pdf){#fig-two-halves}
+
+Now look at one particular kind of tool: one that fetches information, such as a search over the company's policy documents. The model asks for the relevant paragraph, the paragraph is added to the question, and the model answers using it. That is **retrieval-augmented generation**, or **RAG**. The name describes the three steps in order: *retrieve* the information, *augment* (add to) the question with it, then *generate* the answer. RAG is not a separate technology. It is an agent whose tool fetches facts. Modules 6 to 8 are about doing it well.
+
+You will also see agents described in other ways. "Model plus tools" came first. Then people noticed that what you put in front of the model decides most of the result, and started saying "model plus context". The newest description is "model plus harness", where the **harness** means everything around the model: the instructions, the tools, the memory, the checks, the code that runs the loop. All three descriptions are true. Building that harness is the job.
+
+## What does an AI engineer build around the model?
+
+@fig-system-map shows the parts, in the order a customer's message passes through them. Each part has a module of its own.
+
+![The parts of an AI system. A message enters at the front door, is checked, is handled by the control layer with the model, its context and its tools, and is checked again on the way out. Tests, traces, cost and caching watch over everything. The numbers are the modules that cover each part.](/figures/m01/system-map.pdf){#fig-system-map}
+
+1. **The front door** receives the message, and limits how many requests come in (Module 16).
+2. **Safety checks** look at what comes in: private data, abuse, hidden instructions (Module 12).
+3. **Control** decides what happens next. A fixed sequence of steps, or an agent that chooses, or a plan for a long task (Modules 11 and 14).
+4. **The model** is called, perhaps several times (Modules 2 and 10).
+5. **Context** decides what the model sees on each call: the instructions, the retrieved documents, the memory of the conversation (Modules 3, 4 and 6 to 8).
+6. **Tools** let it act, through functions you write or through standard connectors such as MCP (Modules 5 and 13).
+7. **Safety checks** look at what goes out, before the customer sees it or a refund is issued (Module 12).
+8. Under all of it, **quality and operations**: tests that show whether it works, traces of every run, cost and caching, safe releases (Modules 9, 15 and 16).
+
+The model is one box out of eight. The other seven are what the engineer builds.
+
+## Calling a model is not calling a function
+
+In code, a model call looks like any other function call: text goes in, text comes out. It behaves very differently.
+
+```{=latex}
+\needspace{10\baselineskip}
+```
+
+| | An ordinary function | A model call |
+|---|---|---|
+| Speed | Microseconds | Seconds |
+| Failure | Rarely fails | Fails sometimes: busy servers, limits, timeouts |
+| Same input | Same output, every time | A different output is possible every time |
+| Cost | Free to run | Charged for every call, by the amount of text |
+
+Each row changes how you write code around the model. Because the output varies, you check every reply before your code uses it (Module 5), and you cannot test it the usual way (Module 9). Because calls fail, you retry some failures and not others (Module 11). Because calls are slow, you run many at once, within the provider's limits (Module 15). And because every call costs money, you count what you send (Modules 3 and 15).
+
+## Should this problem use AI at all?
+
+The table above gives a simple rule. A model is slower, costlier and less predictable than ordinary code. So when ordinary code can do the job, use ordinary code.
+
+"Was this order placed more than 7 days ago?" is a date comparison. One line of code answers it correctly every time, for free. "Is this customer angry, and are they asking for a refund?", written in a mix of Hindi and English with spelling mistakes, cannot be written as a rule. That is where a model earns its cost.
+
+Before building, ask four questions:
+
+1. Is the input messy language, or a judgement that no rule can capture? If not, write the rule.
+2. If the model is wrong, will someone notice, and how much will it cost?
+3. What does success look like, as a number you can measure before and after?
+4. Can you buy this ready-made? A generic support bot may be enough. You build your own when you need your own data, your own rules, or control over what it is allowed to do.
+
+## Your first call, and what it costs
+
+Here is a complete call to a model in Python, using Anthropic's client library. Other providers' libraries look very similar.
 
 ```python
-from typing import Literal
-from pydantic import BaseModel, ValidationError
+import anthropic
 
-class Ticket(BaseModel):
-    category: Literal["refund", "delivery", "product", "other"]
-    order_id: str | None = None
-    urgent: bool
+MODEL = "claude-opus-5-5"          # model names change; keep this in one place
+client = anthropic.Anthropic()     # reads the API key from the environment
 
-reply = '{"category": "Refund request", "urgent": true}'
-try:
-    ticket = Ticket.model_validate_json(reply)
-except ValidationError as e:
-    print(e.errors()[0]["msg"])
+reply = client.messages.create(
+    model=MODEL,
+    max_tokens=1000,
+    messages=[{"role": "user",
+               "content": "Can I return opened earbuds after 10 days?"}],
+)
+for block in reply.content:
+    if block.type == "text":
+        print(block.text)
+print(reply.usage.input_tokens, reply.usage.output_tokens)
 ```
 
-Each line of `Ticket` is one rule. `Literal[...]` allows only the four words. `str | None = None` means the order number is text, or missing. `bool` means true or false. The reply here is in JSON, a common text format for data, and the model wrote "Refund request" as the category. The code prints:
+The answer will be polite and sensible, and probably wrong for your shop, because the model has never seen your return policy. The last line prints how much text went in and came out, counted in **tokens**, the small pieces of text that models read and charge by. Module 2 explains what a token is.
 
-```
-Input should be 'refund', 'delivery', 'product' or 'other'
-```
+Now work out the cost. Suppose the provider charges ₹350 for every million input tokens and ₹1,700 for every million output tokens. (These are assumed example prices. Output usually costs several times more than input, and Module 2 explains why.)
 
-The bad reply is stopped at the door, with the reason, instead of breaking something three functions later.
+1. This question was about 30 tokens in and 120 tokens out: 30 × 350 ÷ 10,00,000 + 120 × 1,700 ÷ 10,00,000, about ₹0.21.
+2. A real support request also carries instructions and the relevant part of the policy: say 3,000 tokens in and 300 out. That is 1.05 + 0.51, about ₹1.56 per message.
+3. At 4,000 messages a day, that is about ₹6,240 a day, or about ₹1,87,000 a month.
 
-Notice the notes such as `str | None` and `bool`. They are **type hints**. In ordinary Python, they are only notes for people and code editors, and Python does not enforce them. Pydantic enforces them. In AI work they have one more reader, and it is the model itself.
+Two things stand out. Most of the cost comes from the text sent *with* each question, not from the question itself. And the bill grows with every message, so a small saving per call becomes a large saving per month. Modules 3 and 15 come back to both.
 
-```python
-def check_order_status(order_id: str) -> str:
-    """Return the delivery status of one Tarkika order.
+## The project for this book
 
-    order_id: the order number, for example TK-48213.
-    """
-```
+Through the book, you will build one system: a customer-support agent for **Tarkika**, an imagined online marketplace that sells phones, electronics, fashion and home products across India. By the end, it will:
 
-When you give a function like this to a model as a **tool**, a function the model can ask your program to run, the library you use reads the function's name, type hints and docstring. It turns them into a description and sends that description to the model [@openaiagents]. The model decides when to call the tool, and with what, from that text alone. A careless docstring is therefore not a style problem. It is a wrong instruction to the model. We come back to this in Module 7.
+- answer questions from the company's policy documents, with the source of each answer, and say "I don't know" when the documents do not cover a question;
+- look up orders, and prepare refunds that a person approves above a set amount;
+- remember a customer's earlier messages, and keep each customer's data separate;
+- refuse hidden instructions in customer emails;
+- report its own quality, cost and speed.
 
-Checking the reply solves problem 3. It cannot help when there is no reply at all, which is problem 2.
-
-## A model call can fail
-
-A call to a model travels over the internet to someone else's computers, and some calls fail. For each failure, ask one question: if I wait and try again, will it work?
-
-- **429, too many requests.** Ravi sent more calls than his account allows in a short time. Waiting fixes it.
-- **500 or 529, the server has a problem or is overloaded.** Waiting usually fixes it.
-- **No reply in time.** Trying again usually works.
-- **400, bad request.** Something in the call is wrong, such as text that is too long. Waiting never fixes it.
-- **401, unauthorised.** The API key is wrong. Waiting never fixes it.
-
-So retry only the first three. Retrying the others sends the same mistake again.
-
-*Before reading on: after a 429, how long should the script wait before trying again?*
-
-If it tries again at once, the server is still busy, and the call fails again. Now imagine a thousand scripts, each told to wait exactly one second. They all come back at the same moment and flood the server again. Two changes fix this. Wait longer after each failure: up to 1 second, then 2, then 4, then 8. And pick a random wait within that limit, so that different scripts come back at different times. This is called **exponential backoff with jitter**: exponential because the limit doubles each time, jitter for the randomness [@brooker2015]. After a fixed number of tries, stop and record the failure.
-
-```python
-import random, time
-
-RETRYABLE = {429, 500, 503, 529}
-
-def call_with_retry(send, max_attempts=5):
-    for attempt in range(max_attempts):
-        if attempt > 0:
-            time.sleep(random.uniform(0, 2 ** (attempt - 1)))   # full jitter
-        status, body = send()
-        if status == 200:
-            return body
-        if status not in RETRYABLE:
-            raise RuntimeError(f"Not retryable: {status}")
-    raise RuntimeError("Gave up after retries")
-```
-
-`send` is any function that makes one call and returns the status code and the reply. @fig-retry shows the same logic as a picture.
-
-![Only failures that waiting can fix are tried again, and each wait is longer and partly random.](/figures/m01/retry.pdf){#fig-retry}
-
-Five attempts have four waits, of at most 1, 2, 4 and 8 seconds. In the worst case the script waits 15 seconds before giving up on a message. For a batch that runs at night, that is fine. For a customer waiting in a chat window, it is too long, and two attempts are better. The right number depends on who is waiting.
-
-One more thing to check. Most official client libraries for model providers already retry a failed call a few times on their own [[VERIFY]]. If the library tries 3 times and your loop tries 5 times, one message can be sent 15 times.
-
-Retries make crashes rare. They do not make them impossible, and Ravi still lost two hours because his script kept all results in memory until the end. Write each result to a file the moment it arrives. When the script starts, it reads the file and skips what is already done. Then a crash at message 2,180 costs one message, not two hours.
-
-The script no longer loses work. It is still slow.
-
-## A model call is slow, but your computer is not busy
-
-Each call takes about 3 seconds. One after another, 4,000 calls take 12,000 seconds: 3 hours and 20 minutes.
-
-*Before reading on: during those 3 seconds, how much work is Ravi's computer doing?*
-
-Almost none. It sends a few kilobytes of text, then waits. The work happens on the provider's machines. So for three hours, Ravi's program mostly waits.
-
-Think of someone in Tarkika's support team who emails a courier about one lost parcel, and then watches the inbox until the courier replies before writing about the next parcel. Nobody works like that. You send twenty emails, and handle the replies as they come. Python can do the same:
-
-```python
-import asyncio
-
-async def ask_model(message):          # stand-in for a real model call
-    await asyncio.sleep(3)             # the time spent waiting for the reply
-    return "refund"
-
-async def classify_all(messages, limit=20):
-    gate = asyncio.Semaphore(limit)
-    async def one(m):
-        async with gate:
-            return await ask_model(m)
-    return await asyncio.gather(*(one(m) for m in messages))
-
-results = asyncio.run(classify_all(["paisa wapas karo"] * 100))
-```
-
-An `async` function can pause while it waits, and let other calls run in the meantime. `gather` starts all the calls. The **semaphore** lets only 20 be in progress at once. These 100 messages finish in about 15 seconds instead of 300. Doing many waiting tasks at the same time like this is called **concurrency** (@fig-timeline).
-
-![Six calls of 3 seconds. One at a time, they take 18 seconds, almost all of it waiting. Started together, the waits overlap and the batch takes about 3 seconds.](/figures/m01/timeline.pdf){#fig-timeline}
-
-Then why not start all 4,000 at once? Because the provider allows each account only so many calls per minute. Work it out for 20 at a time:
-
-1. Each slot finishes one call every 3 seconds, so 20 calls a minute.
-2. Twenty slots finish 20 × 20 = 400 calls a minute.
-3. If Tarkika's account allows 100 calls a minute, 4,000 messages need at least 40 minutes, whatever the code does.
-
-Go above the limit and you get 429 errors, which you retry, which adds even more calls. So the number of calls at once is set by the account's limit, not by how fast you want to finish. Here, 5 at a time gives exactly 100 a minute.
-
-Three hours became forty minutes, and the script survives errors. Problem 4 is left.
-
-## You cannot test a model call like a function
-
-To catch a silent break, you write tests. A normal test gives a function a fixed input and checks for one exact output. Try that here: send "paisa wapas karo" and check that the answer is `refund`. It passes today. Tomorrow the model says "Refund", and the test fails, though nothing in your code changed. A test that fails at random is soon ignored.
-
-*Before reading on: which parts of Ravi's script give the same result every time?*
-
-Everything Ravi wrote: reading the file, checking the shape, retrying, saving. Only the model's reply changes. So test the two parts separately.
-
-1. **Ravi's own code** is tested with a fake model: a few lines that return replies you choose, including broken ones and errors. Every run gives the same result, needs no network and costs nothing.
-2. **The model** is checked on a set of real messages, with checks like "is the category one of the four?" The result is a score, not a pass or fail. These checks are called **evals**, and Module 11 is about them.
-
-```python
-import pytest
-from triage import parse_ticket, BadReply   # parse_ticket checks a reply with Ticket
-
-def test_valid_reply():
-    t = parse_ticket('{"category": "delivery", "urgent": false}')
-    assert t.category == "delivery"
-
-def test_reply_that_is_not_json():
-    with pytest.raises(BadReply):
-        parse_ticket("Sure! This looks like a delivery issue.")
-```
-
-## What changed
-
-@fig-pipeline shows Ravi's script after the four fixes.
-
-![Ravi's script, rebuilt: up to 20 calls at once, retries for failures that waiting can fix, every reply checked, and each result saved as soon as it arrives.](/figures/m01/pipeline.pdf){#fig-pipeline}
-
-Ravi did not need a better model. He needed to stop treating the model like an ordinary function. It is slow, so he runs calls together. It can fail, so he retries carefully and saves as he goes. It answers differently each time, so he checks every reply and tests his own code apart from the model.
-
-One difference was left out: every call also costs money. Module 2 looks at what the model actually is, what an AI engineer builds around it, and what each of those 4,000 calls costs.
+Each of these is one part of @fig-system-map. The first thing to understand is the model in the middle: how it reads text, why the same question can get different answers, and why you pay for every piece of text you send. That is Module 2.

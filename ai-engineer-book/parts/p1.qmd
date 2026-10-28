@@ -1,9 +1,7 @@
 # The job and the foundations
 
 ::: {.partintro}
-The first modules give you the ground the rest of the book stands on: the Python habits that keep model calls safe and fast, what an AI engineer builds around a model, and the parts of probability, machine learning and language processing you will actually use at work.
-
-None of it is research-level. If an idea is here, a later module or a real job needs it.
+These modules explain what a model can and cannot do, and everything an AI engineer builds around it.
 :::
 
 ```{=latex}
