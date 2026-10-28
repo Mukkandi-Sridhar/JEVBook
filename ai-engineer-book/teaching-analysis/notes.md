@@ -401,3 +401,32 @@ Notes written while reading every line, in order. Line numbers refer to the tran
 ### Lines 26239–26300
 - Opens from day-one definition (agent = LLM + tools in a loop), then compounding errors with arithmetic: 0.95 × 0.95 ≈ 90%, three tools ≈ 85%. "Errors amplify across steps."
 - Moves straight to "are all errors the same?" — learners list 403, 404, 429, 500 — to set up per-error handling.
+
+### Lines 26301–27350 (interview drills, LLMOps)
+- Errors sorted before fixing: retryable (429, network) vs non-retryable (auth, bad body). "Is there any point retrying a wrong header? No." Then backoff with a max, then fallbacks (middleware, tool descriptions, prompt priority) — several valid ways, none "the" answer.
+- Returns to day-one mechanics to explain a term: "what is a docstring? What do we send with the tool list? Name, description, arguments — the model chooses from that string."
+- **"Live interview with me"** format: rapid follow-up questions; she insists on structured answers. "They'll say traffic grew 100x to sound fancy. Don't freak out: throughput went up." Two cases kept separate: too many requests vs each request too slow; profile each.
+- Conflicting documents: versioning and freshness, but "latest isn't always right; a legal document may have more authority." Keep the answer general, then fit it to the case.
+- Precision vs recall in RAG terms (accuracy of what you fetched vs completeness of what you should have fetched), then the production pattern: high recall first, rerank for precision. Fusion vs reranking separated by one question: "do we make a model call in fusion? In reranking?"
+- New term introduced by human behaviour first: spinner for a minute vs a few words appearing then streaming. Then TTFT and tokens per second, then "which to optimise? It depends; for chat, TTFT."
+- Model sizing recap as a quick list (small: classification, judging, summaries; large/reasoning: planning, complex code). "Are bigger models always better? No."
+- Admits a missed term and fills it: harness. Sequence: prompt engineering → context engineering → harness engineering ("if you're not the model, you're the harness"). "If you want to sound smart, use these terms."
+- Outside-scope topics flagged as interview-relevant with a two-line explanation (quantisation: 32-bit vs 8-bit numbers, less space and cost for a small accuracy loss).
+- LLMOps built on known DevOps: "deterministic vs probabilistic — we've said this since day one." MLOps vs LLMOps separated by what the course does and doesn't cover.
+- One-word change demonstration: "you are an assistant" → "you are a software architect" changes the whole system. Learner joke ("a careless assistant") welcomed.
+- **One rule to remember**: "if changing a component changes AI behaviour, give it a version." Then what Git does not version (external knowledge base, third-party schema, skills outside the repo).
+- Offline vs online evals mapped to unit tests before push vs monitoring after rollout. Rollout strategies reused from HLD (canary 5→25→50→100%, blue-green, A/B via YouTube thumbnail analogy, shadow deployment). "The deployment process is the same; the tests differ."
+- Shows two real vendor engineering write-ups with opposite designs (reuse a teammate's index vs no index at all, just grep). Lesson: "there is no one correct design; even the biggest companies call out their trade-offs." Then the condition that flips it: an online, multi-user product can't grep, so indexing is unavoidable.
+- Tool choice stated by fit: one eval library for RAG-specific metrics, another for CI/regression of whole agents; production often uses both.
+- Recap before new code: "what was the source of truth? The golden dataset. How do you build it? Synthetic, human, production logs."
+
+### Lines 27351–28408 (agent evals in CI, career Q&A, end of Day 14)
+- Raises the hard question before the tool answers it: "RAG evals compare retrieved vs expected. How do you test a whole multi-agent workflow?" Lets learners think, then shows per-component evals (classifier, summarisation/memory, tool correctness, plan quality/adherence, task completion, step efficiency, exact/JSON match).
+- A golden dataset made concrete when a learner can't picture it: e-commerce support (return policy, tracking, ordering; grouped by query type); for a coding agent, "for 'implement this feature', the expected files that should exist." Different thresholds per dataset (strict for retrieval, judge-based for plans).
+- Special-case awareness: a coding agent runs inside other projects, so the test fixture is a sample project with its own dataset.
+- CI demo end to end: secret added, trivial commit pushed, workflow runs evals. Warns about cost (every test calls the system and a judge) and stops the run on camera.
+- Closing recap as four steps: golden dataset → test cases → load in test files → trigger on push (then deploy if it passes).
+- Career talk: honest when a learner lacks backend ("I won't sugarcoat it: end-to-end design will be asked"). Advice tied to action: timed practice, start interviewing before you feel ready ("those six months never come"), put proof (projects, links) in front of recruiters.
+- Uses learner stories as evidence for the course's emphasis (most-asked: latency at scale, sharding/caching, observability; also quantisation and fine-tuning).
+
+## Day 15 (lines 28409–30119): Project demos, interview discussion
