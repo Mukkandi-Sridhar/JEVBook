@@ -110,3 +110,33 @@ Notes written while reading every line, in order. Line numbers refer to the tran
 - Explains where each evaluation input comes from with a labelled list: question (golden set), reference (ground truth), context (what the retriever returned), answer (agent's final message).
 - Notes that evaluation is offline and part of CI/CD, so latency matters less; production queries feed the golden set.
 - Repeats the "evals good, production bad" interview question a second time in a new setting (spaced repetition).
+
+### Lines 8351–9450
+- **Predict, then check**: "If I change chunk size from 256 to 1500, should precision go up or down? If k goes from 4 to 1?" Learners predict, then the table confirms. Numbers back up what they saw by eye the week before.
+- Reads the results table per query type: "which file imports Task and Status?" fails in semantic, shines in graph; exact error names shine in lexical; "trace the call" fails in semantic and lexical, wins in graph. Lesson: "no one solution fits all queries".
+- Asks the class to choose the order of teaching ("graph RAG with or without evaluation first?").
+- Graph RAG introduced as a data shape the class already knows: nodes, edges, and a triple (from, to, relationship). Asks for a yes from "every single person" at the key point.
+- Shows the generated relationships ("main imports AuthService") so the abstract graph becomes concrete; acknowledges the token cost a learner points out and turns it into "understand trade-offs, then improve".
+- **Ranking taught by location**: inside the database (we don't control it) vs in the application: fusion (merge ranks, no rereading, no LLM call; RRF) vs reranking (read the text again with a model; cross-encoder). Draws the production pipeline: multiple retrievers → fusion → top 100 → rerank → top 5 → answer, then says every step is optional.
+- Recap by asking the class for each line (what is it good for, how is it stored).
+- **Reframes the taxonomy as questions to ask yourself**: where does the information come from (retrieval), how do I improve the query, how do I validate, how do I orchestrate. "Hybrid is a retrieval strategy, self-RAG a validation strategy, agentic RAG an orchestration strategy" — one system can be all three.
+- Mild humour and honesty about effort ("I spent a lot of dollars running these").
+
+### Lines 9451–9893 (Day 4 Q&A)
+- Time-series question answered with the general pattern: let the LLM write the query for the user's question, run it yourself, send the rows back to the LLM for a natural-language answer. Contrast: fixed APIs are safe but restrictive.
+- Honest comparison of real products: one coding tool uses heavy RAG, another mostly grep; "both designs are possible; we'll learn both and their pros and cons."
+- Storage duplication question → "quality of the system versus storage; that is the trade-off", and agentic routing to query only the needed store.
+- Promises to answer a hard question ("when do we stop increasing chunk size?") the next day in depth, after collecting doubts.
+- Advises: write the code yourself to understand "what happens in this function, what are the steps", not syntax.
+
+## Day 5 (lines 9894–11736)
+
+### Lines 9894–10550
+- Opening tells learners to **notice her words and how she explains**, so they can explain it in interviews and at work. (Meta-teaching.)
+- Opens with quick recall: "where all do we rank?"
+- RRF built from a problem in the numbers: plain reciprocal ranks drop too fast (1 → 0.5 → 0.1), so add a smoothing constant (60). Then shows that a chunk found by both retrievers gets boosted ("rank and agreement"). Ends with three plain advantages (simple, no training, no LLM call).
+- Agentic RAG: guesses from the name first, then the reason (data spread across stores; let the model pick), then a broad rule: "any extra LLM call that makes a decision → agentic". Distinguishes it from hybrid with "not every agentic RAG is hybrid, and the reverse".
+- When confusion remains, refuses to move on: redraws the nested structure (outer agent → retrieval tool that is itself an agent → two retrievers), slowly, step by step. Explains the design choice (single responsibility) but tells learners not to fixate on architecture yet.
+- Query rewriting motivated by contrast pairs of weak vs strong questions ("explain search algorithm" vs "explain binary search with code"; "how does auth work" vs "how does JWT work") and by refusing to blame users: "we can't make the system depend on users writing good queries."
+- HyDE explained from the paper's own figure, step by step; clarifies that the hypothetical text is only for searching and the answer still comes from real documents. Shows that papers prove claims with evaluation tables (recall@k, NDCG) — ties back to the metrics week.
+- "These are possible solutions; whether they help *you* depends on your queries and your evals."
