@@ -219,3 +219,37 @@ Notes written while reading every line, in order. Line numbers refer to the tran
 
 ### Lines 15926–15950
 - Frames the course like HLD learning: first learn the parts (databases, networking), then stitch them into an end-to-end design — which is what interviews expect.
+
+### Lines 15951–16950
+- Promises interview questions on scaling now that the parts are known; explains why plain cosine similarity over millions of vectors is too slow with **back-of-envelope arithmetic** (10 million vectors × 1,536 numbers ≈ thousands of operations each → seconds) — "a common interview question".
+- HNSW intuition via a **linked list with express lanes** (jump 1→20→40, step down a level when you overshoot; ~log n jumps, "like binary search"), then maps it to vectors (similar vectors clustered in layers). Shows the real diagram after the intuition. "The vector DB does this for you; you can tune a bit."
+- Recaps the architecture as a quiz (context: indexing, retrieval, memory; agents: tools, factory, orchestrator; LLM layer; observability; later safety, cost, evals, freshness — and *why* freshness).
+- Calls out latecomers directly (strictness as care).
+- Hybrid with Qdrant: goes faster on familiar ideas ("it's just a different API"), then **proves the value with a before/after query** from the golden set: an exact event name is found in hybrid mode, not found in semantic mode.
+- Short-term memory in the project: three small changes (checkpointer in factory, thread ID in orchestrator, session commands in main). Restarts, switches sessions, shows it persists. When a reply looks like memory loss, opens the trace to prove the history was sent — "that's LLM unpredictability, not memory loss; that's why tracing is great."
+- **Tools moment**: "Can it create a file? It tells you how — but we're lazy." Adds terminal and file tools, then generates a to-do app in an empty folder for a "wow".
+- **Lets the system misbehave to teach safety**: asks it to delete everything; it deletes via the file tool; removes that tool; it deletes via `rm -f` because only `rm -rf` was blocked. "You're getting the importance of guardrails." Real failure > warning.
+- Redraws the tool-calling loop once more on the iPad (query + tool list → which tool → app runs it → result back to LLM → answer), asking each step.
+- **MCP motivated by repetition and by companies**: "why should everyone rewrite file and GitHub tools?" + "companies exposed APIs; now they'll expose tools" + "APIs needed a standard (headers, status codes) — tools need one too" → MCP.
+- Respects mixed audience: some revision for returning learners, but "we have to respect the newcomers"; asks newcomers to type "new".
+
+### Lines 16951–17480 (MCP)
+- **Unpacks a name word by word to make it obvious**: HTTP's P = protocol = rules → MCP = Model Context Protocol: protocol (rules), context (tools give the model more context), model. Same move as RAG on Day 1.
+- Common analogy used and attributed as common ("people say it's like a USB-C port").
+- Architecture built from what's known: an agent's tools → companies expose *tool sets* (GitHub: list, create PR, push…) → each tool set is a server → our app is the host → one client per server. Shows the official diagram after.
+- Practical warning from her own mistake: don't name your file `mcp.py` (clashes with the package).
+- "Demo first, then integrate into the project" becomes the stated rhythm for every new topic, and the same rhythm is asked of learners' own projects.
+- Shows the GitHub server's tool list (names, descriptions, arguments) to make clear that this metadata is what the LLM reads.
+- **Transport explained by the question "where does the code run?"** — on your machine as a separate process (stdio; needs Node for npx) or elsewhere over HTTP. "Code has to run somewhere."
+- Proof by contrast: without the file-system server it says it can't create local files; add a few config lines → it creates the file.
+- Ends with a cliffhanger (browser automation on your LinkedIn).
+- Apologises warmly after a learner felt hurt by being corrected; explains corrections are not personal.
+
+## Day 9 (lines 17481–19496): MCP, Skills, long-running tasks
+
+### Lines 17481–17950
+- Opens by setting expectations for the week ("the hardest, most thought-heavy topics; after this it's stitching small things") and asking what's left in Claude Code (planning, browser automation, skills).
+- Revision chain in one breath: tools are functions → companies exposed APIs, now tools → need a standard → protocol → MCP like HTTP; host, clients, servers, one-to-one; stdio vs streamable HTTP; adding a server = one config entry.
+- Integration in the project with only the tricky part explained (environment variables inside the JSON must be substituted). Factory doesn't change when servers are added. Credits a learner who added tool filtering and a Gmail server.
+- Custom MCP server shown as "the same functions we already wrote, plus FastMCP" — reuse of known code makes the new idea small.
+- Rule of thumb for transport: stdio when the tools can run where the host runs; HTTP with a URL otherwise.
