@@ -93,10 +93,15 @@ inside the module that first needs them, never on their own.
 - When to skip RAG and send the whole document
 
 ## 8. Advanced RAG
-- Instead of a list of RAG types, three questions: where is the information, how good is the question, how do you
-  check the answer?
+- Instead of a list of RAG types, four questions, and each answer is a type of RAG:
+  - Where is the knowledge stored? Meaning (vector, semantic RAG), exact words (lexical or sparse RAG, BM25),
+    relationships (graph RAG), tables (SQL), the live web (web search RAG), or several of them (hybrid RAG)
+  - How good is the question? (query rewriting, splitting a question, HyDE)
+  - How do you check the answer? (corrective RAG, self-RAG)
+  - Who decides where to look? (agentic RAG and adaptive RAG: an extra model call that chooses; how it differs from
+    hybrid)
 - When the question is vague (query rewriting, splitting a question, HyDE)
-- When the answer is about relationships (graph RAG)
+- When the answer is about relationships (graph RAG: nodes, edges, and the cost of building the graph)
 - When there is too much to search (trees of summaries; searching by the document's own index)
 - When the answer is in a table (text-to-SQL)
 - When the model should decide where to look (agentic search: search, grep and SQL in a loop)
