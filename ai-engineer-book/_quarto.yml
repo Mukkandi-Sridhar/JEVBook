@@ -13,6 +13,7 @@ book:
     - part: parts/p1.qmd
       chapters:
         - chapters/m01.qmd
+        - chapters/m02.qmd
   appendices:
     - back/bibliography.qmd
     - back/about-author.qmd
