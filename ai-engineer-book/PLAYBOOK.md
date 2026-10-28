@@ -35,7 +35,7 @@ The module must answer the same eight questions **with our own problem, our own 
 - its code, file names, folder layout, slide order and day order;
 - any sentence, even a short one.
 
-Our material is Tarkika and examples invented for this book. The transcript's *devices* (section 7.2) are
+Our material is Tarkika and examples invented for this book. The transcript's *method* (section 7) is
 used freely; its *sentences and examples* never are.
 
 ## 3. How each module is made (the seven steps)
@@ -138,93 +138,99 @@ Every figure:
 - [ ] No heading at the foot of a page; no code block split across pages.
 - [ ] Colour and greyscale PDFs both checked page by page.
 
-## 7. The soul of the book: insight on every page
+## 7. The soul of the book: understanding, step by step
 
-This is not a fact book. Facts are the floor, not the goal. The goal is that a reader keeps having small moments of
-"oh, so *that's* what it is", and wants the next one. The transcript did this again and again. Its best line on
-agents put two weaknesses side by side: the model can think but cannot act, a tool can act but cannot think. Put
-them together and the agent explains itself. Nothing was memorised; the reader *saw* it.
+The reader should keep having the feeling "now I understand why", and want the next one. That feeling does **not**
+come from clever lines, metaphors or slogans. Lines like "a model is a brain in a jar" or "the closest paragraph is
+not always the right one" sound smart and teach nothing; a reader can repeat them without understanding anything.
+They are banned.
 
-Every module is written for those moments.
+### 7.1 How the transcript actually does it
 
-### 7.1 The big idea of each module
+Look at how the transcript explains an agent. There is no metaphor. There is a chain of plain questions, each with
+an obvious answer:
 
-Each module is built around one idea that changes how the reader sees the topic, stated in the opener as a short
-paradox or question, and paid off by the end. Examples of the kind of idea (our own wording):
+1. What does the model do? It takes text and answers in text. That is all.
+2. Can it search the web, read a database, send an email? No. It cannot do any action.
+3. What can do an action? Code. A function. That is all a tool is.
+4. Can that code understand a sentence typed by a person? No.
+5. So the model understands language but cannot act, and the tool can act but cannot understand language.
+6. Put them together, and you have an agent.
 
-| Module | The big idea |
-|---|---|
-| What AI engineering is | A model is a brain in a jar. A tool is a pair of hands with nobody to guide them. Wire the two together and you have an agent. |
-| Tokens | The model never reads words. It reads pieces, and you pay by the piece. |
-| Embeddings | Two sentences can share no words and mean the same thing. An embedding is how a machine notices. |
-| The decision layer | Making the model answer is easy. Knowing when it should stay quiet is the job. |
-| Calibration | A confident model and a correct model are two different machines. |
-| Prompts and context | The model knows only what is on the page in front of it, at this moment. |
-| Prompt caching | You pay again for words the model read a second ago, unless you put them in exactly the same place. |
-| RAG | The closest paragraph is not always the right one. |
-| Hallucination | The model is not lying. It is completing the sentence. That is the problem. |
-| Evals | Without a test set, "it feels better" is the only number you have. |
-| Memory | The model forgets you the moment it answers. Every memory is text the system chose to send back. |
-| Agents | Ten steps that are each 95% right finish correctly only six times in ten. |
-| MCP | Every company used to make its own plug. MCP is an agreement on the shape of the socket. |
-| Planning | A long task is many short tasks that remember each other. |
-| Caching | A cache that remembers a wrong answer serves it faster. |
-| LLMOps | Change one word in a prompt and you have shipped a new product. |
+Then the next idea grows out of this one: if the tool's job is to *fetch information*, the agent is doing
+retrieval-augmented generation. The name is unpacked word by word, and RAG stops being a new subject. It is the
+same agent with a particular kind of tool.
 
-### 7.2 Insight devices (the transcript's methods, with our own content)
+The understanding comes from three things:
+- **each step is too simple to doubt**, so the reader agrees at every step;
+- **the conclusion is reached by the reader**, a moment before the book states it;
+- **each new idea is built from the one before**, so the book feels like one line of thought.
 
-Use these on purpose. Each module uses at least four of them.
+### 7.2 Our version of the method
 
-1. **Two halves make a whole.** Show two things that each fail alone and succeed together (model + tool;
-   keyword search + meaning search).
-2. **Strip the fancy word.** Show that an impressive term is a plain thing underneath: a tool is a function; a skill
-   is instructions in a folder; a summariser is one more model call. The reader loses their fear of the jargon.
-3. **Everything is text.** Bring each new feature back to the one truth: the model only ever sees text. Memory,
-   tools, retrieval, skills are all ways of choosing which text to send.
-4. **Just because you can.** Every extra model call costs time, money and a new way to fail. Ask whether it is
-   needed before adding it.
-5. **The obvious is wrong.** State what most people assume, then show the case where it breaks (more context makes
-   answers worse; the most similar text is not the most relevant; temperature 0 still varies).
-6. **The question behind the list.** Instead of listing ten types, ask the one question that produces them
-   ("where does the knowledge live?" gives vector, keyword, graph and SQL search).
-7. **The human mirror.** Compare the system with how people behave (a new employee, a doctor's case file, someone
-   taking notes), then show where the comparison stops.
-8. **The number that surprises.** A small calculation whose result the reader did not expect.
-9. **Same model, different system.** Show that the difference between a weak and a strong product is everything
-   around the model.
-10. **Build it, then name it.** The reader builds the mechanism in their head before learning what the world calls it.
+Every concept is introduced as a short reasoning chain in this order:
 
-### 7.3 Threads that run through the whole book
+1. **Start from what the reader already knows** (an earlier module, ordinary software, everyday life).
+2. **Ask plain questions with plain answers** ("Can it…? No." "What can? …"), each one a short sentence.
+3. **Reach the gap**: the thing that is missing or breaking.
+4. **Let the reader fill the gap**, then state the solution in ordinary words.
+5. **Only then give the name** of the concept, and unpack the name if it is a phrase or an acronym.
+6. **Grow the next idea from this one.**
 
-Five ideas return in every part, so the book reads as one argument and not as 23 separate lessons:
+Example in our own words, for short-term memory:
 
-1. **The model only sees text.** Everything else is choosing which text.
-2. **The model proposes; your code decides.** Nothing acts without passing through your rules.
-3. **Every call has a price.** In rupees, in seconds and in new ways to fail.
-4. **Trust is measured, never assumed.** If you have not tested it, you do not know it.
-5. **Systems break at the joins.** Between retrieval and generation, between the model and the tool, between the
-   agent and the person.
+> A Tarkika customer asks, "Where is my order?" The system looks it up and answers. The customer then types, "Okay,
+> and can I return it?" The model replies, "Return what?" Why does it not know? Each call to the model is separate.
+> The model receives only the text in that one call, and nothing else. The earlier question is not in that text, so
+> for the model it never happened. Then how does any chat app remember? It sends the earlier messages again, every
+> time, together with the new one. That is all short-term memory is: the conversation so far, sent again.
 
-When a module touches one of these, it says so ("This is the first thread again: …"). By the end, the reader owns
-a way of thinking, not a pile of facts.
+Nothing in it is clever. Every sentence is obvious. The understanding at the end is the reader's own.
 
-### 7.4 Page-turner rules
+### 7.3 Devices that support the chain
 
-- **Every page gives something new**: a mechanism, a number, a reversal or a connection. A page that only repeats
-  is cut or merged.
-- **Every section ends on its insight line**, the one sentence a reader would underline. It is short, concrete
-  and in our own words. It becomes the section's Rule block.
-- **Open a question before closing one.** Each section ends by raising the problem the next section solves.
-- **Each module ends with a puzzle** that the next module answers.
-- **Section titles make a claim or ask a real question** ("Why the model forgets you", "The closest paragraph is
-  wrong"), never a bare label ("Memory", "Retrieval").
-- **No lecture.** Every abstract paragraph is followed within a page by Tarkika, a number or a picture.
+Use these when they help the chain. They are ways of reasoning, not ways of decorating sentences.
 
-### 7.5 What "philosophical" means here, and what it does not
+1. **Two things that each fail alone** and work together (model and tool; keyword search and meaning search).
+2. **Remove the jargon**: show that an impressive term is a plain thing ("a tool is a function"; "a skill is a set
+   of instructions kept in a folder"; "a summariser is one more call to the model").
+3. **Come back to text**: the model only receives text, so memory, tools, retrieval and skills are all ways of
+   deciding which text to send.
+4. **Ask whether a step is needed**: every extra model call adds time, cost and one more thing that can fail.
+5. **Show the case where the common belief breaks** (more context can make answers worse; the most similar text is
+   not always relevant), and show it with a real example, not a slogan.
+6. **One question instead of a list**: "where is the information stored?" leads to vector, keyword, graph and SQL
+   search, instead of a list of ten RAG types.
+7. **Compare with people** (a new employee, a doctor's notes), then say where the comparison stops.
+8. **Work out a number** the reader can check with a pen.
+9. **Build it, then name it.**
 
-It means: ideas that make the reader think about *why* systems behave as they do, and how a good engineer judges.
-It does not mean: vague musing, grand statements, quotes from famous people, or opinions without a case behind
-them. Every big idea is earned by a concrete example on the same page.
+### 7.4 Threads that run through the book
+
+These are stated plainly when they come up, never as catchphrases:
+
+1. The model only receives text; most engineering is deciding which text to send.
+2. The model suggests an action; your code checks it and decides whether it happens.
+3. Each extra model call adds cost, waiting time and a new place to fail.
+4. You only know a system works if you have tested it on cases you wrote down.
+5. Most failures happen where two parts meet: retrieval and the model, the model and a tool, the agent and a person.
+
+### 7.5 Keeping the reader reading
+
+- **Every page moves the reasoning forward**: a new step, a new case, a number, or the next idea growing from the
+  last. A page that only repeats is cut.
+- **End each section with the question the next section answers**, in plain words ("The answer is right, but it
+  took nine seconds. Where did the time go?").
+- **End each module with a real problem the reader cannot yet solve**, which the next module solves.
+- **Section titles are plain questions or plain statements of the topic** ("Why does the model forget the earlier
+  message?"), not catchy phrases.
+- **No paragraph without a case**: every general statement is followed within a few lines by Tarkika, a number or a
+  picture.
+
+### 7.6 What "philosophical" means here
+
+It means the reader understands *why* things work, and learns to judge like an engineer. It does not mean
+metaphors, aphorisms, grand statements or quotations. The depth comes from the reasoning, not from the wording.
 
 ## 8. Order of work
 
