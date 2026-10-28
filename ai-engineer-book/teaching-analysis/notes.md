@@ -355,3 +355,49 @@ Notes written while reading every line, in order. Line numbers refer to the tran
 - Pros and cons insisted on: "just because we can cache doesn't mean we should." Full vs incremental re-indexing argued both ways (few files or schema change → full; large corpus, frequent small changes → incremental).
 - Production pattern named after the problem is felt: half-applied changes → shadow collection and atomic swap (blue-green).
 - Change detection as two named options with expansions: mtime (modified time) vs content hash.
+
+### Lines 24201–24420 (end of Day 12)
+- Recap as rapid-fire questions before new material: triggers? two change checks? the key concept (debouncing)?
+- Debounce code read beside the timeline again (change at 2 s → index at 7 s; change at 4 s cancels and resets → 9 s). Same example, now mapped line by line to the code.
+- "When would my code be a nightmare?" — invites learners to break her own design (huge files, many files, five people editing at once) and links the last to Git merge conflicts they already know.
+- Uses the gaps as the bridge to the next topic (scaling, sharding, multi-tenancy, metadata filtering).
+
+## Day 13 (lines 24421–26238): Semantic caching, Langfuse, scaling RAG
+
+### Lines 24421–25300
+- Starts by showing an interview-question bank with key points per answer; promises to discuss only the hard ones in class.
+- Caching opened with why (cost, latency), then where (every layer?), then "should I cache everywhere? What are the cons?" Learners list stale data, memory, invalidation complexity, over-engineering.
+- Recaps prompt caching with the placement rule that follows from it: static content first. "If asked whether placement matters: yes."
+- Draws the plain RAG pipeline (query → retrieve → generate) and asks "where can I cache?" Two answers: retrieved chunks or the generated answer.
+- Why caching is different for agents: "users never type the same thing twice — 'what are neural networks' vs 'explain neural networks'." Semantic caching follows from that.
+- Caching framed as three questions to discuss in any design: when to write and what to store; how to match (hit/miss by similarity threshold); when to invalidate (TTL, flush).
+- Contrast that makes the difference clear: prompt caching still generates a new (different) answer each time; semantic caching returns the stored answer, so the response is identical.
+- Code shown as three verbs: get, put, invalidate. Similarity = 1 − cosine distance stated in one line.
+- Demo as threshold experiments: 0.82 (hit), 0.16 (miss, but not zero — "neural networks are usually coded in Python"), 0.7979 against 0.8 ("just missed; at 0.75 it would hit"). TTL experiment: 2 s then 10 s, asking "hit or miss?" before each run.
+- Draws the general rule from the runs: threshold too low → wrong answers; too high → no hits. Similarity depends on the embedding model, so tune on your own queries. TTL low for fast-changing data, high for stable data.
+- Design choice justified: cache ask queries, not plan queries (plans are new work each time).
+- Self-referential demo: the coding agent explains its own planner correctly and writes its own README. Strong motivator.
+- Leaves deliberate homework gaps (retrieval caching, re-indexing in the other vector store, adding HITL and guardrails to the capstone): "same code, different trigger."
+- Subtle point taught with a step-by-step trace: with short-term memory, a repeated question never reaches the retrieval tool, so a retrieval cache there would never be hit. "Caching everywhere is not always useful."
+
+### Lines 25301–26238 (caching edges, scaling, multi-tenancy, local tracing, end of Day 13)
+- Compresses the previous trace into one memorable line: "short-term memory is implicit caching." Then draws the boundary: context-dependent queries ("when was *he* born?") must not be cached.
+- Widens the idea so learners see caching everywhere: embeddings can be cached; the planner's task table is "also caching — stored state we don't redo."
+- Failure-mode question: "a web search returns a wrong answer and you cache it. Implication?" Every similar query now gets the wrong answer fast. Then the production lesson: low latency can hide wrong answers, so never judge a system on one metric; watch relevance/faithfulness and user feedback too.
+- Scaling split into two kinds before any solution: more data (millions of chunks) vs more queries per second.
+- States scope: "HLD-common ideas we skim; agent-specific ones we go deep on."
+- Sharding keys collected from learners (time, region, semantic topic, hot/cold), then "it depends on the queries": logs by time range → shard by time; region-heavy queries → by geography.
+- Problem with numbers: shards take 5, 3, 4, 8 s → even in parallel you wait 8 s. Named afterwards: scatter-gather. Fixes reasoned from the cause (better shard key, cache the slow shard, replicate hot shards: 4 replicas for a hot one, 1–2 for a cold one).
+- **Profiling over reflex**: "system slow — will you directly say caching? At which layer?" Time each stage (embed, retrieve, rerank, generate) first. Same for bad RAG answers: is it retrieval or generation? "Always give a structured response; don't jump to a common solution."
+- Defines jargon plainly before using it: "tenants are just a fancy word for customers"; "a collection is like a table."
+- Multi-tenancy as a spectrum with when-to-use for each: collection per tenant (few tenants, zero leakage), shared collection + metadata filter (scale, but filter bugs leak), namespaces, dedicated cluster (a handful of large enterprise customers).
+- Metadata filtering explained by shrinking numbers: 1 million documents → filter by team → 10,000, so search is faster as well as safer. Demo: unfiltered query about rollbacks returns payments and mobile docs; filtered returns only the two SRE docs even though four were asked for.
+- Answers the earlier "data still goes to the tracing SaaS" worry by showing a self-hosted tracer. Calls it "the same thing" as the hosted one: env keys, a callback handler, pass it on invoke.
+- Interview coaching from her own story: mock interviews, timed 45-minute explain-aloud drills, recording yourself ("you'll go: what am I talking"). Normalises fear ("everyone starts with shaking legs").
+- Learner's real interview report used as evidence: production architecture, POC-to-production evaluation, and safety/PII are the three common question areas.
+
+## Day 14 (lines 26239–28408): Interview questions, LLMOps
+
+### Lines 26239–26300
+- Opens from day-one definition (agent = LLM + tools in a loop), then compounding errors with arithmetic: 0.95 × 0.95 ≈ 90%, three tools ≈ 85%. "Errors amplify across steps."
+- Moves straight to "are all errors the same?" — learners list 403, 404, 429, 500 — to set up per-error handling.
