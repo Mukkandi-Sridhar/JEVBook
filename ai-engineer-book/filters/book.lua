@@ -18,9 +18,9 @@ local draft = os.getenv("BOOK_DRAFT") == "1"
 
 local ENVS = {glance = true, remember = true, project = true, decision = true, production = true, defend = true,
   practice = true, interview = true, nexthook = true, partintro = true, checklist = true, sidebar = true}
-local LABELS = {glance = "This chapter", remember = "Remember", project = "Build it: Tarkika",
+local LABELS = {glance = "This module", remember = "Remember", project = "Build it: Tarkika",
   decision = "Design decision", production = "In production, this goes wrong", defend = "Defend your numbers",
-  practice = "Practice", interview = "Interview corner", nexthook = "Up next", checklist = "Chapter checklist"}
+  practice = "Practice", interview = "Interview corner", nexthook = "Up next", checklist = "Module checklist"}
 
 local function latex(s) return pandoc.RawBlock("latex", s) end
 local function has_class(el, c)

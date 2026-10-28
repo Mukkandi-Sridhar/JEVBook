@@ -2,76 +2,28 @@
 
 Some exercises have one right answer. Others ask about your own work; for those, you will find a sample answer and what a good answer includes. Interview answers are short on purpose: they show the points an interviewer listens for, which you should then back with an example from your own project.
 
-## Chapter 1
+## Module 1
 
 **Exercises**
 
-1. For a food-delivery support bot: *instructions and context*, a description of its job and today's offers; *knowledge*, the refund and cancellation policy and restaurant details; *tools*, looking up an order and its delivery partner's location; *tests*, a fixed set of past questions with good answers; *guardrails*, never showing a delivery partner's phone number, and a limit on refund amounts; *cost and speed*, cost per chat and the time until the first reply.
-2. Input: 2,000 × ₹400 ÷ 10,00,000 = ₹0.80. Output: 200 × ₹1,600 ÷ 10,00,000 = ₹0.32. One answer costs ₹1.12. 10,000 answers a day cost ₹11,200, and a 30-day month costs ₹3,36,000.
-3. A sample answer. *Act alone:* tell a customer their account balance; send a statement by email to the registered address. *Prepare for review:* reverse a disputed charge; raise a credit-card limit. *Escalate at once:* a customer reporting that their card was stolen or that money left their account without their knowledge. A good answer places actions by how costly and how reversible they are.
+1. 6,000 ÷ 10 = 600 rounds of 4 seconds each, so 2,400 seconds, or 40 minutes. Each of the 10 slots finishes 60 ÷ 4 = 15 calls a minute, so 150 calls a minute in all. That is above a limit of 120, so you would get 429 errors. Eight slots give 8 × 15 = 120 calls a minute, and the batch then takes 6,000 ÷ 120 = 50 minutes.
+2. 401: no, fix the key. Timeout: yes, with back-off. 400 "text too long": no, shorten the text. 529: yes, with back-off.
+3. A sample answer:
+
+   ```python
+   from pydantic import BaseModel, Field
+
+   class DeliveryComplaint(BaseModel):
+       order_id: str
+       city: str
+       days_late: int = Field(ge=0, le=60)
+   ```
+
+   A good answer makes `order_id` and `city` required (no default), and uses `Field(ge=0, le=60)` so that a reply of 75 or −2 is rejected.
 
 **Interview questions**
 
-1. An ML engineer mostly trains models on the company's data and runs them in production. An applied AI engineer mostly builds products on top of existing models: choosing a model, giving it context and tools, testing it, making it safe, and shipping it. The roles overlap, but the centre of each is different.
-2. First, whether the model was given the facts it needed, or is guessing. Second, whether there is a test set showing how often answers are wrong, and on which kinds of question. Third, whether the instructions tell the model to say "I don't know" when the facts are missing.
-3. Estimate input and output tokens per task, including the context sent with each request (instructions, documents, history). Multiply by the provider's prices, then by expected daily volume, and add a margin for retries and long conversations. Check the estimate against real usage in the first week.
-
-## Chapter 2
-
-**Exercises**
-
-1. Of 10,000 emails, 100 are spam and the filter catches 98. Of the 9,900 normal emails, 1% are flagged by mistake: 99. So 98 + 99 = 197 emails are flagged, and 99 of them are normal. That is about **half**.
-2. Within about ±8 points, so ±10 is much closer than ±2. With 50 test cases and a score near 90%, the 95% range is roughly 82% to 98%.
-3. The two versions disagree on only 16 of 300 questions, and the split is 9 to 7. That is far too close to call: the difference is under one percentage point and could easily be luck. Tell your manager the versions perform the same on this test, and choose on other grounds such as cost or speed, or test on many more questions.
-
-**Interview questions**
-
-1. Not necessarily. If fraud is 1% of cases, a model that never predicts fraud is 99% accurate. Ask for precision and recall on the fraud class, and for the base rate.
-2. It depends on how big a difference you need to detect. Use a paired comparison on the same questions, and bootstrap the difference. A few hundred cases usually detect a 5 to 10 point difference; a 1 to 2 point difference needs thousands.
-3. Temperature controls how random the choice of each next token is. Low values make answers predictable; high values make them varied. For support, use a low value, because the same question should get the same answer.
-4. A calibrated model's probabilities match reality: when it says 80%, it is right about 80% of the time. Check by grouping past cases by the probability the model gave and counting how often it was right in each group.
-
-## Chapter 3
-
-**Exercises**
-
-1. Leakage. The column "agent_approved" is filled in *after* a person reviews the request, so it contains the answer. A new request will not have it. Remove the column and retrain.
-2. Approve alone when (1 − p) × ₹500 < ₹25, that is, when the chance of being wrong is below 5%. So approve alone above **95%**.
-3. The model is overfitting: it has learned the training examples, not the general pattern. Try more training data, a simpler model or stronger regularisation, and check for duplicate or near-duplicate messages that make training look easy.
-
-**Interview questions**
-
-1. When the labels are fixed, there is enough labelled data, the volume is high, and you need low cost, low latency and checkable probabilities. Also for tables of numbers, where gradient-boosted trees are hard to beat.
-2. Information about the answer reaching the model in training in a way it will not in real use. Examples: duplicate messages in both training and test sets, a column filled in after the outcome, or the same customer in both sets.
-3. From costs: act alone when (chance of being wrong) × (cost of a wrong action) is less than the cost of asking a person. Check that the model is calibrated first, and test how much the threshold moves if the costs are halved or doubled.
-4. Recall on the complaint class by itself, and which other classes complaints are confused with. Then read the missed complaints by hand.
-
-## Chapter 4
-
-**Exercises**
-
-1. 13 billion × 2 bytes = 26 GB in BF16; × 1 byte = 13 GB in INT8; × 0.5 bytes = 6.5 GB in 4-bit. Add working memory on top.
-2. A sample answer: adjusting the salt in a new recipe. You taste, it is too bland, you add a little salt, taste again, and keep going in small steps until it is right. Large steps risk making it too salty.
-3. Gradient-boosted trees, perhaps after a simple baseline such as logistic regression. The data is a clean table of numbers and categories, where trees usually match or beat neural networks at a fraction of the cost and effort.
-
-**Interview questions**
-
-1. A way of sharing out the blame for an error. The error at the output is passed backwards through the layers, and each weight learns how much it contributed, which tells training which way to adjust it.
-2. About 2 bytes per parameter in BF16: 7 billion × 2 = 14 GB for the weights. Add working memory for the conversations being processed, roughly 20% to 50% more depending on context length and number of users. So plan for about 18 to 21 GB.
-3. Training keeps lowering the loss after most answers are right by pushing probabilities towards certainty, so the model says 99% when it is right less often. Any rule that acts on its probabilities then acts too often.
-4. When the data is a clean table of numbers, when you have little data, when you need to explain each decision simply, or when a pre-trained model already does the job.
-
-## Chapter 5
-
-**Exercises**
-
-1. In the training text, "refunded" appears only 6 times, while pieces like "re" and "fund" appear in many words. BPE joins the most common pairs first, so "refund" becomes one token early. The pair "refund" + "e" was never common enough to be joined within the eight steps.
-2. (1, 0) and (0, 1): 0, unrelated. (1, 1) and (2, 2): 1, the same direction. Cosine similarity looks only at direction, not length.
-3. Embeddings capture the topic (a wrong charge) but are weak at exact amounts, so past cases with any amounts will look similar. Extract the amounts as separate fields, and compare them directly, or combine embedding search with keyword or number search.
-
-**Interview questions**
-
-1. A small piece of text, usually a short word or part of a word, that the model reads and writes. Providers charge per token, context windows are measured in tokens, and output speed is measured in tokens per second.
-2. Start with single characters, repeatedly join the most common neighbouring pair into a new piece, and stop at the desired vocabulary size. Common words become single tokens; rare words are built from pieces.
-3. A list of numbers representing a text, placed so that similar meanings are close together. Measure similarity with cosine similarity: about 1 for the same direction, about 0 for unrelated.
-4. Token counts in Hindi (cost and context limits), whether the embedding and language models handle Hindi and Hinglish, whether the test set includes Hindi at all, and the score on Hindi messages measured separately.
+1. Run the calls concurrently with async code, and cap how many are in progress with a semaphore. Set the cap from the account's rate limit, not from the hoped-for speed. Retry failures that waiting can fix, with back-off and jitter. Save each result as it arrives, so that a crash does not lose the batch. If the results are not needed at once, a provider's batch API is cheaper still.
+2. Retry 429, 5xx errors and timeouts, with exponential back-off, random jitter and a maximum number of attempts, and honour a `retry-after` header when there is one. Do not retry 400, 401, 403 or 404, because the request itself must change. Check whether the client library already retries, so that retries are not multiplied.
+3. Separate the code you wrote from the model. Test your code with a fake model that returns fixed replies, including broken ones and errors, so the tests are fast, free and give the same result every time. Measure the model's behaviour separately with evals on a set of real examples.
+4. The model produces language, and the same meaning can come in many forms, or in the wrong form. Code needs exact values. Checking every reply against a data model, such as a Pydantic class, catches bad replies at once with a clear reason, instead of letting them cause errors later.

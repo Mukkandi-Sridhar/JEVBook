@@ -13,11 +13,7 @@ book:
     - front/how-to-read.qmd
     - part: parts/p1.qmd
       chapters:
-        - chapters/c01.qmd
-        - chapters/c02.qmd
-        - chapters/c03.qmd
-        - chapters/c04.qmd
-        - chapters/c05.qmd
+        - chapters/m01.qmd
   appendices:
     - back/answers.qmd
     - back/bibliography.qmd
@@ -49,12 +45,12 @@ format:
     classoption: [twoside, open=any, fontsize=10.5pt, headings=standardclasses, numbers=noenddot]
     papersize: custom
     geometry:
-      - paperwidth=7in
-      - paperheight=10in
-      - top=0.8in
-      - bottom=0.85in
-      - inner=0.9in
-      - outer=0.9in
+      - paperwidth=176mm
+      - paperheight=250mm
+      - top=20mm
+      - bottom=22mm
+      - inner=20mm
+      - outer=18mm
       - marginparsep=0.1in
       - marginparwidth=0.6in
       - headsep=0.28in
