@@ -1,5 +1,8 @@
 # Ship Real AI: book design plan
 
+> **Update:** the author ruled out the block system in section 4.4 and the module-end list in 4.7 as unnecessary
+> scaffolding. Pages carry text, figures and short code only, plus the one-line "Before reading on" prompt.
+
 Status: proposal, 28 October 2026. Nothing is built until this is approved.
 
 ## 1. What the design must do

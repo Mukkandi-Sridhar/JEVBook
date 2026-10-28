@@ -10,12 +10,10 @@ book:
   date-format: "YYYY"
   chapters:
     - index.qmd
-    - front/how-to-read.qmd
     - part: parts/p1.qmd
       chapters:
         - chapters/m01.qmd
   appendices:
-    - back/answers.qmd
     - back/bibliography.qmd
     - back/about-author.qmd
 

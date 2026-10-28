@@ -1,38 +1,3 @@
 # Preface {.unnumbered}
 
-Many people want to become AI engineers, and most of them start the same way. They watch a video, copy a chatbot tutorial, connect it to a vector database, and get a demo working over a weekend. Then they try to put it in front of real users, and it falls apart. The bot invents a refund policy. It costs ten times more than expected. Nobody can say whether last week's change made it better or worse. A customer pastes a strange message, and the bot does something nobody planned.
-
-This book is about the work that starts after the demo. It is a complete path, from the basic probability you need, through how large language models work, to designing AI agents that are safe to run in a real business. It is written for engineers, not for researchers. Every idea is here because you will use it at work or be asked about it in an interview.
-
-## Who this book is for
-
-- **You are starting out.** You know some Python, and you want to become an AI engineer. Read the book in order. Part I gives you every foundation the rest of the book needs, and nothing more.
-- **You are a software engineer.** You build backends, apps or data pipelines, and now your team wants AI features. Skim Part I and spend most of your time in Parts III to VIII.
-- **You work in data science or machine learning.** You know models, but not agents, retrieval or the new protocols. Start at Part II or Part III.
-
-## What makes this book different
-
-Most AI books teach tools. Tools change every few months, so those books go out of date quickly. This book teaches the judgement behind the tools, and keeps the details that change often in a dated register at the back.
-
-An AI system is a chain of small decisions. Which team should get this email? Is this the right document? Is it safe to issue this refund, or should a person check first? Each decision needs three things: a number you can trust, a line drawn by what mistakes cost, and a safe way out when the system is unsure. You will meet these three things in Part I, and they come back in every part after it, from model choice to agent design.
-
-You will also build one system from start to finish. **Tarkika** is an imagined online marketplace that sells phones, electronics, fashion and home products across India. Its customers write in English, Hindi and Hinglish. Through the book you will build its customer-support agent: it answers questions from the store's policy documents, looks up orders, and issues refunds behind a human check. By the last chapter, you will have a complete project you can explain in an interview, with every number in it justified.
-
-## How the book is organised
-
-1. **The job and the foundations.** What an AI engineer does, and the probability, machine learning, deep learning and language basics underneath it.
-2. **How LLMs work.** Transformers, training, reasoning models, long context, serving, and how to choose a model.
-3. **Talking to models.** Prompts and context, structured outputs, tool calling, and your first tests.
-4. **Knowledge and retrieval.** Embeddings, vector databases, and RAG that works.
-5. **Agents.** From fixed workflows to agents, memory, and many agents working together.
-6. **Protocols and frameworks.** MCP, A2A, and how to choose a framework.
-7. **Trust.** Security, guardrails, private data, and testing agents properly.
-8. **Production.** Turning a prototype into a service, running it, cost and speed, fine-tuning, and small models.
-9. **Case studies.** Real systems that worked and real systems that failed, told as design reviews.
-10. **Career.** Your portfolio, the job market, and interview preparation.
-
-## What you need
-
-A laptop, basic Python, and an account with one model provider. Running every example in this book costs very little, and the cost of each one is shown so that nothing surprises you. You do not need a GPU.
-
-Sridhar Mukkandi
+*The preface is written last, once the modules are final.*

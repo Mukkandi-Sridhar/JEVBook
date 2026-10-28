@@ -4,10 +4,30 @@ This is the working agreement for every page of *Ship Real AI*. `STYLE.md` holds
 the page design, `CONTENTS.md` the topics. This file says how a module goes from nothing to finished, and the strict
 rules that apply on the way. When two files disagree, this one wins.
 
+## 0. The author's standing instructions (read before every module)
+
+1. The transcript is the backbone. Re-read the part that covers the topic before writing, every time.
+2. Teach the way the transcript teaches: a problem, then plain questions with obvious answers, then the concept,
+   then its name. No metaphors used as slogans, no clever lines.
+3. Nothing unnecessary. The old JEV book was full of scaffolding: "this chapter" boxes, "remember" notes, chapter
+   checklists, "defend your numbers", "in production" boxes, practice and interview lists at the end of every
+   chapter, answers appendices, long prefaces. None of it goes into this book. A module is the story, the reasoning
+   and the pictures, and it stops when the idea is complete.
+4. Focus on concepts and the thought process, not on syntax or setup steps. Code appears only when it shows the
+   idea, and it is short.
+5. Every page should teach something the reader did not know, so they want to keep reading.
+6. Human, plain, easy to understand, concise. It must not read as AI-written.
+7. No plagiarism: our own examples (Tarkika, an online marketplace), our own sentences. The transcript's method is
+   used; its examples, projects and sentences are not.
+8. Real visuals: architectures, pipelines, comparisons, timelines, drawn in our own style.
+9. Check the internet and primary sources before writing a topic; facts must be right, but the book is about
+   understanding, not about collecting facts.
+10. Quality over quantity. Short modules are fine.
+
 ## 1. The standard
 
 - **Quality over quantity.** No module is long because there was more to say. It is as short as the idea allows.
-  Target: 8 to 14 B5 pages a module, about 250 to 320 pages for the whole book.
+  Target: 5 to 10 B5 pages a module. No page count is a goal.
 - **Every page earns its place.** If a reader could skip a paragraph and lose nothing, it is cut.
 - **Every claim is right on the day of printing.** Checked against a primary source or worked out on the page.
 - **A reader should finish each module able to do something**, and to explain it to an interviewer.
@@ -97,10 +117,10 @@ an admission when something is messy, a short sentence after a long one, and the
 
 Each module has, at minimum:
 
-- **The system map** on its opener, with the module's layer shaded.
+- **The system map** where the module adds a new part to the system.
 - **One pipeline or architecture diagram**: numbered boxes and arrows, drawn the same way across the book.
 - **One comparison visual**: two approaches side by side, or a before/after from a real run.
-- **One worked-numbers block** set out line by line.
+- **Worked numbers** in the text, set out line by line, wherever a number helps the reasoning.
 - Where a tool's output matters: a **real screenshot or trace from our own runs** (never from someone else's
   product page or course), redrawn cleanly if the original is cluttered.
 

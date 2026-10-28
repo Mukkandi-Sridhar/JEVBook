@@ -47,25 +47,22 @@ against them before it is called done.
 - Sentences that only announce: "In this section, we will explore…". Just start.
 - Closing lines that repeat the paragraph in grand words.
 
-## 4. Chapter shape
+## 4. Module shape
 
-1. Title, then a short opening: a real incident or an everyday picture (half a page).
-2. `{.glance}` box: three plain bullets.
-3. Numbered sections that build from the example to the idea.
-4. `{.remember}` notes: two or three per chapter, one line each. They are collected into the chapter checklist.
-5. `{.project}` box: what we add to Tarkika.
-6. `{.decision}` box where the chapter has a real choice to make.
-7. `{.production}` box: what goes wrong in production.
-8. `{.defend}` box: the numbers the reader chose and how to justify them.
-9. `{.practice}`, then `{.interview}`; answers in `back/answers.qmd`.
-10. `{.nexthook}`: one line.
+1. A short opening: a real problem at Tarkika that the reader can feel.
+2. Sections, each a plain question as its title, each built as a reasoning chain (see `PLAYBOOK.md` section 7).
+3. Figures and short code where they show the idea.
+4. A short close that says what changed and names the next problem.
 
-## 6. Teaching method
+No boxes for summaries, checklists, "remember" lines, practice, interview questions, production failures or
+numbers to defend. If something matters, it is part of the reasoning in the text.
+
+## 5. Teaching method
 
 These rules come from studying how a strong live teacher explains agentic systems (see
 `teaching-analysis/analysis.md`). We use the *method* only. All content, examples and structure are our own.
 
-### 6.1 Order inside a section
+### 5.1 Order inside a section
 
 1. Start with a problem the reader can feel: a failure, a cost, a customer complaint at Tarkika.
 2. Give the reader a chance to solve it: one line, in italics, starting "Before reading on, …". At most one per
@@ -75,7 +72,7 @@ These rules come from studying how a strong live teacher explains agentic system
 5. State the rule with its trigger: "If X, do Y."
 6. Show where it breaks or what it costs (the other side of the trade-off).
 
-### 6.2 Making a point stick
+### 5.2 Making a point stick
 
 - **Work the numbers.** Every cost, latency, memory or accuracy claim gets a small calculation the reader can follow
   by hand (assumed example values, marked as such).
@@ -85,7 +82,7 @@ These rules come from studying how a strong live teacher explains agentic system
 - **One memorable rule per section.** It becomes the section's `{.remember}` note, so it is said once in the text and
   once in the note. No more repetition than that.
 
-### 6.3 Making hard things easy
+### 5.3 Making hard things easy
 
 - Define a new thing as a sum of things the reader knows ("an agent is a model plus tools, in a loop").
 - Say when a term only sounds hard ("A *tenant* is just a customer").
@@ -96,7 +93,7 @@ These rules come from studying how a strong live teacher explains agentic system
 - Use a timeline for anything time-based, and shrinking numbers for anything about search or filtering.
 - Analogies: one short everyday picture, then straight to the AI case. Do not stretch an analogy past one paragraph.
 
-### 6.4 Linking topics
+### 5.4 Linking topics
 
 - Each chapter opens by naming the earlier idea it builds on, in one sentence.
 - When an idea mirrors an earlier one, say so ("This is the same split you saw in Chapter 3: rules versus a model").
@@ -105,7 +102,7 @@ These rules come from studying how a strong live teacher explains agentic system
 - Keep one architecture map across the book. Each new part shows where its topic sits on that map.
 - Plant terms before they are needed ("we will need this in Part VI"), but never use a term before defining it.
 
-### 6.5 Interview and decision habits
+### 5.5 Interview and decision habits
 
 - In `{.decision}` and `{.defend}` boxes, start with the assumptions, put numbers on them, then choose.
 - Every design choice ends with "it depends on …" followed by the actual conditions. Never a choice with no
@@ -114,19 +111,19 @@ These rules come from studying how a strong live teacher explains agentic system
   versions that are not code), then fix.
 - Teach the exact words engineers use, in plain sentences the reader can say out loud in an interview.
 
-### 6.6 Honesty
+### 5.6 Honesty
 
 - When an example fails for a boring reason (state, wiring, a limit), say so plainly and say where to look.
 - Name the trade-offs of every approach, including the ones the book recommends.
 - Show that respected teams choose differently, and why, when a real source supports it.
 
-### 6.7 Fit with section 3
+### 5.7 Fit with section 3
 
 The live-teaching habits of constant questions and repetition do not carry over. One "Before reading on" line per
 section is allowed. Rhetorical questions in a row are still banned. "Harness" is allowed only as the technical term
 ("the harness around the model"), never as a verb meaning "use".
 
-## 7. Facts
+## 6. Facts
 
 - Every claim about a product, model, protocol, price or company gets a source in `references.bib`.
 - Version numbers, model names and prices stay out of the main text where possible. They go in the dated version

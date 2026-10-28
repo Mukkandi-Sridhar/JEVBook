@@ -1,70 +1,25 @@
 # Python for AI engineers {#sec-m01}
 
-Ravi is a developer at Tarkika. Customer messages come in by the thousand, and he writes a short Python script to sort them. It reads the messages from a file, sends each one to a language model, and asks for one word back: *refund*, *delivery*, *product* or *other*. He tries it on ten messages. All ten come back right.
+Ravi is a developer at Tarkika. He writes a short Python script that reads customer messages from a file, sends each one to a language model, and asks for one word back: *refund*, *delivery*, *product* or *other*. He tries it on ten messages. All ten come back right.
 
-Then the Diwali sale starts, and he runs the script on a full day of mail, 4,000 messages. Five things go wrong, one after another.
+Then the Diwali sale starts, and he runs it on one day of mail, 4,000 messages.
 
-1. On a colleague's laptop, the script does not even start. An import fails.
-2. On his own laptop it starts, but the progress counter says it needs more than three hours.
-3. Two hours in, at message 2,180, it stops with an error: `429 Too Many Requests`. Nothing has been saved. Two hours of work are gone.
-4. He reruns a small batch and finds that the model does not always reply with one word. Sometimes it says "Refund". Sometimes "refund." with a full stop. Once it says "This customer seems to want their money back." His code was waiting for exactly `refund`.
-5. He fixes that. A week later, another small change breaks the script again, and nobody notices for three days, because nothing tests it.
+1. The progress counter says the run will take more than three hours.
+2. Two hours in, at message 2,180, the script stops with `429 Too Many Requests`. Nothing was saved.
+3. When he reruns a small batch, the replies are not always one word. Sometimes "Refund". Sometimes "refund." with a full stop. Once, "This customer seems to want their money back." His code was waiting for exactly `refund`.
+4. A week later, a small change breaks the script, and nobody notices for three days.
 
-Look at the list again. None of these problems is about how good the model is. Each one is ordinary Python, used in an unusual situation: a slow, unpredictable service that charges per call, sitting in the middle of your program. An AI engineer works in that situation all day. This module takes Ravi's five problems in order and fixes each one.
+The model was not the problem. Ravi wrote the script as if calling a model were like calling any other function: text goes in, text comes out. It looks like that. It does not behave like that. A normal function is fast, always works, and gives the same output for the same input. A model call is slow, sometimes fails, and gives a different output for the same input. Each of Ravi's four problems comes from one of these differences, and this module takes them one by one.
 
-You need basic Python before you start: variables, functions, loops, lists and dictionaries. If any of those is new, spend a week on a beginner course first. Everything else is explained here.
+## The same input does not give the same output
 
-::: {.glance}
-- Keep each project's libraries and secret keys under control, so the code runs the same everywhere.
-- Check every reply from a model before your code uses it, and handle failed calls without losing work.
-- Make thousands of model calls in minutes instead of hours, and test code whose model never answers the same way twice.
-:::
+Ravi's code is strict. For Python, `"Refund" == "refund"` is false. The model is not strict. It writes language, and language allows the same meaning in many forms. Ask it the same question five times and you can get five different sentences, all meaning the same thing.
 
-## Why does the script run on one laptop and not on another?
+So something has to stand between the two, and check each reply before the strict side uses it.
 
-When you run `pip install`, Python puts the library in one folder on your computer, and every project on that computer uses the same folder. Suppose project A was written for version 1 of a library, and project B needs version 2. The folder can hold only one of them. Install version 2 for project B, and project A stops working.
+*Before reading on: what exactly would you check in each of Ravi's replies?*
 
-*Before reading on: how would you let both projects run on the same laptop?*
-
-Give each project its own folder of libraries. Project A's folder keeps version 1, project B's keeps version 2, and neither knows the other exists (@fig-environments). A private folder like this is called a **virtual environment**. Python can create one for you:
-
-```bash
-python -m venv .venv            # create the environment in a folder called .venv
-source .venv/bin/activate       # use it (on Windows: .venv\Scripts\activate)
-pip install pydantic pytest     # these now go into .venv only
-pip freeze > requirements.txt   # write down the exact versions installed
-```
-
-![Left: every project shares one copy of each library, so two projects that need different versions cannot both work. Right: each project has its own environment with the version it needs.](/figures/m01/environments.pdf){#fig-environments}
-
-That fixes one laptop. Now Ravi's colleague makes her own environment and types `pip install pydantic`. She gets the newest version, which may not be the one Ravi tested. The last line above solves this. `pip freeze` writes the exact version of every installed library into `requirements.txt`. She runs `pip install -r requirements.txt` and gets the same versions Ravi has. Fixing a project to exact versions like this is called **pinning**.
-
-Pinning matters more in AI work than in most programming. The libraries for model providers and agent frameworks change quickly, and functions are renamed or removed between versions. A project without pinned versions can break on a new laptop even when nobody has touched its code.
-
-There is one more thing to fix before the code leaves Ravi's laptop. To call a model, the script needs an **API key**: a secret string that proves the call comes from Tarkika's account, and decides who pays for it. Ravi typed the key straight into his script. If that script is pushed to a shared repository, everyone with access can copy the key and spend Tarkika's money. Keep the key outside the code, and let the code read it when it runs:
-
-```python
-import os
-api_key = os.environ["MODEL_API_KEY"]   # set on each machine, never written in the code
-```
-
-Each person sets `MODEL_API_KEY` on their own machine. Many projects keep such values in a file called `.env`. If you do, add `.env` to `.gitignore`, so the file can never be committed by mistake.
-
-::: {.remember}
-Give each project its own environment, pin the versions you tested, and keep keys out of the code.
-:::
-
-The script now runs on both laptops. It still has to make sense of what the model sends back, and that is where problem 4 comes from.
-
-## Why does the model's reply break the code that reads it?
-
-Ravi asked the model for one word, and got "Refund", "refund." and a full sentence. His code compared the reply with the exact text `refund`, so all three failed.
-
-The two sides behave very differently. Ravi's code is strict: `"Refund" == "refund"` is false. The model is loose: it writes language, and language allows the same meaning in many forms. Somewhere between the two, something has to check the reply before the strict side uses it.
-
-*Before reading on: for Ravi's script, what exactly would you check in each reply?*
-
-A reasonable list looks like this. The category must be one of the four allowed words. If the customer mentioned an order number, it should be there. And Ravi also wants to know whether the message is urgent, which must be a plain yes or no. That list is a description of the shape you expect. Write it down as code, and you can check every reply against it automatically. A description like this is called a **data model**, and the library most Python AI projects use for it is Pydantic:
+The category must be one of the four allowed words. If the customer mentioned an order number, it should be there. If Ravi also wants to know whether the message is urgent, that must be a plain true or false. This list is a description of the shape Ravi expects. Write it as code, and every reply can be checked against it automatically. Such a description is called a **data model**. In Python, most AI projects write it with a library called Pydantic:
 
 ```python
 from typing import Literal
@@ -82,15 +37,15 @@ except ValidationError as e:
     print(e.errors()[0]["msg"])
 ```
 
-Each line of `Ticket` is one rule. `Literal[...]` allows only those four words. `str | None = None` means the order number is text, or missing. `bool` means true or false. The reply here is in JSON, a standard text format for structured data; Module 7 shows how to ask a model for it. The model has filled in "Refund request" as the category. Running the code prints:
+Each line of `Ticket` is one rule. `Literal[...]` allows only the four words. `str | None = None` means the order number is text, or missing. `bool` means true or false. The reply here is in JSON, a common text format for data, and the model wrote "Refund request" as the category. The code prints:
 
 ```
 Input should be 'refund', 'delivery', 'product' or 'other'
 ```
 
-The bad reply is stopped at the door, with a clear reason, instead of causing a confusing error three functions later.
+The bad reply is stopped at the door, with the reason, instead of breaking something three functions later.
 
-The annotations such as `str | None` and `bool` are **type hints**: notes that say what kind of value each name holds. In most Python code they are only notes, read by people and code editors; Python itself does not enforce them. Pydantic does enforce them. And in AI work, type hints have one more reader, which surprises most people coming from ordinary software: the model itself.
+Notice the notes such as `str | None` and `bool`. They are **type hints**. In ordinary Python, they are only notes for people and code editors, and Python does not enforce them. Pydantic enforces them. In AI work they have one more reader, and it is the model itself.
 
 ```python
 def check_order_status(order_id: str) -> str:
@@ -100,29 +55,25 @@ def check_order_status(order_id: str) -> str:
     """
 ```
 
-A function the model may ask your program to run is called a **tool**. When you hand a function like this to an agent framework as a tool, the framework reads its name, its type hints and its docstring. It turns them into a description and sends that to the model. Many frameworks do exactly this [@openaiagents]. The model decides when to use the tool, and what to pass it, from that description alone. So a vague docstring is not just untidy. It is a wrong instruction to the model. Module 7 returns to this.
+When you give a function like this to a model as a **tool**, a function the model can ask your program to run, the library you use reads the function's name, type hints and docstring. It turns them into a description and sends that description to the model [@openaiagents]. The model decides when to call the tool, and with what, from that text alone. A careless docstring is therefore not a style problem. It is a wrong instruction to the model. We come back to this in Module 7.
 
-::: {.remember}
-Describe the shape you expect, and check every model reply against it before your code uses it.
-:::
+Checking the reply solves problem 3. It cannot help when there is no reply at all, which is problem 2.
 
-Checking catches bad replies. It cannot help when no reply comes at all, which is what happened at message 2,180.
+## A model call can fail
 
-## What should the script do when the model's server says no?
+A call to a model travels over the internet to someone else's computers, and some calls fail. For each failure, ask one question: if I wait and try again, will it work?
 
-Every call to a model travels over the internet to computers that belong to someone else. Some calls fail. For each kind of failure, ask one question: would waiting fix it?
+- **429, too many requests.** Ravi sent more calls than his account allows in a short time. Waiting fixes it.
+- **500 or 529, the server has a problem or is overloaded.** Waiting usually fixes it.
+- **No reply in time.** Trying again usually works.
+- **400, bad request.** Something in the call is wrong, such as text that is too long. Waiting never fixes it.
+- **401, unauthorised.** The API key is wrong. Waiting never fixes it.
 
-- **429, too many requests.** You sent more calls than your account allows in a short time. Waiting fixes it.
-- **500 or 529, server error or overloaded.** The provider's machines are struggling. Waiting usually fixes it.
-- **A timeout.** No reply came in time. Trying again usually works.
-- **400, bad request.** Something in your call is wrong: the text is too long, or a field is missing. Waiting will never fix it.
-- **401, unauthorised.** The key is wrong or has been revoked. Waiting will never fix it either.
+So retry only the first three. Retrying the others sends the same mistake again.
 
-So the first rule is to retry only the first three kinds. Retrying the others repeats the same mistake, wastes time, and can even cost money.
+*Before reading on: after a 429, how long should the script wait before trying again?*
 
-*Before reading on: after a 429, how long should the script wait before it tries again?*
-
-If it tries again at once, the server is still busy, and the call fails again. Now imagine a thousand scripts, all told "wait one second, then retry". They all come back at the same moment, and the server is flooded again, like a crowd that surges every time a gate opens. Two changes fix this. First, wait longer after each failure: up to 1 second, then 2, then 4, then 8. Second, choose a random wait within that limit, so that different scripts come back at different moments. This is called **exponential backoff with jitter** ("exponential" because the limit doubles each time, "jitter" for the randomness) [@brooker2015]. Stop after a fixed number of tries, and record the failure instead of trying for ever. When the server sends a `retry-after` header saying how long to wait, use that instead.
+If it tries again at once, the server is still busy, and the call fails again. Now imagine a thousand scripts, each told to wait exactly one second. They all come back at the same moment and flood the server again. Two changes fix this. Wait longer after each failure: up to 1 second, then 2, then 4, then 8. And pick a random wait within that limit, so that different scripts come back at different times. This is called **exponential backoff with jitter**: exponential because the limit doubles each time, jitter for the randomness [@brooker2015]. After a fixed number of tries, stop and record the failure.
 
 ```python
 import random, time
@@ -141,36 +92,27 @@ def call_with_retry(send, max_attempts=5):
     raise RuntimeError("Gave up after retries")
 ```
 
-Here `send` stands for any function that makes one call and returns its status code and body. Real client libraries raise an exception with the status code instead of returning it, but the logic is the same. @fig-retry shows the decision as a picture.
+`send` is any function that makes one call and returns the status code and the reply. @fig-retry shows the same logic as a picture.
 
-![What to do with a failed call. Only failures that waiting can fix are retried, with a longer and partly random wait each time.](/figures/m01/retry.pdf){#fig-retry}
+![Only failures that waiting can fix are tried again, and each wait is longer and partly random.](/figures/m01/retry.pdf){#fig-retry}
 
-Now put numbers on it. Five attempts have four waits between them, of at most 1, 2, 4 and 8 seconds:
+Five attempts have four waits, of at most 1, 2, 4 and 8 seconds. In the worst case the script waits 15 seconds before giving up on a message. For a batch that runs at night, that is fine. For a customer waiting in a chat window, it is too long, and two attempts are better. The right number depends on who is waiting.
 
-1. Worst case before giving up: 1 + 2 + 4 + 8 = 15 seconds of waiting.
-2. With random waits, the average is about half of that: around 7 or 8 seconds.
+One more thing to check. Most official client libraries for model providers already retry a failed call a few times on their own [[VERIFY]]. If the library tries 3 times and your loop tries 5 times, one message can be sent 15 times.
 
-For an overnight batch, 15 seconds is nothing. For a customer waiting in a chat window, it is far too long, and fewer attempts are better. The right number depends on who is waiting.
+Retries make crashes rare. They do not make them impossible, and Ravi still lost two hours because his script kept all results in memory until the end. Write each result to a file the moment it arrives. When the script starts, it reads the file and skips what is already done. Then a crash at message 2,180 costs one message, not two hours.
 
-There is a trap here. The official client libraries of the major model providers already retry failed calls a few times on their own [[VERIFY]]. If the library makes up to 3 attempts and your loop makes 5, one stubborn message can be sent 3 × 5 = 15 times. Check what the library does before you add a loop of your own.
+The script no longer loses work. It is still slow.
 
-Retries make crashes rarer. They cannot remove them, and Ravi lost two hours because his script kept every result in memory until the very end. The fix is simple: write each result to a file as soon as it arrives, one line per message. When the script starts, it reads that file and skips the messages already done. A crash at message 2,180 then costs one message, not two hours. Module 16 builds the same idea into long-running agents.
+## A model call is slow, but your computer is not busy
 
-::: {.remember}
-Retry only what waiting can fix, wait longer and a little randomly each time, and save each result as soon as you have it.
-:::
+Each call takes about 3 seconds. One after another, 4,000 calls take 12,000 seconds: 3 hours and 20 minutes.
 
-The script no longer loses work. It is still painfully slow, and the reason is not where most people look first.
+*Before reading on: during those 3 seconds, how much work is Ravi's computer doing?*
 
-## Why do 4,000 messages take three hours?
+Almost none. It sends a few kilobytes of text, then waits. The work happens on the provider's machines. So for three hours, Ravi's program mostly waits.
 
-Each model call takes about 3 seconds. One after another, 4,000 calls take 4,000 × 3 = 12,000 seconds, which is 3 hours and 20 minutes.
-
-*Before reading on: of those 3 seconds, how much time is Ravi's computer actually working?*
-
-Almost none. The script sends a few kilobytes of text and then waits. The real work happens on the provider's machines. For about 3 seconds, Ravi's program does nothing but wait, and it does that 4,000 times in a row.
-
-Think of someone in Tarkika's support team who emails a courier company about one lost parcel. Then they stare at the inbox until the courier replies, and only then write about the next parcel. Nobody works like that. You send twenty emails, and handle the replies as they arrive. Python can work the same way:
+Think of someone in Tarkika's support team who emails a courier about one lost parcel, and then watches the inbox until the courier replies before writing about the next parcel. Nobody works like that. You send twenty emails, and handle the replies as they come. Python can do the same:
 
 ```python
 import asyncio
@@ -189,55 +131,34 @@ async def classify_all(messages, limit=20):
 results = asyncio.run(classify_all(["paisa wapas karo"] * 100))
 ```
 
-An `async def` function can pause in the middle. Each `await` marks a place where it pauses while it waits, and lets other calls run in the meantime. `gather` starts all the calls and collects their results. The **semaphore** is a counter that lets only 20 calls be in progress at any moment; the 21st waits until one finishes. Run it, and the 100 stand-in messages finish in about 15 seconds instead of 300. (`ask_model` here only pretends to call a model, so you can run the example without a key. Module 2 makes the real call.)
+An `async` function can pause while it waits, and let other calls run in the meantime. `gather` starts all the calls. The **semaphore** lets only 20 be in progress at once. These 100 messages finish in about 15 seconds instead of 300. Doing many waiting tasks at the same time like this is called **concurrency** (@fig-timeline).
 
-![Six calls of 3 seconds each. One at a time, the program spends almost all of its 18 seconds waiting. Started together, the six waits overlap and the whole batch takes about 3 seconds.](/figures/m01/timeline.pdf){#fig-timeline}
+![Six calls of 3 seconds. One at a time, they take 18 seconds, almost all of it waiting. Started together, the waits overlap and the batch takes about 3 seconds.](/figures/m01/timeline.pdf){#fig-timeline}
 
-Having many tasks in progress at once, with one moving forward while another waits, is called **concurrency**. It is different from **parallelism**, where several processor cores calculate at the same instant. Model calls need concurrency, because their time goes in waiting, not in calculating (@fig-timeline).
+Then why not start all 4,000 at once? Because the provider allows each account only so many calls per minute. Work it out for 20 at a time:
 
-Why not start all 4,000 at once, then? Because the provider limits how many calls your account may make per minute, and how much text it may send. Do the sum for 20 calls at a time, each taking 3 seconds:
-
-1. Each of the 20 slots finishes 60 ÷ 3 = 20 calls a minute.
+1. Each slot finishes one call every 3 seconds, so 20 calls a minute.
 2. Twenty slots finish 20 × 20 = 400 calls a minute.
-3. Suppose Tarkika's account allows 100 calls a minute. Then 4,000 messages need at least 4,000 ÷ 100 = 40 minutes, however clever the code.
+3. If Tarkika's account allows 100 calls a minute, 4,000 messages need at least 40 minutes, whatever the code does.
 
-Push above the limit and you get 429 errors, which your code now retries, which adds even more calls. So the limit should come from the account's allowance, not from how fast you would like to finish. Here 5 slots × 20 calls a minute = 100 a minute, which fits exactly.
+Go above the limit and you get 429 errors, which you retry, which adds even more calls. So the number of calls at once is set by the account's limit, not by how fast you want to finish. Here, 5 at a time gives exactly 100 a minute.
 
-::: {.remember}
-Model calls spend their time waiting, so run several at once, but never more than your account's limit allows.
-:::
+Three hours became forty minutes, and the script survives errors. Problem 4 is left.
 
-Three hours have become forty minutes, and the script survives errors. One problem is left: the change that broke it silently for three days.
+## You cannot test a model call like a function
 
-## How do you test code when the model answers differently every time?
+To catch a silent break, you write tests. A normal test gives a function a fixed input and checks for one exact output. Try that here: send "paisa wapas karo" and check that the answer is `refund`. It passes today. Tomorrow the model says "Refund", and the test fails, though nothing in your code changed. A test that fails at random is soon ignored.
 
-The usual answer to silent breakage is tests. An ordinary unit test gives a function a fixed input and checks for one exact output. Try that here: send the model "paisa wapas karo" and check that it returns `refund`. The test passes today. Tomorrow the model writes "Refund", or the provider updates the model, and the same test fails although nothing in your code changed. A test that fails at random gets ignored, which is worse than having no test.
+*Before reading on: which parts of Ravi's script give the same result every time?*
 
-*Before reading on: which parts of Ravi's script behave exactly the same every time?*
+Everything Ravi wrote: reading the file, checking the shape, retrying, saving. Only the model's reply changes. So test the two parts separately.
 
-Everything Ravi wrote himself does: reading the file, checking the shape, retrying, saving results. Only the model's reply varies. So split the testing in two.
-
-1. **Test your own code with a fake model.** A fake is a few lines that return replies you choose, including broken ones, instead of calling the real model. Your code is then tested with ordinary tests, and every test gives the same result every time.
-2. **Measure the real model separately.** Run it on a set of real messages and check properties of each reply, such as "is the category one of the four?" The result is a score, not a pass or fail. These checks are called **evals**, and Module 11 is about them.
-
-To make the first kind easy, put the checking step in its own function:
-
-```python
-class BadReply(Exception):
-    pass
-
-def parse_ticket(reply: str) -> Ticket:
-    try:
-        return Ticket.model_validate_json(reply)
-    except ValidationError as e:
-        raise BadReply(reply) from e
-```
-
-Then test it with `pytest`, the most common testing tool in Python:
+1. **Ravi's own code** is tested with a fake model: a few lines that return replies you choose, including broken ones and errors. Every run gives the same result, needs no network and costs nothing.
+2. **The model** is checked on a set of real messages, with checks like "is the category one of the four?" The result is a score, not a pass or fail. These checks are called **evals**, and Module 11 is about them.
 
 ```python
 import pytest
-from triage import parse_ticket, BadReply
+from triage import parse_ticket, BadReply   # parse_ticket checks a reply with Ticket
 
 def test_valid_reply():
     t = parse_ticket('{"category": "delivery", "urgent": false}')
@@ -248,64 +169,12 @@ def test_reply_that_is_not_json():
         parse_ticket("Sure! This looks like a delivery issue.")
 ```
 
-These tests run in a fraction of a second, with no network, no key and no cost. Fakes also let you test what is hard to produce on demand: a burst of 429 errors, a reply cut off halfway, a server that never answers.
+## What changed
 
-::: {.remember}
-Test your own code against a fake model, and measure the real model separately with evals.
-:::
+@fig-pipeline shows Ravi's script after the four fixes.
 
-## Ravi's script, rebuilt
+![Ravi's script, rebuilt: up to 20 calls at once, retries for failures that waiting can fix, every reply checked, and each result saved as soon as it arrives.](/figures/m01/pipeline.pdf){#fig-pipeline}
 
-@fig-pipeline puts the five fixes together. Each step answers one of the problems from the start of the module.
+Ravi did not need a better model. He needed to stop treating the model like an ordinary function. It is slow, so he runs calls together. It can fail, so he retries carefully and saves as he goes. It answers differently each time, so he checks every reply and tests his own code apart from the model.
 
-![The rebuilt triage script. Messages go out up to 20 at a time, failed calls are retried with back-off, every reply is checked against the Ticket model, and each result is saved as soon as it arrives.](/figures/m01/pipeline.pdf){#fig-pipeline}
-
-1. A pinned environment, so it runs the same on every laptop (problem 1).
-2. Up to 20 calls at once, within the account's limit (problem 2).
-3. Retries with back-off for failures that waiting can fix (problem 3).
-4. Every reply checked against `Ticket`; bad replies logged and skipped (problem 4).
-5. Each result saved at once, so a restart loses nothing; and tests for all of Ravi's own code (problems 3 and 5).
-
-None of this needed a smarter model. It needed ordinary engineering around the model, and that is most of what this book is about.
-
-::: {.project}
-Build the first piece of Tarkika's support system: the triage script.
-
-1. Create a project with its own environment. Install `pydantic` and `pytest`, and pin them in `requirements.txt`.
-2. Write the `Ticket` model and `parse_ticket`. Add tests for at least four broken replies: not JSON, an unknown category, a missing `urgent` field, and an empty string.
-3. Write `ask_model` as a stand-in that waits a random 1 to 4 seconds and sometimes fails with a 429. Wrap it in `call_with_retry`.
-4. Classify 200 made-up messages with at most 10 calls at a time. Save each result to `results.jsonl` as it arrives, stop the script halfway, start it again, and check that it continues where it stopped.
-
-In Module 2 you will replace the stand-in with a real model call.
-:::
-
-::: {.production}
-- **Retries on top of retries.** Your loop and the client library both retry, and one failing message turns into fifteen calls.
-- **A key in the logs.** Error messages or debug prints include the full request, key and all, and the logs are shared.
-- **Unpinned libraries.** A new release changes a function, and a script nobody touched fails on the next deploy.
-- **No cap on concurrency.** Thousands of calls start at once, all get 429 errors, all retry together, and the batch takes longer than running one at a time.
-- **Results kept only in memory.** A crash near the end throws away hours of paid calls.
-:::
-
-::: {.defend}
-- **Concurrency.** "We run 5 calls at a time. Each takes about 3 seconds, so that is 100 a minute, which is our account's limit."
-- **Retries.** "Five attempts with doubling back-off and jitter, so at most 15 seconds of waiting. That is fine for the overnight batch. In the chat window we allow two attempts, because the customer is waiting."
-- **Pinned versions.** "Every library is pinned. We upgrade on purpose, one library at a time, and run the tests after each upgrade."
-:::
-
-::: {.practice}
-1. A batch of 6,000 messages, each call taking 4 seconds, with 10 calls at a time. How long does it take? How many calls a minute is that, and would it fit within a limit of 120 a minute?
-2. For each of these, would you retry? A 401 error; a timeout; a 400 error saying the text is too long; a 529 error.
-3. Write a `Ticket`-style model for a delivery complaint that must include an order number, a city, and how many days late the parcel is (a whole number from 0 to 60).
-:::
-
-::: {.interview}
-1. How would you call an LLM API 10,000 times efficiently?
-2. Which API errors would you retry, and how?
-3. How do you write unit tests for code that calls an LLM?
-4. Why do you need to validate the output of an LLM?
-:::
-
-::: {.nexthook}
-The script now sorts 4,000 messages safely. Next: what the model inside it actually is, what an AI engineer builds around it, and what each of those 4,000 calls costs in rupees.
-:::
+One difference was left out: every call also costs money. Module 2 looks at what the model actually is, what an AI engineer builds around it, and what each of those 4,000 calls costs.

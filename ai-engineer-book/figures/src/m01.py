@@ -2,30 +2,6 @@ import figstyle as fs
 from figstyle import C
 
 
-def fig_environments():
-    f, ax = fs.canvas(4.7, 2.15)
-    # Left: one shared place
-    ax.text(1.1, 2.05, "ONE SHARED PYTHON", ha="center", fontsize=6.4, fontweight="bold", color=C["crimson"])
-    fs.box(ax, 0.1, 1.25, 0.9, 0.5, "Project A\nneeds v1", size=6.4)
-    fs.box(ax, 1.2, 1.25, 0.9, 0.5, "Project B\nneeds v2", size=6.4)
-    fs.box(ax, 0.35, 0.25, 1.5, 0.5, "One copy of the library:\nv1 or v2, never both", fc=C["crimson_t"],
-           ec=C["crimson"], size=6.4, lw=1.4)
-    fs.arrow(ax, 0.55, 1.25, 0.85, 0.75)
-    fs.arrow(ax, 1.65, 1.25, 1.35, 0.75)
-    ax.text(1.1, 0.06, "one project breaks", ha="center", fontsize=6.2, color=C["crimson"], style="italic")
-    # Divider
-    ax.plot([2.35, 2.35], [0.1, 2.05], color=C["rule"], lw=0.6, ls=(0, (3, 2)))
-    # Right: one environment per project
-    ax.text(3.55, 2.05, "ONE ENVIRONMENT PER PROJECT", ha="center", fontsize=6.4, fontweight="bold", color=C["indigo"])
-    for i, (name, v) in enumerate([("Project A", "v1"), ("Project B", "v2")]):
-        x = 2.6 + i * 1.05
-        fs.box(ax, x, 1.25, 0.9, 0.5, f"{name}\nneeds {v}", size=6.4)
-        fs.box(ax, x, 0.25, 0.9, 0.5, f".venv with\nlibrary {v}", fc=C["indigo_t"], ec=C["indigo"], size=6.4)
-        fs.arrow(ax, x + 0.45, 1.25, x + 0.45, 0.75)
-    ax.text(3.55, 0.06, "both work", ha="center", fontsize=6.2, color=C["indigo"], style="italic")
-    return f
-
-
 def fig_retry():
     f, ax = fs.canvas(4.7, 2.2)
     fs.box(ax, 0.0, 0.85, 0.75, 0.5, "Call the\nmodel", size=6.6, weight="bold")
