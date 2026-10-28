@@ -293,3 +293,65 @@ Notes written while reading every line, in order. Line numbers refer to the tran
 - ReAct named only after learners have already seen repeated tool calls: "remember why we needed call limits? This is why: reason, act, observe, repeat." Naming arrives after the experience.
 - Long-running planner shown as files with one job each (orchestrator, planner, task store, recovery, judge) before any code is opened. The plan prompt is read line by line and each requirement is justified (why 5–20 tasks, why dependencies must form a DAG, why acceptance criteria).
 - Uses plain terms for graph ideas: "no task can depend on itself, even through others", then gives the formal word (cycle, topological order).
+
+### Lines 20951–21480 (end of Day 10)
+- Live run narrated against the database: "Do you see task.db? Any rows? No. Approve. Now open it again: ten rows, the first in progress." The learner watches state change, not just output.
+- Each column of the task table is read out and tied to a design need (type, status, depends-on, retries, timestamps). Tables are explained column by column.
+- Small, plain mechanism stated once: "as I finish a task I summarise its result and pass it to the next task." No jargon for handoff.
+- Live failure again (file access denied); she debugs aloud, finds her own mistake while answering a learner (duplicate file tools beside the MCP server confused the agent) and says so openly.
+- Honest scoping in Q&A: "we are building this in five weeks; it is not a replacement for the real product." Learner asked "why can explaining the code first help?" → answer reuses the course idea "small tasks perform better; that is why we plan."
+- Deflects off-topic questions to the right tool ("look at how Grafana works, then ask again").
+
+## Day 11 (lines 21481–23634): Design review of a coding agent
+
+### Lines 21481–22000
+- Opens with the interview frame: "if asked to design this on a whiteboard, how would you approach it?" The whole day is synthesis.
+- Starts with requirements, and makes learners list them (functional first: debug, answer, add features, create from scratch; then basic tools: web search, file CRUD, terminal, GitHub, database).
+- "Agentic system design is normal HLD plus agentic-specific things" — ties new topic to known system design (gateway, rate limiter), then adds the agentic parts (injection detector, PII scanner, content filter).
+- Accepts a learner correction publicly ("rate limiting applies to the cloud version, not local; you are right"). Models that mistakes in discussion are fine.
+- "Should the user have to say ask or plan? How would you do it yourself?" → classifier → "can plain code understand the query? No. Who understands queries? The LLM." Leads to a query-classifier agent by elimination.
+- Distinguishes close terms precisely: indexing at start-up vs incremental indexing as changes happen.
+- Builds the architecture as layers, asking for each piece: context (indexers, retrievers, memory), agent (orchestrator, factory, ReAct agent with tools: custom, MCP via a multi-server client, retriever tool; skills), safety, quality assurance, observability, freshness. Acronym check: "ReAct stands for?"
+- Then walks one concrete flow through the layers (a debug query: retrieve → model finds the bug → file tool writes → result back → response).
+- Rapid recall drills: "three types of long-term memory?" (episodic, procedural, semantic).
+- Plants future topics as cliffhangers (Langfuse for local tracing, caching, freshness, token budgeting) and says where each belongs in the layer map.
+
+### Lines 22001–23100 (planner flow, executor, re-indexing)
+- Planner flow redrawn as numbered steps, each one asked for before it is drawn: plan (structured output) → human approval → persist (task store) → executor loop. Recall questions inside the flow ("what did we use to get a fixed format?").
+- Corrects a learner's word choice gently: "if a task hasn't started, do you call it in progress? Pending / to do." Precision of state names matters.
+- Lists every status (pending, in progress, completed, failed, blocked, skipped) with a one-line reason for each.
+- Topological sort taught without DSA: "it's okay if you never did DSA. It just means every task you depend on comes before you." Then the formal name (directed acyclic graph). Says how it is enforced in practice: "through the prompt; the LLM writes depends-on."
+- Handles a hard learner question (two parallel tasks writing the same row) by naming it as plain HLD, not agentic: atomic updates. Marks which ideas are general engineering and which are agent-specific.
+- Shows the simple path and the internal path: "a checkpointer would be the easy way; we do it by hand to understand internals" (store a result summary per task, pass dependents' results into the next task's prompt).
+- Multi-agent introduced before its chapter: "different task types want different models and tools (reasoning model for design, small model for tests, read-only tools for review). Notice you are already using multi-agent." Redefines agent as "LLM plus tools" to settle "different agent or different LLM?"
+- Names over-engineering when a learner proposes choosing a model per task: "per type yes, per task is over-engineering."
+- Code walk-through rule stated: "if syntax is hard, that's not the point; can you say why this is in this layer and why this step comes after that one?" Then drops to a flow chart when the class is lost: "everyone's code is hard to follow until you debug it yourself."
+- Edge case taught with numbers: task 7 depends on 2, 3, 4; 4 is still running; so nothing is ready → sleep and re-check. Learner links it to a task scheduler; she agrees and says it is really LLD.
+- Shows why acceptance criteria exist: used once in planning and again by the LLM judge after each task. One field, two uses.
+- Re-indexing taught from a failure story: rename OrderManager to OrderHandler, ask about OrderHandler, agent says it doesn't exist. Then four triggers (start-up, explicit command, file watcher, after a large planned feature).
+- Debouncing with a timeline: change at second 0, wait 5 s; another change at second 3 resets the timer; index at second 8. Repeated a second time for a confused learner using the typing example.
+- Flags interview answers explicitly: "if asked what happens when files change: re-indexing, then debouncing, then incremental."
+
+### Lines 23101–23633 (prompt caching, end of Day 11)
+- Prompt caching taught through **worked arithmetic on a real price sheet**: input $3/M, cache write $3.75/M, cache hit $0.30/M. Static part 100k (system 40k + tools 20k + retrieved 40k), dynamic 1k, 10 requests. Without cache $3.03; with cache first call $0.378 then $0.033 each. Learners compute each line aloud.
+- First notices the odd fact ("writing to cache costs *more* than normal input — did you notice?"), then explains why it still pays.
+- Demo as a sequence of predictions: "first call: hit or miss?" → run → "run again: now?" → "change one word in the system prompt: now?" → "change the cache key: now?" → "shrink the prompt below 1,024 tokens: now?" Each run tests one variable.
+- Separates provider behaviour honestly: one provider caches implicitly, another needs explicit cache-control markers; "this part is not in our hands; what we can cache ourselves is next week."
+- Ties to known internals in one line (KV cache, time to live) for those who know it, without making it required.
+- Q&A gives practical edges: "the sad case is 1,023 tokens"; parallel requests don't share a cache that isn't written yet → send one warm-up call first.
+- Query-classifier trade-off: "sounds good, but every extra step is another model call; the first response must be fast — that's why products give explicit plan/ask modes."
+- Owns a failing demo plainly (token limit too low for a bigger model) and tells learners which setting to try instead.
+
+## Day 12 (lines 23635–24420): Applying the design to new projects
+
+### Lines 23635–24200
+- Responds to feedback ("we can follow the design but can't apply it to a new project") by reusing one checklist across new domains (finance advisor, infra SaaS, then nutrition, legal, recruiting, CRM).
+- The checklist, asked in the same order each time: user actions → where RAG fits (what documents, how often they change) → which search (hybrid, because stock symbols / instance names need exact match) → fusion → skills → MCP servers → query classifier → simple vs planning path → memory (STM, LTM types with domain examples) → freshness triggers → context building → observability → evals → guardrails/HITL → model per job.
+- Vague requirements are deliberate: "interviewers do this; you are expected to ask cross-questions."
+- "Who are we replacing?" frame: coding agent → developer; infra agent → SRE/DevOps engineer. Then list what that person does.
+- Domain twist on a known concept: freshness in finance has different triggers (user transactions, market changes, watchers on held stocks, scheduled weekly rebalancing). Shows the same idea with a new trigger list.
+- Calls out what is *most* important per domain: "for money, safety and human approval matter most; otherwise the agent goes rogue with money."
+- Gives a low-effort way to practise the hard project (dummy service with a health API and a random-sleep load API on free instances).
+- Pros and cons insisted on: "just because we can cache doesn't mean we should." Full vs incremental re-indexing argued both ways (few files or schema change → full; large corpus, frequent small changes → incremental).
+- Production pattern named after the problem is felt: half-applied changes → shadow collection and atomic swap (blue-green).
+- Change detection as two named options with expansions: mtime (modified time) vs content hash.
