@@ -253,3 +253,43 @@ Notes written while reading every line, in order. Line numbers refer to the tran
 - Integration in the project with only the tricky part explained (environment variables inside the JSON must be substituted). Factory doesn't change when servers are added. Credits a learner who added tool filtering and a Gmail server.
 - Custom MCP server shown as "the same functions we already wrote, plus FastMCP" — reuse of known code makes the new idea small.
 - Rule of thumb for transport: stdio when the tools can run where the host runs; HTTP with a URL otherwise.
+
+### Lines 17951–18950 (Skills, long-running tasks intro)
+- Browser automation demo with an explicit warning learned from experience: set call limits or it loops and burns tokens; bigger/newer models behave noticeably better for such tasks.
+- Warns that without practice topics "become khichdi in your head"; credits a learner who learned most from bugs. "My job is concepts, code, quizzes; the last step — writing it yourself — is yours."
+- **Skills built from first principles**: "In the end, everything we send to an LLM is text." Everyday repeated tasks (make a PPT with these slides/theme; a PDF with header/footer; quizzes with four options) → "instructions + references + examples, sometimes scripts, packaged" → that's a skill. "Fancy term, simple idea."
+- Shows real skill files and their popularity (stars) to signal industry weight.
+- **Learner question drives the key concept**: "this is too long to be a prompt" → "can I send ten of these? No" → "notice every file starts with name and description — what must be happening?" → learners infer *progressive disclosure* before she names it. Then the three levels with rough token sizes (~100 metadata, ~5k instructions, resources on demand).
+- Format stated as a simple standard: folder per skill, SKILL.md required, front matter with name/description, everything else optional.
+- "If you only want to use skills, it's one line (deep agents). We'll build what happens inside so you really understand it." Explicit distinction between using and understanding.
+- Answers "LLMs already know PDFs" with: LLMs are generic — they can explain in two lines or a hundred, for a beginner or a scientist; instructions pin down what *you* want.
+- Live code breaks due to version mix-ups; she stops, apologises, switches to theory and promises to show the working code tomorrow rather than burn class time.
+- Long-running tasks introduced through the familiar plan mode in coding tools, then **learners list the problems** (permissions, deviation, memory, losing context); she adds crash-in-the-middle and parallel steps, then names the requirements: resumability, crash safety, human approval, dependency ordering, parallelism, visibility, timeouts, retries. Flags it as a common interview question.
+- Gives the high-level architecture before tomorrow's code so the code is easier to follow.
+
+### Lines 18951–19496 (end of Day 9)
+- Long-running design explained as a flow first (plan vs ask → task orchestrator → LLM returns a plan in a fixed structure → tasks with type and status stored in a DB), then a live demo of a 15-task plan with human approval as a "cliffhanger" to make people come on time.
+- Q&A shows clear reasoning on trade-offs: skills vs custom multi-agent workflows ("skills for repeated workflows; build your own when you need structured output, verification, guardrails, control"); skill security ("third-party instructions can contain anything — prompt injection; use verified, well-starred ones or write your own").
+- On non-deterministic behaviour: "agentic applications are never fully deterministic; that's why guardrails, structured output, retries and planning exist."
+- Admits when a question is out of scope and points to the right place (OAuth is general system design).
+
+## Day 10 (lines 19497–21480): Safety, long-running tasks
+
+### Lines 19497–19950
+- **Pep talk with substance**: frameworks and APIs change (shows her own year-old video is out of date); "concepts don't change", so the course spends time on what happens inside rather than syntax. Tells learners where *not* to spend energy (Python syntax, model choice) at this stage.
+- Revision as a contrast: MCP vs skills — "should we even compare them? No: one is a protocol for tools, the other is packaged instructions for repeated tasks."
+- Owns yesterday's bug and explains it in two lines before moving on.
+- Before/after demo for skills: to-do app without the skill, then with a front-end design skill; shows in the trace that only names/descriptions were sent first, then the full skill. Notes that a stronger model alone improved the first version — honest about confounders. Homework: try the PDF skill.
+- Swaps hand-written file tools for the file-system MCP server with one subtle point explained: give access only to the current project folder (substitute the current working directory like the env vars).
+- **Teaches interview vocabulary deliberately**: "say 'critical tasks', 'destructive tasks' — using the right terms in 45 minutes is impressive."
+- Human-in-the-loop by design-it-yourself: "Don't read the docs yet. How would you implement it?" Draws the current loop and asks where the interruption goes (after the model chooses a tool, before it runs), then three parts: interrupt, read the human's response, decide what next. "Logically it's simple; let's see how frameworks do it."
+
+### Lines 19951–20950 (HITL, guardrails, planner)
+- HITL taught as a small decision table: per tool, which responses are allowed (approve / edit / reject / respond). Then a conditional version ("only interrupt for write SQL or a dangerous shell command") so learners see that blanket approval is bad design.
+- Explains *why* a checkpointer is needed with one plain sentence: resuming is a second call carrying the human's decision, so state must be saved between the two calls.
+- Demo in two runs: approve first, then reject with a reason, and shows in the trace how the reason reaches the model. Same input, one knob changed.
+- Guardrails start with the question "how would you protect PII?" and collect answers before naming redact / mask / hash / block. Each strategy is shown on the same example string so the difference is visible.
+- Draws a parallel back to evals: deterministic guardrails (regex, rules) vs model-based guardrails mirror formula metrics vs LLM-as-judge. Reusing an earlier mental model instead of teaching a new one.
+- ReAct named only after learners have already seen repeated tool calls: "remember why we needed call limits? This is why: reason, act, observe, repeat." Naming arrives after the experience.
+- Long-running planner shown as files with one job each (orchestrator, planner, task store, recovery, judge) before any code is opened. The plan prompt is read line by line and each requirement is justified (why 5–20 tasks, why dependencies must form a DAG, why acceptance criteria).
+- Uses plain terms for graph ideas: "no task can depend on itself, even through others", then gives the formal word (cycle, topological order).
