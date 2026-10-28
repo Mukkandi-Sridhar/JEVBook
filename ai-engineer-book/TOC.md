@@ -13,7 +13,7 @@ For each chapter you will see:
 - **Opens with:** the problem the reader feels first.
 - **Sections:** in teaching order. Each one goes problem → reader tries → mechanism → name → rule → trade-off.
 - **Numbers worked by hand:** the calculation the chapter does on paper.
-- **Project:** what gets added to Kaveri Kart.
+- **Project:** what gets added to Tarkika.
 - **Defend:** the numbers the reader must be able to justify.
 
 Page target: 12–16 pages a chapter. Thirty-eight chapters in ten parts, about 560 pages in all.
@@ -56,7 +56,7 @@ Chapter 1 draws one picture of an AI system. Every part opener redraws it and hi
   6. Your workbench
   7. Your first call to a model
   8. What one answer costs
-  9. The project: Kaveri Kart's support agent
+  9. The project: Tarkika's support agent
 - **Numbers:** the cost of one call in rupees; the cost of 4,000 calls a day.
 - **Revision for the new method:** add a "Before reading on" prompt in §4, and do the arithmetic in §8 step by step.
 
@@ -135,7 +135,7 @@ Chapter 1 draws one picture of an AI system. Every part opener redraws it and hi
 
 ### Ch 8. Reasoning models and thinking time
 - **Builds on:** Ch 7's checkable rewards.
-- **Opens with:** the same model, two settings: one is 6× the cost and no better on Kaveri Kart's tickets.
+- **Opens with:** the same model, two settings: one is 6× the cost and no better on Tarkika's tickets.
 - **Sections:**
   1. 2 + 2 versus 17 × 24: when thinking helps
   2. What thinking tokens are, and who pays for them
@@ -195,7 +195,7 @@ Chapter 1 draws one picture of an AI system. Every part opener redraws it and hi
   5. Fixed text first, changing text last (prompt caching)
   6. One word changes everything: why prompts need versions
 - **Numbers:** prompt caching worked through ten requests, with and without the cache.
-- **Project:** the Kaveri Kart system prompt, cache-friendly.
+- **Project:** the Tarkika system prompt, cache-friendly.
 - **Defend:** prompt length; cache hit rate; number of examples.
 
 ### Ch 13. Structured outputs, tool calls and your first threat model
@@ -254,7 +254,7 @@ Chapter 1 draws one picture of an AI system. Every part opener redraws it and hi
   7. Fetch widely, then keep the best (high recall, then precision)
   8. Citations, and saying "I don't know"
 - **Numbers:** chunk count for the policy set; tokens sent per question at top-k = 5 and 20.
-- **Project:** Kaveri Kart policy RAG with citations.
+- **Project:** Tarkika policy RAG with citations.
 - **Defend:** chunk size and overlap; top-k; reranker cut-off; abstain threshold.
 
 ### Ch 17. Beyond basic RAG
@@ -378,7 +378,7 @@ Chapter 1 draws one picture of an AI system. Every part opener redraws it and hi
   agent-to-agent protocols; agents that pay (spending limits and confirmations, including UPI pilots, VERIFY); the
   risks of other people's servers and skills.
 - **Shelf life:** changes monthly. Concepts here, details in Appendix C.
-- **Project:** expose the Kaveri Kart tools as an MCP server.
+- **Project:** expose the Tarkika tools as an MCP server.
 
 ### Ch 27. Frameworks: how to choose, and when not to use one
 - **Builds on:** Ch 21's raw loop.
@@ -430,7 +430,7 @@ Chapter 1 draws one picture of an AI system. Every part opener redraws it and hi
 - **Opens with:** a demo that works on a laptop and falls over with ten users.
 - **Sections:** an API around the agent; streaming; async work and queues; containers; timeouts, retries and never
   refunding twice; rate limits at the front door.
-- **Project:** Kaveri Kart as a deployed service.
+- **Project:** Tarkika as a deployed service.
 - **Defend:** timeouts; retry policy; duplicate-refund protection.
 
 ### Ch 32. LLMOps: running AI systems day to day
@@ -473,7 +473,7 @@ Chapter 1 draws one picture of an AI system. Every part opener redraws it and hi
   3. Walking the system map layer by layer
   4. Diagnosis drills: slow system, bad answers, quality falling with no code change
   5. Reviews of real systems, worked and failed, each told as problem, design, what broke, fix (all VERIFY)
-  6. The final design review of Kaveri Kart
+  6. The final design review of Tarkika
 
 ---
 
@@ -482,7 +482,7 @@ Chapter 1 draws one picture of an AI system. Every part opener redraws it and hi
 ### Ch 37. Your portfolio and the job market
 - **Sections:** role names; company types in India; salary tiers (VERIFY near print); entry routes; a portfolio that
   impresses (real problem, measured evals, failure log, deployment, write-up); when certificates help.
-- **Project:** the Kaveri Kart README with evals, cost sheet and failure log.
+- **Project:** the Tarkika README with evals, cost sheet and failure log.
 
 ### Ch 38. Interview preparation
 - **Sections:** the two loop shapes (product companies, services firms); a question bank from every chapter; five

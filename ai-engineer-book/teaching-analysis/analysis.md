@@ -3,7 +3,7 @@
 Source: a 15-day live course transcript on agentic AI system design (30,119 lines, read in full; running notes in
 `notes.md`). The transcript is someone else's paid course. **We take only the method from it:** how the teacher
 builds sentences, makes points stick, makes hard ideas easy and links topics. We take none of its content,
-examples, code, project briefs, structure or order. The book's material stays our own (Kaveri Kart, our examples,
+examples, code, project briefs, structure or order. The book's material stays our own (Tarkika, our examples,
 our chapter plan).
 
 ## 1. The method in one paragraph

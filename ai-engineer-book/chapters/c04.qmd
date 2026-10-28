@@ -1,6 +1,6 @@
 # Deep learning in one chapter {#sec-ch04}
 
-Some Kaveri Kart customers do not write at all. They send a photo of a dented pressure cooker, or a voice note in Kannada saying the mixer makes a strange noise. The classifier from Chapter 3 cannot use either. It needs features someone has defined, like word counts or the order value, and nobody can write a useful list of features for the pixels of a photo.
+Some Tarkika customers do not write at all. They send a photo of a dented pressure cooker, or a voice note in Kannada saying the mixer makes a strange noise. The classifier from Chapter 3 cannot use either. It needs features someone has defined, like word counts or the order value, and nobody can write a useful list of features for the pixels of a photo.
 
 **Deep learning** solves this. A deep learning model takes raw input, such as the pixels of a photo, the sound of a voice or the letters of a sentence, and learns its own features from examples. Every large language model is a deep learning model, so this chapter gives you the core ideas in plain words. You will not build networks from scratch in this book. You need to understand them well enough to use them, choose them, run them, and explain their limits.
 
@@ -26,7 +26,7 @@ A **neural network** solves this with a team of neurons arranged in layers (@fig
 
 Between layers, each neuron applies a small bend to its total before passing it on. The most common bend is very simple: if the total is negative, pass on zero; otherwise pass it on unchanged. It is called **ReLU**. Without these bends, stacking layers would add nothing, because a sum of sums is still just a sum. With them, enough neurons can learn almost any pattern.
 
-A network with many layers is called **deep**, which is where "deep learning" gets its name. On photos, researchers found that the first layers of a trained network learn to spot edges, the middle layers learn textures and shapes, and the last layers learn whole objects [@lecun2015]. For Kaveri Kart's photos, that could mean edges, then a dent or a crack, then "damaged product". Nobody wrote a rule for "dent". The network learned it from labelled photos.
+A network with many layers is called **deep**, which is where "deep learning" gets its name. On photos, researchers found that the first layers of a trained network learn to spot edges, the middle layers learn textures and shapes, and the last layers learn whole objects [@lecun2015]. For Tarkika's photos, that could mean edges, then a dent or a crack, then "damaged product". Nobody wrote a rule for "dent". The network learned it from labelled photos.
 
 ::: {.remember}
 Use neural networks for photos, sound and free text. For clean tables of numbers, gradient-boosted trees are usually as good and far cheaper.
@@ -93,12 +93,12 @@ As an applied AI engineer, you will almost never design a new network. The every
 - **Adapt a pre-trained model** with a small amount of extra training when prompting alone cannot get the behaviour you need.
 - **Use classical models** (Chapter 3) for tables of numbers and for high-volume, simple text decisions.
 
-Training a deep network from scratch is for companies with large datasets, large budgets, and a problem no existing model handles. For Kaveri Kart, every deep learning need, from reading photos to understanding Kannada voice notes, is met by an existing model.
+Training a deep network from scratch is for companies with large datasets, large budgets, and a problem no existing model handles. For Tarkika, every deep learning need, from reading photos to understanding Kannada voice notes, is met by an existing model.
 
 ::: {.project}
 1. Pick two open models you might run yourself: one around 7B parameters and one around 70B. Work out the memory for their weights in BF16 and in 4-bit.
 2. Look up the memory of one common GPU you could rent. Which of the four cases fit on one GPU, after adding 30% for the working memory?
-3. Write one paragraph for Kaveri Kart: should the support system use a model through an API, or run one on its own GPU? Consider the data (customer addresses and phone numbers), the volume (800 to 4,000 messages a day), and the team size. You will revisit this choice in Chapter 12 with real costs.
+3. Write one paragraph for Tarkika: should the support system use a model through an API, or run one on its own GPU? Consider the data (customer addresses and phone numbers), the volume (800 to 4,000 messages a day), and the team size. You will revisit this choice in Chapter 12 with real costs.
 :::
 
 ::: {.production}

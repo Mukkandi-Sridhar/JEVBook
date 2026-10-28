@@ -1,6 +1,6 @@
 # What an applied AI engineer does {#sec-ch01}
 
-Kaveri Kart is a small online store in Mysuru. It sells kitchen and home products across India: pressure cookers, steel tiffin boxes, bedsheets, mixer grinders. On a normal day, its six-person support team answers about 800 emails and chat messages. During the Diwali sale, that number jumps to 4,000 a day, and the team falls days behind.
+Tarkika is a small online store in Mysuru. It sells kitchen and home products across India: pressure cookers, steel tiffin boxes, bedsheets, mixer grinders. On a normal day, its six-person support team answers about 800 emails and chat messages. During the Diwali sale, that number jumps to 4,000 a day, and the team falls days behind.
 
 The owner, Meena, decides to "add AI". A developer friend connects a chatbot to the website over a weekend. It is impressive for about a week. Then the problems start:
 
@@ -32,7 +32,7 @@ An AI system works the same way. The **model** is the cook. A **large language m
 
 ![An AI system is much more than the model. The model sits in the middle; the AI engineer builds everything around it.](/figures/c01/system.pdf){#fig-system}
 
-The weekend chatbot at Kaveri Kart had only the cook. That is why it failed, and it is why companies hire AI engineers instead of just buying access to a model.
+The weekend chatbot at Tarkika had only the cook. That is why it failed, and it is why companies hire AI engineers instead of just buying access to a model.
 
 ::: {.remember}
 Most AI failures come from what is missing around the model: the right facts, tests, limits on its actions, and a budget.
@@ -52,7 +52,7 @@ The lines blur in practice. An applied AI engineer sometimes trains a small mode
 
 ## What the work looks like in a week
 
-Here is a realistic week for the engineer who takes over Kaveri Kart's support system.
+Here is a realistic week for the engineer who takes over Tarkika's support system.
 
 1. **Monday: read real conversations.** Read 50 recent chats from start to end. Note every wrong or awkward answer, and group them: wrong policy, wrong language, made-up order status, too long.
 2. **Tuesday: fix the biggest group.** Most wrong policy answers come from the model not having the policy at all. Add a step that finds the right policy section and gives it to the model with the question.
@@ -84,7 +84,7 @@ Before you ship, answer three questions with numbers: does it work, should it ac
 
 ## Writing or deciding?
 
-When people think of AI, they think of writing: essays, emails, code. But look again at Kaveri Kart's support work. For each incoming message, the system must:
+When people think of AI, they think of writing: essays, emails, code. But look again at Tarkika's support work. For each incoming message, the system must:
 
 - decide which language it is in;
 - decide what kind of request it is: refund, delivery, product question or complaint;
@@ -146,7 +146,7 @@ Here is what each part does:
 
 OpenAI's and Google's Python packages look almost the same: a client, a model name, a list of messages, and a reply with text and token counts. Once you can use one, you can use the others.
 
-Run the program and read the answer. It will probably be polite and sensible, something like "Most stores accept returns within 7 to 30 days, but please check the store's return policy." That sounds fine until you remember the question was about Kaveri Kart. The model has never seen Kaveri Kart's policy. It answered with a general guess. If you ask it to be more specific, it may invent a policy that sounds real. This is called a **hallucination**: a confident answer that is not supported by any fact the model was given. Giving the model the right facts is the subject of Part IV.
+Run the program and read the answer. It will probably be polite and sensible, something like "Most stores accept returns within 7 to 30 days, but please check the store's return policy." That sounds fine until you remember the question was about Tarkika. The model has never seen Tarkika's policy. It answered with a general guess. If you ask it to be more specific, it may invent a policy that sounds real. This is called a **hallucination**: a confident answer that is not supported by any fact the model was given. Giving the model the right facts is the subject of Part IV.
 
 Run the same program three times. The wording will change a little each time, because the model picks its words with some randomness. Chapter 2 explains why, and later chapters show how to control it.
 
@@ -168,22 +168,22 @@ This is how the weekend chatbot's bill surprised everyone. Cost in AI systems gr
 Work out the cost per task before you build. Most of it comes from the context you send, and a few paise per answer becomes lakhs a month.
 :::
 
-## The project: Kaveri Kart's support agent
+## The project: Tarkika's support agent
 
-By the end of this book, Kaveri Kart's support system will look like @fig-project. Each part of the book adds a piece:
+By the end of this book, Tarkika's support system will look like @fig-project. Each part of the book adds a piece:
 
 - In Part I, you collect and label real-looking customer messages, and build a small model that sorts them by type.
 - In Parts II and III, you choose a model, write its instructions, and give it its first tool: looking up an order.
-- In Part IV, the system learns to answer from Kaveri Kart's own policy documents, and to say "I don't know" when the documents do not cover a question.
+- In Part IV, the system learns to answer from Tarkika's own policy documents, and to say "I don't know" when the documents do not cover a question.
 - In Parts V and VI, it becomes an agent that can take actions, such as preparing a refund, behind a human check.
 - In Parts VII and VIII, you protect it from attacks, test it properly, deploy it as a service, and bring its cost down.
 
-![The Kaveri Kart support system at the end of the book. Messages are sorted first; questions are answered from policy documents; order lookups and refunds go through tools; refunds above a limit wait for a person. Tests, logs and cost tracking watch everything.](/figures/c01/project.pdf){#fig-project}
+![The Tarkika support system at the end of the book. Messages are sorted first; questions are answered from policy documents; order lookups and refunds go through tools; refunds above a limit wait for a person. Tests, logs and cost tracking watch everything.](/figures/c01/project.pdf){#fig-project}
 
 ::: {.project}
 1. Make your first call to a model, as shown above, and note the token counts.
-2. Write down 20 questions a Kaveri Kart customer might ask. Mix English, Hindi and Hinglish, and include a few angry ones. For example: "My mixer stopped working after 2 weeks, I want a replacement", "Mera order 5 din se pending hai", "Do you deliver to Shillong?"
-3. Send each question to the model with no extra information. Mark each answer as *correct*, *wrong* or *made up*. Since the model knows nothing about Kaveri Kart, expect many made-up answers. This is your starting point, and you will measure every later improvement against it.
+2. Write down 20 questions a Tarkika customer might ask. Mix English, Hindi and Hinglish, and include a few angry ones. For example: "My mixer stopped working after 2 weeks, I want a replacement", "Mera order 5 din se pending hai", "Do you deliver to Shillong?"
+3. Send each question to the model with no extra information. Mark each answer as *correct*, *wrong* or *made up*. Since the model knows nothing about Tarkika, expect many made-up answers. This is your starting point, and you will measure every later improvement against it.
 4. Work out the cost of the 20 calls, using your provider's real prices.
 :::
 

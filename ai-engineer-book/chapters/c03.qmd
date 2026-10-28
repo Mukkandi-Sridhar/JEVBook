@@ -1,6 +1,6 @@
 # Classical machine learning: small, fast and cheap {#sec-ch03}
 
-Every message that reaches Kaveri Kart's support team first has to go to the right person. Refund requests go to the refunds desk, delivery questions to the logistics desk, product questions to the product team, and complaints to a senior agent. During the sale, one person spends the whole day just reading and sorting messages.
+Every message that reaches Tarkika's support team first has to go to the right person. Refund requests go to the refunds desk, delivery questions to the logistics desk, product questions to the product team, and complaints to a senior agent. During the sale, one person spends the whole day just reading and sorting messages.
 
 You could send each message to a large language model and ask, "Which of these five types is this?" It would work well. But at 4,000 messages a day it costs money, every answer takes a second or two, and the model's own sense of how sure it is cannot be trusted (Chapter 2).
 
@@ -18,7 +18,7 @@ Think of a kirana shopkeeper who gives credit to regular customers. Nobody gave 
 
 **Machine learning** works the same way. Instead of writing rules by hand, you give a program many examples where the answer is already known, and it finds the patterns itself. Two words come up constantly:
 
-- A **label** is the known answer for an example. For Kaveri Kart, the label of a message is its type: *refund*, *delivery*, *product question*, *complaint* or *other*.
+- A **label** is the known answer for an example. For Tarkika, the label of a message is its type: *refund*, *delivery*, *product question*, *complaint* or *other*.
 - A **feature** is a piece of information the model can use to guess the label. For a message, the features are usually its words. For a refund request, features could also be numbers such as the order value and the days since delivery.
 
 Learning from labelled examples is called **supervised learning**. A model that picks one label from a fixed list is called a **classifier**. Almost every decision in an AI system, such as which team, which language, or whether something is safe, can be made by a classifier.
@@ -75,7 +75,7 @@ Logistic regression is fast, cheap, easy to understand (you can read its points 
 
 ## Gradient-boosted trees: many small questions
 
-Some decisions depend on numbers more than words. To flag a suspicious refund request, Kaveri Kart might use the order value, the days since delivery, the number of refunds this customer has asked for, and whether the delivery photo was taken.
+Some decisions depend on numbers more than words. To flag a suspicious refund request, Tarkika might use the order value, the days since delivery, the number of refunds this customer has asked for, and whether the delivery photo was taken.
 
 For this kind of data, in tables with columns of numbers and categories, the strongest common choice is a **gradient-boosted tree** model. A **decision tree** is a chain of yes-or-no questions: "Is the order value above ₹5,000? Has this customer asked for more than three refunds this year?" One tree is weak. Boosting builds hundreds of small trees, one after another, each trying to fix the mistakes of the trees before it. Together, they are very accurate. Popular libraries include XGBoost, LightGBM, and the `HistGradientBoostingClassifier` in scikit-learn.
 
@@ -116,7 +116,7 @@ probs = model.predict_proba(X_test)   # one probability per type, per message
 
 ## Measuring a classifier
 
-A single accuracy number hides too much. For each label, look at precision and recall (Chapter 2). Then look at which labels get confused with which. A table of these mix-ups is called a **confusion matrix**, but you can read the important part in plain words. For example, in Kaveri Kart's test set:
+A single accuracy number hides too much. For each label, look at precision and recall (Chapter 2). Then look at which labels get confused with which. A table of these mix-ups is called a **confusion matrix**, but you can read the important part in plain words. For example, in Tarkika's test set:
 
 - Of 40 delivery messages, 34 were sorted as *delivery*, 5 as *refund* and 1 as *complaint*.
 - Of 12 complaints, only 8 were sorted as *complaint*; 4 went to *refund*.

@@ -1,6 +1,6 @@
 # From words to tokens and vectors {#sec-ch05}
 
-A Kaveri Kart customer writes: *"mera order abhi tak nahi aaya, tracking bhi kaam nahi kar raha"* (my order has not arrived yet, and the tracking is not working either). Another writes: *"Parcel still not delivered and the tracking link is broken."* A third writes the same complaint in Hindi script.
+A Tarkika customer writes: *"mera order abhi tak nahi aaya, tracking bhi kaam nahi kar raha"* (my order has not arrived yet, and the tracking is not working either). Another writes: *"Parcel still not delivered and the tracking link is broken."* A third writes the same complaint in Hindi script.
 
 To a person, these three messages say the same thing. To a computer, they are three completely different strings of characters, and the first one is not even written in a standard spelling. Before any model can work with language, text must become numbers, in a way that keeps the meaning. This chapter shows the two steps that every language model uses: breaking text into **tokens**, and turning tokens into **vectors** that capture meaning. Both steps affect cost, speed and quality, and both need special care for Indian languages.
 
@@ -102,7 +102,7 @@ Cosine similarity multiplies the matching numbers, adds them up, and divides by 
 
 ## Finding similar messages
 
-With embeddings, Kaveri Kart can do something keyword search cannot: find past messages with the same *meaning*, even when they share no words. "Paisa wapas nahi aaya" (the money has not come back) and "refund not credited to my account" can sit close together, if the embedding model has learned enough Hinglish.
+With embeddings, Tarkika can do something keyword search cannot: find past messages with the same *meaning*, even when they share no words. "Paisa wapas nahi aaya" (the money has not come back) and "refund not credited to my account" can sit close together, if the embedding model has learned enough Hinglish.
 
 This gives a simple and useful classifier, called **k-nearest neighbours**:
 

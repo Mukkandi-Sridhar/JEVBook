@@ -16,7 +16,7 @@ Most AI books teach tools. Tools change every few months, so those books go out 
 
 An AI system is a chain of small decisions. Which team should get this email? Is this the right document? Is it safe to issue this refund, or should a person check first? Each decision needs three things: a number you can trust, a line drawn by what mistakes cost, and a safe way out when the system is unsure. You will meet these three things in Part I, and they come back in every part after it, from model choice to agent design.
 
-You will also build one system from start to finish. **Kaveri Kart** is an imagined online store that sells home and kitchen products across India. Its customers write in English, Hindi and Hinglish. Through the book you will build its customer-support agent: it answers questions from the store's policy documents, looks up orders, and issues refunds behind a human check. By the last chapter, you will have a complete project you can explain in an interview, with every number in it justified.
+You will also build one system from start to finish. **Tarkika** is an imagined online store that sells home and kitchen products across India. Its customers write in English, Hindi and Hinglish. Through the book you will build its customer-support agent: it answers questions from the store's policy documents, looks up orders, and issues refunds behind a human check. By the last chapter, you will have a complete project you can explain in an interview, with every number in it justified.
 
 ## How the book is organised
 

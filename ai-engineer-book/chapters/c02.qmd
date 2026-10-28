@@ -1,6 +1,6 @@
 # Probability and statistics you will actually use {#sec-ch02}
 
-Two engineers at Kaveri Kart each write a new set of instructions for the support model. They test both on the same 20 customer questions. Version A gets 17 answers right. Version B gets 15 right. A is better, so the team ships A.
+Two engineers at Tarkika each write a new set of instructions for the support model. They test both on the same 20 customer questions. Version A gets 17 answers right. Version B gets 15 right. A is better, so the team ships A.
 
 A week later, they test both again on 20 different questions. This time B gets 17 right and A gets 15. Which version is really better?
 
@@ -22,7 +22,7 @@ The same is true for AI systems. Suppose a model says a customer message is "80%
 
 ## When something is rare, most alarms are false
 
-Kaveri Kart has a problem with fake refund requests. Some people claim a product arrived broken when it did not. Suppose:
+Tarkika has a problem with fake refund requests. Some people claim a product arrived broken when it did not. Suppose:
 
 - 1 in every 200 refund requests is fake;
 - a fraud checker catches 90% of fake requests;
@@ -172,7 +172,7 @@ Check that a model's 80% really happens 80% of the time before you build any rul
 :::
 
 ::: {.project}
-1. Create a test set of 200 Kaveri Kart customer messages. Write them yourself, or ask a model to write varied examples and then edit them by hand. Include English, Hindi and Hinglish messages, short and long ones, and a few angry or confusing ones.
+1. Create a test set of 200 Tarkika customer messages. Write them yourself, or ask a model to write varied examples and then edit them by hand. Include English, Hindi and Hinglish messages, short and long ones, and a few angry or confusing ones.
 2. Label each message by hand with one of five types: *refund*, *delivery*, *product question*, *complaint*, *other*. This labelled set is your **ground truth**, the answers you trust, and the next chapter trains a model on data like it.
 3. Count the share of each type. These are your base rates. If complaints are only 5% of messages, remember the lesson about rare events.
 4. Save `bootstrap_range` in a file called `stats.py`. You will use it in almost every chapter.

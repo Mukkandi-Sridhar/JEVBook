@@ -21,7 +21,7 @@ against them before it is called done.
 | Abstract explanations | Every new idea gets an everyday example first: cricket, the railway counter, a kirana shop, monsoon, exams, a bank form. Then the AI example. |
 | Text that sounded machine-written | See the banned patterns in section 3. |
 | Claims about the author | The author is an applied AI engineer. Do not write "I built", "I invented", "my program", or that the author is a student. Examples are presented as examples. |
-| Made-up numbers presented as measurements | Every number about Kaveri Kart is an assumed example and is written that way ("Suppose…", "In our example…"). Prices are example prices unless cited. Real figures from outside get a citation. |
+| Made-up numbers presented as measurements | Every number about Tarkika is an assumed example and is written that way ("Suppose…", "In our example…"). Prices are example prices unless cited. Real figures from outside get a citation. |
 
 ## 2. Voice
 
@@ -53,7 +53,7 @@ against them before it is called done.
 2. `{.glance}` box: three plain bullets.
 3. Numbered sections that build from the example to the idea.
 4. `{.remember}` notes: two or three per chapter, one line each. They are collected into the chapter checklist.
-5. `{.project}` box: what we add to Kaveri Kart.
+5. `{.project}` box: what we add to Tarkika.
 6. `{.decision}` box where the chapter has a real choice to make.
 7. `{.production}` box: what goes wrong in production.
 8. `{.defend}` box: the numbers the reader chose and how to justify them.
@@ -67,7 +67,7 @@ These rules come from studying how a strong live teacher explains agentic system
 
 ### 6.1 Order inside a section
 
-1. Start with a problem the reader can feel: a failure, a cost, a customer complaint at Kaveri Kart.
+1. Start with a problem the reader can feel: a failure, a cost, a customer complaint at Tarkika.
 2. Give the reader a chance to solve it: one line, in italics, starting "Before reading on, …". At most one per
    section.
 3. Explain the mechanism in plain words, as numbered steps or a timeline.
