@@ -35,7 +35,7 @@ The module must answer the same eight questions **with our own problem, our own 
 - its code, file names, folder layout, slide order and day order;
 - any sentence, even a short one.
 
-Our material is Tarkika and examples invented for this book. The transcript's *devices* (section 8.2) are
+Our material is Tarkika and examples invented for this book. The transcript's *devices* (section 7.2) are
 used freely; its *sentences and examples* never are.
 
 ## 3. How each module is made (the seven steps)
@@ -138,7 +138,7 @@ Every figure:
 - [ ] No heading at the foot of a page; no code block split across pages.
 - [ ] Colour and greyscale PDFs both checked page by page.
 
-## 8. The soul of the book: insight on every page
+## 7. The soul of the book: insight on every page
 
 This is not a fact book. Facts are the floor, not the goal. The goal is that a reader keeps having small moments of
 "oh, so *that's* what it is", and wants the next one. The transcript did this again and again. Its best line on
@@ -147,7 +147,7 @@ them together and the agent explains itself. Nothing was memorised; the reader *
 
 Every module is written for those moments.
 
-### 8.1 The big idea of each module
+### 7.1 The big idea of each module
 
 Each module is built around one idea that changes how the reader sees the topic, stated in the opener as a short
 paradox or question, and paid off by the end. Examples of the kind of idea (our own wording):
@@ -171,7 +171,7 @@ paradox or question, and paid off by the end. Examples of the kind of idea (our 
 | Caching | A cache that remembers a wrong answer serves it faster. |
 | LLMOps | Change one word in a prompt and you have shipped a new product. |
 
-### 8.2 Insight devices (the transcript's methods, with our own content)
+### 7.2 Insight devices (the transcript's methods, with our own content)
 
 Use these on purpose. Each module uses at least four of them.
 
@@ -194,7 +194,7 @@ Use these on purpose. Each module uses at least four of them.
    around the model.
 10. **Build it, then name it.** The reader builds the mechanism in their head before learning what the world calls it.
 
-### 8.3 Threads that run through the whole book
+### 7.3 Threads that run through the whole book
 
 Five ideas return in every part, so the book reads as one argument and not as 23 separate lessons:
 
@@ -208,7 +208,7 @@ Five ideas return in every part, so the book reads as one argument and not as 23
 When a module touches one of these, it says so ("This is the first thread again: …"). By the end, the reader owns
 a way of thinking, not a pile of facts.
 
-### 8.4 Page-turner rules
+### 7.4 Page-turner rules
 
 - **Every page gives something new**: a mechanism, a number, a reversal or a connection. A page that only repeats
   is cut or merged.
@@ -220,13 +220,13 @@ a way of thinking, not a pile of facts.
   wrong"), never a bare label ("Memory", "Retrieval").
 - **No lecture.** Every abstract paragraph is followed within a page by Tarkika, a number or a picture.
 
-### 8.5 What "philosophical" means here, and what it does not
+### 7.5 What "philosophical" means here, and what it does not
 
 It means: ideas that make the reader think about *why* systems behave as they do, and how a good engineer judges.
 It does not mean: vague musing, grand statements, quotes from famous people, or opinions without a case behind
 them. Every big idea is earned by a concrete example on the same page.
 
-## 9. Order of work
+## 8. Order of work
 
 1. Build the design sample (module opener, one section with every block, module end). Get approval.
 2. Write **Module 2** (*What AI engineering is*) first, as the voice sample for the whole book. Get approval.
