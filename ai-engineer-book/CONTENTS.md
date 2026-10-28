@@ -1,4 +1,6 @@
-# AI Engineer Bootcamp: final content list
+# Ship Real AI: final content list
+
+*The AI Engineer Bootcamp for LLMs, RAG, MCP, AI Agents and Evals, from First Principles to Production and Interviews*
 
 Status: final draft, 28 October 2026. Covers every topic from the transcript study, plus lasting foundations.
 Fast-changing material (model names, prices, spec versions, CVE lists, year-numbered rankings, law dates) is left out.

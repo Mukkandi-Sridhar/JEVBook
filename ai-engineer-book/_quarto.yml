@@ -3,8 +3,8 @@ project:
   output-dir: _book
 
 book:
-  title: "The Applied AI Engineer"
-  subtitle: "From Probability to Production Agents"
+  title: "Ship Real AI"
+  subtitle: "The AI Engineer Bootcamp for LLMs, RAG, MCP, AI Agents and Evals, from First Principles to Production and Interviews"
   author: "Sridhar Mukkandi"
   date: "2026"
   date-format: "YYYY"

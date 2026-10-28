@@ -1,4 +1,4 @@
--- book.lua: the boxes of The Applied AI Engineer, for print (LaTeX) and screen (HTML/EPUB).
+-- book.lua: the boxes of Ship Real AI, for print (LaTeX) and screen (HTML/EPUB).
 --
 --   ::: {.glance}      ... :::   This chapter (three points)
 --   ::: {.remember}    ... :::   One sentence to remember; collected into the chapter checklist

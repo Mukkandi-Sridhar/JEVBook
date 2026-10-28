@@ -1,4 +1,6 @@
-# The Applied AI Engineer: From Probability to Production Agents
+# Ship Real AI
+
+*The AI Engineer Bootcamp for LLMs, RAG, MCP, AI Agents and Evals, from First Principles to Production and Interviews*
 
 A separate book project from *Decide, Don't Generate*. It has its own build, style guide, figures and references,
 and shares nothing with the JEV book's chapters.

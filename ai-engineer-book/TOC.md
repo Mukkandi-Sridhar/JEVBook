@@ -1,4 +1,4 @@
-# The Applied AI Engineer: table of contents and section map
+# Ship Real AI: earlier chapter map (superseded by CONTENTS.md)
 
 Status: draft 1 for review, 28 October 2026. Nothing beyond Part I gets written until this map is agreed.
 
