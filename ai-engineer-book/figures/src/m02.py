@@ -28,7 +28,7 @@ def fig_next_token():
 
 
 def fig_attention():
-    f, ax = fs.canvas(4.7, 1.55)
+    f, ax = fs.canvas(4.7, 1.85)
     words = ["I", "sat", "on", "the", "river", "bank"]
     xs = np.linspace(0.25, 4.4, len(words))
     for x, w in zip(xs, words):
@@ -43,7 +43,7 @@ def fig_attention():
                     arrowprops=dict(arrowstyle="-|>", color=C["indigo"], lw=0.5 + 5 * a,
                                     connectionstyle=f"arc3,rad=0.45", alpha=0.9))
         ax.text(x, 0.66 + 0.02, f"{a:.2f}", ha="center", fontsize=5.8, color=C["ink2"])
-    ax.text(2.3, 1.48, "how much \"bank\" looks at each earlier word (made-up weights for illustration)", ha="center",
+    ax.text(2.3, 1.78, "how much \"bank\" looks at each earlier word (made-up weights for illustration)", ha="center",
             fontsize=6.0, color=C["ink2"])
     return f
 

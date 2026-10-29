@@ -27,6 +27,10 @@ rules that apply on the way. When two files disagree, this one wins.
     problem directly. Use a short example (one or two lines) only when the idea needs one to be understood. The
     fictional company, Tarkika, appears rarely: mainly for the running project, not as a story in every section. A long story is allowed only when a concept truly cannot be shown any other way, and even then it is
     a few lines.
+12. Every sentence must be clear on the first read. If a reader has to read it twice, rewrite it. Short
+    sentences, everyday words, one idea at a time. Internals of models are explained only as far as an engineer
+    needs them, as intuition, never as theory (the transcript itself keeps model internals out of scope). Each
+    section ends with what the idea means for the reader's work.
 
 ## 1. The standard
 
