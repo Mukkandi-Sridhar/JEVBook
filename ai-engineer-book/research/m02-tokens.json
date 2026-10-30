@@ -1,0 +1,126 @@
+{
+ "tokenizer": "o200k_base (GPT-4o family) and cl100k_base (GPT-4), via npm gpt-tokenizer 2.9.0, measured 30 October 2026",
+ "sentences": {
+  "English": {
+   "text": "My refund has not come yet",
+   "o200k": [
+    "My",
+    " refund",
+    " has",
+    " not",
+    " come",
+    " yet"
+   ],
+   "cl100k_count": 6
+  },
+  "Hinglish": {
+   "text": "Mera refund abhi tak nahi aaya",
+   "o200k": [
+    "M",
+    "era",
+    " refund",
+    " ab",
+    "hi",
+    " tak",
+    " nahi",
+    " a",
+    "aya"
+   ],
+   "cl100k_count": 10
+  },
+  "Hindi": {
+   "text": "मेरा रिफंड अभी तक नहीं आया",
+   "o200k": [
+    "म",
+    "ेर",
+    "ा",
+    " र",
+    "िफ",
+    "ंड",
+    " अभ",
+    "ी",
+    " तक",
+    " न",
+    "ह",
+    "ीं",
+    " आय",
+    "ा"
+   ],
+   "cl100k_count": 29
+  },
+  "Telugu": {
+   "text": "నా రిఫండ్ ఇంకా రాలేదు",
+   "o200k": [
+    "న",
+    "ా",
+    " ర",
+    "ిఫ",
+    "ండ",
+    "్",
+    " ఇ",
+    "ంక",
+    "ా",
+    " ర",
+    "ాల",
+    "ేద",
+    "ు"
+   ],
+   "cl100k_count": 36
+  },
+  "Kannada": {
+   "text": "ನನ್ನ ಹಣ ಇನ್ನೂ ವಾಪಸ್ ಬಂದಿಲ್ಲ",
+   "o200k": [
+    "ನ",
+    "ನ",
+    "್ನ",
+    " ಹಣ",
+    " ಇ",
+    "ನ",
+    "್ನ",
+    "ೂ",
+    " ವ",
+    "ಾಪ",
+    "ಸ",
+    "್",
+    " ಬ",
+    "ಂದ",
+    "ಿಲ",
+    "್ಲ"
+   ],
+   "cl100k_count": 46
+  }
+ },
+ "words": {
+  "unbelievable": [
+   "un",
+   "bel",
+   "ievable"
+  ],
+  "refund": [
+   "refund"
+  ],
+  "refunded": [
+   "ref",
+   "unded"
+  ],
+  "Tarkika": [
+   "T",
+   "ark",
+   "ika"
+  ],
+  "earbuds": [
+   "ear",
+   "buds"
+  ]
+ },
+ "long": {
+  "English": 10,
+  "Hinglish": 18,
+  "Hindi": 31,
+  "texts": [
+   "Can I return opened earbuds after 10 days?",
+   "Kya main 10 din baad khule earbuds return kar sakta hoon?",
+   "क्या मैं 10 दिन बाद खुले हुए ईयरबड्स वापस कर सकता हूँ?"
+  ]
+ }
+}

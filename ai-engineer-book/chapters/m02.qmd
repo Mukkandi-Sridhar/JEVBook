@@ -1,161 +1,175 @@
 # How LLMs work, for engineers {#sec-m02}
 
-You do not need to know how to build a model to use one well. But a few facts about how a model works explain most of what you will see in practice. Why do some messages cost more? Why does the same question get different answers? Why can sending more text make answers worse? This module covers only those facts.
+You do not need to know how to build a model to use one well. But a few things about how a model works explain most of what you will see in practice. This module shows them, mostly in pictures. Where a free online tool lets you try something yourself, the module points you to it.
 
-## What does the model actually read?
+## Tokens: what the model actually reads
 
-A model does not read words the way we do. It reads small pieces of text called **tokens**.
+A model does not read words the way we do. It reads small pieces of text called **tokens**. @fig-tokens-words shows how a real tokenizer, the one used by OpenAI's GPT-4o models, splits a few words.
 
-A common word like "refund" is usually one token. A long or rare word is broken into two or three pieces. "Unbelievable" might become "un", "believ" and "able". In English, 100 tokens is roughly 75 words.
+![Real splits from the GPT-4o tokenizer. Common words are one token; longer or rarer words are cut into pieces.](/figures/m02/tokens-words.pdf){#fig-tokens-words}
+
+"Refund" is common, so it is one token. "Refunded" is two. "Unbelievable" is three. A made-up name like "Tarkika" is cut into "T", "ark" and "ika", because the model has never seen it as a whole. In English, 100 tokens is roughly 75 words.
 
 Why should you care? Because everything about a model is counted in tokens. The price is per token. The speed is per token. The limit on how much you can send is in tokens.
 
 Do not confuse a token with a **chunk**. A token is a tiny piece the model reads. A chunk is a large piece of a document, often a few hundred tokens, that you cut out yourself for searching. Chunks come in Module 7.
 
-## Why does a Hindi message cost more?
+*Try it:* search for "OpenAI tokenizer" or open tiktokenizer.vercel.app. Paste any sentence and watch it split into coloured pieces, exactly like the figures here.
 
-Models learn their list of tokens mostly from English text. So common English words get their own tokens. Hindi words, especially in Devanagari, get broken into many small pieces.
+## The same message in five languages
 
-The result: the same message in Hindi can need three to five times as many tokens as in English [@tokenpremium2026]. Between some languages the gap reaches fifteen times [@petrov2023]. Hinglish, written in English letters, usually falls in between.
+Now look at @fig-tokens-playground. It is one message, "My refund has not come yet", written five ways, and split by the same tokenizer. A dot marks a space.
 
-More tokens for the same message means a higher bill, a slower reply, and less room for anything else in the request. If your users write in Indian languages, count real messages with your provider's token counter before you estimate a budget.
+![One message, five ways, split by the GPT-4o tokenizer. Each coloured box is one token. The dotted circles in Hindi, Telugu and Kannada are pieces of a letter that the tokenizer cut away from the rest.](/figures/m02/tokens-playground.pdf){#fig-tokens-playground}
 
-## How does the model choose its next word?
+English needs 6 tokens. For the same meaning, Telugu needs 13, Hindi 14 and Kannada 16. In these scripts, the tokenizer often cuts a single letter into two pieces, like the vowel signs standing alone in their own boxes.
 
-A model writes one token at a time. At each step, it looks at all the text so far and asks: which token should come next? It gives every possible token a chance. Then it picks one, adds it to the text, and repeats.
+Why? The tokenizer learned its list of pieces mostly from English text. Common English words got their own tokens. Words in Indian scripts were seen less often, so they are built from many small pieces.
 
-Look at the left side of @fig-next-token. After "Your refund will reach you within", the token "7" has an 85% chance and "3" has 11%. Most of the time the model picks "7". Sometimes it picks "3".
+@fig-tokens-languages shows that this is improving, but not gone. The older GPT-4 tokenizer needed 29 tokens for the Hindi message, 36 for Telugu and 46 for Kannada. Studies across many languages find gaps of three to five times for Hindi, and up to fifteen times between some languages [@tokenpremium2026; @petrov2023].
 
-![The chances for the next token. The model is the same in both pictures; only the temperature setting differs. (Numbers made up for illustration.)](/figures/m02/next-token.pdf){#fig-next-token}
+![Tokens for the same message, counted with the older GPT-4 tokenizer and the newer GPT-4o tokenizer.](/figures/m02/tokens-languages.pdf){#fig-tokens-languages}
 
-A setting called **temperature** controls how strongly the model prefers its top choice. At a low temperature, it almost always takes the top token. At a high temperature, the chances spread out, as on the right, and replies vary more.
+For your work, more tokens for the same message means a higher bill, a slower reply, and less room for anything else in the request. Hinglish, written in English letters, sits in between. If your users write in Indian languages, count a sample of their real messages before you plan a budget.
 
-So the model is not looking up a stored answer. It is picking words by chance, one at a time. That is why the same question can get a different reply each time, and why your code must never expect an exact reply.
+## Watching the model write
 
-## How does a model learn?
+A model writes one token at a time. At each step it looks at all the text so far, gives every possible next token a chance, picks one, and adds it. Then it repeats. @fig-writing-steps shows four steps.
 
-A model starts knowing nothing. Training teaches it with one simple exercise: show it some text with the next word hidden, and ask it to guess.
+![The model writing a reply, one token per step. At each step it picks one token from many possible ones. (Chances made up for illustration.)](/figures/m02/writing-steps.pdf){#fig-writing-steps}
 
-If the guess is wrong, its internal numbers are adjusted slightly, so that the next guess would be a little better. Then the exercise is repeated, with trillions of words. Slowly, those numbers come to hold grammar, facts and common patterns.
+At step 1, "7" had an 85% chance, so it was picked. But "3" had 11%. Run the same request again, and sometimes the reply will say 3 days, not 7. Nothing is broken. The model is picking by chance, and the chances can go either way.
+
+A setting called **temperature** controls how strongly the model prefers its top choice (@fig-next-token). At a low temperature, the top token wins almost every time. At a high temperature, the chances spread out and replies vary more.
+
+![The same chances at two temperatures. Low temperature makes the top choice dominate; high temperature spreads the chances out. (Numbers made up for illustration.)](/figures/m02/next-token.pdf){#fig-next-token}
+
+This is why the same question can get a different reply each time, and why your code must never expect one exact reply.
+
+## How a model learns
+
+A model starts knowing nothing. Training teaches it with one simple exercise: show it some text with the next word hidden, and ask it to guess. If the guess is wrong, its internal numbers are adjusted a little, so the next guess would be better. This is repeated with trillions of words. Slowly, those numbers come to hold grammar, facts and patterns.
 
 That is all training is: guess, check, adjust, repeat.
 
-The internal numbers are called **parameters**. A large model has billions of them. For your work, this matters in one way: memory. Each parameter usually takes 2 bytes.
+The internal numbers are called **parameters**, and a large model has billions of them. For your work, this matters in one way: memory. Each parameter usually takes 2 bytes.
 
 1. A model with 8 billion parameters needs about 16 GB of memory just to load.
-2. If each parameter is shrunk to half a byte, it needs about 4 GB.
+2. Shrink each parameter to half a byte, and it needs about 4 GB.
 3. Training the same model needs roughly 8 times more memory than running it, about 128 GB [@rajbhandari2020].
 
 This is why most companies use models that someone else has trained. Running a model is within reach. Training a large one is not.
 
-## How does the model know what a word means here?
+## How a word gets its meaning from its neighbours
 
-Take the word "bank". In "the river bank", it means the side of a river. In "my bank account", it means a place for money. Same word, different meaning.
-
-The model works it out the same way you do: by looking at the words around it. For every word, it checks which other words matter most, and uses them to understand it. In @fig-attention, "bank" looks mostly at "river". This idea is called **attention**, and it is the heart of the **transformer**, the design almost every modern model uses.
+"Bank" means the side of a river in "the river bank", and a place for money in "my bank account". The model works out which meaning applies the same way you do: by looking at the words around it. In @fig-attention, "bank" pays most of its attention to "river".
 
 ![Each word looks at the other words to understand itself. Here "bank" looks mostly at "river". (Numbers made up for illustration.)](/figures/m02/attention.pdf){#fig-attention}
 
-Attention has a cost that you will meet in practice. To write each new word, the model looks back at every word before it. To save time, it keeps notes on those earlier words in memory, and the notes grow with every word. For a typical 8-billion-parameter model:
+This idea is called **attention**. It is the heart of the **transformer**, the design almost every modern model uses.
+
+Attention has a cost you will meet in practice. To write each new word, the model looks back at every word before it. To save time, it keeps notes on the earlier words in memory, and the notes grow with every word. For a typical 8-billion-parameter model:
 
 1. One conversation of 8,000 tokens needs about 1 GB of notes.
 2. Fifty such conversations at once need about 50 GB, three times the memory of the model itself.
 
-This is why long conversations are expensive, and why every model has a limit on how much text it accepts.
+That is why long conversations are expensive, and why every model limits how much text it accepts.
 
-## How does a model become helpful?
+*Try it:* Transformer Explainer (poloclub.github.io/transformer-explainer) runs a small model in your browser. Type a sentence and watch the attention lines move between words, then see the chances for the next token [@cho2025].
 
-Training happens in stages (@fig-training).
+## From reading the internet to being helpful
+
+A model is trained in stages (@fig-training).
 
 ![The stages of training. Each stage starts from the model the previous stage produced.](/figures/m02/training.pdf){#fig-training}
 
 1. **Pretraining.** The model guesses the next word across a huge amount of text from the web, books and code. Meta reports about 15 trillion tokens for its Llama 3 models [@llama3]. The result knows a lot, but only continues text. Ask it "What is your return policy?" and it may reply with more questions, because that is what often follows a question on the web.
-2. **Fine-tuning.** It is shown many examples of an instruction followed by a good answer. Now it answers instead of just continuing.
+2. **Fine-tuning.** It sees many examples of an instruction followed by a good answer. Now it answers instead of just continuing.
 3. **Preference tuning.** People compare two answers and pick the better one. The model learns to give answers people prefer [@ouyang2022].
-4. **Checkable rewards.** It practises on problems with answers that can be checked automatically, such as maths and code with tests [@deepseekr1]. This is why recent models are so strong at maths and code.
+4. **Checkable rewards.** It practises on problems whose answers can be checked automatically, such as maths, and code with tests [@deepseekr1]. This is why recent models are so strong at maths and code.
 
-Step 3 has a side effect. People tend to prefer answers that agree with them and sound sure. So models learn to agree with the user and to sound confident, even when they are wrong [@sharma2023]. When a model says "I am sure", treat it as a tone of voice, not a fact. Module 10 shows how to get confidence numbers you can actually trust.
+Step 3 has a side effect. People tend to prefer answers that agree with them and sound sure. So models learn to agree and to sound confident, even when they are wrong [@sharma2023]. When a model says "I am sure", treat it as a tone of voice, not a fact. Module 10 shows how to get confidence numbers you can trust.
 
-## How can a computer tell that two sentences mean the same thing?
+## Meaning as a map
 
-"I want my money back" and "refund chahiye" share no words. A search for matching words would never link them. But they mean the same thing.
+"I want my money back" and "refund chahiye" share no words, yet mean the same thing. A search for matching words would never link them.
 
-An **embedding** solves this. It turns a piece of text into a long list of numbers, so that texts with similar meaning get similar lists. Think of each list as a point on a map. All the refund messages land in one area. Delivery complaints land in another (@fig-embedding-map).
+An **embedding** turns a piece of text into a long list of numbers, so that texts with similar meaning get similar lists. Think of each list as a point on a map. In @fig-embedding-map, refund messages land in one area, delivery complaints in another, and product questions in a third, whatever language they are written in.
 
 ![Messages placed by meaning. Real embeddings have hundreds of numbers; this picture squeezes them into two so they can be drawn. (Positions illustrative.)](/figures/m02/embedding-map.pdf){#fig-embedding-map}
 
-To check if two messages mean the same thing, you measure how close their points are. The usual measure is **cosine similarity**. It gives a score near 1 for very similar meanings.
+To check whether two messages mean the same thing, you measure how close their points are. The usual measure is **cosine similarity**, which gives a score near 1 for very similar meanings.
 
-How long should the list be? Longer lists capture finer differences in meaning, but take more space and more time to search. A million stored pieces of text take about 6 GB with 1,536 numbers each, and about 1.5 GB with 384. There is no single right size. Pick the smallest one that still finds the right results on your own data.
+How long should the list of numbers be? Longer lists capture finer differences in meaning, but take more space and more time to search. A million stored pieces of text take about 6 GB with 1,536 numbers each, and about 1.5 GB with 384. Pick the smallest size that still finds the right results on your own data.
 
 Embeddings come from separate, smaller models that only produce these lists. Module 6 builds search on top of them.
 
-## Why can a longer input give a worse answer?
+*Try it:* the Embedding Projector (projector.tensorflow.org) shows thousands of words as points in 3D. Search for a word and see which words sit closest to it.
 
-Every model has a **context window**: the maximum number of tokens it can take in one call. Today some windows hold a million tokens or more. So it is tempting to send everything: all the policies, all the past emails, every order.
+## More text can mean worse answers
 
-Think back to attention. The model spreads its attention over everything you send. If your question sits beside 300 tokens of material, it stands out. If it sits beside 300,000 tokens, it gets lost among them.
+Every model has a **context window**: the most tokens it can take in one call. Some now hold a million tokens or more. So it is tempting to send everything: all the policies, all the past emails, every order.
 
-Experiments show exactly this. As the input grows, answers get worse, even on simple tasks, and even far below the window's limit [@chroma2025]. This is called **context rot**.
+Look at @fig-context-share. When a 30-token question sits beside 300 tokens of material, it is 9% of what the model reads. Beside 300,000 tokens, it is 0.01%. The question is still there, but it is a tiny part of what the model's attention is spread over.
+
+![How much of the input is the actual question, with a little material and with a lot.](/figures/m02/context-share.pdf){#fig-context-share}
+
+Experiments show the result. As the input grows, answers get worse, even on simple tasks, and even far below the window's limit [@chroma2025]. This is called **context rot**.
 
 So a big window does not mean you can stop choosing what to send. Module 3 is about choosing well.
 
-## Why does output cost more than input?
+## Reading is fast, writing is slow
 
-Look at how the model handles each (@fig-prefill-decode).
+@fig-prefill-decode shows the difference between how a model handles your input and its own output.
 
 ![The model reads all the input in one go, but writes the output one token at a time.](/figures/m02/prefill-decode.pdf){#fig-prefill-decode}
 
-Your input is known from the start, so the model reads all of it in one go. The output is different. The model must write token 1 before it can write token 2, so it works through the output one token at a time. Each output token costs much more computer time than each input token. That is why providers charge around four to five times more for output.
+Your input is known from the start, so the model reads all of it in one go. Its output is not. It must write token 1 before it can write token 2, so it works through the output one token at a time. Each output token takes much more computer time than each input token. That is why providers charge around four to five times more for output.
 
-This also explains two speeds you will notice:
+You will notice two speeds:
 
-- **Time to first token**: how long before anything appears. It grows with the length of your input, because all of it must be read first.
+- **Time to first token**: how long before anything appears. It grows with the length of your input, because all of it is read first.
 - **Tokens per second**: how fast the rest arrives once it starts.
 
 Showing the reply word by word as it is written, called **streaming**, makes a slow reply feel fast, because the user starts reading early.
 
 Providers use a few tricks to make all this cheaper. They process many users' requests together (**batching**). They reuse the work when many requests start with the same text (**prefix caching**; Module 3 shows how to benefit). And they store the model's numbers in fewer bits to save memory and time (**quantisation**), at a small cost in quality.
 
-## Why does temperature 0 still give different answers?
+## Same question, different answer, even at temperature 0
 
-At temperature 0, the model should always pick its top token. So the same question should always get the same answer. Often it does not.
+At temperature 0, the model should always pick its top token, so the same question should always get the same answer. Often it does not.
 
-The reason is in how providers run models. Your request is processed together with other people's requests, and the size of that group changes every moment. That changes the order in which the computer adds up its numbers, which can change the result in the last few digits. Usually this changes nothing. But when two tokens are almost tied, the tiny difference can flip the choice, and the rest of the reply goes a different way [@he2025].
+The reason is in how providers run models. Your request is processed together with other people's requests, and the size of that group changes every moment. That changes the order in which the computer adds up its numbers, which can change the result in the last few digits. Usually this changes nothing. But when two tokens are almost tied, the tiny difference can flip the choice, and the rest of the reply goes another way [@he2025].
 
-For you, the lesson is simple: never build anything that needs the model to give exactly the same text twice. Check the meaning of the answer instead. Module 9 shows how.
+The lesson is simple: never build anything that needs the model to give exactly the same text twice. Check the meaning of the answer instead. Module 9 shows how.
 
-## When is it worth letting the model think first?
+## Thinking costs tokens
 
-What is 2 + 2? You answer at once. What is 17 × 24? You probably work it out in steps. Models are similar. On problems with several steps, they do better if they write out their working before the answer.
+What is 2 + 2? You answer at once. What is 17 × 24? You probably work it out in steps. Models are similar: on problems with several steps, they do better if they write out their working first.
 
-**Thinking models** do this automatically. Before the answer, they write hidden reasoning, and a setting usually called **effort** controls how much. You pay for that reasoning like any other output.
+**Thinking models** do this automatically. Before the answer, they write hidden reasoning, and a setting usually called **effort** controls how much. You pay for that reasoning like any other output. @fig-thinking-cost shows what that means for a simple job, sorting a message into one of four categories.
 
-Try the sum for a simple job: sorting a message into one of four categories.
+![Output tokens for sorting one message, with and without heavy thinking. The answer is the same one word.](/figures/m02/thinking-cost.pdf){#fig-thinking-cost}
 
-1. Without thinking, the reply is about 20 tokens.
-2. With a lot of thinking, the model might write 1,500 tokens of reasoning first.
-3. That is about 76 times the output cost, for the same one-word answer.
+The answer is the same one word, at 76 times the output cost. For sorting messages, that is waste. For working out a refund across three partial returns and a coupon, the thinking may be what makes the answer right. So compare models by the **cost per finished task**, not by the price per token.
 
-For sorting messages, thinking is waste. For working out a refund across three partial returns and a coupon, it may be what makes the answer right. So compare models by the **cost per finished task**, not by the price per token.
-
-## How can a huge model still be fast?
+## Big models that still run fast
 
 A bigger model usually gives better answers. But every word passes through the whole model, so a bigger model is also slower and costs more per word.
 
-A **mixture of experts** gets around this. The model is split into many parts, called experts. For each word, a small router sends the work to only a few of them (@fig-moe). The model can be huge in total, while each word uses only a small part of it. Mixtral 8x7B, for example, has about 47 billion parameters, but uses about 13 billion for each word [@jiang2024].
+A **mixture of experts** gets around this. The model is split into many parts, called experts, and for each token a small router sends the work to only a few of them (@fig-moe). Mixtral 8x7B, for example, has about 47 billion parameters in total, but uses about 13 billion for each token [@jiang2024].
 
 ![A mixture of experts. Each token goes to only two of the eight experts, but all eight must be kept in memory.](/figures/m02/moe.pdf){#fig-moe}
 
-The catch: the speed depends on the part that is used, but the memory depends on the whole. Every expert must be loaded, because the next word might need a different one. So such a model can be as fast as a small model and still need the memory of a large one.
+The catch: speed depends on the part that is used, but memory depends on the whole. Every expert must be loaded, because the next token might need a different one. Such a model can be as fast as a small model and still need the memory of a large one.
 
-## Can models read images, documents and speech?
+## Images, documents and speech
 
-Yes. An image is cut into small squares, and each square is treated like a token. After that, the model handles image and text together, so it can answer a question about a photo. A scanned page can be read the same way. Speech is cut into short slices of sound, or turned into text first by a separate model.
+The same design handles more than text. An image is cut into small squares, and each square is treated like a token, so the model can answer a question about a photo. A scanned page can be read the same way. Speech is cut into short slices of sound, or turned into text first by a separate model.
 
-Images are not free. One image can cost as many tokens as a full page of text, so sending a screenshot with every question adds up quickly.
+Images are not free. One image can cost as many tokens as a full page of text, so a screenshot with every question adds up quickly.
 
-## Which model should do which job?
+## Choosing a model
 
 There is no single best model. There is only the right model for each job.
 

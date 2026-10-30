@@ -132,3 +132,78 @@ def fig_moe():
     fs.box(ax, 3.3, 0.57, 1.3, 0.52, "all 8 experts sit in memory;\nonly 2 do work for this token",
            fc=C["paper"], ec=C["ink2"], size=5.8)
     return f
+
+
+def fig_tokens_languages():
+    """Measured token counts for one message (research/m02-tokens.json)."""
+    import json
+    from pathlib import Path
+    d = json.loads((Path(__file__).resolve().parents[2] / "research" / "m02-tokens.json").read_text())["sentences"]
+    langs = list(d)
+    old = [d[k]["cl100k_count"] for k in langs]
+    new = [len(d[k]["o200k"]) for k in langs]
+    f, ax = fs.subplots(height=1.9)
+    x = np.arange(len(langs))
+    b1 = ax.bar(x - 0.19, old, 0.36, color=C["slate_t"], edgecolor=C["slate"], lw=0.6, hatch="////",
+                label="older tokenizer (GPT-4)")
+    b2 = ax.bar(x + 0.19, new, 0.36, color=C["indigo"], label="newer tokenizer (GPT-4o)")
+    for bars in (b1, b2):
+        for b in bars:
+            ax.text(b.get_x() + b.get_width() / 2, b.get_height() + 1, str(int(b.get_height())), ha="center",
+                    fontsize=6.6)
+    ax.set_xticks(x, langs)
+    ax.set_ylabel("tokens")
+    ax.set_ylim(0, 52)
+    ax.grid(axis="x", visible=False)
+    ax.legend(loc="upper left")
+    return f
+
+
+def fig_writing_steps():
+    f, ax = fs.canvas(4.7, 1.75)
+    rows = [("Your refund will reach you within", "7", "7  85%   ·   3  11%   ·   5  3%"),
+            ("Your refund will reach you within 7", "working", "working  71%   ·   days  27%"),
+            ("Your refund will reach you within 7 working", "days", "days  98%   ·   hours  1%"),
+            ("Your refund will reach you within 7 working days", ".", ".  90%   ·   of  6%")]
+    for i, (text, tok, alts) in enumerate(rows):
+        y = 1.48 - i * 0.42
+        ax.text(0.0, y, f"step {i + 1}", fontsize=6.0, color=C["ink2"], va="center")
+        ax.text(0.42, y, text, fontsize=6.6, va="center", color=C["ink"])
+        fs.box(ax, 3.02, y - 0.12, 0.42, 0.24, tok, fc=C["saffron_t"], ec=C["saffron"], size=6.4, weight="bold")
+        ax.text(3.55, y, alts, fontsize=5.6, va="center", color=C["ink2"])
+    ax.text(3.23, 1.7, "picked", ha="center", fontsize=5.8, color=C["saffron"])
+    ax.text(3.55, 1.7, "top chances at this step", fontsize=5.8, color=C["ink2"])
+    return f
+
+
+def fig_context_share():
+    f, axes = fs.subplots(2, 1, height=1.45)
+    for ax, other, label in [(axes[0], 300, "question + 300 tokens of material"),
+                             (axes[1], 300000, "question + 300,000 tokens of material")]:
+        q = 30
+        share = q / (q + other)
+        ax.barh(0, 1, color=C["slate_t"], height=0.6)
+        ax.barh(0, max(share, 0.004), color=C["saffron"], height=0.6)
+        ax.set_xlim(0, 1)
+        ax.set_yticks([])
+        ax.set_xticks([])
+        ax.grid(False)
+        for s in ax.spines.values():
+            s.set_visible(False)
+        ax.text(0, 0.55, f"{label}:  the 30-token question is {share:.0%}" if share >= 0.01 else
+                f"{label}:  the 30-token question is 0.01%", fontsize=6.6, va="bottom", transform=ax.transData)
+        ax.set_ylim(-0.45, 1.1)
+    return f
+
+
+def fig_thinking_cost():
+    f, ax = fs.subplots(height=1.25)
+    ax.barh([1, 0], [20, 1520], color=[C["indigo"], C["saffron"]], height=0.5)
+    ax.set_yticks([1, 0], ["no thinking", "heavy thinking"])
+    ax.text(40, 1, "20 output tokens", va="center", fontsize=6.6)
+    ax.text(1500, 0, "1,520 output tokens (76 times as many)", va="center", ha="right", fontsize=6.6,
+            color="white")
+    ax.set_xlim(0, 1600)
+    ax.set_xlabel("output tokens for the same one-word answer")
+    ax.grid(axis="y", visible=False)
+    return f
