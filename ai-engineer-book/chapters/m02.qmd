@@ -1,6 +1,6 @@
 # How LLMs work, for engineers {#sec-m02}
 
-You do not need to know how to build a model to use one well. But a few things about how a model works explain most of what you will see in practice. This module shows them, mostly in pictures. Where a free online tool lets you try something yourself, the module points you to it.
+You do not need to build models to use them well. But a few facts about how they work explain most of what you will see in practice. This module shows them, mostly in pictures, and points you to free tools where you can try them yourself.
 
 ## Tokens: what the model actually reads
 
@@ -44,21 +44,21 @@ A setting called **temperature** controls how strongly the model prefers its top
 
 ![The same chances at two temperatures. Low temperature makes the top choice dominate; high temperature spreads the chances out. (Numbers made up for illustration.)](/figures/m02/next-token.pdf){#fig-next-token}
 
-This is why the same question can get a different reply each time, and why your code must never expect one exact reply.
+So your code must never expect one exact reply.
 
 ## How a model learns
 
-A model starts knowing nothing. Training teaches it with one simple exercise: show it some text with the next word hidden, and ask it to guess. If the guess is wrong, its internal numbers are adjusted a little, so the next guess would be better. This is repeated with trillions of words. Slowly, those numbers come to hold grammar, facts and patterns.
+Training is one simple exercise, repeated an enormous number of times (@fig-learning-loop). Hide the next word of a sentence. Let the model guess it. Check the guess. Then adjust the model a little, so that the right word becomes slightly more likely next time.
 
-That is all training is: guess, check, adjust, repeat.
+![Training in four steps. On the right: the chance the model gives the right word grows slowly as the loop repeats. (Numbers made up for illustration.)](/figures/m02/learning-loop.pdf){#fig-learning-loop}
 
-The internal numbers are called **parameters**, and a large model has billions of them. For your work, this matters in one way: memory. Each parameter usually takes 2 bytes.
+One round changes almost nothing. Trillions of rounds, over text from the whole web, change everything. To get good at guessing the next word, the model has to learn grammar, facts and common patterns.
 
-1. A model with 8 billion parameters needs about 16 GB of memory just to load.
-2. Shrink each parameter to half a byte, and it needs about 4 GB.
-3. Training the same model needs roughly 8 times more memory than running it, about 128 GB [@rajbhandari2020].
+What gets adjusted are the model's internal numbers, called **parameters**. A large model has billions of them, and this is the one fact about training that affects your work: every parameter must sit in memory (@fig-model-memory).
 
-This is why most companies use models that someone else has trained. Running a model is within reach. Training a large one is not.
+![Memory needed for a model with 8 billion parameters. Running it fits on one large GPU. Training it does not.](/figures/m02/model-memory.pdf){#fig-model-memory}
+
+Each parameter usually takes 2 bytes, so a model with 8 billion of them needs about 16 GB to run. Compressed to half a byte each, it needs about 4 GB. Training needs about 16 bytes per parameter, roughly 128 GB, more than one large GPU holds [@rajbhandari2020]. That is why most companies run models that someone else trained.
 
 ## How a word gets its meaning from its neighbours
 
@@ -76,19 +76,6 @@ Attention has a cost you will meet in practice. To write each new word, the mode
 That is why long conversations are expensive, and why every model limits how much text it accepts.
 
 *Try it:* Transformer Explainer (poloclub.github.io/transformer-explainer) runs a small model in your browser. Type a sentence and watch the attention lines move between words, then see the chances for the next token [@cho2025].
-
-## From reading the internet to being helpful
-
-A model is trained in stages (@fig-training).
-
-![The stages of training. Each stage starts from the model the previous stage produced.](/figures/m02/training.pdf){#fig-training}
-
-1. **Pretraining.** The model guesses the next word across a huge amount of text from the web, books and code. Meta reports about 15 trillion tokens for its Llama 3 models [@llama3]. The result knows a lot, but only continues text. Ask it "What is your return policy?" and it may reply with more questions, because that is what often follows a question on the web.
-2. **Fine-tuning.** It sees many examples of an instruction followed by a good answer. Now it answers instead of just continuing.
-3. **Preference tuning.** People compare two answers and pick the better one. The model learns to give answers people prefer [@ouyang2022].
-4. **Checkable rewards.** It practises on problems whose answers can be checked automatically, such as maths, and code with tests [@deepseekr1]. This is why recent models are so strong at maths and code.
-
-Step 3 has a side effect. People tend to prefer answers that agree with them and sound sure. So models learn to agree and to sound confident, even when they are wrong [@sharma2023]. When a model says "I am sure", treat it as a tone of voice, not a fact. Module 10 shows how to get confidence numbers you can trust.
 
 ## Meaning as a map
 
@@ -133,7 +120,7 @@ You will notice two speeds:
 
 Showing the reply word by word as it is written, called **streaming**, makes a slow reply feel fast, because the user starts reading early.
 
-Providers use a few tricks to make all this cheaper. They process many users' requests together (**batching**). They reuse the work when many requests start with the same text (**prefix caching**; Module 3 shows how to benefit). And they store the model's numbers in fewer bits to save memory and time (**quantisation**), at a small cost in quality.
+Providers also cut costs behind the scenes. They reuse the work when many requests start with the same text (**prefix caching**; Module 3 shows how to benefit), and they compress the model's numbers to save memory and time (**quantisation**, the "compressed" bar in @fig-model-memory).
 
 ## Same question, different answer, even at temperature 0
 

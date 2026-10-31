@@ -207,3 +207,50 @@ def fig_thinking_cost():
     ax.set_xlabel("output tokens for the same one-word answer")
     ax.grid(axis="y", visible=False)
     return f
+
+
+def fig_learning_loop():
+    f, ax = fs.canvas(5.2, 2.2)
+    steps = [(0.0, 1.35, "1  HIDE THE NEXT WORD", "\"Your refund will reach\nyou within ___\""),
+             (2.0, 1.35, "2  THE MODEL GUESSES", "\"3\"\n(it gives \"7\" only a 10% chance)"),
+             (2.0, 0.1, "3  CHECK", "Wrong. The real word\nwas \"7\"."),
+             (0.0, 0.1, "4  ADJUST A LITTLE", "Change its numbers so \"7\"\nbecomes a bit more likely")]
+    for x, y, title, body in steps:
+        fs.box(ax, x, y, 1.7, 0.78, "", fc="white", lw=1.0)
+        ax.text(x + 0.12, y + 0.6, title, fontsize=6.6, fontweight="bold", color=C["navy"], va="center")
+        ax.text(x + 0.12, y + 0.28, body, fontsize=6.6, color=C["ink"], va="center")
+    fs.arrow(ax, 1.7, 1.74, 2.0, 1.74, lw=1.1)
+    fs.arrow(ax, 2.85, 1.35, 2.85, 0.88, lw=1.1)
+    fs.arrow(ax, 2.0, 0.49, 1.7, 0.49, lw=1.1)
+    fs.arrow(ax, 0.85, 0.88, 0.85, 1.35, lw=1.1)
+    ax.text(1.0, 1.12, "repeat with the next\nsentence", fontsize=5.8, color=C["ink2"], va="center")
+    # How the chance of the right word grows with practice
+    ax.text(3.95, 1.98, "Chance the model gives \"7\"", fontsize=6.6, fontweight="bold", color=C["ink"])
+    rows = [("at the start of training", 0.10), ("part-way through", 0.40), ("after training", 0.85)]
+    for i, (t, p) in enumerate(rows):
+        y = 1.55 - i * 0.48
+        ax.text(3.95, y + 0.18, t, fontsize=6.2, color=C["ink2"])
+        fs.box(ax, 3.95, y - 0.1, 1.2, 0.17, "", fc=C["slate_t"], ec="none", radius=0.02)
+        fs.box(ax, 3.95, y - 0.1, 1.2 * p, 0.17, "", fc=C["saffron"], ec="none", radius=0.02)
+        ax.text(5.2, y - 0.015, f"{p:.0%}", fontsize=6.4, va="center", ha="right", color=C["ink"],
+                fontweight="bold")
+    ax.text(3.95, 0.02, "(numbers made up for illustration)", fontsize=5.6, color=C["ink2"], style="italic")
+    return f
+
+
+def fig_model_memory():
+    f, ax = fs.subplots(height=1.65)
+    labels = ["run it, normal size", "run it, compressed", "train it"]
+    vals = [16, 4, 128]
+    cols = [C["indigo"], C["indigo_t"], C["saffron"]]
+    ax.barh([2, 1, 0], vals, color=cols, edgecolor=[C["indigo"], C["indigo"], C["saffron"]], height=0.55)
+    for y, v in zip([2, 1, 0], vals):
+        ax.text(v + 2, y, f"{v} GB", va="center", fontsize=7, fontweight="bold")
+    ax.axvline(80, color=C["crimson"], lw=1.0, ls=(0, (4, 2)))
+    ax.text(81, 2.45, "one large data-centre GPU: 80 GB", fontsize=6.2, color=C["crimson"])
+    ax.set_yticks([2, 1, 0], labels)
+    ax.set_xlim(0, 150)
+    ax.set_ylim(-0.5, 2.75)
+    ax.set_xlabel("memory for a model with 8 billion parameters")
+    ax.grid(axis="y", visible=False)
+    return f

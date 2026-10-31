@@ -1,6 +1,6 @@
 # What an AI engineer builds {#sec-m01}
 
-A language model can write a polite reply in Hindi, explain a return policy, or sort a thousand complaints in a few minutes. Yet when a company puts one in front of real customers, most of the work has little to do with the model itself. This module explains why. It starts with what a model can and cannot do, and ends with a map of everything an AI engineer builds around it. That map is the plan for the rest of the book.
+A language model can write a polite reply in Hindi, explain a return policy, or sort a thousand complaints in minutes. Yet most of the work of putting one in front of real customers has little to do with the model itself. This module shows what a model can and cannot do, and what an AI engineer builds around it.
 
 ## What does a language model actually do?
 
@@ -14,9 +14,9 @@ Now ask a few simple questions about what a model can do on its own.
 
 *Ask a question, then a follow-up such as "and how long will that take?"* It does not know what "that" means. Every call to a model is separate, and the model keeps nothing from one call to the next. Chat apps seem to remember because the app sends the earlier messages again with every new one. Module 4 builds this.
 
-*Paste in three hundred pages of policy documents and a year of emails.* It will refuse, or fail. Each call accepts only a limited amount of text, called the **context window**. Module 2 explains what fills it and why a longer input does not always give a better answer.
+*Paste in three hundred pages of policy documents and a year of emails.* It will refuse, or fail. Each call accepts only a limited amount of text, called the **context window**.
 
-*Ask the same question twice.* You can get two different answers. An ordinary program gives the same output for the same input, every time. A model picks its words by probability, so its output can change from one call to the next (Module 2 shows how). This is the biggest difference between AI systems and ordinary software, and much of this book deals with its effects.
+*Ask the same question twice.* You can get two different answers. An ordinary program gives the same output for the same input, every time. A model picks its words by chance, so its output can change from one call to the next. This is the biggest difference between AI systems and ordinary software.
 
 *Ask it to check an order, send an email or issue a refund.* It cannot. It can only write text. It can write "I have issued your refund", but writing that sentence does not move any money.
 
@@ -24,7 +24,7 @@ Now ask a few simple questions about what a model can do on its own.
 
 People who "work in AI" usually do one of three jobs. Some **make models**: they collect data and train models, which needs large research teams and large budgets. Some **serve models**: they make trained models run fast and cheaply on hardware, which is called inference engineering. And some **build applications**: they take a model that already exists and turn it into a product that works for real users.
 
-This book is about the third job. You will learn enough about how models work to use them well, but you will not train a large model.
+This book is about the third job.
 
 ## If the model cannot act, what can?
 
@@ -89,29 +89,22 @@ Before building, ask four questions:
 
 ## Your first call, and what it costs
 
-Here is a complete call to a model in Python, using Anthropic's client library. Other providers' libraries look very similar.
+Here is a complete call to a model in Python. It uses an OpenAI model through **LangChain**, a popular library that gives the same way of calling models from many providers. To switch to another provider, you change the import and one line.
 
 ```python
-import anthropic
+from langchain_openai import ChatOpenAI
 
-MODEL = "claude-opus-5-5"          # model names change; keep this in one place
-client = anthropic.Anthropic()     # reads the API key from the environment
+MODEL = "gpt-5-mini"             # model names change; keep this in one place
+llm = ChatOpenAI(model=MODEL)    # reads OPENAI_API_KEY from the environment
 
-reply = client.messages.create(
-    model=MODEL,
-    max_tokens=1000,
-    messages=[{"role": "user",
-               "content": "Can I return opened earbuds after 10 days?"}],
-)
-for block in reply.content:
-    if block.type == "text":
-        print(block.text)
-print(reply.usage.input_tokens, reply.usage.output_tokens)
+reply = llm.invoke("Can I return opened earbuds after 10 days?")
+print(reply.content)             # the answer
+print(reply.usage_metadata)      # how much text went in and came out
 ```
 
-The answer will be polite and sensible, and probably wrong for your shop, because the model has never seen your return policy. The last line prints how much text went in and came out, counted in **tokens**, the small pieces of text that models read and charge by. Module 2 explains what a token is.
+The answer will be polite and sensible, and probably wrong for your shop, because the model has never seen your return policy. The last line prints the amount of text that went in and came out, counted in **tokens**, the small pieces of text that models read and charge by. Module 2 shows what they look like.
 
-Now work out the cost. Suppose the provider charges ₹350 for every million input tokens and ₹1,700 for every million output tokens. (These are assumed example prices. Output usually costs several times more than input, and Module 2 explains why.)
+Now work out the cost. Suppose the provider charges ₹350 for every million input tokens and ₹1,700 for every million output tokens. These are assumed example prices; output usually costs several times more than input.
 
 1. This question was about 30 tokens in and 120 tokens out: 30 × 350 ÷ 10,00,000 + 120 × 1,700 ÷ 10,00,000, about ₹0.21.
 2. A real support request also carries instructions and the relevant part of the policy: say 3,000 tokens in and 300 out. That is 1.05 + 0.51, about ₹1.56 per message.
@@ -129,4 +122,4 @@ Through the book, you will build one system: a customer-support agent for **Tark
 - refuse hidden instructions in customer emails;
 - report its own quality, cost and speed.
 
-Each of these is one part of @fig-system-map. The first thing to understand is the model in the middle: how it reads text, why the same question can get different answers, and why you pay for every piece of text you send. That is Module 2.
+Each of these is one part of @fig-system-map. First, though, the model in the middle: how it reads text, and why you pay for every piece of it. That is Module 2.
