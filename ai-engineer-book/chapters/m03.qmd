@@ -1,0 +1,216 @@
+# Prompts and context {#sec-m03}
+
+A model knows only what is in the request you send it. Module 2 showed that sending more can make answers worse. This module is about deciding what goes into each request, in what order, and at what cost.
+
+## What goes into one request
+
+In Module 1, a real support request was about 3,000 tokens, and the customer's question was only a small part of it. @fig-request-anatomy shows the rest.
+
+![The parts of one support request. Instructions and the tool list are the same every time. The other parts change with every message.](/figures/m03/request-anatomy.pdf){#fig-request-anatomy}
+
+1. **Instructions**, also called the **system prompt**: what the assistant is for, its rules, and the shape of its reply.
+2. **The tool list**: the name and description of every function the model may ask your program to run (Module 5).
+3. **Earlier messages** in the conversation. The model remembers nothing between calls, so your program sends them again (Module 4).
+4. **Policy text** fetched for this question, such as the return rules for earbuds (Modules 6 to 8).
+5. **The question** itself: 40 tokens, about 1% of the request.
+
+The model reads all five as one long piece of text. It cannot tell which parts you meant to matter more. Whatever is in the request shapes the answer, and whatever is missing cannot.
+
+Choosing what goes into each request, and in what order, is called **context engineering**. Writing the instructions is **prompt engineering**, which is one part of it [@anthropic2025context]. The rest of this module goes through the parts one by one.
+
+## Writing the instructions
+
+Here are instructions many first versions start with.
+
+```text
+You are a helpful assistant for Tarkika. Answer the customer's question.
+```
+
+Suppose you try this on fifty real messages. You find four kinds of failure. It promises refunds that the policy does not allow. When the policy text does not cover a question, it makes up an answer. It replies in English to customers who wrote in Hinglish. And its replies run to two paragraphs.
+
+Each failure gets one instruction:
+
+```text
+You answer customer questions for Tarkika, an online shop.
+
+Use only the text inside <policy>. If it does not answer the
+question, say that a person from the support team will reply.
+
+Never promise a refund or a date. Say what the policy allows,
+and that the refund team will confirm it.
+
+Reply in the language the customer used, including Hinglish.
+Use at most four short sentences.
+
+Example
+Customer: earbuds khol liye, return ho sakta hai?
+Reply: Opened earbuds can be returned within 7 days only if they
+are faulty. Kya earbuds mein koi problem hai? If yes, our team
+will check and confirm the return.
+```
+
+Three habits are at work here.
+
+First, every instruction exists because of a failure you saw. Instructions written in advance for problems that never happen cost tokens on every call and give the model more rules to balance. Start short, test on real messages, and add a line only when a test fails [@anthropic2025context].
+
+Second, the policy text is wrapped in `<policy>` markers. The model can then tell your instructions apart from the documents you pass in. This matters more than it looks. A document or an email can contain sentences that read like orders, and Module 12 shows how attackers use that.
+
+Third, one example sets the tone, length and language mix better than a paragraph describing them. But the model copies examples closely. With one example about earbuds, replies may start to sound like that one reply. If you use examples, give two or three that differ from each other.
+
+In LangChain, the instructions go in a `SystemMessage` and the rest follows:
+
+```python
+from langchain_core.messages import SystemMessage, HumanMessage
+
+INSTRUCTIONS = open("prompts/support.txt").read()   # the fixed text
+
+def ask(question, policy, history):
+    messages = [SystemMessage(INSTRUCTIONS),
+                *history,                                  # earlier messages
+                HumanMessage(f"<policy>\n{policy}\n</policy>\n\n{question}")]
+    return llm.invoke(messages)
+```
+
+The instructions live in a file of their own, not inside the code. The last section of this module explains why.
+
+## Where you put things changes the answer
+
+Does it matter where in the request the important text sits? Before reading on, guess: start, middle or end?
+
+In a well-known experiment, a model was given 20 documents and a question. Only one document held the answer. The researchers moved that document from first place to last and measured how often the answer was right (@fig-lost-middle) [@liu2024lost].
+
+![How often a model answered correctly, depending on where the one useful document sat among 20. Redrawn approximately from Liu et al. The dashed line is the same model given no documents at all.](/figures/m03/lost-middle.pdf){#fig-lost-middle}
+
+With the answer in the first document, it was right about 75% of the time. With the answer in the middle, it fell to about 54%. That is worse than the 56% the same model scored with no documents at all. The useful document was there, but hidden among the others, it did more harm than good. Researchers call this **lost in the middle**.
+
+There are two likely reasons. Models learn from text in which the important part usually comes first: titles, headlines, instructions. And they learn to predict the next word mostly from the words just before it, so the end of the input also gets close attention. The middle gets neither.
+
+Newer models do better on this test, but the pattern has not gone away, and it grows as inputs get longer [@chroma2025]. So for your requests:
+
+- Instructions go at the start.
+- The question goes at the end, right after the policy text it needs.
+- Inside the policy text, put the most relevant pieces first and last, and the weakest in the middle.
+
+## When the material does not fit
+
+A search over Tarkika's policies, in our example, returns 40 pieces of about 400 tokens each: 16,000 tokens for a budget of 1,200. Sending all of it would cost more, be slower, and, as you just saw, give worse answers. @fig-context-funnel shows how to get it down.
+
+![Getting 40 search results down to a 1,200-token budget. (Numbers assumed for illustration.)](/figures/m03/context-funnel.pdf){#fig-context-funnel}
+
+1. **Prune.** Remove what should never be sent. Here, 9 pieces repeat text found in others, and 3 are from a return policy that changed last year. That leaves 28.
+2. **Select.** Keep only the most relevant. A reranker (Module 7) scores each piece against the question, and the top 6 stay. Now 2,400 tokens.
+3. **Compress.** Shorten what stays. Each piece is cut to the paragraphs about the product in question, or summarised by a small, cheap model. Now 1,200 tokens.
+4. **Order.** Arrange the 6 pieces as in the previous section: best first and last.
+
+There is a fifth operation, which goes the other way. Sometimes a piece says "see section 4.2 for electronics". Without section 4.2 the model cannot answer. **Expanding** means fetching that linked text and adding it.
+
+Each step has a cost. Pruning old versions needs dates on your documents. Selecting needs a reranker, which adds a call and some delay. Compressing with a model adds another call, and a bad summary can drop the one sentence that mattered. So use the cheapest step that brings you within budget: often pruning and selecting are enough.
+
+## A budget for every part
+
+The model in our example accepts 128,000 tokens. The request uses 3,000. Why stay so far below the limit?
+
+Because every token you add is paid for three times. At Module 1's example prices, each extra 1,000 input tokens costs ₹0.35 per message, or ₹42,000 a month at 4,000 messages a day. The reply starts later, because the model reads the whole input before it writes anything. And as Module 2 showed, answers get worse as the input grows.
+
+So decide a budget for each part, and decide in advance what happens when a part goes over it:
+
+| Part | Budget | When it goes over |
+|---|---|---|
+| Instructions | 700 | Remove lines that no test needs |
+| Tool list | 600 | Send only the tools this request may need (Module 5) |
+| Earlier messages | 460 | Summarise the older ones (Module 4) |
+| Policy text | 1,200 | Prune, select, compress |
+| Question | up to 300 | For long emails, keep the newest part and drop quoted replies |
+| Reply | 300, kept free | Set a maximum length for the output |
+
+The last row is easy to forget. The window holds the reply too. A request that fills the window leaves no room for the model to answer.
+
+Write the budget down, and log the actual size of each part on every call. When a cost or a speed problem appears, you can see at once which part grew.
+
+## Prompting a thinking model
+
+A thinking model, as Module 2 showed, writes its own reasoning before it answers. That changes how you instruct it.
+
+Take a harder request. A customer bought three items for ₹1,000, ₹600 and ₹400, with a ₹200 coupon, and returns the second and third. How much is the refund? With an ordinary model, you might write out the steps: list the returned items, find each price, split the coupon, subtract. With a thinking model, those steps get in the way. It plans its own steps, and fixed steps written for one case break on the next case, such as a return of one item out of five.
+
+Instead, describe what a correct answer looks like and how to check it [@openaigpt5guide]:
+
+```text
+Work out the refund for the returned items.
+Rules: follow the policy text. Split the coupon across all items
+in proportion to their prices.
+Before answering, check that each item's refund is no more than
+what was paid for it, and that the amounts add up to the total.
+Reply with each item's refund and the total.
+```
+
+Here, the coupon is split ₹100, ₹60 and ₹40. The refund is ₹540 + ₹360 = ₹900, and the check confirms it. The same prompt works for five items, or two coupons, because it states the goal and the checks, and leaves the path to the model.
+
+The effort setting from Module 2 needs the same care. More effort is not always better: with unclear instructions, a model can spend thousands of tokens going in circles. Start at a medium setting and test higher and lower on your own examples.
+
+## Long tasks: when the context fills up
+
+An agent working on a long task calls a tool, reads the result, calls another, and so on. Every result is added to the context. In @fig-compaction, each step adds about 3,000 tokens. After about 32 steps, a 100,000-token window is full and the run stops.
+
+![Tokens in the context during a long agent run, with and without compaction. (Numbers assumed for illustration.)](/figures/m03/compaction.pdf){#fig-compaction}
+
+There are three fixes, and they work best together.
+
+1. **Return less from each tool.** An order lookup that returns the full order record, say 2,500 tokens, when the model needs only the status, the date and the amount, about 60 tokens, wastes 97% of what it adds. Design tools to return what the model needs (Module 5).
+2. **Fetch just in time.** Instead of loading every order and every policy at the start, give the model short references, such as order numbers and document names, and tools to open them. It fetches the details only when a step needs them [@anthropic2025context].
+3. **Compact.** When the context reaches a set level, say 80% of the window, replace the older steps with a short summary of what was found and what is left to do. The run continues in the freed space. The lightest form is to delete old tool results that have already been used.
+
+Compaction has a risk. A summary can drop a detail that turns out to matter twenty steps later. Two habits reduce this. Ask the summary to keep facts, numbers and open questions, even at the cost of length. And let the agent keep a notes file or a to-do list outside the context, which it can read again at any time. Module 14 builds this for long tasks.
+
+## Fixed text first: prompt caching
+
+Look again at @fig-request-anatomy. The instructions and the tool list, 1,300 tokens, are the same in every request. Yet the model reads them again every time, and you pay for them every time.
+
+Providers can save that work. When a new request starts with exactly the same text as a recent one, they reuse the work already done on that shared start, and charge much less for it. This is **prompt caching**. The reused tokens typically cost about a tenth of the normal price [@openaicaching; @anthropiccaching].
+
+Work it out with Module 1's example prices, assuming cached tokens cost ₹35 per million instead of ₹350:
+
+1. Without caching, 3,000 input tokens cost 3,000 × 350 ÷ 10,00,000 = ₹1.05 per message.
+2. With caching, 1,300 cached tokens cost about ₹0.05, and the other 1,700 tokens cost about ₹0.60. Total: about ₹0.64.
+3. The saving is about ₹0.41 per message. At 4,000 messages a day, about ₹49,000 a month.
+
+The saving grows with the fixed part. Agents often carry 10,000 tokens of instructions and tools. With 2,000 tokens that change, the input cost falls from ₹4.20 to ₹1.05 a message, a cut of three quarters.
+
+The match must be exact, from the very first token. @fig-cache-prefix shows the most common mistake.
+
+![Prompt caching reuses only an identical start. Putting anything that changes at the top means nothing after it can be reused.](/figures/m03/cache-prefix.pdf){#fig-cache-prefix}
+
+It is natural to begin the instructions with "Today is 31 October 2026, 2:32 pm. The customer's name is Priya." That one line differs in every request, so the rest of the request never matches anything. The cache is never used, and nothing warns you. Moving the line below the fixed text restores the saving.
+
+So the rule is: fixed text first, changing text last. It agrees with the previous sections. Instructions at the start, the question at the end.
+
+A few details decide whether caching happens at all:
+
+- There is a minimum length, often about 1,000 tokens. A fixed part shorter than that is not cached, again without any error. The exact minimum differs by provider and model.
+- The cache expires after a few minutes without use. A busy service keeps it warm, and a quiet one at night pays full price.
+- Some providers cache on their own. Others need you to mark where the fixed part ends, and charge a little extra to store it.
+- Within one conversation, the earlier messages also stay the same from one turn to the next, so they can be reused too.
+
+Check that it works. In LangChain, `reply.usage_metadata["input_token_details"]` reports the cached tokens as `cache_read`. If it stays at zero on a busy service, something at the start of your request is changing.
+
+## A prompt is code: give it a version
+
+Suppose someone edits one word in the instructions. "You **may** offer to pass the request to the refund team" becomes "You **should** offer…". The change looks harmless and no code changes. But the share of chats passed to the refund team rises from 8% to 15% (assumed numbers), and it takes a week for anyone to connect the rise to the edit.
+
+The instructions decide behaviour just as code does, so treat them as code:
+
+1. Keep each prompt in a file under version control, with a name and a version.
+2. Record the version with every call, so any reply can be traced to the prompt that produced it.
+3. Before a new version goes live, run it on a fixed set of test messages and compare it with the old one (Module 9).
+
+```python
+PROMPT_VERSION = "support-v7"
+INSTRUCTIONS = open(f"prompts/{PROMPT_VERSION}.txt").read()
+
+reply = llm.invoke(messages,
+                   config={"metadata": {"prompt_version": PROMPT_VERSION}})
+```
+
+The same applies to everything else that shapes a reply: the model name, the tool descriptions, the examples. A change to any of them is a release (Module 16).
+
+Every request in this module carried earlier messages, and the model forgets them the moment it replies. How your program remembers a conversation, and what it should remember for longer, is Module 4.
