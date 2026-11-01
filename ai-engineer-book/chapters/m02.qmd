@@ -101,18 +101,20 @@ You have now seen the pieces one at a time: tokens, chances for the next token, 
 
 Before 2017, language models read a sentence one word at a time, each step waiting for the one before. That made training slow, and it limited how much text a model could learn from. The transformer drops that waiting. With attention, every word looks at all the others at once, so a whole sentence can be processed in one go on a GPU. Training on far more text became practical, and that is what made today's models possible.
 
-The diagram has two halves, built for translating English to German.
+The diagram has two halves, because the paper's job was translation.
 
-- The **encoder**, on the left, reads the English sentence. Its tokens are turned into lists of numbers, with their positions added, and pass through a stack of layers.
-- The **decoder**, on the right, writes the German sentence one token at a time. At each step it reads the German written so far, and through **cross-attention** it also looks at what the encoder read.
+- The **encoder**, on the left, reads the English sentence.
+- The **decoder**, on the right, writes the German sentence, one token at a time. The arrow between the two halves is **cross-attention**: while writing, the decoder keeps checking the English sentence, the way you glance back at the question while writing an answer.
 
-Each layer is built from the same few boxes:
+Inside each half, the same boxes repeat. Take one sentence and follow it through: "The phone fell because it was slippery."
 
-1. **Multi-head attention** is the attention you saw with "bank" and "river", run several times side by side. Each run, called a head, can look for a different kind of link, such as which noun a word refers to, or which words sit next to it. The paper used 8 heads.
-2. **Masked** attention, in the decoder, adds one rule: a token may look only at the tokens before it. The later ones have not been written yet. This is why a model writes one token at a time.
-3. **Feed-forward** works on each token's list by itself, after attention has mixed in information from the other tokens.
-4. **Add & norm** is plumbing that keeps the numbers stable through many layers. It adds each layer's input back to its output, so a layer only has to learn a change, and then rescales the result.
-5. **Linear + softmax**, at the top, turns the last token's list into a chance for every possible next token, as in @fig-writing-steps.
+1. **Multi-head attention.** Each word collects meaning from the other words. On its own, "it" means nothing. After attention, "it" carries the meaning "the phone". *Multi-head* means this is done several times side by side, each time looking for a different link: one head links "it" to "phone", another links "fell" to "because". The paper used 8 heads.
+2. **Masked.** When writing, a word may look only at the words before it, because the words after it do not exist yet. This is why a model writes one token at a time.
+3. **Feed-forward.** Now each word is worked on by itself, using what the model learned in training. Researchers think much of a model's stored knowledge sits here, such as the fact that phones break when dropped [@geva2021].
+4. **Add & norm.** Housekeeping. Each layer adds its change on top of what came in, instead of replacing it, and keeps the numbers in a steady range. Without it, a deep stack of layers cannot be trained. You can treat it as plumbing.
+5. **Linear + softmax.** At the very top, the last word's numbers are turned into a chance for every possible next token, as in @fig-writing-steps.
+
+In short, attention lets words share meaning, feed-forward adds what the model knows, and the stack repeats both many times, so each layer understands the sentence a little better than the one before.
 
 Models since then usually keep only one half. Encoder-only models, such as BERT, read text in both directions and produce lists of numbers, which makes them good at embeddings [@devlin2019]. Decoder-only models drop the encoder and the cross-attention, and keep the masked stack. Every chat model in this book, GPT, Claude, Gemini, Llama, is of this kind. @fig-transformer follows one token through such a model.
 
