@@ -138,3 +138,28 @@ def fig_compaction():
     ax.set_ylim(0, 112000)
     ax.set_xlim(0, 41)
     return f
+
+
+def _msg(ax, y, h, role, text, who, fc, ec, x=0.62, w=3.3, dashed=False):
+    fs.box(ax, x, y, w, h, "", fc=fc, ec=ec, lw=1.0 if not dashed else 0.9)
+    if dashed:
+        ax.patches[-1].set_linestyle((0, (3, 2)))
+    ax.text(0.56, y + h / 2, role, ha="right", va="center", fontsize=6.6, fontweight="bold", color=ec)
+    ax.text(x + 0.1, y + h / 2, text, ha="left", va="center", fontsize=6.1, linespacing=1.3)
+    ax.text(x + w + 0.12, y + h / 2, who, ha="left", va="center", fontsize=6.0, color=C["ink2"], linespacing=1.25)
+
+
+def fig_message_roles():
+    f, ax = fs.canvas(5.3, 2.95)
+    _msg(ax, 2.2, 0.62, "SYSTEM",
+         "You answer customer questions for Tarkika.\nUse only the text inside <policy>.\n"
+         "Never promise a refund or a date. …", "written by you, once;\nthe customer never sees it",
+         C["indigo_t"], C["indigo"])
+    _msg(ax, 1.74, 0.34, "USER", "earbuds khol liye, return ho sakta hai?", "typed by the customer",
+         "white", C["ink2"])
+    _msg(ax, 1.15, 0.47, "AI", "Opened earbuds can be returned within 7 days\nonly if they are faulty. …",
+         "the model's earlier reply,\nsent back by your program", C["saffron_t"], C["saffron"])
+    _msg(ax, 0.56, 0.47, "USER", "<policy> Headphones: 10-day return … </policy>\naur headphones?",
+         "the customer's new message,\nwith policy text your program added", "white", C["ink2"])
+    _msg(ax, 0.0, 0.4, "AI", "?", "the model writes\nthis one next", "white", C["saffron"], dashed=True)
+    return f

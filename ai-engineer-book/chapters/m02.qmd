@@ -93,23 +93,38 @@ Embeddings come from separate, smaller models that only produce these lists. Mod
 
 *Try it:* the Embedding Projector (projector.tensorflow.org) shows thousands of words as points in 3D. Search for a word and see which words sit closest to it.
 
-## Inside the model: one token's journey
+## The transformer
 
-You have now seen the pieces one at a time: tokens, chances for the next token, attention, and lists of numbers that hold meaning. @fig-transformer puts them together. This design is called the **transformer**, and almost every model in this book uses it.
+You have now seen the pieces one at a time: tokens, chances for the next token, attention, and lists of numbers that hold meaning. They all come from one design, the **transformer**, published by a team at Google in 2017 in a paper called "Attention Is All You Need" [@vaswani2017]. @fig-transformer-paper redraws the paper's diagram.
 
-![How a transformer writes one token. The numbers are for a typical model with 8 billion parameters, such as Llama 3 8B. (Chances made up for illustration.)](/figures/m02/transformer.pdf){#fig-transformer}
+![The transformer as first published, redrawn. It was built to translate: the encoder reads the English sentence, and the decoder writes the German one, token by token. The paper stacked each half 6 times.](/figures/m02/transformer-paper.pdf){#fig-transformer-paper}
 
-1. **Tokens.** The text is split into tokens, as at the start of this module.
-2. **Numbers.** Each token is swapped for its own list of numbers, 4,096 of them in a model like Llama 3 8B [@llama3]. This is the same idea as the map in the previous section. Information about each token's position is added too, because "dog bites man" and "man bites dog" use the same tokens.
-3. **A stack of layers.** The lists pass through a layer, then the next, 32 times. Each layer has two steps. In **attention**, every token looks at the tokens before it and takes in what it needs, as "bank" did with "river". In the **feed-forward** step, each token's list is worked on by itself. Each layer leaves the lists a little richer in meaning than it found them.
-4. **Scores.** After the last layer, the list for the final token is turned into a chance for every token the model knows, about 128,000 of them.
-5. **Pick.** One token is picked, using the temperature, and added to the input. Then the whole journey runs again for the next token.
+Before 2017, language models read a sentence one word at a time, each step waiting for the one before. That made training slow, and it limited how much text a model could learn from. The transformer drops that waiting. With attention, every word looks at all the others at once, so a whole sentence can be processed in one go on a GPU. Training on far more text became practical, and that is what made today's models possible.
+
+The diagram has two halves, built for translating English to German.
+
+- The **encoder**, on the left, reads the English sentence. Its tokens are turned into lists of numbers, with their positions added, and pass through a stack of layers.
+- The **decoder**, on the right, writes the German sentence one token at a time. At each step it reads the German written so far, and through **cross-attention** it also looks at what the encoder read.
+
+Each layer is built from the same few boxes:
+
+1. **Multi-head attention** is the attention you saw with "bank" and "river", run several times side by side. Each run, called a head, can look for a different kind of link, such as which noun a word refers to, or which words sit next to it. The paper used 8 heads.
+2. **Masked** attention, in the decoder, adds one rule: a token may look only at the tokens before it. The later ones have not been written yet. This is why a model writes one token at a time.
+3. **Feed-forward** works on each token's list by itself, after attention has mixed in information from the other tokens.
+4. **Add & norm** is plumbing that keeps the numbers stable through many layers. It adds each layer's input back to its output, so a layer only has to learn a change, and then rescales the result.
+5. **Linear + softmax**, at the top, turns the last token's list into a chance for every possible next token, as in @fig-writing-steps.
+
+Models since then usually keep only one half. Encoder-only models, such as BERT, read text in both directions and produce lists of numbers, which makes them good at embeddings [@devlin2019]. Decoder-only models drop the encoder and the cross-attention, and keep the masked stack. Every chat model in this book, GPT, Claude, Gemini, Llama, is of this kind. @fig-transformer follows one token through such a model.
+
+![How a decoder-only model writes one token. The numbers are for a typical model with 8 billion parameters, such as Llama 3 8B. (Chances made up for illustration.)](/figures/m02/transformer.pdf){#fig-transformer}
+
+The text becomes tokens, and each token becomes a list of 4,096 numbers. The lists pass through 32 layers of masked attention and feed-forward [@llama3]. The last list becomes a chance for each of about 128,000 tokens. One token is picked and added to the input, and the whole journey runs again.
 
 You do not need the maths inside these boxes to build with models. But the picture explains costs you will meet in practice:
 
 - The feed-forward steps hold about two thirds of the 8 billion parameters. That is the part a mixture of experts splits up, as you will see at the end of this module.
 - The notes that attention keeps on earlier tokens are the KV cache from the attention section, the reason fifty long conversations needed 50 GB.
-- Steps 3 to 5 run once for every token of the reply. That is why the output is written one token at a time, and why it is the slow and costly part.
+- The whole stack runs once for every token of the reply. That is why the output is the slow and costly part.
 
 ## More text can mean worse answers
 

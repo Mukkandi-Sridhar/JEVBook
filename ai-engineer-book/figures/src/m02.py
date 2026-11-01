@@ -305,3 +305,57 @@ def fig_transformer():
     ax.text(2.6, 0.08, "add the new token to the input, and go round again", ha="center", va="top",
             fontsize=6.0, color=C["ink2"])
     return f
+
+
+def _stack(ax, x, y, w, rows, ec):
+    """Draw a column of sub-blocks bottom-up; rows = [(label, fc)]. Returns top y."""
+    h, gap = 0.27, 0.07
+    for label, fc in rows:
+        fs.box(ax, x + 0.08, y, w - 0.16, h, label, size=5.9, fc=fc, ec=ec if fc != "white" else C["rule"],
+               radius=0.03)
+        y += h + gap
+    return y
+
+
+def fig_transformer_paper():
+    """The 2017 encoder-decoder transformer, redrawn in the book's style."""
+    f, ax = fs.canvas(5.2, 4.35)
+    w = 1.75
+    xe, xd = 0.55, 2.75
+    # inputs
+    fs.box(ax, xe + 0.08, 0.0, w - 0.16, 0.3, "Input tokens\n(the English sentence)", size=5.7)
+    fs.box(ax, xd + 0.08, 0.0, w - 0.16, 0.3, "Output tokens so far\n(the German written so far)", size=5.7)
+    for x in (xe, xd):
+        fs.arrow(ax, x + w / 2, 0.3, x + w / 2, 0.42, lw=0.8)
+        fs.box(ax, x + 0.08, 0.42, w - 0.16, 0.3, "Embedding + position", size=5.9, fc=C["indigo_t"],
+               ec=C["indigo"])
+        fs.arrow(ax, x + w / 2, 0.72, x + w / 2, 0.86, lw=0.8)
+    # encoder
+    fs.box(ax, xe, 0.86, w, 1.42, "", fc=C["paper"], ec=C["ink2"], lw=0.9)
+    _stack(ax, xe, 0.94, w, [("Multi-head attention", C["saffron_t"]), ("Add & norm", "white"),
+                              ("Feed-forward", C["slate_t"]), ("Add & norm", "white")], C["saffron"])
+    ax.text(xe - 0.06, 1.57, "×6", ha="right", va="center", fontsize=8, fontweight="bold")
+    ax.text(xe + w / 2, 2.36, "ENCODER: reads", ha="center", fontsize=6.6, fontweight="bold", color=C["ink2"])
+    # decoder
+    fs.box(ax, xd, 0.86, w, 2.1, "", fc=C["paper"], ec=C["ink2"], lw=0.9)
+    _stack(ax, xd, 0.94, w, [("Masked multi-head attention", C["saffron_t"]), ("Add & norm", "white"),
+                              ("Cross-attention", C["plum_t"]), ("Add & norm", "white"),
+                              ("Feed-forward", C["slate_t"]), ("Add & norm", "white")], C["saffron"])
+    ax.text(xd + w + 0.06, 1.91, "×6", ha="left", va="center", fontsize=8, fontweight="bold")
+    # encoder output into cross-attention
+    ax.plot([xe + w, xe + w + 0.2, xe + w + 0.2], [2.12, 2.12, 1.71], color=C["plum"], lw=1.0)
+    fs.arrow(ax, xe + w + 0.2, 1.71, xd + 0.08, 1.71, color=C["plum"], lw=1.0)
+    # head
+    fs.arrow(ax, xd + w / 2, 2.96, xd + w / 2, 3.08, lw=0.8)
+    fs.box(ax, xd + 0.08, 3.08, w - 0.16, 0.27, "Linear + softmax", size=5.9, fc="white")
+    fs.arrow(ax, xd + w / 2, 3.35, xd + w / 2, 3.48, lw=0.8)
+    fs.box(ax, xd + 0.08, 3.48, w - 0.16, 0.3, "Chances for the next token", size=5.9, fc=C["saffron_t"],
+           ec=C["saffron"], weight="bold")
+    ax.text(xd + w / 2, 3.86, "DECODER: writes", ha="center", fontsize=6.6, fontweight="bold",
+            color=C["ink2"])
+    # families
+    ax.text(xe + w / 2, 3.2, "Keep only this half:\nBERT-style models,\nused for embeddings", ha="center",
+            va="center", fontsize=6.0, color=C["indigo"], linespacing=1.3)
+    ax.text(xd + w / 2, 4.22, "Keep only this half (no cross-attention): GPT-style chat models", ha="center",
+            va="center", fontsize=6.0, color=C["indigo"])
+    return f
