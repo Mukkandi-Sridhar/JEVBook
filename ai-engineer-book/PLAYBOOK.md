@@ -31,6 +31,10 @@ rules that apply on the way. When two files disagree, this one wins.
     sentences, everyday words, one idea at a time. Internals of models are explained only as far as an engineer
     needs them, as intuition, never as theory (the transcript itself keeps model internals out of scope). Each
     section ends with what the idea means for the reader's work.
+13. Teach the real thing that working engineers use and recognise, not a softened substitute. Use the industry's
+    own terms and objects (system, user and AI messages; the transformer diagram from the 2017 paper), show them as
+    they really appear (a figure of the actual structure, the actual library classes), then explain each part in
+    plain words. A made-up description that avoids the standard term is less clear, not more.
 
 ## 1. The standard
 
