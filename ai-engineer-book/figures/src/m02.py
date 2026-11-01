@@ -254,3 +254,54 @@ def fig_model_memory():
     ax.set_xlabel("memory for a model with 8 billion parameters")
     ax.grid(axis="y", visible=False)
     return f
+
+
+def fig_transformer():
+    """One token's journey through a transformer, as a left-to-right flow."""
+    f, ax = fs.canvas(5.2, 2.75)
+    y0 = 1.05
+    # 1 tokens
+    ax.text(0.0, 2.62, "1  TOKENS", fontsize=6.4, fontweight="bold", color=C["ink2"])
+    for i, t in enumerate(["Your", "·refund", "·will", "·reach", "·you", "·within"]):
+        fs.box(ax, 0.0, 2.2 - i * 0.29, 0.66, 0.23, t, size=5.8, radius=0.03)
+    # 2 numbers
+    ax.text(0.86, 2.62, "2  NUMBERS", fontsize=6.4, fontweight="bold", color=C["ink2"])
+    for i in range(6):
+        fs.arrow(ax, 0.68, 2.315 - i * 0.29, 0.86, 2.315 - i * 0.29, lw=0.7)
+        fs.box(ax, 0.88, 2.2 - i * 0.29, 0.62, 0.23, "[0.2, -1.4, …]", size=5.3, radius=0.03,
+               fc=C["indigo_t"], ec=C["indigo"])
+    ax.text(1.19, 0.48, "one list per token,\nplus its position", ha="center", va="top", fontsize=5.8,
+            color=C["ink2"])
+    # 3 layer stack
+    ax.text(1.78, 2.62, "3  A STACK OF LAYERS", fontsize=6.4, fontweight="bold", color=C["ink2"])
+    for k in range(3, 0, -1):
+        fs.box(ax, 1.78 + k * 0.06, y0 - 0.45 + k * 0.06, 1.5, 1.5, "", fc="white", lw=0.7)
+    fs.box(ax, 1.78, y0 - 0.45, 1.5, 1.5, "", fc="white", ec=C["navy"], lw=1.1)
+    ax.text(2.53, y0 + 0.9, "one layer (of 32)", ha="center", fontsize=6.0, color=C["ink2"])
+    fs.box(ax, 1.88, y0 + 0.33, 1.3, 0.42, "Attention\nwords look at each other", size=5.9, fc=C["saffron_t"],
+           ec=C["saffron"])
+    fs.arrow(ax, 2.53, y0 + 0.33, 2.53, y0 + 0.17, lw=0.8)
+    fs.box(ax, 1.88, y0 - 0.33, 1.3, 0.5, "Feed-forward\neach token worked on\nalone", size=5.9,
+           fc=C["slate_t"], ec=C["slate"])
+    ax.text(2.53, y0 - 0.58, "notes kept from attention = KV cache\nmost parameters sit in feed-forward",
+            ha="center", va="top", fontsize=5.6, color=C["ink2"])
+    fs.arrow(ax, 1.52, y0 + 0.55, 1.76, y0 + 0.55, lw=1.0)
+    # 4 scores
+    fs.arrow(ax, 3.42, y0 + 0.55, 3.62, y0 + 0.55, lw=1.0)
+    ax.text(3.64, 2.62, "4  SCORES", fontsize=6.4, fontweight="bold", color=C["ink2"])
+    for i, (t, p) in enumerate([("7", 0.85), ("3", 0.11), ("5", 0.03), ("…", 0.01)]):
+        yy = 2.1 - i * 0.27
+        ax.text(3.68, yy + 0.09, t, fontsize=6.0, va="center")
+        ax.add_patch(__import__("matplotlib").patches.Rectangle((3.84, yy), 0.46 * p / 0.85, 0.18,
+                                                                fc=C["indigo"], ec="none"))
+        ax.text(3.88 + 0.46 * p / 0.85, yy + 0.09, f"{p:.0%}", fontsize=5.6, va="center", color=C["ink2"])
+    ax.text(3.64, 0.98, "a chance for every\none of ~128,000 tokens", fontsize=5.8, va="top", color=C["ink2"])
+    # 5 pick
+    ax.text(4.72, 2.62, "5  PICK", fontsize=6.4, fontweight="bold", color=C["ink2"])
+    fs.box(ax, 4.66, 1.95, 0.5, 0.3, "·7", size=6.6, weight="bold", fc=C["saffron_t"], ec=C["saffron"])
+    fs.arrow(ax, 4.94, 1.95, 4.94, 0.2, lw=0.9, ls=(0, (3, 2)))
+    fs.arrow(ax, 4.94, 0.2, 0.33, 0.2, lw=0.9, ls=(0, (3, 2)))
+    fs.arrow(ax, 0.33, 0.2, 0.33, 0.48, lw=0.9, ls=(0, (3, 2)))
+    ax.text(2.6, 0.08, "add the new token to the input, and go round again", ha="center", va="top",
+            fontsize=6.0, color=C["ink2"])
+    return f
