@@ -85,42 +85,31 @@ The system message lives in a file of its own, not inside the code. The last sec
 
 ## Where you put things changes the answer
 
-Does it matter where in the request the important text sits? Before reading on, guess: start, middle or end?
+Suppose a customer asks, "Can I return opened earbuds?" Your program sends the model 20 paragraphs from Tarkika's return policy, and only one of them answers the question. Does it matter whether that paragraph is the first of the 20, the tenth, or the last?
 
-In a well-known experiment, a model was given 20 documents and a question. Only one document held the answer. The researchers moved that document from first place to last and measured how often the answer was right (@fig-lost-middle) [@liu2024lost].
+Researchers tested exactly this [@liu2024lost]. They gave a model 20 documents and a question, with the answer in only one document. Then they moved that document from first place to last, and measured how often the model answered correctly (@fig-lost-middle).
 
 ![How often a model answered correctly, depending on where the one useful document sat among 20. Redrawn approximately from Liu et al. The dashed line is the same model given no documents at all.](/figures/m03/lost-middle.pdf){#fig-lost-middle}
 
-With the answer in the first document, it was right about 75% of the time. With the answer in the middle, it fell to about 54%. That is worse than the 56% the same model scored with no documents at all. The useful document was there, but hidden among the others, it did more harm than good. Researchers call this **lost in the middle**.
+1. Answer in the **first** document: correct about 75% of the time.
+2. Answer in the **middle**: correct about 54% of the time.
+3. Answer in the **last** document: somewhere in between.
 
-There are two likely reasons. Models learn from text in which the important part usually comes first: titles, headlines, instructions. And they learn to predict the next word mostly from the words just before it, so the end of the input also gets close attention. The middle gets neither.
+The middle result is surprising. With no documents at all, the same model answered 56% correctly, from what it learned in training. So 20 documents, one of them holding the answer, made it slightly worse than no help at all. The 19 unhelpful documents distracted it, and it sometimes answered from the wrong one. Researchers call this **lost in the middle**.
 
-Newer models do better on this test, but the pattern has not gone away, and it grows as inputs get longer [@chroma2025]. So for your requests:
+Why the middle? Think of how you read a long notice on a board. You read the heading carefully, you notice the last line because that is where you stopped, and you skim what lies between. Models show the same habit, for two reasons. The text they learned from usually puts the important part first: titles, headlines, the first line of an email. And they write each new word looking most closely at the words just before it, so the end of the input stays in sharp focus.
 
-- Instructions go at the start.
-- The question goes at the end, right after the policy text it needs.
-- Inside the policy text, put the most relevant pieces first and last, and the weakest in the middle.
+Newer models do better on this test, but the pattern has not gone away, and it grows as inputs get longer [@chroma2025]. So arrange each request this way:
 
-## When the material does not fit
-
-A search over Tarkika's policies, in our example, returns 40 pieces of about 400 tokens each: 16,000 tokens for a budget of 1,200. Sending all of it would cost more, be slower, and, as you just saw, give worse answers. @fig-context-funnel shows how to get it down.
-
-![Getting 40 search results down to a 1,200-token budget. (Numbers assumed for illustration.)](/figures/m03/context-funnel.pdf){#fig-context-funnel}
-
-1. **Prune.** Remove what should never be sent. Here, 9 pieces repeat text found in others, and 3 are from a return policy that changed last year. That leaves 28.
-2. **Select.** Keep only the most relevant. A reranker (Module 7) scores each piece against the question, and the top 6 stay. Now 2,400 tokens.
-3. **Compress.** Shorten what stays. Each piece is cut to the paragraphs about the product in question, or summarised by a small, cheap model. Now 1,200 tokens.
-4. **Order.** Arrange the 6 pieces as in the previous section: best first and last.
-
-There is a fifth operation, which goes the other way. Sometimes a piece says "see section 4.2 for electronics". Without section 4.2 the model cannot answer. **Expanding** means fetching that linked text and adding it.
-
-Each step has a cost. Pruning old versions needs dates on your documents. Selecting needs a reranker, which adds a call and some delay. Compressing with a model adds another call, and a bad summary can drop the one sentence that mattered. So use the cheapest step that brings you within budget: often pruning and selecting are enough.
+- Instructions at the start.
+- The question at the very end.
+- The policy paragraphs just before the question. Put the best match last, right next to the question, and the second best first. The weakest go in the middle. The search that found the paragraphs gives each one a score, so you know which is best (Module 6).
 
 ## A budget for every part
 
 The model in our example accepts 128,000 tokens. The request uses 3,000. Why stay so far below the limit?
 
-Because every token you add is paid for three times. At Module 1's example prices, each extra 1,000 input tokens costs ₹0.35 per message, or ₹42,000 a month at 4,000 messages a day. The reply starts later, because the model reads the whole input before it writes anything. And as Module 2 showed, answers get worse as the input grows.
+Because every extra token hurts in three ways. At Module 1's example prices, each extra 1,000 input tokens costs ₹0.35 per message, or ₹42,000 a month at 4,000 messages a day. The reply starts later, because the model reads the whole input before it writes anything. And as Module 2 showed, answers get worse as the input grows.
 
 So decide a budget for each part, and decide in advance what happens when a part goes over it:
 
@@ -129,13 +118,34 @@ So decide a budget for each part, and decide in advance what happens when a part
 | Instructions | 700 | Remove lines that no test needs |
 | Tool list | 600 | Send only the tools this request may need (Module 5) |
 | Earlier messages | 460 | Summarise the older ones (Module 4) |
-| Policy text | 1,200 | Prune, select, compress |
+| Policy text | 1,200 | Prune, select, compress (next section) |
 | Question | up to 300 | For long emails, keep the newest part and drop quoted replies |
 | Reply | 300, kept free | Set a maximum length for the output |
 
 The last row is easy to forget. The window holds the reply too. A request that fills the window leaves no room for the model to answer.
 
 Write the budget down, and log the actual size of each part on every call. When a cost or a speed problem appears, you can see at once which part grew.
+
+## When the policy text does not fit
+
+Modules 6 to 8 build a search that finds the policy paragraphs for each question. Take the earbuds question again. Suppose the search returns 40 paragraphs of about 400 tokens each: 16,000 tokens, against a budget of 1,200. Sending all of it would cost more, be slower, and, as the previous sections showed, give worse answers. @fig-context-funnel shows how to bring it down, one step at a time.
+
+![Bringing 40 search results down to a 1,200-token budget. (Numbers assumed for illustration.)](/figures/m03/context-funnel.pdf){#fig-context-funnel}
+
+1. **Prune: remove what should never be sent.** Nine paragraphs appear twice, once in the policy and again in the FAQ page. Three are from last year's return policy, which has since changed. Removing them leaves 28 paragraphs.
+2. **Select: keep only the most useful.** Many of the 28 are about returns in general, or about phones. A second scoring step reads each paragraph together with the question and rates how well it answers it. The 6 best stay: 2,400 tokens. (This scoring step is called a **reranker**, and Module 7 builds one.)
+3. **Compress: shorten what stays.** One of the 6 covers returns for all electronics, but only two of its sentences mention earbuds. Keep those two sentences. Now 1,200 tokens, within budget.
+4. **Order: arrange the 6** as in the previous section, with the best match last, next to the question.
+
+Sometimes a step must add text instead. One paragraph says "for opened items, see the Hygiene Policy", and the Hygiene Policy holds the actual rule. Without it, the model cannot answer. **Expanding** means fetching that linked text and adding it.
+
+The steps differ in cost, and that decides the order you try them in.
+
+- Pruning is ordinary code: compare texts, check dates. It is fast and free, as long as your documents carry dates.
+- Selecting needs the reranker, which adds a model call and a little delay to every question.
+- Compressing with a model adds another call. Worse, a careless summary can drop the one sentence that mattered.
+
+So prune first, select next, and compress only if you are still over budget. Often the first two are enough.
 
 ## Prompting a thinking model
 
@@ -194,12 +204,12 @@ It is natural to begin the instructions with "Today is 31 October 2026, 2:32 pm.
 
 So the rule is: fixed text first, changing text last. It agrees with the previous sections. Instructions at the start, the question at the end.
 
-A few details decide whether caching happens at all:
+Four more things decide whether you actually get the saving. Each one follows from how caching works: the provider keeps the work it did on your fixed text in its own memory, ready for the next request.
 
-- There is a minimum length, often about 1,000 tokens. A fixed part shorter than that is not cached, again without any error. The exact minimum differs by provider and model.
-- The cache expires after a few minutes without use. A busy service keeps it warm, and a quiet one at night pays full price.
-- Some providers cache on their own. Others need you to mark where the fixed part ends, and charge a little extra to store it.
-- Within one conversation, the earlier messages also stay the same from one turn to the next, so they can be reused too.
+1. **The fixed text must be long enough.** Storing that work costs the provider memory, which is only worth it for a long shared start. So providers cache only from a minimum length, often about 1,000 tokens, and for some models 512 or 4,096. Our 1,300 fixed tokens just pass. If someone trims the instructions until the fixed part is 900 tokens, caching stops, the cost per message goes back up, and no error says so.
+2. **The stored work is kept only for a few minutes.** Memory is limited, so the provider drops the stored work if no request uses it for a while, often after 5 to 10 minutes. Some providers let you pay to keep it for an hour or more. During the day, Tarkika's 4,000 messages arrive seconds apart, so every request finds the stored work. At 3 am, messages may come 20 minutes apart. Each one finds nothing stored and pays the full price.
+3. **Some providers need you to mark the fixed text.** OpenAI caches on its own. Anthropic asks you to mark where the fixed part ends, with a `cache_control` setting, and charges 25% more than normal for the first request that stores it. From the second request on, each reuse costs about a tenth, so the extra charge is repaid at once [@anthropiccaching].
+4. **Conversations cache themselves.** In a chat, each request repeats all the earlier messages, in the same order, and the previous request ended with exactly those messages. So by the tenth turn, most of each request can come from the cache. This holds only while the earlier messages stay unchanged. When your program summarises old messages to save space (Module 4), the start of the request changes, and the next request pays full price once.
 
 Check that it works. In LangChain, `reply.usage_metadata["input_token_details"]` reports the cached tokens as `cache_read`. If it stays at zero on a busy service, something at the start of your request is changing.
 
