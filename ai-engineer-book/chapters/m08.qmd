@@ -1,0 +1,133 @@
+# Advanced RAG {#sec-m08}
+
+Module 7 built a pipeline that answers well when the answer is a fact stated in a document. Real questions are often harder. They are vague, or need several facts, or live in a database table, or in a scanned page. This module covers the methods for those cases, and there are many, each with its own name. Rather than learn them as a list, it is easier to sort them by the question each one answers.
+
+## Four questions instead of a list of names
+
+Every "type of RAG" you will read about is an answer to one of four questions (@fig-four-questions).
+
+![Four questions about a RAG system. Each answer is a named type of RAG. A real system picks one answer to each.](/figures/m08/four-questions.pdf){#fig-four-questions}
+
+1. **Where is the knowledge stored?** In text searched by meaning (vector RAG), by exact words (BM25), or both (hybrid RAG), which Modules 6 and 7 built. Or in database tables, in relationships between things, in page images, or on the live web.
+2. **How good is the question?** If it is vague, rewrite it, split it, or search with a guessed answer.
+3. **How do you check what was found?** Grade the chunks before using them (corrective RAG), or have the model judge its own retrieval and answer (self-RAG).
+4. **Who decides where to look?** A fixed pipeline, a router that picks a path (adaptive RAG), or the model itself, in a loop with search tools (agentic RAG).
+
+A real system is one answer to each question. Tarkika's assistant might be: hybrid text plus a SQL table, questions rewritten, chunks graded, and a router choosing between them. The sections below take the cases one at a time.
+
+## When the question is vague
+
+Search can only find what the question asks for. Three kinds of question defeat it.
+
+**Questions that lean on the conversation.** After asking about earbuds, a customer writes "and for phones?" Searching for those three words finds nothing useful. The fix is to **rewrite** the question so it stands alone, using the conversation from Module 4: "What is the return policy for phones?"
+
+**Questions with several parts.** "Can I return the earbuds and the phone case together, and when will I get my money?" needs three different policy sections. One search returns chunks close to the average of the three, which may answer none of them well. The fix is to **split** it into three searches and combine the results (@fig-query-rewrite).
+
+![Two fixes for vague questions. Rewrite a follow-up so it stands alone. Split a question with several parts into one search per part.](/figures/m08/query-rewrite.pdf){#fig-query-rewrite}
+
+A small, cheap model does both in one call, with structured output from Module 5:
+
+```python
+class Searches(BaseModel):
+    queries: list[str] = Field(description="1 to 4 standalone searches")
+
+planner = small_llm.with_structured_output(Searches)
+plan = planner.invoke([SystemMessage(REWRITE_RULES), *history,
+                       HumanMessage(question)])
+chunks = [c for q in plan.queries for c in hybrid_search(q)]
+```
+
+**Questions that do not look like their answers.** A customer writes "box was crushed, phone screen has lines". The policy says "If an item arrives damaged, report it within 48 hours". Questions and answers are written differently, so their embeddings can sit far apart. **HyDE**, short for Hypothetical Document Embeddings, has the model first write a short, made-up answer, such as "Items that arrive damaged can be replaced if reported promptly". It then searches with that instead of the question [@gao2023hyde]. The made-up answer may be wrong in its details, but it is written like a policy, so it lands near the real policy.
+
+Each of these adds a model call before the search, so the reply starts later. Use them where tests show they help, not by default.
+
+## When the answer is in a table
+
+"How many refunds over ₹2,000 did I get this year?" No paragraph holds that answer. The refunds sit in a database table, and the answer is a count. Vector search cannot count.
+
+So let the model write a database query instead. This is **text-to-SQL**: the model receives the question and a description of the tables, and writes SQL. Your program runs it, and the model turns the result into a reply (@fig-text-to-sql).
+
+![Text-to-SQL with checks. The model writes the query, but your code decides what it may touch before the database runs it.](/figures/m08/text-to-sql.pdf){#fig-text-to-sql}
+
+A query the model writes is a tool call that can read anything the login allows, so Module 5's rules apply in full. Run it with a database login that can only read. Allow only the tables the assistant needs. Limit the number of rows. And never let the model choose whose data it reads: the customer id in the query must come from the session, as `:me` does in the figure, filled in by your code.
+
+Text-to-SQL is also where models make quiet mistakes: the wrong column, a missed filter, a join that counts every refund twice. A wrong count looks exactly like a right one. Keep a set of questions with known answers and test against them (Module 9).
+
+## When the answer is about relationships
+
+A customer asks, "Which cases fit my phone, and who has them in stock?" The answer is a chain: this customer bought this phone, these cases fit this phone, these sellers stock these cases. No single paragraph holds the chain.
+
+A **knowledge graph** stores such facts as things, called **nodes**, and the links between them, called **edges** (@fig-graph). Following the edges answers the question in a few steps. **Graph RAG** retrieves along these links instead of, or as well as, by similarity.
+
+![A small knowledge graph. The question "which cases fit my phone, and who stocks them?" is answered by following the links.](/figures/m08/graph.pdf){#fig-graph}
+
+Graphs also help with questions about a whole collection, such as "What are customers complaining about most this month?" No single chunk answers that. Microsoft's GraphRAG has a model pull out the people, products and topics from every document, groups closely linked ones, and writes a summary of each group. Broad questions are then answered from the summaries [@edge2024graphrag].
+
+The cost is in building the graph. Extracting nodes and edges takes a model call for every chunk, and the graph must be updated as documents change. If Tarkika's product data already sits in a database, with compatibility and stock in proper tables, the links already exist, and text-to-SQL may do the same job with no graph to build. Build a graph when the relationships live only in text.
+
+## When there is too much to read
+
+Some documents are long and structured, like a 300-page seller agreement with numbered clauses. Cutting it into chunks loses the structure: a chunk from clause 14.3 may not say it belongs to the clause on penalties.
+
+Two approaches keep the structure.
+
+**Trees of summaries.** Summarise groups of chunks, then summarise the summaries, up to one summary of the whole document. Search can then match a broad question at a high level and a narrow one at the bottom. RAPTOR is the best-known version [@sarthi2024raptor].
+
+**Searching by the document's own index.** A person looking for the penalty for late dispatch opens the table of contents, finds "Penalties", then "Late dispatch". A model can do the same. It reads the table of contents, picks a section, reads that section's headings, and goes down until it reaches the clause. No embeddings are needed, which is why tools such as PageIndex call this "vectorless" retrieval [@pageindex].
+
+The trade-off is model calls. Each step down the tree is a call, so one question may take five or six. That is slow and costly for quick questions over many short documents, and worth it for precise questions over a few long, well-organised ones, such as contracts and manuals.
+
+## When the answer is in a picture of a page
+
+Sellers upload scanned invoices. Policy PDFs have tables and charts. Turning these into text first, with OCR, often loses exactly what matters: a table becomes a jumble of numbers, and a chart disappears.
+
+A newer approach skips the text. It embeds each page as an image, using a model that reads page images directly, and searches those image embeddings with the question. ColPali, the best-known model of this kind, retrieved such pages better than pipelines that extracted the text first [@faysse2025colpali]. The page found is then sent to a model that can read images (Module 2).
+
+It costs more storage and more compute per page than text search. Use it for documents whose meaning is in their layout: forms, invoices, slides, scanned pages.
+
+## Checking what was found
+
+Module 7 checked the answer's citations. You can also check the chunks before the model answers from them.
+
+**Corrective RAG** adds a grading step [@yan2024crag]. A small model reads each retrieved chunk with the question and marks it relevant or not:
+
+```python
+class Grade(BaseModel):
+    relevant: bool
+
+grader = small_llm.with_structured_output(Grade)
+good = [c for c in chunks
+        if grader.invoke(f"Question: {q}\n\nText: {c}").relevant]
+```
+
+If enough chunks pass, answer from those. If none pass, do not answer from bad material. Rewrite the question and search again, try another source, or hand over to a person. Cap the retries, as in Module 5.
+
+**Self-RAG** goes further. The model is trained to decide for itself when to search, and to mark whether each passage supports what it wrote [@asai2024selfrag]. It needs a specially trained model, so most teams use the simpler grading step, which works with any model.
+
+Both cost one extra model call per chunk graded. Grading five chunks with a small model is cheap. Grading fifty is not, so grade after the reranker, not before.
+
+## Who decides where to look
+
+Tarkika's assistant now has several sources: policy search, the orders database, and perhaps the web for courier news. Something must decide which to use for each question.
+
+The simplest choice is a fixed pipeline: always search the policies. Next is a **router**: one model call classifies the question first, then the matching path runs. A refund-count question goes to SQL, a policy question to hybrid search, and "hi" to no search at all. When the router also judges how hard the question is, and sends simple ones down a cheap path and hard ones down a fuller one, it is called **adaptive RAG** [@jeong2024adaptive]. Module 5's `Ticket` was already a router.
+
+The most flexible choice is **agentic RAG**. Each source becomes a tool, as in Module 5, and the model decides in a loop which to call, reads the results, and decides again (@fig-who-decides).
+
+![Hybrid search always runs both searches and merges them, with no model deciding. Agentic RAG lets the model choose which source to use, step by step.](/figures/m08/who-decides.pdf){#fig-who-decides}
+
+Hybrid and agentic are easy to confuse, because both use several search methods. One question separates them: does a model decide which to use? Hybrid always runs both searches and merges them with a formula. Agentic makes a model call for every choice.
+
+That decides the trade-off. Agentic RAG handles questions nobody planned for, such as "check my order, then tell me whether the delay counts as damage under the policy". But each step is a model call, so it is slower and costs more, and it can loop. Use a fixed pipeline or a router when the kinds of question are known, and keep the agent for the questions that need it. The limits from Module 5 apply to every agent.
+
+## Index the whole codebase, or just grep it?
+
+Coding assistants face this same choice on a large scale, and two well-known tools chose differently.
+
+Cursor indexes the codebase. It cuts the code into chunks along functions and classes, embeds them, and keeps the index fresh by tracking which files changed, using a tree of file fingerprints (a Merkle tree), so only changed files are embedded again [@cursor2026indexing]. Searching by meaning then finds code even when you do not know its name.
+
+Claude Code does not index. It searches the way a developer does, with `grep` for text and `glob` for file names, in a loop. Its team reported trying a local vector database first and finding that this agentic search worked better, and avoided keeping an index fresh and storing embeddings of the code [@cherny2025].
+
+Each choice follows from the questions above. Code is full of exact names, which keyword-style search finds perfectly, and it changes every few minutes, which makes an index go stale. That favours grep. But grep needs more steps and more tokens, and it cannot find code by what it does when you do not know what it is called. That favours an index. Neither is right for every codebase. The answer depends on how large it is, how fast it changes, and whether people search by name or by meaning.
+
+Every method in this module claims to improve answers, and every one adds cost. Rewriting, grading, graphs, routers: each helps some questions and slows all of them. The only way to know whether one helps your system is to measure it. That is Module 9.
