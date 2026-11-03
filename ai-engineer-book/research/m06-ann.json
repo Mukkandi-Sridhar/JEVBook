@@ -1,0 +1,28 @@
+{
+ "N": 1000000,
+ "D": 384,
+ "flat_ms_per_query": 55.7,
+ "hnsw_build_seconds": 302,
+ "hnsw": [
+  {
+   "ef": 20,
+   "ms_per_query": 0.285,
+   "recall_at_10": 0.518
+  },
+  {
+   "ef": 50,
+   "ms_per_query": 0.574,
+   "recall_at_10": 0.617
+  },
+  {
+   "ef": 100,
+   "ms_per_query": 0.958,
+   "recall_at_10": 0.7
+  },
+  {
+   "ef": 200,
+   "ms_per_query": 1.877,
+   "recall_at_10": 0.8
+  }
+ ]
+}

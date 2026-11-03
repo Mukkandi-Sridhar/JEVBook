@@ -1,0 +1,109 @@
+{
+ "docs": {
+  "P1": "Returns: Most products can be returned within 10 days of delivery if unused and in original packaging.",
+  "P2": "Hygiene policy: In-ear audio devices, innerwear and cosmetics cannot be returned once the seal is opened, unless they arrive faulty.",
+  "P3": "Earbuds buying guide: Our earbuds come with three sizes of ear tips and a charging case. Battery lasts up to 30 hours.",
+  "P4": "FAQ: Can I return unopened earbuds? Yes. Unopened earbuds can be returned within 10 days.",
+  "P5": "Faulty items: If a product arrives damaged or faulty, report it within 48 hours for a free replacement or refund.",
+  "P6": "Refunds reach the original payment method within 5 to 7 working days after the returned item is checked.",
+  "P7": "Phones can be returned within 7 days only for manufacturing defects confirmed by our service partner.",
+  "P8": "Product AX-7781 (wireless earbuds, black): return window extended to 30 days during the festival sale."
+ },
+ "can I return opened earbuds": {
+  "query_tokens": [
+   "return",
+   "open",
+   "earbud"
+  ],
+  "scores": {
+   "P2": 1.82,
+   "P4": 1.2,
+   "P8": 0.8,
+   "P3": 0.61,
+   "P1": 0.52,
+   "P7": 0.37,
+   "P6": 0.34,
+   "P5": 0.0
+  }
+ },
+ "can I send back earphones I already used": {
+  "query_tokens": [
+   "send",
+   "back",
+   "earphon",
+   "alreadi",
+   "use"
+  ],
+  "scores": {
+   "P1": 0.0,
+   "P2": 0.0,
+   "P3": 0.0,
+   "P4": 0.0,
+   "P5": 0.0,
+   "P6": 0.0,
+   "P7": 0.0,
+   "P8": 0.0
+  }
+ },
+ "return policy for AX-7781": {
+  "query_tokens": [
+   "return",
+   "polici",
+   "ax-7781"
+  ],
+  "scores": {
+   "P8": 1.95,
+   "P2": 1.82,
+   "P1": 0.52,
+   "P4": 0.52,
+   "P7": 0.37,
+   "P6": 0.34,
+   "P3": 0.0,
+   "P5": 0.0
+  }
+ },
+ "index_sample": {
+  "return": [
+   "P1",
+   "P2",
+   "P4",
+   "P6",
+   "P7",
+   "P8"
+  ],
+  "earbud": [
+   "P3",
+   "P4",
+   "P8"
+  ],
+  "open": [
+   "P2"
+  ],
+  "unopen": [
+   "P4"
+  ],
+  "ax-7781": [
+   "P8"
+  ],
+  "faulti": [
+   "P2",
+   "P5"
+  ]
+ },
+ "idf": {
+  "return": 0.35,
+  "earbud": 0.45,
+  "open": 1.61,
+  "ax-7781": 1.61
+ },
+ "doc_len": {
+  "P1": 11,
+  "P2": 15,
+  "P3": 15,
+  "P4": 11,
+  "P5": 13,
+  "P6": 14,
+  "P7": 11,
+  "P8": 13
+ }
+}
