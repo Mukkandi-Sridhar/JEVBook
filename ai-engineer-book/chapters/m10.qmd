@@ -1,0 +1,136 @@
+# Decide, don't generate {#sec-m10}
+
+Most of this book has been about getting a model to write good text. But look closely at what a support system actually does with each message, and most of the steps are not writing at all. They are decisions. This module is about making decisions well: with probabilities you can trust, lines drawn by what mistakes cost, and models built only to decide.
+
+## Writing or deciding?
+
+Follow one message through Tarkika's assistant: "bhai mera refund abhi tak nahi aaya, order TK-5521, 10 din ho gaye!!" (@fig-decide-or-write).
+
+![The steps for one support message. Five are decisions with a fixed set of possible answers. Only the last one writes text.](/figures/m10/decide-or-write.pdf){#fig-decide-or-write}
+
+Which topic is it? Did they give an order number? Is a refund allowed? How upset are they? Does a person need to step in? Each of these has a fixed set of possible answers: one of four topics, yes or no, a point on a scale. Only the last step, the reply, is open-ended writing.
+
+So far, this book has handled such steps by asking a language model and reading its answer, as with the `Ticket` in Module 5. That works, but it is the wrong tool in three ways. A decision needs to know *how sure* the answer is, and generated text does not say. A language model writes its answer token by token, which is slow for one word. And it charges for writing, every time, for a step that could cost far less.
+
+The rest of this module builds up what a decision needs, then looks at models built only for deciding.
+
+## When something is rare, most alarms are false
+
+Before probabilities can be trusted, they must be read correctly. Here is the trap most people fall into.
+
+Suppose 3% of refund requests are abusive: the item was never returned, or the customer is gaming the system. A checker catches 95% of abusive requests, and wrongly flags only 5% of honest ones. It flags a request. How likely is it that the request really is abusive?
+
+Most people say about 95%. Work it out with 10,000 requests (@fig-base-rate).
+
+![10,000 requests passed through a checker that is 95% accurate in both directions. Because honest requests are so many, their false alarms outnumber the true ones.](/figures/m10/base-rate.pdf){#fig-base-rate}
+
+1. 3% of 10,000 is 300 abusive requests. The checker flags 95% of them: 285.
+2. The other 9,700 are honest. The checker wrongly flags 5% of them: 485.
+3. So 770 requests are flagged, and only 285 of them are abusive: 37%.
+
+Nearly two thirds of the alarms are false, from a checker that sounds 95% accurate. The reason is the **base rate**: how common the thing is to begin with. When it is rare, even a small false-alarm rate, applied to the large honest majority, swamps the true alarms.
+
+The same trap hides in accuracy. A checker that never flags anything is right 97% of the time, because 97% of requests are honest. It is also useless. For rare events, accuracy says almost nothing. You need to know how often the checker catches the rare case, and how often its alarms are right.
+
+## Learning from examples
+
+Tarkika's refund team has reviewed thousands of past requests, approving most and rejecting a few. Those past decisions are examples a model can learn from. The rest of this module uses a small experiment built on that idea. The data is synthetic, generated for this book, but the steps are exactly the ones you would follow with real data.
+
+Each request is described by a few facts, called **features**: the order value, days since delivery, product category, whether a photo was attached, the customer's returns in the last 90 days, and the account's age. The thing to predict, called the **label**, is whether the team rejected it. In our data, 2.9% were rejected.
+
+Split the 20,000 examples into two parts: 70% to learn from, the **training data**, and 30% kept aside to test on, the **test data**. A model is judged only on data it never saw, because the goal is to handle tomorrow's requests, not to recite yesterday's.
+
+Then compare three models on the test data:
+
+- **A baseline that always says "approve".** It is right 97.1% of the time, because 97.1% of requests were approved. Every model must be compared with this. A model that cannot beat it is learning nothing.
+- **A logistic regression**, one of the simplest models there is. It weighs each feature and turns the total into a probability. It is also right 97.1% of the time. The next section shows why it is still far more useful.
+- **A deep decision tree**, which keeps splitting the data until every training example is classified perfectly. On the training data it scored 100%. On the test data it scored 94.7%, worse than the baseline. It memorised the training examples, noise and all, instead of learning the pattern. This is **overfitting**, and the test data is the only way to see it.
+
+One more mistake is worth seeing. Suppose the data includes a field "length of the refund team's note". Added as a feature, it pushes accuracy to 99.9%. It is a fake result. The team writes long notes when it rejects, so the field holds the answer, and it is only filled in *after* the decision. At the moment the model must decide, the field does not exist yet. This is called **leakage**. Whenever a model looks too good, ask whether one of its features is only known after the event.
+
+## A probability you can trust
+
+The logistic regression and the baseline are equally accurate. The difference is in the numbers. The baseline says "approve" for everything. The logistic regression gives each request its own chance of rejection: 0.4% for this one, 13% for that one. Those numbers are what make decisions possible, but only if they are right.
+
+What does it mean for a probability to be right? If a model says "13%" for a hundred requests, about 13 of them should end up rejected. A model whose numbers hold up this way is **calibrated**. You check it by grouping test requests by what the model said, and comparing that with what happened (@fig-reliability).
+
+![What the logistic regression said, against how often the team actually rejected, on the test data. Points near the diagonal mean the numbers can be taken at face value.](/figures/m10/reliability.pdf){#fig-reliability}
+
+The points sit close to the diagonal. When the model says 3%, 3% are rejected; when it says 13%, 14% are. Now compare the deep tree. Having memorised its training data, it gives every test request either 0% or 100%. Of the requests it was 100% sure the team would reject, the team rejected only 6%. Its certainty is worthless.
+
+Language models have the same problem in another form. You can ask a model "how sure are you, from 0 to 100?", and it will answer. But studies find these stated numbers are poorly calibrated, and usually too confident [@xiong2024uncertainty]. A number a model writes is text like any other. It is not a measured probability.
+
+## Where should the line be?
+
+The model gives each refund request a chance of rejection. Now draw the line: below what chance should a refund be approved automatically?
+
+The answer comes from what each mistake costs, not from the model. Suppose, in our example, that approving a refund the team would have rejected loses about ₹1,500. And sending a request to a person costs about ₹40 in staff time and a slower reply for the customer.
+
+For a request with rejection chance *p*:
+
+- Approving it automatically costs, on average, *p* × ₹1,500.
+- Sending it to a person costs ₹40.
+
+Automatic approval is cheaper when *p* × 1,500 is less than 40, that is, when *p* is below 40 ÷ 1,500, about 2.7%. @fig-cost-threshold confirms this on the test data.
+
+![Average cost per request in our example, depending on where the line for automatic approval is drawn. The lowest cost is at 2.7%, where the arithmetic said it would be.](/figures/m10/cost-threshold.pdf){#fig-cost-threshold}
+
+Reviewing everything costs ₹40 a request. Approving everything costs about ₹43, because of the rejections that slip through. Drawing the line at 2.7% costs about ₹26: a third cheaper than either.
+
+Notice that the line is at 2.7%, nowhere near 50%. The default line of 50% only makes sense when both mistakes cost the same, and they rarely do. When the costs change, say fraud gets more expensive during a sale, the line moves, and the model does not need to change at all. This only works because the model is calibrated. With the deep tree's 0% and 100%, there is no line to draw.
+
+## Act, review or escalate
+
+One line gives two outcomes. In practice there are usually three (@fig-bands).
+
+![Three outcomes from one calibrated probability, with the share of requests in each from our experiment.](/figures/m10/bands.pdf){#fig-bands}
+
+1. **Act.** Below 2.7%, approve automatically. In our experiment, two thirds of requests land here, and only 1.3% of them would have been rejected.
+2. **Review.** Between 2.7% and 20%, a person checks. A third of requests.
+3. **Escalate.** At 20% and above, send to the senior fraud team. Fewer than 1 request in 100, but a quarter of those are rejected.
+
+The bands are a policy, written in your code, not the model's choice. The model supplies the probability; your rules turn it into an action; the costs set the lines. Each part can then change on its own. A new model can be swapped in without changing the rules. A new cost can move a line without retraining anything. And when someone asks why a refund was approved, the answer is a number and a rule, not a paragraph of generated text.
+
+## Models that only decide: System One models and Jev
+
+If most steps are decisions, why use a model that writes? That question is behind a newer kind of model, built to answer fixed questions with probabilities instead of generating text.
+
+The idea borrows a picture from psychology. People are often described as having two modes of thinking: a fast, automatic one for familiar judgements ("System 1"), and a slow, careful one for hard problems ("System 2"). A language model that writes out its reasoning is closer to the slow mode. TypeSafe AI, which released a model called **Jev** in 2026, describes it as a **System One model**: one built for the fast mode [@typesafe2026]. It is one example of the idea, and the details below come from TypeSafe's own description.
+
+You send Jev a description of the situation and a set of questions. Each question has one of three shapes: yes or no, pick one option, or a point on a scale. For each question, you get back a probability for every possible answer:
+
+```python
+from typesafe_sdk import TypeSafeClient, Choice, Noul, Score
+
+client = TypeSafeClient(api_key=TYPESAFE_API_KEY)
+r = client.system_one(
+    state=message,                     # the customer's message, as text
+    questions={
+        "topic": Choice(criteria={"refund": "Money back for a return",
+                                  "delivery": "Where an order is",
+                                  "other": None}),
+        "needs_person": Noul(instructions="Should a person handle this today?"),
+        "tone": Score(criteria=["calm", "annoyed", "angry"])})
+r.choices["topic"].probabilities    # a chance for each topic
+r.nouls["needs_person"].noul        # chance of "yes", between 0 and 1
+```
+
+`Noul` is TypeSafe's name for a yes-or-no question. The shape of the call and the reply can be checked by anyone with access. The rest should be read in three groups.
+
+**What TypeSafe says, and nobody outside has confirmed:** that Jev answers all the questions in one step instead of writing token by token, which is where its speed comes from, at 70 to 500 milliseconds per call; that it is trained specifically to give calibrated probabilities; and that it costs \$0.042 per million tokens read, with nothing charged for the answers.
+
+**What that would mean, if true:** a million decisions with 500 tokens of description each would cost about \$21, roughly ₹1,850 at an assumed ₹88 to the dollar. The same million decisions through a language model, at this book's example prices, would cost about ₹0.21 each for the input and a short structured answer: about ₹2,10,000 in all. That is a hundred times more.
+
+**What nobody outside knows yet:** whether its probabilities are calibrated on *your* requests, how it behaves when customers try to manipulate it, and how much it changes between versions.
+
+The last group is not a reason to avoid it. It is a reason to test it, and you already know how. Run it on past requests with known outcomes, draw @fig-reliability for its numbers, and compare it with a baseline and with your current approach on the golden set from Module 9. The same check applies to any model that claims to give probabilities.
+
+## Small and fast for easy cases, large for hard ones
+
+A calibrated probability does one more job: it tells you when the fast model is out of its depth.
+
+Put a fast decision model in front of everything. When it is confident, for example the top topic has a chance above 90%, use its answer. When it is not, pass the case to a large language model with thinking turned on, or to a person. This is called a **cascade**. Most messages are routine, so most are handled fast and cheaply, and the slow, expensive path is kept for the cases that need it.
+
+It works only if the fast model knows when it is unsure. A model that is confidently wrong sends hard cases down the fast path, and nothing catches them. That is why calibration is not a detail. It is what makes every design in this module safe: the lines, the bands, and the cascade.
+
+The decisions in this module are single steps. An agent strings many steps together, deciding at each one what to do next, and can go wrong in new ways along the way. Module 11 is about that loop.

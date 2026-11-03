@@ -1,7 +1,9 @@
 # Style guide for this book
 
-This book is separate from *Decide, Don't Generate* (the JEV book). It does not mention Jev, TypeSafe AI, Kestrel or
-Harbor. It does not lean on that book either: every idea is taught here from the start.
+This book is separate from *Decide, Don't Generate* (the JEV book). It does not lean on that book: every idea is taught
+here from the start. Kestrel and Harbor are never mentioned. Jev and TypeSafe AI appear only in Module 10, at the
+author's request, as one example of a System One model: TypeSafe's claims are labelled as claims, and every
+experiment number in that module comes from our own synthetic data.
 
 The rules below come from the problems readers and the author found in the JEV book's drafts. Check every chapter
 against them before it is called done.

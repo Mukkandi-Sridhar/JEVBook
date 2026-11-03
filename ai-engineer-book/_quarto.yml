@@ -21,6 +21,7 @@ book:
         - chapters/m07.qmd
         - chapters/m08.qmd
         - chapters/m09.qmd
+        - chapters/m10.qmd
   appendices:
     - back/bibliography.qmd
     - back/about-author.qmd
