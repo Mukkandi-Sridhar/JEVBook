@@ -1,0 +1,131 @@
+# RAG, end to end {#sec-m07}
+
+Module 6 built search. **RAG**, retrieval-augmented generation, puts that search in front of the model: *retrieve* the relevant text, *augment* the request with it, then *generate* the answer. This module builds the whole pipeline for Tarkika's return policy, and finally puts the hygiene paragraph, P2, ahead of the FAQ that looked so similar.
+
+## Two jobs: preparing documents and answering questions
+
+A RAG system is two pipelines that share one store (@fig-rag-pipelines).
+
+![The two halves of RAG. Ingestion prepares documents and runs when they change. Answering runs for every message.](/figures/m07/rag-pipelines.pdf){#fig-rag-pipelines}
+
+**Ingestion** prepares the documents. It loads them, cleans them, cuts them into pieces called **chunks**, embeds and indexes each chunk, and stores them. It runs when documents are added or changed, not when customers write.
+
+**Answering** runs for every message. It searches, keeps the best few chunks, builds the request as in Module 3, and has the model answer.
+
+The split matters most when an answer is wrong. There are only two places to look. Either the right chunk never reached the model, which is a **retrieval** problem, or it reached the model and the model misused it, which is a **generation** problem. Check which one first, by looking at the chunks that were actually sent. Many teams change the prompt when the real fault is in ingestion: a PDF table flattened into nonsense, or a page header repeated in every chunk.
+
+## How big should a chunk be?
+
+Here is a short return policy with five sections, cut three ways by LangChain's text splitters (@fig-chunking). The chunks are the real output.
+
+![The same policy cut three ways. Too small, a rule and its exception land in different chunks. Too large, unrelated sections share one chunk. Cut by heading, each section stays whole.](/figures/m07/chunking.pdf){#fig-chunking}
+
+**Too small.** At 120 characters, section 3 falls apart. One chunk says hygiene items "cannot be returned once the seal is opened". The next says "The rule does not apply if the item arrives damaged or faulty". Which rule? On its own, that chunk is meaningless. And if search returns only the first chunk, the model will refuse a return that the policy allows.
+
+**Too large.** At 1,000 characters, the whole policy fits in two chunks. The first mixes general returns, electronics and hygiene. Its embedding is an average of three topics, so it is not very close to any question. And whichever question it answers, it carries two unrelated sections into the request.
+
+**By heading.** Each section becomes one chunk, because the author already grouped related sentences under a heading. This is usually the best first cut.
+
+```python
+from langchain_text_splitters import (MarkdownHeaderTextSplitter,
+                                      RecursiveCharacterTextSplitter)
+by_heading = MarkdownHeaderTextSplitter([("#", "title"), ("##", "section")])
+sections = by_heading.split_text(policy_markdown)
+by_size = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=150)
+chunks = by_size.split_documents(sections)   # only long sections get cut
+```
+
+The second splitter handles sections too long to be one chunk. It cuts at paragraph breaks first, then sentences, and repeats the last 150 characters of each chunk at the start of the next. That repeat, called **overlap**, means a sentence cut in half still appears whole in one of the two chunks. Note that `chunk_size` here counts characters; 1,500 characters of English is about 350 tokens.
+
+Code follows the same principle. Cut by class and function, where the programmer already drew the boundaries. The same splitter has a `from_language` option that does this for Python and many other languages.
+
+There is no single right size. Cut where the author cut, start with chunks of a few hundred tokens, and measure on your own questions (Module 9).
+
+## Give each chunk its context
+
+Even cut by heading, a chunk can lose meaning on its own. Section 4 ends with "including items covered by section 3". A chunk from deep inside a long document may say "the limit is 48 hours" without saying what the limit is for.
+
+A simple fix is to add a short note to each chunk before storing it. A small model reads the whole document and the chunk, and writes one or two sentences placing the chunk in the document:
+
+> *From Tarkika's Return Policy, section 4, Damaged or faulty items. This section overrides the hygiene rule in section 3 when an item arrives faulty.*
+
+The note is stored in front of the chunk, and both the embedding and the keyword index include it. Anthropic, which named this **contextual retrieval**, measured how often the right chunk was missing from the top 20 results (@fig-contextual-results) [@anthropic2024contextual].
+
+![How often the right chunk was missing from the top 20 results, in Anthropic's tests. Adding context, keyword search and a reranker each cut the misses.](/figures/m07/contextual-results.pdf){#fig-contextual-results}
+
+Misses fell from 5.7% to 2.9% with the notes added to both embeddings and keyword search, and to 1.9% with a reranker on top. That is two thirds of the misses gone.
+
+The cost is one model call per chunk, paid once at ingestion. Module 3's prompt caching keeps it low. Every chunk of a document is sent with the same document text in front, so that long, fixed start is cached, and only the chunk changes. Anthropic estimated about one dollar per million tokens of documents.
+
+## Fusion or reranking?
+
+Module 6 combined keyword and meaning results with Reciprocal Rank Fusion. It got P2 into the top two, but left P4 first. Fusion cannot do better, because it only looks at ranks. It never reads the text.
+
+A **reranker** reads. It is a model that takes the question and one paragraph together, and scores how well the paragraph answers the question (@fig-encoders).
+
+![An embedding model reads the question and the paragraph separately and compares the results. A reranker reads them together, so it can see that "unopened" does not answer "opened".](/figures/m07/encoders.pdf){#fig-encoders}
+
+Because it sees both texts side by side, it notices that P4 is about unopened earbuds and the question is about opened ones. It gives P2 a high score and P4 a low one. Embeddings cannot do this, since each text was turned into numbers alone, long before the question arrived.
+
+The difference costs speed. Embeddings for the paragraphs are computed once, so meaning search only compares lists of numbers. A reranker must run once for every paragraph, for every question. That is far too slow for 10 lakh paragraphs, but fine for 50.
+
+So the two are not rivals. To tell them apart, ask one question: does it call a model? Fusion does not: it is a formula on ranks, free and instant, and it merges lists. Reranking does: it costs a model run per paragraph, and it judges relevance. A typical pipeline uses fusion to merge the keyword and meaning lists, then a reranker on the merged top 50:
+
+```python
+from sentence_transformers import CrossEncoder
+
+reranker = CrossEncoder("BAAI/bge-reranker-v2-m3")     # an open reranker
+scores = reranker.predict([(question, c) for c in candidates])
+best = [c for _, c in sorted(zip(scores, candidates), reverse=True)[:5]]
+```
+
+Hosted rerankers, such as Cohere's, do the same through an API.
+
+## Fetch widely, then keep the best
+
+Two measures describe any search result. **Recall** asks: is the right chunk somewhere in the list? **Precision** asks: how much of the list is useful? A list of 50 has high recall and low precision. A list of 5 has the opposite.
+
+The pipeline gets both by working in two stages, with shrinking numbers:
+
+1. **10 lakh chunks → 50.** Hybrid search, fast and rough. The goal is recall: the right chunk must be somewhere in the 50.
+2. **50 → 5.** The reranker, slow and careful. The goal is precision: the right chunk must be in the 5.
+3. **5 chunks → the request.** About 1,200 tokens, Module 3's budget for policy text.
+
+Why not ask search for 5 directly? Because whatever search ranks 9th is gone for good. The reranker can only reorder what it is given, so it can never rescue a chunk that was cut before it ran. Fetch widely first, so that the careful step has the right chunk to find. Anthropic's tests fetched 150 and reranked down to 20 [@anthropic2024contextual].
+
+## Why the model still makes things up
+
+A customer asks, "Do you deliver to Port Blair?" Nothing in the policy covers it. Search still returns its five closest chunks, about delivery in general. And the model, asked to be helpful, may answer "Yes, within 7 days", from nothing. An answer that sounds right but is not supported by any source is called a **hallucination**. Answering only from the sources given is called **grounding**.
+
+It also happens when the right chunk is present. The model blends the policy with what it learned in training about how returns usually work elsewhere.
+
+Three defences work together.
+
+1. **Instruct.** The system message from Module 3 already says: use only the text inside `<policy>`, and if it does not answer the question, say a person will reply.
+2. **Ask for sources, in a fixed shape** (Module 5):
+
+```python
+class Answer(BaseModel):
+    answer: str
+    sources: list[str]     # ids of the chunks used, such as "policy-s3"
+    found: bool            # False if the sources do not answer the question
+```
+
+3. **Check in code.** Every id in `sources` must be one of the chunks you actually sent. If `found` is false, or `sources` is empty, do not send the answer. Send the "a person will reply" message instead, and pass the chat to the team.
+
+Treat "I don't know" as a feature. A confident wrong answer about a refund costs Tarkika far more than a short wait for a person.
+
+## When to skip RAG
+
+RAG adds a whole pipeline: ingestion, an index, a reranker, and two places for things to go wrong. Sometimes you do not need it. If all the documents fit comfortably in one request, you can send all of them, every time, and let prompt caching (Module 3) make the repeated text cheap. Anthropic suggests considering this for anything under about 2,00,000 tokens, roughly 500 pages [@anthropic2024contextual].
+
+Work it out for Tarkika. Suppose all its policies come to 40,000 tokens. Cached at Module 3's example price of ₹35 per million, that is ₹1.40 per question. RAG sends 1,200 tokens of policy at the full ₹350 per million, about ₹0.42, plus the reranker. So RAG is cheaper per question, and sending everything is simpler and never misses a chunk.
+
+It depends on four things:
+
+- **Size.** A few hundred pages can go whole. Thousands cannot.
+- **Change.** Documents that change daily keep breaking the cache.
+- **Access.** If some customers or staff may see only some documents, filtering chunks (Module 6) is how you enforce it.
+- **Quality.** Module 2 showed that answers get worse as inputs grow. Test both ways on your own questions (Module 9) before deciding.
+
+The pipeline in this module handles one kind of question well: a fact stated in a document. Questions that are vague, need several steps, live in tables, or depend on relationships between things need more. That is Module 8.
