@@ -2,7 +2,7 @@
 
 Most of this book has been about getting a model to write good text. But look closely at what a support system actually does with each message, and most of the steps are not writing at all. They are decisions. This module is about making decisions well: with probabilities you can trust, lines drawn by what mistakes cost, and models built only to decide.
 
-## Writing or deciding?
+## Writing or deciding? {#sec-m10-writing-deciding}
 
 Follow one message through Tarkika's assistant: "bhai mera refund abhi tak nahi aaya, order TK-5521, 10 din ho gaye!!" (@fig-decide-or-write).
 
@@ -10,11 +10,11 @@ Follow one message through Tarkika's assistant: "bhai mera refund abhi tak nahi 
 
 Which topic is it? Did they give an order number? Is a refund allowed? How upset are they? Does a person need to step in? Each of these has a fixed set of possible answers: one of four topics, yes or no, a point on a scale. Only the last step, the reply, is open-ended writing.
 
-So far, this book has handled such steps by asking a language model and reading its answer, as with the `Ticket` in Module 5. That works, but it is the wrong tool in three ways. A decision needs to know *how sure* the answer is, and generated text does not say. A language model writes its answer token by token, which is slow for one word. And it charges for writing, every time, for a step that could cost far less.
+So far, this book has handled such steps by asking a language model and reading its answer, as with the `Ticket` (\see{sec-m05-answers-fixed-shape}). That works, but it is the wrong tool in three ways. A decision needs to know *how sure* the answer is, and generated text does not say. A language model writes its answer token by token, which is slow for one word. And it charges for writing, every time, for a step that could cost far less.
 
 The rest of this module builds up what a decision needs, then looks at models built only for deciding.
 
-## When something is rare, most alarms are false
+## When something is rare, most alarms are false {#sec-m10-something-rare-most}
 
 Before probabilities can be trusted, they must be read correctly. Here is the trap most people fall into.
 
@@ -32,7 +32,7 @@ Nearly two thirds of the alarms are false, from a checker that sounds 95% accura
 
 The same trap hides in accuracy. A checker that never flags anything is right 97% of the time, because 97% of requests are honest. It is also useless. For rare events, accuracy says almost nothing. You need to know how often the checker catches the rare case, and how often its alarms are right.
 
-## Learning from examples
+## Learning from examples {#sec-m10-learning-examples}
 
 Tarkika's refund team has reviewed thousands of past requests, approving most and rejecting a few. Those past decisions are examples a model can learn from. The rest of this module uses a small experiment built on that idea. The data is synthetic, generated for this book, but the steps are exactly the ones you would follow with real data.
 
@@ -48,7 +48,7 @@ Then compare three models on the test data:
 
 One more mistake is worth seeing. Suppose the data includes a field "length of the refund team's note". Added as a feature, it pushes accuracy to 99.9%. It is a fake result. The team writes long notes when it rejects, so the field holds the answer, and it is only filled in *after* the decision. At the moment the model must decide, the field does not exist yet. This is called **leakage**. Whenever a model looks too good, ask whether one of its features is only known after the event.
 
-## A probability you can trust
+## A probability you can trust {#sec-m10-probability-trust}
 
 The logistic regression and the baseline are equally accurate. The difference is in the numbers. The baseline says "approve" for everything. The logistic regression gives each request its own chance of rejection: 0.4% for this one, 13% for that one. Those numbers are what make decisions possible, but only if they are right.
 
@@ -60,7 +60,7 @@ The points sit close to the diagonal. When the model says 3%, 3% are rejected; w
 
 Language models have the same problem in another form. You can ask a model "how sure are you, from 0 to 100?", and it will answer. But studies find these stated numbers are poorly calibrated, and usually too confident [@xiong2024uncertainty]. A number a model writes is text like any other. It is not a measured probability.
 
-## Where should the line be?
+## Where should the line be? {#sec-m10-where-line}
 
 The model gives each refund request a chance of rejection. Now draw the line: below what chance should a refund be approved automatically?
 
@@ -79,7 +79,7 @@ Reviewing everything costs ₹40 a request. Approving everything costs about ₹
 
 Notice that the line is at 2.7%, nowhere near 50%. The default line of 50% only makes sense when both mistakes cost the same, and they rarely do. When the costs change, say fraud gets more expensive during a sale, the line moves, and the model does not need to change at all. This only works because the model is calibrated. With the deep tree's 0% and 100%, there is no line to draw.
 
-## Act, review or escalate
+## Act, review or escalate {#sec-m10-act-review-escalate}
 
 One line gives two outcomes. In practice there are usually three (@fig-bands).
 
@@ -91,7 +91,7 @@ One line gives two outcomes. In practice there are usually three (@fig-bands).
 
 The bands are a policy, written in your code, not the model's choice. The model supplies the probability; your rules turn it into an action; the costs set the lines. Each part can then change on its own. A new model can be swapped in without changing the rules. A new cost can move a line without retraining anything. And when someone asks why a refund was approved, the answer is a number and a rule, not a paragraph of generated text.
 
-## Models that only decide: System One models and Jev
+## Models that only decide: System One models and Jev {#sec-m10-models-that-only}
 
 If most steps are decisions, why use a model that writes? That question is behind a newer kind of model, built to answer fixed questions with probabilities instead of generating text.
 
@@ -123,14 +123,14 @@ r.nouls["needs_person"].noul        # chance of "yes", between 0 and 1
 
 **What nobody outside knows yet:** whether its probabilities are calibrated on *your* requests, how it behaves when customers try to manipulate it, and how much it changes between versions.
 
-The last group is not a reason to avoid it. It is a reason to test it, and you already know how. Run it on past requests with known outcomes, draw @fig-reliability for its numbers, and compare it with a baseline and with your current approach on the golden set from Module 9. The same check applies to any model that claims to give probabilities.
+These unknowns are a reason to test it before trusting it, and you already know how. Run it on past requests with known outcomes, draw @fig-reliability for its numbers, and compare it with a baseline and with your current approach on the golden set (\see{sec-m09-golden-set}). The same check applies to any model that claims to give probabilities.
 
-## Small and fast for easy cases, large for hard ones
+## Small and fast for easy cases, large for hard ones {#sec-m10-small-fast-easy}
 
 A calibrated probability does one more job: it tells you when the fast model is out of its depth.
 
 Put a fast decision model in front of everything. When it is confident, for example the top topic has a chance above 90%, use its answer. When it is not, pass the case to a large language model with thinking turned on, or to a person. This is called a **cascade**. Most messages are routine, so most are handled fast and cheaply, and the slow, expensive path is kept for the cases that need it.
 
-It works only if the fast model knows when it is unsure. A model that is confidently wrong sends hard cases down the fast path, and nothing catches them. That is why calibration is not a detail. It is what makes every design in this module safe: the lines, the bands, and the cascade.
+It works only if the fast model knows when it is unsure. A model that is confidently wrong sends hard cases down the fast path, and nothing catches them. So every design in this module, the lines, the bands and the cascade, is only as safe as the model's calibration. Check it before you rely on it, and again after every model update.
 
 The decisions in this module are single steps. An agent strings many steps together, deciding at each one what to do next, and can go wrong in new ways along the way. Module 11 is about that loop.

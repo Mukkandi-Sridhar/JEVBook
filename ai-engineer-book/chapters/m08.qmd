@@ -2,7 +2,7 @@
 
 Module 7 built a pipeline that answers well when the answer is a fact stated in a document. Real questions are often harder. They are vague, or need several facts, or live in a database table, or in a scanned page. This module covers the methods for those cases, and there are many, each with its own name. Rather than learn them as a list, it is easier to sort them by the question each one answers.
 
-## Four questions instead of a list of names
+## Four questions instead of a list of names {#sec-m08-four-questions-instead}
 
 Every "type of RAG" you will read about is an answer to one of four questions (@fig-four-questions).
 
@@ -15,17 +15,17 @@ Every "type of RAG" you will read about is an answer to one of four questions (@
 
 A real system is one answer to each question. Tarkika's assistant might be: hybrid text plus a SQL table, questions rewritten, chunks graded, and a router choosing between them. The sections below take the cases one at a time.
 
-## When the question is vague
+## When the question is vague {#sec-m08-question-vague}
 
 Search can only find what the question asks for. Three kinds of question defeat it.
 
-**Questions that lean on the conversation.** After asking about earbuds, a customer writes "and for phones?" Searching for those three words finds nothing useful. The fix is to **rewrite** the question so it stands alone, using the conversation from Module 4: "What is the return policy for phones?"
+**Questions that lean on the conversation.** After asking about earbuds, a customer writes "and for phones?" Searching for those three words finds nothing useful. The fix is to **rewrite** the question so it stands alone, using the conversation history (\see{sec-m04-model-forgets-every}): "What is the return policy for phones?"
 
 **Questions with several parts.** "Can I return the earbuds and the phone case together, and when will I get my money?" needs three different policy sections. One search returns chunks close to the average of the three, which may answer none of them well. The fix is to **split** it into three searches and combine the results (@fig-query-rewrite).
 
 ![Two fixes for vague questions. Rewrite a follow-up so it stands alone. Split a question with several parts into one search per part.](/figures/m08/query-rewrite.pdf){#fig-query-rewrite}
 
-A small, cheap model does both in one call, with structured output from Module 5:
+A small, cheap model does both in one call, with structured output (\see{sec-m05-answers-fixed-shape}):
 
 ```python
 class Searches(BaseModel):
@@ -41,7 +41,7 @@ chunks = [c for q in plan.queries for c in hybrid_search(q)]
 
 Each of these adds a model call before the search, so the reply starts later. Use them where tests show they help, not by default.
 
-## When the answer is in a table
+## When the answer is in a table {#sec-m08-answer-table}
 
 "How many refunds over ₹2,000 did I get this year?" No paragraph holds that answer. The refunds sit in a database table, and the answer is a count. Vector search cannot count.
 
@@ -49,11 +49,11 @@ So let the model write a database query instead. This is **text-to-SQL**: the mo
 
 ![Text-to-SQL with checks. The model writes the query, but your code decides what it may touch before the database runs it.](/figures/m08/text-to-sql.pdf){#fig-text-to-sql}
 
-A query the model writes is a tool call that can read anything the login allows, so Module 5's rules apply in full. Run it with a database login that can only read. Allow only the tables the assistant needs. Limit the number of rows. And never let the model choose whose data it reads: the customer id in the query must come from the session, as `:me` does in the figure, filled in by your code.
+A query the model writes is a tool call that can read anything the login allows, so the rules for tools that act (\see{sec-m05-which-tools-may}) apply in full. Run it with a database login that can only read. Allow only the tables the assistant needs. Limit the number of rows. And never let the model choose whose data it reads: the customer id in the query must come from the session, as `:me` does in the figure, filled in by your code.
 
 Text-to-SQL is also where models make quiet mistakes: the wrong column, a missed filter, a join that counts every refund twice. A wrong count looks exactly like a right one. Keep a set of questions with known answers and test against them (Module 9).
 
-## When the answer is about relationships
+## When the answer is about relationships {#sec-m08-answer-relationships}
 
 A customer asks, "Which cases fit my phone, and who has them in stock?" The answer is a chain: this customer bought this phone, these cases fit this phone, these sellers stock these cases. No single paragraph holds the chain.
 
@@ -65,7 +65,7 @@ Graphs also help with questions about a whole collection, such as "What are cust
 
 The cost is in building the graph. Extracting nodes and edges takes a model call for every chunk, and the graph must be updated as documents change. If Tarkika's product data already sits in a database, with compatibility and stock in proper tables, the links already exist, and text-to-SQL may do the same job with no graph to build. Build a graph when the relationships live only in text.
 
-## When there is too much to read
+## When there is too much to read {#sec-m08-there-too-much}
 
 Some documents are long and structured, like a 300-page seller agreement with numbered clauses. Cutting it into chunks loses the structure: a chunk from clause 14.3 may not say it belongs to the clause on penalties.
 
@@ -77,17 +77,17 @@ Two approaches keep the structure.
 
 The trade-off is model calls. Each step down the tree is a call, so one question may take five or six. That is slow and costly for quick questions over many short documents, and worth it for precise questions over a few long, well-organised ones, such as contracts and manuals.
 
-## When the answer is in a picture of a page
+## When the answer is in a picture of a page {#sec-m08-answer-picture-page}
 
 Sellers upload scanned invoices. Policy PDFs have tables and charts. Turning these into text first, with OCR, often loses exactly what matters: a table becomes a jumble of numbers, and a chart disappears.
 
-A newer approach skips the text. It embeds each page as an image, using a model that reads page images directly, and searches those image embeddings with the question. ColPali, the best-known model of this kind, retrieved such pages better than pipelines that extracted the text first [@faysse2025colpali]. The page found is then sent to a model that can read images (Module 2).
+A newer approach skips the text. It embeds each page as an image, using a model that reads page images directly, and searches those image embeddings with the question. ColPali, the best-known model of this kind, retrieved such pages better than pipelines that extracted the text first [@faysse2025colpali]. The page found is then sent to a model that can read images (\see{sec-m02-images-documents-speech}).
 
 It costs more storage and more compute per page than text search. Use it for documents whose meaning is in their layout: forms, invoices, slides, scanned pages.
 
-## Checking what was found
+## Checking what was found {#sec-m08-checking-was-found}
 
-Module 7 checked the answer's citations. You can also check the chunks before the model answers from them.
+Citations are checked after the answer (\see{sec-m07-model-still-makes}). You can also check the chunks before the model answers from them.
 
 **Corrective RAG** adds a grading step [@yan2024crag]. A small model reads each retrieved chunk with the question and marks it relevant or not:
 
@@ -100,27 +100,27 @@ good = [c for c in chunks
         if grader.invoke(f"Question: {q}\n\nText: {c}").relevant]
 ```
 
-If enough chunks pass, answer from those. If none pass, do not answer from bad material. Rewrite the question and search again, try another source, or hand over to a person. Cap the retries, as in Module 5.
+If enough chunks pass, answer from those. If none pass, do not answer from bad material. Rewrite the question and search again, try another source, or hand over to a person. Cap the retries, as with tool loops (\see{sec-m05-tools-loop}).
 
 **Self-RAG** goes further. The model is trained to decide for itself when to search, and to mark whether each passage supports what it wrote [@asai2024selfrag]. It needs a specially trained model, so most teams use the simpler grading step, which works with any model.
 
 Both cost one extra model call per chunk graded. Grading five chunks with a small model is cheap. Grading fifty is not, so grade after the reranker, not before.
 
-## Who decides where to look
+## Who decides where to look {#sec-m08-who-decides-where}
 
 Tarkika's assistant now has several sources: policy search, the orders database, and perhaps the web for courier news. Something must decide which to use for each question.
 
-The simplest choice is a fixed pipeline: always search the policies. Next is a **router**: one model call classifies the question first, then the matching path runs. A refund-count question goes to SQL, a policy question to hybrid search, and "hi" to no search at all. When the router also judges how hard the question is, and sends simple ones down a cheap path and hard ones down a fuller one, it is called **adaptive RAG** [@jeong2024adaptive]. Module 5's `Ticket` was already a router.
+The simplest choice is a fixed pipeline: always search the policies. Next is a **router**: one model call classifies the question first, then the matching path runs. A refund-count question goes to SQL, a policy question to hybrid search, and "hi" to no search at all. When the router also judges how hard the question is, and sends simple ones down a cheap path and hard ones down a fuller one, it is called **adaptive RAG** [@jeong2024adaptive]. The `Ticket` (\see{sec-m05-answers-fixed-shape}) was already a router.
 
-The most flexible choice is **agentic RAG**. Each source becomes a tool, as in Module 5, and the model decides in a loop which to call, reads the results, and decides again (@fig-who-decides).
+The most flexible choice is **agentic RAG**. Each source becomes a tool (\see{sec-m05-tool-call-step}), and the model decides in a loop which to call, reads the results, and decides again (@fig-who-decides).
 
 ![Hybrid search always runs both searches and merges them, with no model deciding. Agentic RAG lets the model choose which source to use, step by step.](/figures/m08/who-decides.pdf){#fig-who-decides}
 
 Hybrid and agentic are easy to confuse, because both use several search methods. One question separates them: does a model decide which to use? Hybrid always runs both searches and merges them with a formula. Agentic makes a model call for every choice.
 
-That decides the trade-off. Agentic RAG handles questions nobody planned for, such as "check my order, then tell me whether the delay counts as damage under the policy". But each step is a model call, so it is slower and costs more, and it can loop. Use a fixed pipeline or a router when the kinds of question are known, and keep the agent for the questions that need it. The limits from Module 5 apply to every agent.
+That decides the trade-off. Agentic RAG handles questions nobody planned for, such as "check my order, then tell me whether the delay counts as damage under the policy". But each step is a model call, so it is slower and costs more, and it can loop. Use a fixed pipeline or a router when the kinds of question are known, and keep the agent for the questions that need it. The limits from \see{sec-m05-tools-loop} apply to every agent.
 
-## Index the whole codebase, or just grep it?
+## Index the whole codebase, or just grep it? {#sec-m08-index-whole-codebase}
 
 Coding assistants face this same choice on a large scale, and two well-known tools chose differently.
 

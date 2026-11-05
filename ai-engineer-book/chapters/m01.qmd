@@ -2,7 +2,7 @@
 
 A language model can write a polite reply in Hindi, explain a return policy, or sort a thousand complaints in minutes. Yet most of the work of putting one in front of real customers has little to do with the model itself. This module shows what a model can and cannot do, and what an AI engineer builds around it.
 
-## What does a language model actually do?
+## What does a language model actually do? {#sec-m01-language-model-actually}
 
 You send it text, and it sends back text. That is all a single call to a model does.
 
@@ -20,13 +20,13 @@ Now ask a few simple questions about what a model can do on its own.
 
 *Ask it to check an order, send an email or issue a refund.* It cannot. It can only write text. It can write "I have issued your refund", but writing that sentence does not move any money.
 
-## Three kinds of AI work
+## Three kinds of AI work {#sec-m01-three-kinds-ai}
 
 People who "work in AI" usually do one of three jobs. Some **make models**: they collect data and train models, which needs large research teams and large budgets. Some **serve models**: they make trained models run fast and cheaply on hardware, which is called inference engineering. And some **build applications**: they take a model that already exists and turn it into a product that works for real users.
 
 This book is about the third job.
 
-## If the model cannot act, what can?
+## If the model cannot act, what can? {#sec-m01-model-cannot-act}
 
 In software, what does the actual work, such as looking up an order or sending an email? Code. A function such as `check_order_status(order_id)` can query a database and return the answer.
 
@@ -40,7 +40,7 @@ Now look at one particular kind of tool: one that fetches information, such as a
 
 You will also see agents described in other ways. "Model plus tools" came first. Then people noticed that what you put in front of the model decides most of the result, and started saying "model plus context". The newest description is "model plus harness", where the **harness** means everything around the model: the instructions, the tools, the memory, the checks, the code that runs the loop. All three descriptions are true. Building that harness is the job.
 
-## What does an AI engineer build around the model?
+## What does an AI engineer build around the model? {#sec-m01-ai-engineer-build}
 
 @fig-system-map shows the parts, in the order a customer's message passes through them. Each part has a module of its own.
 
@@ -57,7 +57,7 @@ You will also see agents described in other ways. "Model plus tools" came first.
 
 The model is one box out of eight. The other seven are what the engineer builds.
 
-## Calling a model is not calling a function
+## Calling a model is not calling a function {#sec-m01-calling-model-calling}
 
 In code, a model call looks like any other function call: text goes in, text comes out. It behaves very differently.
 
@@ -74,7 +74,7 @@ In code, a model call looks like any other function call: text goes in, text com
 
 Each row changes how you write code around the model. Because the output varies, you check every reply before your code uses it (Module 5), and you cannot test it the usual way (Module 9). Because calls fail, you retry some failures and not others (Module 11). Because calls are slow, you run many at once, within the provider's limits (Module 15). And because every call costs money, you count what you send (Modules 3 and 15).
 
-## Should this problem use AI at all?
+## Should this problem use AI at all? {#sec-m01-problem-use-ai}
 
 The table above gives a simple rule. A model is slower, costlier and less predictable than ordinary code. So when ordinary code can do the job, use ordinary code.
 
@@ -87,7 +87,7 @@ Before building, ask four questions:
 3. What does success look like, as a number you can measure before and after?
 4. Can you buy this ready-made? A generic support bot may be enough. You build your own when you need your own data, your own rules, or control over what it is allowed to do.
 
-## Your first call, and what it costs
+## Your first call, and what it costs {#sec-m01-call-costs}
 
 Here is a complete call to a model in Python. It uses an OpenAI model through **LangChain**, a popular library that gives the same way of calling models from many providers. To switch to another provider, you change the import and one line.
 
@@ -112,7 +112,7 @@ Now work out the cost. Suppose the provider charges ₹350 for every million inp
 
 Two things stand out. Most of the cost comes from the text sent *with* each question, not from the question itself. And the bill grows with every message, so a small saving per call becomes a large saving per month. Modules 3 and 15 come back to both.
 
-## The project for this book
+## The project for this book {#sec-m01-project-book}
 
 Through the book, you will build one system: a customer-support agent for **Tarkika**, an imagined online marketplace that sells phones, electronics, fashion and home products across India. By the end, it will:
 

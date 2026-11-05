@@ -220,3 +220,7 @@
 % Headings keep a few lines of text with them
 \pretocmd{\section}{\needspace{7\baselineskip}}{}{}
 \pretocmd{\subsection}{\needspace{5\baselineskip}}{}{}
+
+% Cross-references with page numbers: \see{sec-...} -> "Section 3.9, page 31"; \seefig{fig-...} -> "Figure 3.1, page 18"
+\newcommand{\see}[1]{Section~\ref{#1}, page~\pageref{#1}}
+\newcommand{\seefig}[1]{Figure~\ref{#1}, page~\pageref{#1}}

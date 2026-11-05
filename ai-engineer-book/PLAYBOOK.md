@@ -35,6 +35,12 @@ rules that apply on the way. When two files disagree, this one wins.
     own terms and objects (system, user and AI messages; the transformer diagram from the 2017 paper), show them as
     they really appear (a figure of the actual structure, the actual library classes), then explain each part in
     plain words. A made-up description that avoids the standard term is less clear, not more.
+14. Every reference to an earlier idea points to the exact place: `\see{sec-...}` prints "Section 3.9, page 29" and
+    `\seefig{fig-...}` prints "Figure 3.1, page 20". Never write "Module 3 showed..." for a specific point. Every
+    section has an id (`{#sec-mNN-...}`).
+15. Show, don't describe. A failure is shown with the input that causes it and what the model does; a design rule is
+    shown with a before and after. A study's number comes with one plain sentence on what the researchers did.
+    No bold-label bullets standing in for explanation, no "not X. It is Y." pairs, no closing slogans.
 
 ## 1. The standard
 

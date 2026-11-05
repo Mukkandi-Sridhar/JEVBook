@@ -2,7 +2,7 @@
 
 You do not need to build models to use them well. But a few facts about how they work explain most of what you will see in practice. This module shows them, mostly in pictures, and points you to free tools where you can try them yourself.
 
-## Tokens: what the model actually reads
+## Tokens: what the model actually reads {#sec-m02-tokens-model-actually}
 
 A model does not read words the way we do. It reads small pieces of text called **tokens**. @fig-tokens-words shows how a real tokenizer, the one used by OpenAI's GPT-4o models, splits a few words.
 
@@ -16,7 +16,7 @@ Do not confuse a token with a **chunk**. A token is a tiny piece the model reads
 
 *Try it:* search for "OpenAI tokenizer" or open tiktokenizer.vercel.app. Paste any sentence and watch it split into coloured pieces, exactly like the figures here.
 
-## The same message in five languages
+## The same message in five languages {#sec-m02-same-message-five}
 
 Now look at @fig-tokens-playground. It is one message, "My refund has not come yet", written five ways, and split by the same tokenizer. A dot marks a space.
 
@@ -32,7 +32,7 @@ Why? The tokenizer learned its list of pieces mostly from English text. Common E
 
 For your work, more tokens for the same message means a higher bill, a slower reply, and less room for anything else in the request. Hinglish, written in English letters, sits in between. If your users write in Indian languages, count a sample of their real messages before you plan a budget.
 
-## Watching the model write
+## Watching the model write {#sec-m02-watching-model-write}
 
 A model writes one token at a time. At each step it looks at all the text so far, gives every possible next token a chance, picks one, and adds it. Then it repeats. @fig-writing-steps shows four steps.
 
@@ -46,7 +46,7 @@ A setting called **temperature** controls how strongly the model prefers its top
 
 So your code must never expect one exact reply.
 
-## How a model learns
+## How a model learns {#sec-m02-model-learns}
 
 Training is one simple exercise, repeated an enormous number of times (@fig-learning-loop). Hide the next word of a sentence. Let the model guess it. Check the guess. Then adjust the model a little, so that the right word becomes slightly more likely next time.
 
@@ -60,7 +60,7 @@ What gets adjusted are the model's internal numbers, called **parameters**. A la
 
 Each parameter usually takes 2 bytes, so a model with 8 billion of them needs about 16 GB to run. Compressed to half a byte each, it needs about 4 GB. Training needs about 16 bytes per parameter, roughly 128 GB, more than one large GPU holds [@rajbhandari2020]. That is why most companies run models that someone else trained.
 
-## How a word gets its meaning from its neighbours
+## How a word gets its meaning from its neighbours {#sec-m02-word-gets-meaning}
 
 "Bank" means the side of a river in "the river bank", and a place for money in "my bank account". The model works out which meaning applies the same way you do: by looking at the words around it. In @fig-attention, "bank" pays most of its attention to "river".
 
@@ -77,7 +77,7 @@ That is why long conversations are expensive, and why every model limits how muc
 
 *Try it:* Transformer Explainer (poloclub.github.io/transformer-explainer) runs a small model in your browser. Type a sentence and watch the attention lines move between words, then see the chances for the next token [@cho2025].
 
-## Meaning as a map
+## Meaning as a map {#sec-m02-meaning-as-map}
 
 "I want my money back" and "refund chahiye" share no words, yet mean the same thing. A search for matching words would never link them.
 
@@ -93,7 +93,7 @@ Embeddings come from separate, smaller models that only produce these lists. Mod
 
 *Try it:* the Embedding Projector (projector.tensorflow.org) shows thousands of words as points in 3D. Search for a word and see which words sit closest to it.
 
-## The transformer
+## The transformer {#sec-m02-transformer}
 
 You have now seen the pieces one at a time: tokens, chances for the next token, attention, and lists of numbers that hold meaning. They all come from one design, the **transformer**, published by a team at Google in 2017 in a paper called "Attention Is All You Need" [@vaswani2017]. @fig-transformer-paper redraws the paper's diagram.
 
@@ -128,7 +128,7 @@ You do not need the maths inside these boxes to build with models. But the pictu
 - The notes that attention keeps on earlier tokens are the KV cache from the attention section, the reason fifty long conversations needed 50 GB.
 - The whole stack runs once for every token of the reply. That is why the output is the slow and costly part.
 
-## More text can mean worse answers
+## More text can mean worse answers {#sec-m02-text-mean-worse}
 
 Every model has a **context window**: the most tokens it can take in one call. Some now hold a million tokens or more. So it is tempting to send everything: all the policies, all the past emails, every order.
 
@@ -140,7 +140,7 @@ Experiments show the result. As the input grows, answers get worse, even on simp
 
 So a big window does not mean you can stop choosing what to send. Module 3 is about choosing well.
 
-## Reading is fast, writing is slow
+## Reading is fast, writing is slow {#sec-m02-reading-fast-writing}
 
 @fig-prefill-decode shows the difference between how a model handles your input and its own output.
 
@@ -157,7 +157,7 @@ Showing the reply word by word as it is written, called **streaming**, makes a s
 
 Providers also cut costs behind the scenes. They reuse the work when many requests start with the same text (**prefix caching**; Module 3 shows how to benefit), and they compress the model's numbers to save memory and time (**quantisation**, the "compressed" bar in @fig-model-memory).
 
-## Same question, different answer, even at temperature 0
+## Same question, different answer, even at temperature 0 {#sec-m02-same-question-different}
 
 At temperature 0, the model should always pick its top token, so the same question should always get the same answer. Often it does not.
 
@@ -165,7 +165,7 @@ The reason is in how providers run models. Your request is processed together wi
 
 The lesson is simple: never build anything that needs the model to give exactly the same text twice. Check the meaning of the answer instead. Module 9 shows how.
 
-## Thinking costs tokens
+## Thinking costs tokens {#sec-m02-thinking-costs-tokens}
 
 What is 2 + 2? You answer at once. What is 17 × 24? You probably work it out in steps. Models are similar: on problems with several steps, they do better if they write out their working first.
 
@@ -175,7 +175,7 @@ What is 2 + 2? You answer at once. What is 17 × 24? You probably work it out in
 
 The answer is the same one word, at 76 times the output cost. For sorting messages, that is waste. For working out a refund across three partial returns and a coupon, the thinking may be what makes the answer right. So compare models by the **cost per finished task**, not by the price per token.
 
-## Big models that still run fast
+## Big models that still run fast {#sec-m02-big-models-that}
 
 A bigger model usually gives better answers. But every word passes through the whole model, so a bigger model is also slower and costs more per word.
 
@@ -185,13 +185,13 @@ A **mixture of experts** gets around this. In each layer, the feed-forward step 
 
 The catch: speed depends on the part that is used, but memory depends on the whole. Every expert must be loaded, because the next token might need a different one. Such a model can be as fast as a small model and still need the memory of a large one.
 
-## Images, documents and speech
+## Images, documents and speech {#sec-m02-images-documents-speech}
 
 The same design handles more than text. An image is cut into small squares, and each square is treated like a token, so the model can answer a question about a photo. A scanned page can be read the same way. Speech is cut into short slices of sound, or turned into text first by a separate model.
 
 Images are not free. One image can cost as many tokens as a full page of text, so a screenshot with every question adds up quickly.
 
-## Choosing a model
+## Choosing a model {#sec-m02-choosing-model}
 
 There is no single best model. There is only the right model for each job.
 
