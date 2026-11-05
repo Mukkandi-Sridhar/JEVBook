@@ -1,30 +1,30 @@
 # Agents: the loop {#sec-m11}
 
-Module 5 let `create_agent` run the loop of tool calls, and Module 8 let a model choose where to search. This module opens that loop up. It covers when you need an agent at all, how the loop works inside, why long loops go wrong, and how to stop them, recover from failures, and choose a framework.
+In Module 5, `create_agent` ran the loop of tool calls for us, and in Module 8 a model chose where to search. This module opens that loop up to show when you need an agent at all, how the loop works inside, why long loops go wrong, how to stop them and recover from failures, and how to choose a framework.
 
 ## Workflow or agent? {#sec-m11-workflow-agent}
 
-There are two ways to string model calls together. In a **workflow**, your code decides the path: first this call, then that one. In an **agent**, the model decides the path, one step at a time. Anthropic's guide to building agents lists five common workflows, and they cover most real systems [@schluntz2024agents] (@fig-workflows).
+There are two ways to string model calls together. In a **workflow**, your code decides the path, for example this call first and then that one, while in an **agent**, the model decides the path itself, one step at a time. Anthropic's guide to building agents lists five common workflows, which between them cover most real systems (@fig-workflows) [@schluntz2024agents].
 
 ![Five common workflows, where code decides the path, and an agent, where the model does.](/figures/m11/workflows.pdf){#fig-workflows}
 
-1. **Chain.** Fixed steps in order: find the policy text, answer, check the answer.
-2. **Route.** Classify first, then take one path. The `Ticket` (\see{sec-m05-answers-fixed-shape}) was a router.
-3. **Parallel.** Run independent parts at once: the three searches of a split question (\see{sec-m08-question-vague}), or several safety checks side by side.
-4. **Orchestrator-workers.** A lead model splits a task it cannot plan in advance into pieces, hands them out, and combines the results. "Compare the return rules for these four categories" becomes four workers, one per category.
-5. **Evaluator-optimiser.** One call writes a reply, another checks it against the policy, and the first rewrites until the check passes.
+1. **Chain.** Fixed steps run in order, such as finding the policy text, answering, and then checking the answer.
+2. **Route.** The message is classified first, and then one of several paths runs; the `Ticket` from \see{sec-m05-answers-fixed-shape} was a router.
+3. **Parallel.** Independent parts run at the same time, such as the three searches for a split question (\see{sec-m08-question-vague}), or several safety checks side by side.
+4. **Orchestrator-workers.** A lead model splits a task that cannot be planned in advance into pieces, hands them out to workers, and combines their results, so that "compare the return rules for these four categories" becomes four workers, one per category.
+5. **Evaluator-optimiser.** One call writes a reply, another checks it against the policy, and the first rewrites the reply until the check passes.
 
-An **agent** drops the fixed path. The model looks at the situation, chooses a tool, reads the result, and chooses again, until it decides it is done.
+An **agent** has no fixed path at all. The model looks at the situation, chooses a tool, reads the result, and chooses again, until it decides it is done.
 
-Which should you use? The simplest one that works. A workflow is faster, cheaper, and easier to test, because you know every path it can take. An agent pays for its flexibility with more model calls, more delay, and less predictable behaviour. Use one where the steps genuinely cannot be known in advance. For Tarkika, a router in front of a few chains handles most messages. An agent is kept for the messy ones: "I returned three things from two orders, one refund came, where are the others?"
+The rule for choosing is to use the simplest design that works. A workflow is faster, cheaper and easier to test, because you know every path it can take, whereas an agent pays for its flexibility with more model calls, more delay and less predictable behaviour. Use an agent only where the steps genuinely cannot be known in advance. At Tarkika, a router in front of a few chains handles most messages, and an agent is kept for the messy ones, such as "I returned three things from two orders, one refund came, where are the others?"
 
 ## The loop by hand {#sec-m11-loop-by-hand}
 
-Here is an agent handling one message, step by step (@fig-react-trace).
+@fig-react-trace shows an agent handling one message, step by step.
 
 ![An agent's steps for one message. It alternates between deciding what to do and looking at the result, until it decides to reply.](/figures/m11/react-trace.pdf){#fig-react-trace}
 
-It decides it needs the order, calls a tool, and looks at the result. It decides it needs the policy, calls another tool, and looks again. Then it decides it has enough, and replies. The whole agent is that loop. In code, it is about a dozen lines:
+The agent decides that it needs the order, calls a tool, and looks at the result; then it decides that it needs the policy, calls another tool, and looks again; and finally it decides that it has enough, and replies. The whole agent is nothing more than this loop, which takes about a dozen lines of code:
 
 <!-- check: replies [{"tool_calls": [{"name": "check_order_status", "args": {"order_id": "TK-5521"}}]}, {"tool_calls": [{"name": "search_policy", "args": {"query": "return opened earbuds"}}]}, "Opened earbuds can be returned only if they are faulty. Are they?"] -->
 <!-- check: expect -->
@@ -57,31 +57,31 @@ print(run_agent([SystemMessage(INSTRUCTIONS), HumanMessage(question)]))
 Opened earbuds can be returned only if they are faulty. Are they?
 ```
 
-The model's tool calls go in, the tools' results come back as tool messages ("look"), and the loop ends the first time the model replies without asking for a tool. Each pass through the loop is one model call, carrying everything so far, and the context (\see{sec-m03-goes-request}) grows with every result.
+Each time the model asks for a tool, the loop runs it and adds the result as a tool message (the "look" step), and the loop ends the first time the model replies without asking for a tool. Every pass through the loop is one model call carrying the whole conversation so far, so the context (\see{sec-m03-goes-request}) grows with every result.
 
-This pattern was described in a 2022 paper as **ReAct**, short for *Reason* and *Act*: the model reasons about what to do, acts with a tool, observes the result, and repeats [@yao2023react]. In the paper, the model wrote its reasoning out as text before each action. Today's models usually reason inside their thinking, or simply pick the next tool, but the loop is the same.
+This pattern was described in a 2022 paper under the name **ReAct**, short for *Reason* and *Act*: the model reasons about what to do, acts by calling a tool, observes the result, and repeats [@yao2023react]. In the paper, the model wrote out its reasoning as text before each action, whereas today's models usually reason inside their thinking or simply pick the next tool, but the loop itself is the same.
 
 ## Errors multiply {#sec-m11-errors-multiply}
 
-Suppose each step of the loop is right 95% of the time: the right tool, the right arguments, the right reading of the result. That sounds reliable. But a run is only right if every step is. If each step's mistakes happen independently of the others, the chance over 10 steps is 0.95 multiplied by itself 10 times: about 60% (@fig-compound). Real steps are not fully independent, but the pattern holds.
+Suppose each step of the loop is right 95% of the time, meaning the model picks the right tool, passes the right arguments and reads the result correctly. That sounds reliable, but a run is only right if every one of its steps is right. If each step's mistakes happen independently of the others, the chance that all 10 steps of a run are right is 0.95 multiplied by itself 10 times, which is about 60% (@fig-compound). Real steps are not fully independent, but the pattern still holds.
 
 ![The chance that every step of a run is right, for different step accuracies. Small error rates add up quickly over long runs.](/figures/m11/compound.pdf){#fig-compound}
 
-Four in ten runs go wrong somewhere, from steps that are each 95% right. At 90% per step, 20 steps succeed only 12% of the time. This one calculation explains much of how agents are built.
+So four runs in ten go wrong somewhere, even though each step is 95% right, and at 90% per step a run of 20 steps succeeds only 12% of the time. This one calculation explains much of how agents are built.
 
-- **Keep loops short.** Fewer steps leave fewer chances to fail. A tool that does a whole job in one call (\see{sec-m05-model-knows-tool}) removes steps.
-- **Make each step more reliable.** Clear tool descriptions and useful error messages raise the per-step rate, and a small rise there gives a large rise over the run.
-- **Check the result at the end,** as the evaluator-optimiser does, so one bad step can be caught before the customer sees it.
-- **Use workflows for the parts you can predict.** Code does not get a step wrong 5% of the time.
+- **Keep loops short,** because fewer steps leave fewer chances to fail; a tool that does a whole job in one call (\see{sec-m05-model-knows-tool}) removes steps.
+- **Make each step more reliable,** with clear tool descriptions and useful error messages, because a small rise in the success of each step gives a large rise in the success of the whole run.
+- **Check the result at the end,** as the evaluator-optimiser does, so that one bad step can be caught before the customer sees it.
+- **Use workflows for the parts you can predict,** because ordinary code does not get a step wrong 5% of the time.
 
 ## When should the loop stop? {#sec-m11-loop-stop}
 
-The loop above stops in two ways: the model stops asking for tools, or it hits `MAX_STEPS`. Real agents need a few more ways out.
+The loop above stops in one of two ways: either the model stops asking for tools, or the loop reaches `MAX_STEPS`. Real agents need a few more ways out.
 
-1. **A step limit,** as above, or `ModelCallLimitMiddleware` (\see{sec-m05-tools-loop}).
-2. **A budget.** Add up `usage_metadata` after each call, and stop when the tokens, or the rupees, pass a limit.
-3. **A time limit.** The customer is waiting. After, say, 30 seconds, stop and say so.
-4. **A stuck check.** An agent that calls the same tool with the same arguments twice is usually going in circles. So keep a list of the calls made so far, and check each new call against it. These lines go inside the `for call` loop, before the tool runs:
+1. **A step limit,** as above, or with `ModelCallLimitMiddleware` (\see{sec-m05-tools-loop}).
+2. **A budget.** Add up the `usage_metadata` after each call, and stop when the tokens, or the rupees they cost, pass a limit.
+3. **A time limit.** The customer is waiting, so after, say, 30 seconds, stop and tell them.
+4. **A stuck check.** An agent that calls the same tool with the same arguments a second time is usually going in circles, so keep a list of the calls made so far and check each new call against it. These lines go inside the `for call` loop, before the tool runs:
 
 <!-- check: skip -->
 ```python
@@ -93,38 +93,38 @@ seen.append(this_call)
 
 and `seen = []` goes at the start of `run_agent`.
 
-What happens at the stop matters as much as the stop. Never end with silence or an error page. Tell the customer a person will take over, hand the conversation to the team with everything gathered so far, and save the state, so the person does not start again from the beginning.
+What happens when the loop stops matters as much as the stop itself, so never end with silence or an error page. Tell the customer that a person will take over, hand the conversation to the team with everything gathered so far, and save the state, so that the person does not have to start again from the beginning.
 
 ## When a tool or the model fails {#sec-m11-tool-model-fails}
 
-Calls fail. The model provider is busy, the order database times out, the network drops. Before retrying anything, sort the failure into one of two kinds.
+Calls fail for all sorts of reasons: the model provider is busy, the order database times out, or the network drops. Before retrying anything, sort the failure into one of two kinds.
 
-**Waiting might fix it.** The provider says it is overloaded (HTTP 429 or 529), the server had an error (500, 503), or the call timed out. Retry these.
+**Failures that waiting might fix.** The provider says it is overloaded (HTTP 429 or 529), the server had an error (500 or 503), or the call timed out. These are worth retrying.
 
-**Waiting will not fix it.** The request was malformed (400), the key is wrong (401), the order does not exist (404), or the arguments failed validation. Retrying sends the same broken request again. Stop, or send the error back to the model as a tool message so it can correct itself.
+**Failures that waiting will not fix.** The request was malformed (400), the key is wrong (401), the order does not exist (404), or the arguments failed validation. Retrying would only send the same broken request again, so either stop, or send the error back to the model as a tool message so that it can correct itself.
 
-How you retry matters as much as whether. Suppose 500 requests hit a service at once, during a sale, and the service can handle 50 every tenth of a second. The rest fail. If every client retries after exactly one second, they all come back together, fail together, and come back together again. @fig-retry-storm shows a simulation of this.
+How you retry matters as much as whether you retry. Suppose 500 requests reach a service at once during a sale, and the service can handle only 50 of them every tenth of a second, so the rest fail. If every client then retries after exactly one second, they all come back together, fail together, and come back together again. @fig-retry-storm shows a simulation of this.
 
 ![500 requests arrive at once at a service that handles 50 per tenth of a second. Retrying after a fixed second keeps them bunched; random, growing waits spread them out.](/figures/m11/retry-storm.pdf){#fig-retry-storm}
 
-With fixed one-second retries, the requests return in a wave each second. The service needed 2,750 calls and 9 seconds to serve everyone. With waits that are random and grow after each failure (up to 1 second, then 2, then 4), the retries spread out across the gaps. It took 953 calls and 2.3 seconds. This is **exponential back-off with jitter**: back-off means the wait grows each time, and jitter means it is random [@brooker2015]. LangChain's `ModelRetryMiddleware` and `ToolRetryMiddleware` do it for you, with jitter on by default.
+With fixed one-second retries, the requests return in a wave every second, and the service needed 2,750 calls and 9 seconds to serve everyone. When each client instead waits a random time that grows after every failure (up to 1 second, then up to 2, then up to 4), the retries spread out into the gaps, and the same 500 requests needed only 953 calls and 2.3 seconds. This method is called **exponential back-off with jitter**, where back-off means that the wait grows each time and jitter means that it is random [@brooker2015]. LangChain's `ModelRetryMiddleware` and `ToolRetryMiddleware` do this for you, with jitter turned on by default.
 
 Two more defences complete the picture.
 
-- **Fallbacks.** If the main model keeps failing, switch to another one: `ModelFallbackMiddleware` takes a list of models to try in order. If all fail, fall back to a person.
-- **Never retry an action twice by accident.** A refund call that times out may have succeeded before the timeout. Retrying it blindly can refund the customer twice. Give each action a unique id, called an **idempotency key**, and have the payment system ignore a second request with the same id. This is ordinary engineering, and agents need it more than most code, because they retry on their own.
+- **Fallbacks.** If the main model keeps failing, switch to another one; `ModelFallbackMiddleware` takes a list of models to try in order, and if they all fail, the chat falls back to a person.
+- **Never repeat an action by accident.** A refund call that timed out may still have gone through before the timeout, so retrying it blindly can refund the customer twice. To prevent this, give each action a unique id, called an **idempotency key**, and have the payment system ignore any second request with the same id. This is ordinary engineering practice, but agents need it more than most code, because they retry on their own.
 
 ## Answer straight away, or plan first? {#sec-m11-answer-straight-away}
 
-"Where is TK-5521?" needs one tool call. "I returned three items from two orders, one refund came, where are the others?" needs a plan: find both orders, find the three returns, check each refund, then answer.
+"Where is TK-5521?" needs a single tool call, but "I returned three items from two orders, one refund came, where are the others?" needs a plan: find both orders, find the three returns, check each refund, and then answer.
 
-For the second kind, it often works better to have the model write a plan first, as a list of steps with structured output (\see{sec-m05-answers-fixed-shape}), and then carry it out. Your code can run independent steps in parallel, check each one, and show the plan to a person if the steps include actions.
+For questions of the second kind, it often works better to have the model write a plan first, as a list of steps in structured output (\see{sec-m05-answers-fixed-shape}), and then carry it out. Your code can then run independent steps in parallel, check each one as it finishes, and show the plan to a person first if any step takes an action.
 
-But how does the system know which kind of message it has? It needs a classifier in front: a router. That adds a step to every message, including the simple ones. Two things keep the cost down. Use a small, fast model for it, or a decision model (\see{sec-m10-models-that-only}), since "is this simple or complex?" is a decision, not writing. And when the classifier is unsure, let it choose the fast path. A simple question sent to the planner wastes time and money on a plan it did not need. A complex question sent down the fast path still reaches the agent loop, which can take several steps; it just does so without a plan written first. Long, multi-step plans that run for minutes or hours are the subject of Module 14.
+To know which kind of message it has, the system needs a classifier in front, in other words a router, and that adds a step to every message, including the simple ones. Two things keep this cost down. First, use a small, fast model for the router, or a decision model (\see{sec-m10-models-that-only}), since "is this simple or complex?" is a decision rather than a piece of writing. Second, when the classifier is unsure, let it choose the fast path. A simple question sent to the planner wastes time and money on a plan it did not need, whereas a complex question sent down the fast path still reaches the agent loop, which can take several steps, only without a written plan to guide it. Long, multi-step plans that run for minutes or hours are the subject of Module 14.
 
 ## The same loop in one line {#sec-m11-same-loop-line}
 
-Here is the hand-written loop as a framework call:
+Here is the same loop as a single framework call:
 
 ```python
 from langchain.agents import create_agent
@@ -137,25 +137,25 @@ agent = create_agent(llm, tools=list(TOOLS.values()),
                      middleware=[ModelCallLimitMiddleware(run_limit=8)])
 ```
 
-That one line does what the dozen lines did, and more. It keeps the message list, runs the tools, including several at once when the model asks for them, turns tool errors into messages the model can read, decides when to stop, saves the state after each step, streams the reply, and runs your middleware around every call.
+That one call does everything the dozen lines did, and more: it keeps the message list, runs the tools (several at once when the model asks for them), turns tool errors into messages the model can read, decides when to stop, saves the state after each step, streams the reply, and runs your middleware around every call.
 
-Use the framework, but keep the hand-written version in mind. When an agent misbehaves, the cause is in one of the steps that the one line hides, and you can only find it if you know what those steps are. Is it looping because a tool returns a useless error? Is the context full of old results? Is a retry repeating an action? The trace of each step, covered in Module 16, shows you the loop the line is running.
+Use the framework, but keep the hand-written version in mind, because when an agent misbehaves, the cause lies in one of the steps that the single call hides, and you can only find it if you know what those steps are. The agent may be looping because a tool returns a useless error, its context may be full of old results, or a retry may be repeating an action, and the trace of each step, covered in Module 16, shows you which.
 
 Choosing a framework comes down to a few questions:
 
-- **How much control do you need over the path?** LangGraph lets you draw the steps as a graph, mixing workflow and agent, with saved state at every step.
-- **Which models will you use?** Some SDKs are built around one provider's models, such as the OpenAI Agents SDK and the Claude Agent SDK. Others, such as LangChain and Pydantic AI, work across providers.
-- **What comes ready-made?** The Claude Agent SDK brings the tools and permission system of a coding agent. CrewAI is organised around teams of agents with roles. Pydantic AI centres on typed inputs and outputs.
-- **What does your team already know?** The loop is simple. The difference between frameworks matters less than people being able to read and debug what they run.
+- **How much control do you need over the path?** LangGraph lets you draw the steps as a graph that mixes workflow and agent, with the state saved at every step.
+- **Which models will you use?** Some SDKs, such as the OpenAI Agents SDK and the Claude Agent SDK, are built around one provider's models, while others, such as LangChain and Pydantic AI, work across providers.
+- **What comes ready-made?** The Claude Agent SDK brings the tools and permission system of a coding agent, CrewAI is organised around teams of agents with roles, and Pydantic AI centres on typed inputs and outputs.
+- **What does your team already know?** Because the loop itself is simple, the differences between frameworks matter less than whether your team can read and debug what they run.
 
 ## Everything around the model is the harness {#sec-m11-everything-around-model}
 
-Module 1 described an agent as a model plus a **harness**: everything around the model (\see{sec-m01-model-cannot-act}). This module completes the picture (@fig-harness).
+Module 1 described an agent as a model plus a **harness**, meaning everything around the model (\see{sec-m01-model-cannot-act}), and this module completes that picture (@fig-harness).
 
 ![The harness: everything around the model, and the module that covers each part.](/figures/m11/harness.pdf){#fig-harness}
 
-The system message, the tools and their descriptions, memory, the choice of what to send, the limits, retries and fallbacks, approvals, safety checks, traces and evals. Only one of these boxes is the model. You build every other one.
+The harness includes the system message, the tools and their descriptions, memory, the choice of what to send, the limits, retries and fallbacks, the approvals, the safety checks, and the traces and evals. Only one box in the figure is the model, and you build every other one.
 
-This is why two products built on the same model can behave very differently. When Anthropic refined only the descriptions of its agent's tools, the same model reached the best published score at the time on SWE-bench Verified, a benchmark of real software fixes [@anthropic2025tools]. Improving a system by changing what surrounds the model, rather than the model itself, is sometimes called **harness engineering**. Most of the gains in this book have come from it.
+That is why two products built on the same model can behave very differently. When Anthropic improved nothing but the descriptions of its agent's tools, the same model reached the best published score at the time on SWE-bench Verified, a benchmark of real software fixes [@anthropic2025tools]. Improving a system by changing what surrounds the model, rather than the model itself, is sometimes called **harness engineering**, and most of the gains in this book have come from it.
 
-Some steps in the loop change things that cannot be undone: a refund, a cancellation, an email. And some of the text the loop reads was written by people trying to misuse it. Module 12 is about approvals and safety.
+Some steps in the loop change things that cannot be undone, such as a refund, a cancellation or an email, and some of the text the loop reads was written by people trying to misuse it. Module 12 is about approvals and safety.

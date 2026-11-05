@@ -41,6 +41,11 @@ rules that apply on the way. When two files disagree, this one wins.
 15. Show, don't describe. A failure is shown with the input that causes it and what the model does; a design rule is
     shown with a before and after. A study's number comes with one plain sentence on what the researchers did.
     No bold-label bullets standing in for explanation, no "not X. It is Y." pairs, no closing slogans.
+16. Sentences carry a whole thought and connect to the next one. Join cause and effect in one sentence with
+    "because", "so", "which means"; do not chop one idea into three short sentences, and do not cram two ideas
+    into one with a semicolon. Put references at the end of a clause, not in its middle.
+17. Every code example imports what it uses (from `code/tarkika.py` for shared pieces), uses plain Python
+    (loops, named functions, one step per line), shows its output, and passes `python3 tools/check_code.py`.
 
 ## 1. The standard
 

@@ -1,52 +1,50 @@
 # Search inside out {#sec-m06}
 
-When the policy text did not fit (\see{sec-m03-policy-text-fit}), we assumed a search that hands you the right policy paragraphs for each question. This module opens that search up. There are two kinds, keyword search and meaning search. Each works differently inside, each misses different things, and the best systems use both.
+When the policy text did not fit (\see{sec-m03-policy-text-fit}), we assumed there was a search that hands you the right policy paragraphs for each question. This module looks inside that search. There are two kinds, keyword search and meaning search, which work differently inside and miss different things, and that is why the best systems use both.
 
 ## Two ways to miss {#sec-m06-two-ways-miss}
 
-Take a small set of eight paragraphs from Tarkika's policies. Two matter here:
+Take a small set of eight paragraphs from Tarkika's policies, of which two matter most here:
 
 - **P2, the hygiene policy:** "In-ear audio devices, innerwear and cosmetics cannot be returned once the seal is opened, unless they arrive faulty."
 - **P4, an FAQ:** "Can I return unopened earbuds? Yes. Unopened earbuds can be returned within 10 days."
 
 The other six cover general returns (P1), an earbuds buying guide (P3), faulty items (P5), refund timing (P6), phones (P7), and a sale offer on a product coded AX-7781 (P8).
 
-A customer asks, "Can I return opened earbuds?" The answer is in P2: no, unless faulty. @fig-keyword-scores shows a real keyword search over the eight paragraphs, with two ways of asking.
+A customer asks, "Can I return opened earbuds?", and the answer is in P2: no, unless they are faulty. @fig-keyword-scores shows a real keyword search over the eight paragraphs, for two different ways of asking that question.
 
 ![Real BM25 keyword scores for the eight paragraphs. Asked one way, the right paragraph comes first. Asked another way, with no words in common, every paragraph scores zero.](/figures/m06/keyword-scores.pdf){#fig-keyword-scores}
 
-Asked as "can I return opened earbuds", keyword search puts P2 first. Asked as "can I send back earphones I already used", it finds nothing at all. Every score is zero, because the question and the paragraph share no words: "earphones" is not "in-ear audio", and "used" is not "opened".
+When the question is "can I return opened earbuds", keyword search puts P2 first. When the same question is asked as "can I send back earphones I already used", it finds nothing at all, and every score is zero, because the question and the paragraph share no words: "earphones" is not "in-ear audio", and "used" is not "opened".
 
-Meaning search, which compares embeddings (\see{sec-m02-meaning-as-map}), would catch the second question, since "earphones I already used" and "in-ear audio … seal opened" mean nearly the same thing. But it has misses of its own. Ask for "return policy for AX-7781". To keyword search, AX-7781 is a rare and exact word, and it finds P8 at once. To meaning search, it is just a product code that looks like every other product code.
+Meaning search, which compares embeddings (\see{sec-m02-meaning-as-map}), should catch the second question, because "earphones I already used" and "in-ear audio … seal opened" mean nearly the same thing. It has misses of its own, though. If a customer asks for the "return policy for AX-7781", keyword search treats AX-7781 as a rare, exact word and finds P8 at once, while meaning search sees only a product code that looks like every other product code.
 
-So keyword search misses different words with the same meaning, and meaning search misses exact names and codes. The rest of this module shows why, from the inside, and ends by combining them.
+In short, keyword search misses questions that use different words for the same meaning, and meaning search misses exact names and codes. The rest of this module shows, from the inside, why each one misses what it does, and ends by combining the two.
 
 ## Keyword search: the inverted index {#sec-m06-keyword-search-inverted}
 
-How does a search engine find "opened" among a million paragraphs without reading all of them? The same way you find a topic in a textbook: through the index at the back, which lists each word with the pages it appears on.
-
-A search engine builds that index before any question arrives (@fig-inverted-index).
+A search engine can find "opened" among a million paragraphs without reading all of them, in the same way that you find a topic in a textbook: through the index at the back, which lists each word with the pages it appears on. The engine builds its index before any question arrives (@fig-inverted-index), in four steps.
 
 ![Part of the index for the eight paragraphs. Each word points to the paragraphs that contain it.](/figures/m06/inverted-index.pdf){#fig-inverted-index}
 
 1. Split each paragraph into words, and lower-case them.
-2. Reduce each word to a common root, so that "returned", "returns" and "return" become one entry, and "opened" becomes "open". This is called **stemming**. It is why the first question found P2: the customer's "opened" and the policy's "opened" both became "open".
-3. Drop very common words such as "the" and "can".
+2. Reduce each word to its root, so that "returned", "returns" and "return" all become one entry, and "opened" becomes "open". This step is called **stemming**, and it is the reason the first question found P2: the customer's "opened" and the policy's "opened" both became "open".
+3. Drop very common words such as "the" and "can", which appear everywhere and tell you nothing.
 4. For each remaining word, record the list of paragraphs that contain it.
 
-The result is called an **inverted index**: instead of paragraph → words, it stores word → paragraphs. At question time, the engine reads only the lists for the question's words. If "open" appears in 2,000 paragraphs out of 10 lakh, it scores 2,000 paragraphs, not 10 lakh. That is why keyword search is fast at any size. Elasticsearch, OpenSearch and the full-text search in Postgres all work this way.
+The result is called an **inverted index**, because instead of listing the words in each paragraph, it lists the paragraphs for each word. When a question arrives, the engine reads only the lists for the question's own words. If "open" appears in 2,000 of 10 lakh paragraphs, the engine scores just those 2,000, which is why keyword search stays fast at any size. Elasticsearch, OpenSearch and the full-text search in Postgres all work this way.
 
 ## Which paragraph matches best: BM25 {#sec-m06-which-paragraph-matches}
 
-The index finds the paragraphs that contain the words. Then they must be ranked. The standard formula for this is **BM25** ("Best Matching", version 25), from the 1990s and still the default in most search engines [@robertson2009]. It asks three questions about each word of the question (@fig-bm25-parts).
+The index finds the paragraphs that contain the question's words, but they still have to be ranked. The standard formula for ranking them is **BM25**, short for "Best Matching, version 25", which dates from the 1990s and is still the default in most search engines [@robertson2009]. It asks three questions about each word of the question (@fig-bm25-parts).
 
 ![The three parts of BM25. Repeats count less and less; rare words count more; long paragraphs are marked down. The middle chart uses the real values from our eight paragraphs.](/figures/m06/bm25-parts.pdf){#fig-bm25-parts}
 
-1. **How often does the word appear in this paragraph?** More is better, but each repeat adds less than the one before. The second mention adds less than the first, and the tenth adds almost nothing. So a paragraph cannot win by repeating a word.
-2. **How rare is the word across all paragraphs?** In our eight paragraphs, "return" appears in six, so finding it tells you little. It gets a weight of 0.35. "Open" appears in one, so it gets 1.61, more than four times as much. So rare words carry most of the score.
-3. **How long is the paragraph?** A long paragraph mentions many words just by being long, so its score is marked down a little.
+1. **How often does the word appear in this paragraph?** More often is better, but each repeat adds less than the one before, so that the tenth mention adds almost nothing and a paragraph cannot win just by repeating a word.
+2. **How rare is the word across all the paragraphs?** In our eight paragraphs, "return" appears in six, so finding it tells you little, and it gets a weight of only 0.35. "Open" appears in just one, so it gets 1.61, more than four times as much. Rare words therefore carry most of the score.
+3. **How long is the paragraph?** A long paragraph contains many words simply because it is long, so its score is marked down a little.
 
-A paragraph's score is the sum over the question's words. P2 won the first question because it was the only paragraph with the rare word "open". Here is the whole search in code, with the `rank_bm25` library. The function `words` does steps 1 to 3 of the index, and `BM25Okapi` does step 4 and the scoring:
+A paragraph's total score is the sum of these weights over the question's words. P2 won the first question because it was the only paragraph containing the rare word "open". Here is the whole search in code, using the `rank_bm25` library, where the function `words` does steps 1 to 3 of the index and `BM25Okapi` does step 4 and the scoring:
 
 <!-- check: expect -->
 ```python
@@ -82,14 +80,14 @@ P8 0.8
 
 These are the scores in @fig-keyword-scores.
 
-BM25 needs no model, no training and no GPU. It is fast, it is cheap, and it is exactly right about exact words. Those are the reasons it is still part of nearly every search system.
+BM25 needs no model, no training and no GPU, and it is always right about exact words. Those qualities are why, decades later, it is still part of nearly every search system.
 
 ## Meaning search: embeddings {#sec-m06-meaning-search-embeddings}
 
-An **embedding** (\see{sec-m02-meaning-as-map}) is a list of numbers for a piece of text, placed so that texts with similar meanings get similar lists. Meaning search, also called **semantic search** or **vector search**, works in two stages.
+An **embedding** (\see{sec-m02-meaning-as-map}) is a list of numbers that stands for a piece of text, chosen so that texts with similar meanings get similar lists. Meaning search, also called **semantic search** or **vector search**, uses embeddings in two stages.
 
-1. Before any question: turn every paragraph into an embedding, once, and store the lists.
-2. For each question: turn the question into an embedding with the same model, and find the stored lists closest to it, measured by cosine similarity.
+1. Before any question arrives, turn every paragraph into an embedding, once, and store the lists.
+2. When a question arrives, turn it into an embedding with the same model, and find the stored lists closest to it, measured by cosine similarity.
 
 <!-- check: skip -->
 ```python
@@ -107,39 +105,39 @@ for doc in found:
     print(doc.page_content)
 ```
 
-A good embedding model should place the second question close to P2, because the meanings are close even though no words match.
+A good embedding model should place the second question close to P2, because their meanings are close even though they share no words.
 
-One rule follows from stage 1. The paragraphs and the questions must be embedded by the same model. Lists from two different models do not live on the same map, so comparing them is meaningless. Changing the embedding model means embedding every stored paragraph again.
+Stage 1 brings one firm rule with it: the paragraphs and the questions must be embedded by the same model. Lists made by two different models do not live on the same map, so comparing them means nothing, and if you ever change the embedding model, you have to embed every stored paragraph again.
 
 ## Searching a million vectors fast {#sec-m06-searching-million-vectors}
 
-The simplest way to find the closest vectors is to compare the question with every stored vector. We timed this on 10 lakh vectors of 384 numbers each, on a 4-core machine. It took about 56 milliseconds per question.
+The simplest way to find the closest vectors is to compare the question with every stored vector. We timed this on 10 lakh vectors of 384 numbers each, on a 4-core machine, and it took about 56 milliseconds per question.
 
-That sounds fast, but it does not scale well. At 100 questions a second, the machine would need 5.6 seconds of work every second, so it falls behind. And the time grows in step with the data: 1 crore vectors would take about ten times as long.
+That sounds fast, but it does not scale. At 100 questions a second, the machine would need 5.6 seconds of work for every second that passes, so it would fall further and further behind, and the time grows in step with the data, so 1 crore vectors would take about ten times as long.
 
-So large systems use **approximate nearest neighbour** search, or **ANN**. They give up a guarantee of finding the exact closest vectors in exchange for speed. The most widely used method is **HNSW** [@malkov2018]. The name means Hierarchical Navigable Small World, but the idea is simple. It works the way you find a house in an unfamiliar city: take the highway to the right area, then main roads to the right street, then walk to the door (@fig-hnsw).
+Large systems therefore use **approximate nearest neighbour** search, or **ANN**, which gives up the guarantee of finding the exact closest vectors in exchange for speed. The most widely used method is **HNSW** [@malkov2018]. Its name, Hierarchical Navigable Small World, sounds complicated, but it works the way you find a house in an unfamiliar city: you take the highway to the right area, then main roads to the right street, and then walk to the door (@fig-hnsw).
 
 ![HNSW, as an intuition. The top layer has few points with long links, for big jumps. Each layer down has more points and shorter links. The search drops down a layer whenever it can get no closer.](/figures/m06/hnsw.pdf){#fig-hnsw}
 
-The search starts in the top layer, which holds only a few vectors, linked over long distances. It hops to whichever neighbour is closest to the question, until no neighbour is closer. Then it drops to the layer below, which has more vectors and shorter links, and repeats. In the bottom layer, which holds every vector, it finishes with small steps.
+The search starts in the top layer, which holds only a few vectors linked over long distances, and keeps hopping to whichever neighbour is closest to the question until no neighbour is any closer. Then it drops to the layer below, where there are more vectors with shorter links, and does the same again. In the bottom layer, which holds every vector, it finishes with small steps.
 
-We built an HNSW index on the same 10 lakh vectors and measured it (@fig-ann-tradeoff).
+We built an HNSW index on the same 10 lakh vectors and measured how fast and how accurate it was (@fig-ann-tradeoff).
 
 ![Measured speed and accuracy of HNSW on 10 lakh synthetic vectors, against checking every vector. A setting called ef trades speed for accuracy.](/figures/m06/ann-tradeoff.pdf){#fig-ann-tradeoff}
 
-HNSW answered in 0.3 to 1.9 milliseconds, 30 to 200 times faster than checking everything. But it did not always find the true closest 10. A setting called `ef` controls how widely it looks. At `ef=20` it found about half of the true top 10. At `ef=200` it found 80%, and took nearly seven times longer. The vectors we used were random-like, a hard case for HNSW, and real embeddings often do better. So the numbers here are only a guide. The right setting for `ef` depends on your own data. To find it, check how many of the true closest vectors HNSW returns on your own data, at a few settings. Module 9 shows how. Building the index also took 5 minutes, which matters when your data changes often.
+HNSW answered in 0.3 to 1.9 milliseconds, 30 to 200 times faster than checking every vector, but it did not always find the true closest 10. How widely it looks is controlled by a setting called `ef`: at `ef=20` it found about half of the true top 10, while at `ef=200` it found 80% but took nearly seven times longer. Our vectors were random-like, which is a hard case for HNSW, and real embeddings often do better, so treat these numbers only as a guide. The right `ef` depends on your own data, and the way to find it is to try a few settings and count how many of the true closest vectors HNSW returns each time (Module 9 shows how). Building the index also took 5 minutes, which matters if your data changes often.
 
 ## Choosing where to store vectors {#sec-m06-choosing-where-store}
 
-A **vector store** keeps the embeddings and runs the search. There are three kinds.
+A **vector store** keeps the embeddings and runs the search, and it comes in three kinds.
 
-1. **The database you already run.** Postgres has an extension, pgvector, that adds vector search. Elasticsearch and OpenSearch store vectors next to their keyword index, which makes combining the two easy.
-2. **A dedicated vector database**, such as Qdrant, Weaviate, Milvus, or the managed service Pinecone. These are built for very large collections and heavy traffic.
-3. **A library inside your program**, such as FAISS or hnswlib. Good for data that changes rarely and fits in memory.
+1. **The database you already run.** Postgres has an extension, pgvector, that adds vector search, and Elasticsearch and OpenSearch store vectors next to their keyword index, which makes it easy to combine the two kinds of search.
+2. **A dedicated vector database**, such as Qdrant, Weaviate, Milvus, or the managed service Pinecone, built for very large collections and heavy traffic.
+3. **A library inside your program**, such as FAISS or hnswlib, which suits data that rarely changes and fits in memory.
 
-Size decides less than you might think: a few lakh paragraphs fit comfortably in any of the three. Two other questions usually decide.
+Size matters less than you might expect, because a few lakh paragraphs fit comfortably in any of the three. Two other questions usually decide.
 
-The first is **filtering**. The pruning step in \see{sec-m03-policy-text-fit} removed out-of-date policy paragraphs before sending them. Better still, never retrieve them. Store a date, a category and a language with each paragraph, called **metadata**, and filter during the search. The order matters. If you fetch the top 10 and then remove the old ones, and 9 of the 10 were old, you are left with 1. A good vector store applies the filter while searching, and still returns 10.
+The first question is about **filtering**. The pruning step in \see{sec-m03-policy-text-fit} removed out-of-date policy paragraphs before they were sent, but it is better never to retrieve them at all. To do that, store some facts with each paragraph, such as its date, category and language, which are called its **metadata**, and filter on them during the search. The order matters here: if you fetch the top 10 first and then remove the old ones, and 9 of the 10 were old, you are left with only 1. A good vector store applies the filter while it searches, so it still returns 10.
 
 <!-- check: skip -->
 ```python
@@ -152,30 +150,32 @@ store.similarity_search("can I return opened earbuds", k=10,
 
 The store runs `still_valid` on each stored paragraph as it searches, and keeps only those it approves. Store dates in one sortable format, such as `2026-11-05`, so that this comparison works.
 
-The second is **keyword search**. If you need both kinds, as the last section of this module argues, a store that does both saves you running two systems.
+The second question is whether you also need keyword search. If you need both kinds, as the last section of this module argues, a store that does both saves you from running two systems.
 
-So start with the database you already run. Move to a dedicated one when its size, traffic or filtering needs outgrow it.
+A sensible default is to start with the database you already run, and move to a dedicated one only when its size, traffic or filtering needs outgrow it.
 
 ## The most similar is not the most relevant {#sec-m06-most-similar-most}
 
-Go back to the first question, "Can I return opened earbuds?", and to P4: "Can I return unopened earbuds? Yes."
+Go back to the first question, "Can I return opened earbuds?", and compare it with P4: "Can I return unopened earbuds? Yes."
 
-To an embedding model, P4 looks almost exactly like the question: it has the same words in the same order, with one extra "un". An embedding model is likely to place P4 closest to the question, ahead of P2. But P4 answers a different question, and its answer, "yes", is the opposite of the right one. A model that receives P4 first may tell the customer they can return opened earbuds.
+To an embedding model, P4 looks almost exactly like the question, with the same words in the same order and one extra "un", so it is likely to place P4 closest to the question, ahead of P2. Yet P4 answers a different question, and its answer, "yes", is the opposite of the right one, so a model that receives P4 first may tell the customer they can return opened earbuds.
 
-Embeddings measure whether two texts are about the same thing. They do not measure whether one answers the other. Small words that flip a meaning, such as "un", "not", "except" and "only", barely move the embedding. So the closest paragraph is often the right topic with the wrong answer.
+The trouble is that embeddings measure whether two texts are about the same thing, not whether one answers the other. Small words that flip a meaning, such as "un", "not", "except" and "only", barely move an embedding, which is why the closest paragraph is often on the right topic but gives the wrong answer.
 
-Fixing this needs a model that reads the question and the paragraph together and judges whether one answers the other. That is a **reranker**, and Module 7 adds one.
+Fixing this needs a model that reads the question and the paragraph together and judges whether one really answers the other. Such a model is called a **reranker**, and Module 7 adds one.
 
 ## Hybrid search {#sec-m06-hybrid-search}
 
-Keyword search misses reworded questions. Meaning search misses exact codes and is fooled by near-copies. Their mistakes are different, so run both and combine the results. This is **hybrid search**.
+Keyword search misses reworded questions, while meaning search misses exact codes and is fooled by near-copies. Because their mistakes are different, it makes sense to run both and combine their results, which is called **hybrid search**.
 
-Combining them has one problem. The scores are on different scales. P2's BM25 score is 1.82, while a cosine similarity is between 0 and 1. Adding them makes no sense. So instead of scores, use ranks. The usual method is **Reciprocal Rank Fusion**, or **RRF** [@cormack2009]. Each list gives every paragraph 1 ÷ (60 + its rank), and the amounts are added up. Why 60? It keeps the gaps between ranks small. First place gets 1 ÷ 61, about 0.0164, and second gets 1 ÷ 62, about 0.0161. Without the 60, first would get 1 and second 0.5, so a paragraph that is first in one list would win almost regardless of the other list.
+Combining them raises one problem: the two kinds of score are on different scales. P2's BM25 score is 1.82, while a cosine similarity always lies between 0 and 1, so adding the two scores together makes no sense. Instead, hybrid search combines the ranks. The usual method is **Reciprocal Rank Fusion**, or **RRF** [@cormack2009], in which each list gives every paragraph 1 ÷ (60 + its rank), and the amounts from the two lists are added up.
 
-@fig-hybrid works it out for the first question, with keyword ranks from our real search and illustrative meaning ranks.
+The 60 is there to keep the gaps between ranks small. With it, first place gets 1 ÷ 61, about 0.0164, and second place gets 1 ÷ 62, about 0.0161. Without it, first place would get 1 and second place 0.5, so a paragraph ranked first in one list would win almost regardless of where it stood in the other list.
+
+@fig-hybrid works this out for the first question, using the keyword ranks from our real search and illustrative ranks for meaning search.
 
 ![Hybrid search for "can I return opened earbuds". Keyword ranks are real; meaning ranks are illustrative. The combined score is shown in thousandths.](/figures/m06/hybrid.pdf){#fig-hybrid}
 
-P2 is first in the keyword list and fourth in the meaning list: 1 ÷ 61 + 1 ÷ 64, about 0.0320. P4 is second and first: 1 ÷ 62 + 1 ÷ 61, about 0.0325. Both end up at the top. For the second question, where keyword search found nothing, the meaning list carries the result. For AX-7781, the keyword list does.
+P2 is first in the keyword list and fourth in the meaning list, so it gets 1 ÷ 61 + 1 ÷ 64, about 0.0320. P4 is second and first, so it gets 1 ÷ 62 + 1 ÷ 61, about 0.0325, and the two end up together at the top. For the second question, where keyword search found nothing, the meaning list alone carries the result, and for AX-7781 the keyword list does.
 
-Hybrid search makes sure the right paragraph is among the first few. It does not make sure it is first: P4 still edges out P2. Putting the best paragraph first, out of a handful, is a different job from finding a handful out of lakhs, and it needs a different tool. Module 7 builds the whole pipeline, from cutting documents into pieces to the reranker that finally puts P2 on top.
+Hybrid search makes sure the right paragraph is among the first few, but not that it comes first, since P4 still edges out P2. Putting the best paragraph first out of a handful is a different job from finding that handful among lakhs, and it needs a different tool. Module 7 builds the whole pipeline, from cutting documents into pieces to the reranker that finally puts P2 on top.

@@ -1,6 +1,6 @@
 # Advanced RAG {#sec-m08}
 
-Module 7 built a pipeline that answers well when the answer is a fact stated in a document. Real questions are often harder. They are vague, or need several facts, or live in a database table, or in a scanned page. This module covers the methods for those cases, and there are many, each with its own name. Rather than learn them as a list, it is easier to sort them by the question each one answers.
+Module 7 built a pipeline that works well when the answer is a fact stated in a document, but real questions are often harder: they are vague, or need several facts, or have their answers in a database table or a scanned page. There are many methods for these cases, each with its own name, and rather than learning them as a list, it is easier to sort them by the question each one answers.
 
 ## Four questions instead of a list of names {#sec-m08-four-questions-instead}
 
@@ -8,24 +8,24 @@ Every "type of RAG" you will read about is an answer to one of four questions (@
 
 ![Four questions about a RAG system. Each answer is a named type of RAG. A real system picks one answer to each.](/figures/m08/four-questions.pdf){#fig-four-questions}
 
-1. **Where is the knowledge stored?** In text searched by meaning (vector RAG), by exact words (BM25), or both (hybrid RAG), which Modules 6 and 7 built. Or in database tables, in relationships between things, in page images, or on the live web.
-2. **How good is the question?** If it is vague, rewrite it, split it, or search with a guessed answer.
-3. **How do you check what was found?** Grade the chunks before using them (corrective RAG), or have the model judge its own retrieval and answer (self-RAG).
-4. **Who decides where to look?** A fixed pipeline, a router that picks a path (adaptive RAG), or the model itself, in a loop with search tools (agentic RAG).
+1. **Where is the knowledge stored?** It may be in text searched by meaning (vector RAG), by exact words (BM25), or both ways at once (hybrid RAG), as in Modules 6 and 7. It may also be in database tables, in relationships between things, in images of pages, or on the live web.
+2. **How good is the question?** If it is vague, you can rewrite it, split it into parts, or search with a guessed answer.
+3. **How do you check what was found?** You can grade the chunks before using them (corrective RAG), or have the model judge its own search and answer (self-RAG).
+4. **Who decides where to look?** It can be a fixed pipeline, a router that picks a path for each question (adaptive RAG), or the model itself, working in a loop with search tools (agentic RAG).
 
-A real system is one answer to each question. Tarkika's assistant might be: hybrid text plus a SQL table, questions rewritten, chunks graded, and a router choosing between them. The sections below take the cases one at a time.
+A real system picks one answer to each question. Tarkika's assistant, for example, might search hybrid text plus a SQL table, rewrite vague questions, grade the chunks it finds, and use a router to choose between sources. The sections below take these cases one at a time.
 
 ## When the question is vague {#sec-m08-question-vague}
 
-Search can only find what the question asks for. Three kinds of question defeat it.
+Search can only find what the question asks for, and three kinds of question defeat it.
 
-**Questions that lean on the conversation.** A customer asks about a refund for opened earbuds, gets an answer, then writes "kitne din lagenge?" ("how many days will it take?"). Searched on its own, that question has nothing to match: it does not say days for what. The fix is to **rewrite** the question so it stands alone, using the conversation history (\see{sec-m04-model-forgets-every}): "How many days does a refund for returned earbuds take?"
+**Questions that lean on the conversation.** A customer asks about a refund for opened earbuds, gets an answer, and then writes "kitne din lagenge?" ("how many days will it take?"). Searched on its own, that question has nothing to match, because it does not say what the days are for. The fix is to **rewrite** it so that it stands on its own, using the conversation history (\see{sec-m04-model-forgets-every}): "How many days does a refund for returned earbuds take?"
 
-**Questions with several parts.** "Can I return the earbuds and the phone case together, and when will I get my money?" needs three different policy sections. One search returns chunks close to the average of the three, which may answer none of them well. The fix is to **split** it into three searches and combine the results (@fig-query-rewrite).
+**Questions with several parts.** "Can I return the earbuds and the phone case together, and when will I get my money?" needs three different policy sections. A single search returns chunks that are close to an average of the three parts, and they may answer none of them well, so the fix is to **split** the question into three searches and combine the results (@fig-query-rewrite).
 
 ![Two fixes for vague questions. Rewrite a follow-up so it stands alone. Split a question with several parts into one search per part.](/figures/m08/query-rewrite.pdf){#fig-query-rewrite}
 
-A small, cheap model does both in one call, with structured output (\see{sec-m05-answers-fixed-shape}):
+A small, cheap model can do both jobs in one call, using structured output (\see{sec-m05-answers-fixed-shape}):
 
 <!-- check: replies [{"queries": ["How many days does a refund for returned earbuds take?"]}] -->
 <!-- check: expect -->
@@ -52,7 +52,7 @@ print(plan.queries)
 ['How many days does a refund for returned earbuds take?']
 ```
 
-Each search is then run, and the results are put together:
+Each of the searches is then run, and their results are put together:
 
 ```python
 from tarkika import hybrid_search    # a small version of Section 6.8's
@@ -62,59 +62,57 @@ for query in plan.queries:
     chunks += hybrid_search(query)
 ```
 
-**Questions that do not look like their answers.** A customer writes "box was crushed, phone screen has lines". The policy says "If an item arrives damaged, report it within 48 hours". Questions and answers are written differently, so their embeddings can sit far apart. **HyDE**, short for Hypothetical Document Embeddings, has the model first write a short, made-up answer, such as "Items that arrive damaged can be replaced if reported promptly". It then searches with that instead of the question [@gao2023hyde]. The made-up answer may be wrong in its details, but it is written like a policy, so it lands near the real policy.
+**Questions that do not look like their answers.** A customer writes "box was crushed, phone screen has lines", while the policy says "If an item arrives damaged, report it within 48 hours". Because questions and policies are written so differently, their embeddings can sit far apart. **HyDE**, short for Hypothetical Document Embeddings, deals with this by having the model first write a short, made-up answer, such as "Items that arrive damaged can be replaced if reported promptly", and then searching with that instead of the question [@gao2023hyde]. The made-up answer may be wrong in its details, but because it is written like a policy, it lands near the real policy.
 
-Each of these adds a model call before the search, so the reply starts later. Use them where tests show they help, not by default.
+Each of these fixes adds a model call before the search, which makes the reply start later, so use them where your tests show they help rather than by default.
 
 ## When the answer is in a table {#sec-m08-answer-table}
 
-"How many refunds over ₹2,000 did I get this year?" No paragraph holds that answer. The refunds sit in a database table, and the answer is a count. Vector search cannot count.
+No paragraph can answer "How many refunds over ₹2,000 did I get this year?", because the refunds sit in a database table and the answer is a count, which vector search cannot produce.
 
-So let the model write a database query instead. This is **text-to-SQL**: the model receives the question and a description of the tables, and writes SQL. Your program runs it, and the model turns the result into a reply (@fig-text-to-sql).
+Instead, let the model write a database query. In **text-to-SQL**, the model receives the question and a description of the tables and writes a SQL query; your program runs it, and the model turns the result into a reply (@fig-text-to-sql).
 
 ![Text-to-SQL with checks. The model writes the query, but your code decides what it may touch before the database runs it.](/figures/m08/text-to-sql.pdf){#fig-text-to-sql}
 
-A query the model writes is a tool call (\see{sec-m05-which-tools-may}), and a powerful one: it can read anything the database login allows. So limit it in code, as you would any tool. Run it with a database login that can only read. Allow only the tables the assistant needs. Limit the number of rows. And never let the model choose whose data it reads: the customer id in the query must come from the session, as `:me` does in the figure, filled in by your code.
+A query written by the model is a tool call (\see{sec-m05-which-tools-may}), and a powerful one, since it can read anything the database login allows, so limit it in code as you would any other tool. Run it with a database login that can only read, allow only the tables the assistant needs, and cap the number of rows it can return. Above all, never let the model choose whose data it reads: the customer id in the query must come from the session, filled in by your code, as `:me` is in the figure.
 
-Text-to-SQL is also where models make quiet mistakes: the wrong column, a missed filter, a join that counts every refund twice. A wrong count looks exactly like a right one. Keep a set of questions with known answers and test against them (Module 9).
+Text-to-SQL is also where models make quiet mistakes, such as using the wrong column, missing a filter, or writing a join that counts every refund twice. A wrong count looks exactly like a right one, so keep a set of questions with known answers and test against them (Module 9).
 
 ## When the answer is about relationships {#sec-m08-answer-relationships}
 
-A customer asks, "Which cases fit my phone, and who has them in stock?" The answer is a chain: this customer bought this phone, these cases fit this phone, these sellers stock these cases. No single paragraph holds the chain.
+A customer asks, "Which cases fit my phone, and who has them in stock?" The answer is a chain of facts: this customer bought this phone, these cases fit this phone, and these sellers stock these cases. No single paragraph holds the whole chain.
 
-A **knowledge graph** stores such facts as things, called **nodes**, and the links between them, called **edges** (@fig-graph). Following the edges answers the question in a few steps. **Graph RAG** retrieves along these links instead of, or as well as, by similarity.
+A **knowledge graph** stores facts like these as things, called **nodes**, and links between them, called **edges** (@fig-graph), so the question can be answered by following the edges in a few steps. **Graph RAG** searches along these links, either instead of searching by similarity or as well as it.
 
 ![A small knowledge graph. The question "which cases fit my phone, and who stocks them?" is answered by following the links.](/figures/m08/graph.pdf){#fig-graph}
 
-Graphs also help with questions about a whole collection, such as "What are customers complaining about most this month?" No single chunk answers that. Microsoft's GraphRAG uses a model to pull out the people, products and topics from every document. It then groups the ones that are closely linked, and writes a summary of each group. Broad questions are then answered from the summaries [@edge2024graphrag].
+Graphs also help with questions about a whole collection, such as "What are customers complaining about most this month?", which no single chunk can answer. Microsoft's GraphRAG uses a model to pull the people, products and topics out of every document, groups the ones that are closely linked, and writes a summary of each group, so that broad questions can be answered from the summaries [@edge2024graphrag].
 
-The cost is in building the graph. Extracting nodes and edges takes a model call for every chunk, and the graph must be updated as documents change. If Tarkika's product data already sits in a database, with compatibility and stock in proper tables, the links already exist, and text-to-SQL may do the same job with no graph to build. Build a graph when the relationships live only in text.
+The cost lies in building the graph, because extracting nodes and edges takes a model call for every chunk, and the graph has to be updated whenever the documents change. If Tarkika's product data already sits in a database, with compatibility and stock in proper tables, the links already exist and text-to-SQL may do the same job with no graph to build. A graph is worth building when the relationships exist only in text.
 
 ## When there is too much to read {#sec-m08-there-too-much}
 
-Some documents are long and structured, like a 300-page seller agreement with numbered clauses. Cutting it into chunks loses the structure: a chunk from clause 14.3 may not say it belongs to the clause on penalties.
+Some documents are long and carefully structured, like a 300-page seller agreement with numbered clauses, and cutting them into chunks loses that structure: a chunk from clause 14.3 may not say that it belongs to the clause on penalties. Two approaches keep the structure.
 
-Two approaches keep the structure.
+**Trees of summaries.** Summarise groups of chunks, then summarise those summaries, and continue until there is one summary of the whole document. Search can then match a broad question near the top of this tree and a narrow one near the bottom. RAPTOR is the best-known version of this approach [@sarthi2024raptor].
 
-**Trees of summaries.** Summarise groups of chunks, then summarise the summaries, up to one summary of the whole document. Search can then match a broad question at a high level and a narrow one at the bottom. RAPTOR is the best-known version [@sarthi2024raptor].
+**Searching by the document's own index.** A person looking for the penalty for late dispatch opens the table of contents, finds "Penalties", and then "Late dispatch". A model can do the same: it reads the table of contents, picks a section, reads that section's headings, and keeps going down until it reaches the clause. No embeddings are needed, which is why tools such as PageIndex call this "vectorless" retrieval [@pageindex].
 
-**Searching by the document's own index.** A person looking for the penalty for late dispatch opens the table of contents, finds "Penalties", then "Late dispatch". A model can do the same. It reads the table of contents, picks a section, reads that section's headings, and goes down until it reaches the clause. No embeddings are needed, which is why tools such as PageIndex call this "vectorless" retrieval [@pageindex].
-
-The trade-off is model calls. Each step down the tree is a call, so one question may take five or six. That is slow and costly for quick questions over many short documents, and worth it for precise questions over a few long, well-organised ones, such as contracts and manuals.
+The price is model calls, because each step down the tree is one call, so a single question may take five or six. That is too slow and costly for quick questions over many short documents, but worth it for precise questions over a few long, well-organised ones, such as contracts and manuals.
 
 ## When the answer is in a picture of a page {#sec-m08-answer-picture-page}
 
-Sellers upload scanned invoices. Policy PDFs have tables and charts. Turning these into text first, with OCR, often loses exactly what matters: a table becomes a jumble of numbers, and a chart disappears.
+Sellers upload scanned invoices, and policy PDFs contain tables and charts. Turning these into text first, with OCR, often loses exactly what matters, because a table becomes a jumble of numbers and a chart disappears altogether.
 
-A newer approach skips the text. It embeds each page as an image, using a model that reads page images directly, and searches those image embeddings with the question. ColPali, the best-known model of this kind, retrieved such pages better than pipelines that extracted the text first [@faysse2025colpali]. The page found is then sent to a model that can read images (\see{sec-m02-images-documents-speech}).
+A newer approach skips the text entirely. It embeds each page as an image, using a model that reads page images directly, and then searches those image embeddings with the question. ColPali, the best-known model of this kind, found the right pages more often than pipelines that extracted the text first [@faysse2025colpali]. The page it finds is then sent to a model that can read images (\see{sec-m02-images-documents-speech}).
 
-It costs more storage and more compute per page than text search. Use it for documents whose meaning is in their layout: forms, invoices, slides, scanned pages.
+This costs more storage and more computing per page than text search, so use it for documents whose meaning lies in their layout, such as forms, invoices, slides and scanned pages.
 
 ## Checking what was found {#sec-m08-checking-was-found}
 
-Citations are checked after the answer (\see{sec-m07-model-still-makes}). You can also check the chunks before the model answers from them.
+Citations are checked after the model has answered (\see{sec-m07-model-still-makes}), but you can also check the chunks before the model answers from them.
 
-**Corrective RAG** adds a grading step [@yan2024crag]. A small model reads each retrieved chunk with the question and marks it relevant or not:
+**Corrective RAG** adds a grading step [@yan2024crag], in which a small model reads each chunk together with the question and marks it as relevant or not:
 
 <!-- check: replies [{"relevant": True}, {"relevant": False}, {"relevant": False}, {"relevant": True}, {"relevant": False}] -->
 ```python
@@ -131,34 +129,34 @@ for chunk in chunks:
         good.append(chunk)
 ```
 
-If enough chunks pass, answer from those. If none pass, do not answer from bad material. Rewrite the question and search again, try another source, or hand over to a person. Cap the retries, as with tool loops (\see{sec-m05-tools-loop}).
+If enough chunks pass, the model answers from those. If none pass, it should not answer from bad material at all; instead, rewrite the question and search again, try another source, or hand the chat to a person, with a cap on the number of retries, as with tool loops (\see{sec-m05-tools-loop}).
 
-**Self-RAG** goes further. The model is trained to decide for itself when to search, and to mark whether each passage supports what it wrote [@asai2024selfrag]. It needs a specially trained model, so most teams use the simpler grading step, which works with any model.
+**Self-RAG** goes a step further: the model is trained to decide for itself when to search, and to mark whether each passage supports what it wrote [@asai2024selfrag]. Because it needs a specially trained model, most teams use the simpler grading step, which works with any model.
 
-Grading costs one extra model call per chunk. Grading five chunks with a small model is cheap. Grading fifty is not, so grade after the reranker, not before.
+Grading costs one extra model call per chunk. That is cheap for five chunks graded by a small model, but not for fifty, so grade the chunks after the reranker has cut the list down, not before.
 
 ## Who decides where to look {#sec-m08-who-decides-where}
 
-Tarkika's assistant now has several sources: policy search, the orders database, and perhaps the web for courier news. Something must decide which to use for each question.
+Tarkika's assistant now has several sources, namely policy search, the orders database and perhaps the web for courier news, and something has to decide which of them to use for each question.
 
-The simplest choice is a fixed pipeline: always search the policies. Next is a **router**: one model call classifies the question first, then the matching path runs. A refund-count question goes to SQL, a policy question to hybrid search, and "hi" to no search at all. When the router also judges how hard the question is, and sends simple ones down a cheap path and hard ones down a fuller one, it is called **adaptive RAG** [@jeong2024adaptive]. The `Ticket` (\see{sec-m05-answers-fixed-shape}) was already a router.
+The simplest choice is a fixed pipeline that always searches the policies. The next is a **router**: one model call first classifies the question, and then the matching path runs, so a refund-count question goes to SQL, a policy question goes to hybrid search, and "hi" gets no search at all. When the router also judges how hard a question is, and sends simple ones down a cheap path and hard ones down a fuller one, the design is called **adaptive RAG** [@jeong2024adaptive]. The `Ticket` from \see{sec-m05-answers-fixed-shape} was already a simple router.
 
-The most flexible choice is **agentic RAG**. Each source becomes a tool (\see{sec-m05-tool-call-step}), and the model decides in a loop which to call, reads the results, and decides again (@fig-who-decides).
+The most flexible choice is **agentic RAG**, in which each source becomes a tool (\see{sec-m05-tool-call-step}) and the model decides in a loop which tool to call, reads the results, and decides again (@fig-who-decides).
 
 ![Hybrid search always runs both searches and merges them, with no model deciding. Agentic RAG lets the model choose which source to use, step by step.](/figures/m08/who-decides.pdf){#fig-who-decides}
 
-Hybrid and agentic are easy to confuse, because both use several search methods. One question separates them: does a model decide which to use? Hybrid always runs both searches and merges them with a formula. Agentic makes a model call for every choice.
+Hybrid and agentic RAG are easy to confuse, because both use several search methods, but one question separates them: does a model decide which method to use? Hybrid search always runs both searches and merges them with a formula, whereas agentic RAG makes a model call for every choice.
 
-That decides the trade-off. Agentic RAG handles questions nobody planned for, such as "check my order, then tell me whether the delay counts as damage under the policy". But each step is a model call, so it is slower and costs more, and it can loop. Use a fixed pipeline or a router when the kinds of question are known, and keep the agent for the questions that need it. The limits from \see{sec-m05-tools-loop} apply to every agent.
+That difference decides the trade-off. Agentic RAG can handle questions nobody planned for, such as "check my order, then tell me whether the delay counts as damage under the policy", but every step is a model call, so it is slower, it costs more, and it can loop. Use a fixed pipeline or a router when you know the kinds of question to expect, and keep the agent for the questions that really need it, with the limits from \see{sec-m05-tools-loop} in place.
 
 ## Index the whole codebase, or just grep it? {#sec-m08-index-whole-codebase}
 
-Coding assistants face this same choice on a large scale, and two well-known tools chose differently.
+Coding assistants face this same choice on a large scale, and two well-known tools have made it differently.
 
-Cursor indexes the codebase. It cuts the code into chunks along functions and classes, embeds them, and keeps the index fresh by tracking which files changed, using a tree of file fingerprints (a Merkle tree), so only changed files are embedded again [@cursor2026indexing]. Searching by meaning then finds code even when you do not know its name.
+Cursor indexes the codebase. It cuts the code into chunks along functions and classes, embeds them, and keeps the index up to date by tracking which files have changed, using a tree of file fingerprints called a Merkle tree, so that only the changed files are embedded again [@cursor2026indexing]. Searching by meaning then finds code even when you do not know what it is called.
 
-Claude Code does not index. It searches the way a developer does, with `grep` for text and `glob` for file names, in a loop. Its team reported trying a local vector database first and finding that this agentic search worked better, and avoided keeping an index fresh and storing embeddings of the code [@cherny2025].
+Claude Code does not index at all. It searches the way a developer does, with `grep` for text and `glob` for file names, in a loop. Its team reported that they tried a local vector database first, found that this agentic search worked better, and avoided the work of keeping an index fresh and storing embeddings of people's code [@cherny2025].
 
-Each choice follows from the questions above. Code is full of exact names, which keyword-style search finds perfectly, and it changes every few minutes, which makes an index go stale. That favours grep. But grep needs more steps and more tokens, and it cannot find code by what it does when you do not know what it is called. That favours an index. Neither is right for every codebase. The answer depends on how large it is, how fast it changes, and whether people search by name or by meaning.
+Each choice follows from the questions in this module. Code is full of exact names, which keyword-style search finds perfectly, and it changes every few minutes, which keeps making an index stale; both of these favour grep. On the other hand, grep needs more steps and more tokens, and it cannot find code by what it does when you do not know its name, which favours an index. Neither choice is right for every codebase, because the answer depends on how large it is, how fast it changes, and whether people search by name or by meaning.
 
-Every method in this module claims to improve answers, and every one adds cost. Rewriting, grading, graphs, routers: each helps some questions and slows all of them. The only way to know whether one helps your system is to measure it. That is Module 9.
+Every method in this module promises better answers and adds some cost. Rewriting, grading, graphs and routers each help some questions while slowing down all of them, and the only way to know whether one helps your system is to measure it, which is the subject of Module 9.
