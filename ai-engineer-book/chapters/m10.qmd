@@ -10,7 +10,7 @@ Follow one message through Tarkika's assistant: "bhai mera refund abhi tak nahi 
 
 Which topic is it? Did they give an order number? Is a refund allowed? How upset are they? Does a person need to step in? Each of these has a fixed set of possible answers: one of four topics, yes or no, a point on a scale. Only the last step, the reply, is open-ended writing.
 
-So far, this book has handled such steps by asking a language model and reading its answer, as with the `Ticket` (\see{sec-m05-answers-fixed-shape}). That works, but it is the wrong tool in three ways. A decision needs to know *how sure* the answer is, and generated text does not say. A language model writes its answer token by token, which is slow for one word. And it charges for writing, every time, for a step that could cost far less.
+So far, this book has handled such steps by asking a language model and reading its answer, as with the `Ticket` (\see{sec-m05-answers-fixed-shape}). That works, but it is the wrong tool in three ways. A decision needs to know *how sure* the answer is, and generated text does not say. A language model is built to write, so even a one-word answer goes through the full process of generation, and every call is billed as writing. A model built only to decide can be faster and much cheaper for the same step.
 
 The rest of this module builds up what a decision needs, then looks at models built only for deciding.
 
@@ -56,7 +56,7 @@ What does it mean for a probability to be right? If a model says "13%" for a hun
 
 ![What the logistic regression said, against how often the team actually rejected, on the test data. Points near the diagonal mean the numbers can be taken at face value.](/figures/m10/reliability.pdf){#fig-reliability}
 
-The points sit close to the diagonal. When the model says 3%, 3% are rejected; when it says 13%, 14% are. Now compare the deep tree. Having memorised its training data, it gives every test request either 0% or 100%. Of the requests it was 100% sure the team would reject, the team rejected only 6%. Its certainty is worthless.
+The points sit close to the diagonal. When the model says 3%, 3% are rejected; when it says 13%, 14% are. Now compare the deep tree. Having memorised its training data, it gives every test request either 0% or 100%. Of the requests it was 100% sure the team would reject, the team rejected only 6%. Its "100%" tells you almost nothing.
 
 Language models have the same problem in another form. You can ask a model "how sure are you, from 0 to 100?", and it will answer. But studies find these stated numbers are poorly calibrated, and usually too confident [@xiong2024uncertainty]. A number a model writes is text like any other. It is not a measured probability.
 
@@ -75,7 +75,7 @@ Automatic approval is cheaper when *p* × 1,500 is less than 40, that is, when *
 
 ![Average cost per request in our example, depending on where the line for automatic approval is drawn. The lowest cost is at 2.7%, where the arithmetic said it would be.](/figures/m10/cost-threshold.pdf){#fig-cost-threshold}
 
-Reviewing everything costs ₹40 a request. Approving everything costs about ₹43, because of the rejections that slip through. Drawing the line at 2.7% costs about ₹26: a third cheaper than either.
+Reviewing everything costs ₹40 a request. Approving everything costs about ₹43, because of the rejections that slip through. Drawing the line at 2.7% costs about ₹26: 35% less than reviewing everything, and 40% less than approving everything.
 
 Notice that the line is at 2.7%, nowhere near 50%. The default line of 50% only makes sense when both mistakes cost the same, and they rarely do. When the costs change, say fraud gets more expensive during a sale, the line moves, and the model does not need to change at all. This only works because the model is calibrated. With the deep tree's 0% and 100%, there is no line to draw.
 
@@ -87,7 +87,7 @@ One line gives two outcomes. In practice there are usually three (@fig-bands).
 
 1. **Act.** Below 2.7%, approve automatically. In our experiment, two thirds of requests land here, and only 1.3% of them would have been rejected.
 2. **Review.** Between 2.7% and 20%, a person checks. A third of requests.
-3. **Escalate.** At 20% and above, send to the senior fraud team. Fewer than 1 request in 100, but a quarter of those are rejected.
+3. **Escalate.** At 20% and above, send to the senior fraud team. Fewer than 1 request in 100, but a quarter of those are rejected. The 20% line is not set by cost like the first one. It is set by capacity: the fraud team can look closely at only so many cases, so the line is placed where it sends them the riskiest few.
 
 The bands are a policy, written in your code, not the model's choice. The model supplies the probability; your rules turn it into an action; the costs set the lines. Each part can then change on its own. A new model can be swapped in without changing the rules. A new cost can move a line without retraining anything. And when someone asks why a refund was approved, the answer is a number and a rule, not a paragraph of generated text.
 
@@ -115,7 +115,7 @@ r.choices["topic"].probabilities    # a chance for each topic
 r.nouls["needs_person"].noul        # chance of "yes", between 0 and 1
 ```
 
-`Noul` is TypeSafe's name for a yes-or-no question. The shape of the call and the reply can be checked by anyone with access. The rest should be read in three groups.
+`Noul` is TypeSafe's name for a yes-or-no question. The shape of this call was checked against TypeSafe's published SDK, using a test stand-in for the service, not the live model. Anyone with access can check it against the real one. The rest should be read in three groups.
 
 **What TypeSafe says, and nobody outside has confirmed:** that Jev answers all the questions in one step instead of writing token by token, which is where its speed comes from, at 70 to 500 milliseconds per call; that it is trained specifically to give calibrated probabilities; and that it costs \$0.042 per million tokens read, with nothing charged for the answers.
 

@@ -9,7 +9,7 @@ Take a small set of eight paragraphs from Tarkika's policies. Two matter here:
 - **P2, the hygiene policy:** "In-ear audio devices, innerwear and cosmetics cannot be returned once the seal is opened, unless they arrive faulty."
 - **P4, an FAQ:** "Can I return unopened earbuds? Yes. Unopened earbuds can be returned within 10 days."
 
-The others cover general returns, an earbuds buying guide, faulty items, refund timing, phones, and a sale offer on a product coded AX-7781.
+The other six cover general returns (P1), an earbuds buying guide (P3), faulty items (P5), refund timing (P6), phones (P7), and a sale offer on a product coded AX-7781 (P8).
 
 A customer asks, "Can I return opened earbuds?" The answer is in P2: no, unless faulty. @fig-keyword-scores shows a real keyword search over the eight paragraphs, with two ways of asking.
 
@@ -43,7 +43,7 @@ The index finds the paragraphs that contain the words. Then they must be ranked.
 ![The three parts of BM25. Repeats count less and less; rare words count more; long paragraphs are marked down. The middle chart uses the real values from our eight paragraphs.](/figures/m06/bm25-parts.pdf){#fig-bm25-parts}
 
 1. **How often does the word appear in this paragraph?** More is better, but each repeat adds less than the one before. The second mention adds less than the first, and the tenth adds almost nothing. So a paragraph cannot win by repeating a word.
-2. **How rare is the word across all paragraphs?** In our eight paragraphs, "return" appears in six, so finding it tells you little. It gets a weight of 0.35. "Open" appears in one, so it gets 1.61, more than four times as much. Rare words decide the ranking.
+2. **How rare is the word across all paragraphs?** In our eight paragraphs, "return" appears in six, so finding it tells you little. It gets a weight of 0.35. "Open" appears in one, so it gets 1.61, more than four times as much. So rare words carry most of the score.
 3. **How long is the paragraph?** A long paragraph mentions many words just by being long, so its score is marked down a little.
 
 A paragraph's score is the sum over the question's words. P2 won the first question because it was the only paragraph with the rare word "open". In code, with the `rank_bm25` library:
@@ -74,7 +74,7 @@ store.add_texts(paragraphs)                             # stage 1, once
 store.similarity_search("can I send back earphones I already used", k=3)
 ```
 
-This finds P2 for the second question, because the meanings are close even though no words match.
+A good embedding model should place the second question close to P2, because the meanings are close even though no words match.
 
 One rule follows from stage 1. The paragraphs and the questions must be embedded by the same model. Lists from two different models do not live on the same map, so comparing them is meaningless. Changing the embedding model means embedding every stored paragraph again.
 
@@ -94,7 +94,7 @@ We built an HNSW index on the same 10 lakh vectors and measured it (@fig-ann-tra
 
 ![Measured speed and accuracy of HNSW on 10 lakh synthetic vectors, against checking every vector. A setting called ef trades speed for accuracy.](/figures/m06/ann-tradeoff.pdf){#fig-ann-tradeoff}
 
-HNSW answered in 0.3 to 1.9 milliseconds, 30 to 200 times faster than checking everything. But it did not always find the true closest 10. A setting called `ef` controls how widely it looks. At `ef=20` it found about half of the true top 10. At `ef=200` it found 80%, and took nearly seven times longer. The vectors we used were random-like, a hard case for HNSW, and real embeddings often do better. So the numbers here are only a guide. The right setting for `ef` depends on your own data, and the only way to find it is to measure recall on that data. Module 9 shows how. Building the index also took 5 minutes, which matters when your data changes often.
+HNSW answered in 0.3 to 1.9 milliseconds, 30 to 200 times faster than checking everything. But it did not always find the true closest 10. A setting called `ef` controls how widely it looks. At `ef=20` it found about half of the true top 10. At `ef=200` it found 80%, and took nearly seven times longer. The vectors we used were random-like, a hard case for HNSW, and real embeddings often do better. So the numbers here are only a guide. The right setting for `ef` depends on your own data. To find it, check how many of the true closest vectors HNSW returns on your own data, at a few settings. Module 9 shows how. Building the index also took 5 minutes, which matters when your data changes often.
 
 ## Choosing where to store vectors {#sec-m06-choosing-where-store}
 
@@ -113,7 +113,9 @@ store.similarity_search(question, k=10,
     filter=lambda d: d.metadata["valid_until"] >= today)
 ```
 
-The second is **keyword search**. If you need both kinds, as the next sections argue, a store that does both saves you running two systems.
+Store dates in one sortable format, such as `2026-11-05`, so that this comparison works.
+
+The second is **keyword search**. If you need both kinds, as the last section of this module argues, a store that does both saves you running two systems.
 
 So start with the database you already run. Move to a dedicated one when its size, traffic or filtering needs outgrow it.
 
@@ -121,7 +123,7 @@ So start with the database you already run. Move to a dedicated one when its siz
 
 Go back to the first question, "Can I return opened earbuds?", and to P4: "Can I return unopened earbuds? Yes."
 
-To an embedding model, P4 looks almost exactly like the question. Same words, same shape, one extra "un". An embedding model is likely to place P4 closest to the question, ahead of P2. But P4 answers a different question, and its answer, "yes", is the opposite of the right one. A model that receives P4 first may tell the customer they can return opened earbuds.
+To an embedding model, P4 looks almost exactly like the question: it has the same words in the same order, with one extra "un". An embedding model is likely to place P4 closest to the question, ahead of P2. But P4 answers a different question, and its answer, "yes", is the opposite of the right one. A model that receives P4 first may tell the customer they can return opened earbuds.
 
 Embeddings measure whether two texts are about the same thing. They do not measure whether one answers the other. Small words that flip a meaning, such as "un", "not", "except" and "only", barely move the embedding. So the closest paragraph is often the right topic with the wrong answer.
 
@@ -131,7 +133,7 @@ Fixing this needs a model that reads the question and the paragraph together and
 
 Keyword search misses reworded questions. Meaning search misses exact codes and is fooled by near-copies. Their mistakes are different, so run both and combine the results. This is **hybrid search**.
 
-Combining them has one problem. The scores are on different scales. P2's BM25 score is 1.82, while a cosine similarity is between 0 and 1. Adding them makes no sense. So instead of scores, use ranks. The usual method is **Reciprocal Rank Fusion**, or **RRF** [@cormack2009]. Each list gives every paragraph 1 ÷ (60 + its rank), and the amounts are added up. The 60 keeps a single first place from outweighing everything else.
+Combining them has one problem. The scores are on different scales. P2's BM25 score is 1.82, while a cosine similarity is between 0 and 1. Adding them makes no sense. So instead of scores, use ranks. The usual method is **Reciprocal Rank Fusion**, or **RRF** [@cormack2009]. Each list gives every paragraph 1 ÷ (60 + its rank), and the amounts are added up. Why 60? It keeps the gaps between ranks small. First place gets 1 ÷ 61, about 0.0164, and second gets 1 ÷ 62, about 0.0161. Without the 60, first would get 1 and second 0.5, so a paragraph that is first in one list would win almost regardless of the other list.
 
 @fig-hybrid works it out for the first question, with keyword ranks from our real search and illustrative meaning ranks.
 

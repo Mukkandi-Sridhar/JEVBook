@@ -19,7 +19,7 @@ A real system is one answer to each question. Tarkika's assistant might be: hybr
 
 Search can only find what the question asks for. Three kinds of question defeat it.
 
-**Questions that lean on the conversation.** After asking about earbuds, a customer writes "and for phones?" Searching for those three words finds nothing useful. The fix is to **rewrite** the question so it stands alone, using the conversation history (\see{sec-m04-model-forgets-every}): "What is the return policy for phones?"
+**Questions that lean on the conversation.** A customer asks about a refund for opened earbuds, gets an answer, then writes "kitne din lagenge?" ("how many days will it take?"). Searched on its own, that question has nothing to match: it does not say days for what. The fix is to **rewrite** the question so it stands alone, using the conversation history (\see{sec-m04-model-forgets-every}): "How many days does a refund for returned earbuds take?"
 
 **Questions with several parts.** "Can I return the earbuds and the phone case together, and when will I get my money?" needs three different policy sections. One search returns chunks close to the average of the three, which may answer none of them well. The fix is to **split** it into three searches and combine the results (@fig-query-rewrite).
 
@@ -37,6 +37,8 @@ plan = planner.invoke([SystemMessage(REWRITE_RULES), *history,
 chunks = [c for q in plan.queries for c in hybrid_search(q)]
 ```
 
+Here `hybrid_search` is the search from \see{sec-m06-hybrid-search}, and `REWRITE_RULES` is a short system message telling the model to write each search so it makes sense on its own.
+
 **Questions that do not look like their answers.** A customer writes "box was crushed, phone screen has lines". The policy says "If an item arrives damaged, report it within 48 hours". Questions and answers are written differently, so their embeddings can sit far apart. **HyDE**, short for Hypothetical Document Embeddings, has the model first write a short, made-up answer, such as "Items that arrive damaged can be replaced if reported promptly". It then searches with that instead of the question [@gao2023hyde]. The made-up answer may be wrong in its details, but it is written like a policy, so it lands near the real policy.
 
 Each of these adds a model call before the search, so the reply starts later. Use them where tests show they help, not by default.
@@ -49,7 +51,7 @@ So let the model write a database query instead. This is **text-to-SQL**: the mo
 
 ![Text-to-SQL with checks. The model writes the query, but your code decides what it may touch before the database runs it.](/figures/m08/text-to-sql.pdf){#fig-text-to-sql}
 
-A query the model writes is a tool call that can read anything the login allows, so the rules for tools that act (\see{sec-m05-which-tools-may}) apply in full. Run it with a database login that can only read. Allow only the tables the assistant needs. Limit the number of rows. And never let the model choose whose data it reads: the customer id in the query must come from the session, as `:me` does in the figure, filled in by your code.
+A query the model writes is a tool call (\see{sec-m05-which-tools-may}), and a powerful one: it can read anything the database login allows. So limit it in code, as you would any tool. Run it with a database login that can only read. Allow only the tables the assistant needs. Limit the number of rows. And never let the model choose whose data it reads: the customer id in the query must come from the session, as `:me` does in the figure, filled in by your code.
 
 Text-to-SQL is also where models make quiet mistakes: the wrong column, a missed filter, a join that counts every refund twice. A wrong count looks exactly like a right one. Keep a set of questions with known answers and test against them (Module 9).
 
@@ -61,7 +63,7 @@ A **knowledge graph** stores such facts as things, called **nodes**, and the lin
 
 ![A small knowledge graph. The question "which cases fit my phone, and who stocks them?" is answered by following the links.](/figures/m08/graph.pdf){#fig-graph}
 
-Graphs also help with questions about a whole collection, such as "What are customers complaining about most this month?" No single chunk answers that. Microsoft's GraphRAG has a model pull out the people, products and topics from every document, groups closely linked ones, and writes a summary of each group. Broad questions are then answered from the summaries [@edge2024graphrag].
+Graphs also help with questions about a whole collection, such as "What are customers complaining about most this month?" No single chunk answers that. Microsoft's GraphRAG uses a model to pull out the people, products and topics from every document. It then groups the ones that are closely linked, and writes a summary of each group. Broad questions are then answered from the summaries [@edge2024graphrag].
 
 The cost is in building the graph. Extracting nodes and edges takes a model call for every chunk, and the graph must be updated as documents change. If Tarkika's product data already sits in a database, with compatibility and stock in proper tables, the links already exist, and text-to-SQL may do the same job with no graph to build. Build a graph when the relationships live only in text.
 
@@ -104,7 +106,7 @@ If enough chunks pass, answer from those. If none pass, do not answer from bad m
 
 **Self-RAG** goes further. The model is trained to decide for itself when to search, and to mark whether each passage supports what it wrote [@asai2024selfrag]. It needs a specially trained model, so most teams use the simpler grading step, which works with any model.
 
-Both cost one extra model call per chunk graded. Grading five chunks with a small model is cheap. Grading fifty is not, so grade after the reranker, not before.
+Grading costs one extra model call per chunk. Grading five chunks with a small model is cheap. Grading fifty is not, so grade after the reranker, not before.
 
 ## Who decides where to look {#sec-m08-who-decides-where}
 

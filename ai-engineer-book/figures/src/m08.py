@@ -28,10 +28,10 @@ def fig_four_questions():
 def fig_query_rewrite():
     f, ax = fs.canvas(5.2, 2.05)
     ax.text(0.0, 1.95, "REWRITE: make it stand alone", fontsize=6.6, fontweight="bold", color=C["indigo"])
-    fs.box(ax, 0.0, 1.25, 2.3, 0.55, "Earlier: \"Can I return opened earbuds?\"\nNow: \"and for phones?\"",
+    fs.box(ax, 0.0, 1.25, 2.3, 0.55, "Earlier: refund for opened earbuds\nNow: \"kitne din lagenge?\"",
            size=6.0, ha="left")
     fs.arrow(ax, 2.35, 1.52, 2.7, 1.52, lw=1.0)
-    fs.box(ax, 2.75, 1.3, 2.45, 0.45, "\"What is the return policy for phones?\"", size=6.0, fc=C["indigo_t"],
+    fs.box(ax, 2.75, 1.3, 2.45, 0.45, "\"How many days does a refund\nfor returned earbuds take?\"", size=6.0, fc=C["indigo_t"],
            ec=C["indigo"])
     ax.text(0.0, 0.98, "SPLIT: one search per part", fontsize=6.6, fontweight="bold", color=C["indigo"])
     fs.box(ax, 0.0, 0.05, 2.3, 0.75, "\"Can I return the earbuds and\nthe phone case together, and\nwhen "

@@ -22,7 +22,7 @@ Here is a short return policy with five sections, cut three ways by LangChain's 
 
 **Too small.** At 120 characters, section 3 falls apart. One chunk says hygiene items "cannot be returned once the seal is opened". The next says "The rule does not apply if the item arrives damaged or faulty". Which rule? On its own, that chunk is meaningless. And if search returns only the first chunk, the model will refuse a return that the policy allows.
 
-**Too large.** At 1,000 characters, the whole policy fits in two chunks. The first mixes general returns, electronics and hygiene. Its embedding is an average of three topics, so it is not very close to any question. And whichever question it answers, it carries two unrelated sections into the request.
+**Too large.** At 1,000 characters, the whole policy fits in two chunks. The first holds four sections: general returns, electronics, hygiene and damaged items. Its embedding is an average of four topics, so it is not very close to any one question. And whichever question it answers, it carries three unrelated sections into the request.
 
 **By heading.** Each section becomes one chunk, because the author already grouped related sentences under a heading. This is usually the best first cut.
 
@@ -65,7 +65,7 @@ A **reranker** reads. It is a model that takes the question and one paragraph to
 
 ![An embedding model reads the question and the paragraph separately and compares the results. A reranker reads them together, so it can see that "unopened" does not answer "opened".](/figures/m07/encoders.pdf){#fig-encoders}
 
-Because it sees both texts side by side, it notices that P4 is about unopened earbuds and the question is about opened ones. It gives P2 a high score and P4 a low one. Embeddings cannot do this, since each text was turned into numbers alone, long before the question arrived.
+Because it sees both texts side by side, it can notice that P4 is about unopened earbuds and the question is about opened ones. A good reranker should give P2 a high score and P4 a low one. Embeddings cannot do this, since each text was turned into numbers alone, long before the question arrived.
 
 The difference costs speed. Embeddings for the paragraphs are computed once, so meaning search only compares lists of numbers. A reranker must run once for every paragraph, for every question. That is far too slow for 10 lakh paragraphs, but fine for 50.
 
@@ -119,7 +119,7 @@ Saying "a person will reply" may feel like a failure, but compare the costs. A c
 
 RAG adds a whole pipeline: ingestion, an index, a reranker, and two places for things to go wrong. Sometimes you do not need it. If all the documents fit comfortably in one request, you can send all of them, every time, and let prompt caching (\see{sec-m03-caching}) make the repeated text cheap. Anthropic suggests considering this for anything under about 2,00,000 tokens, roughly 500 pages [@anthropic2024contextual].
 
-Work it out for Tarkika. Suppose all its policies come to 40,000 tokens. Cached at the example price of ₹35 per million from \see{sec-m03-caching}, that is ₹1.40 per question. RAG sends 1,200 tokens of policy at the full ₹350 per million, about ₹0.42, plus the reranker. So RAG is cheaper per question, and sending everything is simpler and never misses a chunk.
+Work it out for Tarkika. Suppose all its policies come to 40,000 tokens. Cached at the example price of ₹35 per million from \see{sec-m03-caching}, that is ₹1.40 per question. But the cache expires when no request comes for a few minutes, and the first request after that pays the full ₹350 per million: ₹14. RAG sends 1,200 tokens of policy at the full price, about ₹0.42 a question, plus the reranker. So RAG is cheaper per question, while sending everything is simpler and never misses a chunk.
 
 It depends on four things:
 

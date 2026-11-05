@@ -40,13 +40,13 @@ def run_agent(messages):
     return HANDOVER                                  # too many steps
 ```
 
-Each pass through the loop is one model call, carrying everything so far, and the context (\see{sec-m03-goes-request}) grows with every result.
+Here `TOOLS` maps each tool's name to the tool, `MAX_STEPS` is the step limit, and `HANDOVER` is the "a person will reply" message. Each pass through the loop is one model call, carrying everything so far, and the context (\see{sec-m03-goes-request}) grows with every result.
 
 This pattern was described in a 2022 paper as **ReAct**, short for *Reason* and *Act*: the model reasons about what to do, acts with a tool, observes the result, and repeats [@yao2023react]. In the paper, the model wrote its reasoning out as text before each action. Today's models usually reason inside their thinking, or simply pick the next tool, but the loop is the same.
 
 ## Errors multiply {#sec-m11-errors-multiply}
 
-Suppose each step of the loop is right 95% of the time: the right tool, the right arguments, the right reading of the result. That sounds reliable. But a run is only right if every step is. Over 10 steps, the chance is 0.95 multiplied by itself 10 times: about 60% (@fig-compound).
+Suppose each step of the loop is right 95% of the time: the right tool, the right arguments, the right reading of the result. That sounds reliable. But a run is only right if every step is. If each step's mistakes happen independently of the others, the chance over 10 steps is 0.95 multiplied by itself 10 times: about 60% (@fig-compound). Real steps are not fully independent, but the pattern holds.
 
 ![The chance that every step of a run is right, for different step accuracies. Small error rates add up quickly over long runs.](/figures/m11/compound.pdf){#fig-compound}
 
@@ -64,7 +64,7 @@ The loop above stops in two ways: the model stops asking for tools, or it hits `
 1. **A step limit,** as above, or `ModelCallLimitMiddleware` (\see{sec-m05-tools-loop}).
 2. **A budget.** Add up `usage_metadata` after each call, and stop when the tokens, or the rupees, pass a limit.
 3. **A time limit.** The customer is waiting. After, say, 30 seconds, stop and say so.
-4. **A stuck check.** An agent that calls the same tool with the same arguments twice is usually going in circles:
+4. **A stuck check.** An agent that calls the same tool with the same arguments twice is usually going in circles. Keep a set of the calls made so far, `seen = set()` before the loop, and check each new call against it:
 
 ```python
 key = (call["name"], json.dumps(call["args"], sort_keys=True))
@@ -100,7 +100,7 @@ Two more defences complete the picture.
 
 For the second kind, it often works better to have the model write a plan first, as a list of steps with structured output (\see{sec-m05-answers-fixed-shape}), and then carry it out. Your code can run independent steps in parallel, check each one, and show the plan to a person if the steps include actions.
 
-But how does the system know which kind of message it has? It needs a classifier in front: a router. That adds a step to every message, including the simple ones. Two things keep the cost down. Use a small, fast model for it, or a decision model (\see{sec-m10-models-that-only}), since "is this simple or complex?" is a decision, not writing. And keep the classifier biased towards the fast path, because a simple question sent to the planner is only slow, while a complex question sent down the fast path still has the agent loop to fall back on. Long, multi-step plans that run for minutes or hours are the subject of Module 14.
+But how does the system know which kind of message it has? It needs a classifier in front: a router. That adds a step to every message, including the simple ones. Two things keep the cost down. Use a small, fast model for it, or a decision model (\see{sec-m10-models-that-only}), since "is this simple or complex?" is a decision, not writing. And when the classifier is unsure, let it choose the fast path. A simple question sent to the planner wastes time and money on a plan it did not need. A complex question sent down the fast path still reaches the agent loop, which can take several steps; it just does so without a plan written first. Long, multi-step plans that run for minutes or hours are the subject of Module 14.
 
 ## The same loop in one line {#sec-m11-same-loop-line}
 
