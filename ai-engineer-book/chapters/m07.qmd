@@ -26,14 +26,28 @@ Here is a short return policy with five sections, cut three ways by LangChain's 
 
 **By heading.** Each section becomes one chunk, because the author already grouped related sentences under a heading. This is usually the best first cut.
 
+<!-- check: expect -->
 ```python
-from langchain_text_splitters import (MarkdownHeaderTextSplitter,
-                                      RecursiveCharacterTextSplitter)
+from langchain_text_splitters import MarkdownHeaderTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from tarkika import POLICY                  # the policy, as Markdown text
+
 by_heading = MarkdownHeaderTextSplitter([("#", "title"), ("##", "section")])
-sections = by_heading.split_text(policy_markdown)
+sections = by_heading.split_text(POLICY)    # one piece per heading
+
 by_size = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=150)
-chunks = by_size.split_documents(sections)   # only long sections get cut
+chunks = by_size.split_documents(sections)  # cuts only the long sections
+
+print(len(chunks), "chunks")
+print(chunks[2].metadata)
 ```
+
+```text
+5 chunks
+{'title': 'Tarkika Return Policy', 'section': '3. Hygiene products'}
+```
+
+Every section of this policy is short, so the second splitter leaves all five whole. Each chunk also remembers which heading it came from, in its `metadata`, which is useful for citations later.
 
 The second splitter handles sections too long to be one chunk. It cuts at paragraph breaks first, then sentences, and repeats the last 150 characters of each chunk at the start of the next. That repeat, called **overlap**, means a sentence cut in half still appears whole in one of the two chunks. Note that `chunk_size` here counts characters; 1,500 characters of English is about 350 tokens.
 
@@ -71,13 +85,21 @@ The difference costs speed. Embeddings for the paragraphs are computed once, so 
 
 So the two are not rivals. To tell them apart, ask one question: does it call a model? Fusion does not: it is a formula on ranks, free and instant, and it merges lists. Reranking does: it costs a model run per paragraph, and it judges relevance. A typical pipeline uses fusion to merge the keyword and meaning lists, then a reranker on the merged top 50:
 
+<!-- check: skip -->
 ```python
 from sentence_transformers import CrossEncoder
 
-reranker = CrossEncoder("BAAI/bge-reranker-v2-m3")     # an open reranker
-scores = reranker.predict([(question, c) for c in candidates])
-best = [c for _, c in sorted(zip(scores, candidates), reverse=True)[:5]]
+reranker = CrossEncoder("BAAI/bge-reranker-v2-m3")       # an open reranker
+question = "Can I return opened earbuds?"
+
+pairs = [(question, chunk) for chunk in candidates]      # the merged top 50
+scores = reranker.predict(pairs)                         # one score per pair
+
+ranked = sorted(zip(scores, candidates), reverse=True)   # highest score first
+best = [chunk for score, chunk in ranked[:5]]            # keep the top 5
 ```
+
+`zip` pairs each score with its chunk, so that sorting by score carries the chunks along with it.
 
 Hosted rerankers, such as Cohere's, do the same through an API.
 
@@ -105,6 +127,8 @@ Three defences work together.
 2. **Ask for sources, in a fixed shape** (\see{sec-m05-answers-fixed-shape}):
 
 ```python
+from pydantic import BaseModel
+
 class Answer(BaseModel):
     answer: str
     sources: list[str]     # ids of the chunks used, such as "policy-s3"

@@ -34,16 +34,26 @@ The model reads the whole list and writes one new AI message. On the next turn, 
 
 In LangChain, each role has its own class:
 
+<!-- check: replies ["Phone cases can be returned within 10 days of delivery, if unused and in the original packaging. Return Orders page se start kar sakte hain."] -->
 ```python
-from langchain_core.messages import (SystemMessage, HumanMessage,
-                                     AIMessage)
+from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
+from tarkika import llm, INSTRUCTIONS, POLICY
+
 messages = [
-    SystemMessage(INSTRUCTIONS),                      # your rules
-    HumanMessage("earbuds khol liye, return ho sakta hai?"),
-    AIMessage("Opened earbuds can be returned within 7 days ..."),
-    HumanMessage(f"<policy>{policy}</policy>\n\naur headphones?"),
+    SystemMessage(INSTRUCTIONS),                              # your rules
+    HumanMessage("earbuds khol liye, return ho sakta hai?"),  # the customer
+    AIMessage("Opened earbuds can be returned only if they are faulty."),
+    HumanMessage(f"<policy>{POLICY}</policy> aur phone case?"),
 ]
-reply = llm.invoke(messages)        # reply is a new AIMessage
+reply = llm.invoke(messages)     # the model writes the next AI message
+print(reply.content)
+```
+
+The four messages are the four boxes of @fig-message-roles: your instructions, the customer's first message, the model's earlier reply, and the customer's new message with the policy text in front of it. A typical reply:
+
+```text
+Phone cases can be returned within 10 days of delivery, if unused and in
+the original packaging. Return Orders page se start kar sakte hain.
 ```
 
 LangChain calls the user role `HumanMessage`; providers call it `user`. A fourth role, the **tool message**, carries the result of a function the model asked to run. Module 5 uses it.
@@ -224,12 +234,16 @@ The instructions decide behaviour just as code does, so treat them as code:
 3. Before a new version goes live, run it on a fixed set of test messages and compare it with the old one (Module 9).
 
 ```python
-PROMPT_VERSION = "support-v7"
+from tarkika import llm
+
+PROMPT_VERSION = "support-v7"          # change this to release a new prompt
 INSTRUCTIONS = open(f"prompts/{PROMPT_VERSION}.txt").read()
 
-reply = llm.invoke(messages,
+reply = llm.invoke(messages,           # the messages from Section 3.2
                    config={"metadata": {"prompt_version": PROMPT_VERSION}})
 ```
+
+The first two lines are exactly how `tarkika.py` loads the instructions. The `metadata` travels with the call into your logs and traces (Module 16), so every reply can be traced back to the prompt that produced it.
 
 The same applies to everything else that shapes a reply: the model name, the tool descriptions, the examples. A change to any of them is a release (Module 16).
 

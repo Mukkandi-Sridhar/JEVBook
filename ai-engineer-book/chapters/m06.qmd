@@ -46,14 +46,41 @@ The index finds the paragraphs that contain the words. Then they must be ranked.
 2. **How rare is the word across all paragraphs?** In our eight paragraphs, "return" appears in six, so finding it tells you little. It gets a weight of 0.35. "Open" appears in one, so it gets 1.61, more than four times as much. So rare words carry most of the score.
 3. **How long is the paragraph?** A long paragraph mentions many words just by being long, so its score is marked down a little.
 
-A paragraph's score is the sum over the question's words. P2 won the first question because it was the only paragraph with the rare word "open". In code, with the `rank_bm25` library:
+A paragraph's score is the sum over the question's words. P2 won the first question because it was the only paragraph with the rare word "open". Here is the whole search in code, with the `rank_bm25` library. The function `words` does steps 1 to 3 of the index, and `BM25Okapi` does step 4 and the scoring:
 
+<!-- check: expect -->
 ```python
+import re
+from nltk.stem import PorterStemmer
 from rank_bm25 import BM25Okapi
+from tarkika import PARAGRAPHS            # P1 to P8, by name
 
-bm25 = BM25Okapi([words(p) for p in paragraphs])  # words(): steps 1 to 3
+stem = PorterStemmer().stem
+COMMON = {"can", "i", "the", "a", "of", "and", "or", "to", "is", "it", "if",
+          "in", "for", "our", "by", "with", "be", "up", "are", "on", "once"}
+
+def words(text):
+    found = re.findall(r"[a-z0-9-]+", text.lower())     # step 1
+    return [stem(w) for w in found if w not in COMMON]  # steps 2 and 3
+
+bm25 = BM25Okapi([words(p) for p in PARAGRAPHS.values()])
 scores = bm25.get_scores(words("can I return opened earbuds"))
+for name, score in zip(PARAGRAPHS, scores):
+    print(name, round(score, 2))
 ```
+
+```text
+P1 0.52
+P2 1.82
+P3 0.61
+P4 1.2
+P5 0.0
+P6 0.34
+P7 0.37
+P8 0.8
+```
+
+These are the scores in @fig-keyword-scores.
 
 BM25 needs no model, no training and no GPU. It is fast, it is cheap, and it is exactly right about exact words. Those are the reasons it is still part of nearly every search system.
 
@@ -64,14 +91,20 @@ An **embedding** (\see{sec-m02-meaning-as-map}) is a list of numbers for a piece
 1. Before any question: turn every paragraph into an embedding, once, and store the lists.
 2. For each question: turn the question into an embedding with the same model, and find the stored lists closest to it, measured by cosine similarity.
 
+<!-- check: skip -->
 ```python
 from langchain_openai import OpenAIEmbeddings
 from langchain_core.vectorstores import InMemoryVectorStore
+from tarkika import PARAGRAPHS
 
-emb = OpenAIEmbeddings(model="text-embedding-3-small")  # 1,536 numbers each
+emb = OpenAIEmbeddings(model="text-embedding-3-small")   # 1,536 numbers each
 store = InMemoryVectorStore(embedding=emb)
-store.add_texts(paragraphs)                             # stage 1, once
-store.similarity_search("can I send back earphones I already used", k=3)
+
+store.add_texts(list(PARAGRAPHS.values()))               # stage 1, once
+found = store.similarity_search("can I send back earphones I already used",
+                                k=3)                     # stage 2
+for doc in found:
+    print(doc.page_content)
 ```
 
 A good embedding model should place the second question close to P2, because the meanings are close even though no words match.
@@ -108,12 +141,16 @@ Size decides less than you might think: a few lakh paragraphs fit comfortably in
 
 The first is **filtering**. The pruning step in \see{sec-m03-policy-text-fit} removed out-of-date policy paragraphs before sending them. Better still, never retrieve them. Store a date, a category and a language with each paragraph, called **metadata**, and filter during the search. The order matters. If you fetch the top 10 and then remove the old ones, and 9 of the 10 were old, you are left with 1. A good vector store applies the filter while searching, and still returns 10.
 
+<!-- check: skip -->
 ```python
-store.similarity_search(question, k=10,
-    filter=lambda d: d.metadata["valid_until"] >= today)
+def still_valid(doc):
+    return doc.metadata["valid_until"] >= "2026-11-05"    # today's date
+
+store.similarity_search("can I return opened earbuds", k=10,
+                        filter=still_valid)
 ```
 
-Store dates in one sortable format, such as `2026-11-05`, so that this comparison works.
+The store runs `still_valid` on each stored paragraph as it searches, and keeps only those it approves. Store dates in one sortable format, such as `2026-11-05`, so that this comparison works.
 
 The second is **keyword search**. If you need both kinds, as the last section of this module argues, a store that does both saves you running two systems.
 

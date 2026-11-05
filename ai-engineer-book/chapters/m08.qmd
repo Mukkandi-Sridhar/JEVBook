@@ -27,17 +27,40 @@ Search can only find what the question asks for. Three kinds of question defeat 
 
 A small, cheap model does both in one call, with structured output (\see{sec-m05-answers-fixed-shape}):
 
+<!-- check: replies [{"queries": ["How many days does a refund for returned earbuds take?"]}] -->
+<!-- check: expect -->
 ```python
+from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
+from pydantic import BaseModel, Field
+from tarkika import small_llm
+
 class Searches(BaseModel):
-    queries: list[str] = Field(description="1 to 4 standalone searches")
+    queries: list[str] = Field(description="1 to 4 searches, each complete")
+
+REWRITE_RULES = ("Turn the customer's last message into searches of the "
+                 "return policy. Each search must make sense on its own.")
+chat = [HumanMessage("Can I return opened earbuds?"),
+        AIMessage("Only if they are faulty."),
+        HumanMessage("kitne din lagenge?")]
 
 planner = small_llm.with_structured_output(Searches)
-plan = planner.invoke([SystemMessage(REWRITE_RULES), *history,
-                       HumanMessage(question)])
-chunks = [c for q in plan.queries for c in hybrid_search(q)]
+plan = planner.invoke([SystemMessage(REWRITE_RULES)] + chat)
+print(plan.queries)
 ```
 
-Here `hybrid_search` is the search from \see{sec-m06-hybrid-search}, and `REWRITE_RULES` is a short system message telling the model to write each search so it makes sense on its own.
+```text
+['How many days does a refund for returned earbuds take?']
+```
+
+Each search is then run, and the results are put together:
+
+```python
+from tarkika import hybrid_search    # a small version of Section 6.8's
+
+chunks = []
+for query in plan.queries:
+    chunks += hybrid_search(query)
+```
 
 **Questions that do not look like their answers.** A customer writes "box was crushed, phone screen has lines". The policy says "If an item arrives damaged, report it within 48 hours". Questions and answers are written differently, so their embeddings can sit far apart. **HyDE**, short for Hypothetical Document Embeddings, has the model first write a short, made-up answer, such as "Items that arrive damaged can be replaced if reported promptly". It then searches with that instead of the question [@gao2023hyde]. The made-up answer may be wrong in its details, but it is written like a policy, so it lands near the real policy.
 
@@ -93,13 +116,19 @@ Citations are checked after the answer (\see{sec-m07-model-still-makes}). You ca
 
 **Corrective RAG** adds a grading step [@yan2024crag]. A small model reads each retrieved chunk with the question and marks it relevant or not:
 
+<!-- check: replies [{"relevant": True}, {"relevant": False}, {"relevant": False}, {"relevant": True}, {"relevant": False}] -->
 ```python
 class Grade(BaseModel):
-    relevant: bool
+    relevant: bool                  # does this text help answer the question?
 
 grader = small_llm.with_structured_output(Grade)
-good = [c for c in chunks
-        if grader.invoke(f"Question: {q}\n\nText: {c}").relevant]
+question = plan.queries[0]
+
+good = []
+for chunk in chunks:
+    grade = grader.invoke(f"Question: {question}\n\nText: {chunk}")
+    if grade.relevant:
+        good.append(chunk)
 ```
 
 If enough chunks pass, answer from those. If none pass, do not answer from bad material. Rewrite the question and search again, try another source, or hand over to a person. Cap the retries, as with tool loops (\see{sec-m05-tools-loop}).

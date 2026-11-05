@@ -159,7 +159,7 @@ def fig_message_roles():
          "white", C["ink2"])
     _msg(ax, 1.15, 0.47, "AI", "Opened earbuds can be returned within 7 days\nonly if they are faulty. …",
          "the model's earlier reply,\nsent back by your program", C["saffron_t"], C["saffron"])
-    _msg(ax, 0.56, 0.47, "USER", "<policy> Headphones: 10-day return … </policy>\naur headphones?",
+    _msg(ax, 0.56, 0.47, "USER", "<policy> … accessories follow the general rules … </policy>\naur phone case?",
          "the customer's new message,\nwith policy text your program added", "white", C["ink2"])
     _msg(ax, 0.0, 0.4, "AI", "?", "the model writes\nthis one next", "white", C["saffron"], dashed=True)
     return f

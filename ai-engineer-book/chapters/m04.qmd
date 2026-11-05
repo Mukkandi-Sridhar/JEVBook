@@ -6,29 +6,50 @@ Every request in Module 3 carried the earlier messages of the conversation (\see
 
 Try two calls in a row:
 
+<!-- check: replies ["Sorry to hear that. Let me check.", "Could you tell me which order you mean?"] -->
 ```python
+from tarkika import llm
+
 llm.invoke("My order TK-5521 has not come.")
-llm.invoke("Where is it now?")
+reply = llm.invoke("Where is it now?")
+print(reply.content)
 ```
 
-The second reply will ask which order you mean. The model has no idea what "it" is, because it never saw the first message. Each call is separate, and the model keeps nothing from one call to the next. This is what engineers mean when they say a model is **stateless**.
+A typical reply:
+
+```text
+Could you tell me which order you mean?
+```
+
+The model asks which order you mean. The model has no idea what "it" is, because it never saw the first message. Each call is separate, and the model keeps nothing from one call to the next. This is what engineers mean when they say a model is **stateless**.
 
 The fix is the message list (\see{sec-m03-system-user-ai}). Your program keeps the list, adds each new message to it, and sends the whole list on every call:
 
+<!-- check: replies ["Sorry to hear that. I will check order TK-5521.", "Order TK-5521 was delivered on 20 Oct."] -->
+<!-- check: expect -->
 ```python
 from langchain_core.messages import SystemMessage, HumanMessage
+from tarkika import llm, INSTRUCTIONS
 
 history = [SystemMessage(INSTRUCTIONS)]
 
 def chat(text):
-    history.append(HumanMessage(text))
-    reply = llm.invoke(history)
-    history.append(reply)            # the AI message joins the list
+    history.append(HumanMessage(text))   # the customer's message joins
+    reply = llm.invoke(history)          # the whole list is sent, every time
+    history.append(reply)                # the model's reply joins the list
     return reply.content
 
 chat("My order TK-5521 has not come.")
-chat("Where is it now?")             # the model now sees both turns
+print(chat("Where is it now?"))
+print(len(history), "messages in the list")
 ```
+
+```text
+Order TK-5521 was delivered on 20 Oct.
+5 messages in the list
+```
+
+The second call now carries the first exchange, so the model knows what "it" is. The list holds five messages: the instructions, two from the customer and two from the model.
 
 Chat memory is nothing more than this list, sent again on every call. Some provider APIs offer to keep the list on their side, but the model still receives the full list on every call, and you still pay for it.
 
@@ -43,20 +64,25 @@ So keep one list per conversation, in a database, under an id. This id is called
 
 LangGraph, the agent library from the LangChain team, does this for you. The part that saves and loads the list is called a **checkpointer**:
 
+<!-- check: replies ["Sorry to hear that. I will check order TK-5521.", "Order TK-5521 was delivered on 20 Oct."] -->
 ```python
 from langchain.agents import create_agent
 from langgraph.checkpoint.memory import InMemorySaver
+from tarkika import llm, INSTRUCTIONS
 
 agent = create_agent(llm, system_prompt=INSTRUCTIONS,
-                     checkpointer=InMemorySaver())
+                     checkpointer=InMemorySaver())  # saves each thread
 config = {"configurable": {"thread_id": "cust-881:chat-17"}}
 
 def say(text):
-    return agent.invoke({"messages": [("user", text)]}, config)
+    result = agent.invoke({"messages": [("user", text)]}, config)
+    return result["messages"][-1].content    # the newest message: the reply
 
 say("My order TK-5521 has not come.")
-say("Where is it now?")       # loads the first exchange first
+print(say("Where is it now?"))
 ```
+
+Two parts of this need a word. `agent.invoke` takes the new message, written as `("user", text)`, a short form of `HumanMessage(text)`, and a `config` that names the thread. It returns the thread's whole list of messages, and the last one is the model's reply.
 
 The second call finds the first exchange by its thread id. `InMemorySaver` keeps lists in memory and is for trying things out. In production you use a checkpointer backed by a database, such as `PostgresSaver`, so the lists survive restarts and every server sees the same ones.
 
@@ -81,14 +107,18 @@ Most chat products use the second: a summary plus the last few messages. In Lang
 
 ```python
 from langchain.agents.middleware import SummarizationMiddleware
+from tarkika import small_llm
 
-agent = create_agent(
-    llm, system_prompt=INSTRUCTIONS, checkpointer=checkpointer,
-    middleware=[SummarizationMiddleware(
-        model=small_llm,               # a cheap model writes the summary
-        trigger=("tokens", 3000),      # summarise when history passes 3,000
-        keep=("messages", 6))])        # keep the last 6 messages as they are
+summarise = SummarizationMiddleware(
+    model=small_llm,            # a cheap model writes the summary
+    trigger=("tokens", 3000),   # start when the history passes 3,000 tokens
+    keep=("messages", 6),       # keep the newest 6 messages word for word
+)
+agent = create_agent(llm, system_prompt=INSTRUCTIONS,
+                     checkpointer=InMemorySaver(), middleware=[summarise])
 ```
+
+Nothing else changes. The agent is called exactly as before, and the summarising happens inside it.
 
 Summarise in large steps, not a little every turn. Prompt caching reuses the start of a request only while it stays exactly the same (\see{sec-m03-caching}), and the earlier messages are part of that start. Trimming one old message every turn changes the start every turn, so nothing is ever reused. Summarising once at 3,000 tokens changes it once, and caching resumes from the next turn.
 
@@ -100,16 +130,27 @@ Look at what happens around each model call. Before it, your program loads the t
 
 Code that runs around every call, rather than inside one feature, is called **middleware**. It is the same idea as middleware in a web framework, which logs or checks every request before your handler sees it. In LangChain, you write it with the `before_model` and `after_model` hooks, and `SummarizationMiddleware` above is one that comes ready-made. Here is a small one of your own, which logs the tokens of every call:
 
+<!-- check: replies ["Order TK-5521 was delivered on 20 Oct."] -->
+<!-- check: expect -->
 ```python
 from langchain.agents.middleware import after_model
 
 @after_model
 def log_usage(state, runtime):
-    reply = state["messages"][-1]
-    print(reply.usage_metadata)    # tokens in and out for this call
+    reply = state["messages"][-1]      # the message the model just wrote
+    print(reply.usage_metadata)        # tokens in and out for this call
+
+agent = create_agent(llm, system_prompt=INSTRUCTIONS,
+                     checkpointer=InMemorySaver(),
+                     middleware=[summarise, log_usage])
+agent.invoke({"messages": [("user", "Where is TK-5521?")]}, config)
 ```
 
-Pass it in the same `middleware` list. Keeping this code out of the agent's main logic means each concern (memory, logging, safety checks in Module 12) lives in one place and applies to every call.
+```text
+{'input_tokens': 1412, 'output_tokens': 63, 'total_tokens': 1475}
+```
+
+The `@after_model` line marks the function to run after every model call. LangChain passes it `state`, which holds the thread's messages, and `runtime`, which holds extra details this example does not need. Keeping this code out of the agent's main logic means each concern (memory, logging, safety checks in Module 12) lives in one place and applies to every call.
 
 ## Remembering across conversations {#sec-m04-remembering-across-conversations}
 
@@ -127,20 +168,54 @@ Long-term memories are usually sorted into three kinds, names borrowed from psyc
 
 What should not go in memory? Anything your company's own systems already know exactly: order status, refund amounts, addresses on file. Those change, and the order database always has the current value. A memory saying "order out for delivery" is wrong the next day. Look such things up with tools when they are needed (Module 5). Memory is for what only the conversation revealed.
 
-Memories reach the model through the system message. Before each call, middleware searches the customer's notes and adds the few most relevant ones:
+Long-term memories are kept in a **store**. Each note goes into a folder for one customer, called a **namespace**, under a short name, called a **key**:
 
 ```python
+from langgraph.store.memory import InMemoryStore
+
+store = InMemoryStore()       # in production, a store backed by a database
+store.put(("customers", "cust-881"), "language",
+          {"text": "Prefers replies in Hinglish", "source": "chat-12"})
+store.put(("customers", "cust-881"), "refund-oct",
+          {"text": "12 Oct: earbuds refund approved", "source": "chat-17"})
+```
+
+Memories reach the model through the system message. Before each call, middleware looks up this customer's notes and adds them to the instructions:
+
+<!-- check: replies ["Haan, aapka pichhla refund 12 Oct ko approve hua tha. Ab kya problem hai?"] -->
+```python
+from dataclasses import dataclass
 from langchain.agents.middleware import dynamic_prompt
+
+@dataclass
+class Customer:
+    customer_id: str        # filled in by your login code, never by the model
 
 @dynamic_prompt
 def add_memories(request):
-    cid = request.runtime.context.customer_id    # set by your login code
-    notes = request.runtime.store.search(("customers", cid), limit=5)
-    lines = "\n".join(f"- {n.value['text']}" for n in notes)
-    return f"{INSTRUCTIONS}\n\nNotes from earlier chats:\n{lines}"
+    customer_id = request.runtime.context.customer_id
+    notes = request.runtime.store.search(("customers", customer_id), limit=5)
+    prompt = INSTRUCTIONS + "\n\nNotes from earlier chats:\n"
+    for note in notes:
+        prompt += "- " + note.value["text"] + "\n"
+    return prompt           # this becomes the system message for this call
+
+agent = create_agent(llm, middleware=[add_memories], store=store,
+                     context_schema=Customer, checkpointer=InMemorySaver())
+agent.invoke({"messages": [("user", "Same problem as last time.")]},
+             {"configurable": {"thread_id": "cust-881:chat-18"}},
+             context=Customer(customer_id="cust-881"))
 ```
 
-The store is passed to `create_agent` with `store=...`, next to the checkpointer. The `limit=5` matters. Memories are context like any other, they cost tokens on every call, and the budget from \see{sec-m03-budget-every-part} applies to them too.
+For this customer, the model's system message now ends like this:
+
+```text
+Notes from earlier chats:
+- Prefers replies in Hinglish
+- 12 Oct: earbuds refund approved
+```
+
+The `limit=5` matters. Memories are context like any other, they cost tokens on every call, and the budget from \see{sec-m03-budget-every-part} applies to them too.
 
 ## Who writes memories, and what if they disagree {#sec-m04-who-writes-memories}
 

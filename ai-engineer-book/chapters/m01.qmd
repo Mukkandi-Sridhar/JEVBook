@@ -91,6 +91,7 @@ Before building, ask four questions:
 
 Here is a complete call to a model in Python. It uses an OpenAI model through **LangChain**, a popular library that gives the same way of calling models from many providers. To switch to another provider, you change the import and one line.
 
+<!-- check: skip -->
 ```python
 from langchain_openai import ChatOpenAI
 
@@ -102,7 +103,17 @@ print(reply.content)             # the answer
 print(reply.usage_metadata)      # how much text went in and came out
 ```
 
+A typical run prints something like this:
+
+```text
+Opened earbuds usually cannot be returned for hygiene reasons, unless they
+are faulty. Please check the seller's return policy for your order...
+{'input_tokens': 30, 'output_tokens': 120, 'total_tokens': 150}
+```
+
 The answer will be polite and sensible, and probably wrong for your shop, because the model has never seen your return policy. The last line prints the amount of text that went in and came out, counted in **tokens**, the small pieces of text that models read and charge by. Module 2 shows what they look like.
+
+Every later example builds on this call. To keep them short, the pieces they share live in one small file, `tarkika.py`, in the book's `code` folder: the model `llm` (plus a cheaper `small_llm`), the instructions, the sample policy and a few sample orders. Each example starts by importing exactly what it uses, so you can always see where a name comes from. And every example in the book is run by a checker before it is printed.
 
 Now work out the cost. Suppose the provider charges ₹350 for every million input tokens and ₹1,700 for every million output tokens. These are assumed example prices; output usually costs several times more than input.
 

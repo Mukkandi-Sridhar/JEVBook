@@ -99,17 +99,19 @@ The idea borrows a picture from psychology. People are often described as having
 
 You send Jev a description of the situation and a set of questions. Each question has one of three shapes: yes or no, pick one option, or a point on a scale. For each question, you get back a probability for every possible answer:
 
+<!-- check: skip -->
 ```python
 from typesafe_sdk import TypeSafeClient, Choice, Noul, Score
 
 client = TypeSafeClient(api_key=TYPESAFE_API_KEY)
+message = "bhai mera refund abhi tak nahi aaya, order TK-5521!!"
 r = client.system_one(
-    state=message,                     # the customer's message, as text
+    state=message,                     # the situation, as plain text
     questions={
         "topic": Choice(criteria={"refund": "Money back for a return",
                                   "delivery": "Where an order is",
                                   "other": None}),
-        "needs_person": Noul(instructions="Should a person handle this today?"),
+        "needs_person": Noul(instructions="Should a person handle this?"),
         "tone": Score(criteria=["calm", "annoyed", "angry"])})
 r.choices["topic"].probabilities    # a chance for each topic
 r.nouls["needs_person"].noul        # chance of "yes", between 0 and 1

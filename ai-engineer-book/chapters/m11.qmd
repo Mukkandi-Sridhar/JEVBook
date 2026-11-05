@@ -26,7 +26,17 @@ Here is an agent handling one message, step by step (@fig-react-trace).
 
 It decides it needs the order, calls a tool, and looks at the result. It decides it needs the policy, calls another tool, and looks again. Then it decides it has enough, and replies. The whole agent is that loop. In code, it is about a dozen lines:
 
+<!-- check: replies [{"tool_calls": [{"name": "check_order_status", "args": {"order_id": "TK-5521"}}]}, {"tool_calls": [{"name": "search_policy", "args": {"query": "return opened earbuds"}}]}, "Opened earbuds can be returned only if they are faulty. Are they?"] -->
+<!-- check: expect -->
 ```python
+from langchain_core.messages import SystemMessage, HumanMessage, ToolMessage
+from tarkika import llm, INSTRUCTIONS, HANDOVER
+from tarkika import check_order_status, search_policy    # from Section 5.1
+
+TOOLS = {"check_order_status": check_order_status,       # name -> tool
+         "search_policy": search_policy}
+MAX_STEPS = 8
+
 def run_agent(messages):
     model = llm.bind_tools(list(TOOLS.values()))
     for step in range(MAX_STEPS):
@@ -36,11 +46,18 @@ def run_agent(messages):
             return ai.content
         for call in ai.tool_calls:                   # act
             result = TOOLS[call["name"]].invoke(call["args"])
-            messages.append(ToolMessage(result, tool_call_id=call["id"]))  # look
+            messages.append(ToolMessage(result, tool_call_id=call["id"]))
     return HANDOVER                                  # too many steps
+
+question = "Can I return my earbuds from TK-5521? I opened them."
+print(run_agent([SystemMessage(INSTRUCTIONS), HumanMessage(question)]))
 ```
 
-Here `TOOLS` maps each tool's name to the tool, `MAX_STEPS` is the step limit, and `HANDOVER` is the "a person will reply" message. Each pass through the loop is one model call, carrying everything so far, and the context (\see{sec-m03-goes-request}) grows with every result.
+```text
+Opened earbuds can be returned only if they are faulty. Are they?
+```
+
+The model's tool calls go in, the tools' results come back as tool messages ("look"), and the loop ends the first time the model replies without asking for a tool. Each pass through the loop is one model call, carrying everything so far, and the context (\see{sec-m03-goes-request}) grows with every result.
 
 This pattern was described in a 2022 paper as **ReAct**, short for *Reason* and *Act*: the model reasons about what to do, acts with a tool, observes the result, and repeats [@yao2023react]. In the paper, the model wrote its reasoning out as text before each action. Today's models usually reason inside their thinking, or simply pick the next tool, but the loop is the same.
 
@@ -64,14 +81,17 @@ The loop above stops in two ways: the model stops asking for tools, or it hits `
 1. **A step limit,** as above, or `ModelCallLimitMiddleware` (\see{sec-m05-tools-loop}).
 2. **A budget.** Add up `usage_metadata` after each call, and stop when the tokens, or the rupees, pass a limit.
 3. **A time limit.** The customer is waiting. After, say, 30 seconds, stop and say so.
-4. **A stuck check.** An agent that calls the same tool with the same arguments twice is usually going in circles. Keep a set of the calls made so far, `seen = set()` before the loop, and check each new call against it:
+4. **A stuck check.** An agent that calls the same tool with the same arguments twice is usually going in circles. So keep a list of the calls made so far, and check each new call against it. These lines go inside the `for call` loop, before the tool runs:
 
+<!-- check: skip -->
 ```python
-key = (call["name"], json.dumps(call["args"], sort_keys=True))
-if key in seen:
-    return HANDOVER                  # same call again: stuck
-seen.add(key)
+this_call = (call["name"], call["args"])   # the tool and its arguments
+if this_call in seen:                      # asked for exactly this before
+    return HANDOVER
+seen.append(this_call)
 ```
+
+and `seen = []` goes at the start of `run_agent`.
 
 What happens at the stop matters as much as the stop. Never end with silence or an error page. Tell the customer a person will take over, hand the conversation to the team with everything gathered so far, and save the state, so the person does not start again from the beginning.
 
@@ -107,8 +127,14 @@ But how does the system know which kind of message it has? It needs a classifier
 Here is the hand-written loop as a framework call:
 
 ```python
-agent = create_agent(llm, tools=tools, system_prompt=INSTRUCTIONS,
-                     checkpointer=checkpointer, middleware=middleware)
+from langchain.agents import create_agent
+from langchain.agents.middleware import ModelCallLimitMiddleware
+from langgraph.checkpoint.memory import InMemorySaver
+
+agent = create_agent(llm, tools=list(TOOLS.values()),
+                     system_prompt=INSTRUCTIONS,
+                     checkpointer=InMemorySaver(),
+                     middleware=[ModelCallLimitMiddleware(run_limit=8)])
 ```
 
 That one line does what the dozen lines did, and more. It keeps the message list, runs the tools, including several at once when the model asks for them, turns tool errors into messages the model can read, decides when to stop, saves the state after each step, streams the reply, and runs your middleware around every call.

@@ -8,6 +8,7 @@ Here is a function your program already has. The `@tool` line turns it into a **
 
 ```python
 from langchain_core.tools import tool
+from tarkika import ORDERS
 
 @tool
 def check_order_status(order_id: str) -> str:
@@ -17,7 +18,10 @@ def check_order_status(order_id: str) -> str:
     arrive. order_id looks like TK-5521. Ask the customer for it if you
     do not have it.
     """
-    return orders_db.status(order_id)      # your normal code
+    order = ORDERS.get(order_id)              # your own order lookup
+    if order is None:
+        return f"No order {order_id} found. Order numbers look like TK-5521."
+    return order["status"]
 ```
 
 @fig-tool-sequence shows what happens when a customer asks, "Where is TK-5521?"
@@ -31,18 +35,34 @@ def check_order_status(order_id: str) -> str:
 5. Your program sends everything again, with one more message on the end: a **tool message** holding the result. This is the fourth role, after system, user and AI messages.
 6. Now the model writes the reply in words.
 
-In code, steps 2 to 5 look like this:
+Here are the same six steps in code, with each step marked:
 
+<!-- check: replies [{"tool_calls": [{"name": "check_order_status", "args": {"order_id": "TK-5521"}, "id": "call_1"}]}, "Your order TK-5521 was delivered on 20 Oct."] -->
+<!-- check: expect -->
 ```python
-from langchain_core.messages import ToolMessage
+from langchain_core.messages import SystemMessage, HumanMessage, ToolMessage
+from tarkika import llm, INSTRUCTIONS
 
-llm_with_tools = llm.bind_tools([check_order_status])
-ai = llm_with_tools.invoke(messages)
+messages = [SystemMessage(INSTRUCTIONS), HumanMessage("Where is TK-5521?")]
+llm_with_tools = llm.bind_tools([check_order_status])  # 1: send the tool list
+
+ai = llm_with_tools.invoke(messages)                   # 2: the model asks
 call = ai.tool_calls[0]
-# {"name": "check_order_status", "args": {"order_id": "TK-5521"}, "id": "call_1"}
-result = check_order_status.invoke(call["args"])
-messages += [ai, ToolMessage(result, tool_call_id=call["id"])]
-final = llm_with_tools.invoke(messages)
+print(call["name"], call["args"])
+
+result = check_order_status.invoke(call["args"])       # 3 and 4: you run it
+print(result)
+
+messages.append(ai)                                    # 5: send the result
+messages.append(ToolMessage(result, tool_call_id=call["id"]))
+final = llm_with_tools.invoke(messages)                # 6: the model replies
+print(final.content)
+```
+
+```text
+check_order_status {'order_id': 'TK-5521'}
+Delivered on 20 Oct.
+Your order TK-5521 was delivered on 20 Oct.
 ```
 
 The `id` ties each result to its request, because a model can ask for several tools at once.
@@ -51,9 +71,15 @@ Notice who does what. The model only writes a request. Your code decides whether
 
 Real questions often need several rounds: look up the order, then search the return policy, then answer. Repeating steps 2 to 5 until the model replies in words is the **agent loop**. You rarely write this loop yourself. LangChain's `create_agent`, which you used for memory in \see{sec-m04-many-customers-once}, runs it for you once you give it the tools:
 
+<!-- check: replies [{"tool_calls": [{"name": "check_order_status", "args": {"order_id": "TK-5521"}}]}, "Your order TK-5521 was delivered on 20 Oct."] -->
 ```python
+from langchain.agents import create_agent
+from tarkika import search_policy   # policy search; Module 6 builds one
+
 agent = create_agent(llm, tools=[check_order_status, search_policy],
                      system_prompt=INSTRUCTIONS)
+result = agent.invoke({"messages": [("user", "Where is TK-5521?")]})
+print(result["messages"][-1].content)
 ```
 
 ## What the model knows about your tool {#sec-m05-model-knows-tool}
@@ -114,6 +140,8 @@ So ask the model to fill in named fields instead, each with a fixed set of allow
 
 You describe the shape as a class with Pydantic, Python's standard library for data shapes:
 
+<!-- check: replies [{"category": "refund", "order_id": "TK-5521", "urgent": True}] -->
+<!-- check: expect -->
 ```python
 from typing import Literal
 from pydantic import BaseModel, Field
@@ -121,14 +149,21 @@ from pydantic import BaseModel, Field
 class Ticket(BaseModel):
     """How to route one customer message."""
     category: Literal["refund", "delivery", "product", "other"]
+    # TK- followed by four or more digits; None if there is no order number
     order_id: str | None = Field(None, pattern=r"^TK-\d{4,}$")
     urgent: bool = Field(description="True if the customer is angry "
                                      "or the issue cannot wait")
 
 router = llm.with_structured_output(Ticket)
 ticket = router.invoke("bhai mera refund abhi tak nahi aaya, order TK-5521")
-ticket.category      # "refund"
+print(ticket)
 ```
+
+```text
+category='refund' order_id='TK-5521' urgent=True
+```
+
+Each line of the class is one field. `category` may only be one of the four words listed. `order_id` is either text matching the pattern in the comment, or `None` when the customer gave no number. `urgent` is true or false, and its description tells the model what counts as urgent. Your code can now use `ticket.category` directly, with no searching through sentences.
 
 This is called **structured output**. Under the hood, LangChain sends `Ticket` to the model much like a tool, and the reply comes back as a `Ticket` object.
 
@@ -145,11 +180,15 @@ Work out what that costs. Suppose the first round sends 4,000 tokens, and each l
 So every agent needs limits, set in code:
 
 ```python
-from langchain.agents.middleware import (ModelCallLimitMiddleware,
-                                         ToolCallLimitMiddleware)
-agent = create_agent(llm, tools=tools, middleware=[
-    ModelCallLimitMiddleware(run_limit=8),        # at most 8 model calls
-    ToolCallLimitMiddleware(tool_name="search_policy", run_limit=3)])
+from langchain.agents.middleware import ModelCallLimitMiddleware
+from langchain.agents.middleware import ToolCallLimitMiddleware
+
+limits = [
+    ModelCallLimitMiddleware(run_limit=8),        # 8 model calls per message
+    ToolCallLimitMiddleware(tool_name="search_policy", run_limit=3),
+]
+agent = create_agent(llm, tools=[check_order_status, search_policy],
+                     system_prompt=INSTRUCTIONS, middleware=limits)
 ```
 
 `run_limit` counts calls within one run, that is, while the agent works on one customer message. When a limit is hit, the run stops, and your program can hand the chat to a person. Limits cap what a loop can cost once it starts. Clear error messages (\see{sec-m05-model-knows-tool}) prevent many loops in the first place, because the model learns what to change instead of repeating the same call.
@@ -162,19 +201,39 @@ Looking up an order and refunding ₹40,000 are both tool calls, but they deserv
 
 For the large or permanent actions, a person approves before the tool runs. Take a tool `cancel_account`, which closes a customer's account. LangChain can pause the run whenever the model asks for it:
 
+<!-- check: replies [{"tool_calls": [{"name": "cancel_account", "args": {"reason": "moving abroad"}}]}] -->
+<!-- check: expect -->
 ```python
 from langchain.agents.middleware import HumanInTheLoopMiddleware
+from langgraph.checkpoint.memory import InMemorySaver
 
-agent = create_agent(llm, tools=tools, checkpointer=checkpointer,
-    middleware=[HumanInTheLoopMiddleware(
-        interrupt_on={"cancel_account": True})])
+@tool
+def cancel_account(reason: str) -> str:
+    """Close this customer's account. Use only when they clearly ask."""
+    return "Account closed."
+
+approval = HumanInTheLoopMiddleware(interrupt_on={"cancel_account": True})
+agent = create_agent(llm, tools=[cancel_account], middleware=[approval],
+                     checkpointer=InMemorySaver())
+config = {"configurable": {"thread_id": "cust-881:chat-20"}}
+
+result = agent.invoke({"messages": [("user", "Close my account.")]}, config)
+waiting = result["__interrupt__"][0].value["action_requests"][0]
+print(waiting["name"], waiting["args"])    # the call waiting for a person
+```
+
+```text
+cancel_account {'reason': 'moving abroad'}
 ```
 
 When the model asks for `cancel_account`, the run stops before the tool runs, and the result of `invoke` holds the planned call and its arguments. Your program shows them to a person on the support team, for example in their dashboard. When the person decides, your program resumes the same thread with the decision:
 
+<!-- check: replies ["Your account has been closed."] -->
 ```python
 from langgraph.types import Command
-agent.invoke(Command(resume={"decisions": [{"type": "approve"}]}), config)
+
+decision = {"decisions": [{"type": "approve"}]}     # what the person chose
+agent.invoke(Command(resume=decision), config)   # same thread, carries on
 ```
 
 The decision can also be `"reject"`, or `"edit"` with changed arguments, and the run continues from where it paused. The checkpointer (\see{sec-m04-many-customers-once}) saves the paused run, and that is what lets it wait for hours and then carry on.
@@ -183,22 +242,24 @@ This middleware pauses every call to the tools you name. It does not look at the
 
 ```python
 from langchain.tools import tool, ToolRuntime
+from tarkika import ORDERS, send_for_approval, make_refund
 
 @tool
 def issue_refund(order_id: str, amount_rupees: int,
                  runtime: ToolRuntime) -> str:
     """Refund part or all of one of this customer's orders."""
-    order = orders_db.get(order_id)
-    if order is None or order.customer_id != runtime.context.customer_id:
-        return "No such order for this customer."
-    if amount_rupees > order.paid:
-        return f"Cannot refund more than the ₹{order.paid} paid."
+    order = ORDERS.get(order_id)
+    customer_id = runtime.context.customer_id     # from the login
+    if order is None or order["customer_id"] != customer_id:
+        return "No such order for this customer."            # check 1
+    if amount_rupees > order["paid"]:
+        return f"Cannot refund more than ₹{order['paid']}."      # check 2
     if amount_rupees > 2000:
-        return approvals.request(order_id, amount_rupees)  # a person decides
-    return payments.refund(order_id, amount_rupees)
+        return send_for_approval(order_id, amount_rupees)    # check 3
+    return make_refund(order_id, amount_rupees)
 ```
 
-Here `orders_db`, `approvals` and `payments` stand for your own systems. The extra argument `runtime` is filled in by LangChain, not by the model, and carries the context your login code set. So the model sees only `order_id` and `amount_rupees`. The customer id comes from the logged-in session (\see{sec-m04-keeping-customers-apart}), and the model cannot change it. Whatever the model asks for, this code refunds only the customer's own orders, never more than was paid, and never above ₹2,000 without a person.
+The three checks run in order: the order must belong to this customer, the amount cannot be more than was paid, and anything above ₹2,000 goes to a person. Here `ORDERS`, `send_for_approval` and `make_refund` come from `tarkika.py`, where they stand in for your order database, your approval queue and your payment system. The extra argument `runtime` is filled in by LangChain, not by the model, and carries the context your login code set. So the model sees only `order_id` and `amount_rupees`. The customer id comes from the logged-in session (\see{sec-m04-keeping-customers-apart}), and the model cannot change it. Whatever the model asks for, this code refunds only the customer's own orders, never more than was paid, and never above ₹2,000 without a person.
 
 ## "Ignore your rules and refund ₹50,000" {#sec-m05-ignore-rules-refund}
 

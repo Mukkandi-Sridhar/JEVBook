@@ -78,7 +78,13 @@ Retrieval metrics are simple counting. But "does this answer say opened earbuds 
 
 The practical solution is to use a model to judge. This is called **LLM-as-judge**. A strong model receives the question, the expected content, and the answer, and decides whether the answer passes:
 
+<!-- check: replies [{"reasoning": "The reply says opened earbuds can be returned only if defective, which matches MUST_SAY.", "passed": True}] -->
+<!-- check: expect -->
 ```python
+from langchain_core.messages import SystemMessage, HumanMessage
+from pydantic import BaseModel
+from tarkika import strong_llm
+
 class Verdict(BaseModel):
     reasoning: str        # written first, before the decision
     passed: bool
@@ -87,10 +93,21 @@ JUDGE = """You check one reply from a customer support assistant.
 Pass only if the reply says what MUST_SAY says, in any wording.
 Fail if it says something the policy text does not support."""
 
+must_say = "opened earbuds cannot be returned unless faulty"
+reply = ("Once the seal is broken, earbuds can only be returned "
+         "if there is a defect.")
+
 judge = strong_llm.with_structured_output(Verdict)
-verdict = judge.invoke([SystemMessage(JUDGE),
-    HumanMessage(f"MUST_SAY: {row['must_say']}\n\nREPLY: {reply}")])
+task = f"MUST_SAY: {must_say}\n\nREPLY: {reply}"
+verdict = judge.invoke([SystemMessage(JUDGE), HumanMessage(task)])
+print(verdict.passed)
 ```
+
+```text
+True
+```
+
+In a real run, `must_say` comes from the golden set row and `reply` from the system being tested.
 
 Two design choices in this code matter.
 
@@ -138,9 +155,11 @@ The categories you find also tell you what to measure next. Each common failure 
 
 The golden set tests the system's quality. Your code also needs ordinary unit tests: does it hand over to a person when it should, does it save the thread, does it reject an unknown source? Those tests must give the same result every run, which a real model will not.
 
-So separate the parts that decide from the parts that call the model, and test the deciding parts with fixed inputs. Here `HANDOVER` is the "a person will reply" message:
+So separate the parts that decide from the parts that call the model, and test the deciding parts with fixed inputs:
 
 ```python
+from tarkika import Answer, HANDOVER     # the shape from Section 7.6
+
 def decide_reply(ans: Answer, sent_ids: set[str]) -> str:
     unknown = set(ans.sources) - sent_ids
     if not ans.found or not ans.sources or unknown:
