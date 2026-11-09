@@ -219,8 +219,8 @@
 \AtBeginDocument{\bookmarksetup{numbered}}
 
 % Headings keep a few lines of text with them
-\pretocmd{\section}{\needspace{7\baselineskip}}{}{}
-\pretocmd{\subsection}{\needspace{5\baselineskip}}{}{}
+\pretocmd{\section}{\Needspace{7\baselineskip}}{}{}  % breaks only when 7 lines do not fit; \needspace added a break bonus that left pages short
+\pretocmd{\subsection}{\Needspace{5\baselineskip}}{}{}
 
 % Cross-references with page numbers: \see{sec-...} -> "Section 3.9, page 31"; \seefig{fig-...} -> "Figure 3.1, page 18"
 \newcommand{\see}[1]{Section~\ref{#1}, page~\pageref{#1}}

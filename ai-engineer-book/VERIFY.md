@@ -21,4 +21,5 @@ Claims and sources in the draft that must be checked against a primary source be
 | Module 15.6 | OpenAI Batch API and Anthropic Message Batches: 50% price, results within 24 hours (current terms). |
 | Module 16.1 | Anthropic postmortem (Sept 2025): worst hour 16% of Sonnet 4 requests affected; snapshot name gpt-5-mini-2025-08-07. |
 | Module 16.7 | GPU rental price (assumed ₹250/hour) and capacity per GPU; refresh against current Indian cloud prices before print. |
+| Module 17.4 | Stivers et al. 2009: typical turn gap about 200 ms across ten languages. Voice budget figures are design targets, not measurements. |
 | All | Every `[[VERIFY]]` marker (shown only in draft builds: `BOOK_DRAFT=1 quarto render`). |

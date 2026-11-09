@@ -1,0 +1,77 @@
+# Designing an AI system, start to finish {#sec-m17}
+
+Every module so far built one part of a system. This one puts them together the way the work arrives in practice, as a vague request, and walks one design from that request to a complete plan. It then applies the same method to a new problem, a Hindi voice line, and to the questions that design interviews ask, and ends with how to show this work to someone hiring.
+
+## Vague on purpose {#sec-m17-vague-on-purpose}
+
+The request usually comes in one line, such as "Build an AI assistant for Tarkika's customer support." It is vague on purpose, whether it comes from a manager or an interviewer, because deciding what it means is the first part of the job. Five questions turn it into something you can design:
+
+1. Who will use it, and for what? Customers in the app, in which languages, asking about what?
+2. How much traffic? Messages a day, and at the busiest hour.
+3. What may it do? Only answer, or also act, and up to what limit?
+4. How fast, and at what cost? Seconds to the first word, rupees per chat.
+5. How will we know it works? The number that must improve, measured before and after.
+
+When nobody is available to answer, state assumptions as numbers and design for them, because a number can be checked and corrected later, whereas "lots of users" cannot. For Tarkika, the assumptions used throughout this book were 4,000 messages a day, ten times that in festival week, customers writing in English, Hindi and Hinglish, refunds up to ₹2,000 without a person, and success measured as the share of chats resolved without a handover.
+
+The numbers then size the system, before any design. If a tenth of a normal day's messages arrive in the busiest hour, that is 400 an hour, about one every nine seconds, so at four seconds a reply, rarely more than one or two are being written at once. In festival week the busiest hour brings about one message a second, so four or five replies are in progress at any moment, reading about 2 lakh tokens a minute and costing roughly ₹47,000 a day at ₹1.17 a reply (\see{sec-m15-cost-per-task}). This tells you, before writing any code, that the limits to plan for are the provider's rate limits and the budget (\see{sec-m15-batch-three-hours}), not the number of servers.
+
+## Who does this help, and what do they do all day? {#sec-m17-who-does-help}
+
+A support assistant changes the work of the people who answer chats today, so the next step is to learn what that work is, ideally by sitting with them for a day. Suppose, as an illustration, that 40% of their chats are "where is my order?", 25% are return questions answered from the policy, 20% need a judgement such as an exception or an angry customer, and 15% are about payments and refunds.
+
+Each share calls for a different design. The tracking questions need no language model at all: a "Track order" button, or a fixed workflow that looks up the order and formats the answer, handles them faster, cheaper and without mistakes, which is the advice of \see{sec-m01-problem-use-ai}. The policy questions suit RAG with checked sources. The refunds suit an agent with tools whose limits are written in code. The judgement calls should reach a person quickly, with the context already gathered, as in the approval card of \see{sec-m12-approvals-people-read}. Designing this way means the assistant takes the repetitive work and leaves people the work that needs them, and the support team, who know which chats are hard, become the system's best testers rather than its opponents.
+
+## Tarkika's support agent, layer by layer {#sec-m17-layer-by-layer}
+
+Module 1 drew the parts of an AI system as an empty map (\see{sec-m01-ai-engineer-build}). @fig-system-design fills it in with the decisions this book made for Tarkika, and each one can be read as the answer to a question.
+
+![The system map of Module 1, filled in for Tarkika's support assistant. Each box holds the decision made for it and the module that explains why.](/figures/m17/system-design.pdf){#fig-system-design}
+
+Following one message through it shows how the parts depend on each other. The front door signs the customer in, which supplies the customer id that every tool trusts, and limits each customer to 20 messages a minute (\see{sec-m16-script-to-service}). The input checks mask an Aadhaar number before the model sees it (\see{sec-m12-private-data-way}). A router, a small decision model with calibrated probabilities (Module 10), sends tracking questions to a fixed workflow and everything else to the agent, and sends any message it is unsure about to the agent too. The agent works with the system message, the thread's memory, and policy chunks found by hybrid search and a reranker (Modules 3, 4 and 6 to 8). Its tools come from the orders MCP server, and the refund tool checks ownership and amount in code and sends anything over ₹2,000 to a person (Modules 5, 12 and 13). The reply is checked for promises, other customers' orders and unsupported claims before it streams to the customer (\see{sec-m12-checks-way-out}). Around all of it, the golden and attack sets gate every release, every reply carries a version record and a trace, and the cost per resolved chat is on the dashboard (Modules 9, 15 and 16).
+
+At every box, the design chose the simplest thing that meets the requirement: a workflow where the path is fixed, an agent only where it is not, a small model where it is confident, and a person where the cost of a mistake is high. That rule, more than any single technique, is what an interviewer listens for.
+
+## The same method on a new problem: a Hindi voice line {#sec-m17-hindi-voice-line}
+
+Now a new request: many of Tarkika's customers in smaller towns prefer to call rather than type, so the company wants a phone line, in Hindi, that answers order questions. The method is the same, and the first question turns out to be one the chat assistant never faced: how fast must it answer?
+
+In conversation, people answer each other quickly. A study of ten languages found that the typical gap between one speaker finishing and the next starting is about 200 milliseconds, with only small differences between languages and cultures [@stivers2009turntaking]. A voice assistant cannot match that, but a pause of much more than a second feels like a dropped call, so the design starts from a **latency budget** that divides about one second between the stages (@fig-voice-budget).
+
+![A latency budget for one turn of the voice line, from the moment the caller stops speaking to the first sound of the reply. The figures are targets for design, not measurements.](/figures/m17/voice-budget.pdf){#fig-voice-budget}
+
+The budget decides most of the design. The model gets 400 milliseconds to its first words, which rules out a large reasoning model on this path and calls for a fast model with short replies, as in the cascade of \see{sec-m10-small-fast-easy}. Every stage must stream, so speech-to-text sends words as they are recognised, the model's first words go to text-to-speech before the rest is written, and the caller hears the start of the reply while the end is still being generated. Detecting that the caller has finished, which naive systems do by waiting for half a second of silence, needs a model trained to recognise the end of a turn, because silence alone either cuts callers off mid-thought or wastes the budget. When a tool call cannot fit in the budget, the assistant says a short filler, such as "ek second, main aapka order dekh rahi hoon", while it runs.
+
+Voice also brings problems that text did not. Order numbers arrive as speech, "TK paanch paanch do ek", so the assistant reads every number back before acting on it. Callers mix Hindi and English, phone lines are noisy, and speech models differ widely by language, so the golden set needs recorded calls, not typed questions, with pass rates measured for each language and accent (\see{sec-m12-fair-open}). Speech models built for Indian languages, from AI4Bharat and Sarvam AI among others, are worth testing against general ones on those recordings. Some actions stay off the phone entirely: the voice line can tell a caller a refund's status, but starting one is confirmed in the app, since a phone call gives no reliable way to check who is speaking.
+
+## Diagnosis drills {#sec-m17-diagnosis-drills}
+
+A designed system still goes wrong, and the useful skill is a fixed routine for finding out why: measure the symptom, find the stage with the trace, check what changed with the version record, and only then fix. Three symptoms cover most cases.
+
+The system is slow. In festival week the time to the first word rises from one second to four. The traces show that the model call itself is no slower, but requests are waiting in the gateway, retrying after 429 errors because traffic has crossed the rate limit, so the fix is a higher limit agreed with the provider and a concurrency setting below it (\see{sec-m15-batch-three-hours}), not a faster model.
+
+The system is wrong. A customer is told that opened earbuds can be returned. The trace shows which chunks were sent, and P2, the hygiene rule, is missing, so this is a retrieval failure rather than a generation failure (\see{sec-m09-did-search-fail}). The version record shows the index was rebuilt the day before, and the new chunking had merged sections 3 and 4 into one chunk whose embedding matched the question poorly, so the fix is to restore heading-based chunks and add the question to the golden set.
+
+The system is getting worse with no code change. The handover rate creeps up for three weeks, as in Module 16. Grouping it by language shows that only Hinglish chats are affected, and grouping by version shows the rise began when the model alias moved to a new snapshot, so the fix is to pin the old snapshot, run the golden set on the new one, and release it through a canary once it passes (\see{sec-m16-releasing-safely}).
+
+In each drill, the first instinct, a faster model, a better prompt, a different model, would have been wrong, and the routine found the real cause in minutes because the traces and version records already existed.
+
+## Classic interview questions as reasoning chains {#sec-m17-interview-questions}
+
+Design interviews for AI engineers return to a few questions, and each is answered best as a chain of reasoning from numbers rather than as a list of techniques.
+
+"How would you summarise a 10,000-page PDF?" begins with its size. At about 600 tokens a page, it is some six million tokens, more than any model's context window, so it cannot be sent at once, and even if it could, answers get worse as inputs grow (\see{sec-m02-text-mean-worse}). The next question is what the summary is for, because a reader who wants answers to specific questions is better served by RAG over the document (Module 7) than by any summary. For a true summary, the document's own structure is the plan: summarise each section with its page numbers, then summarise the section summaries for each chapter, and then the chapters, which is the tree of summaries of \see{sec-m08-there-too-much}. The section summaries are independent, so they run in parallel on a small model, or through a batch interface at half price, and at the book's example prices the whole document costs around ₹2,000 to read once with the main model, and much less with a small one. Finally, check the result by asking questions whose answers you know and confirming each cited page.
+
+"Why does output cost more than input?" is answered by how a model works. Input is read in one pass, with all its tokens processed in parallel, while output is written one token at a time, and every new token requires another pass through the whole model and the notes it keeps on the tokens so far (\see{sec-m02-reading-fast-writing}). Each output token therefore takes far more of the provider's computing time than an input token, which is why the example prices in this book charge ₹1,700 per million output tokens against ₹350 for input, almost five times as much, and why short replies are one of the cheapest savings available.
+
+"How would you take RAG from 1 lakh documents to 1 crore?" is a question about what breaks at a hundred times the size. Storage breaks first: at five chunks a document and 1,536 numbers a chunk, the embeddings grow from about 3 GB, which fits in one machine's memory, to about 300 GB, which calls for compressing the vectors (\see{sec-m06-searching-million-vectors}), sharding the index and accepting the tail latency that comes with it (\see{sec-m15-too-much-one}). Ingestion breaks next, because embedding five crore chunks is billions of tokens, so it must run as a resumable job (\see{sec-m14-resuming-after-crash}), and later changes must be incremental (\see{sec-m15-mondays-change}). Quality breaks quietly, because with a hundred times more documents, near-duplicates and old versions crowd the top results, so metadata filters, hybrid search and a reranker matter more than before, and retrieval has to be measured again on the golden set at the new size (\see{sec-m09-did-search-fail}).
+
+## Your portfolio {#sec-m17-portfolio}
+
+The strongest evidence of this work is one complete system, in a domain you know, with numbers. A support assistant for a local business, a helpdesk for a college's admissions rules, or a question-answering service over GST notices all work, as long as the project includes what this book treated as the real work: a golden set of real questions with its pass rate, one change measured before and after, a sample trace, the cost per task in rupees, an attack set and its result, and a short list of the failures you found and how you fixed them.
+
+Write it up as a design document, with the assumptions and their numbers, the system map with your choices, and the choices you rejected and why, because what you chose not to build shows judgement as clearly as what you built. Put the summary in two minutes at the top, then the detail, and keep the evals runnable, so that someone reading it can check your numbers.
+
+Then practise explaining it out loud, since interviews test whether you can reason in front of someone, not only whether you can build. Explain your system map in two minutes and in ten, take a vague prompt such as "design a voice line" and work through it with the method of this module while someone asks follow-up questions, and tell the story of one failure you diagnosed in the order of the drills above: the symptom, the measurement, the stage, what had changed, and the fix.
+
+The best place to start is the golden set, because it decides everything that follows. Choose a problem from your own work or studies, write the fifty questions that a good system must answer, and build the smallest system that passes them.
