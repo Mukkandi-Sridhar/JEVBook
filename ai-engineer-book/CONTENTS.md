@@ -144,70 +144,94 @@ inside the module that first needs them, never on their own.
 - The same loop in one line of a framework, and what that line hides; choosing a framework
 - Everything around the model is the harness (harness engineering)
 
-## 12. Human approval and safety
-- Where should the agent pause for a person? (after it picks a tool, before it runs)
-- Approve, edit, reject, reply; and pausing only for risky actions
-- How does the agent continue after the person answers? (saving state)
-- Checks on the way in and the way out (guardrails; rules first, models second)
-- Private data: redact, mask, hash or block; and logs are a second copy
-- Hidden instructions in documents and emails (prompt injection; too much power; safe patterns)
-- Keys, sandboxes and backups out of reach: plain-language rules are not permissions
-- Being fair and open with users (bias, showing uncertainty, undo, saying it is AI)
+## 12. Guardrails and safety (about 12 pages)
+*Thread:* build Tarkika's safety layer around the agent from Module 11, one checkpoint at a time.
+*Not repeated:* approval mechanics (5.5), the trifecta (5.6) and memory poisoning (4.8) are referenced, not retaught.
+- Where do safety checks sit? (in, at the tools, out, and watching; rules first because they are free and certain,
+  models second) — figure: the request path with every checkpoint
+- Private data on the way in: Aadhaar, PAN, phone, UPI and card numbers; redact, mask, hash or block
+  (real code: detectors with checksums, run on sample messages; LangChain's `PIIMiddleware`)
+- Prompt injection, one level deeper: why instructions and keyword filters fail; detectors and their limits;
+  design patterns that hold (separating instructions from data, plan-then-execute, a quarantined model that
+  only reads; OWASP's 2026 agentic list as the map)
+- Plain-language rules are not permissions: least privilege, scoped keys, sandboxes for code, backups out of reach
+  (a real incident where an agent ignored "do not touch production")
+- Checks on the way out: promises, grounding (7.6), leaked data, tone; regenerate once or hand over
+- Approvals that people actually read: what the reviewer sees, risk bands from 10.6, approval fatigue, audits
+- Logs are a second copy: redact before logging, retention, and what India's DPDP Act asks of you
+- Testing safety: an attack set run like the golden set (9.2), attack success rate; red-teaming tools
+- Being fair and open: saying it is AI, showing uncertainty, an easy way to a person, quality per language
 
-## 13. MCP and skills
-- Why rewrite the same file and GitHub tools in every app? (the need for a standard)
-- MCP word by word: model, context, protocol
-- Host, client, server: who runs what, and where? (local and remote)
-- Writing your own server from functions you already have
-- Driving a browser through MCP
-- Skills: repeated instructions, packaged, and loaded only when needed
-- What can go wrong with someone else's server or skill?
-- Agents talking to agents, and agents that pay
+## 13. MCP, skills and agent protocols (about 11 pages)
+*Thread:* the same order tools are needed by the support agent, a staff assistant and a seller agent.
+- Why a standard? (N apps × M tools, before and after) — figure
+- MCP word by word; host, client, server; tools, resources, prompts; local (stdio) and remote (HTTP)
+  (the real JSON messages of `tools/list` and `tools/call`, captured from a running server)
+- Turning Tarkika's tools into an MCP server, and connecting the agent to it (runnable, checked)
+- Remote servers: sign-in and scopes (OAuth), asking the user mid-task, long-running tasks
+  (checked against the current spec when written; it changed in 2025 and 2026)
+- Driving a browser through MCP, and why an API is better when one exists
+- Skills: instructions, files and scripts in a folder, loaded only when needed (SKILL.md, now an open standard);
+  token arithmetic for 20 skills; building one for Tarkika's returns process
+- Tool, MCP server or skill? (one deciding question each)
+- Someone else's server or skill: poisoned descriptions, silent updates, broad scopes; pin, review, allow-list
+- Agents talking to agents (A2A, agent cards) and agents that pay (AP2, ACP): what is mature and what is early
 
-## 14. Planning, long tasks and many agents
-- What goes wrong when a 40-step job crashes at step 31?
-- Plan first, in a fixed shape, and let a person approve it
-- Tasks, statuses and dependencies without cycles
-- Which tasks can run together, and how results pass from one to the next
-- Resuming after a crash; progress files; checking each task against its acceptance criteria
-- When do many agents beat one? (different models and tools per job; many readers, one writer)
-- Subagents, and special agents: coding, browser, research
-- How teams of agents fail
+## 14. Long tasks and many agents (about 12 pages)
+*Thread:* a back-office job: check 2,000 festival-sale refunds against the new policy and draft letters.
+- The crash at step 31: why long runs need saved state — figure: a timeline with and without it
+- Plan first, in a fixed shape: tasks, dependencies, acceptance criteria; a person approves the plan (5.5)
+- Dependencies without cycles, and which tasks can run together (real code: Python's `graphlib`, printing waves)
+- Passing results between tasks, and checking each against its acceptance criteria (the judge from 9.5)
+- Resuming after a crash: a task store with statuses, idempotency (11.5), durable execution (runnable crash demo)
+- Notes and progress files for work longer than one context window (fulfils 3.8)
+- When do many agents beat one? (separate contexts, parallel reading; the token bill; many readers, one writer)
+- Subagents and special agents: coding, browser, research
+- How teams of agents fail (a published taxonomy of failures; conflicting writes; agents waiting on each other)
 
-## 15. Freshness, scale, caching and cost
-- The policy changed on Monday; why does the agent still quote the old one on Wednesday?
-- What changed, and when to re-index? (file time or hash; incremental; debouncing; full rebuild; swapping indexes)
-- Many customers in one system (metadata filters; collection per customer or shared)
-- Too much data for one machine (sharding; waiting for the slowest shard; hot shards)
-- Two documents disagree: newer, or more authoritative?
-- Where to cache, and where not to (prompt caching vs caching answers by meaning; threshold, expiry, keys,
-  warm-up; short-term memory as a cache; never cache a wrong answer)
-- Why does the batch take three hours, and what sets the floor? (concurrency, rate limits)
-- Find the slow or costly step before fixing anything (profiling)
-- Batch jobs, and routing easy requests to small models
-- Cost per task in rupees, and when cutting cost cuts quality
+## 15. Freshness, scale, caching and cost (about 12 pages)
+*Thread:* festival week: the policy changes on Monday, traffic rises tenfold, and the budget stays the same.
+- Monday's change, Wednesday's old answer: detecting what changed (hashes), incremental re-indexing, debouncing,
+  rebuilding and swapping an index (real code: change detection on the policy files; a debounce timeline figure)
+- Two documents disagree: newer, or more authoritative? (dates and source ranks in metadata)
+- Many customers and sellers in one index (filters or a collection each; ties to 4.7 and 6.6)
+- Too much for one machine: shards, waiting for the slowest one, hot shards (ordinary engineering, kept short)
+- Caching answers by meaning: thresholds, expiry, keys, and the "opened"/"unopened" trap from 6.7;
+  prompt caching (3.9) compared side by side
+- Why the batch takes three hours: concurrency within rate limits (real measurement: one at a time vs many at once)
+- Profile before fixing: where the 4 seconds and the rupees actually go
+- Cost per task in rupees: small models for easy cases (10.8), caching, batch discounts; and checking on the
+  golden set that cheaper did not mean worse
 
-## 16. LLMOps and production
-- Quality fell for three weeks and nobody changed the code (versions of prompts, models, data, tools and skills;
-  what Git does not track; silent changes by the provider)
-- Tests before release, watching after (offline and online evals; in CI)
-- Releasing safely (canary, blue-green, A/B, shadow; rollback)
-- Seeing inside a run (tracing; hosted or self-hosted; low latency can hide wrong answers)
-- From script to service (project layers, pinned environments, config and secrets, packaging; streaming, queues, timeouts,
-  rate limits and gateways; never refunding twice)
-- When to fine-tune, and when not to (behaviour, not knowledge; LoRA and QLoRA; preference pairs; distillation;
-  reward hacking)
-- Local models or an API?
+## 16. Running it in production (about 12 pages)
+*Thread:* quality fell for three weeks and nobody changed the code.
+- Everything that can change without a code change: prompt, model snapshot, index, tools, skills, embeddings,
+  libraries; a version record for every release (fulfils 3.10)
+- From script to service: the front door (sign-in, rate limits; fulfils 1.4), a model gateway, queues, streaming,
+  timeouts, config and secrets — figure: the service layout
+- Seeing inside a run: traces, spans and what to record (fulfils 3.10 and 11.7); hosted or self-hosted tools
+  (real: a trace tree printed from a checked run)
+- Evals before release and while running: the golden set in CI, sampled judging online, alerts on drift
+- Releasing safely: shadow, canary, A/B, rollback, feature flags for prompts
+- When to fine-tune, and when not: behaviour and format, not knowledge; LoRA and QLoRA by memory arithmetic (2.4);
+  preference tuning; distilling a large model into a small one
+- Open models on your own machines, or an API? (the cost crossover in rupees, data residency, the work of running it)
 
-## 17. Designing an AI system, start to finish
-- Vague on purpose: ask questions and state assumptions, with numbers
-- Who does this system replace or help, and what does that person do?
-- Walking the system map layer by layer
-- Taking the same design to a new domain
-- Diagnosis drills: slow, wrong, getting worse with no code change
-- The final review of Tarkika's support agent
-- Interview drills (summarising a 10,000-page PDF; why output costs more; scaling RAG)
-- Your portfolio, the capstone demo, and practising out loud (mock interviews)
+## 17. Designing an AI system, start to finish (about 10 pages)
+*Format:* one design walked end to end, then the same method applied to a new problem.
+- Vague on purpose: asking questions and stating assumptions, with numbers
+- Who does this system help or replace, and what does that person do all day?
+- Tarkika's support agent, layer by layer: the system map from 1.4, completed, with the module behind each part
+- The same method on a new problem: a Hindi voice line for order queries (a latency budget in milliseconds)
+- Diagnosis drills: slow, wrong, or getting worse with no code change (measure, find the stage, check what
+  changed, then fix)
+- Classic interview questions as reasoning chains: summarising a 10,000-page PDF, why output costs more,
+  taking RAG from 1 lakh to 1 crore documents
+- Your portfolio: what to build, what to show, and practising out loud
+
+**How each module is written** (standing instructions 1–17 in `PLAYBOOK.md`): research first; one running case;
+real numbers measured or computed by a saved script; figures in the book's style; code that imports from
+`code/tarkika.py` and passes `tools/check_code.py`; connected sentences; exact references with page numbers.
 
 ---
 
