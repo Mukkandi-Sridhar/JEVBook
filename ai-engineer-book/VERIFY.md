@@ -19,4 +19,6 @@ Claims and sources in the draft that must be checked against a primary source be
 | Module 14.7 | Anthropic multi-agent post: 90.2% over single agent on internal eval; about 4x (agent) and 15x (multi-agent) tokens of a chat. Cognition's example of two subagents clashing. |
 | Module 14.6 | Anthropic long-running harness: JSON feature list with a passes field, progress file, reason for JSON over Markdown. |
 | Module 15.6 | OpenAI Batch API and Anthropic Message Batches: 50% price, results within 24 hours (current terms). |
+| Module 16.1 | Anthropic postmortem (Sept 2025): worst hour 16% of Sonnet 4 requests affected; snapshot name gpt-5-mini-2025-08-07. |
+| Module 16.7 | GPU rental price (assumed ₹250/hour) and capacity per GPU; refresh against current Indian cloud prices before print. |
 | All | Every `[[VERIFY]]` marker (shown only in draft builds: `BOOK_DRAFT=1 quarto render`). |

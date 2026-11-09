@@ -1,0 +1,131 @@
+# Running it in production {#sec-m16}
+
+For three weeks, more and more of Tarkika's chats were handed to a person, rising from 8% to 13%, and nobody had changed a line of code (the numbers in this module are illustrative). This module is about running an AI system in which that can happen: recording what every reply depended on, turning the scripts of earlier modules into a service, seeing inside each run, testing before and during release, releasing in steps, and two larger decisions, when to fine-tune a model and when to run one yourself.
+
+## Quality fell and nobody changed the code {#sec-m16-quality-fell}
+
+An ordinary program changes only when its code changes. An AI system's behaviour depends on much more, and most of it can change while the code stays the same:
+
+- the prompt, if it is loaded from a file or a settings service (\see{sec-m03-prompt-code-give})
+- the model, because a name such as `gpt-5-mini` is an alias that the provider can point at a newer snapshot, whereas a dated name such as `gpt-5-mini-2025-08-07` stays fixed
+- the index, rebuilt with new documents, a new chunk size or a new embedding model (Module 15)
+- the tools and skills, when another team updates its MCP server or edits a skill (Module 13)
+- the libraries, when a framework update changes a default
+- the customers themselves, who start asking about a new sale in new words.
+
+Even the provider's own machines can change. In September 2025, Anthropic described three bugs in its serving infrastructure that had lowered the quality of some responses over several weeks, with up to 16% of one model's requests affected in the worst hour, while every customer's code was unchanged [@anthropic2025postmortem].
+
+The defence is a **version record** saved with every reply, naming everything the reply depended on:
+
+```json
+{"reply_id": "r-88213", "prompt": "support-v7",
+ "model": "gpt-5-mini-2025-08-07", "index": "policy-2026-11-02",
+ "tools": {"tarkika-orders": "1.4.2"}, "skills": {"damaged-item-claim": "a1c9e0"},
+ "code": "6b3b3e7", "libraries": "uv.lock 3f2a91"}
+```
+
+With the record in place, the three-week question becomes a query: group the handover rate by each field and find the one whose change lines up with the rise. Without it, the team can only guess, which in Tarkika's case meant a week of rewording the prompt before anyone noticed that the courier team's MCP server had started returning "In transit (delayed)" where it used to return a date.
+
+## From script to service {#sec-m16-script-to-service}
+
+The code in this book runs as scripts, one request at a time. A service has to take thousands of requests from customers it does not trust, survive the failure of any part, and let the team change it without stopping it. @fig-service-layout shows the usual shape, which fills in the front door promised in \see{sec-m01-ai-engineer-build}.
+
+![A support assistant as a service. The front door checks every request, identical copies of the chat service share the load, one gateway handles every model call, and long jobs go through a queue.](/figures/m16/service-layout.pdf){#fig-service-layout}
+
+The **front door** signs the customer in, which is where the customer id that the tools trust comes from (\see{sec-m04-keeping-customers-apart}). It also limits how many messages each customer may send a minute and how long a message may be, so that one customer, or one attacker, cannot use up the whole budget. Behind it, the chat service runs as many identical copies, which keep no state of their own, with threads and task stores in a shared database, so any copy can serve any request and a copy can be replaced at any time.
+
+Every model call goes through a **model gateway**, one component that holds the API keys, applies retries and fallbacks (\see{sec-m11-tool-model-fails}), records tokens and cost, and can move traffic from one provider to another. Open-source gateways such as LiteLLM and the gateways of the large cloud platforms do this, and having one means a change of provider is a configuration change rather than a code change. Long jobs, such as the refund re-check, go into a **queue** that workers take from, so a burst of jobs waits its turn instead of slowing the chats. Replies stream back to the customer as they are written (\see{sec-m02-reading-fast-writing}), and every arrow in the figure has a **timeout**, because a call that never returns holds a worker forever. API keys and other secrets live in a secrets manager, never in the code or the prompt files.
+
+## Seeing inside a run {#sec-m16-traces}
+
+When a reply is wrong, the version record says what it depended on, and a **trace** says what happened: every step of the run, with its inputs, outputs, time, tokens and cost. A trace is a tree, because steps contain steps, and each node in it is called a **span**. LangChain already reports every step to any tracer you attach, so a few lines can collect a run and print its tree:
+
+```python
+from langchain.agents import create_agent
+from langchain_core.tracers.base import BaseTracer
+from tarkika import llm, check_order_status, PROMPT_VERSION
+
+class KeepRun(BaseTracer):
+    """Keep the finished run, with all its steps, to look at afterwards."""
+    def _persist_run(self, run):
+        self.root = run
+
+def show(run, depth=0):
+    line = f"{'  ' * depth}{run.run_type:5} {run.name}"
+    if run.run_type == "llm":
+        msg = run.outputs["generations"][0][0]["message"]["kwargs"]
+        line += f"   {msg['usage_metadata']['input_tokens']} tokens in"
+    if run.run_type == "tool":
+        line += f"   -> {run.outputs['output'].content}"
+    print(line)
+    for child in run.child_runs:
+        show(child, depth + 1)
+```
+
+`show` prints one line per span, indented by its depth in the tree, with the tokens read by each model call and the result of each tool call. Attaching the tracer to a run takes one argument, and a second argument, `metadata`, attaches the version record:
+
+<!-- check: replies [{"tool_calls": [{"name": "check_order_status", "args": {"order_id": "TK-5521"}}]}, "Your earbuds were delivered on 20 Oct."] -->
+<!-- check: expect -->
+```python
+tracer = KeepRun()
+versions = {"prompt": PROMPT_VERSION, "model": "gpt-5-mini-2025-08-07",
+            "index": "policy-2026-11-02"}
+agent = create_agent(llm, tools=[check_order_status])
+agent.invoke({"messages": [("user", "Where is TK-5521?")]},
+             config={"callbacks": [tracer], "metadata": versions})
+show(tracer.root)
+```
+
+```text
+chain LangGraph
+  chain model
+    llm   ScriptedModel   1412 tokens in
+  chain tools
+    tool  check_order_status   -> Delivered on 20 Oct.
+  chain model
+    llm   ScriptedModel   1412 tokens in
+```
+
+The tree is the loop of \see{sec-m11-loop-by-hand}, recorded: a model call that asked for a tool, the tool and what it returned, and a second model call that wrote the reply. (The model's name is `ScriptedModel` because the book's checker runs the code with a stand-in model; with a real key it is `ChatOpenAI`.) The `metadata` is stored with the run, which is how the version record of the first section travels with every trace.
+
+You will rarely print traces yourself. Hosted and open-source tools collect them and let you search, compare and replay runs, including LangSmith from LangChain, and Langfuse and Arize Phoenix, both of which can run on your own servers. Many now accept the **OpenTelemetry** format, a vendor-neutral standard for traces whose conventions for AI calls are still being settled, so you can change tools without changing your code [@otelgenai]. Whatever the tool, record the version record, every model call with its tokens and cost, every tool call with its arguments and result, and the final reply, and run the private-data detectors of \see{sec-m12-logs-second-copy} before anything is stored.
+
+## Evals before release and while running {#sec-m16-evals-release-running}
+
+The golden set of Module 9 becomes a gate. Every change, whether a prompt, a model, an index or a library, runs the golden set and the attack set (\see{sec-m12-testing-safety}) automatically before it can be released, in the same pipeline that runs the code's ordinary tests (\see{sec-m09-testing-own-code}). The release is blocked if the pass rate falls by more than the noise you measured in \see{sec-m09-sure-score-50}, or if any attack succeeds.
+
+The golden set cannot see what production brings (\see{sec-m09-evals-good-production}), so the checks continue after release. The cheap checks run on every reply. A judge model scores a random sample, say 2% of chats a day, and people read a smaller sample along with every chat that was handed over or rated badly. A dashboard follows a handful of numbers: the handover rate, the judged pass rate, the cost per resolved chat (\see{sec-m15-cost-per-task}) and the time to the first word, each broken down by language, since an average can hide one language getting worse. An alert fires when any of them moves beyond its usual range for a day, which in Tarkika's story would have flagged the rise in handovers in its first week rather than its third.
+
+## Releasing safely {#sec-m16-releasing-safely}
+
+Passing the evals shows that a new version is good on the questions you have, but production has questions you do not, so a release proceeds in steps that expose it to more real traffic only as it proves itself (@fig-release-ladder).
+
+In **shadow** mode, the new version answers real messages alongside the old one, but only the old one's answers reach customers, so the two can be compared on real traffic at no risk. A **canary** release then sends a small share of real chats, say 5%, to the new version and watches the dashboard numbers, before moving to 25% and then everyone. A full **A/B test**, which splits customers at random between the versions and compares outcomes such as how many problems were solved without a person, is the way to settle questions that the evals cannot, such as whether shorter replies make customers happier.
+
+![Releasing a new version in steps. Each step shows it to more real traffic, and any step can switch straight back to the old version.](/figures/m16/release-ladder.pdf){#fig-release-ladder}
+
+Two habits make each step reversible. The old version stays deployed and ready, so going back is one switch rather than a new release. And prompts, models and settings are chosen by configuration, often through **feature flags**, which let a team turn a change on for some customers and off again without deploying code.
+
+## When to fine-tune, and when not {#sec-m16-fine-tune}
+
+**Fine-tuning** continues the training of an existing model on your own examples (\see{sec-m02-model-learns}), so that it learns a behaviour rather than being told about it in every request. It is often proposed too early, and the reasoning that decides it is simple. Fine-tuning is good at changing *how* a model answers: a format, a tone, a fixed set of labels, or replies kept short. It is poor at teaching *what* is true, because facts learned in training cannot be updated without training again, cannot be cited, and are mixed in with everything else the model learned. Tarkika's return policy therefore belongs in RAG, where Monday's change reaches customers on Monday, while a classifier that labels every message with one of twelve support categories is a good candidate for fine-tuning.
+
+The usual order is to try a better prompt first, then RAG for knowledge, and fine-tuning only when a behaviour still falls short after both. When fine-tuning is right, it rarely needs to touch every weight. **LoRA** freezes the model and trains small extra matrices, called adapters, alongside some of its layers [@hu2022lora], and **QLoRA** also stores the frozen model in 4 bits instead of 16 [@dettmers2023qlora]. @fig-finetune-memory shows what that means for memory with a model of 8 billion parameters (`tools/m16_numbers.py`).
+
+![Memory needed to fine-tune a model of 8 billion parameters, before the working memory that grows with the length of the examples. LoRA trains about 42 million adapter parameters, half a percent of the model.](/figures/m16/finetune-memory.pdf){#fig-finetune-memory}
+
+Full fine-tuning needs about 16 bytes for every parameter, for the weights, their gradients and the optimiser's running averages, which comes to about 128 GB and several large GPUs. With LoRA, the frozen model takes its usual 16 GB and the adapters add well under 1 GB, and with QLoRA the whole job fits in about 5 GB, which is why the QLoRA paper could fine-tune a model of 65 billion parameters on a single 48 GB GPU.
+
+Two related methods come up in the same conversations. **Preference tuning** trains on pairs of answers in which a person marked one as better, and the method called DPO does this directly, without the separate reward model of earlier approaches [@rafailov2023dpo]. **Distillation** uses a large model to produce answers or labels, and trains a small model to imitate them [@hinton2015distill], which is how a team can turn an expensive classifier into a cheap one. Whatever the method, a few hundred to a few thousand good examples usually beat many thousands of poor ones. Measure the tuned model on the golden set, including questions outside the tuned task, because a model can lose abilities it was not trained on, and compare it with the prompted model on cost per correct answer.
+
+## Open models on your own machines, or an API? {#sec-m16-open-models-or-api}
+
+Open-weight models, such as Llama, Qwen, Mistral, Gemma and OpenAI's gpt-oss, can be run on your own GPUs or rented ones, and Indian labs such as Sarvam AI release open models built for Indian languages. Running one replaces a price per token with a price per hour, so the comparison is a crossover (@fig-crossover).
+
+![Monthly cost of an API against two or more rented GPUs, by daily messages. Every price here is an assumption, stated in the text.](/figures/m16/crossover.pdf){#fig-crossover}
+
+The assumptions behind the figure are these. Through the API, a reply costs ₹1.17, the cached reply of \see{sec-m15-cost-per-task}. On rented GPUs, an hour costs ₹250, one GPU serves 15,000 messages a day at the speed customers need, at least two run at all times so one can fail, and half an engineer's time plus monitoring adds ₹1.7 lakh a month. The lines cross near 16,000 messages a day. On a normal day of 4,000 messages, the API costs about ₹1.4 lakh a month against ₹5.3 lakh for GPUs, while at the festival rate of 40,000 messages a day, the API would cost about ₹14 lakh a month and the GPUs about ₹7 lakh.
+
+Cost is only one of four questions. The open model must pass the golden set as well as the API model does, or the saving disappears in handovers, as \see{sec-m15-cost-per-task} showed. Some data may have to stay in India or inside the company, which an open model on Indian servers can guarantee and a foreign API may not. Running your own model means the model never changes unless you change it, which removes one of the silent changes of the first section. And it brings work that an API does not: serving software such as vLLM, GPUs to keep busy, upgrades and on-call duty. Many teams therefore mix the two, an API for the main assistant and an open model for a high-volume narrow task, such as labelling every message, where a small tuned model is enough.
+
+The system now runs, changes safely and shows what it is doing. The last module puts the whole book together, by designing a system from a vague request to a working plan.
