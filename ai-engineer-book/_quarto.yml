@@ -23,6 +23,7 @@ book:
         - chapters/m09.qmd
         - chapters/m10.qmd
         - chapters/m11.qmd
+        - chapters/m12.qmd
   appendices:
     - back/bibliography.qmd
     - back/about-author.qmd
