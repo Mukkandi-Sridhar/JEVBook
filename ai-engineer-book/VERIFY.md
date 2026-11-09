@@ -18,4 +18,5 @@ Claims and sources in the draft that must be checked against a primary source be
 | Module 13.8 | postmark-mcp: version 1.0.16, about 1,500 weekly downloads (Koi Security). |
 | Module 14.7 | Anthropic multi-agent post: 90.2% over single agent on internal eval; about 4x (agent) and 15x (multi-agent) tokens of a chat. Cognition's example of two subagents clashing. |
 | Module 14.6 | Anthropic long-running harness: JSON feature list with a passes field, progress file, reason for JSON over Markdown. |
+| Module 15.6 | OpenAI Batch API and Anthropic Message Batches: 50% price, results within 24 hours (current terms). |
 | All | Every `[[VERIFY]]` marker (shown only in draft builds: `BOOK_DRAFT=1 quarto render`). |

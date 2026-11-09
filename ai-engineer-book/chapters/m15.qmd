@@ -1,0 +1,130 @@
+# Freshness, scale, caching and cost {#sec-m15}
+
+Festival week tests every part of the system at once. On Monday the return policy changes for the sale, by Wednesday traffic is ten times its usual level, and the budget for model calls stays the same. This module covers the engineering that keeps answers current and costs under control when that happens: noticing what changed, deciding which document to believe, keeping sellers' data apart, handling load, caching, running large jobs quickly, and measuring cost per task rather than per call. Tarkika's numbers in it are illustrative.
+
+## Monday's change, Wednesday's old answer {#sec-m15-mondays-change}
+
+The search index from Module 7 was built on Sunday. On Monday the policy team extends the general return window from 10 days to 15 for sale orders, and on Wednesday a customer is still told "10 days", because the chunk the search returns was embedded before the change. The model answered correctly from the text it was given, and the text was out of date.
+
+Rebuilding the whole index after every edit would fix it, but at thousands of documents it wastes time and money re-embedding text that did not change. The usual method is to keep a **fingerprint** of every chunk, a short hash computed from its text, so that the same text always gives the same fingerprint and any change gives a different one. Comparing the fingerprints before and after an edit shows exactly what to redo:
+
+<!-- check: expect -->
+```python
+import hashlib
+from tarkika import POLICY
+
+def fingerprints(policy):
+    """One fingerprint per section: the same text gives the same one."""
+    sections = policy.split("\n## ")[1:]
+    return {s.splitlines()[0]: hashlib.sha256(s.encode()).hexdigest()[:12]
+            for s in sections}
+
+before = fingerprints(POLICY)
+monday = POLICY.replace("within 10 days of delivery",
+                        "within 15 days of delivery")
+after = fingerprints(monday)
+
+print("changed:", [k for k in after if k in before and after[k] != before[k]])
+print("added:  ", [k for k in after if k not in before])
+print("removed:", [k for k in before if k not in after])
+```
+
+```text
+changed: ['1. General returns']
+added:   []
+removed: []
+```
+
+Only section 1 is embedded again, and a section that disappears from the policy has its chunks deleted from the index, which matters as much as adding new ones, because a deleted rule that is still in the index will go on being found. Re-embedding only what changed is called **incremental indexing**.
+
+Editors rarely save once. The policy team may save the document seven times in twenty minutes while they fix wording, and re-indexing on every save starts seven runs, some of them overlapping (@fig-debounce). The fix is to wait until the document has been quiet for a few minutes before re-indexing, which is called **debouncing**.
+
+![Seven saves by an editor. Re-indexing on every save starts seven runs; waiting for five quiet minutes starts two.](/figures/m15/debounce.pdf){#fig-debounce}
+
+Some changes need the whole index rebuilt, such as a new embedding model or a new way of cutting chunks, and the index has to keep answering while that happens. Build the new index beside the old one, run the golden set against it (\see{sec-m09-golden-set}), and only then switch searches over to it, keeping the old one for a day in case you need to switch back. Whatever the change, also clear every cached answer that came from the changed text, for reasons the section on caching makes clear.
+
+## Two documents disagree {#sec-m15-two-documents-disagree}
+
+During the sale, the help-centre FAQ still says electronics can be returned within 7 days, while a sale notice in the policy extends this to 10, and both are in the index. If search returns both, the model has to pick one, and nothing in the text tells it which to trust.
+
+The answer has to be stored with the chunks, as metadata (\see{sec-m06-choosing-where-store}). Two fields settle most conflicts: dates that say when a text applies, and a rank that says how authoritative its source is.
+
+```json
+{"id": "policy-sale-2", "source": "policy", "rank": 1,
+ "valid_from": "2026-10-17", "valid_until": "2026-11-15",
+ "text": "Electronics bought in the sale can be returned within 10 days."}
+{"id": "faq-12", "source": "faq", "rank": 2,
+ "valid_from": "2025-03-01", "valid_until": null,
+ "text": "Electronics can be returned within 7 days of delivery."}
+```
+
+The search filters out any chunk whose dates do not cover today, and puts higher-ranked sources first. The system message then says what to do when sources still disagree: follow the one marked `policy`, and if two policy texts conflict, say that a person will reply. The deeper fix is outside the AI system altogether: the conflict shows that the FAQ was not updated, so the check that finds such pairs should also tell the team that owns the FAQ.
+
+## Many sellers in one index {#sec-m15-many-sellers-index}
+
+The seller agent of Module 13 answers from each seller's own documents, such as their return rules and product manuals, and one seller must never receive another seller's text. Systems that serve many customers from shared infrastructure call each customer a **tenant**, and there are two ways to keep tenants apart.
+
+One shared index can hold everyone's chunks, each tagged with a `seller_id`, and every search can filter on it. This is cheap and simple, but a single forgotten filter leaks one seller's documents to another, so the filter must be added by code from the logged-in session, never by the model and never from the question, exactly as customer ids were handled in \see{sec-m04-keeping-customers-apart}. The alternative is a separate index for each seller, often called a **namespace** or collection, which isolates them completely but costs more to run when there are thousands of small sellers. Most vector databases support both, and a common split is a namespace each for the largest sellers and a shared index with a mandatory filter for everyone else.
+
+## Too much for one machine {#sec-m15-too-much-one}
+
+An index that outgrows one machine is split across several, which is called **sharding**, and each search then goes to every shard and waits for all of them to answer. That wait is the catch, because the search is only as fast as the slowest shard. If each shard is slow one time in a hundred, a search that needs 20 shards hits at least one slow shard 1 − 0.99²⁰ of the time, about 18%, and engineers at Google showed the same arithmetic at larger scale, where one server in a hundred being slow makes 63% of requests slow when each request needs 100 servers [@dean2013tail]. Two other problems follow. A shard holding a very busy seller's data gets more traffic than the others, which is called a **hot shard**, and copies of each shard, called **replicas**, are needed to share the reading load and to survive a lost machine.
+
+None of this is special to AI, and managed vector databases handle most of it for you. It matters to an AI engineer because the slowest shard sets the latency of every search, so an index that grows tenfold during the sale can make answers slower without any change to the code.
+
+## Caching answers by meaning {#sec-m15-caching-by-meaning}
+
+Many customers ask the same thing in different words, such as "how many days to return?", "return window kitna hai?" and "can I still return after a week?". A **semantic cache** stores past answers by the embedding of their question, and when a new question's embedding is close enough to a stored one, it returns the stored answer without calling the model at all.
+
+The danger is the one from \see{sec-m06-most-similar-most}. "Can I return opened earbuds?" and "Can I return unopened earbuds?" are close in embedding space and have opposite answers, so a cache that matches them serves a confident wrong answer, faster and cheaper than ever. A semantic cache is only as safe as four decisions about it.
+
+1. The threshold for "close enough" has to be strict, and set by testing pairs like these, near-misses included, rather than by picking a round number.
+2. Only general answers may be cached, never one that depends on the customer's order or account, because "Where is TK-5521?" and "Where is TK-6120?" are nearly identical questions with different answers, and caching one would show a customer someone else's delivery.
+3. The key must include the language of the answer and the policy version, so that an English answer is never served to a Hindi question, and a policy change makes every old answer unreachable.
+4. Every entry needs an expiry, such as a day, which limits the damage of a wrong entry, while the change detection of the first section clears the entries built on changed text straight away.
+
+Prompt caching (\see{sec-m03-caching}) is a different thing, and the two are easy to confuse. Prompt caching lets the provider reuse its work on a long fixed beginning of the request, so the model still reads the question and writes a fresh answer, the answer is always correct, and the saving is on input tokens only. A semantic cache skips the model entirely, which saves the whole call but can return the wrong answer. Use prompt caching everywhere, and a semantic cache only for general questions, with the four safeguards above.
+
+## Why the batch takes three hours {#sec-m15-batch-three-hours}
+
+The refund re-check of Module 14 runs 2,000 checks, each taking about five seconds. One after another, that is about three hours, but nothing about the checks requires that order, since they are independent. Running several at once is called **concurrency**, and LangChain's `batch` does it, with `max_concurrency` setting how many run at the same time:
+
+<!-- check: expect -->
+```python
+from tarkika import small_llm
+
+requests = [f"RF-{n}" for n in range(1, 2001)]
+prompts = [f"Check refund request {r} against the policy." for r in requests]
+verdicts = small_llm.batch(prompts, config={"max_concurrency": 12})
+print(len(verdicts), "verdicts")
+```
+
+```text
+2000 verdicts
+```
+
+How far to raise `max_concurrency` depends on the provider's **rate limit**, the number of requests (and tokens) it accepts per minute, beyond which it refuses calls with the error 429, "too many requests". To see the effect, we ran 2,000 checks against a stand-in service with that behaviour, allowing 120 requests a minute, using real asyncio code with every delay scaled down (`tools/m15_concurrency.py`). @fig-concurrency shows the results.
+
+![Time to finish 2,000 checks of about five seconds each, against a limit of 120 requests a minute. Concurrency helps until the limit is reached, and after that it only adds refused requests.](/figures/m15/concurrency.pdf){#fig-concurrency}
+
+Each doubling of concurrency roughly halves the time, from 3.2 hours with one check at a time to 26 minutes with eight. Beyond that the rate limit sets a floor, since 2,000 requests at 120 a minute take at least 17 minutes, and more concurrency only produces refusals: with 64 checks at once, the service refused 7,528 requests, each retried after a wait (\see{sec-m11-tool-model-fails}), and the job finished no sooner. The right setting is just below the limit, which for this job is about a dozen.
+
+Jobs that can wait have a cheaper option. OpenAI and Anthropic both offer **batch** interfaces, in which you upload all the requests at once and collect the results within 24 hours, at half the normal price [@openai2024batch; @anthropic2024batches]. The refund re-check is a good candidate, since nobody is waiting for it in real time, whereas a customer's chat never is.
+
+## Profile before fixing {#sec-m15-profile-before-fixing}
+
+When replies feel slow or the bill feels high, the instinct is to optimise whatever part you suspect. Measuring first, which is called **profiling**, usually shows that one part dominates and the rest hardly matter. @fig-where-it-goes shows where time and money go in one of Tarkika's support replies.
+
+![Where the time and the money go in one support reply, at the book's example prices. Writing the reply takes three quarters of the time, and input tokens take two thirds of the cost.](/figures/m15/where-it-goes.pdf){#fig-where-it-goes}
+
+Three quarters of the four seconds is the model writing 300 tokens, because writing is slow (\see{sec-m02-reading-fast-writing}). Making the reranker twice as fast would save under a tenth of a second, while asking for replies of 200 tokens instead of 300 would save a second, and streaming the reply would let the customer start reading after about one second whatever its length. The cost has a different shape: two thirds of it is input, the system message, the policy chunks and the chat so far, which is exactly what prompt caching and trimming the context reduce. The traces of Module 16 give you these numbers for real requests, broken down by step.
+
+## Cost per task in rupees {#sec-m15-cost-per-task}
+
+A cost per call is easy to measure and misleading, because a customer's problem takes several calls, and a cheap call that fails leads to more calls, or to a person. The figure that matters is the cost per resolved task, here the cost of answering one message correctly, including what failures cost.
+
+Start with the reply of @fig-where-it-goes, at ₹1.58. Caching the 1,300 tokens of the system message brings it to about ₹1.17 (\see{sec-m03-caching}). Asking for 200-token replies instead of 300 brings it to about ₹1.00. Answering one message in ten from a semantic cache, if that many are general questions, brings the average to about ₹0.90. At 4,000 messages a day, that is about ₹80,000 a month saved, without changing the model. Two further levers apply in the right places: routing easy messages to a small model when it is confident (\see{sec-m10-small-fast-easy}), and the batch discount for work that can wait.
+
+Changing to a cheaper model is the lever that most needs checking, because its saving is visible at once and its cost arrives later. Suppose a smaller model cuts the cost of a reply from ₹0.90 to ₹0.30, but on the golden set it passes 85% of questions where the current model passes 92%, and suppose each failure ends with a person taking over the chat, at the ₹40 of \see{sec-m10-where-line}. Counting the failures, the current model costs 0.90 + 0.08 × 40, about ₹4.10 a message, and the cheaper one costs 0.30 + 0.15 × 40, about ₹6.30, so the cheaper model is the more expensive one. Every cost-saving change therefore goes through the golden set before release, and is judged on cost per correct answer rather than on the price of a call.
+
+Every change in this module, a new index, a cache, a different model or a new concurrency setting, changes the system's behaviour without changing a line of its main code. Module 16 is about running a system in which that happens all the time.
