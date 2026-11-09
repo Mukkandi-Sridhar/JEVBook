@@ -16,4 +16,6 @@ Claims and sources in the draft that must be checked against a primary source be
 | Module 13.4 | MCP 2026-07-28: `input_required` results (multi round-trip requests) and the tasks extension, against the published specification. |
 | Module 13.1, 13.9 | Dates: MCP to the Agentic AI Foundation (Dec 2025); A2A to the Linux Foundation (June 2025) and v1.0 (2026); AP2 and ACP (Sept 2025); NPCI-Razorpay-OpenAI pilot (Oct 2025). |
 | Module 13.8 | postmark-mcp: version 1.0.16, about 1,500 weekly downloads (Koi Security). |
+| Module 14.7 | Anthropic multi-agent post: 90.2% over single agent on internal eval; about 4x (agent) and 15x (multi-agent) tokens of a chat. Cognition's example of two subagents clashing. |
+| Module 14.6 | Anthropic long-running harness: JSON feature list with a passes field, progress file, reason for JSON over Markdown. |
 | All | Every `[[VERIFY]]` marker (shown only in draft builds: `BOOK_DRAFT=1 quarto render`). |

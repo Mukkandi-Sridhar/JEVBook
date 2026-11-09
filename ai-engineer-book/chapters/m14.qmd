@@ -1,0 +1,217 @@
+# Long tasks and many agents {#sec-m14}
+
+After the Diwali sale, Tarkika's refund team found that some refunds for faulty earbuds had been refused as "hygiene items", although section 4 of the policy allows them. The team wants every refund refused during the sale checked again, about 2,000 of them, and a letter drafted for each customer who was wrongly refused (the numbers in this module are illustrative). At around ten seconds a check, the job takes more than five hours, far longer than any chat. This module covers what changes when an agent's work takes hours: plans in a fixed shape, saved progress, notes that outlast the context window, and when to split the work across many agents.
+
+## The crash at item 1,241 {#sec-m14-crash-step}
+
+Suppose the job runs as one long loop, and at item 1,241 the server is restarted for a routine deploy (@fig-crash-timeline). Everything the loop knew was held in memory, so it is gone, and the only safe choice is to start again from item 1. Starting again is not even fully safe, because some letters were already sent, and running the job again would send them twice.
+
+![The same crash with and without saved progress. Without it, the work done so far is lost; with it, the job resumes at the item that failed.](/figures/m14/crash-timeline.pdf){#fig-crash-timeline}
+
+Crashes are not rare events in long runs, because a run of hours meets every deploy, timeout, rate limit and lost machine of those hours. Suppose, as an assumption, that the run crashes once in every 500 items. The chance of finishing 2,000 items without a single crash is then 0.998 multiplied by itself 2,000 times, which is under 2%. @fig-restart-cost shows what that means for the total work, computed by formula and checked by simulation (`tools/m14_crash_sim.py`).
+
+![The average number of items handled before a job finishes, when the run crashes once in every 500 items. Without saved progress the work grows exponentially with the length of the job.](/figures/m14/restart-cost.pdf){#fig-restart-cost}
+
+A job that saves each finished item and resumes after a crash handles about 2,004 items, only the crashed ones twice. A job that starts again from the beginning handles about 27,000 on average, more than thirteen times the work, because each attempt must survive all 2,000 items in a row, and most attempts do not. The longer the job, the worse this gets, so a long task needs saved progress from its first version.
+
+## A plan in a fixed shape {#sec-m14-plan-fixed-shape}
+
+A long job should start with a plan, written down before any work begins, for two reasons. A person can read and approve the plan before hours of work and money are spent on it, as with the approvals of \see{sec-m05-which-tools-may}. And code can run a written plan, keep track of it and resume it, which is impossible with a plan that exists only in a model's head.
+
+A plan that code can run needs a fixed shape (\see{sec-m05-answers-fixed-shape}). Each task gets an id, what to do, the tasks it needs finished first, and a test for whether it is done:
+
+<!-- check: replies [{"tasks": [{"id": "export", "do": "Export the 2,000 sale-period refusals", "needs": [], "done_when": "2,000 rows, one per request"}, {"id": "rules", "do": "Turn the policy into a checklist", "needs": [], "done_when": "every rule cites a policy section"}, {"id": "check", "do": "Check each request against the checklist", "needs": ["export", "rules"], "done_when": "a verdict for every request"}, {"id": "letters", "do": "Draft a letter for each wrong refusal", "needs": ["check"], "done_when": "one letter per wrong refusal"}, {"id": "totals", "do": "Total the refunds owed, for finance", "needs": ["check"], "done_when": "totals match the verdicts"}, {"id": "review", "do": "A person reviews letters and totals", "needs": ["letters", "totals"], "done_when": "approved by the refund team"}]}] -->
+<!-- check: expect -->
+```python
+from pydantic import BaseModel
+from tarkika import llm
+
+class Task(BaseModel):
+    id: str
+    do: str
+    needs: list[str]       # ids of the tasks that must finish first
+    done_when: str         # how to check the result
+
+class Plan(BaseModel):
+    tasks: list[Task]
+
+planner = llm.with_structured_output(Plan)
+plan = planner.invoke("Plan this job: re-check the 2,000 refunds refused "
+                      "during the sale against the policy, and write to "
+                      "every customer who was wrongly refused.")
+for t in plan.tasks:
+    print(f"{t.id:8} needs {t.needs}")
+```
+
+```text
+export   needs []
+rules    needs []
+check    needs ['export', 'rules']
+letters  needs ['check']
+totals   needs ['check']
+review   needs ['letters', 'totals']
+```
+
+The `done_when` field matters as much as the task itself, because it is what lets code, or a judge, decide later whether the task really finished. A task without one tends to end whenever the model feels it is done.
+
+## Which tasks can run together? {#sec-m14-which-tasks-together}
+
+The `needs` lists form a **dependency graph**, in which an arrow from one task to another means the second must wait for the first. A graph like this must contain no loop, since two tasks that wait for each other would wait forever, and a graph without loops is called a **directed acyclic graph**, or DAG. Python's standard library can check that, and can also say which tasks are ready at each moment:
+
+<!-- check: expect -->
+```python
+from graphlib import TopologicalSorter
+
+graph = TopologicalSorter({t.id: t.needs for t in plan.tasks})
+graph.prepare()                        # raises CycleError if tasks loop
+wave = 1
+while graph.is_active():
+    ready = sorted(graph.get_ready())  # every task whose needs are done
+    print(f"wave {wave}: {ready}")
+    graph.done(*ready)                 # in real use: as each one finishes
+    wave += 1
+```
+
+```text
+wave 1: ['export', 'rules']
+wave 2: ['check']
+wave 3: ['letters', 'totals']
+wave 4: ['review']
+```
+
+Tasks in the same wave do not depend on each other, so they can run at the same time (@fig-plan-waves). If the model writes a plan in which `check` needs `letters` and `letters` needs `check`, `prepare()` raises a `CycleError` naming the loop, and your program can send the plan back to be fixed before any work starts.
+
+![Tarkika's plan as a dependency graph. Tasks in the same wave can run at the same time, and the person's review comes last.](/figures/m14/plan-waves.pdf){#fig-plan-waves}
+
+## Passing results and checking them {#sec-m14-checking-each-result}
+
+Each task's result should be stored outside the conversation, in a file or a database table, and passed to the tasks that need it as their input. If results were passed by leaving them in one long conversation, the `check` task would carry the whole export in its context, and the `letters` task would carry every verdict, including the 1,900 cases that need no letter. A task that receives only its own inputs stays small and cheap, and it never sees text it does not need, which is the context minimisation of \see{sec-m12-prompt-injection-deeper}.
+
+Before a task's result is passed on, it is checked against its `done_when`. Cheap checks come first (\see{sec-m09-cheap-checks}): the export has 2,000 rows, every request has a verdict, and the number of letters equals the number of wrong refusals. Where no rule can judge, a model judges, as in \see{sec-m09-no-formula-judge}, for example by reading a sample of the letters for tone and accuracy. A task that fails its check is retried once with the failure named, and if it fails again it goes to a person, exactly as replies did in \see{sec-m12-checks-way-out}.
+
+## Resuming after a crash {#sec-m14-resuming-after-crash}
+
+Saved progress needs two pieces. A **task store** records the status of every unit of work, so that a restarted job skips what is done. **Idempotency keys** (\see{sec-m11-tool-model-fails}) make sure that an action repeated after a crash happens only once. The second piece matters because of a gap that every job has: a crash can come after a letter is sent but before the store records it, and then the restarted job sends the letter again. Here is the store, and a letter service that accepts a key:
+
+```python
+import sqlite3
+
+db = sqlite3.connect(":memory:")      # in production: a file or a server
+db.execute("CREATE TABLE work (request_id TEXT PRIMARY KEY, status TEXT)")
+SENT = {}                             # the letter service's own record
+
+def send_letter(request_id):
+    key = f"{request_id}:festival-letter"     # same request, same key
+    if key in SENT:
+        return                                # a repeat: ignored
+    SENT[key] = request_id
+```
+
+`SENT` stands in for the record that the letter service itself keeps of the keys it has seen. The job checks the store before each request and records each request after handling it, and for this demonstration it can be told to crash straight after sending one letter:
+
+<!-- check: expect -->
+```python
+def run(requests, crash_after=None):
+    for rid in requests:
+        row = db.execute("SELECT status FROM work WHERE request_id = ?",
+                         (rid,)).fetchone()
+        if row and row[0] == "done":
+            continue                          # finished before a crash
+        send_letter(rid)
+        if rid == crash_after:                # crash in the gap
+            raise RuntimeError("server restarted")
+        db.execute("INSERT INTO work VALUES (?, 'done')", (rid,))
+        db.commit()
+
+requests = [f"RF-{n}" for n in range(1, 11)]
+try:
+    run(requests, crash_after="RF-6")
+except RuntimeError as e:
+    print("crash:", e)
+count = lambda: db.execute("SELECT COUNT(*) FROM work").fetchone()[0]
+print(count(), "marked done,", len(SENT), "letters sent")
+run(requests)                                 # the same job, started again
+print(count(), "marked done,", len(SENT), "letters sent")
+```
+
+```text
+crash: server restarted
+5 marked done, 6 letters sent
+10 marked done, 10 letters sent
+```
+
+After the crash, five requests are marked done but six letters have gone out, because the letter for RF-6 was sent just before the crash. The restarted job skips the first five, handles RF-6 again, and the letter service ignores the repeated key, so every customer gets exactly one letter. In a real system the key goes to the email or payment service, many of which accept one for exactly this purpose, and the task store is a database table that survives the restart.
+
+Frameworks offer the same guarantee for agents. LangGraph's checkpointer, which saved conversations in \see{sec-m04-many-customers-once}, saves the state after every step, so a run invoked again with the same thread id continues from its last saved step, and engines built for **durable execution**, such as Temporal, do the same for any long-running code. Whatever does the saving, the side effects still need idempotency keys, because no framework can know whether an email left before the crash.
+
+## Notes for work longer than one context window {#sec-m14-notes-longer-context}
+
+A task store tracks units of work, but some work is a single long piece, such as a refactoring of the refund code, that runs for longer than one context window can hold. \see{sec-m03-long-tasks-context} described compaction, which summarises old steps to make room, and ended with the safer habit of keeping notes outside the context, which is built here.
+
+Anthropic's engineers, building agents that work on one piece of software across many sessions, settled on a simple routine. A first session writes a list of everything to be done, as JSON, with a "passes" field for each item, and starts a **progress file**. Every later session begins by reading the progress file and the recent history of the code, picks the most important unfinished item, completes and tests it, records it in the progress file, and stops [@anthropic2025harness]. They chose JSON for the list because models were less inclined to rewrite a JSON file wholesale than a Markdown one. A progress file for Tarkika's job might read:
+
+```text
+# Progress: re-check of sale-period refusals
+Done: export (2,000 rows), rules (9 rules, each cites a section).
+Check: 1,240 of 2,000 verdicts written to verdicts.jsonl.
+Found so far: 61 wrong refusals, all faulty in-ear audio (section 4).
+Next: continue the check from request 1,241.
+Open question: 3 requests have no delivery date; asked the refund team.
+```
+
+Each session starts fresh, with a context holding only the instructions, this file and the work at hand, so nothing depends on a summary that might have dropped a detail, and a person can read the file at any time to see where the job stands.
+
+## When do many agents beat one? {#sec-m14-many-agents-beat}
+
+A **multi-agent system** splits a job across several agents, usually a lead agent that plans and several **subagents** that each do one part in a context of their own (@fig-many-agents). The main gain is that context: four subagents can each read 500 refund requests and return a short summary, so the lead never holds 2,000 requests in its own window.
+
+![A lead agent with four subagents. Each subagent reads its share in its own context and returns a short summary, and only the lead writes the final output.](/figures/m14/many-agents.pdf){#fig-many-agents}
+
+The gain is real for the right kind of job. Anthropic's research system, in which a lead agent sends subagents to search different directions at once, scored 90.2% higher than a single agent on Anthropic's internal research evaluation. It also used about fifteen times as many tokens as a chat, against about four times for a single agent [@anthropic2025multiagent]. The same post notes that this suits work that splits into independent parts and reads more than one context can hold, and suits poorly work whose parts depend closely on each other.
+
+The opposite warning comes from Cognition, the makers of the Devin coding agent. Every action an agent takes carries decisions that are not written down, such as a style, an assumption or a choice of approach, so two agents that work on the same output without seeing each other's full context make decisions that clash [@cognition2025]. Their example is a game split between two subagents, one drawing the background and one the bird, which came back in two different visual styles.
+
+The two views fit together in one rule: **many readers, one writer**. Reading, searching and checking split well, because the parts are independent and each subagent returns facts. Writing one output, whether a letter, a report or a change to code, belongs to one agent that sees everything the output depends on. For Tarkika's job, subagents can check the 2,000 requests in parallel, and one agent drafts all the letters from their verdicts, so the letters are consistent in tone and wording.
+
+## Subagents and special agents {#sec-m14-subagents}
+
+In LangChain, a subagent is an ordinary agent that the lead calls as a tool. The tool runs the subagent in a fresh conversation and returns only its final answer:
+
+<!-- check: replies [{"tool_calls": [{"name": "check_refund", "args": {"request": "RF-6: opened earbuds, left side dead on day 1, refused as hygiene item"}}]}, "Wrongly refused: a faulty hygiene item can be returned (section 4).", "RF-6 was wrongly refused. I will draft a letter offering a full refund."] -->
+<!-- check: expect -->
+```python
+from langchain.agents import create_agent
+from langchain.tools import tool
+from tarkika import llm, small_llm, search_policy
+
+checker = create_agent(small_llm, tools=[search_policy],
+                       system_prompt="Check one refund request against "
+                       "the policy. Answer in one line: the verdict and "
+                       "the policy section.")
+
+@tool
+def check_refund(request: str) -> str:
+    """Check one refund request against the policy; returns a verdict."""
+    result = checker.invoke({"messages": [("user", request)]})
+    return result["messages"][-1].content    # only the final answer
+
+lead = create_agent(llm, tools=[check_refund])
+result = lead.invoke({"messages": [("user", "Re-check refund RF-6.")]})
+print(result["messages"][-1].content)
+```
+
+```text
+RF-6 was wrongly refused. I will draft a letter offering a full refund.
+```
+
+Whatever the checker read and searched along the way stays in its own conversation, and the lead's context grows by one line per request. The checker also runs on the small model, because checking one request against a checklist is a narrow job, while the lead, which plans and writes, uses the main model.
+
+The same structure explains the **special agents** that products now offer as subagents. A coding agent reads and changes a code base with file and terminal tools, a browser agent works web pages (\see{sec-m13-browser-or-api}), and a research agent searches and reads many sources. Each is a full agent with its own tools and context, and the lead uses it the way it would use any other tool, by sending a task and reading back the answer.
+
+## How teams of agents fail {#sec-m14-teams-fail}
+
+Researchers at Berkeley studied more than 1,600 recorded runs of seven popular multi-agent frameworks and sorted what went wrong into 14 kinds of failure, in three groups [@cemri2025mast]. The first group is poor specification: agents that ignore their role or the task's requirements, or repeat steps. The second is misalignment between agents: one agent withholds information another needs, ignores another's input, or drifts off the task. The third is weak checking and stopping: runs that end too early, or never check whether the result is right. The authors argue that many of these failures come from how the system is designed rather than from the limits of the model, so better prompts alone rarely fix them.
+
+Each group has a remedy from this module or an earlier one. Plans in a fixed shape, with a `done_when` for every task, fix much of the first group, because roles and tests are written down rather than implied. A single writer, and results passed through a store rather than through conversation, prevent most of the second, since no two agents write the same output and every agent receives exactly the inputs it needs. Checks on every task's result, limits on steps and time (\see{sec-m11-loop-stop}), and a person's review at the end of the plan cover the third.
+
+The refund job now runs to the end, survives crashes and checks its own work. Running it every week, for thousands of customers, at festival-sale traffic, raises the questions of Module 15: keeping the data fresh, handling the load, and paying for it.
