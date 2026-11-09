@@ -47,14 +47,24 @@ def make_refund(order_id: str, amount_rupees: int) -> str:
     return f"Refund of ₹{amount_rupees} for {order_id} started."
 
 
-if os.environ.get("TARKIKA_FAKE"):
-    from fake_model import ScriptedModel
-    llm = small_llm = strong_llm = ScriptedModel()
-else:
-    from langchain_openai import ChatOpenAI
-    llm = ChatOpenAI(model="gpt-5-mini")         # the main model (Section 1.7)
-    small_llm = ChatOpenAI(model="gpt-5-nano")   # small and cheap: summaries, rewrites, grading
-    strong_llm = ChatOpenAI(model="gpt-5")       # large: judging answers in Module 9
+# The three models are made on first use, so that code needing only the data above (such as the MCP server of
+# Module 13) runs without an API key.
+_MODELS = {"llm": "gpt-5-mini",          # the main model (Section 1.7)
+           "small_llm": "gpt-5-nano",    # small and cheap: summaries, rewrites, grading
+           "strong_llm": "gpt-5"}        # large: judging answers in Module 9
+
+
+def __getattr__(name):
+    if name not in _MODELS:
+        raise AttributeError(name)
+    if os.environ.get("TARKIKA_FAKE"):
+        from fake_model import ScriptedModel
+        model = ScriptedModel()
+    else:
+        from langchain_openai import ChatOpenAI
+        model = ChatOpenAI(model=_MODELS[name])
+    globals()[name] = model
+    return model
 
 
 # Ready-made tools, as built in Section 5.1, for the modules that reuse them.

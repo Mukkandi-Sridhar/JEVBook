@@ -1,0 +1,27 @@
+[
+ {
+  "skill": "damaged-item-claim",
+  "part": "menu",
+  "tokens": 45
+ },
+ {
+  "skill": "damaged-item-claim",
+  "part": "skill",
+  "tokens": 260
+ },
+ {
+  "skill": "damaged-item-claim",
+  "part": "reference",
+  "tokens": 78
+ },
+ {
+  "skill": "order-tracking",
+  "part": "menu",
+  "tokens": 36
+ },
+ {
+  "skill": "order-tracking",
+  "part": "skill",
+  "tokens": 100
+ }
+]
