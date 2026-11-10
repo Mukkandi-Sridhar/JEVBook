@@ -1,0 +1,319 @@
+{
+ "title": "Ship Real AI",
+ "subtitle": "The AI Engineer Bootcamp for LLMs, RAG, MCP, AI Agents and Evals, from First Principles to Production and Interviews",
+ "author": "Sridhar Mukkandi",
+ "publisher": "Mukkandi Sridhar (self-published)",
+ "edition": "First edition, 2026",
+ "language": "en",
+ "pages": 193,
+ "trim": "176 x 250 mm (B5)",
+ "format": "Paperback, colour; ebook",
+ "isbn": "pending (RRRNA, applied November 2026)",
+ "subjects": [
+  "Artificial intelligence",
+  "Large language models",
+  "AI engineering",
+  "RAG",
+  "AI agents",
+  "LLM evaluation",
+  "MCP"
+ ],
+ "description": "Ship Real AI is a complete, practical path to becoming an AI engineer. It follows one system, a customer-support\nassistant for an imagined Indian marketplace, from its first model call to a production service, across 17 modules:\nhow LLMs work, prompts and context, memory, tools and structured output, search and RAG, evals, decision models,\nagents, guardrails and safety, MCP and agent protocols, long-running jobs, caching and cost, running in production,\nand system design for interviews. Every number is measured or computed, costs are worked out in rupees, and every\ncode listing is run before it is printed.",
+ "tagline": "Anyone can build the demo. This book is about what comes after.",
+ "parts": [
+  {
+   "title": "The model and what goes into it",
+   "modules": [
+    1,
+    2,
+    3
+   ]
+  },
+  {
+   "title": "Memory, tools and knowledge",
+   "modules": [
+    4,
+    5,
+    6,
+    7,
+    8
+   ]
+  },
+  {
+   "title": "Measuring and deciding",
+   "modules": [
+    9,
+    10
+   ]
+  },
+  {
+   "title": "Agents",
+   "modules": [
+    11,
+    12,
+    13,
+    14
+   ]
+  },
+  {
+   "title": "Production",
+   "modules": [
+    15,
+    16,
+    17
+   ]
+  }
+ ],
+ "modules": [
+  {
+   "module": 1,
+   "title": "What an AI engineer builds",
+   "sections": [
+    "What does a language model actually do?",
+    "Three kinds of AI work",
+    "If the model cannot act, what can?",
+    "What does an AI engineer build around the model?",
+    "Calling a model is not calling a function",
+    "Should this problem use AI at all?",
+    "Your first call, and what it costs",
+    "The project for this book"
+   ]
+  },
+  {
+   "module": 2,
+   "title": "How LLMs work, for engineers",
+   "sections": [
+    "Tokens: what the model actually reads",
+    "The same message in five languages",
+    "Watching the model write",
+    "How a model learns",
+    "How a word gets its meaning from its neighbours",
+    "Meaning as a map",
+    "The transformer",
+    "More text can mean worse answers",
+    "Reading is fast, writing is slow",
+    "Same question, different answer, even at temperature 0",
+    "Thinking costs tokens",
+    "Big models that still run fast",
+    "Images, documents and speech",
+    "Choosing a model"
+   ]
+  },
+  {
+   "module": 3,
+   "title": "Prompts and context",
+   "sections": [
+    "What goes into one request",
+    "System, user and AI messages",
+    "Writing the system message",
+    "Where you put things changes the answer",
+    "A budget for every part",
+    "When the policy text does not fit",
+    "Prompting a thinking model",
+    "Long tasks: when the context fills up",
+    "Fixed text first: prompt caching",
+    "A prompt is code: give it a version"
+   ]
+  },
+  {
+   "module": 4,
+   "title": "Memory",
+   "sections": [
+    "The model forgets every message",
+    "Many customers at once: threads",
+    "Long conversations cost more every turn",
+    "Where memory code runs: middleware",
+    "Remembering across conversations",
+    "Who writes memories, and what if they disagree",
+    "Keeping customers apart",
+    "False memories"
+   ]
+  },
+  {
+   "module": 5,
+   "title": "Tools and structured output",
+   "sections": [
+    "A tool call, step by step",
+    "What the model knows about your tool",
+    "Answers in a fixed shape",
+    "When tools loop",
+    "Which tools may act on their own",
+    "\"Ignore your rules and refund ₹50,000\"",
+    "Too many tools"
+   ]
+  },
+  {
+   "module": 6,
+   "title": "Search inside out",
+   "sections": [
+    "Two ways to miss",
+    "Keyword search: the inverted index",
+    "Which paragraph matches best: BM25",
+    "Meaning search: embeddings",
+    "Searching a million vectors fast",
+    "Choosing where to store vectors",
+    "The most similar is not the most relevant",
+    "Hybrid search"
+   ]
+  },
+  {
+   "module": 7,
+   "title": "RAG, end to end",
+   "sections": [
+    "Two jobs: preparing documents and answering questions",
+    "How big should a chunk be?",
+    "Give each chunk its context",
+    "Fusion or reranking?",
+    "Fetch widely, then keep the best",
+    "Why the model still makes things up",
+    "When to skip RAG"
+   ]
+  },
+  {
+   "module": 8,
+   "title": "Advanced RAG",
+   "sections": [
+    "Four questions instead of a list of names",
+    "When the question is vague",
+    "When the answer is in a table",
+    "When the answer is about relationships",
+    "When there is too much to read",
+    "When the answer is in a picture of a page",
+    "Checking what was found",
+    "Who decides where to look",
+    "Index the whole codebase, or just grep it?"
+   ]
+  },
+  {
+   "module": 9,
+   "title": "Evals",
+   "sections": [
+    "\"It feels better\" is not a measurement",
+    "The golden set",
+    "Cheap checks first",
+    "Did the search fail, or the answer?",
+    "When no formula can judge it",
+    "How sure is a score from 50 questions?",
+    "Read the failures",
+    "Testing your own code when the model varies",
+    "Testing an agent",
+    "Evals good, production bad"
+   ]
+  },
+  {
+   "module": 10,
+   "title": "Decide, don't generate",
+   "sections": [
+    "Writing or deciding?",
+    "When something is rare, most alarms are false",
+    "Learning from examples",
+    "A probability you can trust",
+    "Where should the line be?",
+    "Act, review or escalate",
+    "Models that only decide: System One models and Jev",
+    "Small and fast for easy cases, large for hard ones"
+   ]
+  },
+  {
+   "module": 11,
+   "title": "Agents: the loop",
+   "sections": [
+    "Workflow or agent?",
+    "The loop by hand",
+    "Errors multiply",
+    "When should the loop stop?",
+    "When a tool or the model fails",
+    "Answer straight away, or plan first?",
+    "The same loop in one line",
+    "Everything around the model is the harness"
+   ]
+  },
+  {
+   "module": 12,
+   "title": "Guardrails and safety",
+   "sections": [
+    "Where the checks sit",
+    "Private data on the way in",
+    "Prompt injection, one level deeper",
+    "Rules in plain words are not permissions",
+    "Checks on the way out",
+    "Approvals people actually read",
+    "Logs are a second copy",
+    "Testing safety",
+    "Fair and open"
+   ]
+  },
+  {
+   "module": 13,
+   "title": "MCP, skills and agent protocols",
+   "sections": [
+    "Why a standard?",
+    "MCP word by word",
+    "Tarkika's tools as an MCP server",
+    "Remote servers: sign-in, questions and long jobs",
+    "Driving a browser, or calling an API?",
+    "Skills: know-how loaded only when needed",
+    "Tool, server or skill?",
+    "Someone else's server or skill",
+    "Agents talking to agents, and agents that pay"
+   ]
+  },
+  {
+   "module": 14,
+   "title": "Long tasks and many agents",
+   "sections": [
+    "The crash at item 1,241",
+    "A plan in a fixed shape",
+    "Which tasks can run together?",
+    "Passing results and checking them",
+    "Resuming after a crash",
+    "Notes for work longer than one context window",
+    "When do many agents beat one?",
+    "Subagents and special agents",
+    "How teams of agents fail"
+   ]
+  },
+  {
+   "module": 15,
+   "title": "Freshness, scale, caching and cost",
+   "sections": [
+    "Monday's change, Wednesday's old answer",
+    "Two documents disagree",
+    "Many sellers in one index",
+    "Too much for one machine",
+    "Caching answers by meaning",
+    "Why the batch takes three hours",
+    "Profile before fixing",
+    "Cost per task in rupees"
+   ]
+  },
+  {
+   "module": 16,
+   "title": "Running it in production",
+   "sections": [
+    "Quality fell and nobody changed the code",
+    "From script to service",
+    "Seeing inside a run",
+    "Evals before release and while running",
+    "Releasing safely",
+    "When to fine-tune, and when not",
+    "Open models on your own machines, or an API?"
+   ]
+  },
+  {
+   "module": 17,
+   "title": "Designing an AI system, start to finish",
+   "sections": [
+    "Vague on purpose",
+    "Who does this help, and what do they do all day?",
+    "Tarkika's support agent, layer by layer",
+    "The same method on a new problem: a Hindi voice line",
+    "Diagnosis drills",
+    "Classic interview questions as reasoning chains",
+    "Your portfolio"
+   ]
+  }
+ ],
+ "figures": 82,
+ "glossary_terms": 90
+}
