@@ -23,12 +23,12 @@ SUB2 = "from First Principles to Production and Interviews"
 AUTHOR = "SRIDHAR MUKKANDI"
 WS, SERIF, MONO = "Work Sans", "Plex Serif", "Plex Mono"
 
-# The sea: what real customers type, and the words of the trade.
-SEA = ["bhai mera refund abhi tak nahi aaya", "order TK-5521", "10 din ho gaye", "can I return opened earbuds?",
-       "where is my order?", "return window kitna hai?", "insaan se baat karao", "earbuds khol liye, return ho sakta hai?",
-       "the left side stopped working", "KYC update kar do", "paid by UPI, ref 523412341234", "is this covered?",
-       "tokens", "context", "memory", "tools", "search", "RAG", "evals", "guardrails", "agents", "MCP", "skills",
-       "traces", "cost", "caching", "prompts", "embeddings", "rerank", "golden set", "rate limits", "rollback"]
+# The sea: the concepts the book teaches.
+SEA = ["tokens", "attention", "embeddings", "KV cache", "context window", "system prompt", "structured output",
+       "tool calls", "BM25", "HNSW", "hybrid search", "reranker", "RAG", "chunking", "golden set", "LLM-as-judge",
+       "calibration", "agent loop", "ReAct", "guardrails", "prompt injection", "MCP", "skills", "A2A", "durable execution",
+       "semantic cache", "prompt caching", "rate limits", "traces", "canary release", "LoRA", "distillation", "evals",
+       "least privilege", "idempotency", "mixture of experts", "transformer", "latency budget"]
 
 
 def page(body, bg, defs=""):
@@ -161,7 +161,7 @@ def common_defs(p):
 def neural_ship(p, tag1="A demo floats.", tag2="A real system sails."):
     cx, base = 88, 170
     horizon = base + 16
-    sdefs, sea_layer = sea(horizon + 3.5, p)
+    sdefs, sea_layer = sea(horizon + 7.5, p)
     s = [f'<rect width="{W}" height="{H}" fill="url(#sky)"/>', stars(p, ymax=horizon - 14)]
     if p.get("sun"):                                             # a rising sun behind the sails
         s.append(f'<circle cx="{cx + 6}" cy="{horizon - 30}" r="74" fill="{p["sun"][1]}" opacity="0.5" filter="url(#big)"/>'
