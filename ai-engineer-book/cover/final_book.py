@@ -66,15 +66,40 @@ def isbn_box():
             '<div class="bars"></div><div class="note">barcode area · 46 × 30 mm</div></div>')
 
 
-POINTS = [
-    ("Build one real system", "a support assistant for an Indian marketplace, from its first API call to a service in production."),
-    ("Understand the model", "how LLMs read, write and cost, in tokens and in rupees, and why more context can mean worse answers."),
-    ("Master the core skills", "context, memory, tools, structured output, search, RAG, and the evals that prove each change helped."),
-    ("Make agents safe", "guardrails, private data, prompt injection, least privilege, and approvals people actually read."),
-    ("Connect and scale", "MCP, skills and agent protocols, long jobs that survive crashes, caching and cost per correct answer."),
-    ("Ship and get hired", "traces, safe releases, fine-tuning, open models, and system-design interviews as reasoning chains."),
-]
-lis = "".join(f"<li><b>{h}:</b> {t}</li>" for h, t in POINTS)
+# Back-cover copy. BACK picks the version: "A" (problem first) or "B" (outcome first).
+BACK = "A"
+COPY = {
+ "A": dict(
+  kick="THE AI ENGINEER BOOTCAMP",
+  h1="Your AI demo works.<br><span>Production is a different job.</span>",
+  lead="The chatbot invents a refund policy. The bill comes in at five times the estimate. A prompt change ships "
+       "and nobody can say if it helped. <i>Ship Real AI</i> teaches the engineering that fixes this, by building one "
+       "real system, step by step, from the first model call to a service running in production.",
+  head="YOU WILL LEARN TO",
+  points=["Control what the model sees: prompts, context, memory and caching",
+          "Build retrieval that finds the right answer: hybrid search, reranking, RAG",
+          "Prove every change with evals, golden sets and LLM judges",
+          "Design agents that act safely, with guardrails and human approval",
+          "Connect tools with MCP, and run long jobs that survive failure",
+          "Cut cost and latency, release safely, and know when to fine-tune",
+          "Answer AI system-design questions in interviews"]),
+ "B": dict(
+  kick="FROM FIRST PRINCIPLES TO PRODUCTION",
+  h1="Stop building demos.<br><span>Start shipping AI systems.</span>",
+  lead="Most AI tutorials end where the real work begins. This book starts there. Across 17 modules you build one "
+       "complete AI assistant and learn the engineering every production system needs: retrieval that is right, "
+       "agents that are safe, costs you can predict, and quality you can measure.",
+  head="INSIDE",
+  points=["How LLMs work, explained for engineers",
+          "Prompts, context engineering and memory",
+          "Tools, structured output, search and RAG",
+          "Evals, LLM-as-judge and calibrated decisions",
+          "Agents, guardrails, MCP and agent protocols",
+          "Caching, scale, cost, tracing and safe releases",
+          "System design and interview preparation"]),
+}
+C = COPY[BACK]
+lis = "".join(f"<li>{t}</li>" for t in C["points"])
 fonts = "".join(
     f"@font-face{{font-family:'{fam}';src:url('file://{ROOT / 'assets' / 'fonts' / f}');font-weight:{wt};font-style:{st};}}"
     for fam, f, wt, st in [("Work Sans", "WorkSans-Regular.ttf", 400, "normal"), ("Work Sans", "WorkSans-Bold.ttf", 700, "normal"),
@@ -91,15 +116,15 @@ html,body{{margin:0;padding:0}}
   background:radial-gradient(120mm 90mm at 100% 0%,#FBE2BD 0%,rgba(251,226,189,0) 70%),linear-gradient(#FBF8F0,#EFE7D5);
   font-family:'Work Sans';color:{INK}}}
 .kick{{font-size:7.4pt;letter-spacing:.22em;color:{SAFF};font-weight:700;margin-bottom:3mm}}
-h1{{font-family:'Plex Serif';font-weight:700;font-size:18.5pt;line-height:1.18;margin:0 0 5mm}}
+h1{{font-family:'Plex Serif';font-weight:700;font-size:22pt;line-height:1.16;margin:0 0 6mm}}
 h1 span{{color:{SAFF}}}
-p.lead{{font-family:'Plex Serif';font-size:9.8pt;line-height:1.52;margin:0 0 5mm;color:{SOFT}}}
+p.lead{{font-family:'Plex Serif';font-size:10.6pt;line-height:1.55;margin:0 0 7mm;color:{SOFT}}}
 ul{{margin:0 0 5mm;padding:0;list-style:none}}
-li{{font-size:8.6pt;line-height:1.42;margin:0 0 2.3mm;padding-left:6.5mm;position:relative;color:#2B3157}}
-li b{{color:{INK}}}
+li{{font-size:10pt;line-height:1.38;margin:0 0 3mm;padding-left:6.5mm;position:relative;color:#2B3157}}
+.head{{font-size:7.2pt;letter-spacing:.2em;font-weight:700;color:{INDIGO};margin:0 0 3.4mm}}
 li:before{{content:'';position:absolute;left:0;top:1.4mm;width:2.3mm;height:2.3mm;border-radius:50%;
   background:{SAFF};box-shadow:0 0 0 1.1mm rgba(232,120,10,.16)}}
-.facts{{display:flex;gap:4mm;margin:0 0 5.5mm}}
+.facts{{display:flex;gap:4mm;margin:6mm 0 7mm}}
 .fact{{flex:1;border:0.3mm solid rgba(42,55,137,.18);border-radius:2mm;padding:2.4mm 3mm;background:rgba(255,255,255,.45)}}
 .fact b{{display:block;font-size:13pt;color:{INDIGO}}}
 .fact span{{font-size:6.8pt;letter-spacing:.06em;color:{SOFT}}}
@@ -118,14 +143,13 @@ li:before{{content:'';position:absolute;left:0;top:1.4mm;width:2.3mm;height:2.3m
 .isbn .bars{{height:12mm;background:repeating-linear-gradient(90deg,#E4DFD3 0 .5mm,transparent .5mm 1.3mm)}}
 .isbn .note{{font-size:5.4pt;margin-top:1.2mm;letter-spacing:.06em}}
 </style></head><body><div class="page">
-<div class="kick">THE AI ENGINEER BOOTCAMP</div>
-<h1>Anyone can build the demo.<br><span>This book is about what comes after.</span></h1>
-<p class="lead">A weekend chatbot answers "Can I return opened earbuds?" with a confident yes. The bill arrives at five
-times the estimate, and nobody can say whether last week's prompt change helped. <i>Ship Real AI</i> is the complete
-path from first principles to production, built around one system you grow module by module.</p>
+<div class="kick">{C["kick"]}</div>
+<h1>{C["h1"]}</h1>
+<p class="lead">{C["lead"]}</p>
+<div class="head">{C["head"]}</div>
 <ul>{lis}</ul>
 <div class="facts"><div class="fact"><b>17</b><span>MODULES</span></div><div class="fact"><b>80+</b><span>FIGURES</span></div>
-<div class="fact"><b>100%</b><span>CODE TESTED</span></div><div class="fact"><b>₹</b><span>COSTS IN RUPEES</span></div></div>
+<div class="fact"><b>193</b><span>COLOUR PAGES</span></div><div class="fact"><b>₹</b><span>COSTS IN RUPEES</span></div></div>
 <div class="author"><b>SRIDHAR MUKKANDI</b> is an applied AI engineer who builds AI agents and the decision systems
 behind them. He writes for engineers who want AI systems they can trust in production.</div>
 <div class="sea">{words * 3}<br>&nbsp;&nbsp;&nbsp;&nbsp;{words * 3}</div>
