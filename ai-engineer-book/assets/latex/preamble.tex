@@ -90,9 +90,11 @@
 \RedeclareSectionCommand[beforeskip=0.1in, afterskip=0.3in]{chapter}
 \RedeclareSectionCommand[beforeskip=-1.7\baselineskip plus -4pt, afterskip=0.6\baselineskip]{section}
 \RedeclareSectionCommand[beforeskip=-1.2\baselineskip plus -3pt, afterskip=0.35\baselineskip]{subsection}
+\newif\ifbookappendix
+\AddToHook{cmd/appendix/after}{\global\bookappendixtrue}
 % Chapter opener: a large saffron number above the title, then a short indigo rule under it
 \renewcommand*{\chapterformat}{%
-  {\sffamily\bfseries\fontsize{60}{60}\selectfont\color{saffron}\twodigit{\value{chapter}}}\par\vspace{10pt}}
+  {\sffamily\bfseries\fontsize{60}{60}\selectfont\color{saffron}\ifbookappendix\Alph{chapter}\else\twodigit{\value{chapter}}\fi}\par\vspace{10pt}}
 \renewcommand*{\chapterlinesformat}[3]{%
   \parbox[t]{\textwidth}{\raggedright #2#3\par\vspace{10pt}{\color{indigo}\rule{0.9in}{2.2pt}}}}
 % Section numbers in saffron
@@ -182,6 +184,14 @@
   left=10pt, right=10pt, top=7pt, bottom=7pt, fontupper=\small, before upper={\boxtag{navy}{#1}\par\vspace{4pt}}}
 
 % Part pages
+% Part openers: the line under each part title. It lives here because Quarto puts a part file's content after
+% \part, too late for KOMA's \setpartpreamble, which must come before it.
+\newcommand{\partintroi}{What an AI engineer builds, how a language model works inside, and how to control what it reads.}
+\newcommand{\partintroii}{How an assistant remembers, acts, and finds the right text among thousands of pages.}
+\newcommand{\partintroiii}{How to know whether a change made things better, and how to make decisions with probabilities you can trust.}
+\newcommand{\partintroiv}{The loop that lets a model act, the safety around it, the protocols that connect it, and work that lasts for hours.}
+\newcommand{\partintrov}{Keeping the system fresh, fast and affordable, running it safely, and designing a system from a blank page.}
+\AddToHook{cmd/part/before}{\setpartpreamble[ul][0.86\textwidth]{\vspace{18pt}\raggedright\fontsize{11.5}{17}\selectfont\color{slate}\csname partintro\roman{part}\endcsname\par}}
 \newenvironment{partintro}{\begin{minipage}{0.9\textwidth}\raggedright\fontsize{11.5}{17}\selectfont\color{slate}}{\end{minipage}\clearpage}
 
 % Draft markers (shown only in draft builds)

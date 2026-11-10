@@ -1,8 +1,4 @@
-# The job and the foundations
-
-::: {.partintro}
-These modules explain what a model can and cannot do, and everything an AI engineer builds around it.
-:::
+# The model and what goes into it
 
 ```{=latex}
 \bookmainmatter

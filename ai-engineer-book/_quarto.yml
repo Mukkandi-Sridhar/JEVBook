@@ -15,21 +15,31 @@ book:
         - chapters/m01.qmd
         - chapters/m02.qmd
         - chapters/m03.qmd
+    - part: parts/p2.qmd
+      chapters:
         - chapters/m04.qmd
         - chapters/m05.qmd
         - chapters/m06.qmd
         - chapters/m07.qmd
         - chapters/m08.qmd
+    - part: parts/p3.qmd
+      chapters:
         - chapters/m09.qmd
         - chapters/m10.qmd
+    - part: parts/p4.qmd
+      chapters:
         - chapters/m11.qmd
         - chapters/m12.qmd
         - chapters/m13.qmd
         - chapters/m14.qmd
+    - part: parts/p5.qmd
+      chapters:
         - chapters/m15.qmd
         - chapters/m16.qmd
         - chapters/m17.qmd
   appendices:
+    - back/code.qmd
+    - back/glossary.qmd
     - back/bibliography.qmd
     - back/about-author.qmd
 

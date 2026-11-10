@@ -1,0 +1,267 @@
+# Glossary {#sec-app-glossary}
+
+Each term is defined in a line, with the section where the book explains it. Use it to look a term up, or to revise before an interview by explaining each one aloud in your own words.
+
+A/B test
+: Sending customers at random to two versions of a system and comparing outcomes, such as problems solved without a person. \see{sec-m16-releasing-safely}.
+
+Agent
+: A model that chooses its own next step, calling tools in a loop until the task is done. \see{sec-m11-workflow-agent}.
+
+Agent card
+: A JSON file at a fixed web address describing what an agent can do, where to reach it and how to sign in, used by the A2A protocol. \see{sec-m13-agents-talking}.
+
+Agents Rule of Two
+: The rule that an agent should have at most two of: untrusted input, access to private data or sensitive systems, and the power to change things or send data out. \see{sec-m12-prompt-injection-deeper}.
+
+Approximate nearest neighbour (ANN)
+: Search that finds vectors close to a query without comparing it with every stored vector, trading a little recall for a lot of speed. \see{sec-m06-searching-million-vectors}.
+
+Attack success rate
+: The share of attacks in an attack set that made a forbidden outcome happen. \see{sec-m12-testing-safety}.
+
+Attention
+: The step in a transformer where each token gathers information from the tokens before it. \see{sec-m02-word-gets-meaning}.
+
+Base rate
+: How common something is to begin with. When it is rare, most alarms are false, even from an accurate checker. \see{sec-m10-something-rare-most}.
+
+BM25
+: The standard formula for scoring keyword matches, which rewards rare words and discounts long paragraphs. \see{sec-m06-which-paragraph-matches}.
+
+Calibrated
+: Said of a model whose probabilities match how often things really happen. \see{sec-m10-probability-trust}.
+
+Canary release
+: Sending a small share of real traffic to a new version, and watching the numbers before sending more. \see{sec-m16-releasing-safely}.
+
+Cascade
+: A fast model answers the cases it is confident about and passes the rest to a stronger model or a person. \see{sec-m10-small-fast-easy}.
+
+Check digit
+: A digit computed from the others in an identifier, such as the last digit of an Aadhaar number, used to catch typing mistakes. \see{sec-m12-private-data-way}.
+
+Checkpointer
+: The component that saves a conversation's state after each step under its thread id, so the conversation can continue later. \see{sec-m04-many-customers-once}.
+
+Chunk
+: A piece of a document that is stored, embedded and searched as one unit. \see{sec-m07-two-jobs-preparing}.
+
+Concurrency
+: Running several independent requests at the same time. \see{sec-m15-batch-three-hours}.
+
+Context engineering
+: Deciding what goes into each request: instructions, documents, memory and tools. \see{sec-m03-goes-request}.
+
+Context window
+: The most tokens a model can handle in one request, counting its own reply. \see{sec-m01-language-model-actually}.
+
+Contextual retrieval
+: Adding a short note to each chunk, saying where it belongs in its document, before indexing it. \see{sec-m07-give-each-chunk}.
+
+Debouncing
+: Waiting until a document has been quiet for a few minutes before re-indexing it. \see{sec-m15-mondays-change}.
+
+Directed acyclic graph (DAG)
+: A graph of tasks and their dependencies with no loops, so every task can eventually run. \see{sec-m14-which-tasks-together}.
+
+Distillation
+: Training a small model to imitate the outputs of a large one. \see{sec-m16-fine-tune}.
+
+Dual LLM
+: A design in which a model with no tools reads untrusted text, and the model with tools never sees that text. \see{sec-m12-prompt-injection-deeper}.
+
+Durable execution
+: Running long code so that its state is saved at each step and it resumes where it stopped after a crash. \see{sec-m14-resuming-after-crash}.
+
+Embedding
+: A list of numbers that places a text on a map of meaning, so that texts with similar meanings get similar lists. \see{sec-m02-meaning-as-map}.
+
+Eval-driven development
+: Turning every failure into a test case before fixing it. \see{sec-m09-evals-good-production}.
+
+Feature flag
+: A setting that turns a change on or off for some customers without deploying new code. \see{sec-m16-releasing-safely}.
+
+Fine-tuning
+: Continuing a model's training on your own examples, to change how it answers rather than what it knows. \see{sec-m16-fine-tune}.
+
+Golden set
+: A fixed list of test questions, each stored with what a good answer must contain. \see{sec-m09-golden-set}.
+
+Grounding
+: Answering only from the sources provided. \see{sec-m07-model-still-makes}.
+
+Guardrails
+: Checks around a model on what comes in, what it may do and what goes out. \see{sec-m12-where-checks-sit}.
+
+Hallucination
+: An answer that sounds right but is not supported by any source. \see{sec-m07-model-still-makes}.
+
+Harness
+: Everything around the model: instructions, tools, memory, limits, checks, traces and evals. \see{sec-m11-everything-around-model}.
+
+HNSW
+: A layered graph of vectors that makes approximate nearest-neighbour search fast. \see{sec-m06-searching-million-vectors}.
+
+Hybrid search
+: Combining keyword search and meaning search, usually with Reciprocal Rank Fusion. \see{sec-m06-hybrid-search}.
+
+Idempotency key
+: A unique id sent with an action, so that a repeated request is carried out only once. \see{sec-m11-tool-model-fails}.
+
+Incremental indexing
+: Re-embedding only the chunks whose text changed. \see{sec-m15-mondays-change}.
+
+Inverted index
+: A table from each word to the paragraphs that contain it, which makes keyword search fast. \see{sec-m06-keyword-search-inverted}.
+
+KV cache
+: The notes a model keeps on the tokens it has read, so that it need not read them again for each new token. \see{sec-m02-word-gets-meaning}.
+
+Latency budget
+: A target time for a request, divided among its stages. \see{sec-m17-hindi-voice-line}.
+
+Leakage
+: A feature that is known only after the event being predicted, which makes a model look better than it is. \see{sec-m10-learning-examples}.
+
+Least privilege
+: Giving each part of a system only the permissions its job needs. \see{sec-m12-rules-plain-words}.
+
+Lethal trifecta
+: Untrusted input, private data and the ability to act or send data out, together in one agent. \see{sec-m05-ignore-rules-refund}.
+
+LLM-as-judge
+: Using a model, checked against people, to grade answers that no formula can check. \see{sec-m09-no-formula-judge}.
+
+LoRA and QLoRA
+: Fine-tuning that freezes the model and trains small added matrices; QLoRA also stores the frozen model in 4 bits. \see{sec-m16-fine-tune}.
+
+Lost in the middle
+: The tendency of models to use information at the start and end of a long input better than information in the middle. \see{sec-m03-where-put-things}.
+
+MCP (Model Context Protocol)
+: The open standard through which apps connect models to tools and data offered by servers. \see{sec-m13-mcp-word-word}.
+
+Memory poisoning
+: Getting false instructions saved into an assistant's memory, so that they are later treated as trusted. \see{sec-m04-false-memories}.
+
+Metadata
+: Facts stored with a chunk, such as its date, source and language, used to filter searches. \see{sec-m06-choosing-where-store}.
+
+Middleware
+: Code that runs before or after each model or tool call in an agent. \see{sec-m04-where-memory-code}.
+
+Mixture of experts
+: A model design in which only some of the parameters are used for each token. \see{sec-m02-big-models-that}.
+
+Model gateway
+: One service through which every model call passes, holding the keys and handling retries, fallbacks and costs. \see{sec-m16-script-to-service}.
+
+Multi-agent system
+: A lead agent that splits a job among subagents, each working in its own context. \see{sec-m14-many-agents-beat}.
+
+Overfitting
+: Learning the training examples, noise included, instead of the pattern behind them. \see{sec-m10-learning-examples}.
+
+Precision and recall
+: Recall asks whether the right item is somewhere in a result list; precision asks how much of the list is useful. \see{sec-m07-fetch-widely-then}.
+
+Preference tuning
+: Training on pairs of answers in which one was marked better, as in DPO. \see{sec-m16-fine-tune}.
+
+Progress file
+: Notes an agent keeps outside its context, so that work can continue in a fresh context window. \see{sec-m14-notes-longer-context}.
+
+Progressive disclosure
+: Loading a skill in stages: its description always, its instructions when a task matches, its files when a step needs them. \see{sec-m13-skills}.
+
+Prompt caching
+: The provider reusing its work on a fixed beginning of a request, and charging less for it. \see{sec-m03-caching}.
+
+Prompt injection
+: Text written to make a model ignore its instructions; indirect when it arrives through a tool rather than from the user. \see{sec-m05-ignore-rules-refund}.
+
+Quantisation
+: Storing a model's numbers in fewer bits, to save memory and time. \see{sec-m02-reading-fast-writing}.
+
+RAG (retrieval-augmented generation)
+: Finding the relevant text and adding it to the request, so that the model answers from it. \see{sec-m07-two-jobs-preparing}.
+
+Rate limit
+: The number of requests or tokens a provider accepts per minute, above which it refuses calls. \see{sec-m15-batch-three-hours}.
+
+ReAct
+: The pattern of an agent alternating between reasoning about the next step and acting with a tool. \see{sec-m11-loop-by-hand}.
+
+Reciprocal Rank Fusion (RRF)
+: A formula that merges ranked lists using only the positions of their items. \see{sec-m06-hybrid-search}.
+
+Red-teaming
+: People and tools trying to break a system, changing their attacks as it responds. \see{sec-m12-testing-safety}.
+
+Reranker
+: A model that reads a question and a passage together and scores how well one answers the other. \see{sec-m07-fusion-reranking}.
+
+Semantic cache
+: Reusing a stored answer when a new question's embedding is close to a past question's. \see{sec-m15-caching-by-meaning}.
+
+Shadow mode
+: Running a new version on real traffic without showing its answers, to compare it with the old one. \see{sec-m16-releasing-safely}.
+
+Sharding
+: Splitting an index across several machines. \see{sec-m15-too-much-one}.
+
+Skill
+: A folder of instructions, scripts and reference files that an agent loads when a task needs it. \see{sec-m13-skills}.
+
+Span
+: One step inside a trace, such as a model call or a tool call. \see{sec-m16-traces}.
+
+Stateless
+: Keeping nothing between requests: a model forgets each message once it has answered. \see{sec-m04-model-forgets-every}.
+
+Streaming
+: Sending the reply as it is written, so the reader can start early. \see{sec-m02-reading-fast-writing}.
+
+Structured output
+: Making the model reply in a fixed shape that code can read, such as a Pydantic model. \see{sec-m05-answers-fixed-shape}.
+
+Subagent
+: An agent that another agent calls as a tool, working in its own context and returning a short answer. \see{sec-m14-subagents}.
+
+System message
+: The message that holds your instructions, which models weigh more than the user's messages. \see{sec-m03-system-user-ai}.
+
+Temperature
+: A setting that controls how much randomness goes into choosing each token. \see{sec-m02-watching-model-write}.
+
+Tenant
+: One customer of a shared system, whose data must be kept apart from every other's. \see{sec-m15-many-sellers-index}.
+
+Thread id
+: The id under which one conversation's state is saved and found again. \see{sec-m04-many-customers-once}.
+
+Time to first token
+: How long before the first part of a reply appears; it grows with the length of the input. \see{sec-m02-reading-fast-writing}.
+
+Token
+: The piece of text a model reads and writes, often part of a word, and the unit in which use is priced. \see{sec-m02-tokens-model-actually}.
+
+Tool call
+: The model's request to run a named function with arguments, which your code carries out. \see{sec-m05-tool-call-step}.
+
+Tool poisoning
+: Hidden instructions placed in a tool's description. \see{sec-m13-someone-elses}.
+
+Trace
+: The record of every step of one run, with its inputs, outputs, time, tokens and cost. \see{sec-m16-traces}.
+
+Transformer
+: The model design behind today's language models, built from layers of attention and feed-forward steps. \see{sec-m02-transformer}.
+
+Version record
+: The list of everything a reply depended on: prompt, model snapshot, index, tools, skills, code and libraries. \see{sec-m16-quality-fell}.
+
+Workflow
+: Fixed steps in a fixed order, written by you, with a model used inside some of them. \see{sec-m11-workflow-agent}.

@@ -1,0 +1,52 @@
+# The code, and the versions it was checked with {#sec-app-code}
+
+Every listing in this book comes from a small set of files, and a checker runs all of them before each build. This appendix explains how to run them yourself, what each file does, and which versions of the libraries, models and standards the book was checked against.
+
+## Running the examples
+
+The code lives in a folder called `code`. Install the packages it needs, at the versions listed below, and set your API key:
+
+```text
+cd code
+pip install -r requirements.txt
+export OPENAI_API_KEY=sk-...
+```
+
+Run each example from inside `code`, because the examples read the prompt, the policy and the skills from folders there. To run them without a key, set `TARKIKA_FAKE=1` first. Every import of a model from `tarkika.py` then returns a scripted stand-in, which is how the book's checker runs each listing and confirms that it prints exactly what the book shows. The stand-in replies only with the answers queued for it, so outside the checker it is useful for testing your own code, as in \see{sec-m09-testing-own-code}, rather than for answering questions.
+
+## What each file does
+
+`tarkika.py` is the shared setup that every example imports from. It holds the system message and its version, the return policy, the eight policy paragraphs of Module 6, a few sample orders, the handover message, stand-ins for the approval queue and the payment system, the two ready-made tools, a small stand-in for hybrid search, and the `Answer` shape of Module 7. Its three models, `llm`, `small_llm` and `strong_llm`, are created the first time an example uses them, so code that needs only the data, such as the MCP server, runs without a key. To use another provider, change the lines in `tarkika.py` that create the models.
+
+`fake_model.py` is the scripted stand-in model. `tarkika_mcp.py` is the MCP server of Module 13, and the `skills` folder holds the two skills of that module. The `prompts` and `data` folders hold the system message and the policy texts.
+
+The numbers in the book's figures come from scripts in the `tools` folder, each of which saves its results to the `research` folder.
+
+| Module | Script | What it measures or computes |
+|---|---|---|
+| 6 | `m06_bm25.py`, `m06_ann.py` | BM25 scores for the worked example; exact and HNSW search on a million vectors |
+| 9 | `m09_stats.py` | the spread of a score from 50 questions, retrieval metrics |
+| 10 | `m10_experiment.py` | the synthetic refund experiment: models, calibration, costs |
+| 11 | `m11_retry_sim.py` | a retry storm, with fixed waits and with jitter |
+| 12 | `m12_pii.py` | how a check digit separates Aadhaar numbers from other numbers |
+| 13 | `m13_capture.py`, `m13_skill_tokens.py` | the MCP messages on the wire; the tokens in each part of a skill |
+| 14 | `m14_crash_sim.py` | the work a crash costs a long job, with and without saved progress |
+| 15 | `m15_concurrency.py` | 2,000 checks at different concurrency, against a rate limit |
+| 16 | `m16_numbers.py` | fine-tuning memory; the API and GPU cost crossover |
+
+## The versions used
+
+Libraries, models and standards in this field change every few months, and some details in this book will change with them. The book was last checked on 9 November 2026 against the following.
+
+| What | Version |
+|---|---|
+| Python | 3.11 |
+| LangChain, LangChain Core, LangChain OpenAI | 1.4.7, 1.7.3, 1.7.3 |
+| LangGraph | 1.2.19 |
+| MCP Python SDK | 2.3.0, speaking the 2026-07-28 revision of the protocol |
+| Pydantic | 2.14 |
+| python-stdnum | 2.2 |
+| Models named in the code | OpenAI's `gpt-5-mini`, `gpt-5-nano` and `gpt-5` |
+| Example prices | ₹350 per million input tokens, ₹35 cached, ₹1,700 per million output tokens; round figures for arithmetic |
+
+If a listing fails with a newer version, the idea behind it still holds, and the library's changelog usually names the new spelling of what changed.

@@ -1,0 +1,12 @@
+# Packages for the code in Ship Real AI, at the versions the book was checked with (Appendix A).
+langchain==1.4.7
+langchain-core==1.7.3
+langchain-openai==1.7.3
+langchain-text-splitters==1.1.3
+langgraph==1.2.19
+mcp==2.3.0
+pydantic==2.14.2
+python-stdnum==2.2
+PyYAML==6.0.1
+rank-bm25==0.2.2
+nltk
