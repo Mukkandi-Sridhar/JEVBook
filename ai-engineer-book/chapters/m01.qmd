@@ -1,6 +1,6 @@
 # What an AI engineer builds {#sec-m01}
 
-A language model can write a polite reply in Hindi, explain a return policy, or sort a thousand complaints in minutes. Yet most of the work of putting one in front of real customers has little to do with the model itself. This module shows what a model can and cannot do, and what an AI engineer builds around it.
+Ask a language model to answer a customer whose parcel is late, and in two seconds it writes a calm, polite reply that apologises and promises a full refund within five days. It reads well, and it is wrong three times over: the model has never seen this customer's order, it has never read the shop's refund policy, and nothing it writes can move any money. The model wrote that promise; someone has to make it true, or stop it from being sent. That someone is the AI engineer, and the work starts with knowing exactly where the model ends.
 
 ## What does a language model actually do? {#sec-m01-language-model-actually}
 
