@@ -13,9 +13,9 @@ navigation; do not restyle the rest of the site.
 ## The book
 
 All facts are in `book.json` (title, subtitle, author, edition, pages, description, five parts, 17 modules with their
-section titles). Use only those facts. Do not invent reviews, ratings, sales numbers, prices or an ISBN: the ISBN is
-pending, so leave a clearly marked placeholder for it and for the store links (Amazon paperback, Kindle, India
-paperback) that I will fill in later.
+section titles). Use only those facts. Do not invent reviews, ratings, sales numbers or prices. The India paperback ISBN is
+**978-93-346-0447-4**; leave clearly marked placeholders for the store links (Amazon paperback, Kindle, India
+paperback) and prices that I will fill in later.
 
 - Title: Ship Real AI
 - Subtitle: The AI Engineer Bootcamp for LLMs, RAG, MCP, AI Agents and Evals, from First Principles to Production
@@ -69,8 +69,8 @@ Module 1), built with PDF.js (pin an exact version) and rendered on the client:
 - Canonical URL, Open Graph and Twitter card tags using `og-image.jpg`, `og:type=book`, `book:author`,
   `book:release_date`, `book:tag`.
 - JSON-LD structured data: a `Book` (name, alternateName = subtitle, author `Person`, publisher, inLanguage,
-  numberOfPages, bookFormat, image, description, about = the subjects, workExample for paperback and ebook with
-  the ISBN placeholder left out until it exists), a `BreadcrumbList`, and an `FAQPage` matching the visible FAQ.
+  numberOfPages, bookFormat, image, description, about = the subjects, workExample for the paperback with `isbn` 978-93-346-0447-4, and an ebook entry
+  without an ISBN), a `BreadcrumbList`, and an `FAQPage` matching the visible FAQ.
   Validate it in the format Google's Rich Results Test accepts. No fake reviews or ratings in the markup.
 - Semantic HTML: one `<h1>`, headings in order, the contents as real lists, descriptive link text.
 - Add the pages to `sitemap.xml` and make sure `robots.txt` allows them; the reader page can be `noindex` (the book
@@ -86,5 +86,5 @@ Module 1), built with PDF.js (pin an exact version) and rendered on the client:
 
 Build the site, fix any warnings, check the pages on a phone-sized and a desktop viewport, run Lighthouse and aim
 for 95+ in Performance, Accessibility, Best Practices and SEO, then show me screenshots and the scores. Tell me
-exactly which placeholders I need to fill in (ISBN, store links, prices). After it is deployed, I will submit the
+exactly which placeholders I need to fill in (store links, prices). After it is deployed, I will submit the
 sitemap in Google Search Console and Bing Webmaster Tools.

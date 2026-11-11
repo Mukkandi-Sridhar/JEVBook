@@ -28,7 +28,7 @@ INK, SOFT, SAFF, INDIGO = "#10163A", "#454C6E", "#E8780A", "#2A3789"
 
 # The ISBN. Leave it as None until RRRNA allots it; then write it here, e.g. "978-93-xxxxx-xx-x", and rerun.
 # With None the back cover shows a clean, labelled box of the right size; with a number it prints the EAN-13 barcode.
-ISBN = None
+ISBN = "978-93-346-0447-4"
 
 L = ["0001101", "0011001", "0010011", "0111101", "0100011", "0110001", "0101111", "0111011", "0110111", "0001011"]
 G = ["0100111", "0110011", "0011011", "0100001", "0011101", "0111001", "0000101", "0010001", "0001001", "0010111"]

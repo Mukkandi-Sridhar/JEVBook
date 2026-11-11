@@ -1,5 +1,8 @@
 # ISBN application: Ship Real AI (India paperback, RRRNA)
 
+**Allotted: ISBN 978-93-346-0447-4** (application 58486|ISBN|2026|A, approved November 2026). It is on the
+copyright page and the back-cover barcode; the print files are in `release/print-india/`.
+
 Apply the same way as for *Decide, Don't Generate* (ISBN 978-93-345-4878-5, allotted by RRRNA on 8 Oct 2026):
 sign in at **isbn.gov.in** with the same publisher account (**Mukkandi Sridhar**, self-publisher), choose to apply for
 a new ISBN, and fill in the book details below. The ISBN is free. Allotment took about a week last time.

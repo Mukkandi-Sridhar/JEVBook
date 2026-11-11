@@ -8,7 +8,7 @@
  "pages": 193,
  "trim": "176 x 250 mm (B5)",
  "format": "Paperback, colour; ebook",
- "isbn": "pending (RRRNA, applied November 2026)",
+ "isbn": "978-93-346-0447-4",
  "subjects": [
   "Artificial intelligence",
   "Large language models",
@@ -315,5 +315,6 @@
   }
  ],
  "figures": 82,
- "glossary_terms": 90
+ "glossary_terms": 90,
+ "isbn_note": "Paperback, India edition (RRRNA). The Amazon paperback has its own KDP ISBN."
 }
