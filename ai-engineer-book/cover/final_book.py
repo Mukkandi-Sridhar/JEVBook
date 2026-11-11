@@ -167,7 +167,7 @@ PART_NAME = ["The model", "Memory, tools, knowledge", "Measuring", "Agents", "Pr
 
 def route_svg():
     w, rows, x0, x1 = 146.0, [(0, 6), (6, 12), (12, 17)], 12.0, 134.0
-    ys = [9.0, 33.0, 57.0]
+    ys = [10.0, 40.0, 70.0]
     pts = []
     for r, (a, b) in enumerate(rows):
         n = b - a
@@ -193,15 +193,15 @@ def route_svg():
         out.append(f'<text x="{x}" y="{y + 1.15}" text-anchor="middle" font-size="2.3" font-weight="700" fill="{col}">{i + 1}</text>')
         for k, line in enumerate(STOPS[i].split("|")):
             anc, lx = ("end", x + 1.5) if i == 5 else ("start", x - 1.5) if i == 11 else ("middle", x)
-            out.append(f'<text x="{lx}" y="{y + 7.0 + k * 3.7}" text-anchor="{anc}" font-size="3.2" fill="#2B3157">{line}</text>')
+            out.append(f'<text x="{lx}" y="{y + 7.6 + k * 4.1}" text-anchor="{anc}" font-size="3.6" fill="#2B3157">{line}</text>')
     out.append(f'<text x="{pts[0][0] - 4}" y="{pts[0][1] - 4.6}" font-size="2.9" letter-spacing="0.35" fill="#8C8576">FIRST API CALL</text>')
     out.append(f'<text x="{pts[16][0] + 4}" y="{pts[16][1] - 4.6}" text-anchor="end" font-size="2.9" letter-spacing="0.35" '
                f'fill="#E8780A" font-weight="700">IN PRODUCTION</text>')
     lx, leg = 4.0, ""
     for c, n in zip(PART_COL, PART_NAME):
-        leg += f'<circle cx="{lx}" cy="76" r="1.3" fill="{c}"/><text x="{lx + 2.4}" y="77.1" font-size="2.9" fill="#454C6E">{n}</text>'
-        lx += 2.4 + len(n) * 1.55 + 6
-    return (f'<svg viewBox="0 0 {w} 80" width="{w}mm" height="80mm" xmlns="http://www.w3.org/2000/svg" '
+        leg += f'<circle cx="{lx}" cy="92" r="1.5" fill="{c}"/><text x="{lx + 2.4}" y="93.3" font-size="3.3" fill="#454C6E">{n}</text>'
+        lx += 2.4 + len(n) * 1.72 + 5
+    return (f'<svg viewBox="0 0 {w} 97" width="{w}mm" height="97mm" xmlns="http://www.w3.org/2000/svg" '
             f'font-family="Work Sans">{"".join(out)}{leg}</svg>')
 
 
@@ -218,7 +218,7 @@ html,body{{margin:0;padding:0}}
              radial-gradient(90mm 70mm at -10% 105%,#E3E6F6 0%,rgba(227,230,246,0) 70%),linear-gradient(#FBF8F0,#F1EADA);
   font-family:'Work Sans';color:{INK}}}
 .kick{{font-size:7pt;letter-spacing:.24em;color:{SAFF};font-weight:700;margin-bottom:2.2mm}}
-h1{{font-family:'Plex Serif';font-weight:700;font-size:22pt;line-height:1.12;margin:0 0 6mm}}
+h1{{font-family:'Plex Serif';font-weight:700;font-size:24pt;line-height:1.12;margin:0 0 7mm}}
 h1 span{{color:{SAFF}}}
 .chat{{background:rgba(255,255,255,.55);border:0.3mm solid rgba(42,55,137,.14);border-radius:3mm;padding:3.2mm 3.6mm 3.4mm}}
 .row{{display:flex;gap:2.4mm;align-items:flex-start;margin-bottom:2.4mm}}
@@ -237,16 +237,16 @@ h1 span{{color:{SAFF}}}
 .chip{{font-family:'Plex Mono';font-size:5.9pt;color:#1F7A63;background:#E3F3EC;border-radius:1.2mm;padding:.5mm 1.4mm}}
 .arr{{font-size:6pt;color:#9AA1BD}}
 .meta{{margin:1.4mm 0 0 8.6mm;font-family:'Plex Mono';font-size:6pt;color:{SOFT}}}
-.pitch{{font-family:'Plex Serif';font-size:10.8pt;line-height:1.55;color:{SOFT};margin:0 0 9mm}}
+.pitch{{font-family:'Plex Serif';font-size:11.6pt;line-height:1.58;color:{SOFT};margin:0 0 10mm}}
 .stats{{display:flex;gap:3mm;margin:0 0 6.5mm}}
 .stats div{{flex:1;border-top:0.6mm solid {SAFF};padding-top:2mm}}
 .stats b{{display:block;font-family:'Plex Serif';font-size:17pt;color:{INK};line-height:1}}
 .stats span{{display:block;margin-top:1.2mm;font-size:7pt;letter-spacing:.04em;color:{SOFT}}}
-.diff{{font-family:'Plex Serif';font-size:10pt;line-height:1.45;color:{SOFT};margin:0}}
+.diff{{font-family:'Plex Serif';font-size:10.6pt;line-height:1.45;color:{SOFT};margin:0 0 2mm}}
 .diff b{{color:{INK}}}
 .route{{margin:1mm -1mm 0}}
-.left{{max-width:92mm}} .who{{display:flex;gap:2mm;align-items:center;margin-top:2.5mm}} .for{{font-size:6.2pt;letter-spacing:.2em;font-weight:700;color:{SAFF};margin-right:1mm}}
-.w{{font-size:7.4pt;font-weight:700;color:{INK};background:rgba(255,255,255,.6);border:0.3mm solid rgba(42,55,137,.16);border-radius:3mm;padding:1mm 2.6mm}}
+.left{{max-width:92mm}} .who{{display:flex;gap:2.4mm;align-items:center;margin-top:5mm}} .for{{font-size:6.2pt;letter-spacing:.2em;font-weight:700;color:{SAFF};margin-right:1mm}}
+.w{{font-size:8.2pt;font-weight:700;color:{INK};background:rgba(255,255,255,.6);border:0.3mm solid rgba(42,55,137,.16);border-radius:3mm;padding:1mm 2.6mm}}
 .w b{{font-size:7.6pt;margin-right:1.4mm}}
 .w span{{font-family:'Plex Serif';font-size:7.4pt;line-height:1.38;color:{SOFT}}}
 .foot{{position:absolute;left:15mm;right:15mm;bottom:11mm;display:flex;justify-content:space-between;align-items:flex-end}}
