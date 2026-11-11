@@ -167,7 +167,7 @@ PART_NAME = ["The model", "Memory, tools, knowledge", "Measuring", "Agents", "Pr
 
 def route_svg():
     w, rows, x0, x1 = 146.0, [(0, 6), (6, 12), (12, 17)], 12.0, 134.0
-    ys = [10.0, 38.0, 66.0]
+    ys = [9.0, 33.0, 57.0]
     pts = []
     for r, (a, b) in enumerate(rows):
         n = b - a
@@ -199,39 +199,57 @@ def route_svg():
                f'fill="#E8780A" font-weight="700">IN PRODUCTION</text>')
     lx, leg = 4.0, ""
     for c, n in zip(PART_COL, PART_NAME):
-        leg += f'<circle cx="{lx}" cy="88" r="1.3" fill="{c}"/><text x="{lx + 2.4}" y="89.1" font-size="2.9" fill="#454C6E">{n}</text>'
+        leg += f'<circle cx="{lx}" cy="76" r="1.3" fill="{c}"/><text x="{lx + 2.4}" y="77.1" font-size="2.9" fill="#454C6E">{n}</text>'
         lx += 2.4 + len(n) * 1.55 + 6
-    return (f'<svg viewBox="0 0 {w} 92" width="{w}mm" height="92mm" xmlns="http://www.w3.org/2000/svg" '
+    return (f'<svg viewBox="0 0 {w} 80" width="{w}mm" height="80mm" xmlns="http://www.w3.org/2000/svg" '
             f'font-family="Work Sans">{"".join(out)}{leg}</svg>')
 
 
 if BACK == "C":
+    PIPE = ["input checks", "hybrid search", "reranker", "model", "output checks"]
+    pipe = '<span class="arr">→</span>'.join(f'<span class="chip">✓ {x}</span>' for x in PIPE)
+    WHO = ["Beginners with Python", "Software engineers adding AI", "Interview preparation"]
+    who = '<span class="for">FOR</span>' + "".join(f'<span class="w">{h}</span>' for h in WHO)
     back = f"""<!doctype html><html><head><meta charset="utf-8"><style>{fonts}
 @page {{ size: {TW}mm {TH}mm; margin: 0 }}
 html,body{{margin:0;padding:0}}
-.page{{width:{TW}mm;height:{TH}mm;box-sizing:border-box;padding:14mm 15mm 0;position:relative;overflow:hidden;
-  background:radial-gradient(120mm 90mm at 100% 0%,#FBE2BD 0%,rgba(251,226,189,0) 70%),linear-gradient(#FBF8F0,#EFE7D5);
+.page{{width:{TW}mm;height:{TH}mm;box-sizing:border-box;padding:13mm 15mm 0;position:relative;overflow:hidden;
+  background:radial-gradient(130mm 95mm at 105% -5%,#FBDDB0 0%,rgba(251,221,176,0) 70%),
+             radial-gradient(90mm 70mm at -10% 105%,#E3E6F6 0%,rgba(227,230,246,0) 70%),linear-gradient(#FBF8F0,#F1EADA);
   font-family:'Work Sans';color:{INK}}}
-.kick{{font-size:7.2pt;letter-spacing:.22em;color:{SAFF};font-weight:700;margin-bottom:2.5mm}}
-h1{{font-family:'Plex Serif';font-weight:700;font-size:21pt;line-height:1.12;margin:0 0 5mm}}
-.q{{font-family:'Plex Mono';font-size:8.2pt;color:{SOFT};margin:0 0 2.4mm}}
-.q b{{color:{INK}}}
-.ans{{display:flex;gap:4mm;margin-bottom:4mm}}
-.card{{flex:1;border-radius:2.4mm;padding:3mm 3.4mm;box-sizing:border-box}}
-.demo{{background:#FFFFFF;border:0.35mm solid #E7D9D6}}
-.prod{{background:{INK};color:#fff}}
-.tag{{font-size:6.4pt;letter-spacing:.2em;font-weight:700;margin-bottom:1.6mm}}
-.demo .tag{{color:#B42318}} .prod .tag{{color:#FFB84D}}
-.say{{font-family:'Plex Serif';font-size:9.6pt;line-height:1.35;margin-bottom:2mm}}
-.demo .say{{color:#5A1A14}}
-.meta{{font-family:'Plex Mono';font-size:6.4pt;line-height:1.5}}
-.demo .meta{{color:#B42318}} .prod .meta{{color:#9FE3BE}}
-.diff{{font-family:'Plex Serif';font-size:10.2pt;line-height:1.45;color:{SOFT};margin:0 0 1mm}}
+.kick{{font-size:7pt;letter-spacing:.24em;color:{SAFF};font-weight:700;margin-bottom:2.2mm}}
+h1{{font-family:'Plex Serif';font-weight:700;font-size:20.5pt;line-height:1.12;margin:0 0 4.5mm}}
+h1 span{{color:{SAFF}}}
+.chat{{background:rgba(255,255,255,.55);border:0.3mm solid rgba(42,55,137,.14);border-radius:3mm;padding:3.2mm 3.6mm 3.4mm}}
+.row{{display:flex;gap:2.4mm;align-items:flex-start;margin-bottom:2.4mm}}
+.av{{flex:none;width:6.2mm;height:6.2mm;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:5.6pt;font-weight:700;color:#fff}}
+.bub{{border-radius:2.4mm;padding:2mm 3mm;font-family:'Plex Serif';font-size:9.2pt;line-height:1.34}}
+.cust .av{{background:#9AA1BD}} .cust .bub{{background:#E9EBF5;color:{INK}}}
+.demo .av{{background:#C9463B}} .demo .bub{{background:#fff;border:0.3mm solid #EBC9C4;color:#5A1A14;position:relative}}
+.prod .av{{background:{INK}}} .prod .bub{{background:{INK};color:#fff}}
+.lab{{font-family:'Work Sans';font-size:5.6pt;letter-spacing:.18em;font-weight:700;display:block;margin-bottom:.8mm}}
+.demo .lab{{color:#C9463B}} .prod .lab{{color:#FFB84D}}
+.stamp{{position:absolute;right:2.6mm;top:50%;transform:translateY(-50%) rotate(-8deg);border:0.45mm solid #C9463B;
+  color:#C9463B;font-family:'Work Sans';font-weight:700;font-size:6.6pt;letter-spacing:.14em;padding:.6mm 1.6mm;border-radius:1mm}}
+.demo .bub{{padding-right:20mm}}
+.pipe{{margin:1.6mm 0 0 8.6mm;display:flex;align-items:center;flex-wrap:wrap;gap:1mm}}
+.chip{{font-family:'Plex Mono';font-size:5.9pt;color:#1F7A63;background:#E3F3EC;border-radius:1.2mm;padding:.5mm 1.4mm}}
+.arr{{font-size:6pt;color:#9AA1BD}}
+.meta{{margin:1.4mm 0 0 8.6mm;font-family:'Plex Mono';font-size:6pt;color:{SOFT}}}
+.diff{{font-family:'Plex Serif';font-size:10pt;line-height:1.45;color:{SOFT};margin:4.2mm 0 0}}
 .diff b{{color:{INK}}}
-.route{{margin:0 -1mm}}
-.foot{{position:absolute;left:15mm;right:15mm;bottom:12mm;display:flex;justify-content:space-between;align-items:flex-end}}
-.who{{font-family:'Plex Serif';font-size:8.4pt;line-height:1.45;color:{SOFT};max-width:88mm}}
-.who b{{font-family:'Work Sans';letter-spacing:.14em;color:{INK};font-size:8.2pt;display:block;margin-bottom:1mm}}
+.route{{margin:1mm -1mm 0}}
+.left{{max-width:92mm}} .who{{display:flex;gap:2mm;align-items:center;margin-top:2.5mm}} .for{{font-size:6.2pt;letter-spacing:.2em;font-weight:700;color:{SAFF};margin-right:1mm}}
+.w{{font-size:7.4pt;font-weight:700;color:{INK};background:rgba(255,255,255,.6);border:0.3mm solid rgba(42,55,137,.16);border-radius:3mm;padding:1mm 2.6mm}}
+.w b{{font-size:7.6pt;margin-right:1.4mm}}
+.w span{{font-family:'Plex Serif';font-size:7.4pt;line-height:1.38;color:{SOFT}}}
+.foot{{position:absolute;left:15mm;right:15mm;bottom:11mm;display:flex;justify-content:space-between;align-items:flex-end}}
+.au{{display:flex;gap:3mm;align-items:center;max-width:92mm}}
+.mono{{flex:none;width:11mm;height:11mm;border-radius:50%;background:{INK};color:#FFB84D;display:flex;align-items:center;
+  justify-content:center;font-family:'Plex Serif';font-weight:700;font-size:10pt}}
+.au b{{display:block;font-size:8pt;letter-spacing:.16em;margin-bottom:.8mm}}
+.au span{{font-family:'Plex Serif';font-size:7.8pt;line-height:1.42;color:{SOFT}}}
 .isbn{{width:46mm;height:30mm;background:#fff;border-radius:1mm;box-shadow:0 0.6mm 2mm rgba(16,22,58,.12)}}
 .isbn.empty{{box-sizing:border-box;border:0.35mm dashed #B9B2A2;padding:2.6mm 3mm;font-family:'Work Sans';color:#8C8576}}
 .isbn .lbl{{font-size:6.4pt;letter-spacing:.2em;font-weight:700}}
@@ -240,21 +258,22 @@ h1{{font-family:'Plex Serif';font-weight:700;font-size:21pt;line-height:1.12;mar
 .isbn .note{{font-size:5.4pt;margin-top:1.2mm;letter-spacing:.06em}}
 </style></head><body><div class="page">
 <div class="kick">SAME QUESTION · TWO SYSTEMS</div>
-<h1>Anyone can build the demo.<br><span style="color:{SAFF}">This book is about what comes after.</span></h1>
-<div class="q">customer › <b>Can I return opened earbuds?</b></div>
-<div class="ans">
- <div class="card demo"><div class="tag">THE DEMO</div>
-  <div class="say">"Yes! Returns are accepted within 10 days."</div>
-  <div class="meta">✗ wrong: opened in-ear audio is non-returnable<br>✗ no source · cost unknown · never tested</div></div>
- <div class="card prod"><div class="tag">THE REAL SYSTEM</div>
-  <div class="say">"Only if they are faulty. Opened in-ear audio can't be returned otherwise."</div>
-  <div class="meta">✓ sources: policy §3, §4 · 1.2 s · ₹1.17<br>✓ golden set 92% · guardrails passed</div></div>
+<h1>Anyone can build the demo.<br><span>This book is about what comes after.</span></h1>
+<div class="chat">
+ <div class="row cust"><div class="av">C</div><div class="bub">Can I return opened earbuds?</div></div>
+ <div class="row demo"><div class="av">D</div><div class="bub"><span class="lab">THE DEMO</span>
+   Yes! Returns are accepted within 10 days.<span class="stamp">WRONG</span></div></div>
+ <div class="row prod" style="margin-bottom:0"><div class="av">AI</div><div class="bub"><span class="lab">THE REAL SYSTEM</span>
+   Only if they are faulty. Opened in-ear audio can't be returned otherwise.</div></div>
+ <div class="pipe">{pipe}</div>
+ <div class="meta">sources: policy §3, §4 · 1.2 s · ₹1.17 · golden set 92%</div>
 </div>
-<p class="diff">The difference is engineering. <b>Ship Real AI</b> builds it with you, one system and seventeen modules,
+<p class="diff">The difference is engineering. <b>Ship Real AI</b> builds it with you: one real system, seventeen modules,
 from the first API call to production.</p>
 <div class="route">{route_svg()}</div>
-<div class="foot"><div class="who"><b>SRIDHAR MUKKANDI</b>Applied AI engineer. Builds AI agents and the decision
-systems behind them, and writes for engineers who want AI they can trust in production.</div>{isbn_box()}</div>
+<div class="who">{who}</div>
+<div class="foot"><div class="left"><div class="au"><div class="mono">SM</div><div><b>SRIDHAR MUKKANDI</b><span>Applied AI engineer who
+builds AI agents and the decision systems behind them.</span></div></div></div>{isbn_box()}</div>
 </div></body></html>"""
 (OUT / "back.html").write_text(back)
 
