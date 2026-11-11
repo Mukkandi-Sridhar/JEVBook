@@ -237,7 +237,7 @@ h1 span{{color:{SAFF}}}
 .chip{{font-family:'Plex Mono';font-size:5.9pt;color:#1F7A63;background:#E3F3EC;border-radius:1.2mm;padding:.5mm 1.4mm}}
 .arr{{font-size:6pt;color:#9AA1BD}}
 .meta{{margin:1.4mm 0 0 8.6mm;font-family:'Plex Mono';font-size:6pt;color:{SOFT}}}
-.pitch{{font-family:'Plex Serif';font-size:10.8pt;line-height:1.55;color:{SOFT};margin:0 0 6mm}}
+.pitch{{font-family:'Plex Serif';font-size:10.8pt;line-height:1.55;color:{SOFT};margin:0 0 9mm}}
 .stats{{display:flex;gap:3mm;margin:0 0 6.5mm}}
 .stats div{{flex:1;border-top:0.6mm solid {SAFF};padding-top:2mm}}
 .stats b{{display:block;font-family:'Plex Serif';font-size:17pt;color:{INK};line-height:1}}
@@ -267,8 +267,6 @@ h1 span{{color:{SAFF}}}
 <p class="pitch">Getting a model to answer is easy. Making it right, safe, affordable and measurable for real users is the
 job of an AI engineer, and that is what this book teaches. You build one complete AI system, layer by layer, and learn
 the engineering behind every part of it.</p>
-<div class="stats"><div><b>17</b><span>modules</span></div><div><b>80+</b><span>figures</span></div>
-<div><b>193</b><span>colour pages</span></div><div><b>1</b><span>real system</span></div></div>
 <p class="diff">Your route through the book, <b>from the first API call to production</b>:</p>
 <div class="route">{route_svg()}</div>
 <div class="who">{who}</div>
