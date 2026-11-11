@@ -218,7 +218,7 @@ html,body{{margin:0;padding:0}}
              radial-gradient(90mm 70mm at -10% 105%,#E3E6F6 0%,rgba(227,230,246,0) 70%),linear-gradient(#FBF8F0,#F1EADA);
   font-family:'Work Sans';color:{INK}}}
 .kick{{font-size:7pt;letter-spacing:.24em;color:{SAFF};font-weight:700;margin-bottom:2.2mm}}
-h1{{font-family:'Plex Serif';font-weight:700;font-size:20.5pt;line-height:1.12;margin:0 0 4.5mm}}
+h1{{font-family:'Plex Serif';font-weight:700;font-size:22pt;line-height:1.12;margin:0 0 6mm}}
 h1 span{{color:{SAFF}}}
 .chat{{background:rgba(255,255,255,.55);border:0.3mm solid rgba(42,55,137,.14);border-radius:3mm;padding:3.2mm 3.6mm 3.4mm}}
 .row{{display:flex;gap:2.4mm;align-items:flex-start;margin-bottom:2.4mm}}
@@ -237,7 +237,12 @@ h1 span{{color:{SAFF}}}
 .chip{{font-family:'Plex Mono';font-size:5.9pt;color:#1F7A63;background:#E3F3EC;border-radius:1.2mm;padding:.5mm 1.4mm}}
 .arr{{font-size:6pt;color:#9AA1BD}}
 .meta{{margin:1.4mm 0 0 8.6mm;font-family:'Plex Mono';font-size:6pt;color:{SOFT}}}
-.diff{{font-family:'Plex Serif';font-size:10pt;line-height:1.45;color:{SOFT};margin:4.2mm 0 0}}
+.pitch{{font-family:'Plex Serif';font-size:10.8pt;line-height:1.55;color:{SOFT};margin:0 0 6mm}}
+.stats{{display:flex;gap:3mm;margin:0 0 6.5mm}}
+.stats div{{flex:1;border-top:0.6mm solid {SAFF};padding-top:2mm}}
+.stats b{{display:block;font-family:'Plex Serif';font-size:17pt;color:{INK};line-height:1}}
+.stats span{{display:block;margin-top:1.2mm;font-size:7pt;letter-spacing:.04em;color:{SOFT}}}
+.diff{{font-family:'Plex Serif';font-size:10pt;line-height:1.45;color:{SOFT};margin:0}}
 .diff b{{color:{INK}}}
 .route{{margin:1mm -1mm 0}}
 .left{{max-width:92mm}} .who{{display:flex;gap:2mm;align-items:center;margin-top:2.5mm}} .for{{font-size:6.2pt;letter-spacing:.2em;font-weight:700;color:{SAFF};margin-right:1mm}}
@@ -257,19 +262,14 @@ h1 span{{color:{SAFF}}}
 .isbn .bars{{height:12mm;background:repeating-linear-gradient(90deg,#E4DFD3 0 .5mm,transparent .5mm 1.3mm)}}
 .isbn .note{{font-size:5.4pt;margin-top:1.2mm;letter-spacing:.06em}}
 </style></head><body><div class="page">
-<div class="kick">SAME QUESTION · TWO SYSTEMS</div>
+<div class="kick">THE AI ENGINEER BOOTCAMP</div>
 <h1>Anyone can build the demo.<br><span>This book is about what comes after.</span></h1>
-<div class="chat">
- <div class="row cust"><div class="av">C</div><div class="bub">Can I return opened earbuds?</div></div>
- <div class="row demo"><div class="av">D</div><div class="bub"><span class="lab">THE DEMO</span>
-   Yes! Returns are accepted within 10 days.<span class="stamp">WRONG</span></div></div>
- <div class="row prod" style="margin-bottom:0"><div class="av">AI</div><div class="bub"><span class="lab">THE REAL SYSTEM</span>
-   Only if they are faulty. Opened in-ear audio can't be returned otherwise.</div></div>
- <div class="pipe">{pipe}</div>
- <div class="meta">sources: policy §3, §4 · 1.2 s · ₹1.17 · golden set 92%</div>
-</div>
-<p class="diff">The difference is engineering. <b>Ship Real AI</b> builds it with you: one real system, seventeen modules,
-from the first API call to production.</p>
+<p class="pitch">Getting a model to answer is easy. Making it right, safe, affordable and measurable for real users is the
+job of an AI engineer, and that is what this book teaches. You build one complete AI system, layer by layer, and learn
+the engineering behind every part of it.</p>
+<div class="stats"><div><b>17</b><span>modules</span></div><div><b>80+</b><span>figures</span></div>
+<div><b>193</b><span>colour pages</span></div><div><b>1</b><span>real system</span></div></div>
+<p class="diff">Your route through the book, <b>from the first API call to production</b>:</p>
 <div class="route">{route_svg()}</div>
 <div class="who">{who}</div>
 <div class="foot"><div class="left"><div class="au"><div class="mono">SM</div><div><b>SRIDHAR MUKKANDI</b><span>Applied AI engineer who
